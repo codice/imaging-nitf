@@ -53,6 +53,13 @@ public class Nitf21HeaderTest {
         assertEquals("", reader.getFileDowngrade());
         assertEquals("", reader.getFileDowngradeDate());
         assertEquals("", reader.getFileClassificationText());
+        assertEquals("", reader.getFileClassificationAuthorityType());
+        assertEquals("", reader.getFileClassificationAuthority());
+        assertEquals("", reader.getFileClassificationReason());
+        assertEquals("", reader.getFileSecurityControlNumber());
+        assertEquals("00001", reader.getFileCopyNumber());
+        assertEquals("00001", reader.getFileNumberOfCopies());
+
 
         is.close();
     }

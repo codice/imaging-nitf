@@ -36,13 +36,23 @@ public class NitfHeaderReader
     private String nitfFileCodewords = null;
     private String nitfFileControlAndHandling = null;
     private String nitfFileReleaseInstructions = null;
+    // Could be an enumerated type
     private String nitfFileDeclassificationType = null;
     // String instead of Date because its frequently just an empty string
     private String nitfFileDeclassificationDate = null;
     private String nitfFileDeclassificationExemption = null;
     private String nitfFileDowngrade = null;
+    // String instead of Date because its frequently just an empty string
     private String nitfFileDowngradeDate = null;
     private String nitfFileClassificationText = null;
+    // Could be an enumerated type
+    private String nitfFileClassificationAuthorityType = null;
+    private String nitfFileClassificationAuthority = null;
+    private String nitfFileClassificationReason = null;
+    private String nitfFileSecuritySourceDate = null;
+    private String nitfFileSecurityControlNumber = null;
+    private String nitfFileCopyNumber = null;
+    private String nitfFileNumberOfCopies = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -66,6 +76,14 @@ public class NitfHeaderReader
     private static final int FSDG_LENGTH = 1;
     private static final int FSDGDT_LENGTH = 8;
     private static final int FSCLTX_LENGTH = 43;
+    private static final int FSCATP_LENGTH = 1;
+    private static final int FSCAUT_LENGTH = 40;
+    private static final int FSCRSN_LENGTH = 1;
+    private static final int FSSRDT_LENGTH = 8;
+    private static final int FSCTLN_LENGTH = 15;
+    private static final int FSCOP_LENGTH = 5;
+    private static final int FSCPYS_LENGTH = 5;
+    private static final int ENCRYP_LENGTH = 1;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -144,6 +162,34 @@ public class NitfHeaderReader
         return nitfFileClassificationText;
     }
 
+    public String getFileClassificationAuthorityType() {
+        return nitfFileClassificationAuthorityType;
+    }
+
+    public String getFileClassificationAuthority() {
+        return nitfFileClassificationAuthority;
+    }
+
+    public String getFileClassificationReason() {
+        return nitfFileClassificationReason;
+    }
+
+    public String getFileSecuritySourceDate() {
+        return nitfFileSecuritySourceDate;
+    }
+
+    public String getFileSecurityControlNumber() {
+        return nitfFileSecurityControlNumber;
+    }
+
+    public String getFileCopyNumber() {
+        return nitfFileCopyNumber;
+    }
+
+    public String getFileNumberOfCopies() {
+        return nitfFileNumberOfCopies;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -163,6 +209,14 @@ public class NitfHeaderReader
         readFSDG();
         readFSDGDT();
         readFSCLTX();
+        readFSCATP();
+        readFSCAUT();
+        readFSCRSN();
+        readFSSRDT();
+        readFSCTLN();
+        readFSCOP();
+        readFSCPYS();
+        readENCRYP();
     }
 
     private void readFHDR() throws ParseException {
@@ -260,6 +314,40 @@ public class NitfHeaderReader
 
     private void readFSCLTX() throws ParseException {
         nitfFileClassificationText= readTrimmedBytes(FSCLTX_LENGTH);
+    }
+
+    private void readFSCATP() throws ParseException {
+        nitfFileClassificationAuthorityType = readTrimmedBytes(FSCATP_LENGTH);
+    }
+
+    private void readFSCAUT() throws ParseException {
+        nitfFileClassificationAuthority = readTrimmedBytes(FSCAUT_LENGTH);
+    }
+
+    private void readFSCRSN() throws ParseException {
+        nitfFileClassificationReason = readTrimmedBytes(FSCRSN_LENGTH);
+    }
+
+    private void readFSSRDT() throws ParseException {
+        nitfFileSecuritySourceDate = readTrimmedBytes(FSSRDT_LENGTH);
+    }
+
+    private void readFSCTLN() throws ParseException {
+        nitfFileSecurityControlNumber = readTrimmedBytes(FSCTLN_LENGTH);
+    }
+
+    private void readFSCOP() throws ParseException {
+        nitfFileCopyNumber = readTrimmedBytes(FSCOP_LENGTH);
+    }
+
+    private void readFSCPYS() throws ParseException {
+        nitfFileNumberOfCopies = readTrimmedBytes(FSCPYS_LENGTH);
+    }
+
+    private void readENCRYP() throws ParseException {
+        if (!readBytes(ENCRYP_LENGTH).equals("0")) {
+            new ParseException("Unexpected ENCRYP values", numBytesRead);
+        }
     }
 
     private String readTrimmedBytes(int count) throws ParseException {
