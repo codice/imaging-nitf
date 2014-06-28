@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class NitfHeaderReader
 {
@@ -27,6 +29,7 @@ public class NitfHeaderReader
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
     private String nitfOriginatingStationId = null;
+    private Date nitfFileDateTime = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -39,6 +42,7 @@ public class NitfHeaderReader
     private static final int CLEVEL_LENGTH = 2;
     private static final int STYPE_LENGTH = 4;
     private static final int OSTAID_LENGTH = 10;
+    private static final int FDT_LENGTH = 14;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -65,12 +69,17 @@ public class NitfHeaderReader
         return nitfOriginatingStationId;
     }
 
+    public Date getFileDateTime() {
+        return nitfFileDateTime;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
         readCLEVEL();
         readSTYPE();
         readOSTAID();
+        readFDT();
     }
 
     private void readFHDR() throws ParseException {
@@ -106,6 +115,16 @@ public class NitfHeaderReader
     private void readOSTAID() throws ParseException {
         String ostaid = readBytes(OSTAID_LENGTH);
         nitfOriginatingStationId = ostaid.trim();
+    }
+
+    private void readFDT() throws ParseException {
+        String fdt = readBytes(FDT_LENGTH);
+        // TODO: check if NITF 2.0 uses the same format.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        nitfFileDateTime = dateFormat.parse(fdt);
+        if (nitfFileDateTime == null) {
+            new ParseException(String.format("Bad FDT format: %s", fdt), numBytesRead);
+        }
     }
 
     private String readBytes(int count) throws ParseException {

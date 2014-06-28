@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
@@ -39,6 +40,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("I_3034C", reader.getOriginatingStationId());
+        assertEquals("1997-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
         is.close();
     }
 
