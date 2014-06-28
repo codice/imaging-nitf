@@ -60,6 +60,7 @@ public class NitfHeaderReader
     private String nitfOriginatorsPhoneNumber = null;
     private long nitfFileLength = -1;
     private int nitfHeaderLength = -1;
+    private int numberImageSegments = 0;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -96,6 +97,7 @@ public class NitfHeaderReader
     private static final int OPHONE_LENGTH = 18;
     private static final int FL_LENGTH = 12;
     private static final int HL_LENGTH = 6;
+    private static final int NUMI_LENGTH = 3;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -230,6 +232,11 @@ public class NitfHeaderReader
         return nitfHeaderLength;
     }
 
+    public int getNumberOfImageSegments() {
+        // TODO: this should be based on the number we actually found, not what the header claimed
+        return numberImageSegments;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -262,6 +269,7 @@ public class NitfHeaderReader
         readOPHONE();
         readFL();
         readHL();
+        readNUMI();
     }
 
     private void readFHDR() throws ParseException {
@@ -429,6 +437,15 @@ public class NitfHeaderReader
             nitfHeaderLength = Integer.parseInt(hl);
         } catch (NumberFormatException ex) {
             new ParseException("Bad HL", numBytesRead);
+        }
+    }
+
+    private void readNUMI() throws ParseException {
+        String numi = readBytes(NUMI_LENGTH);
+        try {
+            numberImageSegments = Integer.parseInt(numi);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad NUMI", numBytesRead);
         }
     }
 

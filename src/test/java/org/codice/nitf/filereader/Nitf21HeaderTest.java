@@ -66,6 +66,7 @@ public class Nitf21HeaderTest {
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
         assertEquals(933L, reader.getFileLength());
         assertEquals(404, reader.getHeaderLength());
+        assertEquals(1, reader.getNumberOfImageSegments());
 
         is.close();
     }
