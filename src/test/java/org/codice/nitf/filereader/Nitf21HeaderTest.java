@@ -59,7 +59,9 @@ public class Nitf21HeaderTest {
         assertEquals("", reader.getFileSecurityControlNumber());
         assertEquals("00001", reader.getFileCopyNumber());
         assertEquals("00001", reader.getFileNumberOfCopies());
-
+        assertEquals(0, reader.getFileBackgroundColourRed());
+        assertEquals(0, reader.getFileBackgroundColourGreen());
+        assertEquals(0, reader.getFileBackgroundColourBlue());
 
         is.close();
     }

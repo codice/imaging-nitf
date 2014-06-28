@@ -53,6 +53,9 @@ public class NitfHeaderReader
     private String nitfFileSecurityControlNumber = null;
     private String nitfFileCopyNumber = null;
     private String nitfFileNumberOfCopies = null;
+    private int nitfFileBackgroundColourRed = 0;
+    private int nitfFileBackgroundColourGreen = 0;
+    private int nitfFileBackgroundColourBlue = 0;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -84,6 +87,7 @@ public class NitfHeaderReader
     private static final int FSCOP_LENGTH = 5;
     private static final int FSCPYS_LENGTH = 5;
     private static final int ENCRYP_LENGTH = 1;
+    private static final int FBKGC_LENGTH = 3;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -190,6 +194,18 @@ public class NitfHeaderReader
         return nitfFileNumberOfCopies;
     }
 
+    public int getFileBackgroundColourRed() {
+        return nitfFileBackgroundColourRed;
+    }
+
+    public int getFileBackgroundColourGreen() {
+        return nitfFileBackgroundColourGreen;
+    }
+
+    public int getFileBackgroundColourBlue() {
+        return nitfFileBackgroundColourBlue;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -217,6 +233,7 @@ public class NitfHeaderReader
         readFSCOP();
         readFSCPYS();
         readENCRYP();
+        readFBKGC();
     }
 
     private void readFHDR() throws ParseException {
@@ -347,6 +364,17 @@ public class NitfHeaderReader
     private void readENCRYP() throws ParseException {
         if (!readBytes(ENCRYP_LENGTH).equals("0")) {
             new ParseException("Unexpected ENCRYP values", numBytesRead);
+        }
+    }
+
+    private void readFBKGC() throws ParseException {
+        String fbkgc = readBytes(FBKGC_LENGTH);
+        try {
+            nitfFileBackgroundColourRed = Integer.parseInt(fbkgc.substring(0, 1));
+            nitfFileBackgroundColourGreen = Integer.parseInt(fbkgc.substring(1, 2));
+            nitfFileBackgroundColourBlue = Integer.parseInt(fbkgc.substring(2));
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad FBKGC", numBytesRead);
         }
     }
 
