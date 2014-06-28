@@ -44,6 +44,8 @@ public class Nitf21HeaderTest {
         assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", reader.getFileTitle());
         assertEquals(NitfSecurityClassification.UNCLASSIFIED, reader.getSecurityClassification());
         assertEquals("", reader.getFileSecurityClassificationSystem());
+        assertEquals("", reader.getFileCodewords());
+        assertEquals("", reader.getFileControlAndHandling());
 
         is.close();
     }

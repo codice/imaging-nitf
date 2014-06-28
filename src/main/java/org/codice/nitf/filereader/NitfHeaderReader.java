@@ -33,6 +33,8 @@ public class NitfHeaderReader
     private String nitfFileTitle = null;
     private NitfSecurityClassification nitfSecurityClassification = NitfSecurityClassification.UNKNOWN;
     private String nitfFileSecurityClassificationSystem = null;
+    private String nitfFileCodewords = null;
+    private String nitfFileControlAndHandling = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -47,6 +49,8 @@ public class NitfHeaderReader
     private static final int FTITLE_LENGTH = 80;
     private static final int FSCLAS_LENGTH = 1;
     private static final int FSCLSY_LENGTH = 2;
+    private static final int FSCODE_LENGTH = 11;
+    private static final int FSCTLH_LENGTH = 2;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -89,6 +93,14 @@ public class NitfHeaderReader
         return nitfFileSecurityClassificationSystem;
     }
 
+    public String getFileCodewords() {
+        return nitfFileCodewords;
+    }
+
+    public String getFileControlAndHandling() {
+        return nitfFileControlAndHandling;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -99,6 +111,8 @@ public class NitfHeaderReader
         readFTITLE();
         readFSCLAS();
         readFSCLSY();
+        readFSCODE();
+        readFSCTLH();
     }
 
     private void readFHDR() throws ParseException {
@@ -132,8 +146,7 @@ public class NitfHeaderReader
     }
 
     private void readOSTAID() throws ParseException {
-        String ostaid = readBytes(OSTAID_LENGTH);
-        nitfOriginatingStationId = ostaid.trim();
+        nitfOriginatingStationId = readTrimmedBytes(OSTAID_LENGTH);
     }
 
     private void readFDT() throws ParseException {
@@ -147,8 +160,7 @@ public class NitfHeaderReader
     }
 
     private void readFTITLE() throws ParseException {
-        String ftitle = readBytes(FTITLE_LENGTH);
-        nitfFileTitle = ftitle.trim();
+        nitfFileTitle = readTrimmedBytes(FTITLE_LENGTH);
     }
 
     private void readFSCLAS() throws ParseException {
@@ -161,8 +173,19 @@ public class NitfHeaderReader
     }
 
     private void readFSCLSY() throws ParseException {
-        String fsclsy = readBytes(FSCLSY_LENGTH);
-        nitfFileSecurityClassificationSystem = fsclsy.trim();
+        nitfFileSecurityClassificationSystem = readTrimmedBytes(FSCLSY_LENGTH);
+    }
+
+    private void readFSCODE() throws ParseException {
+        nitfFileCodewords = readTrimmedBytes(FSCODE_LENGTH);
+    }
+
+    private void readFSCTLH() throws ParseException {
+        nitfFileControlAndHandling = readTrimmedBytes(FSCTLH_LENGTH);
+    }
+
+    private String readTrimmedBytes(int count) throws ParseException {
+        return readBytes(count).trim();
     }
 
     private String readBytes(int count) throws ParseException {
