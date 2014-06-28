@@ -32,6 +32,7 @@ public class NitfHeaderReader
     private Date nitfFileDateTime = null;
     private String nitfFileTitle = null;
     private NitfSecurityClassification nitfSecurityClassification = NitfSecurityClassification.UNKNOWN;
+    private String nitfFileSecurityClassificationSystem = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -45,6 +46,7 @@ public class NitfHeaderReader
     private static final int FDT_LENGTH = 14;
     private static final int FTITLE_LENGTH = 80;
     private static final int FSCLAS_LENGTH = 1;
+    private static final int FSCLSY_LENGTH = 2;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -83,6 +85,10 @@ public class NitfHeaderReader
         return nitfSecurityClassification;
     }
 
+    public String getFileSecurityClassificationSystem() {
+        return nitfFileSecurityClassificationSystem;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -92,6 +98,7 @@ public class NitfHeaderReader
         readFDT();
         readFTITLE();
         readFSCLAS();
+        readFSCLSY();
     }
 
     private void readFHDR() throws ParseException {
@@ -151,6 +158,11 @@ public class NitfHeaderReader
                 nitfSecurityClassification = classification;
             }
         }
+    }
+
+    private void readFSCLSY() throws ParseException {
+        String fsclsy = readBytes(FSCLSY_LENGTH);
+        nitfFileSecurityClassificationSystem = fsclsy.trim();
     }
 
     private String readBytes(int count) throws ParseException {
