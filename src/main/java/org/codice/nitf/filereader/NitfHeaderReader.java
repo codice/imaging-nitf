@@ -58,6 +58,8 @@ public class NitfHeaderReader
     private int nitfFileBackgroundColourBlue = 0;
     private String nitfOriginatorsName = null;
     private String nitfOriginatorsPhoneNumber = null;
+    private long nitfFileLength = -1;
+    private int nitfHeaderLength = -1;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -92,6 +94,8 @@ public class NitfHeaderReader
     private static final int FBKGC_LENGTH = 3;
     private static final int ONAME_LENGTH = 24;
     private static final int OPHONE_LENGTH = 18;
+    private static final int FL_LENGTH = 12;
+    private static final int HL_LENGTH = 6;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -218,6 +222,14 @@ public class NitfHeaderReader
         return nitfOriginatorsPhoneNumber;
     }
 
+    public long getFileLength() {
+        return nitfFileLength;
+    }
+
+    public int getHeaderLength() {
+        return nitfHeaderLength;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -248,6 +260,8 @@ public class NitfHeaderReader
         readFBKGC();
         readONAME();
         readOPHONE();
+        readFL();
+        readHL();
     }
 
     private void readFHDR() throws ParseException {
@@ -398,6 +412,24 @@ public class NitfHeaderReader
 
     private void readOPHONE() throws ParseException {
         nitfOriginatorsPhoneNumber = readTrimmedBytes(OPHONE_LENGTH);
+    }
+
+    private void readFL() throws ParseException {
+        String fl = readBytes(FL_LENGTH);
+        try {
+            nitfFileLength = Long.parseLong(fl);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad FL", numBytesRead);
+        }
+    }
+
+    private void readHL() throws ParseException {
+        String hl = readBytes(HL_LENGTH);
+        try {
+            nitfHeaderLength = Integer.parseInt(hl);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad HL", numBytesRead);
+        }
     }
 
     private String readTrimmedBytes(int count) throws ParseException {
