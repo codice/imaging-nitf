@@ -41,6 +41,8 @@ public class NitfHeaderReader
     private String nitfFileDeclassificationDate = null;
     private String nitfFileDeclassificationExemption = null;
     private String nitfFileDowngrade = null;
+    private String nitfFileDowngradeDate = null;
+    private String nitfFileClassificationText = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -62,6 +64,8 @@ public class NitfHeaderReader
     private static final int FSDCDT_LENGTH = 8;
     private static final int FSDCXM_LENGTH = 4;
     private static final int FSDG_LENGTH = 1;
+    private static final int FSDGDT_LENGTH = 8;
+    private static final int FSCLTX_LENGTH = 43;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -132,6 +136,14 @@ public class NitfHeaderReader
         return nitfFileDowngrade;
     }
 
+    public String getFileDowngradeDate() {
+        return nitfFileDowngradeDate;
+    }
+
+    public String getFileClassificationText() {
+        return nitfFileClassificationText;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -149,6 +161,8 @@ public class NitfHeaderReader
         readFSDCDT();
         readFSDCXM();
         readFSDG();
+        readFSDGDT();
+        readFSCLTX();
     }
 
     private void readFHDR() throws ParseException {
@@ -238,6 +252,14 @@ public class NitfHeaderReader
 
     private void readFSDG() throws ParseException {
         nitfFileDowngrade = readTrimmedBytes(FSDG_LENGTH);
+    }
+
+    private void readFSDGDT() throws ParseException {
+        nitfFileDowngradeDate = readTrimmedBytes(FSDGDT_LENGTH);
+    }
+
+    private void readFSCLTX() throws ParseException {
+        nitfFileClassificationText= readTrimmedBytes(FSCLTX_LENGTH);
     }
 
     private String readTrimmedBytes(int count) throws ParseException {
