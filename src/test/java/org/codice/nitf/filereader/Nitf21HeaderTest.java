@@ -76,6 +76,11 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
         assertEquals(0, reader.getExtendedHeaderDataLength());
 
+        // Checks for ImageSegment.
+        NitfImageSegment segment1 = reader.getImageSegment(1);
+        assertNotNull(segment1);
+        assertEquals("Missing ID", segment1.getImageIdentifier1());
+
         is.close();
     }
 

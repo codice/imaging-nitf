@@ -71,6 +71,8 @@ public class NitfHeaderReader
     private int userDefinedHeaderDataLength = 0;
     private int extendedHeaderDataLength = 0;
 
+    private ArrayList<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
+
     private BufferedReader reader;
     private int numBytesRead = 0;
 
@@ -120,6 +122,9 @@ public class NitfHeaderReader
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
         readFHDR();
+        if (!hasNitfHeader) {
+            new ParseException("Missing NITF magic", numBytesRead);
+        }
         readFVER();
         readCLEVEL();
         readSTYPE();
@@ -180,6 +185,7 @@ public class NitfHeaderReader
         if (extendedHeaderDataLength > 0) {
             // TODO: find a case that exercises this and implement it
         }
+        readImageSegments();
     }
 
     public Boolean isNitf() {
@@ -345,6 +351,14 @@ public class NitfHeaderReader
 
     public int getExtendedHeaderDataLength() {
         return extendedHeaderDataLength;
+    }
+
+    public NitfImageSegment getImageSegment(int segmentNumber) {
+        return getImageSegmentZeroBase(segmentNumber - 1);
+    }
+
+    public NitfImageSegment getImageSegmentZeroBase(int segmentNumberZeroBase) {
+        return imageSegments.get(segmentNumberZeroBase);
     }
 
     private void readFHDR() throws ParseException {
@@ -623,4 +637,9 @@ public class NitfHeaderReader
         return null;
     }
 
+    private void readImageSegments() throws ParseException {
+        for (int i = 0; i < numberImageSegments; ++i) {
+            imageSegments.add(new NitfImageSegment(reader, numBytesRead));
+        }
+    }
 }
