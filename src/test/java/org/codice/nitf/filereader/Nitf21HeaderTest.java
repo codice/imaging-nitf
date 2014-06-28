@@ -46,6 +46,8 @@ public class Nitf21HeaderTest {
         assertEquals("", reader.getFileSecurityClassificationSystem());
         assertEquals("", reader.getFileCodewords());
         assertEquals("", reader.getFileControlAndHandling());
+        assertEquals("", reader.getFileReleaseInstructions());
+        assertEquals("", reader.getFileDeclassificationType());
 
         is.close();
     }

@@ -35,6 +35,8 @@ public class NitfHeaderReader
     private String nitfFileSecurityClassificationSystem = null;
     private String nitfFileCodewords = null;
     private String nitfFileControlAndHandling = null;
+    private String nitfFileReleaseInstructions = null;
+    private String nitfFileDeclassificationType = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -51,6 +53,8 @@ public class NitfHeaderReader
     private static final int FSCLSY_LENGTH = 2;
     private static final int FSCODE_LENGTH = 11;
     private static final int FSCTLH_LENGTH = 2;
+    private static final int FSREL_LENGTH = 20;
+    private static final int FSDCTP_LENGTH = 2;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -101,6 +105,14 @@ public class NitfHeaderReader
         return nitfFileControlAndHandling;
     }
 
+    public String getFileReleaseInstructions() {
+        return nitfFileReleaseInstructions;
+    }
+
+    public String getFileDeclassificationType() {
+        return nitfFileDeclassificationType;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -113,6 +125,8 @@ public class NitfHeaderReader
         readFSCLSY();
         readFSCODE();
         readFSCTLH();
+        readFSREL();
+        readFSDCTP();
     }
 
     private void readFHDR() throws ParseException {
@@ -182,6 +196,14 @@ public class NitfHeaderReader
 
     private void readFSCTLH() throws ParseException {
         nitfFileControlAndHandling = readTrimmedBytes(FSCTLH_LENGTH);
+    }
+
+    private void readFSREL() throws ParseException {
+        nitfFileReleaseInstructions = readTrimmedBytes(FSREL_LENGTH);
+    }
+
+    private void readFSDCTP() throws ParseException {
+        nitfFileDeclassificationType = readTrimmedBytes(FSDCTP_LENGTH);
     }
 
     private String readTrimmedBytes(int count) throws ParseException {
