@@ -42,6 +42,7 @@ public class Nitf21HeaderTest {
         assertEquals("I_3034C", reader.getOriginatingStationId());
         assertEquals("1997-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
         assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", reader.getFileTitle());
+        assertEquals(NitfSecurityClassification.UNCLASSIFIED, reader.getSecurityClassification());
 
         is.close();
     }

@@ -31,6 +31,7 @@ public class NitfHeaderReader
     private String nitfOriginatingStationId = null;
     private Date nitfFileDateTime = null;
     private String nitfFileTitle = null;
+    private NitfSecurityClassification nitfSecurityClassification = NitfSecurityClassification.UNKNOWN;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -45,6 +46,7 @@ public class NitfHeaderReader
     private static final int OSTAID_LENGTH = 10;
     private static final int FDT_LENGTH = 14;
     private static final int FTITLE_LENGTH = 80;
+    private static final int FSCLAS_LENGTH = 1;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -79,6 +81,10 @@ public class NitfHeaderReader
         return nitfFileTitle;
     }
 
+    public NitfSecurityClassification getSecurityClassification() {
+        return nitfSecurityClassification;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -87,6 +93,7 @@ public class NitfHeaderReader
         readOSTAID();
         readFDT();
         readFTITLE();
+        readFSCLAS();
     }
 
     private void readFHDR() throws ParseException {
@@ -96,10 +103,10 @@ public class NitfHeaderReader
 
     private void readFVER() throws ParseException {
         String fver = readBytes(FVER_LENGTH);
-        if (fver.equals(NITF_2_0)) {
-            nitfVersion = NitfVersion.TWO_ZERO;
-        } else if (String.valueOf(fver).equals(NITF_2_1)) {
-            nitfVersion = NitfVersion.TWO_ONE;
+        for (NitfVersion version : NitfVersion.values()) {
+            if (fver.equals(version.getTextEquivalent())) {
+                nitfVersion = version;
+            }
         }
     }
 
@@ -137,6 +144,15 @@ public class NitfHeaderReader
     private void readFTITLE() throws ParseException {
         String ftitle = readBytes(FTITLE_LENGTH);
         nitfFileTitle = ftitle.trim();
+    }
+
+    private void readFSCLAS() throws ParseException {
+        String fsclas = readBytes(FSCLAS_LENGTH);
+        for (NitfSecurityClassification classification : NitfSecurityClassification.values()) {
+            if (fsclas.equals(classification.getTextEquivalent())) {
+                nitfSecurityClassification = classification;
+            }
+        }
     }
 
     private String readBytes(int count) throws ParseException {

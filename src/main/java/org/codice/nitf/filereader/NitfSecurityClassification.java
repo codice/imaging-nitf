@@ -14,14 +14,17 @@
  **/
 package org.codice.nitf.filereader;
 
-public enum NitfVersion
+public enum NitfSecurityClassification
 {
     UNKNOWN (""),
-    TWO_ZERO ("02.00"),
-    TWO_ONE ("02.10");
+    UNCLASSIFIED ("U"),
+    RESTRICTED ("R"),
+    CONFIDENTIAL ("C"),
+    SECRET ("S"),
+    TOP_SECRET ("T");
 
     private final String textEquivalent;
-    NitfVersion(String abbreviation) {
+    NitfSecurityClassification(String abbreviation) {
         this.textEquivalent = abbreviation;
     }
     public String getTextEquivalent() {
