@@ -39,8 +39,6 @@ public class NitfHeaderReader
     private static final int FHDR_LENGTH = 4;
     private static final String NITF_FHDR = "NITF";
     private static final int FVER_LENGTH = 5;
-    private static final String NITF_2_0 = "02.00";
-    private static final String NITF_2_1 = "02.10";
     private static final int CLEVEL_LENGTH = 2;
     private static final int STYPE_LENGTH = 4;
     private static final int OSTAID_LENGTH = 10;
