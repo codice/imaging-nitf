@@ -26,6 +26,7 @@ public class NitfHeaderReader
     private NitfVersion nitfVersion = NitfVersion.UNKNOWN;
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
+    private String nitfOriginatingStationId = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -37,6 +38,7 @@ public class NitfHeaderReader
     private static final String NITF_2_1 = "02.10";
     private static final int CLEVEL_LENGTH = 2;
     private static final int STYPE_LENGTH = 4;
+    private static final int OSTAID_LENGTH = 10;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -59,11 +61,16 @@ public class NitfHeaderReader
         return nitfStandardType;
     }
 
+    public String getOriginatingStationId() {
+        return nitfOriginatingStationId;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
         readCLEVEL();
         readSTYPE();
+        readOSTAID();
     }
 
     private void readFHDR() throws ParseException {
@@ -94,6 +101,11 @@ public class NitfHeaderReader
 
     private void readSTYPE() throws ParseException {
         nitfStandardType = readBytes(STYPE_LENGTH);
+    }
+
+    private void readOSTAID() throws ParseException {
+        String ostaid = readBytes(OSTAID_LENGTH);
+        nitfOriginatingStationId = ostaid.trim();
     }
 
     private String readBytes(int count) throws ParseException {

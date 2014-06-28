@@ -38,6 +38,7 @@ public class Nitf21HeaderTest {
         assertEquals(NitfVersion.TWO_ONE, reader.getVersion());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
+        assertEquals("I_3034C", reader.getOriginatingStationId());
         is.close();
     }
 
