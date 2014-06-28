@@ -30,6 +30,7 @@ public class NitfHeaderReader
     private String nitfStandardType = null;
     private String nitfOriginatingStationId = null;
     private Date nitfFileDateTime = null;
+    private String nitfFileTitle = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -43,6 +44,7 @@ public class NitfHeaderReader
     private static final int STYPE_LENGTH = 4;
     private static final int OSTAID_LENGTH = 10;
     private static final int FDT_LENGTH = 14;
+    private static final int FTITLE_LENGTH = 80;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -73,6 +75,10 @@ public class NitfHeaderReader
         return nitfFileDateTime;
     }
 
+    public String getFileTitle() {
+        return nitfFileTitle;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -80,6 +86,7 @@ public class NitfHeaderReader
         readSTYPE();
         readOSTAID();
         readFDT();
+        readFTITLE();
     }
 
     private void readFHDR() throws ParseException {
@@ -125,6 +132,11 @@ public class NitfHeaderReader
         if (nitfFileDateTime == null) {
             new ParseException(String.format("Bad FDT format: %s", fdt), numBytesRead);
         }
+    }
+
+    private void readFTITLE() throws ParseException {
+        String ftitle = readBytes(FTITLE_LENGTH);
+        nitfFileTitle = ftitle.trim();
     }
 
     private String readBytes(int count) throws ParseException {
