@@ -37,6 +37,8 @@ public class NitfHeaderReader
     private String nitfFileControlAndHandling = null;
     private String nitfFileReleaseInstructions = null;
     private String nitfFileDeclassificationType = null;
+    // String instead of Date because its frequently just an empty string
+    private String nitfFileDeclassificationDate = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -55,6 +57,7 @@ public class NitfHeaderReader
     private static final int FSCTLH_LENGTH = 2;
     private static final int FSREL_LENGTH = 20;
     private static final int FSDCTP_LENGTH = 2;
+    private static final int FSDCDT_LENGTH = 8;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -113,6 +116,10 @@ public class NitfHeaderReader
         return nitfFileDeclassificationType;
     }
 
+    public String getFileDeclassificationDate() {
+        return nitfFileDeclassificationDate;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -127,6 +134,7 @@ public class NitfHeaderReader
         readFSCTLH();
         readFSREL();
         readFSDCTP();
+        readFSDCDT();
     }
 
     private void readFHDR() throws ParseException {
@@ -204,6 +212,10 @@ public class NitfHeaderReader
 
     private void readFSDCTP() throws ParseException {
         nitfFileDeclassificationType = readTrimmedBytes(FSDCTP_LENGTH);
+    }
+
+    private void readFSDCDT() throws ParseException {
+        nitfFileDeclassificationDate = readTrimmedBytes(FSDCDT_LENGTH);
     }
 
     private String readTrimmedBytes(int count) throws ParseException {
