@@ -40,6 +40,7 @@ public class NitfHeaderReader
     // String instead of Date because its frequently just an empty string
     private String nitfFileDeclassificationDate = null;
     private String nitfFileDeclassificationExemption = null;
+    private String nitfFileDowngrade = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -60,6 +61,7 @@ public class NitfHeaderReader
     private static final int FSDCTP_LENGTH = 2;
     private static final int FSDCDT_LENGTH = 8;
     private static final int FSDCXM_LENGTH = 4;
+    private static final int FSDG_LENGTH = 1;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -126,6 +128,10 @@ public class NitfHeaderReader
         return nitfFileDeclassificationExemption;
     }
 
+    public String getFileDowngrade() {
+        return nitfFileDowngrade;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -142,6 +148,7 @@ public class NitfHeaderReader
         readFSDCTP();
         readFSDCDT();
         readFSDCXM();
+        readFSDG();
     }
 
     private void readFHDR() throws ParseException {
@@ -227,6 +234,10 @@ public class NitfHeaderReader
 
     private void readFSDCXM() throws ParseException {
         nitfFileDeclassificationExemption = readTrimmedBytes(FSDCXM_LENGTH);
+    }
+
+    private void readFSDG() throws ParseException {
+        nitfFileDowngrade = readTrimmedBytes(FSDG_LENGTH);
     }
 
     private String readTrimmedBytes(int count) throws ParseException {
