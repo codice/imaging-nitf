@@ -22,16 +22,21 @@ import java.text.ParseException;
 
 public class NitfHeaderReader
 {
-    private BufferedReader reader;
-    private long numBytesRead = 0;
     private Boolean hasNitfHeader = false;
     private NitfVersion nitfVersion = NitfVersion.UNKNOWN;
+    private int nitfComplexityLevel = 0;
+    private String nitfStandardType = null;
+
+    private BufferedReader reader;
+    private int numBytesRead = 0;
 
     private static final int FHDR_LENGTH = 4;
     private static final String NITF_FHDR = "NITF";
     private static final int FVER_LENGTH = 5;
     private static final String NITF_2_0 = "02.00";
     private static final String NITF_2_1 = "02.10";
+    private static final int CLEVEL_LENGTH = 2;
+    private static final int STYPE_LENGTH = 4;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -46,9 +51,19 @@ public class NitfHeaderReader
         return nitfVersion;
     }
 
+    public int getComplexityLevel() {
+        return nitfComplexityLevel;
+    }
+
+    public String getStandardType() {
+        return nitfStandardType;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
+        readCLEVEL();
+        readSTYPE();
     }
 
     private void readFHDR() throws ParseException {
@@ -65,20 +80,36 @@ public class NitfHeaderReader
         }
     }
 
+    private void readCLEVEL() throws ParseException {
+        String clevel = readBytes(CLEVEL_LENGTH);
+        try {
+            nitfComplexityLevel = Integer.parseInt(clevel);
+            if ((nitfComplexityLevel < 0) || (nitfComplexityLevel > 99)) {
+                new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), numBytesRead);
+            }
+        } catch (NumberFormatException ex) {
+            new ParseException(String.format("Bad CLEVEL format: %s", clevel), numBytesRead);
+        }
+    }
+
+    private void readSTYPE() throws ParseException {
+        nitfStandardType = readBytes(STYPE_LENGTH);
+    }
+
     private String readBytes(int count) throws ParseException {
         int thisRead = 0;
         try {
             char[] bytes = new char[count];
             thisRead = reader.read(bytes, 0, count);
             if (thisRead == -1) {
-                new ParseException("End of file reading from NITF stream.", (int)numBytesRead);
+                new ParseException("End of file reading from NITF stream.", numBytesRead);
             } else if (thisRead < count) {
-                new ParseException("Short read while reading from NITF stream.", (int)(numBytesRead + thisRead));
+                new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
             }
             numBytesRead += thisRead;
             return String.valueOf(bytes);
         } catch (IOException ex) {
-            new ParseException("Error reading from NITF stream: " + ex.getMessage(), (int)numBytesRead);
+            new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
         }
         return null;
     }
