@@ -56,6 +56,8 @@ public class NitfHeaderReader
     private int nitfFileBackgroundColourRed = 0;
     private int nitfFileBackgroundColourGreen = 0;
     private int nitfFileBackgroundColourBlue = 0;
+    private String nitfOriginatorsName = null;
+    private String nitfOriginatorsPhoneNumber = null;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -88,6 +90,8 @@ public class NitfHeaderReader
     private static final int FSCPYS_LENGTH = 5;
     private static final int ENCRYP_LENGTH = 1;
     private static final int FBKGC_LENGTH = 3;
+    private static final int ONAME_LENGTH = 24;
+    private static final int OPHONE_LENGTH = 18;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
@@ -206,6 +210,14 @@ public class NitfHeaderReader
         return nitfFileBackgroundColourBlue;
     }
 
+    public String getOriginatorsName() {
+        return nitfOriginatorsName;
+    }
+
+    public String getOriginatorsPhoneNumber() {
+        return nitfOriginatorsPhoneNumber;
+    }
+
     private void readBaseHeader() throws ParseException {
         readFHDR();
         readFVER();
@@ -234,6 +246,8 @@ public class NitfHeaderReader
         readFSCPYS();
         readENCRYP();
         readFBKGC();
+        readONAME();
+        readOPHONE();
     }
 
     private void readFHDR() throws ParseException {
@@ -376,6 +390,14 @@ public class NitfHeaderReader
         } catch (NumberFormatException ex) {
             new ParseException("Bad FBKGC", numBytesRead);
         }
+    }
+
+    private void readONAME() throws ParseException {
+        nitfOriginatorsName = readTrimmedBytes(ONAME_LENGTH);
+    }
+
+    private void readOPHONE() throws ParseException {
+        nitfOriginatorsPhoneNumber = readTrimmedBytes(OPHONE_LENGTH);
     }
 
     private String readTrimmedBytes(int count) throws ParseException {

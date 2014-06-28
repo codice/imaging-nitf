@@ -62,6 +62,8 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getFileBackgroundColourRed());
         assertEquals(0, reader.getFileBackgroundColourGreen());
         assertEquals(0, reader.getFileBackgroundColourBlue());
+        assertEquals("JITC", reader.getOriginatorsName());
+        assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
 
         is.close();
     }
