@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class NitfHeaderReader
@@ -61,6 +62,14 @@ public class NitfHeaderReader
     private long nitfFileLength = -1;
     private int nitfHeaderLength = -1;
     private int numberImageSegments = 0;
+    private ArrayList<Integer> lish = new ArrayList<Integer>();
+    private ArrayList<Long> li = new ArrayList<Long>();
+    private int numberGraphicsSegments = 0;
+    private int numberTextSegments = 0;
+    private int numberDataExtensionSegments = 0;
+    private int numberReservedExtensionSegments = 0;
+    private int userDefinedHeaderDataLength = 0;
+    private int extendedHeaderDataLength = 0;
 
     private BufferedReader reader;
     private int numBytesRead = 0;
@@ -98,10 +107,79 @@ public class NitfHeaderReader
     private static final int FL_LENGTH = 12;
     private static final int HL_LENGTH = 6;
     private static final int NUMI_LENGTH = 3;
+    private static final int LISH_LENGTH = 6;
+    private static final int LI_LENGTH = 10;
+    private static final int NUMS_LENGTH = 3;
+    private static final int NUMX_LENGTH = 3;
+    private static final int NUMT_LENGTH = 3;
+    private static final int NUMDES_LENGTH = 3;
+    private static final int NUMRES_LENGTH = 3;
+    private static final int UDHDL_LENGTH = 5;
+    private static final int XHDL_LENGTH = 5;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new BufferedReader(new InputStreamReader(nitfInputStream));
-        readBaseHeader();
+        readFHDR();
+        readFVER();
+        readCLEVEL();
+        readSTYPE();
+        readOSTAID();
+        readFDT();
+        readFTITLE();
+        readFSCLAS();
+        readFSCLSY();
+        readFSCODE();
+        readFSCTLH();
+        readFSREL();
+        readFSDCTP();
+        readFSDCDT();
+        readFSDCXM();
+        readFSDG();
+        readFSDGDT();
+        readFSCLTX();
+        readFSCATP();
+        readFSCAUT();
+        readFSCRSN();
+        readFSSRDT();
+        readFSCTLN();
+        readFSCOP();
+        readFSCPYS();
+        readENCRYP();
+        readFBKGC();
+        readONAME();
+        readOPHONE();
+        readFL();
+        readHL();
+        readNUMI();
+        for (int i = 0; i < numberImageSegments; ++i) {
+            readLISH(i);
+            readLI(i);
+        }
+        readNUMS();
+        for (int i = 0; i < numberGraphicsSegments; ++i) {
+            // TODO: find a case that exercises this and implement it
+        }
+        readNUMX();
+        readNUMT();
+        for (int i = 0; i < numberTextSegments; ++i) {
+            // TODO: find a case that exercises this and implement it
+        }
+        readNUMDES();
+        for (int i = 0; i < numberDataExtensionSegments; ++i) {
+            // TODO: find a case that exercises this and implement it
+        }
+        readNUMRES();
+        for (int i = 0; i < numberReservedExtensionSegments; ++i) {
+            // TODO: find a case that exercises this and implement it
+        }
+        readUDHDL();
+        if (userDefinedHeaderDataLength > 0) {
+            // TODO: find a case that exercises this and implement it
+        }
+        readXHDL();
+        if (extendedHeaderDataLength > 0) {
+            // TODO: find a case that exercises this and implement it
+        }
     }
 
     public Boolean isNitf() {
@@ -237,39 +315,36 @@ public class NitfHeaderReader
         return numberImageSegments;
     }
 
-    private void readBaseHeader() throws ParseException {
-        readFHDR();
-        readFVER();
-        readCLEVEL();
-        readSTYPE();
-        readOSTAID();
-        readFDT();
-        readFTITLE();
-        readFSCLAS();
-        readFSCLSY();
-        readFSCODE();
-        readFSCTLH();
-        readFSREL();
-        readFSDCTP();
-        readFSDCDT();
-        readFSDCXM();
-        readFSDG();
-        readFSDGDT();
-        readFSCLTX();
-        readFSCATP();
-        readFSCAUT();
-        readFSCRSN();
-        readFSSRDT();
-        readFSCTLN();
-        readFSCOP();
-        readFSCPYS();
-        readENCRYP();
-        readFBKGC();
-        readONAME();
-        readOPHONE();
-        readFL();
-        readHL();
-        readNUMI();
+    public int getLengthOfImageSubheader(int i) {
+        return lish.get(i);
+    }
+
+    public long getLengthOfImage(int i) {
+        return li.get(i);
+    }
+
+    public int getNumberOfGraphicsSegments() {
+        return numberGraphicsSegments;
+    }
+
+    public int getNumberOfTextSegments() {
+        return numberTextSegments;
+    }
+
+    public int getNumberOfDataExtensionSegments() {
+        return numberDataExtensionSegments;
+    }
+
+    public int getNumberOfReservedExtensionSegments() {
+        return numberReservedExtensionSegments;
+    }
+
+    public int getUserDefinedHeaderDataLength() {
+        return userDefinedHeaderDataLength;
+    }
+
+    public int getExtendedHeaderDataLength() {
+        return extendedHeaderDataLength;
     }
 
     private void readFHDR() throws ParseException {
@@ -446,6 +521,83 @@ public class NitfHeaderReader
             numberImageSegments = Integer.parseInt(numi);
         } catch (NumberFormatException ex) {
             new ParseException("Bad NUMI", numBytesRead);
+        }
+    }
+
+    private void readLISH(int i) throws ParseException {
+        String str = readBytes(LISH_LENGTH);
+        try {
+            lish.add(Integer.parseInt(str));
+        } catch (NumberFormatException ex) {
+            new ParseException(String.format("Bad LISH%i", i), numBytesRead);
+        }
+    }
+
+    private void readLI(int i) throws ParseException {
+        String str = readBytes(LI_LENGTH);
+        try {
+            li.add(Long.parseLong(str));
+        } catch (NumberFormatException ex) {
+            new ParseException(String.format("Bad LI%i", i), numBytesRead);
+        }
+    }
+
+    private void readNUMS() throws ParseException {
+        String nums = readBytes(NUMS_LENGTH);
+        try {
+            numberGraphicsSegments = Integer.parseInt(nums);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad NUMS", numBytesRead);
+        }
+    }
+
+    private void readNUMX() throws ParseException {
+        // Just throw this away.
+        String numx = readBytes(NUMX_LENGTH);
+    }
+
+    private void readNUMT() throws ParseException {
+        String numt = readBytes(NUMT_LENGTH);
+        try {
+            numberTextSegments = Integer.parseInt(numt);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad NUMT", numBytesRead);
+        }
+    }
+
+    private void readNUMDES() throws ParseException {
+        String numdes = readBytes(NUMDES_LENGTH);
+        try {
+            numberDataExtensionSegments = Integer.parseInt(numdes);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad NUMDES", numBytesRead);
+        }
+    }
+
+    private void readNUMRES() throws ParseException {
+        String numres = readBytes(NUMRES_LENGTH);
+        try {
+            numberReservedExtensionSegments = Integer.parseInt(numres);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad NUMRES", numBytesRead);
+        }
+    }
+
+    private void readUDHDL() throws ParseException {
+        String udhdl = readBytes(UDHDL_LENGTH);
+        try {
+            userDefinedHeaderDataLength = Integer.parseInt(udhdl);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad UDHDL", numBytesRead);
+        }
+    }
+
+    private void readXHDL() throws ParseException {
+        String xhdl = readBytes(XHDL_LENGTH);
+        try {
+            extendedHeaderDataLength = Integer.parseInt(xhdl);
+        } catch (NumberFormatException ex) {
+            new ParseException("Bad XHDL", numBytesRead);
         }
     }
 
