@@ -75,6 +75,7 @@ public class Nitf21HeaderTest {
         assertEquals(35L, segment1.getNumColumns());
         assertEquals(PixelValueType.BILEVEL, segment1.getPixelValueType());
         assertEquals(ImageRepresentation.RGBLUT, segment1.getImageRepresentation());
+        assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
 
         is.close();
     }
