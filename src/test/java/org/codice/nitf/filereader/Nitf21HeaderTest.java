@@ -83,6 +83,7 @@ public class Nitf21HeaderTest {
         assertEquals("1996-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
+        assertEquals(NitfSecurityClassification.UNCLASSIFIED, segment1.getSecurityClassification());
 
         is.close();
     }
