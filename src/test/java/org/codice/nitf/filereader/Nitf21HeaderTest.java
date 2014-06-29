@@ -109,6 +109,11 @@ public class Nitf21HeaderTest {
         assertEquals(1, segment1.getNumberOfBitsPerPixelPerBand());
         assertEquals(1, segment1.getImageDisplayLevel());
         assertEquals(0, segment1.getImageAttachmentLevel());
+        assertEquals(100, segment1.getImageLocationRow());
+        assertEquals(100, segment1.getImageLocationColumn());
+        assertEquals(1.0, segment1.getImageMagnification(), 0.00001);
+        assertEquals(0, segment1.getUserDefinedImageDataLength());
+        assertEquals(0, segment1.getImageExtendedSubheaderDataLength());
 
         is.close();
     }

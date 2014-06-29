@@ -78,6 +78,17 @@ public class NitfReader
         return longValue;
     }
 
+    public Double readBytesAsDouble(int count) throws ParseException {
+        String doubleString = readBytes(count);
+        Double doubleValue = 0.0;
+        try {
+            doubleValue = Double.parseDouble(doubleString.trim());
+        } catch (NumberFormatException ex) {
+            new ParseException(String.format("Bad Double format: %s", doubleString), numBytesRead);
+        }
+        return doubleValue;
+    }
+
     public String readTrimmedBytes(int count) throws ParseException {
         return readBytes(count).trim();
     }

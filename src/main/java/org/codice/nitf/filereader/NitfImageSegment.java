@@ -52,6 +52,11 @@ public class NitfImageSegment
     private int numBitsPerPixelPerBand = 0;
     private int imageDisplayLevel = 0;
     private int imageAttachmentLevel = 0;
+    private int imageLocationRow = 0;
+    private int imageLocationColumn = 0;
+    private double imageMagnification = 0.0;
+    private int userDefinedImageDataLength = 0;
+    private int imageExtendedSubheaderDataLength = 0;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -79,6 +84,10 @@ public class NitfImageSegment
     private static final int NBPP_LENGTH = 2;
     private static final int IDLVL_LENGTH = 3;
     private static final int IALVL_LENGTH = 3;
+    private static final int ILOC_HALF_LENGTH = 5;
+    private static final int IMAG_LENGTH = 4;
+    private static final int UDIDL_LENGTH = 5;
+    private static final int IXSHDL_LENGTH = 5;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -127,6 +136,16 @@ public class NitfImageSegment
         readNBPP();
         readIDLVL();
         readIALVL();
+        readILOC();
+        readIMAG();
+        readUDIDL();
+        if (userDefinedImageDataLength > 0) {
+            new UnsupportedOperationException("IMPLEMENT UDOFL / UDID PARSING");
+        }
+        readIXSHDL();
+        if (imageExtendedSubheaderDataLength > 0) {
+            new UnsupportedOperationException("IMPLEMENT IXSOFL / IXSHD PARSING");
+        }
     }
 
     public String getImageIdentifier1() {
@@ -235,6 +254,26 @@ public class NitfImageSegment
 
     public int getImageAttachmentLevel() {
         return imageAttachmentLevel;
+    }
+
+    public int getImageLocationRow() {
+        return imageLocationRow;
+    }
+
+    public int getImageLocationColumn() {
+        return imageLocationColumn;
+    }
+
+    public double getImageMagnification() {
+        return imageMagnification;
+    }
+
+    public int getUserDefinedImageDataLength() {
+        return userDefinedImageDataLength;
+    }
+
+    public int getImageExtendedSubheaderDataLength() {
+        return imageExtendedSubheaderDataLength;
     }
 
     private Boolean hasCOMRAT() {
@@ -359,5 +398,22 @@ public class NitfImageSegment
 
     private void readIALVL() throws ParseException {
         imageAttachmentLevel = reader.readBytesAsInteger(IALVL_LENGTH);
+    }
+
+    private void readILOC() throws ParseException {
+        imageLocationRow = reader.readBytesAsInteger(ILOC_HALF_LENGTH);
+        imageLocationColumn = reader.readBytesAsInteger(ILOC_HALF_LENGTH);
+    }
+
+    private void readIMAG() throws ParseException {
+        imageMagnification = reader.readBytesAsDouble(IMAG_LENGTH);
+    }
+
+    private void readUDIDL() throws ParseException {
+        userDefinedImageDataLength = reader.readBytesAsInteger(UDIDL_LENGTH);
+    }
+
+    private void readIXSHDL() throws ParseException {
+        imageExtendedSubheaderDataLength = reader.readBytesAsInteger(IXSHDL_LENGTH);
     }
 }
