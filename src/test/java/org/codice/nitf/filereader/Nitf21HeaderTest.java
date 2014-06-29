@@ -71,6 +71,8 @@ public class Nitf21HeaderTest {
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
         assertUnclasAndEmpty(segment1.getSecurityMetadata());
         assertEquals("Unknown", segment1.getImageSource());
+        assertEquals(18L, segment1.getNumRows());
+        assertEquals(35L, segment1.getNumColumns());
 
         is.close();
     }

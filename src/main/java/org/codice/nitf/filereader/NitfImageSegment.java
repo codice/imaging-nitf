@@ -31,6 +31,8 @@ public class NitfImageSegment
     private String imageIdentifier2 = null;
     private NitfSecurityMetadata securityMetadata = null;
     private String imageSource = null;
+    private long numRows = 0L;
+    private long numColumns = 0L;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -38,6 +40,8 @@ public class NitfImageSegment
     private static final int TGTID_LENGTH = 17;
     private static final int IID2_LENGTH = 80;
     private static final int ISORCE_LENGTH = 42;
+    private static final int NROWS_LENGTH = 8;
+    private static final int NCOLS_LENGTH = 8;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -49,6 +53,8 @@ public class NitfImageSegment
         securityMetadata = new NitfSecurityMetadata(reader);
         reader.readENCRYP();
         readISORCE();
+        readNROWS();
+        readNCOLS();
     }
 
     public String getImageIdentifier1() {
@@ -75,6 +81,14 @@ public class NitfImageSegment
         return imageSource;
     }
 
+    public long getNumRows() {
+        return numRows;
+    }
+
+    public long getNumColumns() {
+        return numColumns;
+    }
+
     private void readIM() throws ParseException {
        reader.verifyHeaderMagic(IM);
     }
@@ -97,5 +111,13 @@ public class NitfImageSegment
 
     private void readISORCE() throws ParseException {
         imageSource = reader.readTrimmedBytes(ISORCE_LENGTH);
+    }
+
+    private void readNROWS() throws ParseException {
+        numRows = reader.readBytesAsLong(NROWS_LENGTH);
+    }
+
+    private void readNCOLS() throws ParseException {
+        numColumns = reader.readBytesAsLong(NCOLS_LENGTH);
     }
 }
