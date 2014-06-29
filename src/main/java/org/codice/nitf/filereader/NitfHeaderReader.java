@@ -154,7 +154,7 @@ public class NitfHeaderReader
         readNUMI();
         for (int i = 0; i < numberImageSegments; ++i) {
             readLISH();
-            readLI(i);
+            readLI();
         }
         readNUMS();
         for (int i = 0; i < numberGraphicsSegments; ++i) {
@@ -504,7 +504,7 @@ public class NitfHeaderReader
         lish.add(reader.readBytesAsInteger(LISH_LENGTH));
     }
 
-    private void readLI(int i) throws ParseException {
+    private void readLI() throws ParseException {
         li.add(reader.readBytesAsLong(LI_LENGTH));
     }
 
