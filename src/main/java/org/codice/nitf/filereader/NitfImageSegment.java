@@ -36,7 +36,6 @@ public class NitfImageSegment
     private static final int IID1_LENGTH = 10;
     private static final int TGTID_LENGTH = 17;
     private static final int IID2_LENGTH = 80;
-    private static final int ISCLAS_LENGTH = 1;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
