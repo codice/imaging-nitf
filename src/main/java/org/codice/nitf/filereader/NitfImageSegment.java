@@ -38,6 +38,8 @@ public class NitfImageSegment
     private ImageCategory imageCategory = ImageCategory.UNKNOWN;
     private int actualBitsPerPixelPerBand = 0;
     private PixelJustification pixelJustification = PixelJustification.UNKNOWN;
+    private ImageCoordinatesRepresentation imageCoordinatesRepresentation = ImageCoordinatesRepresentation.UNKNOWN;
+    private int numImageComments;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -52,6 +54,8 @@ public class NitfImageSegment
     private static final int ICAT_LENGTH = 8;
     private static final int ABPP_LENGTH = 2;
     private static final int PJUST_LENGTH = 1;
+    private static final int ICORDS_LENGTH = 1;
+    private static final int NICOM_LENGTH = 1;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -70,6 +74,16 @@ public class NitfImageSegment
         readICAT();
         readABPP();
         readPJUST();
+        readICORDS();
+        if ((imageCoordinatesRepresentation != ImageCoordinatesRepresentation.UNKNOWN) &&
+            (imageCoordinatesRepresentation != ImageCoordinatesRepresentation.NONE)) {
+            // TODO: find example and implement
+            new UnsupportedOperationException("IMPLEMENT COORDINATE PARSING (IGEOLO)");
+        }
+        readNICOM();
+        for (int i = 0; i < numImageComments; ++i) {
+            new UnsupportedOperationException("IMPLEMENT IMAGE COMMENT PARSING (ICOMx)");
+        }
     }
 
     public String getImageIdentifier1() {
@@ -122,6 +136,14 @@ public class NitfImageSegment
 
     public PixelJustification getPixelJustification() {
         return pixelJustification;
+    }
+
+    public ImageCoordinatesRepresentation getImageCoordinatesRepresentation() {
+        return imageCoordinatesRepresentation;
+    }
+
+    public int getNumberOfImageComments() {
+        return numImageComments;
     }
 
     private void readIM() throws ParseException {
@@ -178,5 +200,14 @@ public class NitfImageSegment
     private void readPJUST() throws ParseException {
         String pjust = reader.readTrimmedBytes(PJUST_LENGTH);
         pixelJustification = PixelJustification.getEnumValue(pjust);
+    }
+
+    private void readICORDS() throws ParseException {
+        String icords = reader.readBytes(ICORDS_LENGTH);
+        imageCoordinatesRepresentation = ImageCoordinatesRepresentation.getEnumValue(icords);
+    }
+
+    private void readNICOM() throws ParseException {
+        numImageComments = reader.readBytesAsInteger(NICOM_LENGTH);
     }
 }
