@@ -73,8 +73,7 @@ public class NitfHeaderReader
 
     private ArrayList<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
 
-    private BufferedReader reader;
-    private int numBytesRead = 0;
+    private NitfReader reader;
 
     private static final int FHDR_LENGTH = 4;
     private static final String NITF_FHDR = "NITF";
@@ -120,11 +119,8 @@ public class NitfHeaderReader
     private static final int XHDL_LENGTH = 5;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
-        reader = new BufferedReader(new InputStreamReader(nitfInputStream));
+        reader = new NitfReader(new BufferedReader(new InputStreamReader(nitfInputStream)), 0);
         readFHDR();
-        if (!hasNitfHeader) {
-            new ParseException("Missing NITF magic", numBytesRead);
-        }
         readFVER();
         readCLEVEL();
         readSTYPE();
@@ -157,7 +153,7 @@ public class NitfHeaderReader
         readHL();
         readNUMI();
         for (int i = 0; i < numberImageSegments; ++i) {
-            readLISH(i);
+            readLISH();
             readLI(i);
         }
         readNUMS();
@@ -362,12 +358,12 @@ public class NitfHeaderReader
     }
 
     private void readFHDR() throws ParseException {
-        String fhdr = readBytes(FHDR_LENGTH);
-        hasNitfHeader = fhdr.equals(NITF_FHDR);
+        reader.verifyHeaderMagic(NITF_FHDR);
+        hasNitfHeader = true;
     }
 
     private void readFVER() throws ParseException {
-        String fver = readBytes(FVER_LENGTH);
+        String fver = reader.readBytes(FVER_LENGTH);
         for (NitfVersion version : NitfVersion.values()) {
             if (fver.equals(version.getTextEquivalent())) {
                 nitfVersion = version;
@@ -376,41 +372,35 @@ public class NitfHeaderReader
     }
 
     private void readCLEVEL() throws ParseException {
-        String clevel = readBytes(CLEVEL_LENGTH);
+        String clevel = reader.readBytes(CLEVEL_LENGTH);
         try {
             nitfComplexityLevel = Integer.parseInt(clevel);
             if ((nitfComplexityLevel < 0) || (nitfComplexityLevel > 99)) {
-                new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), numBytesRead);
+                new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.getNumBytesRead());
             }
         } catch (NumberFormatException ex) {
-            new ParseException(String.format("Bad CLEVEL format: %s", clevel), numBytesRead);
+            new ParseException(String.format("Bad CLEVEL format: %s", clevel), reader.getNumBytesRead());
         }
     }
 
     private void readSTYPE() throws ParseException {
-        nitfStandardType = readBytes(STYPE_LENGTH);
+        nitfStandardType = reader.readBytes(STYPE_LENGTH);
     }
 
     private void readOSTAID() throws ParseException {
-        nitfOriginatingStationId = readTrimmedBytes(OSTAID_LENGTH);
+        nitfOriginatingStationId = reader.readTrimmedBytes(OSTAID_LENGTH);
     }
 
     private void readFDT() throws ParseException {
-        String fdt = readBytes(FDT_LENGTH);
-        // TODO: check if NITF 2.0 uses the same format.
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        nitfFileDateTime = dateFormat.parse(fdt);
-        if (nitfFileDateTime == null) {
-            new ParseException(String.format("Bad FDT format: %s", fdt), numBytesRead);
-        }
+        nitfFileDateTime = reader.readNitfDateTime();
     }
 
     private void readFTITLE() throws ParseException {
-        nitfFileTitle = readTrimmedBytes(FTITLE_LENGTH);
+        nitfFileTitle = reader.readTrimmedBytes(FTITLE_LENGTH);
     }
 
     private void readFSCLAS() throws ParseException {
-        String fsclas = readBytes(FSCLAS_LENGTH);
+        String fsclas = reader.readBytes(FSCLAS_LENGTH);
         for (NitfSecurityClassification classification : NitfSecurityClassification.values()) {
             if (fsclas.equals(classification.getTextEquivalent())) {
                 nitfSecurityClassification = classification;
@@ -419,227 +409,150 @@ public class NitfHeaderReader
     }
 
     private void readFSCLSY() throws ParseException {
-        nitfFileSecurityClassificationSystem = readTrimmedBytes(FSCLSY_LENGTH);
+        nitfFileSecurityClassificationSystem = reader.readTrimmedBytes(FSCLSY_LENGTH);
     }
 
     private void readFSCODE() throws ParseException {
-        nitfFileCodewords = readTrimmedBytes(FSCODE_LENGTH);
+        nitfFileCodewords = reader.readTrimmedBytes(FSCODE_LENGTH);
     }
 
     private void readFSCTLH() throws ParseException {
-        nitfFileControlAndHandling = readTrimmedBytes(FSCTLH_LENGTH);
+        nitfFileControlAndHandling = reader.readTrimmedBytes(FSCTLH_LENGTH);
     }
 
     private void readFSREL() throws ParseException {
-        nitfFileReleaseInstructions = readTrimmedBytes(FSREL_LENGTH);
+        nitfFileReleaseInstructions = reader.readTrimmedBytes(FSREL_LENGTH);
     }
 
     private void readFSDCTP() throws ParseException {
-        nitfFileDeclassificationType = readTrimmedBytes(FSDCTP_LENGTH);
+        nitfFileDeclassificationType = reader.readTrimmedBytes(FSDCTP_LENGTH);
     }
 
     private void readFSDCDT() throws ParseException {
-        nitfFileDeclassificationDate = readTrimmedBytes(FSDCDT_LENGTH);
+        nitfFileDeclassificationDate = reader.readTrimmedBytes(FSDCDT_LENGTH);
     }
 
     private void readFSDCXM() throws ParseException {
-        nitfFileDeclassificationExemption = readTrimmedBytes(FSDCXM_LENGTH);
+        nitfFileDeclassificationExemption = reader.readTrimmedBytes(FSDCXM_LENGTH);
     }
 
     private void readFSDG() throws ParseException {
-        nitfFileDowngrade = readTrimmedBytes(FSDG_LENGTH);
+        nitfFileDowngrade = reader.readTrimmedBytes(FSDG_LENGTH);
     }
 
     private void readFSDGDT() throws ParseException {
-        nitfFileDowngradeDate = readTrimmedBytes(FSDGDT_LENGTH);
+        nitfFileDowngradeDate = reader.readTrimmedBytes(FSDGDT_LENGTH);
     }
 
     private void readFSCLTX() throws ParseException {
-        nitfFileClassificationText= readTrimmedBytes(FSCLTX_LENGTH);
+        nitfFileClassificationText= reader.readTrimmedBytes(FSCLTX_LENGTH);
     }
 
     private void readFSCATP() throws ParseException {
-        nitfFileClassificationAuthorityType = readTrimmedBytes(FSCATP_LENGTH);
+        nitfFileClassificationAuthorityType = reader.readTrimmedBytes(FSCATP_LENGTH);
     }
 
     private void readFSCAUT() throws ParseException {
-        nitfFileClassificationAuthority = readTrimmedBytes(FSCAUT_LENGTH);
+        nitfFileClassificationAuthority = reader.readTrimmedBytes(FSCAUT_LENGTH);
     }
 
     private void readFSCRSN() throws ParseException {
-        nitfFileClassificationReason = readTrimmedBytes(FSCRSN_LENGTH);
+        nitfFileClassificationReason = reader.readTrimmedBytes(FSCRSN_LENGTH);
     }
 
     private void readFSSRDT() throws ParseException {
-        nitfFileSecuritySourceDate = readTrimmedBytes(FSSRDT_LENGTH);
+        nitfFileSecuritySourceDate = reader.readTrimmedBytes(FSSRDT_LENGTH);
     }
 
     private void readFSCTLN() throws ParseException {
-        nitfFileSecurityControlNumber = readTrimmedBytes(FSCTLN_LENGTH);
+        nitfFileSecurityControlNumber = reader.readTrimmedBytes(FSCTLN_LENGTH);
     }
 
     private void readFSCOP() throws ParseException {
-        nitfFileCopyNumber = readTrimmedBytes(FSCOP_LENGTH);
+        nitfFileCopyNumber = reader.readTrimmedBytes(FSCOP_LENGTH);
     }
 
     private void readFSCPYS() throws ParseException {
-        nitfFileNumberOfCopies = readTrimmedBytes(FSCPYS_LENGTH);
+        nitfFileNumberOfCopies = reader.readTrimmedBytes(FSCPYS_LENGTH);
     }
 
     private void readENCRYP() throws ParseException {
-        if (!readBytes(ENCRYP_LENGTH).equals("0")) {
-            new ParseException("Unexpected ENCRYP values", numBytesRead);
+        if (!reader.readBytes(ENCRYP_LENGTH).equals("0")) {
+            new ParseException("Unexpected ENCRYP values", reader.getNumBytesRead());
         }
     }
 
     private void readFBKGC() throws ParseException {
-        String fbkgc = readBytes(FBKGC_LENGTH);
+        String fbkgc = reader.readBytes(FBKGC_LENGTH);
         try {
             nitfFileBackgroundColourRed = Integer.parseInt(fbkgc.substring(0, 1));
             nitfFileBackgroundColourGreen = Integer.parseInt(fbkgc.substring(1, 2));
             nitfFileBackgroundColourBlue = Integer.parseInt(fbkgc.substring(2));
         } catch (NumberFormatException ex) {
-            new ParseException("Bad FBKGC", numBytesRead);
+            new ParseException("Bad FBKGC", reader.getNumBytesRead());
         }
     }
 
     private void readONAME() throws ParseException {
-        nitfOriginatorsName = readTrimmedBytes(ONAME_LENGTH);
+        nitfOriginatorsName = reader.readTrimmedBytes(ONAME_LENGTH);
     }
 
     private void readOPHONE() throws ParseException {
-        nitfOriginatorsPhoneNumber = readTrimmedBytes(OPHONE_LENGTH);
+        nitfOriginatorsPhoneNumber = reader.readTrimmedBytes(OPHONE_LENGTH);
     }
 
     private void readFL() throws ParseException {
-        String fl = readBytes(FL_LENGTH);
-        try {
-            nitfFileLength = Long.parseLong(fl);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad FL", numBytesRead);
-        }
+        nitfFileLength = reader.readBytesAsLong(FL_LENGTH);
     }
 
     private void readHL() throws ParseException {
-        String hl = readBytes(HL_LENGTH);
-        try {
-            nitfHeaderLength = Integer.parseInt(hl);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad HL", numBytesRead);
-        }
+        nitfHeaderLength = reader.readBytesAsInteger(HL_LENGTH);
     }
 
     private void readNUMI() throws ParseException {
-        String numi = readBytes(NUMI_LENGTH);
-        try {
-            numberImageSegments = Integer.parseInt(numi);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad NUMI", numBytesRead);
-        }
+        numberImageSegments = reader.readBytesAsInteger(NUMI_LENGTH);
     }
 
-    private void readLISH(int i) throws ParseException {
-        String str = readBytes(LISH_LENGTH);
-        try {
-            lish.add(Integer.parseInt(str));
-        } catch (NumberFormatException ex) {
-            new ParseException(String.format("Bad LISH%i", i), numBytesRead);
-        }
+    private void readLISH() throws ParseException {
+        lish.add(reader.readBytesAsInteger(LISH_LENGTH));
     }
 
     private void readLI(int i) throws ParseException {
-        String str = readBytes(LI_LENGTH);
-        try {
-            li.add(Long.parseLong(str));
-        } catch (NumberFormatException ex) {
-            new ParseException(String.format("Bad LI%i", i), numBytesRead);
-        }
+        li.add(reader.readBytesAsLong(LI_LENGTH));
     }
 
     private void readNUMS() throws ParseException {
-        String nums = readBytes(NUMS_LENGTH);
-        try {
-            numberGraphicsSegments = Integer.parseInt(nums);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad NUMS", numBytesRead);
-        }
+        numberGraphicsSegments = reader.readBytesAsInteger(NUMS_LENGTH);
     }
 
     private void readNUMX() throws ParseException {
         // Just throw this away.
-        String numx = readBytes(NUMX_LENGTH);
+        String numx = reader.readBytes(NUMX_LENGTH);
     }
 
     private void readNUMT() throws ParseException {
-        String numt = readBytes(NUMT_LENGTH);
-        try {
-            numberTextSegments = Integer.parseInt(numt);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad NUMT", numBytesRead);
-        }
+        numberTextSegments = reader.readBytesAsInteger(NUMT_LENGTH);
     }
 
     private void readNUMDES() throws ParseException {
-        String numdes = readBytes(NUMDES_LENGTH);
-        try {
-            numberDataExtensionSegments = Integer.parseInt(numdes);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad NUMDES", numBytesRead);
-        }
+        numberDataExtensionSegments = reader.readBytesAsInteger(NUMDES_LENGTH);
     }
 
     private void readNUMRES() throws ParseException {
-        String numres = readBytes(NUMRES_LENGTH);
-        try {
-            numberReservedExtensionSegments = Integer.parseInt(numres);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad NUMRES", numBytesRead);
-        }
+        numberReservedExtensionSegments = reader.readBytesAsInteger(NUMRES_LENGTH);
     }
 
     private void readUDHDL() throws ParseException {
-        String udhdl = readBytes(UDHDL_LENGTH);
-        try {
-            userDefinedHeaderDataLength = Integer.parseInt(udhdl);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad UDHDL", numBytesRead);
-        }
+        userDefinedHeaderDataLength = reader.readBytesAsInteger(UDHDL_LENGTH);
     }
 
     private void readXHDL() throws ParseException {
-        String xhdl = readBytes(XHDL_LENGTH);
-        try {
-            extendedHeaderDataLength = Integer.parseInt(xhdl);
-        } catch (NumberFormatException ex) {
-            new ParseException("Bad XHDL", numBytesRead);
-        }
-    }
-
-    private String readTrimmedBytes(int count) throws ParseException {
-        return readBytes(count).trim();
-    }
-
-    private String readBytes(int count) throws ParseException {
-        int thisRead = 0;
-        try {
-            char[] bytes = new char[count];
-            thisRead = reader.read(bytes, 0, count);
-            if (thisRead == -1) {
-                new ParseException("End of file reading from NITF stream.", numBytesRead);
-            } else if (thisRead < count) {
-                new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
-            }
-            numBytesRead += thisRead;
-            return String.valueOf(bytes);
-        } catch (IOException ex) {
-            new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
-        }
-        return null;
+        extendedHeaderDataLength = reader.readBytesAsInteger(XHDL_LENGTH);
     }
 
     private void readImageSegments() throws ParseException {
         for (int i = 0; i < numberImageSegments; ++i) {
-            imageSegments.add(new NitfImageSegment(reader, numBytesRead));
+            imageSegments.add(new NitfImageSegment(reader.reader, reader.getNumBytesRead()));
         }
     }
 }
