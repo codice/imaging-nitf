@@ -14,23 +14,27 @@
  **/
 package org.codice.nitf.filereader;
 
-public enum PixelValueType
+public enum ImageRepresentation
 {
     UNKNOWN (""),
-    INTEGER ("INT"),
-    BILEVEL ("B"),
-    SIGNEDINTEGER ("SI"),
-    REAL ("R"),
-    COMPLEX ("C");
+    MONOCHROME ("MONO"),
+    RGBTRUECOLOUR ("RGB"),
+    RGBLUT ("RGB/LUT"),
+    MULTIBAND ("MULTI"),
+    NOTFORDISPLAY ("NODISPLY"),
+    CARTESIANVECTOR ("NVECTOR"),
+    POLARVECTOR ("POLAR"),
+    SARVIDEOPHASE ("VPH"),
+    ITUBT6015 ("YCbCr601");
 
     private final String textEquivalent;
-    PixelValueType(String abbreviation) {
+    ImageRepresentation(String abbreviation) {
         this.textEquivalent = abbreviation;
     }
-    static public PixelValueType getEnumValue(String textEquivalent) {
-        for (PixelValueType pv : values()) {
-            if (textEquivalent.equals(pv.textEquivalent)) {
-                return pv;
+    static public ImageRepresentation getEnumValue(String textEquivalent) {
+        for (ImageRepresentation irep : values()) {
+            if (textEquivalent.equals(irep.textEquivalent)) {
+                return irep;
             }
         }
         return UNKNOWN;

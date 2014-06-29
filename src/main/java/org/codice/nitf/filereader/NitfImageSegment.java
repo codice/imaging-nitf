@@ -26,7 +26,7 @@ public class NitfImageSegment
 
     private String imageIdentifier1 = null;
     private Date imageDateTime = null;
-    // TODO: consider making this a class (BE/O-suffix + country code) if we can find examples
+    // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples
     private String imageTargetId = null;
     private String imageIdentifier2 = null;
     private NitfSecurityMetadata securityMetadata = null;
@@ -34,6 +34,7 @@ public class NitfImageSegment
     private long numRows = 0L;
     private long numColumns = 0L;
     private PixelValueType pixelValueType = PixelValueType.UNKNOWN;
+    private ImageRepresentation imageRepresentation = ImageRepresentation.UNKNOWN;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -44,6 +45,7 @@ public class NitfImageSegment
     private static final int NROWS_LENGTH = 8;
     private static final int NCOLS_LENGTH = 8;
     private static final int PVTYPE_LENGTH = 3;
+    private static final int IREP_LENGTH = 8;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -58,6 +60,7 @@ public class NitfImageSegment
         readNROWS();
         readNCOLS();
         readPVTYPE();
+        readIREP();
     }
 
     public String getImageIdentifier1() {
@@ -96,6 +99,10 @@ public class NitfImageSegment
         return pixelValueType;
     }
 
+    public ImageRepresentation getImageRepresentation() {
+        return imageRepresentation;
+    }
+
     private void readIM() throws ParseException {
        reader.verifyHeaderMagic(IM);
     }
@@ -129,7 +136,12 @@ public class NitfImageSegment
     }
 
     private void readPVTYPE() throws ParseException {
-        String pvtype = reader.readBytes(PVTYPE_LENGTH);
+        String pvtype = reader.readTrimmedBytes(PVTYPE_LENGTH);
         pixelValueType = PixelValueType.getEnumValue(pvtype);
+    }
+
+    private void readIREP() throws ParseException {
+        String irep = reader.readTrimmedBytes(IREP_LENGTH);
+        imageRepresentation = ImageRepresentation.getEnumValue(irep);
     }
 }
