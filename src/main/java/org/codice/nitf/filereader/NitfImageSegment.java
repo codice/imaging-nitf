@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class NitfImageSegment
@@ -41,6 +42,8 @@ public class NitfImageSegment
     private ImageCoordinatesRepresentation imageCoordinatesRepresentation = ImageCoordinatesRepresentation.UNKNOWN;
     private int numImageComments;
     private ImageCompression imageCompression = ImageCompression.UNKNOWN;
+    private int numBands = 0;
+    private ArrayList<NitfImageBand> imageBands = new ArrayList<NitfImageBand>();
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -58,6 +61,7 @@ public class NitfImageSegment
     private static final int ICORDS_LENGTH = 1;
     private static final int NICOM_LENGTH = 1;
     private static final int IC_LENGTH = 2;
+    private static final int NBANDS_LENGTH = 1;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -87,6 +91,16 @@ public class NitfImageSegment
             new UnsupportedOperationException("IMPLEMENT IMAGE COMMENT PARSING (ICOMx)");
         }
         readIC();
+        if (hasCOMRAT()) {
+            new UnsupportedOperationException("IMPLEMENT COMRAT PARSING");
+        }
+        readNBANDS();
+        if (numBands == 0) {
+            new UnsupportedOperationException("IMPLEMENT XBAND PARSING");
+        }
+        for (int i = 0; i < numBands; ++i) {
+            imageBands.add(new NitfImageBand(reader.reader, reader.getNumBytesRead()));
+        }
     }
 
     public String getImageIdentifier1() {
@@ -151,6 +165,31 @@ public class NitfImageSegment
 
     public ImageCompression getImageCompression() {
         return imageCompression;
+    }
+
+    public int getNumBands() {
+        return numBands;
+    }
+
+    public NitfImageBand getImageBand(int bandNumber) {
+        return getImageBandZeroBase(bandNumber - 1);
+    }
+
+    public NitfImageBand getImageBandZeroBase(int bandNumberZeroBase) {
+        return imageBands.get(bandNumberZeroBase);
+    }
+
+    private Boolean hasCOMRAT() {
+        return ((imageCompression == ImageCompression.BILEVEL) ||
+                (imageCompression == ImageCompression.JPEG) ||
+                (imageCompression == ImageCompression.VECTORQUANTIZATION) ||
+                (imageCompression == ImageCompression.LOSSLESSJPEG) ||
+                (imageCompression == ImageCompression.JPEG2000) ||
+                (imageCompression == ImageCompression.BILEVELMASK) ||
+                (imageCompression == ImageCompression.JPEGMASK) ||
+                (imageCompression == ImageCompression.VECTORQUANTIZATIONMASK) ||
+                (imageCompression == ImageCompression.LOSSLESSJPEGMASK) ||
+                (imageCompression == ImageCompression.JPEG2000MASK));
     }
 
     private void readIM() throws ParseException {
@@ -221,5 +260,9 @@ public class NitfImageSegment
     private void readIC() throws ParseException {
         String ic = reader.readBytes(IC_LENGTH);
         imageCompression = ImageCompression.getEnumValue(ic);
+    }
+
+    private void readNBANDS() throws ParseException {
+        numBands = reader.readBytesAsInteger(NBANDS_LENGTH);
     }
 }

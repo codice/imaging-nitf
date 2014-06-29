@@ -81,6 +81,11 @@ public class Nitf21HeaderTest {
         assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
         assertEquals(0, segment1.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
+        assertEquals(1, segment1.getNumBands());
+
+        // TODO: checks for ImageBand
+        NitfImageBand band1 = segment1.getImageBand(1);
+        assertNotNull(band1);
 
         is.close();
     }
