@@ -29,7 +29,7 @@ public class NitfImageSegment
     // TODO: consider making this a class (BE/O-suffix + country code) if we can find examples
     private String imageTargetId = null;
     private String imageIdentifier2 = null;
-    private NitfSecurityClassification imageSecurityClassification = NitfSecurityClassification.UNKNOWN;
+    private NitfSecurityMetadata securityMetadata = null;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -45,7 +45,7 @@ public class NitfImageSegment
         readIDATIM();
         readTGTID();
         readIID2();
-        readISCLAS();
+        securityMetadata = new NitfSecurityMetadata(reader);
     }
 
     public String getImageIdentifier1() {
@@ -64,8 +64,8 @@ public class NitfImageSegment
         return imageIdentifier2;
     }
 
-    public NitfSecurityClassification getSecurityClassification() {
-        return imageSecurityClassification;
+    public NitfSecurityMetadata getSecurityMetadata() {
+        return securityMetadata;
     }
 
     private void readIM() throws ParseException {
@@ -86,10 +86,5 @@ public class NitfImageSegment
 
     private void readIID2() throws ParseException {
         imageIdentifier2 = reader.readTrimmedBytes(IID2_LENGTH);
-    }
-
-    private void readISCLAS() throws ParseException {
-        String isclas = reader.readBytes(ISCLAS_LENGTH);
-        imageSecurityClassification = NitfSecurityClassification.getEnumValue(isclas);
     }
 }

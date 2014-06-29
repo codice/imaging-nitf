@@ -42,21 +42,7 @@ public class Nitf21HeaderTest {
         assertEquals("I_3034C", reader.getOriginatingStationId());
         assertEquals("1997-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
         assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", reader.getFileTitle());
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, reader.getSecurityClassification());
-        assertEquals("", reader.getFileSecurityClassificationSystem());
-        assertEquals("", reader.getFileCodewords());
-        assertEquals("", reader.getFileControlAndHandling());
-        assertEquals("", reader.getFileReleaseInstructions());
-        assertEquals("", reader.getFileDeclassificationType());
-        assertEquals("", reader.getFileDeclassificationDate());
-        assertEquals("", reader.getFileDeclassificationExemption());
-        assertEquals("", reader.getFileDowngrade());
-        assertEquals("", reader.getFileDowngradeDate());
-        assertEquals("", reader.getFileClassificationText());
-        assertEquals("", reader.getFileClassificationAuthorityType());
-        assertEquals("", reader.getFileClassificationAuthority());
-        assertEquals("", reader.getFileClassificationReason());
-        assertEquals("", reader.getFileSecurityControlNumber());
+        assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00001", reader.getFileCopyNumber());
         assertEquals("00001", reader.getFileNumberOfCopies());
         assertEquals(0, reader.getFileBackgroundColourRed());
@@ -83,9 +69,26 @@ public class Nitf21HeaderTest {
         assertEquals("1996-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, segment1.getSecurityClassification());
+        assertUnclasAndEmpty(segment1.getSecurityMetadata());
 
         is.close();
     }
 
+    void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
+        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+        assertEquals("", securityMetadata.getSecurityClassificationSystem());
+        assertEquals("", securityMetadata.getCodewords());
+        assertEquals("", securityMetadata.getControlAndHandling());
+        assertEquals("", securityMetadata.getReleaseInstructions());
+        assertEquals("", securityMetadata.getDeclassificationType());
+        assertEquals("", securityMetadata.getDeclassificationDate());
+        assertEquals("", securityMetadata.getDeclassificationExemption());
+        assertEquals("", securityMetadata.getDowngrade());
+        assertEquals("", securityMetadata.getDowngradeDate());
+        assertEquals("", securityMetadata.getClassificationText());
+        assertEquals("", securityMetadata.getClassificationAuthorityType());
+        assertEquals("", securityMetadata.getClassificationAuthority());
+        assertEquals("", securityMetadata.getClassificationReason());
+        assertEquals("", securityMetadata.getSecurityControlNumber());
+    }
 }

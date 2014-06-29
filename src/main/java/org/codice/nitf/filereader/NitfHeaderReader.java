@@ -32,26 +32,8 @@ public class NitfHeaderReader
     private String nitfOriginatingStationId = null;
     private Date nitfFileDateTime = null;
     private String nitfFileTitle = null;
-    private NitfSecurityClassification nitfSecurityClassification = NitfSecurityClassification.UNKNOWN;
-    private String nitfFileSecurityClassificationSystem = null;
-    private String nitfFileCodewords = null;
-    private String nitfFileControlAndHandling = null;
-    private String nitfFileReleaseInstructions = null;
-    // Could be an enumerated type
-    private String nitfFileDeclassificationType = null;
-    // String instead of Date because its frequently just an empty string
-    private String nitfFileDeclassificationDate = null;
-    private String nitfFileDeclassificationExemption = null;
-    private String nitfFileDowngrade = null;
-    // String instead of Date because its frequently just an empty string
-    private String nitfFileDowngradeDate = null;
-    private String nitfFileClassificationText = null;
-    // Could be an enumerated type
-    private String nitfFileClassificationAuthorityType = null;
-    private String nitfFileClassificationAuthority = null;
-    private String nitfFileClassificationReason = null;
-    private String nitfFileSecuritySourceDate = null;
-    private String nitfFileSecurityControlNumber = null;
+    // TODO: create subclass and merge
+    private NitfSecurityMetadata fileSecurityMetadata = null;
     private String nitfFileCopyNumber = null;
     private String nitfFileNumberOfCopies = null;
     private int nitfFileBackgroundColourRed = 0;
@@ -81,26 +63,14 @@ public class NitfHeaderReader
     private static final int CLEVEL_LENGTH = 2;
     private static final int STYPE_LENGTH = 4;
     private static final int OSTAID_LENGTH = 10;
+    // TODO: try to remove
     private static final int FDT_LENGTH = 14;
     private static final int FTITLE_LENGTH = 80;
-    private static final int FSCLAS_LENGTH = 1;
-    private static final int FSCLSY_LENGTH = 2;
-    private static final int FSCODE_LENGTH = 11;
-    private static final int FSCTLH_LENGTH = 2;
-    private static final int FSREL_LENGTH = 20;
-    private static final int FSDCTP_LENGTH = 2;
-    private static final int FSDCDT_LENGTH = 8;
-    private static final int FSDCXM_LENGTH = 4;
-    private static final int FSDG_LENGTH = 1;
-    private static final int FSDGDT_LENGTH = 8;
-    private static final int FSCLTX_LENGTH = 43;
-    private static final int FSCATP_LENGTH = 1;
-    private static final int FSCAUT_LENGTH = 40;
-    private static final int FSCRSN_LENGTH = 1;
-    private static final int FSSRDT_LENGTH = 8;
-    private static final int FSCTLN_LENGTH = 15;
+
+    // TODO: move these to a NitfSecurityMetadata subclass
     private static final int FSCOP_LENGTH = 5;
     private static final int FSCPYS_LENGTH = 5;
+
     private static final int ENCRYP_LENGTH = 1;
     private static final int FBKGC_LENGTH = 3;
     private static final int ONAME_LENGTH = 24;
@@ -127,22 +97,7 @@ public class NitfHeaderReader
         readOSTAID();
         readFDT();
         readFTITLE();
-        readFSCLAS();
-        readFSCLSY();
-        readFSCODE();
-        readFSCTLH();
-        readFSREL();
-        readFSDCTP();
-        readFSDCDT();
-        readFSDCXM();
-        readFSDG();
-        readFSDGDT();
-        readFSCLTX();
-        readFSCATP();
-        readFSCAUT();
-        readFSCRSN();
-        readFSSRDT();
-        readFSCTLN();
+        fileSecurityMetadata = new NitfSecurityMetadata(reader);
         readFSCOP();
         readFSCPYS();
         readENCRYP();
@@ -212,68 +167,8 @@ public class NitfHeaderReader
         return nitfFileTitle;
     }
 
-    public NitfSecurityClassification getSecurityClassification() {
-        return nitfSecurityClassification;
-    }
-
-    public String getFileSecurityClassificationSystem() {
-        return nitfFileSecurityClassificationSystem;
-    }
-
-    public String getFileCodewords() {
-        return nitfFileCodewords;
-    }
-
-    public String getFileControlAndHandling() {
-        return nitfFileControlAndHandling;
-    }
-
-    public String getFileReleaseInstructions() {
-        return nitfFileReleaseInstructions;
-    }
-
-    public String getFileDeclassificationType() {
-        return nitfFileDeclassificationType;
-    }
-
-    public String getFileDeclassificationDate() {
-        return nitfFileDeclassificationDate;
-    }
-
-    public String getFileDeclassificationExemption() {
-        return nitfFileDeclassificationExemption;
-    }
-
-    public String getFileDowngrade() {
-        return nitfFileDowngrade;
-    }
-
-    public String getFileDowngradeDate() {
-        return nitfFileDowngradeDate;
-    }
-
-    public String getFileClassificationText() {
-        return nitfFileClassificationText;
-    }
-
-    public String getFileClassificationAuthorityType() {
-        return nitfFileClassificationAuthorityType;
-    }
-
-    public String getFileClassificationAuthority() {
-        return nitfFileClassificationAuthority;
-    }
-
-    public String getFileClassificationReason() {
-        return nitfFileClassificationReason;
-    }
-
-    public String getFileSecuritySourceDate() {
-        return nitfFileSecuritySourceDate;
-    }
-
-    public String getFileSecurityControlNumber() {
-        return nitfFileSecurityControlNumber;
+    public NitfSecurityMetadata getFileSecurityMetadata() {
+        return fileSecurityMetadata;
     }
 
     public String getFileCopyNumber() {
@@ -388,71 +283,6 @@ public class NitfHeaderReader
 
     private void readFTITLE() throws ParseException {
         nitfFileTitle = reader.readTrimmedBytes(FTITLE_LENGTH);
-    }
-
-    private void readFSCLAS() throws ParseException {
-        String fsclas = reader.readBytes(FSCLAS_LENGTH);
-        nitfSecurityClassification = NitfSecurityClassification.getEnumValue(fsclas);
-    }
-
-    private void readFSCLSY() throws ParseException {
-        nitfFileSecurityClassificationSystem = reader.readTrimmedBytes(FSCLSY_LENGTH);
-    }
-
-    private void readFSCODE() throws ParseException {
-        nitfFileCodewords = reader.readTrimmedBytes(FSCODE_LENGTH);
-    }
-
-    private void readFSCTLH() throws ParseException {
-        nitfFileControlAndHandling = reader.readTrimmedBytes(FSCTLH_LENGTH);
-    }
-
-    private void readFSREL() throws ParseException {
-        nitfFileReleaseInstructions = reader.readTrimmedBytes(FSREL_LENGTH);
-    }
-
-    private void readFSDCTP() throws ParseException {
-        nitfFileDeclassificationType = reader.readTrimmedBytes(FSDCTP_LENGTH);
-    }
-
-    private void readFSDCDT() throws ParseException {
-        nitfFileDeclassificationDate = reader.readTrimmedBytes(FSDCDT_LENGTH);
-    }
-
-    private void readFSDCXM() throws ParseException {
-        nitfFileDeclassificationExemption = reader.readTrimmedBytes(FSDCXM_LENGTH);
-    }
-
-    private void readFSDG() throws ParseException {
-        nitfFileDowngrade = reader.readTrimmedBytes(FSDG_LENGTH);
-    }
-
-    private void readFSDGDT() throws ParseException {
-        nitfFileDowngradeDate = reader.readTrimmedBytes(FSDGDT_LENGTH);
-    }
-
-    private void readFSCLTX() throws ParseException {
-        nitfFileClassificationText= reader.readTrimmedBytes(FSCLTX_LENGTH);
-    }
-
-    private void readFSCATP() throws ParseException {
-        nitfFileClassificationAuthorityType = reader.readTrimmedBytes(FSCATP_LENGTH);
-    }
-
-    private void readFSCAUT() throws ParseException {
-        nitfFileClassificationAuthority = reader.readTrimmedBytes(FSCAUT_LENGTH);
-    }
-
-    private void readFSCRSN() throws ParseException {
-        nitfFileClassificationReason = reader.readTrimmedBytes(FSCRSN_LENGTH);
-    }
-
-    private void readFSSRDT() throws ParseException {
-        nitfFileSecuritySourceDate = reader.readTrimmedBytes(FSSRDT_LENGTH);
-    }
-
-    private void readFSCTLN() throws ParseException {
-        nitfFileSecurityControlNumber = reader.readTrimmedBytes(FSCTLN_LENGTH);
     }
 
     private void readFSCOP() throws ParseException {
