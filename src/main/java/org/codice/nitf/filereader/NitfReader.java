@@ -26,6 +26,7 @@ public class NitfReader
     int numBytesRead = 0;
 
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
+    private static final int ENCRYP_LENGTH = 1;
 
     public NitfReader(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = nitfBufferedReader;
@@ -79,6 +80,12 @@ public class NitfReader
 
     public String readTrimmedBytes(int count) throws ParseException {
         return readBytes(count).trim();
+    }
+
+    public void readENCRYP() throws ParseException {
+        if (!readBytes(ENCRYP_LENGTH).equals("0")) {
+            new ParseException("Unexpected ENCRYP value", numBytesRead);
+        }
     }
 
     public String readBytes(int count) throws ParseException {

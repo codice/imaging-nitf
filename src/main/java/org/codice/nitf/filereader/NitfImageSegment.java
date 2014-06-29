@@ -30,12 +30,14 @@ public class NitfImageSegment
     private String imageTargetId = null;
     private String imageIdentifier2 = null;
     private NitfSecurityMetadata securityMetadata = null;
+    private String imageSource = null;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
     private static final int IID1_LENGTH = 10;
     private static final int TGTID_LENGTH = 17;
     private static final int IID2_LENGTH = 80;
+    private static final int ISORCE_LENGTH = 42;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -45,6 +47,8 @@ public class NitfImageSegment
         readTGTID();
         readIID2();
         securityMetadata = new NitfSecurityMetadata(reader);
+        reader.readENCRYP();
+        readISORCE();
     }
 
     public String getImageIdentifier1() {
@@ -67,6 +71,10 @@ public class NitfImageSegment
         return securityMetadata;
     }
 
+    public String getImageSource() {
+        return imageSource;
+    }
+
     private void readIM() throws ParseException {
        reader.verifyHeaderMagic(IM);
     }
@@ -85,5 +93,9 @@ public class NitfImageSegment
 
     private void readIID2() throws ParseException {
         imageIdentifier2 = reader.readTrimmedBytes(IID2_LENGTH);
+    }
+
+    private void readISORCE() throws ParseException {
+        imageSource = reader.readTrimmedBytes(ISORCE_LENGTH);
     }
 }

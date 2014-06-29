@@ -61,7 +61,6 @@ public class NitfHeaderReader
     private static final int STYPE_LENGTH = 4;
     private static final int OSTAID_LENGTH = 10;
     private static final int FTITLE_LENGTH = 80;
-    private static final int ENCRYP_LENGTH = 1;
     private static final int FBKGC_LENGTH = 3;
     private static final int ONAME_LENGTH = 24;
     private static final int OPHONE_LENGTH = 18;
@@ -88,7 +87,7 @@ public class NitfHeaderReader
         readFDT();
         readFTITLE();
         fileSecurityMetadata = new NitfFileSecurityMetadata(reader);
-        readENCRYP();
+        reader.readENCRYP();
         readFBKGC();
         readONAME();
         readOPHONE();
@@ -263,12 +262,6 @@ public class NitfHeaderReader
 
     private void readFTITLE() throws ParseException {
         nitfFileTitle = reader.readTrimmedBytes(FTITLE_LENGTH);
-    }
-
-    private void readENCRYP() throws ParseException {
-        if (!reader.readBytes(ENCRYP_LENGTH).equals("0")) {
-            new ParseException("Unexpected ENCRYP values", reader.getNumBytesRead());
-        }
     }
 
     private void readFBKGC() throws ParseException {
