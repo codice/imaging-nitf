@@ -16,7 +16,6 @@ package org.codice.nitf.filereader;
 
 public enum ImageCategory
 {
-// TODO: the rest
     UNKNOWN (""),
     VISUAL ("VIS"),
     SIDELOOKINGRADAR ("SL"),

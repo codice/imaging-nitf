@@ -40,6 +40,7 @@ public class NitfImageSegment
     private PixelJustification pixelJustification = PixelJustification.UNKNOWN;
     private ImageCoordinatesRepresentation imageCoordinatesRepresentation = ImageCoordinatesRepresentation.UNKNOWN;
     private int numImageComments;
+    private ImageCompression imageCompression = ImageCompression.UNKNOWN;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -56,6 +57,7 @@ public class NitfImageSegment
     private static final int PJUST_LENGTH = 1;
     private static final int ICORDS_LENGTH = 1;
     private static final int NICOM_LENGTH = 1;
+    private static final int IC_LENGTH = 2;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -84,6 +86,7 @@ public class NitfImageSegment
         for (int i = 0; i < numImageComments; ++i) {
             new UnsupportedOperationException("IMPLEMENT IMAGE COMMENT PARSING (ICOMx)");
         }
+        readIC();
     }
 
     public String getImageIdentifier1() {
@@ -144,6 +147,10 @@ public class NitfImageSegment
 
     public int getNumberOfImageComments() {
         return numImageComments;
+    }
+
+    public ImageCompression getImageCompression() {
+        return imageCompression;
     }
 
     private void readIM() throws ParseException {
@@ -209,5 +216,10 @@ public class NitfImageSegment
 
     private void readNICOM() throws ParseException {
         numImageComments = reader.readBytesAsInteger(NICOM_LENGTH);
+    }
+
+    private void readIC() throws ParseException {
+        String ic = reader.readBytes(IC_LENGTH);
+        imageCompression = ImageCompression.getEnumValue(ic);
     }
 }

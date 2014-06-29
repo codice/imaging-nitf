@@ -80,6 +80,7 @@ public class Nitf21HeaderTest {
         assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
         assertEquals(0, segment1.getNumberOfImageComments());
+        assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
 
         is.close();
     }
