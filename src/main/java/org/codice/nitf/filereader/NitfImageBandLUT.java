@@ -21,7 +21,6 @@ public class NitfImageBandLUT
 {
     NitfReader reader = null;
 
-    public NitfImageBandLUT(BufferedReader nitfBufferedReader, int offset) throws ParseException {
-        reader = new NitfReader(nitfBufferedReader, offset);
+    public NitfImageBandLUT() {
     }
 }

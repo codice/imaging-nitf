@@ -101,6 +101,8 @@ public class Nitf21HeaderTest {
         assertNotNull(lut3);
         // TODO check values
 
+        assertEquals(ImageMode.BLOCKINTERLEVE, segment1.getImageMode());
+
         is.close();
     }
 

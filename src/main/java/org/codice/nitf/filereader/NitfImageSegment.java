@@ -44,6 +44,7 @@ public class NitfImageSegment
     private ImageCompression imageCompression = ImageCompression.UNKNOWN;
     private int numBands = 0;
     private ArrayList<NitfImageBand> imageBands = new ArrayList<NitfImageBand>();
+    private ImageMode imageMode = ImageMode.UNKNOWN;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -62,6 +63,8 @@ public class NitfImageSegment
     private static final int NICOM_LENGTH = 1;
     private static final int IC_LENGTH = 2;
     private static final int NBANDS_LENGTH = 1;
+    private static final int ISYNC_LENGTH = 1;
+    private static final int IMODE_LENGTH = 1;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -101,6 +104,8 @@ public class NitfImageSegment
         for (int i = 0; i < numBands; ++i) {
             imageBands.add(new NitfImageBand(reader.reader, reader.getNumBytesRead()));
         }
+        readISYNC();
+        readIMODE();
     }
 
     public String getImageIdentifier1() {
@@ -177,6 +182,10 @@ public class NitfImageSegment
 
     public NitfImageBand getImageBandZeroBase(int bandNumberZeroBase) {
         return imageBands.get(bandNumberZeroBase);
+    }
+
+    public ImageMode getImageMode() {
+        return imageMode;
     }
 
     private Boolean hasCOMRAT() {
@@ -264,5 +273,14 @@ public class NitfImageSegment
 
     private void readNBANDS() throws ParseException {
         numBands = reader.readBytesAsInteger(NBANDS_LENGTH);
+    }
+
+    private void readISYNC() throws ParseException {
+        reader.readBytes(ISYNC_LENGTH);
+    }
+
+    private void readIMODE() throws ParseException {
+        String imode = reader.readBytes(IMODE_LENGTH);
+        imageMode = ImageMode.getEnumValue(imode);
     }
 }
