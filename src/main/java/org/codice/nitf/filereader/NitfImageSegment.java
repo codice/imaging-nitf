@@ -33,6 +33,7 @@ public class NitfImageSegment
     private String imageSource = null;
     private long numRows = 0L;
     private long numColumns = 0L;
+    private PixelValueType pixelValueType = PixelValueType.UNKNOWN;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -42,6 +43,7 @@ public class NitfImageSegment
     private static final int ISORCE_LENGTH = 42;
     private static final int NROWS_LENGTH = 8;
     private static final int NCOLS_LENGTH = 8;
+    private static final int PVTYPE_LENGTH = 3;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -55,6 +57,7 @@ public class NitfImageSegment
         readISORCE();
         readNROWS();
         readNCOLS();
+        readPVTYPE();
     }
 
     public String getImageIdentifier1() {
@@ -89,6 +92,10 @@ public class NitfImageSegment
         return numColumns;
     }
 
+    public PixelValueType getPixelValueType() {
+        return pixelValueType;
+    }
+
     private void readIM() throws ParseException {
        reader.verifyHeaderMagic(IM);
     }
@@ -119,5 +126,10 @@ public class NitfImageSegment
 
     private void readNCOLS() throws ParseException {
         numColumns = reader.readBytesAsLong(NCOLS_LENGTH);
+    }
+
+    private void readPVTYPE() throws ParseException {
+        String pvtype = reader.readBytes(PVTYPE_LENGTH);
+        pixelValueType = PixelValueType.getEnumValue(pvtype);
     }
 }
