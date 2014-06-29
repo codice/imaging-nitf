@@ -83,9 +83,13 @@ public class Nitf21HeaderTest {
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
 
-        // TODO: checks for ImageBand
+        // Checks for ImageBand
         NitfImageBand band1 = segment1.getImageBand(1);
         assertNotNull(band1);
+        assertEquals("LU", band1.getImageRepresentation());
+        assertEquals("", band1.getSubCategory());
+        assertEquals(3, band1.getNumLUTs());
+        assertEquals(2, band1.getNumLUTEntries());
 
         is.close();
     }
