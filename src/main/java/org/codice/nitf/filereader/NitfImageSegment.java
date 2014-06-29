@@ -47,6 +47,8 @@ public class NitfImageSegment
     private ImageMode imageMode = ImageMode.UNKNOWN;
     private int numBlocksPerRow = 0;
     private int numBlocksPerColumn = 0;
+    private int numPixelsPerBlockHorizontal = 0;
+    private int numPixelsPerBlockVertical = 0;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -69,6 +71,8 @@ public class NitfImageSegment
     private static final int IMODE_LENGTH = 1;
     private static final int NBPR_LENGTH = 4;
     private static final int NBPC_LENGTH = 4;
+    private static final int NPPBH_LENGTH = 4;
+    private static final int NPPBV_LENGTH = 4;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -112,6 +116,8 @@ public class NitfImageSegment
         readIMODE();
         readNBPR();
         readNBPC();
+        readNPPBH();
+        readNPPBV();
     }
 
     public String getImageIdentifier1() {
@@ -200,6 +206,14 @@ public class NitfImageSegment
 
     public int getNumberOfBlocksPerColumn() {
         return numBlocksPerColumn;
+    }
+
+    public int getNumberOfPixelsPerBlockHorizontal() {
+        return numPixelsPerBlockHorizontal;
+    }
+
+    public int getNumberOfPixelsPerBlockVertical() {
+        return numPixelsPerBlockVertical;
     }
 
     private Boolean hasCOMRAT() {
@@ -306,4 +320,11 @@ public class NitfImageSegment
         numBlocksPerColumn = reader.readBytesAsInteger(NBPC_LENGTH);
     }
 
+    private void readNPPBH() throws ParseException {
+        numPixelsPerBlockHorizontal = reader.readBytesAsInteger(NPPBH_LENGTH);
+    }
+
+    private void readNPPBV() throws ParseException {
+        numPixelsPerBlockVertical = reader.readBytesAsInteger(NPPBV_LENGTH);
+    }
 }
