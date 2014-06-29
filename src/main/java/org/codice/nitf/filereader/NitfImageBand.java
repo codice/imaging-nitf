@@ -43,9 +43,11 @@ public class NitfImageBand
         readIFC();
         readIMFLT();
         readNLUTS();
-        readNELUT();
-        for (int i = 0; i < numLUTs; ++i) {
-            luts.add(new NitfImageBandLUT(reader.reader, reader.getNumBytesRead()));
+        if (numLUTs > 0) {
+            readNELUT();
+            for (int i = 0; i < numLUTs; ++i) {
+                luts.add(new NitfImageBandLUT(reader.reader, reader.getNumBytesRead()));
+            }
         }
     }
 
