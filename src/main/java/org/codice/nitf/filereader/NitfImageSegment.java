@@ -49,6 +49,9 @@ public class NitfImageSegment
     private int numBlocksPerColumn = 0;
     private int numPixelsPerBlockHorizontal = 0;
     private int numPixelsPerBlockVertical = 0;
+    private int numBitsPerPixelPerBand = 0;
+    private int imageDisplayLevel = 0;
+    private int imageAttachmentLevel = 0;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -73,6 +76,9 @@ public class NitfImageSegment
     private static final int NBPC_LENGTH = 4;
     private static final int NPPBH_LENGTH = 4;
     private static final int NPPBV_LENGTH = 4;
+    private static final int NBPP_LENGTH = 2;
+    private static final int IDLVL_LENGTH = 3;
+    private static final int IALVL_LENGTH = 3;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -118,6 +124,9 @@ public class NitfImageSegment
         readNBPC();
         readNPPBH();
         readNPPBV();
+        readNBPP();
+        readIDLVL();
+        readIALVL();
     }
 
     public String getImageIdentifier1() {
@@ -214,6 +223,18 @@ public class NitfImageSegment
 
     public int getNumberOfPixelsPerBlockVertical() {
         return numPixelsPerBlockVertical;
+    }
+
+    public int getNumberOfBitsPerPixelPerBand() {
+        return numBitsPerPixelPerBand;
+    }
+
+    public int getImageDisplayLevel() {
+        return imageDisplayLevel;
+    }
+
+    public int getImageAttachmentLevel() {
+        return imageAttachmentLevel;
     }
 
     private Boolean hasCOMRAT() {
@@ -326,5 +347,17 @@ public class NitfImageSegment
 
     private void readNPPBV() throws ParseException {
         numPixelsPerBlockVertical = reader.readBytesAsInteger(NPPBV_LENGTH);
+    }
+
+    private void readNBPP() throws ParseException {
+        numBitsPerPixelPerBand = reader.readBytesAsInteger(NBPP_LENGTH);
+    }
+
+    private void readIDLVL() throws ParseException {
+        imageDisplayLevel = reader.readBytesAsInteger(IDLVL_LENGTH);
+    }
+
+    private void readIALVL() throws ParseException {
+        imageAttachmentLevel = reader.readBytesAsInteger(IALVL_LENGTH);
     }
 }
