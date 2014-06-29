@@ -90,6 +90,16 @@ public class Nitf21HeaderTest {
         assertEquals("", band1.getSubCategory());
         assertEquals(3, band1.getNumLUTs());
         assertEquals(2, band1.getNumLUTEntries());
+        // Checks for lookup tables
+        NitfImageBandLUT lut1 = band1.getLUT(1);
+        assertNotNull(lut1);
+        // TODO: check values
+        NitfImageBandLUT lut2 = band1.getLUT(2);
+        assertNotNull(lut2);
+        // TODO check values
+        NitfImageBandLUT lut3 = band1.getLUT(3);
+        assertNotNull(lut3);
+        // TODO check values
 
         is.close();
     }

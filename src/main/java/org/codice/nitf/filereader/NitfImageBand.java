@@ -16,6 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.io.BufferedReader;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 public class NitfImageBand
 {
@@ -26,6 +27,7 @@ public class NitfImageBand
     private String imageSubcategory = null;
     private int numLUTs = 0;
     private int numEntriesLUT = 0;
+    private ArrayList<NitfImageBandLUT> luts = new ArrayList<NitfImageBandLUT>();
 
     private static final int IREPBAND_LENGTH = 2;
     private static final int ISUBCAT_LENGTH = 6;
@@ -42,6 +44,9 @@ public class NitfImageBand
         readIMFLT();
         readNLUTS();
         readNELUT();
+        for (int i = 0; i < numLUTs; ++i) {
+            luts.add(new NitfImageBandLUT(reader.reader, reader.getNumBytesRead()));
+        }
     }
 
     public String getImageRepresentation() {
@@ -58,6 +63,14 @@ public class NitfImageBand
 
     public int getNumLUTEntries() {
         return numEntriesLUT;
+    }
+
+    public NitfImageBandLUT getLUT(int lutNumber) {
+        return getLUTZeroBase(lutNumber - 1);
+    }
+
+    public NitfImageBandLUT getLUTZeroBase(int lutNumberZeroBase) {
+        return luts.get(lutNumberZeroBase);
     }
 
     private void readIREPBAND() throws ParseException {
