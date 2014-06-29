@@ -26,16 +26,20 @@ public class NitfImageSegment
 
     private String imageIdentifier1 = null;
     private Date imageDateTime = null;
+    // TODO: consider making this a class (BE/O-suffix + country code) if we can find examples
+    private String imageTargetId = null;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
     private static final int IID1_LENGTH = 10;
+    private static final int TGTID_LENGTH = 17;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
         readIM();
         readIID1();
         readIDATIM();
+        readTGTID();
     }
 
     public String getImageIdentifier1() {
@@ -44,6 +48,10 @@ public class NitfImageSegment
 
     public Date getImageDateTime() {
         return imageDateTime;
+    }
+
+    public String getImageTargetId() {
+        return imageTargetId;
     }
 
     private void readIM() throws ParseException {
@@ -56,5 +64,9 @@ public class NitfImageSegment
 
     private void readIDATIM() throws ParseException {
         imageDateTime = reader.readNitfDateTime();
+    }
+
+    private void readTGTID() throws ParseException {
+        imageTargetId = reader.readTrimmedBytes(TGTID_LENGTH);
     }
 }
