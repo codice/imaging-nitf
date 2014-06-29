@@ -60,8 +60,6 @@ public class NitfHeaderReader
     private static final int CLEVEL_LENGTH = 2;
     private static final int STYPE_LENGTH = 4;
     private static final int OSTAID_LENGTH = 10;
-    // TODO: try to remove
-    private static final int FDT_LENGTH = 14;
     private static final int FTITLE_LENGTH = 80;
     private static final int ENCRYP_LENGTH = 1;
     private static final int FBKGC_LENGTH = 3;
