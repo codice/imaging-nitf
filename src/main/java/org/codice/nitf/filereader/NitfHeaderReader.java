@@ -101,33 +101,33 @@ public class NitfHeaderReader
         readNUMS();
         for (int i = 0; i < numberGraphicsSegments; ++i) {
             // TODO: find a case that exercises this and implement it
-            new UnsupportedOperationException("IMPLEMENT GRAPHICS SEGMENT PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT GRAPHICS SEGMENT PARSING");
         }
         readNUMX();
         readNUMT();
         for (int i = 0; i < numberTextSegments; ++i) {
             // TODO: find a case that exercises this and implement it
-            new UnsupportedOperationException("IMPLEMENT TEXT SEGMENT PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT TEXT SEGMENT PARSING");
         }
         readNUMDES();
         for (int i = 0; i < numberDataExtensionSegments; ++i) {
             // TODO: find a case that exercises this and implement it
-            new UnsupportedOperationException("IMPLEMENT DES PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT DES PARSING");
         }
         readNUMRES();
         for (int i = 0; i < numberReservedExtensionSegments; ++i) {
             // TODO: find a case that exercises this and implement it
-            new UnsupportedOperationException("IMPLEMENT RES PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT RES PARSING");
         }
         readUDHDL();
         if (userDefinedHeaderDataLength > 0) {
             // TODO: find a case that exercises this and implement it
-            new UnsupportedOperationException("IMPLEMENT USER DEFINED SEGMENT PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT USER DEFINED SEGMENT PARSING");
         }
         readXHDL();
         if (extendedHeaderDataLength > 0) {
             // TODO: find a case that exercises this and implement it
-            new UnsupportedOperationException("IMPLEMENT EXTENDED HEADER DATA PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT EXTENDED HEADER DATA PARSING");
         }
         readImageSegments();
     }

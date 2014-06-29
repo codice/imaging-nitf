@@ -110,19 +110,21 @@ public class NitfImageSegment
         if ((imageCoordinatesRepresentation != ImageCoordinatesRepresentation.UNKNOWN) &&
             (imageCoordinatesRepresentation != ImageCoordinatesRepresentation.NONE)) {
             // TODO: find example and implement
-            new UnsupportedOperationException("IMPLEMENT COORDINATE PARSING (IGEOLO)");
+            // TODO: figure out why this doesn't cause an abort
+            throw new UnsupportedOperationException("IMPLEMENT COORDINATE PARSING (IGEOLO)");
         }
         readNICOM();
         for (int i = 0; i < numImageComments; ++i) {
-            new UnsupportedOperationException("IMPLEMENT IMAGE COMMENT PARSING (ICOMx)");
+            // TODO: figure out why this doesn't cause an abort!
+            throw new UnsupportedOperationException("IMPLEMENT IMAGE COMMENT PARSING (ICOMx)");
         }
         readIC();
         if (hasCOMRAT()) {
-            new UnsupportedOperationException("IMPLEMENT COMRAT PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT COMRAT PARSING");
         }
         readNBANDS();
         if (numBands == 0) {
-            new UnsupportedOperationException("IMPLEMENT XBAND PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT XBAND PARSING");
         }
         for (int i = 0; i < numBands; ++i) {
             imageBands.add(new NitfImageBand(reader.reader, reader.getNumBytesRead()));
@@ -140,12 +142,13 @@ public class NitfImageSegment
         readIMAG();
         readUDIDL();
         if (userDefinedImageDataLength > 0) {
-            new UnsupportedOperationException("IMPLEMENT UDOFL / UDID PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT UDOFL / UDID PARSING");
         }
         readIXSHDL();
         if (imageExtendedSubheaderDataLength > 0) {
-            new UnsupportedOperationException("IMPLEMENT IXSOFL / IXSHD PARSING");
+            throw new UnsupportedOperationException("IMPLEMENT IXSOFL / IXSHD PARSING");
         }
+        readImageData();
     }
 
     public String getImageIdentifier1() {
@@ -415,5 +418,9 @@ public class NitfImageSegment
 
     private void readIXSHDL() throws ParseException {
         imageExtendedSubheaderDataLength = reader.readBytesAsInteger(IXSHDL_LENGTH);
+    }
+
+    private void readImageData() throws ParseException {
+        // TODO: this needs to read length given in header
     }
 }

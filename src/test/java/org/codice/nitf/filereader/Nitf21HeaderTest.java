@@ -118,6 +118,65 @@ public class Nitf21HeaderTest {
         is.close();
     }
 
+    @Test
+    public void testGeoAirfieldHeaderReader() throws IOException, ParseException {
+        final String geoAirfieldNitf21File = "/i_3001a.ntf";
+
+        assertNotNull("Test file missing", getClass().getResource(geoAirfieldNitf21File));
+
+        InputStream is = getClass().getResourceAsStream(geoAirfieldNitf21File);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertTrue(reader.isNitf());
+        assertEquals(NitfVersion.TWO_ONE, reader.getVersion());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("i_3001a", reader.getOriginatingStationId());
+        assertEquals("1997-12-17 10:26:30", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("Checks an uncompressed 1024x1024 8 bit mono image with GEOcentric data. Airfield", reader.getFileTitle());
+        assertUnclasAndEmpty(reader.getFileSecurityMetadata());
+        assertEquals("00000", reader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00000", reader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals(0, reader.getFileBackgroundColourRed());
+        assertEquals(0, reader.getFileBackgroundColourGreen());
+        assertEquals(0, reader.getFileBackgroundColourBlue());
+        assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
+        assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
+        assertEquals(1049479L, reader.getFileLength());
+        assertEquals(404, reader.getHeaderLength());
+        assertEquals(1, reader.getNumberOfImageSegments());
+        assertEquals(499, reader.getLengthOfImageSubheader(0));
+        assertEquals(1048576, reader.getLengthOfImage(0));
+        assertEquals(0, reader.getNumberOfGraphicsSegments());
+        assertEquals(0, reader.getNumberOfTextSegments());
+        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        assertEquals(0, reader.getExtendedHeaderDataLength());
+
+        // Checks for ImageSegment.
+        NitfImageSegment segment1 = reader.getImageSegment(1);
+        assertNotNull(segment1);
+        assertEquals("Missing ID", segment1.getImageIdentifier1());
+        assertEquals("1996-12-17 10:26:30", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
+        assertEquals("", segment1.getImageTargetId());
+        assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
+        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        assertEquals("Unknown", segment1.getImageSource());
+        assertEquals(1024L, segment1.getNumRows());
+        assertEquals(1024L, segment1.getNumColumns());
+        assertEquals(PixelValueType.INTEGER, segment1.getPixelValueType());
+        assertEquals(ImageRepresentation.MONOCHROME, segment1.getImageRepresentation());
+        assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
+        assertEquals(8, segment1.getActualBitsPerPixelPerBand());
+        assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
+        assertEquals(ImageCoordinatesRepresentation.GEOGRAPHIC, segment1.getImageCoordinatesRepresentation());
+        // TODO: geo comparison
+        assertEquals(3, segment1.getNumberOfImageComments());
+        // TODO: image comments
+        assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
+        assertEquals(1, segment1.getNumBands());
+    }
+
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
         assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());
