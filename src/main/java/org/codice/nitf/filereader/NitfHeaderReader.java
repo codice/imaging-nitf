@@ -368,14 +368,9 @@ public class NitfHeaderReader
     }
 
     private void readCLEVEL() throws ParseException {
-        String clevel = reader.readBytes(CLEVEL_LENGTH);
-        try {
-            nitfComplexityLevel = Integer.parseInt(clevel);
-            if ((nitfComplexityLevel < 0) || (nitfComplexityLevel > 99)) {
-                new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.getNumBytesRead());
-            }
-        } catch (NumberFormatException ex) {
-            new ParseException(String.format("Bad CLEVEL format: %s", clevel), reader.getNumBytesRead());
+        nitfComplexityLevel = reader.readBytesAsInteger(CLEVEL_LENGTH);
+        if ((nitfComplexityLevel < 0) || (nitfComplexityLevel > 99)) {
+            new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.getNumBytesRead());
         }
     }
 
