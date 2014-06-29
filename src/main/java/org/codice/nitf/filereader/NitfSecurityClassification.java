@@ -27,8 +27,13 @@ public enum NitfSecurityClassification
     NitfSecurityClassification(String abbreviation) {
         this.textEquivalent = abbreviation;
     }
-    public String getTextEquivalent() {
-        return textEquivalent;
+    static public NitfSecurityClassification getEnumValue(String textEquivalent) {
+        for (NitfSecurityClassification classification : values()) {
+            if (textEquivalent.equals(classification.textEquivalent)) {
+                return classification;
+            }
+        }
+        return UNKNOWN;
     }
 };
 

@@ -24,8 +24,13 @@ public enum NitfVersion
     NitfVersion(String abbreviation) {
         this.textEquivalent = abbreviation;
     }
-    public String getTextEquivalent() {
-        return textEquivalent;
+    static public NitfVersion getEnumValue(String textEquivalent) {
+        for (NitfVersion version : values()) {
+            if (textEquivalent.equals(version.textEquivalent)) {
+                return version;
+            }
+        }
+        return UNKNOWN;
     }
 };
 

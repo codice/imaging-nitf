@@ -364,11 +364,7 @@ public class NitfHeaderReader
 
     private void readFVER() throws ParseException {
         String fver = reader.readBytes(FVER_LENGTH);
-        for (NitfVersion version : NitfVersion.values()) {
-            if (fver.equals(version.getTextEquivalent())) {
-                nitfVersion = version;
-            }
-        }
+        nitfVersion = NitfVersion.getEnumValue(fver);
     }
 
     private void readCLEVEL() throws ParseException {
@@ -401,11 +397,7 @@ public class NitfHeaderReader
 
     private void readFSCLAS() throws ParseException {
         String fsclas = reader.readBytes(FSCLAS_LENGTH);
-        for (NitfSecurityClassification classification : NitfSecurityClassification.values()) {
-            if (fsclas.equals(classification.getTextEquivalent())) {
-                nitfSecurityClassification = classification;
-            }
-        }
+        nitfSecurityClassification = NitfSecurityClassification.getEnumValue(fsclas);
     }
 
     private void readFSCLSY() throws ParseException {
