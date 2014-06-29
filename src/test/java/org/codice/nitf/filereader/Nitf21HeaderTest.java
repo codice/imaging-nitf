@@ -43,8 +43,8 @@ public class Nitf21HeaderTest {
         assertEquals("1997-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
         assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
-        assertEquals("00001", reader.getFileCopyNumber());
-        assertEquals("00001", reader.getFileNumberOfCopies());
+        assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00001", reader.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals(0, reader.getFileBackgroundColourRed());
         assertEquals(0, reader.getFileBackgroundColourGreen());
         assertEquals(0, reader.getFileBackgroundColourBlue());

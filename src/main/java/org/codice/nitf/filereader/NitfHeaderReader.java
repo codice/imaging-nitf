@@ -32,10 +32,7 @@ public class NitfHeaderReader
     private String nitfOriginatingStationId = null;
     private Date nitfFileDateTime = null;
     private String nitfFileTitle = null;
-    // TODO: create subclass and merge
-    private NitfSecurityMetadata fileSecurityMetadata = null;
-    private String nitfFileCopyNumber = null;
-    private String nitfFileNumberOfCopies = null;
+    private NitfFileSecurityMetadata fileSecurityMetadata = null;
     private int nitfFileBackgroundColourRed = 0;
     private int nitfFileBackgroundColourGreen = 0;
     private int nitfFileBackgroundColourBlue = 0;
@@ -66,11 +63,6 @@ public class NitfHeaderReader
     // TODO: try to remove
     private static final int FDT_LENGTH = 14;
     private static final int FTITLE_LENGTH = 80;
-
-    // TODO: move these to a NitfSecurityMetadata subclass
-    private static final int FSCOP_LENGTH = 5;
-    private static final int FSCPYS_LENGTH = 5;
-
     private static final int ENCRYP_LENGTH = 1;
     private static final int FBKGC_LENGTH = 3;
     private static final int ONAME_LENGTH = 24;
@@ -97,9 +89,7 @@ public class NitfHeaderReader
         readOSTAID();
         readFDT();
         readFTITLE();
-        fileSecurityMetadata = new NitfSecurityMetadata(reader);
-        readFSCOP();
-        readFSCPYS();
+        fileSecurityMetadata = new NitfFileSecurityMetadata(reader);
         readENCRYP();
         readFBKGC();
         readONAME();
@@ -167,16 +157,8 @@ public class NitfHeaderReader
         return nitfFileTitle;
     }
 
-    public NitfSecurityMetadata getFileSecurityMetadata() {
+    public NitfFileSecurityMetadata getFileSecurityMetadata() {
         return fileSecurityMetadata;
-    }
-
-    public String getFileCopyNumber() {
-        return nitfFileCopyNumber;
-    }
-
-    public String getFileNumberOfCopies() {
-        return nitfFileNumberOfCopies;
     }
 
     public int getFileBackgroundColourRed() {
@@ -283,14 +265,6 @@ public class NitfHeaderReader
 
     private void readFTITLE() throws ParseException {
         nitfFileTitle = reader.readTrimmedBytes(FTITLE_LENGTH);
-    }
-
-    private void readFSCOP() throws ParseException {
-        nitfFileCopyNumber = reader.readTrimmedBytes(FSCOP_LENGTH);
-    }
-
-    private void readFSCPYS() throws ParseException {
-        nitfFileNumberOfCopies = reader.readTrimmedBytes(FSCPYS_LENGTH);
     }
 
     private void readENCRYP() throws ParseException {

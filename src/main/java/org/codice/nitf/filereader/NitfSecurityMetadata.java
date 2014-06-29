@@ -18,7 +18,7 @@ import java.text.ParseException;
 
 public class NitfSecurityMetadata
 {
-    NitfReader reader = null;
+    protected NitfReader reader = null;
 
     private NitfSecurityClassification nitfSecurityClassification = NitfSecurityClassification.UNKNOWN;
     private String nitfSecurityClassificationSystem = null;
