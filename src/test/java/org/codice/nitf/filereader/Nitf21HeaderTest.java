@@ -103,6 +103,7 @@ public class Nitf21HeaderTest {
 
         assertEquals(ImageMode.BLOCKINTERLEVE, segment1.getImageMode());
         assertEquals(1, segment1.getNumberOfBlocksPerRow());
+        assertEquals(1, segment1.getNumberOfBlocksPerColumn());
 
         is.close();
     }
