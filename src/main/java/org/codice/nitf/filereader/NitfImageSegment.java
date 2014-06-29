@@ -36,6 +36,8 @@ public class NitfImageSegment
     private PixelValueType pixelValueType = PixelValueType.UNKNOWN;
     private ImageRepresentation imageRepresentation = ImageRepresentation.UNKNOWN;
     private ImageCategory imageCategory = ImageCategory.UNKNOWN;
+    private int actualBitsPerPixelPerBand = 0;
+    private PixelJustification pixelJustification = PixelJustification.UNKNOWN;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -48,6 +50,8 @@ public class NitfImageSegment
     private static final int PVTYPE_LENGTH = 3;
     private static final int IREP_LENGTH = 8;
     private static final int ICAT_LENGTH = 8;
+    private static final int ABPP_LENGTH = 2;
+    private static final int PJUST_LENGTH = 1;
 
     public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
         reader = new NitfReader(nitfBufferedReader, offset);
@@ -64,6 +68,8 @@ public class NitfImageSegment
         readPVTYPE();
         readIREP();
         readICAT();
+        readABPP();
+        readPJUST();
     }
 
     public String getImageIdentifier1() {
@@ -108,6 +114,14 @@ public class NitfImageSegment
 
     public ImageCategory getImageCategory() {
         return imageCategory;
+    }
+
+    public int getActualBitsPerPixelPerBand() {
+        return actualBitsPerPixelPerBand;
+    }
+
+    public PixelJustification getPixelJustification() {
+        return pixelJustification;
     }
 
     private void readIM() throws ParseException {
@@ -155,5 +169,14 @@ public class NitfImageSegment
     private void readICAT() throws ParseException {
         String icat = reader.readTrimmedBytes(ICAT_LENGTH);
         imageCategory = ImageCategory.getEnumValue(icat);
+    }
+
+    private void readABPP() throws ParseException {
+        actualBitsPerPixelPerBand = reader.readBytesAsInteger(ABPP_LENGTH);
+    }
+
+    private void readPJUST() throws ParseException {
+        String pjust = reader.readTrimmedBytes(PJUST_LENGTH);
+        pixelJustification = PixelJustification.getEnumValue(pjust);
     }
 }
