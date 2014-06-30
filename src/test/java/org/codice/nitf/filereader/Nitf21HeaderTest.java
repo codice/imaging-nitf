@@ -54,7 +54,6 @@ public class Nitf21HeaderTest {
         assertEquals(404, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
         assertEquals(450, reader.getLengthOfImageSubheader(0));
-        assertEquals(79, reader.getLengthOfImage(0));
         assertEquals(0, reader.getNumberOfGraphicsSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
@@ -114,6 +113,7 @@ public class Nitf21HeaderTest {
         assertEquals(1.0, segment1.getImageMagnification(), 0.00001);
         assertEquals(0, segment1.getUserDefinedImageDataLength());
         assertEquals(0, segment1.getImageExtendedSubheaderDataLength());
+        assertEquals(79, segment1.getLengthOfImage());
 
         is.close();
     }

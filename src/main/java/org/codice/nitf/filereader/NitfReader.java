@@ -101,17 +101,28 @@ public class NitfReader
     }
 
     public byte[] readBytesRaw(int count) throws ParseException {
-        int thisRead = 0;
         try {
             byte[] bytes = new byte[count];
-            thisRead = input.read(bytes, 0, count);
+            int thisRead = input.read(bytes, 0, count);
             if (thisRead == -1) {
                 throw new ParseException("End of file reading from NITF stream.", numBytesRead);
             } else if (thisRead < count) {
-                throw new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
+                throw new ParseException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count), numBytesRead + thisRead);
             }
             numBytesRead += thisRead;
             return bytes;
+        } catch (IOException ex) {
+            throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
+        }
+    }
+
+    public void skip(long count) throws ParseException {
+        try {
+            long thisRead = 0;
+            do {
+                thisRead = input.skip(count);
+                numBytesRead += thisRead;
+            } while ((count -= thisRead) > 0);
         } catch (IOException ex) {
             throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
         }

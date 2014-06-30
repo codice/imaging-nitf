@@ -335,7 +335,7 @@ public class NitfHeaderReader
 
     private void readImageSegments() throws ParseException {
         for (int i = 0; i < numberImageSegments; ++i) {
-            imageSegments.add(new NitfImageSegment(reader.input, reader.numBytesRead));
+            imageSegments.add(new NitfImageSegment(reader.input, reader.numBytesRead, li.get(i)));
         }
     }
 }

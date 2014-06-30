@@ -58,6 +58,7 @@ public class NitfImageSegment
     private double imageMagnification = 0.0;
     private int userDefinedImageDataLength = 0;
     private int imageExtendedSubheaderDataLength = 0;
+    private long lengthOfImage = 0L;
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -91,8 +92,9 @@ public class NitfImageSegment
     private static final int UDIDL_LENGTH = 5;
     private static final int IXSHDL_LENGTH = 5;
 
-    public NitfImageSegment(BufferedInputStream inputStream, int offset) throws ParseException {
+    public NitfImageSegment(BufferedInputStream inputStream, int offset, long imageLength) throws ParseException {
         reader = new NitfReader(inputStream, offset);
+        lengthOfImage = imageLength;
         readIM();
         readIID1();
         readIDATIM();
@@ -282,6 +284,10 @@ public class NitfImageSegment
         return imageCoordinates;
     }
 
+    public long getLengthOfImage() {
+        return lengthOfImage;
+    }
+    
     private Boolean hasCOMRAT() {
         return ((imageCompression == ImageCompression.BILEVEL) ||
                 (imageCompression == ImageCompression.JPEG) ||
@@ -442,6 +448,7 @@ public class NitfImageSegment
     }
 
     private void readImageData() throws ParseException {
-        // TODO: this needs to read length given in header
+        // TODO: we could use this if needed later
+        reader.skip(lengthOfImage);
     }
 }
