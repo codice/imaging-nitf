@@ -309,8 +309,7 @@ public class NitfHeaderReader
     }
 
     private void readNUMX() throws ParseException {
-        // Just throw this away.
-        String numx = reader.readBytes(NUMX_LENGTH);
+        reader.skip(NUMX_LENGTH);
     }
 
     private void readNUMT() throws ParseException {

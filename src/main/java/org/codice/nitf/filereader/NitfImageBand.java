@@ -90,13 +90,11 @@ public class NitfImageBand
     }
 
     private void readIFC() throws ParseException {
-        // Just throw this away.
-        String ifc = reader.readBytes(IFC_LENGTH);
+        reader.skip(IFC_LENGTH);
     }
 
     private void readIMFLT() throws ParseException {
-        // Just throw this away.
-        String imflt = reader.readBytes(IMFLT_LENGTH);
+        reader.skip(IMFLT_LENGTH);
     }
 
     private void readNLUTS() throws ParseException {
