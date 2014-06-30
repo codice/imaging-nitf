@@ -41,7 +41,7 @@ public class NitfReader
     public void verifyHeaderMagic(String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
-            new ParseException(String.format("Missing %s magic header", magicHeader), numBytesRead);
+            throw new ParseException(String.format("Missing %s magic header", magicHeader), numBytesRead);
         }
     }
 
@@ -51,7 +51,7 @@ public class NitfReader
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         Date dateTime = dateFormat.parse(dateString);
         if (dateTime == null) {
-            new ParseException(String.format("Bad DATETIME format: %s", dateString), numBytesRead);
+            throw new ParseException(String.format("Bad DATETIME format: %s", dateString), numBytesRead);
         }
         return dateTime;
     }
@@ -62,7 +62,7 @@ public class NitfReader
         try {
             intValue = Integer.parseInt(intString);
         } catch (NumberFormatException ex) {
-            new ParseException(String.format("Bad Integer format: %s", intString), numBytesRead);
+            throw new ParseException(String.format("Bad Integer format: %s", intString), numBytesRead);
         }
         return intValue;
     }
@@ -73,7 +73,7 @@ public class NitfReader
         try {
             longValue = Long.parseLong(longString);
         } catch (NumberFormatException ex) {
-            new ParseException(String.format("Bad Long format: %s", longString), numBytesRead);
+            throw new ParseException(String.format("Bad Long format: %s", longString), numBytesRead);
         }
         return longValue;
     }
@@ -84,7 +84,7 @@ public class NitfReader
         try {
             doubleValue = Double.parseDouble(doubleString.trim());
         } catch (NumberFormatException ex) {
-            new ParseException(String.format("Bad Double format: %s", doubleString), numBytesRead);
+            throw new ParseException(String.format("Bad Double format: %s", doubleString), numBytesRead);
         }
         return doubleValue;
     }
@@ -95,7 +95,7 @@ public class NitfReader
 
     public void readENCRYP() throws ParseException {
         if (!readBytes(ENCRYP_LENGTH).equals("0")) {
-            new ParseException("Unexpected ENCRYP value", numBytesRead);
+            throw new ParseException("Unexpected ENCRYP value", numBytesRead);
         }
     }
 
@@ -105,14 +105,14 @@ public class NitfReader
             char[] bytes = new char[count];
             thisRead = reader.read(bytes, 0, count);
             if (thisRead == -1) {
-                new ParseException("End of file reading from NITF stream.", numBytesRead);
+                throw new ParseException("End of file reading from NITF stream.", numBytesRead);
             } else if (thisRead < count) {
-                new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
+                throw new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
             }
             numBytesRead += thisRead;
             return String.valueOf(bytes);
         } catch (IOException ex) {
-            new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
+            throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
         }
         return null;
     }

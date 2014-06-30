@@ -250,7 +250,7 @@ public class NitfHeaderReader
     private void readCLEVEL() throws ParseException {
         nitfComplexityLevel = reader.readBytesAsInteger(CLEVEL_LENGTH);
         if ((nitfComplexityLevel < 0) || (nitfComplexityLevel > 99)) {
-            new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.getNumBytesRead());
+            throw new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.getNumBytesRead());
         }
     }
 
@@ -277,7 +277,7 @@ public class NitfHeaderReader
             nitfFileBackgroundColourGreen = Integer.parseInt(fbkgc.substring(1, 2));
             nitfFileBackgroundColourBlue = Integer.parseInt(fbkgc.substring(2));
         } catch (NumberFormatException ex) {
-            new ParseException("Bad FBKGC", reader.getNumBytesRead());
+            throw new ParseException("Bad FBKGC", reader.getNumBytesRead());
         }
     }
 

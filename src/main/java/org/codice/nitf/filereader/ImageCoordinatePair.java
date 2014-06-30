@@ -73,7 +73,7 @@ public class ImageCoordinatePair {
                 lon = -1 * lon;
             }
         } catch (NumberFormatException ex) {
-            new ParseException(String.format("Incorrect DMS format: %s", dms), 0);
+            throw new ParseException(String.format("Incorrect DMS format: %s", dms), 0);
         }
     }
 
