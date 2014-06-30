@@ -35,11 +35,6 @@ public class NitfReader
         numBytesRead = offset;
     }
 
-    // TODO make protected
-    public int getNumBytesRead() {
-        return numBytesRead;
-    }
-
     public void verifyHeaderMagic(String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
@@ -102,20 +97,7 @@ public class NitfReader
     }
 
     public String readBytes(int count) throws ParseException {
-        int thisRead = 0;
-        try {
-            byte[] bytes = new byte[count];
-            thisRead = input.read(bytes, 0, count);
-            if (thisRead == -1) {
-                throw new ParseException("End of file reading from NITF stream.", numBytesRead);
-            } else if (thisRead < count) {
-                throw new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
-            }
-            numBytesRead += thisRead;
-            return new String(bytes, UTF8_CHARSET);
-        } catch (IOException ex) {
-            throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
-        }
+        return new String(readBytesRaw(count), UTF8_CHARSET);
     }
 
     public byte[] readBytesRaw(int count) throws ParseException {
