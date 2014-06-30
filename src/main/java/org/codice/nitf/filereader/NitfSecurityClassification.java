@@ -35,5 +35,8 @@ public enum NitfSecurityClassification
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 
