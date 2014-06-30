@@ -77,10 +77,29 @@ public class ImageCoordinatePair {
         }
     }
 
-    public double buildDecimalDegrees(String degStr, String minStr, String secStr) {
+    private double buildDecimalDegrees(String degStr, String minStr, String secStr) {
         int degrees = Integer.parseInt(degStr);
         int minutes = Integer.parseInt(minStr);
         int seconds = Integer.parseInt(secStr);
         return degrees + ((minutes + (seconds / SECONDS_IN_ONE_MINUTE)) / MINUTES_IN_ONE_DEGREE);
+    }
+
+    /**
+        Set latitude and longitude from Decimal Degrees string
+
+        /param dd string representation in MIL-STD-2500C ±dd.ddd±ddd.ddd form
+     */
+    public void setFromDecimalDegrees(String dd) throws ParseException {
+        if (dd.length() != "+dd.ddd+ddd.ddd".length()) {
+            throw new ParseException("Incorrect length for decimal degrees parsing", 0);
+        }
+        String latPart = dd.substring(0, "+dd.ddd".length());
+        String lonPart = dd.substring("+dd.ddd".length());
+        try {
+            lat = Double.parseDouble(latPart);
+            lon = Double.parseDouble(lonPart);
+        } catch (NumberFormatException ex) {
+            throw new ParseException(String.format("Incorrect decimal degrees format: %s", dd), 0);
+        }
     }
 }

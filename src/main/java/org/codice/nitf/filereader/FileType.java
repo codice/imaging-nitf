@@ -14,18 +14,19 @@
  **/
 package org.codice.nitf.filereader;
 
-public enum NitfVersion
+public enum FileType
 {
     UNKNOWN (""),
-    TWO_ZERO ("02.00"),
-    TWO_ONE ("02.10");
+    NITF_TWO_ZERO ("NITF02.00"),
+    NITF_TWO_ONE ("NITF02.10"),
+    NSIF_ONE_ZERO ("NSIF01.00");
 
     private final String textEquivalent;
-    NitfVersion(String abbreviation) {
+    FileType(String abbreviation) {
         this.textEquivalent = abbreviation;
     }
-    static public NitfVersion getEnumValue(String textEquivalent) {
-        for (NitfVersion version : values()) {
+    static public FileType getEnumValue(String textEquivalent) {
+        for (FileType version : values()) {
             if (textEquivalent.equals(version.textEquivalent)) {
                 return version;
             }

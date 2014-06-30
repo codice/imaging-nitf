@@ -35,8 +35,7 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(simpleNitf21File);
         NitfHeaderReader reader = new NitfHeaderReader(is);
-        assertTrue(reader.isNitf());
-        assertEquals(NitfVersion.TWO_ONE, reader.getVersion());
+        assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("I_3034C", reader.getOriginatingStationId());
@@ -126,8 +125,7 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(geoAirfieldNitf21File);
         NitfHeaderReader reader = new NitfHeaderReader(is);
-        assertTrue(reader.isNitf());
-        assertEquals(NitfVersion.TWO_ONE, reader.getVersion());
+        assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("i_3001a", reader.getOriginatingStationId());
@@ -183,6 +181,153 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment1.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
+    }
+
+    @Test
+    public void testImageTextComment() throws IOException, ParseException {
+        final String testfile = "/ns3010a.nsf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+
+        InputStream is = getClass().getResourceAsStream(testfile);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("NS3010A", reader.getOriginatingStationId());
+        assertEquals("1997-12-17 16:00:28", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("Checks a JPEG-compressed 231x191 8-bit mono image. blimp. Not divisable by 8.", reader.getFileTitle());
+        assertUnclasAndEmpty(reader.getFileSecurityMetadata());
+        assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00001", reader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourRed());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourGreen());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourBlue());
+        assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
+        assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
+        assertEquals(10711L, reader.getFileLength());
+        assertEquals(404, reader.getHeaderLength());
+        assertEquals(1, reader.getNumberOfImageSegments());
+        assertEquals(1163, reader.getLengthOfImageSubheader(0));
+        assertEquals(9144, reader.getLengthOfImage(0));
+        assertEquals(0, reader.getNumberOfGraphicsSegments());
+        assertEquals(0, reader.getNumberOfTextSegments());
+        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        assertEquals(0, reader.getExtendedHeaderDataLength());
+
+        // Checks for ImageSegment.
+        NitfImageSegment segment1 = reader.getImageSegment(1);
+        assertNotNull(segment1);
+        assertEquals("0000000001", segment1.getImageIdentifier1());
+        assertEquals("1996-12-17 16:00:28", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
+        assertEquals("", segment1.getImageTargetId());
+        assertEquals("This is an unclassified image in an unclassified NITF file Q3.", segment1.getImageIdentifier2());
+        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        assertEquals("", segment1.getImageSource());
+        assertEquals(191L, segment1.getNumRows());
+        assertEquals(231L, segment1.getNumColumns());
+        assertEquals(PixelValueType.INTEGER, segment1.getPixelValueType());
+        assertEquals(ImageRepresentation.MONOCHROME, segment1.getImageRepresentation());
+        assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
+        assertEquals(8, segment1.getActualBitsPerPixelPerBand());
+        assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
+        assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
+        assertEquals(9, segment1.getNumberOfImageComments());
+        assertEquals("This is image comment #1 for the unclassified image #1 from test message Q3.", segment1.getImageComment(1));
+        assertEquals("This is image comment #2 for the unclassified image #1 from test message Q3.", segment1.getImageComment(2));
+        assertEquals("This is image comment #3 for the unclassified image #1 from test message Q3.", segment1.getImageComment(3));
+        assertEquals("This is image comment #4 for the unclassified image #1 from test message Q3.", segment1.getImageComment(4));
+        assertEquals("This is image comment #5 for the unclassified image #1 from test message Q3.", segment1.getImageComment(5));
+        assertEquals("This is image comment #6 for the unclassified image #1 from test message Q3.", segment1.getImageComment(6));
+        assertEquals("This is image comment #7 for the unclassified image #1 from test message Q3.", segment1.getImageComment(7));
+        assertEquals("This is image comment #8 for the unclassified image #1 from test message Q3.", segment1.getImageComment(8));
+        assertEquals("This is image comment #9 for the unclassified image #1 from test message Q3.", segment1.getImageComment(9));
+        assertEquals(ImageCompression.JPEG, segment1.getImageCompression());
+        assertEquals("00.0", segment1.getCompressionRate());
+        assertEquals(1, segment1.getNumBands());
+    }
+
+    @Test
+    public void testMultiImage() throws IOException, ParseException {
+        final String testfile = "/ns3361c.nsf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+
+        InputStream is = getClass().getResourceAsStream(testfile);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("NS3361c", reader.getOriginatingStationId());
+        assertEquals("2000-12-12 12:12:12", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("Boston_1 CONTAINS Four Sub-images lined up to show as a single image, dec data.", reader.getFileTitle());
+        assertUnclasAndEmpty(reader.getFileSecurityMetadata());
+        assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00001", reader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals((byte)0x00, reader.getFileBackgroundColourRed());
+        assertEquals((byte)0x7F, reader.getFileBackgroundColourGreen());
+        assertEquals((byte)0x00, reader.getFileBackgroundColourBlue());
+        assertEquals("JITC NITF LAB", reader.getOriginatorsName());
+        assertEquals("(520) 538-4858", reader.getOriginatorsPhoneNumber());
+        assertEquals(264592L, reader.getFileLength());
+        assertEquals(452, reader.getHeaderLength());
+        assertEquals(4, reader.getNumberOfImageSegments());
+        assertEquals(499, reader.getLengthOfImageSubheader(0));
+        assertEquals(65536, reader.getLengthOfImage(0));
+        assertEquals(499, reader.getLengthOfImageSubheader(1));
+        assertEquals(65536, reader.getLengthOfImage(1));
+        assertEquals(499, reader.getLengthOfImageSubheader(2));
+        assertEquals(65536, reader.getLengthOfImage(2));
+        assertEquals(499, reader.getLengthOfImageSubheader(3));
+        assertEquals(65536, reader.getLengthOfImage(3));
+        assertEquals(0, reader.getNumberOfGraphicsSegments());
+        assertEquals(0, reader.getNumberOfTextSegments());
+        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        assertEquals(0, reader.getExtendedHeaderDataLength());
+
+        // Checks for ImageSegment.
+        NitfImageSegment segment1 = reader.getImageSegment(1);
+        assertNotNull(segment1);
+        assertEquals("GRT BOSTON", segment1.getImageIdentifier1());
+        assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
+        assertEquals("US", segment1.getImageTargetId());
+        assertEquals("LOGAN AIRPORT BOSTON Located at 256,256, display level 4 first image file.", segment1.getImageIdentifier2());
+        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        assertEquals("", segment1.getImageSource());
+        assertEquals(256L, segment1.getNumRows());
+        assertEquals(256L, segment1.getNumColumns());
+        assertEquals(PixelValueType.INTEGER, segment1.getPixelValueType());
+        assertEquals(ImageRepresentation.MONOCHROME, segment1.getImageRepresentation());
+        assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
+        assertEquals(8, segment1.getActualBitsPerPixelPerBand());
+        assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
+        assertEquals(ImageCoordinatesRepresentation.DECIMALDEGREES, segment1.getImageCoordinatesRepresentation());
+        ImageCoordinates imageCoords = segment1.getImageCoordinates();
+        assertNotNull(imageCoords);
+        assertEquals(42.201, imageCoords.getCoordinate00().latitude(), 0.000001);
+        assertEquals(-71.050, imageCoords.getCoordinate00().longitude(), 0.000001);
+        assertEquals(42.201, imageCoords.getCoordinate0MaxCol().latitude(), 0.000001);
+        assertEquals(-70.933, imageCoords.getCoordinate0MaxCol().longitude(), 0.000001);
+        assertEquals(41.950, imageCoords.getCoordinateMaxRowMaxCol().latitude(), 0.000001);
+        assertEquals(-70.933, imageCoords.getCoordinateMaxRowMaxCol().longitude(), 0.000001);
+        assertEquals(41.950, imageCoords.getCoordinateMaxRow0().latitude(), 0.000001);
+        assertEquals(-71.0500, imageCoords.getCoordinateMaxRow0().longitude(), 0.000001);
+        assertEquals(0, segment1.getNumberOfImageComments());
+        assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
+        assertEquals(1, segment1.getNumBands());
+
+        NitfImageSegment segment2 = reader.getImageSegment(2);
+        assertNotNull(segment2);
+
+        NitfImageSegment segment3 = reader.getImageSegment(3);
+        assertNotNull(segment3);
+
+        NitfImageSegment segment4 = reader.getImageSegment(4);
+        assertNotNull(segment4);
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {

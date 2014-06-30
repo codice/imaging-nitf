@@ -42,7 +42,9 @@ public class NitfImageSegment
     private ImageCoordinatesRepresentation imageCoordinatesRepresentation = ImageCoordinatesRepresentation.UNKNOWN;
     private ImageCoordinates imageCoordinates = null;
     private int numImageComments;
+    private ArrayList<String> imageComments = new ArrayList<String>();
     private ImageCompression imageCompression = ImageCompression.UNKNOWN;
+    private String compressionRate = null;
     private int numBands = 0;
     private ArrayList<NitfImageBand> imageBands = new ArrayList<NitfImageBand>();
     private ImageMode imageMode = ImageMode.UNKNOWN;
@@ -76,7 +78,9 @@ public class NitfImageSegment
     private static final int ICORDS_LENGTH = 1;
     private static final int IGEOLO_LENGTH = 60;
     private static final int NICOM_LENGTH = 1;
+    private static final int ICOM_LENGTH = 80;
     private static final int IC_LENGTH = 2;
+    private static final int COMRAT_LENGTH = 4;
     private static final int NBANDS_LENGTH = 1;
     private static final int ISYNC_LENGTH = 1;
     private static final int IMODE_LENGTH = 1;
@@ -117,11 +121,11 @@ public class NitfImageSegment
         }
         readNICOM();
         for (int i = 0; i < numImageComments; ++i) {
-            throw new UnsupportedOperationException("IMPLEMENT IMAGE COMMENT PARSING (ICOMx)");
+            imageComments.add(reader.readTrimmedBytes(ICOM_LENGTH));
         }
         readIC();
         if (hasCOMRAT()) {
-            throw new UnsupportedOperationException("IMPLEMENT COMRAT PARSING");
+            readCOMRAT();
         }
         readNBANDS();
         if (numBands == 0) {
@@ -212,8 +216,20 @@ public class NitfImageSegment
         return numImageComments;
     }
 
+    public String getImageComment(int commentNumber) {
+        return getImageCommentZeroBase(commentNumber - 1);
+    }
+
+    public String getImageCommentZeroBase(int commentNumberZeroBase) {
+        return imageComments.get(commentNumberZeroBase);
+    }
+
     public ImageCompression getImageCompression() {
         return imageCompression;
+    }
+
+    public String getCompressionRate() {
+        return compressionRate;
     }
 
     public int getNumBands() {
@@ -371,10 +387,15 @@ public class NitfImageSegment
         for (int i = 0; i < NUM_COORDS; ++i) {
             coords[i] = new ImageCoordinatePair();
             String coordStr = igeolo.substring(i * COORD_LENGTH, (i + 1) * COORD_LENGTH);
-            if (imageCoordinatesRepresentation == ImageCoordinatesRepresentation.GEOGRAPHIC) {
-                coords[i].setFromDMS(coordStr);
-            } else {
-                throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS");
+            switch (imageCoordinatesRepresentation) {
+                case GEOGRAPHIC:
+                    coords[i].setFromDMS(coordStr);
+                    break;
+                case DECIMALDEGREES:
+                    coords[i].setFromDecimalDegrees(coordStr);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS");
             }
         }
         imageCoordinates = new ImageCoordinates(coords[0], coords[1], coords[2], coords[3]);
@@ -445,6 +466,10 @@ public class NitfImageSegment
 
     private void readIXSHDL() throws ParseException {
         imageExtendedSubheaderDataLength = reader.readBytesAsInteger(IXSHDL_LENGTH);
+    }
+
+    private void readCOMRAT() throws ParseException {
+        compressionRate = reader.readTrimmedBytes(COMRAT_LENGTH);
     }
 
     private void readImageData() throws ParseException {

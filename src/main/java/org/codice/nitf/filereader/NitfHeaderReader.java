@@ -24,8 +24,7 @@ import java.util.Date;
 
 public class NitfHeaderReader
 {
-    private Boolean hasNitfHeader = false;
-    private NitfVersion nitfVersion = NitfVersion.UNKNOWN;
+    private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
     private String nitfOriginatingStationId = null;
@@ -78,8 +77,7 @@ public class NitfHeaderReader
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new NitfReader(new BufferedInputStream((nitfInputStream)), 0);
-        readFHDR();
-        readFVER();
+        readFHDRFVER();
         readCLEVEL();
         readSTYPE();
         readOSTAID();
@@ -131,12 +129,8 @@ public class NitfHeaderReader
         readImageSegments();
     }
 
-    public Boolean isNitf() {
-        return hasNitfHeader;
-    }
-
-    public NitfVersion getVersion() {
-        return nitfVersion;
+    public FileType getFileType() {
+        return fileType;
     }
 
     public int getComplexityLevel() {
@@ -236,14 +230,9 @@ public class NitfHeaderReader
         return imageSegments.get(segmentNumberZeroBase);
     }
 
-    private void readFHDR() throws ParseException {
-        reader.verifyHeaderMagic(NITF_FHDR);
-        hasNitfHeader = true;
-    }
-
-    private void readFVER() throws ParseException {
-        String fver = reader.readBytes(FVER_LENGTH);
-        nitfVersion = NitfVersion.getEnumValue(fver);
+    private void readFHDRFVER() throws ParseException {
+        String fhdrfver = reader.readBytes(FHDR_LENGTH + FVER_LENGTH);
+        fileType = FileType.getEnumValue(fhdrfver);
     }
 
     private void readCLEVEL() throws ParseException {
