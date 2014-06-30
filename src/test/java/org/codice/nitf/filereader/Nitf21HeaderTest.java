@@ -170,9 +170,17 @@ public class Nitf21HeaderTest {
         assertEquals(8, segment1.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.GEOGRAPHIC, segment1.getImageCoordinatesRepresentation());
-        // TODO: geo comparison
-        assertEquals(3, segment1.getNumberOfImageComments());
-        // TODO: image comments
+        ImageCoordinates imageCoords = segment1.getImageCoordinates();
+        assertNotNull(imageCoords);
+        assertEquals(32.98333333333, imageCoords.getCoordinate00().latitude(), 0.000001);
+        assertEquals(85.00000000000, imageCoords.getCoordinate00().longitude(), 0.000001);
+        assertEquals(32.98333333333, imageCoords.getCoordinate0MaxCol().latitude(), 0.000001);
+        assertEquals(85.00027777777, imageCoords.getCoordinate0MaxCol().longitude(), 0.000001);
+        assertEquals(32.98305555555, imageCoords.getCoordinateMaxRowMaxCol().latitude(), 0.000001);
+        assertEquals(85.00027777777, imageCoords.getCoordinateMaxRowMaxCol().longitude(), 0.000001);
+        assertEquals(32.98305555555, imageCoords.getCoordinateMaxRow0().latitude(), 0.000001);
+        assertEquals(85.00000000000, imageCoords.getCoordinateMaxRow0().longitude(), 0.000001);
+        assertEquals(0, segment1.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
     }

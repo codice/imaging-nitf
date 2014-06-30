@@ -40,6 +40,7 @@ public class NitfImageSegment
     private int actualBitsPerPixelPerBand = 0;
     private PixelJustification pixelJustification = PixelJustification.UNKNOWN;
     private ImageCoordinatesRepresentation imageCoordinatesRepresentation = ImageCoordinatesRepresentation.UNKNOWN;
+    private ImageCoordinates imageCoordinates = null;
     private int numImageComments;
     private ImageCompression imageCompression = ImageCompression.UNKNOWN;
     private int numBands = 0;
@@ -72,6 +73,7 @@ public class NitfImageSegment
     private static final int ABPP_LENGTH = 2;
     private static final int PJUST_LENGTH = 1;
     private static final int ICORDS_LENGTH = 1;
+    private static final int IGEOLO_LENGTH = 60;
     private static final int NICOM_LENGTH = 1;
     private static final int IC_LENGTH = 2;
     private static final int NBANDS_LENGTH = 1;
@@ -109,13 +111,10 @@ public class NitfImageSegment
         readICORDS();
         if ((imageCoordinatesRepresentation != ImageCoordinatesRepresentation.UNKNOWN) &&
             (imageCoordinatesRepresentation != ImageCoordinatesRepresentation.NONE)) {
-            // TODO: find example and implement
-            // TODO: figure out why this doesn't cause an abort
-            throw new UnsupportedOperationException("IMPLEMENT COORDINATE PARSING (IGEOLO)");
+            readIGEOLO();
         }
         readNICOM();
         for (int i = 0; i < numImageComments; ++i) {
-            // TODO: figure out why this doesn't cause an abort!
             throw new UnsupportedOperationException("IMPLEMENT IMAGE COMMENT PARSING (ICOMx)");
         }
         readIC();
@@ -279,6 +278,10 @@ public class NitfImageSegment
         return imageExtendedSubheaderDataLength;
     }
 
+    public ImageCoordinates getImageCoordinates() {
+        return imageCoordinates;
+    }
+
     private Boolean hasCOMRAT() {
         return ((imageCompression == ImageCompression.BILEVEL) ||
                 (imageCompression == ImageCompression.JPEG) ||
@@ -351,6 +354,24 @@ public class NitfImageSegment
     private void readICORDS() throws ParseException {
         String icords = reader.readBytes(ICORDS_LENGTH);
         imageCoordinatesRepresentation = ImageCoordinatesRepresentation.getEnumValue(icords);
+    }
+
+    private void readIGEOLO() throws ParseException {
+        // TODO: this really only handle the GEO case, not the other representations.
+        final int NUM_COORDS = 4;
+        final int COORD_LENGTH = IGEOLO_LENGTH / NUM_COORDS;
+        String igeolo = reader.readBytes(IGEOLO_LENGTH);
+        ImageCoordinatePair[] coords = new ImageCoordinatePair[NUM_COORDS];
+        for (int i = 0; i < NUM_COORDS; ++i) {
+            coords[i] = new ImageCoordinatePair();
+            String coordStr = igeolo.substring(i * COORD_LENGTH, (i + 1) * COORD_LENGTH);
+            if (imageCoordinatesRepresentation == ImageCoordinatesRepresentation.GEOGRAPHIC) {
+                coords[i].setFromDMS(coordStr);
+            } else {
+                throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS");
+            }
+        }
+        imageCoordinates = new ImageCoordinates(coords[0], coords[1], coords[2], coords[3]);
     }
 
     private void readNICOM() throws ParseException {
