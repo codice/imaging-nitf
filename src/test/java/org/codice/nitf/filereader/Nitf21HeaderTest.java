@@ -45,9 +45,9 @@ public class Nitf21HeaderTest {
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00001", reader.getFileSecurityMetadata().getFileNumberOfCopies());
-        assertEquals(0, reader.getFileBackgroundColourRed());
-        assertEquals(0, reader.getFileBackgroundColourGreen());
-        assertEquals(0, reader.getFileBackgroundColourBlue());
+        assertEquals(0x20, reader.getFileBackgroundColourRed());
+        assertEquals(0x20, reader.getFileBackgroundColourGreen());
+        assertEquals(0x20, reader.getFileBackgroundColourBlue());
         assertEquals("JITC", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
         assertEquals(933L, reader.getFileLength());
@@ -136,9 +136,9 @@ public class Nitf21HeaderTest {
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00000", reader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00000", reader.getFileSecurityMetadata().getFileNumberOfCopies());
-        assertEquals(0, reader.getFileBackgroundColourRed());
-        assertEquals(0, reader.getFileBackgroundColourGreen());
-        assertEquals(0, reader.getFileBackgroundColourBlue());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourRed());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourGreen());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourBlue());
         assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
         assertEquals(1049479L, reader.getFileLength());

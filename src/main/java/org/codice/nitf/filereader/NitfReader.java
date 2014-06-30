@@ -14,22 +14,24 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NitfReader
 {
-    BufferedReader reader = null;
+    BufferedInputStream input = null;
     int numBytesRead = 0;
 
+    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
     private static final int ENCRYP_LENGTH = 1;
 
-    public NitfReader(BufferedReader nitfBufferedReader, int offset) throws ParseException {
-        reader = nitfBufferedReader;
+    public NitfReader(BufferedInputStream nitfInputStream, int offset) throws ParseException {
+        input = nitfInputStream;
         numBytesRead = offset;
     }
 
@@ -41,7 +43,7 @@ public class NitfReader
     public void verifyHeaderMagic(String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
-            throw new ParseException(String.format("Missing %s magic header", magicHeader), numBytesRead);
+            throw new ParseException(String.format("Missing %s magic header, got %s", magicHeader, actualHeader), numBytesRead);
         }
     }
 
@@ -102,19 +104,34 @@ public class NitfReader
     public String readBytes(int count) throws ParseException {
         int thisRead = 0;
         try {
-            char[] bytes = new char[count];
-            thisRead = reader.read(bytes, 0, count);
+            byte[] bytes = new byte[count];
+            thisRead = input.read(bytes, 0, count);
             if (thisRead == -1) {
                 throw new ParseException("End of file reading from NITF stream.", numBytesRead);
             } else if (thisRead < count) {
                 throw new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
             }
             numBytesRead += thisRead;
-            return String.valueOf(bytes);
+            return new String(bytes, UTF8_CHARSET);
         } catch (IOException ex) {
             throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
         }
-        return null;
     }
 
+    public byte[] readBytesRaw(int count) throws ParseException {
+        int thisRead = 0;
+        try {
+            byte[] bytes = new byte[count];
+            thisRead = input.read(bytes, 0, count);
+            if (thisRead == -1) {
+                throw new ParseException("End of file reading from NITF stream.", numBytesRead);
+            } else if (thisRead < count) {
+                throw new ParseException("Short read while reading from NITF stream.", numBytesRead + thisRead);
+            }
+            numBytesRead += thisRead;
+            return bytes;
+        } catch (IOException ex) {
+            throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
+        }
+    }
 }

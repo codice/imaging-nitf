@@ -14,7 +14,7 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -91,8 +91,8 @@ public class NitfImageSegment
     private static final int UDIDL_LENGTH = 5;
     private static final int IXSHDL_LENGTH = 5;
 
-    public NitfImageSegment(BufferedReader nitfBufferedReader, int offset) throws ParseException {
-        reader = new NitfReader(nitfBufferedReader, offset);
+    public NitfImageSegment(BufferedInputStream inputStream, int offset) throws ParseException {
+        reader = new NitfReader(inputStream, offset);
         readIM();
         readIID1();
         readIDATIM();
@@ -126,7 +126,7 @@ public class NitfImageSegment
             throw new UnsupportedOperationException("IMPLEMENT XBAND PARSING");
         }
         for (int i = 0; i < numBands; ++i) {
-            imageBands.add(new NitfImageBand(reader.reader, reader.getNumBytesRead()));
+            imageBands.add(new NitfImageBand(reader.input, reader.numBytesRead));
         }
         readISYNC();
         readIMODE();

@@ -14,9 +14,8 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,9 +32,9 @@ public class NitfHeaderReader
     private Date nitfFileDateTime = null;
     private String nitfFileTitle = null;
     private NitfFileSecurityMetadata fileSecurityMetadata = null;
-    private int nitfFileBackgroundColourRed = 0;
-    private int nitfFileBackgroundColourGreen = 0;
-    private int nitfFileBackgroundColourBlue = 0;
+    private byte nitfFileBackgroundColourRed = 0;
+    private byte nitfFileBackgroundColourGreen = 0;
+    private byte nitfFileBackgroundColourBlue = 0;
     private String nitfOriginatorsName = null;
     private String nitfOriginatorsPhoneNumber = null;
     private long nitfFileLength = -1;
@@ -78,7 +77,7 @@ public class NitfHeaderReader
     private static final int XHDL_LENGTH = 5;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
-        reader = new NitfReader(new BufferedReader(new InputStreamReader(nitfInputStream)), 0);
+        reader = new NitfReader(new BufferedInputStream((nitfInputStream)), 0);
         readFHDR();
         readFVER();
         readCLEVEL();
@@ -164,15 +163,15 @@ public class NitfHeaderReader
         return fileSecurityMetadata;
     }
 
-    public int getFileBackgroundColourRed() {
+    public byte getFileBackgroundColourRed() {
         return nitfFileBackgroundColourRed;
     }
 
-    public int getFileBackgroundColourGreen() {
+    public byte getFileBackgroundColourGreen() {
         return nitfFileBackgroundColourGreen;
     }
 
-    public int getFileBackgroundColourBlue() {
+    public byte getFileBackgroundColourBlue() {
         return nitfFileBackgroundColourBlue;
     }
 
@@ -271,14 +270,10 @@ public class NitfHeaderReader
     }
 
     private void readFBKGC() throws ParseException {
-        String fbkgc = reader.readBytes(FBKGC_LENGTH);
-        try {
-            nitfFileBackgroundColourRed = Integer.parseInt(fbkgc.substring(0, 1));
-            nitfFileBackgroundColourGreen = Integer.parseInt(fbkgc.substring(1, 2));
-            nitfFileBackgroundColourBlue = Integer.parseInt(fbkgc.substring(2));
-        } catch (NumberFormatException ex) {
-            throw new ParseException("Bad FBKGC", reader.getNumBytesRead());
-        }
+        byte[] fbkgc = reader.readBytesRaw(FBKGC_LENGTH);
+        nitfFileBackgroundColourRed = fbkgc[0];
+        nitfFileBackgroundColourGreen = fbkgc[1];
+        nitfFileBackgroundColourBlue = fbkgc[2];
     }
 
     private void readONAME() throws ParseException {
@@ -340,7 +335,7 @@ public class NitfHeaderReader
 
     private void readImageSegments() throws ParseException {
         for (int i = 0; i < numberImageSegments; ++i) {
-            imageSegments.add(new NitfImageSegment(reader.reader, reader.getNumBytesRead()));
+            imageSegments.add(new NitfImageSegment(reader.input, reader.numBytesRead));
         }
     }
 }

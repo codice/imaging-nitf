@@ -14,7 +14,7 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -36,8 +36,8 @@ public class NitfImageBand
     private static final int NLUTS_LENGTH = 1;
     private static final int NELUT_LENGTH = 5;
 
-    public NitfImageBand(BufferedReader nitfBufferedReader, int offset) throws ParseException {
-        reader = new NitfReader(nitfBufferedReader, offset);
+    public NitfImageBand(BufferedInputStream inputStream, int offset) throws ParseException {
+        reader = new NitfReader(inputStream, offset);
         readIREPBAND();
         readISUBCAT();
         readIFC();
