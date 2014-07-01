@@ -60,5 +60,8 @@ public enum ImageCategory
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 

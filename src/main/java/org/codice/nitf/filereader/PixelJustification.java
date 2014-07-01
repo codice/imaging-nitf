@@ -32,5 +32,8 @@ public enum PixelJustification
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 

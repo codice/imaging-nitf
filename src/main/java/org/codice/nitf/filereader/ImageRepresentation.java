@@ -39,5 +39,8 @@ public enum ImageRepresentation
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 

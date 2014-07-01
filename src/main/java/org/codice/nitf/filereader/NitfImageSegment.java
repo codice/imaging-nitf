@@ -180,11 +180,11 @@ public class NitfImageSegment
         return imageSource;
     }
 
-    public long getNumRows() {
+    public long getNumberOfRows() {
         return numRows;
     }
 
-    public long getNumColumns() {
+    public long getNumberOfColumns() {
         return numColumns;
     }
 
@@ -379,7 +379,7 @@ public class NitfImageSegment
     }
 
     private void readIGEOLO() throws ParseException {
-        // TODO: this really only handle the GEO case, not the other representations.
+        // TODO: this really only handle the GEO and D cases, not the UTM / UPS representations.
         final int NUM_COORDS = 4;
         final int COORD_LENGTH = IGEOLO_LENGTH / NUM_COORDS;
         String igeolo = reader.readBytes(IGEOLO_LENGTH);

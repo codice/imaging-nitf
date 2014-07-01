@@ -43,5 +43,8 @@ public enum ImageCompression
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 

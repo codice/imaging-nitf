@@ -35,5 +35,8 @@ public enum PixelValueType
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 

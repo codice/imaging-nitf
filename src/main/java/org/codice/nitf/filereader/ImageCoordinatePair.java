@@ -32,11 +32,11 @@ public class ImageCoordinatePair {
         lon = longitude;
     }
 
-    public double latitude() {
+    public double getLatitude() {
         return lat;
     }
 
-    public double longitude() {
+    public double getLongitude() {
         return lon;
     }
 

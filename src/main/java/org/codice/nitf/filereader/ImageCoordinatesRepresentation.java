@@ -36,5 +36,8 @@ public enum ImageCoordinatesRepresentation
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 

@@ -34,5 +34,8 @@ public enum ImageMode
         }
         return UNKNOWN;
     }
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 
