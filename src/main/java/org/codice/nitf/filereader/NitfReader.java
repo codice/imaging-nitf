@@ -46,7 +46,7 @@ public class NitfReader
         String dateString = readTrimmedBytes(STANDARD_DATE_TIME_LENGTH);
         // TODO: check if NITF 2.0 uses the same format.
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        if (dateString.trim().length() == "yyyyMMdd".length()) {
+        if (dateString.length() == "yyyyMMdd".length()) {
             // Fallback for files that aren't spec compliant
             dateFormat = new SimpleDateFormat("yyyyMMdd");
         }
