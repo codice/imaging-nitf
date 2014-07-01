@@ -24,15 +24,20 @@ public class NitfTextSegment
     NitfReader reader = null;
     int lengthOfText = 0;
     Date textDateTime = null;
+    NitfSecurityMetadata securityMetadata = null;
+    int textExtendedSubheaderLength = 0;
 
     private String textIdentifier = null;
     private int textAttachmentLevel = 0;
     private String textTitle = null;
+    private TextFormat textFormat = TextFormat.UNKNOWN;
 
     private static final String TE = "TE";
     private static final int TEXTID_LENGTH = 7;
     private static final int TXTALVL_LENGTH = 3;
     private static final int TXTITL_LENGTH = 80;
+    private static final int TXTFMT_LENGTH = 3;
+    private static final int TXSHDL_LENGTH = 5;
 
     public NitfTextSegment(NitfReader nitfReader, int textLength) throws ParseException {
         reader = nitfReader;
@@ -43,7 +48,14 @@ public class NitfTextSegment
         readTXTALVL();
         readTEXTDT();
         readTXTITL();
-        // rest
+        securityMetadata = new NitfSecurityMetadata(reader);
+        reader.readENCRYP();
+        readTXTFMT();
+        readTXSHDL();
+        if (textExtendedSubheaderLength > 0) {
+            // TODO: find a case that exercises this and implement it
+            throw new UnsupportedOperationException("IMPLEMENT TXSOFL / TXSHD PARSING");
+        }
         readTextData();
     }
 
@@ -61,6 +73,18 @@ public class NitfTextSegment
 
     public String getTextTitle() {
         return textTitle;
+    }
+
+    public NitfSecurityMetadata getSecurityMetadata() {
+        return securityMetadata;
+    }
+
+    public TextFormat getTextFormat() {
+        return textFormat;
+    }
+
+    public int getTextExtendedSubheaderLength() {
+        return textExtendedSubheaderLength;
     }
 
     private void readTE() throws ParseException {
@@ -81,6 +105,15 @@ public class NitfTextSegment
 
     private void readTXTITL() throws ParseException {
         textTitle = reader.readTrimmedBytes(TXTITL_LENGTH);
+    }
+
+    private void readTXTFMT() throws ParseException {
+        String txtfmt = reader.readTrimmedBytes(TXTFMT_LENGTH);
+        textFormat = TextFormat.getEnumValue(txtfmt);
+    }
+
+    private void readTXSHDL() throws ParseException {
+        textExtendedSubheaderLength = reader.readBytesAsInteger(TXSHDL_LENGTH);
     }
 
     private void readTextData() throws ParseException {
