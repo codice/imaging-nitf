@@ -65,12 +65,12 @@ public class ImageCoordinatePair {
         }
         try {
             lat = buildDecimalDegrees(latDegrees, latMinutes, latSeconds);
-            if (latNS == "S") {
-                lat = -1 * lat;
+            if (latNS.equals("S")) {
+                lat = -1.0 * lat;
             }
             lon = buildDecimalDegrees(lonDegrees, lonMinutes, lonSeconds);
-            if (lonEW == "W") {
-                lon = -1 * lon;
+            if (lonEW.equals("W")) {
+                lon = -1.0 * lon;
             }
         } catch (NumberFormatException ex) {
             throw new ParseException(String.format("Incorrect DMS format: %s", dms), 0);
