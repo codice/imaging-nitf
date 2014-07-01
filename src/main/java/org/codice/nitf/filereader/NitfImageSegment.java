@@ -60,6 +60,8 @@ public class NitfImageSegment
     private double imageMagnification = 0.0;
     private int userDefinedImageDataLength = 0;
     private int imageExtendedSubheaderDataLength = 0;
+    private int imageExtendedSubheaderOverflow = 0;
+    private String imageExtendedSubheaderData = null;
     private long lengthOfImage = 0L;
 
     private static final String IM = "IM";
@@ -95,6 +97,7 @@ public class NitfImageSegment
     private static final int IMAG_LENGTH = 4;
     private static final int UDIDL_LENGTH = 5;
     private static final int IXSHDL_LENGTH = 5;
+    private static final int IXSOFL_LENGTH = 3;
 
     public NitfImageSegment(NitfReader nitfReader, long imageLength) throws ParseException {
         reader = nitfReader;
@@ -151,7 +154,8 @@ public class NitfImageSegment
         }
         readIXSHDL();
         if (imageExtendedSubheaderDataLength > 0) {
-            throw new UnsupportedOperationException("IMPLEMENT IXSOFL / IXSHD PARSING");
+            readIXSOFL();
+            readIXSHD();
         }
         readImageData();
     }
@@ -466,6 +470,16 @@ public class NitfImageSegment
 
     private void readIXSHDL() throws ParseException {
         imageExtendedSubheaderDataLength = reader.readBytesAsInteger(IXSHDL_LENGTH);
+    }
+
+    private void readIXSOFL() throws ParseException {
+        imageExtendedSubheaderOverflow = reader.readBytesAsInteger(IXSOFL_LENGTH);
+    }
+
+    private void readIXSHD() throws ParseException {
+        imageExtendedSubheaderData = reader.readBytes(imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
+        // TODO: this should drop into extension parsing code.
+        System.out.println("IXSHD:" + imageExtendedSubheaderData);
     }
 
     private void readCOMRAT() throws ParseException {
