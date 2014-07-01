@@ -49,6 +49,8 @@ public class NitfHeaderReader
     private int numberReservedExtensionSegments = 0;
     private int userDefinedHeaderDataLength = 0;
     private int extendedHeaderDataLength = 0;
+    private int extendedHeaderOverflow = 0;
+    private String extendedHeaderData = null;
 
     private ArrayList<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private ArrayList<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
@@ -79,6 +81,7 @@ public class NitfHeaderReader
     private static final int NUMRES_LENGTH = 3;
     private static final int UDHDL_LENGTH = 5;
     private static final int XHDL_LENGTH = 5;
+    private static final int XHDLOFL_LENGTH = 3;
 
     public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new NitfReader(new BufferedInputStream((nitfInputStream)), 0);
@@ -128,8 +131,8 @@ public class NitfHeaderReader
         }
         readXHDL();
         if (extendedHeaderDataLength > 0) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT EXTENDED HEADER DATA PARSING");
+            readXHDLOFL();
+            readXHD();
         }
         readImageSegments();
         readTextSegments();
@@ -234,6 +237,10 @@ public class NitfHeaderReader
 
     public int getExtendedHeaderDataLength() {
         return extendedHeaderDataLength;
+    }
+
+    public String getRawExtendedHeaderData() {
+        return extendedHeaderData;
     }
 
     public NitfImageSegment getImageSegment(int segmentNumber) {
@@ -349,6 +356,14 @@ public class NitfHeaderReader
 
     private void readXHDL() throws ParseException {
         extendedHeaderDataLength = reader.readBytesAsInteger(XHDL_LENGTH);
+    }
+
+    private void readXHDLOFL() throws ParseException {
+        extendedHeaderOverflow = reader.readBytesAsInteger(XHDLOFL_LENGTH);
+    }
+
+    private void readXHD() throws ParseException {
+        extendedHeaderData = reader.readTrimmedBytes(extendedHeaderDataLength - XHDLOFL_LENGTH);
     }
 
     private void readImageSegments() throws ParseException {

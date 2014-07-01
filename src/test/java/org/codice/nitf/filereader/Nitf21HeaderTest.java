@@ -441,6 +441,28 @@ public class Nitf21HeaderTest {
         assertEquals(0, textSegment.getTextExtendedSubheaderLength());
     }
 
+    @Test
+    public void testExtendedHeaderSegmentParsing() throws IOException, ParseException {
+        final String testfile = "/ns3228d.nsf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+        InputStream is = getClass().getResourceAsStream(testfile);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("NS3228D", reader.getOriginatingStationId());
+        assertEquals(1, reader.getNumberOfImageSegments());
+        assertEquals(0, reader.getNumberOfGraphicsSegments());
+        assertEquals(0, reader.getNumberOfTextSegments());
+        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        assertEquals(214, reader.getExtendedHeaderDataLength());
+        assertEquals("JITCID00200I_3228D, Checks multi spectral image of 6 bands, the image subheader tells the receiving system to display band 2 as red, band 4 as green, and band 6 as blue.", reader.getRawExtendedHeaderData());
+
+    }
+
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
         assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());
