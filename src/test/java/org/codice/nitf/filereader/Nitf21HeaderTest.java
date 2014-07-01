@@ -411,6 +411,33 @@ public class Nitf21HeaderTest {
         assertEquals(1, segment4.getNumBands());
     }
 
+    @Test
+    public void testTextSegmentParsingComment() throws IOException, ParseException {
+        final String testfile = "/ns3201a.nsf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+        InputStream is = getClass().getResourceAsStream(testfile);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("NS3201a", reader.getOriginatingStationId());
+        assertEquals(1, reader.getNumberOfImageSegments());
+        assertEquals(0, reader.getNumberOfGraphicsSegments());
+        assertEquals(1, reader.getNumberOfTextSegments());
+        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        assertEquals(0, reader.getExtendedHeaderDataLength());
+
+        NitfTextSegment textSegment = reader.getTextSegment(1);
+        assertNotNull(textSegment);
+        assertEquals(" PIDF T", textSegment.getTextIdentifier());
+        assertEquals(1, textSegment.getTextAttachmentLevel());
+        assertEquals("1998-02-17 10:19:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
+        assertEquals("Paragon Imaging Comment File", textSegment.getTextTitle());
+    }
+
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
         assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());

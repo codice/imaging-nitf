@@ -41,6 +41,8 @@ public class NitfHeaderReader
     private int numberImageSegments = 0;
     private ArrayList<Integer> lish = new ArrayList<Integer>();
     private ArrayList<Long> li = new ArrayList<Long>();
+    private ArrayList<Integer> ltsh = new ArrayList<Integer>();
+    private ArrayList<Integer> lt = new ArrayList<Integer>();
     private int numberGraphicsSegments = 0;
     private int numberTextSegments = 0;
     private int numberDataExtensionSegments = 0;
@@ -49,6 +51,7 @@ public class NitfHeaderReader
     private int extendedHeaderDataLength = 0;
 
     private ArrayList<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
+    private ArrayList<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
 
     private NitfReader reader;
 
@@ -70,6 +73,8 @@ public class NitfHeaderReader
     private static final int NUMS_LENGTH = 3;
     private static final int NUMX_LENGTH = 3;
     private static final int NUMT_LENGTH = 3;
+    private static final int LTSH_LENGTH = 4;
+    private static final int LT_LENGTH = 5;
     private static final int NUMDES_LENGTH = 3;
     private static final int NUMRES_LENGTH = 3;
     private static final int UDHDL_LENGTH = 5;
@@ -103,8 +108,8 @@ public class NitfHeaderReader
         readNUMX();
         readNUMT();
         for (int i = 0; i < numberTextSegments; ++i) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT TEXT SEGMENT PARSING");
+            readLTSH();
+            readLT();
         }
         readNUMDES();
         for (int i = 0; i < numberDataExtensionSegments; ++i) {
@@ -127,6 +132,7 @@ public class NitfHeaderReader
             throw new UnsupportedOperationException("IMPLEMENT EXTENDED HEADER DATA PARSING");
         }
         readImageSegments();
+        readTextSegments();
     }
 
     public FileType getFileType() {
@@ -206,6 +212,14 @@ public class NitfHeaderReader
         return numberTextSegments;
     }
 
+    public int getLengthOfTextSubheader(int i) {
+        return ltsh.get(i);
+    }
+
+    public long getLengthOfText(int i) {
+        return lt.get(i);
+    }
+
     public int getNumberOfDataExtensionSegments() {
         return numberDataExtensionSegments;
     }
@@ -228,6 +242,14 @@ public class NitfHeaderReader
 
     public NitfImageSegment getImageSegmentZeroBase(int segmentNumberZeroBase) {
         return imageSegments.get(segmentNumberZeroBase);
+    }
+
+    public NitfTextSegment getTextSegment(int segmentNumber) {
+        return getTextSegmentZeroBase(segmentNumber - 1);
+    }
+
+    public NitfTextSegment getTextSegmentZeroBase(int segmentNumberZeroBase) {
+        return textSegments.get(segmentNumberZeroBase);
     }
 
     private void readFHDRFVER() throws ParseException {
@@ -305,6 +327,14 @@ public class NitfHeaderReader
         numberTextSegments = reader.readBytesAsInteger(NUMT_LENGTH);
     }
 
+    private void readLTSH() throws ParseException {
+        ltsh.add(reader.readBytesAsInteger(LTSH_LENGTH));
+    }
+
+    private void readLT() throws ParseException {
+        lt.add(reader.readBytesAsInteger(LT_LENGTH));
+    }
+
     private void readNUMDES() throws ParseException {
         numberDataExtensionSegments = reader.readBytesAsInteger(NUMDES_LENGTH);
     }
@@ -323,7 +353,13 @@ public class NitfHeaderReader
 
     private void readImageSegments() throws ParseException {
         for (int i = 0; i < numberImageSegments; ++i) {
-            imageSegments.add(new NitfImageSegment(reader.input, reader.numBytesRead, li.get(i)));
+            imageSegments.add(new NitfImageSegment(reader, li.get(i)));
+        }
+    }
+
+    private void readTextSegments() throws ParseException {
+        for (int i = 0; i < numberTextSegments; ++i) {
+            textSegments.add(new NitfTextSegment(reader, lt.get(i)));
         }
     }
 }

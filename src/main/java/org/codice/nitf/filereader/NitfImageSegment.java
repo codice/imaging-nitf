@@ -96,8 +96,8 @@ public class NitfImageSegment
     private static final int UDIDL_LENGTH = 5;
     private static final int IXSHDL_LENGTH = 5;
 
-    public NitfImageSegment(BufferedInputStream inputStream, int offset, long imageLength) throws ParseException {
-        reader = new NitfReader(inputStream, offset);
+    public NitfImageSegment(NitfReader nitfReader, long imageLength) throws ParseException {
+        reader = nitfReader;
         lengthOfImage = imageLength;
         readIM();
         readIID1();
@@ -132,7 +132,7 @@ public class NitfImageSegment
             throw new UnsupportedOperationException("IMPLEMENT XBAND PARSING");
         }
         for (int i = 0; i < numBands; ++i) {
-            imageBands.add(new NitfImageBand(reader.input, reader.numBytesRead));
+            imageBands.add(new NitfImageBand(reader));
         }
         readISYNC();
         readIMODE();

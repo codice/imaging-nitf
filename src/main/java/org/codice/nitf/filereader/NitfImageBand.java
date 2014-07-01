@@ -36,8 +36,8 @@ public class NitfImageBand
     private static final int NLUTS_LENGTH = 1;
     private static final int NELUT_LENGTH = 5;
 
-    public NitfImageBand(BufferedInputStream inputStream, int offset) throws ParseException {
-        reader = new NitfReader(inputStream, offset);
+    public NitfImageBand(NitfReader nitfReader) throws ParseException {
+        reader = nitfReader;
         readIREPBAND();
         readISUBCAT();
         readIFC();
@@ -51,7 +51,7 @@ public class NitfImageBand
             for (int i = 0; i < numLUTs; ++i) {
                 for (int j = 0; j < numEntriesLUT; ++j) {
                     // TODO: read bytes for real
-                    reader.readBytes(1);
+                    reader.skip(1);
                 }
             }
         }
