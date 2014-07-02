@@ -525,6 +525,7 @@ public class Nitf21HeaderTest {
         assertEquals(100, segment.getGraphicLocationColumn());
         assertEquals(175, segment.getBoundingBox1Row());
         assertEquals(125, segment.getBoundingBox1Column());
+        assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
