@@ -32,6 +32,7 @@ public class NitfGraphicSegment
     private GraphicColour graphicColour = GraphicColour.UNKNOWN;
     private int boundingBox2Row = 0;
     private int boundingBox2Column = 0;
+    private int graphicExtendedSubheaderLength = 0;
 
     private NitfSecurityMetadata securityMetadata = null;
 
@@ -46,6 +47,8 @@ public class NitfGraphicSegment
     private static final int SBND1_HALF_LENGTH = 5;
     private static final int SCOLOR_LENGTH = 1;
     private static final int SBND2_HALF_LENGTH = 5;
+    private static final String SRES = "00";
+    private static final int SXSHDL_LENGTH = 5;
 
     public NitfGraphicSegment(NitfReader nitfReader, int graphicLength) throws ParseException {
         reader = nitfReader;
@@ -64,13 +67,13 @@ public class NitfGraphicSegment
         readSBND1();
         readSCOLOR();
         readSBND2();
-
-        //readTXSHDL();
-        // if (textExtendedSubheaderLength > 0) {
+        readSRES();
+        readSXSHDL();
+        if (graphicExtendedSubheaderLength > 0) {
             // TODO: find a case that exercises this and implement it
-        //    throw new UnsupportedOperationException("IMPLEMENT TXSOFL / TXSHD PARSING");
-        //}
-        // readTextData();
+            throw new UnsupportedOperationException("IMPLEMENT SXSOFL / SXSHD PARSING");
+        }
+        readGraphicData();
     }
 
     public String getGraphicIdentifier() {
@@ -121,6 +124,10 @@ public class NitfGraphicSegment
         return boundingBox2Column;
     }
 
+    public int getGraphicExtendedSubheaderLength() {
+        return graphicExtendedSubheaderLength;
+    }
+
     private void readSY() throws ParseException {
         reader.verifyHeaderMagic(SY);
     }
@@ -169,8 +176,16 @@ public class NitfGraphicSegment
         boundingBox2Column = reader.readBytesAsInteger(SBND2_HALF_LENGTH);
     }
 
-//     private void readTextData() throws ParseException {
-//         // TODO: we could use this if needed later
-//         reader.skip(lengthOfText);
-//     }
+    private void readSRES() throws ParseException {
+        reader.verifyHeaderMagic(SRES);
+    }
+
+    private void readSXSHDL() throws ParseException {
+        graphicExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
+    }
+
+    private void readGraphicData() throws ParseException {
+        // TODO: we could use this if needed later
+        reader.skip(lengthOfGraphic);
+    }
 }
