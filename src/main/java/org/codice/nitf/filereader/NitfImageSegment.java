@@ -84,6 +84,7 @@ public class NitfImageSegment
     private static final int IC_LENGTH = 2;
     private static final int COMRAT_LENGTH = 4;
     private static final int NBANDS_LENGTH = 1;
+    private static final int XBANDS_LENGTH = 5;
     private static final int ISYNC_LENGTH = 1;
     private static final int IMODE_LENGTH = 1;
     private static final int NBPR_LENGTH = 4;
@@ -132,7 +133,7 @@ public class NitfImageSegment
         }
         readNBANDS();
         if (numBands == 0) {
-            throw new UnsupportedOperationException("IMPLEMENT XBAND PARSING");
+            readXBANDS();
         }
         for (int i = 0; i < numBands; ++i) {
             imageBands.add(new NitfImageBand(reader));
@@ -314,6 +315,7 @@ public class NitfImageSegment
                 (imageCompression == ImageCompression.VECTORQUANTIZATION) ||
                 (imageCompression == ImageCompression.LOSSLESSJPEG) ||
                 (imageCompression == ImageCompression.JPEG2000) ||
+                (imageCompression == ImageCompression.DOWNSAMPLEDJPEG) || 
                 (imageCompression == ImageCompression.BILEVELMASK) ||
                 (imageCompression == ImageCompression.JPEGMASK) ||
                 (imageCompression == ImageCompression.VECTORQUANTIZATIONMASK) ||
@@ -416,6 +418,10 @@ public class NitfImageSegment
 
     private void readNBANDS() throws ParseException {
         numBands = reader.readBytesAsInteger(NBANDS_LENGTH);
+    }
+
+    private void readXBANDS() throws ParseException {
+        numBands = reader.readBytesAsInteger(XBANDS_LENGTH);
     }
 
     private void readISYNC() throws ParseException {
