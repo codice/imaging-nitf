@@ -30,6 +30,8 @@ public class NitfGraphicSegment
     private int boundingBox1Row = 0;
     private int boundingBox1Column = 0;
     private GraphicColour graphicColour = GraphicColour.UNKNOWN;
+    private int boundingBox2Row = 0;
+    private int boundingBox2Column = 0;
 
     private NitfSecurityMetadata securityMetadata = null;
 
@@ -43,6 +45,7 @@ public class NitfGraphicSegment
     private static final int SLOC_HALF_LENGTH = 5;
     private static final int SBND1_HALF_LENGTH = 5;
     private static final int SCOLOR_LENGTH = 1;
+    private static final int SBND2_HALF_LENGTH = 5;
 
     public NitfGraphicSegment(NitfReader nitfReader, int graphicLength) throws ParseException {
         reader = nitfReader;
@@ -60,6 +63,7 @@ public class NitfGraphicSegment
         readSLOC();
         readSBND1();
         readSCOLOR();
+        readSBND2();
 
         //readTXSHDL();
         // if (textExtendedSubheaderLength > 0) {
@@ -109,6 +113,14 @@ public class NitfGraphicSegment
         return graphicColour;
     }
 
+    public int getBoundingBox2Row() {
+        return boundingBox2Row;
+    }
+
+    public int getBoundingBox2Column() {
+        return boundingBox2Column;
+    }
+
     private void readSY() throws ParseException {
         reader.verifyHeaderMagic(SY);
     }
@@ -150,6 +162,11 @@ public class NitfGraphicSegment
     private void readSCOLOR() throws ParseException {
         String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
         graphicColour = GraphicColour.getEnumValue(scolor);
+    }
+
+    private void readSBND2() throws ParseException {
+        boundingBox2Row = reader.readBytesAsInteger(SBND2_HALF_LENGTH);
+        boundingBox2Column = reader.readBytesAsInteger(SBND2_HALF_LENGTH);
     }
 
 //     private void readTextData() throws ParseException {
