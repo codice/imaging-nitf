@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import org.junit.rules.ExpectedException;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf21HeaderTest {
@@ -461,6 +463,20 @@ public class Nitf21HeaderTest {
         assertEquals(214, reader.getExtendedHeaderDataLength());
         assertEquals("JITCID00200I_3228D, Checks multi spectral image of 6 bands, the image subheader tells the receiving system to display band 2 as red, band 4 as green, and band 6 as blue.", reader.getRawExtendedHeaderData());
 
+    }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void testStreamingModeParsing() throws IOException, ParseException {
+        final String testfile = "/ns3321a.nsf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+        InputStream is = getClass().getResourceAsStream(testfile);
+        exception.expect(UnsupportedOperationException.class);
+        exception.expectMessage("No support for streaming mode unless input is seekable");
+        NitfHeaderReader reader = new NitfHeaderReader(is);
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {

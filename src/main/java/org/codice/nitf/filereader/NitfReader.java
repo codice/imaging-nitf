@@ -35,6 +35,10 @@ public class NitfReader
         numBytesRead = offset;
     }
 
+    public Boolean canSeek() {
+        return false;
+    }
+
     public void verifyHeaderMagic(String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {

@@ -43,6 +43,8 @@ public class NitfHeaderReader
     private ArrayList<Long> li = new ArrayList<Long>();
     private ArrayList<Integer> ltsh = new ArrayList<Integer>();
     private ArrayList<Integer> lt = new ArrayList<Integer>();
+    private ArrayList<Integer> ldsh = new ArrayList<Integer>();
+    private ArrayList<Long> ld = new ArrayList<Long>();
     private int numberGraphicsSegments = 0;
     private int numberTextSegments = 0;
     private int numberDataExtensionSegments = 0;
@@ -54,6 +56,7 @@ public class NitfHeaderReader
 
     private ArrayList<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private ArrayList<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
+    private ArrayList<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
     private NitfReader reader;
 
@@ -78,12 +81,16 @@ public class NitfHeaderReader
     private static final int LTSH_LENGTH = 4;
     private static final int LT_LENGTH = 5;
     private static final int NUMDES_LENGTH = 3;
+    private static final int LDSH_LENGTH = 4;
+    private static final int LD_LENGTH = 9;
     private static final int NUMRES_LENGTH = 3;
     private static final int UDHDL_LENGTH = 5;
     private static final int XHDL_LENGTH = 5;
     private static final int XHDLOFL_LENGTH = 3;
 
-    public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
+    private static final long STREAMING_FILE_MODE = 999999999999L;
+
+    public NitfHeaderReader(InputStream nitfInputStream) throws ParseException, UnsupportedOperationException {
         reader = new NitfReader(new BufferedInputStream((nitfInputStream)), 0);
         readFHDRFVER();
         readCLEVEL();
@@ -97,6 +104,12 @@ public class NitfHeaderReader
         readONAME();
         readOPHONE();
         readFL();
+        if (nitfFileLength == STREAMING_FILE_MODE) {
+            if (!reader.canSeek()) {
+                throw new UnsupportedOperationException("No support for streaming mode unless input is seekable");
+            }
+            // TODO If we can ever seek, we need to read the streaming mode DES and update properties here.
+        }
         readHL();
         readNUMI();
         for (int i = 0; i < numberImageSegments; ++i) {
@@ -116,8 +129,8 @@ public class NitfHeaderReader
         }
         readNUMDES();
         for (int i = 0; i < numberDataExtensionSegments; ++i) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT DES PARSING");
+            readLDSH();
+            readLD();
         }
         readNUMRES();
         for (int i = 0; i < numberReservedExtensionSegments; ++i) {
@@ -136,6 +149,7 @@ public class NitfHeaderReader
         }
         readImageSegments();
         readTextSegments();
+        readDataExtensionSegments();
     }
 
     public FileType getFileType() {
@@ -259,6 +273,14 @@ public class NitfHeaderReader
         return textSegments.get(segmentNumberZeroBase);
     }
 
+    public NitfDataExtensionSegment getDataExtensionSegment(int segmentNumber) {
+        return getDataExtensionSegmentZeroBase(segmentNumber - 1);
+    }
+
+    public NitfDataExtensionSegment getDataExtensionSegmentZeroBase(int segmentNumberZeroBase) {
+        return dataExtensionSegments.get(segmentNumberZeroBase);
+    }
+
     private void readFHDRFVER() throws ParseException {
         String fhdrfver = reader.readBytes(FHDR_LENGTH + FVER_LENGTH);
         fileType = FileType.getEnumValue(fhdrfver);
@@ -346,6 +368,14 @@ public class NitfHeaderReader
         numberDataExtensionSegments = reader.readBytesAsInteger(NUMDES_LENGTH);
     }
 
+    private void readLDSH() throws ParseException {
+        ldsh.add(reader.readBytesAsInteger(LDSH_LENGTH));
+    }
+
+    private void readLD() throws ParseException {
+        ld.add(reader.readBytesAsLong(LD_LENGTH));
+    }
+
     private void readNUMRES() throws ParseException {
         numberReservedExtensionSegments = reader.readBytesAsInteger(NUMRES_LENGTH);
     }
@@ -375,6 +405,13 @@ public class NitfHeaderReader
     private void readTextSegments() throws ParseException {
         for (int i = 0; i < numberTextSegments; ++i) {
             textSegments.add(new NitfTextSegment(reader, lt.get(i)));
+        }
+    }
+
+    private void readDataExtensionSegments() throws ParseException {
+        for (int i = 0; i < numberDataExtensionSegments; ++i) {
+            throw new UnsupportedOperationException("Implement DES parsing");
+            // dataExtensionSegments.add(new NitfDataExtensionSegment(reader, ld.get(i)));
         }
     }
 }
