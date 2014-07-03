@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.junit.rules.ExpectedException;
 import org.junit.Rule;
@@ -529,6 +531,100 @@ public class Nitf21HeaderTest {
         assertEquals(1075, segment.getBoundingBox2Row());
         assertEquals(825, segment.getBoundingBox2Column());
         assertEquals(0, segment.getGraphicExtendedSubheaderLength());
+    }
+
+    @Test
+    public void testTreParsing() throws IOException, ParseException {
+        final String testfile = "/i_3128b.ntf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+
+        InputStream is = getClass().getResourceAsStream(testfile);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("I_3128b", reader.getOriginatingStationId());
+        // TODO: update below this
+        assertEquals("1999-02-10 14:01:44", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("Checks an uncomp. 512x480 w/PIAPR_,PIAIM_ & 3 PIAPE_tags conf. to STD. Lab Gang.", reader.getFileTitle());
+        assertUnclasAndEmpty(reader.getFileSecurityMetadata());
+        assertEquals("00000", reader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00000", reader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals(0, reader.getFileBackgroundColourRed());
+        assertEquals(0x7F, reader.getFileBackgroundColourGreen());
+        assertEquals(0, reader.getFileBackgroundColourBlue());
+        assertEquals("JITC FT HUACHUCA", reader.getOriginatorsName());
+        assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
+        assertEquals(248762L, reader.getFileLength());
+        assertEquals(1903, reader.getHeaderLength());
+        assertEquals(1, reader.getNumberOfImageSegments());
+        assertEquals(0, reader.getNumberOfGraphicSegments());
+        assertEquals(0, reader.getNumberOfTextSegments());
+        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        assertEquals(1499, reader.getExtendedHeaderDataLength());
+        assertEquals("PIAPRC01485THIS IS AN IPA FILE.                                       -END-PXX                        -END-PYYUNKNOWX211                JUNK FILE.2726081023ZOCT95132                                -END-02FIRST                                   31/46001SECOND                                  32/4700202FIRST                                                      -END-SECOND                                                     -END-02FIRST                                                                                                                                                                                                                                                     -END-SECOND                                                                                                                                                                                                                                                    -END-02FIRST          -END-SECOND         -END-02FIRST                                                                                                                                                                                                                                                     -END-SECOND                                                                                                                                                                                                                                                    -END-", reader.getRawExtendedHeaderData());
+        // TODO: verify parsing of PIAPRC
+
+        NitfImageSegment image = reader.getImageSegmentZeroBase(0);
+        assertNotNull(image);
+        assertEquals("Missing ID", image.getImageIdentifier1());
+        assertEquals("1998-02-10 14:01:44", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(image.getImageDateTime()));
+        assertEquals("", image.getImageTargetId());
+        assertEquals("- BASE IMAGE -", image.getImageIdentifier2());
+        assertUnclasAndEmpty(image.getSecurityMetadata());
+        assertEquals("Unknown", image.getImageSource());
+        assertEquals(480L, image.getNumberOfRows());
+        assertEquals(512L, image.getNumberOfColumns());
+        assertEquals(PixelValueType.INTEGER, image.getPixelValueType());
+        assertEquals(ImageRepresentation.MONOCHROME, image.getImageRepresentation());
+        assertEquals(ImageCategory.VISUAL, image.getImageCategory());
+        assertEquals(8, image.getActualBitsPerPixelPerBand());
+        assertEquals(PixelJustification.RIGHT, image.getPixelJustification());
+        assertEquals(ImageCoordinatesRepresentation.NONE, image.getImageCoordinatesRepresentation());
+        assertEquals(0, image.getNumberOfImageComments());
+        assertEquals(ImageCompression.NOTCOMPRESSED, image.getImageCompression());
+        assertEquals(1, image.getNumBands());
+        assertEquals(660, image.getImageExtendedSubheaderDataLength());
+        Map<String, String> tresFlat = image.getTREsFlat();
+        Map<String, String> expectedTresFlat = new HashMap<String, String>() {
+            {
+                put("PIAIMB_CAMSPECS", "GREAT");
+                put("PIAIMB_CLOUDCVR", "050");
+                put("PIAIMB_COMGEN", "00");
+                put("PIAIMB_ESD", "Y");
+                put("PIAIMB_GENERATION", "7");
+                put("PIAIMB_OTHERCOND", "NO");
+                put("PIAIMB_PIAMSNNUM", "BX-137");
+                put("PIAIMB_PROJID", "47");
+                put("PIAIMB_SENSMODE", "WHISKBROOM");
+                put("PIAIMB_SENSNAME", "EYE BALL");
+                put("PIAIMB_SOURCE", "ME LOOKING AT PICTURE TAKEN FROM A GOOD SOURCE.");
+                put("PIAIMB_SRP", "Y");
+                put("PIAIMB_SUBQUAL", "G");
+                put("PIAPEA_0_ASSOCTRY", "US");
+                put("PIAPEA_0_DOB", "031260");
+                put("PIAPEA_0_FIRSTNME", "JAMES");
+                put("PIAPEA_0_LASTNME", "DURHAM");
+                put("PIAPEA_0_MIDNME", "A.");
+                put("PIAPEA_1_ASSOCTRY", "US");
+                put("PIAPEA_1_DOB", "062146");
+                put("PIAPEA_1_FIRSTNME", "RICHARD");
+                put("PIAPEA_1_LASTNME", "DAILEY");
+                put("PIAPEA_1_MIDNME", "R.");
+                put("PIAPEA_2_ASSOCTRY", "US");
+                put("PIAPEA_2_DOB", "061856");
+                put("PIAPEA_2_FIRSTNME", "DAVE");
+                put("PIAPEA_2_LASTNME", "WEBB");
+                put("PIAPEA_2_MIDNME", "L.");
+            }
+        };
+        assertEquals(expectedTresFlat.size(), tresFlat.size());
+        for (String fieldName : expectedTresFlat.keySet()) {
+            assertEquals(expectedTresFlat.get(fieldName), tresFlat.get(fieldName));
+        }
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {

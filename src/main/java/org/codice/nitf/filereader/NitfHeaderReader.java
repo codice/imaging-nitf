@@ -61,7 +61,7 @@ public class NitfHeaderReader
     private ArrayList<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
     private ArrayList<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
-    private NitfReader reader;
+    private NitfReader reader = null;
 
     private static final int FHDR_LENGTH = 4;
     private static final String NITF_FHDR = "NITF";
