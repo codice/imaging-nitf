@@ -88,8 +88,12 @@ public class TreParser {
             } else if (fieldLoopIf instanceof FieldType) {
                 FieldType field = (FieldType) fieldLoopIf;
                 String fieldKey = field.getName();
-                String fieldValue = reader.readBytes(field.getLength().intValue());
-                tre.add(fieldKey, fieldValue);
+                if (fieldKey == null) {
+                    reader.skip(field.getLength().intValue());
+                } else {
+                    String fieldValue = reader.readBytes(field.getLength().intValue());
+                    tre.add(fieldKey, fieldValue);
+                }
             }
         }
         return tre;
