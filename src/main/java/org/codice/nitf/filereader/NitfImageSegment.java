@@ -65,7 +65,7 @@ public class NitfImageSegment
     private int imageExtendedSubheaderDataLength = 0;
     private int imageExtendedSubheaderOverflow = 0;
     private long lengthOfImage = 0L;
-    Map<String, List<Tre>> tres = new TreeMap<String, List<Tre>>();
+    ArrayList<TreListEntry> tres = new ArrayList<TreListEntry>();
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -312,26 +312,28 @@ public class NitfImageSegment
         return lengthOfImage;
     }
     
-    public Map<String, List<Tre>> getTREsRawStructure() {
+    public ArrayList<TreListEntry> getTREsRawStructure() {
         return tres;
     }
 
     public Map<String, String> getTREsFlat() {
         Map<String, String> tresFlat = new TreeMap<String, String>();
-        for (String treName : tres.keySet()) {
-            List<Tre> treForName = tres.get(treName);
+        for (TreListEntry listEntry : tres) {
+            List<Tre> treForName = listEntry.getTresWithName();
             if (treForName.size() == 1) {
                 Tre onlyTre = treForName.get(0);
-                Map<String, String> treFields = onlyTre.getFields();
-                for (String treFieldName : treFields.keySet()) {
-                    tresFlat.put(String.format("%s_%s", onlyTre.getName(), treFieldName), treFields.get(treFieldName).trim());
+                List<TreField> treFields = onlyTre.getFields();
+                for (TreField treField : treFields) {
+                    // System.out.println(String.format("Putting %s|%s|", treField.getName(), treField.getFieldValue().trim()));
+                    tresFlat.put(String.format("%s_%s", onlyTre.getName(), treField.getName()), treField.getFieldValue().trim());
                 }
             } else {
                 for (int i = 0; i < treForName.size(); ++i) {
                     Tre thisTre = treForName.get(i);
-                    Map<String, String> treFields = thisTre.getFields();
-                    for (String treFieldName : treFields.keySet()) {
-                        tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treFieldName), treFields.get(treFieldName).trim());
+                    List<TreField> treFields = thisTre.getFields();
+                    for (TreField treField : treFields) {
+                        // System.out.println(String.format("Putting multi %s|%d|%s|", treField.getName(), i, treField.getFieldValue().trim()));
+                        tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treField.getName()), treField.getFieldValue().trim());
                     }
                 }
             }
@@ -513,12 +515,19 @@ public class NitfImageSegment
     }
 
     private void readIXSHD() throws ParseException {
-        Map<String, List<Tre>> extendedSubheaderTres = reader.parseTREs(imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
-        for (String treName : extendedSubheaderTres.keySet()) {
-            if (tres.containsKey(treName)) {
-                tres.get(treName).addAll(extendedSubheaderTres.get(treName));
-            } else {
-                tres.put(treName, extendedSubheaderTres.get(treName));
+        TreParser treParser = new TreParser();
+        List<TreListEntry> extendedSubheaderTres = treParser.parse(reader, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
+        for (TreListEntry treEntry : extendedSubheaderTres) {
+            boolean matchingExistingEntryWasFound = false;
+            for (TreListEntry existingEntry : tres) {
+                if (existingEntry.getName().equals(treEntry.getName())) {
+                    existingEntry.getTresWithName().addAll(existingEntry.getTresWithName());
+                    matchingExistingEntryWasFound = true;
+                    break;
+                }
+            }
+            if (matchingExistingEntryWasFound == false) {
+                tres.add(treEntry);
             }
         }
     }

@@ -27,7 +27,6 @@ public class NitfReader
 {
     BufferedInputStream input = null;
     int numBytesRead = 0;
-    private TreParser treParser = null;
 
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
@@ -36,7 +35,6 @@ public class NitfReader
     public NitfReader(BufferedInputStream nitfInputStream, int offset) throws ParseException {
         input = nitfInputStream;
         numBytesRead = offset;
-        treParser = new TreParser();
     }
 
     public Boolean canSeek() {
@@ -138,9 +136,5 @@ public class NitfReader
         } catch (IOException ex) {
             throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
         }
-    }
-
-    public Map<String, List<Tre>> parseTREs (int treLength) throws ParseException {
-        return treParser.parse(this, treLength);
     }
 }

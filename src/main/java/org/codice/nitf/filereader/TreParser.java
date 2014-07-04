@@ -17,9 +17,7 @@ package org.codice.nitf.filereader;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -33,74 +31,103 @@ import org.codice.nitf.filereader.schema.TreType;
 
 public class TreParser {
 
-    private Tres tres = null;
+    private Tres tresStructure = null;
 
     private static final int TAG_LENGTH = 6;
     private static final int TAGLEN_LENGTH = 5;
 
+    private ArrayList<TreListEntry> tresList = new ArrayList<TreListEntry>();
+
     public TreParser() throws ParseException {
         InputStream is = getClass().getResourceAsStream("/nitf_spec.xml");
         try {
-            tres = unmarshal(is);
+            unmarshal(is);
         } catch (JAXBException e) {
             throw new ParseException("Exception while loading TRE XML" + e.getMessage(), 0);
         }
     }
 
-    private Tres unmarshal(InputStream inputStream) throws JAXBException {
+    private void unmarshal(InputStream inputStream) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Tres.class);
         Unmarshaller u = jc.createUnmarshaller();
-        return (Tres)u.unmarshal( inputStream );
+        tresStructure = (Tres)u.unmarshal( inputStream );
     }
 
-    public Map<String, List<Tre>> parse(NitfReader reader, int treLength) throws ParseException {
-        Map<String, List<Tre>> tres = new HashMap<String, List<Tre>>();
+    public List<TreListEntry> parse(NitfReader reader, int treLength) throws ParseException {
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);
             bytesRead += TAG_LENGTH;
             int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
             bytesRead += TAGLEN_LENGTH;
-            Tre tre = parseOneTre(reader, tag, fieldLength);
-            if (!tres.containsKey(tag)) {
-                tres.put(tag, new ArrayList<Tre>());
-            }
-            tres.get(tag).add(tre);
+            parseOneTre(reader, tag, fieldLength);
             bytesRead += fieldLength;
         }
-        return tres;
+        return tresList;
     }
 
-    private Tre parseOneTre(NitfReader reader, String tag, int fieldLength) throws ParseException {
+    private void parseOneTre(NitfReader reader, String tag, int fieldLength) throws ParseException {
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
             System.out.println(String.format("Unhandled TRE %s, skipping over it", tag));
-            return null;
+            reader.skip(fieldLength);
+            return;
         }
         Tre tre = new Tre();
         tre.setPrefix(treType.getMdPrefix());
         tre.setName(treType.getName());
-        for (Object fieldLoopIf: treType.getFieldOrLoopOrIf()) {
+        parseTreComponents(treType.getFieldOrLoopOrIf(), reader, tre.getFields(), treType.getName());
+        TreListEntry entryForTag = null;
+        for (TreListEntry entry : tresList) {
+            if (entry.getName().equals(tag)) {
+                entryForTag = entry;
+                break;
+            }
+        }
+        if (entryForTag == null) {
+            entryForTag = new TreListEntry(tag);
+            tresList.add(entryForTag);
+        }
+        entryForTag.add(tre);
+
+    }
+
+    private void parseTreComponents(List<Object> components, NitfReader reader, List<TreField> parent, String fallbackName) throws ParseException {
+        for (Object fieldLoopIf: components) {
             if (fieldLoopIf instanceof  IfType) {
                 throw new UnsupportedOperationException("Implement IfType support");
             } else if (fieldLoopIf instanceof LoopType) {
-                throw new UnsupportedOperationException("Implement LoopType support");
+                LoopType loop = (LoopType) fieldLoopIf;
+                // TODO: check for counter mode vs iteration mode
+                TreField treField = new TreField(loop.getName(), null);
+                treField.initSubFields();
+                for (int i = 0; i < loop.getIterations().intValue(); ++i) {
+                    // System.out.println(String.format("Looping under %s, iteration %d of %d", loop.getName(), i, loop.getIterations().intValue()));
+                    parseTreComponents(loop.getFieldOrLoopOrIf(), reader, treField.getSubFields(), loop.getName());
+                }
+                parent.add(treField);
             } else if (fieldLoopIf instanceof FieldType) {
                 FieldType field = (FieldType) fieldLoopIf;
                 String fieldKey = field.getName();
                 if (fieldKey == null) {
+                    // System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
                     reader.skip(field.getLength().intValue());
                 } else {
                     String fieldValue = reader.readBytes(field.getLength().intValue());
-                    tre.add(fieldKey, fieldValue);
+                    if (fieldKey.isEmpty()) {
+                        // System.out.println(String.format("Parsed |%s|%d|%s|", fallbackName, field.getLength().intValue(), fieldValue));
+                        parent.add(new TreField(fallbackName, fieldValue));
+                    } else {
+                        // System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, field.getLength().intValue(), fieldValue));
+                        parent.add(new TreField(fieldKey, fieldValue));
+                    }
                 }
             }
         }
-        return tre;
     }
 
     private TreType getTreTypeForTag(String tag) {
-        for (TreType treType : tres.getTre()) {
+        for (TreType treType : tresStructure.getTre()) {
             if (treType.getName().equals(tag)) {
                 return treType;
             }
