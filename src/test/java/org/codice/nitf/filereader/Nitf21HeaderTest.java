@@ -463,8 +463,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
         assertEquals(214, reader.getExtendedHeaderDataLength());
-        assertEquals("JITCID00200I_3228D, Checks multi spectral image of 6 bands, the image subheader tells the receiving system to display band 2 as red, band 4 as green, and band 6 as blue.", reader.getRawExtendedHeaderData());
-
+        // TODO: check TREs
     }
 
     @Rule
@@ -565,8 +564,46 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
         assertEquals(1499, reader.getExtendedHeaderDataLength());
-        assertEquals("PIAPRC01485THIS IS AN IPA FILE.                                       -END-PXX                        -END-PYYUNKNOWX211                JUNK FILE.2726081023ZOCT95132                                -END-02FIRST                                   31/46001SECOND                                  32/4700202FIRST                                                      -END-SECOND                                                     -END-02FIRST                                                                                                                                                                                                                                                     -END-SECOND                                                                                                                                                                                                                                                    -END-02FIRST          -END-SECOND         -END-02FIRST                                                                                                                                                                                                                                                     -END-SECOND                                                                                                                                                                                                                                                    -END-", reader.getRawExtendedHeaderData());
+        // assertEquals("PIAPRC01485THIS IS AN IPA FILE.                                       -END-PXX                        -END-PYYUNKNOWX211                JUNK FILE.2726081023ZOCT95132                                -END-02FIRST                                   31/46001SECOND                                  32/4700202FIRST                                                      -END-SECOND                                                     -END-02FIRST                                                                                                                                                                                                                                                     -END-SECOND                                                                                                                                                                                                                                                    -END-02FIRST          -END-SECOND         -END-02FIRST                                                                                                                                                                                                                                                     -END-SECOND                                                                                                                                                                                                                                                    -END-", reader.getRawExtendedHeaderData());
         // TODO: verify parsing of PIAPRC
+        Map<String, String> fileTresFlat = reader.getTREsFlat();
+        Map<String, String> expectedFileTresFlat = new HashMap<String, String>() {
+            {
+                put("ACCESSID", "THIS IS AN IPA FILE.                                       -END-");
+                put("FMCONTROL", "PXX                        -END-");
+                put("SUBDET", "P");
+                put("PRODCODE", "YY");
+                put("PRODUCERSE", "UNKNOW");
+                put("PRODIDNO", "X211");
+                put("PRODSNME", "JUNK FILE.");
+                put("PRODUCERCD", "27");
+                put("PRODCRTIME", "26081023ZOCT95");
+                put("MAPID", "132                                -END-");
+                put("SECTITLEREP", "02");
+                put("SECTITLE_0", "FIRST");
+                put("PPNUM_0", "31/46");
+                put("TPP_0", "001");
+                put("SECTITLE_1", "SECOND");
+                put("PPNUM_1", "32/47");
+                put("TPP_1", "002");
+                put("REQORGREP", "02");
+                put("REQORG_0", "FIRST                                                      -END-");
+                put("REQORG_1", "SECOND                                                     -END-");
+                put("KEYWORDREP", "02");
+                put("KEYWORD_0", "FIRST                                                                                                                                                                                                                                                     -END-");
+                put("KEYWORD_0", "SECOND                                                                                                                                                                                                                                                    -END-");
+                put("ASSRPTREP", "02");
+                put("ASSRPT_0", "FIRST          -END-");
+                put("ASSRPT_1", "SECOND         -END-");
+                put("ATEXTREP", "02");
+                put("ATEXT_0", "FIRST                                                                                                                                                                                                                                                     -END-");
+                put("ATEXT_1", "SECOND                                                                                                                                                                                                                                                    -END-");
+            }
+        };
+        assertEquals(expectedFileTresFlat.size(), fileTresFlat.size());
+        for (String fieldName : expectedFileTresFlat.keySet()) {
+            assertEquals(expectedFileTresFlat.get(fieldName), fileTresFlat.get(fieldName));
+        }
 
         NitfImageSegment image = reader.getImageSegmentZeroBase(0);
         assertNotNull(image);
@@ -588,8 +625,8 @@ public class Nitf21HeaderTest {
         assertEquals(ImageCompression.NOTCOMPRESSED, image.getImageCompression());
         assertEquals(1, image.getNumBands());
         assertEquals(660, image.getImageExtendedSubheaderDataLength());
-        Map<String, String> tresFlat = image.getTREsFlat();
-        Map<String, String> expectedTresFlat = new HashMap<String, String>() {
+        Map<String, String> tresImageFlat = image.getTREsFlat();
+        Map<String, String> expectedTresImageFlat = new HashMap<String, String>() {
             {
                 put("PIAIMB_CAMSPECS", "GREAT");
                 put("PIAIMB_CLOUDCVR", "050");
@@ -621,9 +658,9 @@ public class Nitf21HeaderTest {
                 put("PIAPEA_2_MIDNME", "L.");
             }
         };
-        assertEquals(expectedTresFlat.size(), tresFlat.size());
-        for (String fieldName : expectedTresFlat.keySet()) {
-            assertEquals(expectedTresFlat.get(fieldName), tresFlat.get(fieldName));
+        assertEquals(expectedTresImageFlat.size(), tresImageFlat.size());
+        for (String fieldName : expectedTresImageFlat.keySet()) {
+            assertEquals(expectedTresImageFlat.get(fieldName), tresImageFlat.get(fieldName));
         }
     }
 

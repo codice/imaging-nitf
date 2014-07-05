@@ -21,8 +21,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class NitfHeaderReader
+public class NitfHeaderReader extends AbstractNitfSegment
 {
     private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;
@@ -54,14 +55,11 @@ public class NitfHeaderReader
     private int userDefinedHeaderDataLength = 0;
     private int extendedHeaderDataLength = 0;
     private int extendedHeaderOverflow = 0;
-    private String extendedHeaderData = null;
 
     private ArrayList<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private ArrayList<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
     private ArrayList<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
     private ArrayList<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
-
-    private NitfReader reader = null;
 
     private static final int FHDR_LENGTH = 4;
     private static final String NITF_FHDR = "NITF";
@@ -267,10 +265,6 @@ public class NitfHeaderReader
         return extendedHeaderDataLength;
     }
 
-    public String getRawExtendedHeaderData() {
-        return extendedHeaderData;
-    }
-
     public NitfImageSegment getImageSegment(int segmentNumber) {
         return getImageSegmentZeroBase(segmentNumber - 1);
     }
@@ -423,7 +417,9 @@ public class NitfHeaderReader
     }
 
     private void readXHD() throws ParseException {
-        extendedHeaderData = reader.readTrimmedBytes(extendedHeaderDataLength - XHDLOFL_LENGTH);
+        TreParser treParser = new TreParser();
+        List<TreListEntry> extendedHeaderTres = treParser.parse(reader, extendedHeaderDataLength - XHDLOFL_LENGTH);
+        mergeTREs(extendedHeaderTres);
     }
 
     private void readImageSegments() throws ParseException {

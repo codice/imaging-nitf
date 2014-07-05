@@ -24,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class NitfImageSegment
+public class NitfImageSegment extends AbstractNitfSegment
 {
-    NitfReader reader = null;
-
     private String imageIdentifier1 = null;
     private Date imageDateTime = null;
     // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples
@@ -65,7 +63,6 @@ public class NitfImageSegment
     private int imageExtendedSubheaderDataLength = 0;
     private int imageExtendedSubheaderOverflow = 0;
     private long lengthOfImage = 0L;
-    ArrayList<TreListEntry> tres = new ArrayList<TreListEntry>();
 
     private static final String IM = "IM";
     private static final int IM_LENGTH = 2;
@@ -311,35 +308,6 @@ public class NitfImageSegment
     public long getLengthOfImage() {
         return lengthOfImage;
     }
-    
-    public ArrayList<TreListEntry> getTREsRawStructure() {
-        return tres;
-    }
-
-    public Map<String, String> getTREsFlat() {
-        Map<String, String> tresFlat = new TreeMap<String, String>();
-        for (TreListEntry listEntry : tres) {
-            List<Tre> treForName = listEntry.getTresWithName();
-            if (treForName.size() == 1) {
-                Tre onlyTre = treForName.get(0);
-                List<TreField> treFields = onlyTre.getFields();
-                for (TreField treField : treFields) {
-                    // System.out.println(String.format("Putting %s|%s|", treField.getName(), treField.getFieldValue().trim()));
-                    tresFlat.put(String.format("%s_%s", onlyTre.getName(), treField.getName()), treField.getFieldValue().trim());
-                }
-            } else {
-                for (int i = 0; i < treForName.size(); ++i) {
-                    Tre thisTre = treForName.get(i);
-                    List<TreField> treFields = thisTre.getFields();
-                    for (TreField treField : treFields) {
-                        // System.out.println(String.format("Putting multi %s|%d|%s|", treField.getName(), i, treField.getFieldValue().trim()));
-                        tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treField.getName()), treField.getFieldValue().trim());
-                    }
-                }
-            }
-        }
-        return tresFlat;
-    }
 
     private Boolean hasCOMRAT() {
         return ((imageCompression == ImageCompression.BILEVEL) ||
@@ -517,19 +485,7 @@ public class NitfImageSegment
     private void readIXSHD() throws ParseException {
         TreParser treParser = new TreParser();
         List<TreListEntry> extendedSubheaderTres = treParser.parse(reader, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
-        for (TreListEntry treEntry : extendedSubheaderTres) {
-            boolean matchingExistingEntryWasFound = false;
-            for (TreListEntry existingEntry : tres) {
-                if (existingEntry.getName().equals(treEntry.getName())) {
-                    existingEntry.getTresWithName().addAll(existingEntry.getTresWithName());
-                    matchingExistingEntryWasFound = true;
-                    break;
-                }
-            }
-            if (matchingExistingEntryWasFound == false) {
-                tres.add(treEntry);
-            }
-        }
+        mergeTREs(extendedSubheaderTres);
     }
 
     private void readCOMRAT() throws ParseException {

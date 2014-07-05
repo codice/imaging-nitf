@@ -101,24 +101,37 @@ public class TreParser {
                 // TODO: check for counter mode vs iteration mode
                 TreField treField = new TreField(loop.getName(), null);
                 treField.initSubFields();
-                for (int i = 0; i < loop.getIterations().intValue(); ++i) {
-                    // System.out.println(String.format("Looping under %s, iteration %d of %d", loop.getName(), i, loop.getIterations().intValue()));
-                    parseTreComponents(loop.getFieldOrLoopOrIf(), reader, treField.getSubFields(), loop.getName());
+                if (loop.getIterations() != null) {
+                    for (int i = 0; i < loop.getIterations().intValue(); ++i) {
+                        // System.out.println(String.format("Looping under %s, iteration %d of %d", loop.getName(), i, loop.getIterations().intValue()));
+                        parseTreComponents(loop.getFieldOrLoopOrIf(), reader, treField.getSubFields(), loop.getName());
+                    }
+                } else {
+                    String repetitionCounter = loop.getCounter();
+                    for (TreField field : parent) {
+                        if (field.getName().equals(repetitionCounter)) {
+                            // TODO: factor this out with the loop version above.
+                            for (int i = 0; i < Integer.parseInt(field.getFieldValue()); ++i) {
+                                // System.out.println(String.format("Looping under %s, count %d of %d", loop.getName(), i, loop.getIterations().intValue()));
+                                parseTreComponents(loop.getFieldOrLoopOrIf(), reader, treField.getSubFields(), loop.getName());
+                            }
+                        }
+                    }
                 }
                 parent.add(treField);
             } else if (fieldLoopIf instanceof FieldType) {
                 FieldType field = (FieldType) fieldLoopIf;
                 String fieldKey = field.getName();
                 if (fieldKey == null) {
-                    // System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
+                    System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
                     reader.skip(field.getLength().intValue());
                 } else {
                     String fieldValue = reader.readBytes(field.getLength().intValue());
                     if (fieldKey.isEmpty()) {
-                        // System.out.println(String.format("Parsed |%s|%d|%s|", fallbackName, field.getLength().intValue(), fieldValue));
+                        System.out.println(String.format("Parsed |%s|%d|%s|", fallbackName, field.getLength().intValue(), fieldValue.trim()));
                         parent.add(new TreField(fallbackName, fieldValue));
                     } else {
-                        // System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, field.getLength().intValue(), fieldValue));
+                        System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, field.getLength().intValue(), fieldValue.trim()));
                         parent.add(new TreField(fieldKey, fieldValue));
                     }
                 }
