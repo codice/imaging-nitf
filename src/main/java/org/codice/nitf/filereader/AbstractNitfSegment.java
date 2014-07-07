@@ -28,33 +28,47 @@ public class AbstractNitfSegment
 {
     protected NitfReader reader = null;
 
-    ArrayList<TreListEntry> tres = new ArrayList<TreListEntry>();
+    TreCollection treCollection = new TreCollection();
 
-    public ArrayList<TreListEntry> getTREsRawStructure() {
-        return tres;
+    public TreCollection getTREsRawStructure() {
+        return treCollection;
     }
 
     public Map<String, String> getTREsFlat() {
         Map<String, String> tresFlat = new TreeMap<String, String>();
-        for (TreListEntry listEntry : tres) {
-            List<Tre> treForName = listEntry.getTresWithName();
-            if (treForName.size() == 1) {
-                Tre onlyTre = treForName.get(0);
-                List<TreField> treFields = onlyTre.getFields();
-                for (TreField treField : treFields) {
+        for (String treName : treCollection.getUniqueNamesOfTRE()) {
+            List<Tre> tresWithName = treCollection.getTREsWithName(treName);
+            if (tresWithName.size() == 1) {
+                Tre onlyTre = tresWithName.get(0);
+                List<TreEntry> treEntries = onlyTre.getEntries();
+                for (TreEntry treEntry : treEntries) {
                     // TODO: this should recurse properly, and be shared with below.
-                    if ((treField.getName() != null) && (treField.getFieldValue() != null)) {
-                        System.out.println(String.format("Putting %s|%s|%s|", onlyTre.getName(), treField.getName(), treField.getFieldValue().trim()));
-                        tresFlat.put(String.format("%s_%s", onlyTre.getName(), treField.getName()), treField.getFieldValue().trim());
+                    if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
+                        String key = String.format("%s_%s", onlyTre.getName(), treEntry.getName());
+                        String value = treEntry.getFieldValue().trim();
+                        // System.out.println(String.format("Putting |%s|%s|", key, value));
+                        tresFlat.put(key, value);
+                    } else if (treEntry.getGroups() != null) {
+                        int groupCounter = 0;
+                        for (TreGroup group : treEntry.getGroups()) {
+                            groupCounter++;
+                            // System.out.println(String.format("Group |%s|%d|%d|", treEntry.getName(), groupCounter, group.getEntries().size()));
+                            for (TreEntry entryInGroup : group.getEntries()) {
+                                String key = String.format("%s_%s_%d", onlyTre.getName(), entryInGroup.getName(), groupCounter);
+                                String value = entryInGroup.getFieldValue().trim();
+                                // System.out.println(String.format("\tSubgroup entry |%s|%s|", key, value));
+                                tresFlat.put(key, value);
+                            }
+                        }
                     }
                 }
             } else {
-                for (int i = 0; i < treForName.size(); ++i) {
-                    Tre thisTre = treForName.get(i);
-                    List<TreField> treFields = thisTre.getFields();
-                    for (TreField treField : treFields) {
-                        System.out.println(String.format("Putting multi %s|%d|%s|", treField.getName(), i, treField.getFieldValue().trim()));
-                        tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treField.getName()), treField.getFieldValue().trim());
+                for (int i = 0; i < tresWithName.size(); ++i) {
+                    Tre thisTre = tresWithName.get(i);
+                    List<TreEntry> treEntries = thisTre.getEntries();
+                    for (TreEntry treEntry : treEntries) {
+                        // System.out.println(String.format("Putting multi %s|%d|%s|", treEntry.getName(), i, treEntry.getFieldValue().trim()));
+                        tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treEntry.getName()), treEntry.getFieldValue().trim());
                     }
                 }
             }
@@ -62,19 +76,7 @@ public class AbstractNitfSegment
         return tresFlat;
     }
 
-    protected void mergeTREs(List<TreListEntry> tresToAdd) {
-        for (TreListEntry treEntry : tresToAdd) {
-            boolean matchingExistingEntryWasFound = false;
-            for (TreListEntry existingEntry : tres) {
-                if (existingEntry.getName().equals(treEntry.getName())) {
-                    existingEntry.getTresWithName().addAll(existingEntry.getTresWithName());
-                    matchingExistingEntryWasFound = true;
-                    break;
-                }
-            }
-            if (matchingExistingEntryWasFound == false) {
-                tres.add(treEntry);
-            }
-        }
+    protected void mergeTREs(TreCollection tresToAdd) {
+        treCollection.add(tresToAdd);
     }
 }

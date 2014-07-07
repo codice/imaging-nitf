@@ -14,21 +14,21 @@
  **/
 package org.codice.nitf.filereader;
 
-// import java.text.Collator;
 import java.util.ArrayList;
-// import java.util.Collections;
-// import java.util.List;
-// import java.util.Map;
-// import java.util.TreeMap;
 
-public class TreField {
+public class TreEntry {
     private String name = null;
     private String value = null;
-    private ArrayList<TreField> subfields = null;
+    private ArrayList<TreGroup> groups = null;
 
-    public TreField(String fieldName, String fieldValue) {
+    public TreEntry(String fieldName, String fieldValue) {
         name = fieldName;
         value = fieldValue;
+    }
+
+    public TreEntry(String fieldName) {
+        name = fieldName;
+        groups = new ArrayList<TreGroup>();
     }
 
     public void setName(String fieldName) {
@@ -47,13 +47,30 @@ public class TreField {
         return value;
     }
 
-    public void initSubFields() {
-        if (subfields == null) {
-            subfields = new ArrayList<TreField>();
+    public void initGroups() {
+        if (groups == null) {
+            groups = new ArrayList<TreGroup>();
         }
     }
-    
-    public ArrayList<TreField> getSubFields() {
-        return subfields;
+
+    public ArrayList<TreGroup> getGroups() {
+        return groups;
+    }
+
+    public void addGroup(TreGroup group) {
+        groups.add(group);
+    }
+
+    public void dump() {
+        System.out.println("\tName:" + name);
+        if (value != null) {
+            System.out.println("\tValue:" + value);
+        } else if (groups != null) {
+            for (TreGroup group : groups) {
+                System.out.println("\t--New Group--");
+                group.dump();
+                System.out.println("\t--End Group--");
+            }
+        }
     }
 }

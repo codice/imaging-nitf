@@ -484,7 +484,7 @@ public class NitfImageSegment extends AbstractNitfSegment
 
     private void readIXSHD() throws ParseException {
         TreParser treParser = new TreParser();
-        List<TreListEntry> extendedSubheaderTres = treParser.parse(reader, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
+        TreCollection extendedSubheaderTres = treParser.parse(reader, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
         mergeTREs(extendedSubheaderTres);
     }
 

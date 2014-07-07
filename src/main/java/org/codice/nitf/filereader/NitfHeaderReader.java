@@ -418,7 +418,7 @@ public class NitfHeaderReader extends AbstractNitfSegment
 
     private void readXHD() throws ParseException {
         TreParser treParser = new TreParser();
-        List<TreListEntry> extendedHeaderTres = treParser.parse(reader, extendedHeaderDataLength - XHDLOFL_LENGTH);
+        TreCollection extendedHeaderTres = treParser.parse(reader, extendedHeaderDataLength - XHDLOFL_LENGTH);
         mergeTREs(extendedHeaderTres);
     }
 

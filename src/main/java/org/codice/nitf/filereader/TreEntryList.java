@@ -14,31 +14,21 @@
  **/
 package org.codice.nitf.filereader;
 
-// import java.text.Collator;
 import java.util.ArrayList;
-// import java.util.Collections;
 import java.util.List;
-// import java.util.Map;
-// import java.util.TreeMap;
 
-public class TreListEntry {
-    private String name = null;
-    private ArrayList<Tre> tresWithName = null;
+public class TreEntryList extends TreGroup {
 
-    public TreListEntry(String tag) {
+    protected String name;
+
+    public TreEntryList(String tag) {
         name = tag;
-        tresWithName = new ArrayList<Tre>();
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Tre> getTresWithName() {
-        return tresWithName;
-    }
 
-    public void add(Tre tre) {
-        tresWithName.add(tre);
-    }
+
 }

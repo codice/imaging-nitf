@@ -36,7 +36,7 @@ public class TreParser {
     private static final int TAG_LENGTH = 6;
     private static final int TAGLEN_LENGTH = 5;
 
-    private ArrayList<TreListEntry> tresList = new ArrayList<TreListEntry>();
+    private TreCollection treCollection = new TreCollection();
 
     public TreParser() throws ParseException {
         InputStream is = getClass().getResourceAsStream("/nitf_spec.xml");
@@ -53,7 +53,7 @@ public class TreParser {
         tresStructure = (Tres)u.unmarshal( inputStream );
     }
 
-    public List<TreListEntry> parse(NitfReader reader, int treLength) throws ParseException {
+    public TreCollection parse(NitfReader reader, int treLength) throws ParseException {
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);
@@ -63,7 +63,7 @@ public class TreParser {
             parseOneTre(reader, tag, fieldLength);
             bytesRead += fieldLength;
         }
-        return tresList;
+        return treCollection;
     }
 
     private void parseOneTre(NitfReader reader, String tag, int fieldLength) throws ParseException {
@@ -73,68 +73,63 @@ public class TreParser {
             reader.skip(fieldLength);
             return;
         }
-        Tre tre = new Tre();
+        Tre tre = new Tre(tag);
         tre.setPrefix(treType.getMdPrefix());
-        tre.setName(treType.getName());
-        parseTreComponents(treType.getFieldOrLoopOrIf(), reader, tre.getFields(), treType.getName());
-        TreListEntry entryForTag = null;
-        for (TreListEntry entry : tresList) {
-            if (entry.getName().equals(tag)) {
-                entryForTag = entry;
-                break;
-            }
-        }
-        if (entryForTag == null) {
-            entryForTag = new TreListEntry(tag);
-            tresList.add(entryForTag);
-        }
-        entryForTag.add(tre);
-
+        TreGroup group = parseTreComponents(treType.getFieldOrLoopOrIf(), reader, tre);
+        tre.setEntries(group.getEntries());
+        treCollection.add(tre);
     }
 
-    private void parseTreComponents(List<Object> components, NitfReader reader, List<TreField> parent, String fallbackName) throws ParseException {
+    private TreGroup parseTreComponents(List<Object> components, NitfReader reader, TreEntryList parent) throws ParseException {
+        TreGroup treGroup = new TreGroup();
         for (Object fieldLoopIf: components) {
             if (fieldLoopIf instanceof  IfType) {
                 throw new UnsupportedOperationException("Implement IfType support");
             } else if (fieldLoopIf instanceof LoopType) {
+                // throw new UnsupportedOperationException("Implement LoopType support");
                 LoopType loop = (LoopType) fieldLoopIf;
-                // TODO: check for counter mode vs iteration mode
-                TreField treField = new TreField(loop.getName(), null);
-                treField.initSubFields();
+                int numRepetitions = 0;
                 if (loop.getIterations() != null) {
-                    for (int i = 0; i < loop.getIterations().intValue(); ++i) {
-                        // System.out.println(String.format("Looping under %s, iteration %d of %d", loop.getName(), i, loop.getIterations().intValue()));
-                        parseTreComponents(loop.getFieldOrLoopOrIf(), reader, treField.getSubFields(), loop.getName());
-                    }
+                    numRepetitions = loop.getIterations().intValue();
                 } else {
                     String repetitionCounter = loop.getCounter();
-                    for (TreField field : parent) {
-                        if (field.getName().equals(repetitionCounter)) {
-                            // TODO: factor this out with the loop version above.
-                            for (int i = 0; i < Integer.parseInt(field.getFieldValue()); ++i) {
-                                // System.out.println(String.format("Looping under %s, count %d of %d", loop.getName(), i, loop.getIterations().intValue()));
-                                parseTreComponents(loop.getFieldOrLoopOrIf(), reader, treField.getSubFields(), loop.getName());
-                            }
-                        }
-                    }
+                    numRepetitions = treGroup.getIntValue(repetitionCounter);
                 }
-                parent.add(treField);
+                TreEntry treEntry = new TreEntry(loop.getName());
+                for (int i = 0; i < numRepetitions; ++i) {
+                    // System.out.println(String.format("Looping under %s, count %d of %d", treEntry.getName(), i, numRepetitions));
+                    TreGroup subGroup = parseTreComponents(loop.getFieldOrLoopOrIf(), reader, parent);
+                    treEntry.addGroup(subGroup);
+                }
+                treGroup.add(treEntry);
             } else if (fieldLoopIf instanceof FieldType) {
                 FieldType field = (FieldType) fieldLoopIf;
-                String fieldKey = field.getName();
-                if (fieldKey == null) {
-                    System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
-                    reader.skip(field.getLength().intValue());
-                } else {
-                    String fieldValue = reader.readBytes(field.getLength().intValue());
-                    if (fieldKey.isEmpty()) {
-                        System.out.println(String.format("Parsed |%s|%d|%s|", fallbackName, field.getLength().intValue(), fieldValue.trim()));
-                        parent.add(new TreField(fallbackName, fieldValue));
-                    } else {
-                        System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, field.getLength().intValue(), fieldValue.trim()));
-                        parent.add(new TreField(fieldKey, fieldValue));
-                    }
+                TreEntry treEntry = parseOneField(reader, field, parent.getName());
+                if (treEntry != null) {
+                    treGroup.add(treEntry);
                 }
+            }
+        }
+        return treGroup;
+    }
+
+    private TreEntry parseOneField(NitfReader reader, FieldType field, String parentName) throws ParseException {
+        String fieldKey = field.getName();
+        if (fieldKey.isEmpty()) {
+            fieldKey = field.getLongname();
+        }
+        if (fieldKey == null) {
+            System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
+            reader.skip(field.getLength().intValue());
+            return null;
+        } else {
+            String fieldValue = reader.readBytes(field.getLength().intValue());
+            if (fieldKey.isEmpty()) {
+                // System.out.println(String.format("parent |%s|%d|%s|", parentName, field.getLength().intValue(), fieldValue.trim()));
+                return new TreEntry(parentName, fieldValue);
+            } else {
+                // System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, field.getLength().intValue(), fieldValue.trim()));
+                return new TreEntry(fieldKey, fieldValue);
             }
         }
     }

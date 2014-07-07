@@ -14,32 +14,18 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Tre {
+public class Tre extends TreEntryList {
     private String prefix = null;
-    private String treName = null;
-    List<TreField> fields = new ArrayList<TreField>();
 
-    public void setName(String name) {
-        treName = name;
-    }
-
-    public String getName() {
-        return treName;
+    public Tre(String tag) {
+        super(tag);
     }
 
     public void setPrefix(String mdPrefix) {
         prefix = mdPrefix;
-
     }
 
     public String getPrefix() {
         return prefix;
-    }
-
-    public List<TreField> getFields() {
-        return fields;
     }
 }
