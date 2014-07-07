@@ -42,25 +42,7 @@ public class AbstractNitfSegment
                 Tre onlyTre = tresWithName.get(0);
                 List<TreEntry> treEntries = onlyTre.getEntries();
                 for (TreEntry treEntry : treEntries) {
-                    // TODO: this should recurse properly, and be shared with below.
-                    if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
-                        String key = String.format("%s_%s", onlyTre.getName(), treEntry.getName());
-                        String value = treEntry.getFieldValue().trim();
-                        // System.out.println(String.format("Putting |%s|%s|", key, value));
-                        tresFlat.put(key, value);
-                    } else if (treEntry.getGroups() != null) {
-                        int groupCounter = 0;
-                        for (TreGroup group : treEntry.getGroups()) {
-                            groupCounter++;
-                            // System.out.println(String.format("Group |%s|%d|%d|", treEntry.getName(), groupCounter, group.getEntries().size()));
-                            for (TreEntry entryInGroup : group.getEntries()) {
-                                String key = String.format("%s_%s_%d", onlyTre.getName(), entryInGroup.getName(), groupCounter);
-                                String value = entryInGroup.getFieldValue().trim();
-                                // System.out.println(String.format("\tSubgroup entry |%s|%s|", key, value));
-                                tresFlat.put(key, value);
-                            }
-                        }
-                    }
+                    flattenOneTreEntry(tresFlat, treEntry, onlyTre.getName());
                 }
             } else {
                 for (int i = 0; i < tresWithName.size(); ++i) {
@@ -76,6 +58,26 @@ public class AbstractNitfSegment
         return tresFlat;
     }
 
+    public void flattenOneTreEntry(Map<String,String> tresFlat, TreEntry treEntry, String parentName) {
+        if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
+            String key = String.format("%s_%s", parentName, treEntry.getName());
+            String value = treEntry.getFieldValue().trim();
+            // System.out.println(String.format("Putting |%s|%s|", key, value));
+            tresFlat.put(key, value);
+        } else if (treEntry.getGroups() != null) {
+            int groupCounter = 0;
+            for (TreGroup group : treEntry.getGroups()) {
+                groupCounter++;
+                // System.out.println(String.format("Group |%s|%d|%d|", treEntry.getName(), groupCounter, group.getEntries().size()));
+                for (TreEntry entryInGroup : group.getEntries()) {
+                    String key = String.format("%s_%s_%d", parentName, entryInGroup.getName(), groupCounter);
+                    String value = entryInGroup.getFieldValue().trim();
+                    // System.out.println(String.format("\tSubgroup entry |%s|%s|", key, value));
+                    tresFlat.put(key, value);
+                }
+            }
+        }
+    }
     protected void mergeTREs(TreCollection tresToAdd) {
         treCollection.add(tresToAdd);
     }
