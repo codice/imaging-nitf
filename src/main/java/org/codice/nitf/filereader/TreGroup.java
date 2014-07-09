@@ -34,15 +34,21 @@ public class TreGroup {
         entries.addAll(treEntries);
     }
 
-    public int getIntValue(String tagName) throws ParseException {
-        // System.out.println("getIntValue");
+    public String getFieldValue(String tagName) throws ParseException {
         for (TreEntry entry : entries) {
-            // System.out.println("getIntValue entry:" + entry.getName());
             if (entry.getName().equals(tagName)) {
-                return Integer.parseInt(entry.getFieldValue());
+                return entry.getFieldValue();
             }
         }
-        throw new ParseException(String.format("Failed to look up %s as integer value", tagName), 0);
+        throw new ParseException(String.format("Failed to look up %s", tagName), 0);
+    }
+
+    public int getIntValue(String tagName) throws ParseException {
+        try {
+            return Integer.parseInt(getFieldValue(tagName));
+        } catch (ParseException ex) {
+            throw new ParseException(String.format("Failed to look up %s as integer value", tagName), 0);
+        }
     }
     
     public void dump() {

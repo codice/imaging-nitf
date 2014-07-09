@@ -31,7 +31,7 @@ public class TreCollection {
     public void add(TreCollection collectionToAdd) {
         treCollectionEntries.addAll(collectionToAdd.getTREs());
     }
-    
+
     public List<String> getUniqueNamesOfTRE() {
         List<String> treNames = new ArrayList<String>();
         for (Tre tre : treCollectionEntries) {
@@ -42,7 +42,7 @@ public class TreCollection {
         }
         return treNames;
     }
-    
+
     public List<Tre> getTREsWithName(String nameToMatch) {
         List<Tre> tres = new ArrayList<Tre>();
         for (Tre tre : treCollectionEntries) {
@@ -52,5 +52,9 @@ public class TreCollection {
             }
         }
         return tres;
+    }
+
+    public boolean hasTREs() {
+        return (treCollectionEntries.size() > 0);
     }
 }

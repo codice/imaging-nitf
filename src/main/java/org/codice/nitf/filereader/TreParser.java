@@ -84,7 +84,25 @@ public class TreParser {
         TreGroup treGroup = new TreGroup();
         for (Object fieldLoopIf: components) {
             if (fieldLoopIf instanceof  IfType) {
-                throw new UnsupportedOperationException("Implement IfType support");
+                IfType ifType = (IfType) fieldLoopIf;
+                String condition = ifType.getCond();
+                System.out.println("Condition: " + ifType.getCond());
+                if (condition.endsWith("=!")) {
+                    throw new UnsupportedOperationException("Implement =! operator for iftype");
+                } else if (condition.contains("=")) {
+                    String[] conditionParts = condition.split("=");
+                    if (conditionParts.length != 2) {
+                        throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
+                    }
+                    System.out.println(String.format("Condition |%s|%s|", conditionParts[0], conditionParts[1]));
+                    String actualValue = treGroup.getFieldValue(conditionParts[0]);
+                    System.out.println("Comparing: " + actualValue + " with " + conditionParts[1]);
+                    if (actualValue.equals(conditionParts[1])) {
+                        throw new UnsupportedOperationException("Should recurse into if body - complete implementation");
+                    }
+                } else {
+                    throw new UnsupportedOperationException("Unsupported operator for iftype:" + condition);
+                }
             } else if (fieldLoopIf instanceof LoopType) {
                 // throw new UnsupportedOperationException("Implement LoopType support");
                 LoopType loop = (LoopType) fieldLoopIf;
@@ -115,14 +133,14 @@ public class TreParser {
 
     private TreEntry parseOneField(NitfReader reader, FieldType field, String parentName) throws ParseException {
         String fieldKey = field.getName();
-        if (fieldKey.isEmpty()) {
-            fieldKey = field.getLongname();
-        }
         if (fieldKey == null) {
             System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
             reader.skip(field.getLength().intValue());
             return null;
         } else {
+            if (fieldKey.isEmpty()) {
+                fieldKey = field.getLongname();
+            }
             String fieldValue = reader.readBytes(field.getLength().intValue());
             if (fieldKey.isEmpty()) {
                 // System.out.println(String.format("parent |%s|%d|%s|", parentName, field.getLength().intValue(), fieldValue.trim()));
