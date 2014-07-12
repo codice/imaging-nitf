@@ -47,7 +47,7 @@ public class NitfHeaderReader extends AbstractNitfSegment
     private ArrayList<Integer> ltsh = new ArrayList<Integer>();
     private ArrayList<Integer> lt = new ArrayList<Integer>();
     private ArrayList<Integer> ldsh = new ArrayList<Integer>();
-    private ArrayList<Long> ld = new ArrayList<Long>();
+    private ArrayList<Integer> ld = new ArrayList<Integer>();
     private int numberGraphicSegments = 0;
     private int numberTextSegments = 0;
     private int numberDataExtensionSegments = 0;
@@ -397,7 +397,7 @@ public class NitfHeaderReader extends AbstractNitfSegment
     }
 
     private void readLD() throws ParseException {
-        ld.add(reader.readBytesAsLong(LD_LENGTH));
+        ld.add(reader.readBytesAsInteger(LD_LENGTH));
     }
 
     private void readNUMRES() throws ParseException {

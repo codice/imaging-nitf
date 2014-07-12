@@ -84,6 +84,11 @@ public class ImageCoordinatePair {
         return degrees + ((minutes + (seconds / SECONDS_IN_ONE_MINUTE)) / MINUTES_IN_ONE_DEGREE);
     }
 
+    public void setFromUPSNorth(String ups) throws ParseException {
+        System.out.println("UPSNorth: [" + ups + "]");
+        // TODO: complete implementation
+    }
+
     /**
         Set latitude and longitude from Decimal Degrees string
 

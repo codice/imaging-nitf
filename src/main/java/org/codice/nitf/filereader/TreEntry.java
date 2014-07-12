@@ -20,14 +20,17 @@ public class TreEntry {
     private String name = null;
     private String value = null;
     private ArrayList<TreGroup> groups = null;
+    private TreGroup entryParent = null;
 
-    public TreEntry(String fieldName, String fieldValue) {
+    public TreEntry(String fieldName, String fieldValue, TreGroup parent) {
         name = fieldName;
         value = fieldValue;
+        entryParent = parent;
     }
 
-    public TreEntry(String fieldName) {
+    public TreEntry(String fieldName, TreGroup parent) {
         name = fieldName;
+        entryParent = parent;
         groups = new ArrayList<TreGroup>();
     }
 

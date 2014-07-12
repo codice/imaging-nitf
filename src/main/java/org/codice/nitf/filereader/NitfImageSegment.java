@@ -400,8 +400,11 @@ public class NitfImageSegment extends AbstractNitfSegment
                 case DECIMALDEGREES:
                     coords[i].setFromDecimalDegrees(coordStr);
                     break;
+                case UTMUPSNORTH:
+                    coords[i].setFromUPSNorth(coordStr);
+                    break;
                 default:
-                    throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS");
+                    throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS: " + imageCoordinatesRepresentation);
             }
         }
         imageCoordinates = new ImageCoordinates(coords[0], coords[1], coords[2], coords[3]);
