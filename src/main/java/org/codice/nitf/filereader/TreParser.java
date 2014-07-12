@@ -154,7 +154,7 @@ public class TreParser {
 
     private TreType getTreTypeForTag(String tag) {
         for (TreType treType : tresStructure.getTre()) {
-            if (treType.getName().equals(tag)) {
+            if (treType.getName().equals(tag.trim())) {
                 return treType;
             }
         }
