@@ -65,11 +65,12 @@ public class NitfReader
 
     public Integer readBytesAsInteger(int count) throws ParseException {
         String intString = readBytes(count);
+        // System.out.println("Bytes to be converted to integer: |" + intString + "|");
         Integer intValue = 0;
         try {
             intValue = Integer.parseInt(intString);
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Integer format: %s", intString), numBytesRead);
+            throw new ParseException(String.format("Bad Integer format: [%s]", intString), numBytesRead);
         }
         return intValue;
     }

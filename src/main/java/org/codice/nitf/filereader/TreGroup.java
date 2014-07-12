@@ -29,6 +29,10 @@ public class TreGroup {
         entries.add(entry);
     }
 
+    public void addAll(List<TreEntry> oneOrMoreEntries) {
+        entries.addAll(oneOrMoreEntries);
+    }
+
     public void setEntries(List<TreEntry> treEntries) {
         entries = new ArrayList<TreEntry>();
         entries.addAll(treEntries);

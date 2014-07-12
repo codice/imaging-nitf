@@ -57,6 +57,7 @@ public class TreParser {
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);
+            // System.out.println("reading tag:" + tag + "|");
             bytesRead += TAG_LENGTH;
             int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
             bytesRead += TAGLEN_LENGTH;
@@ -85,24 +86,7 @@ public class TreParser {
         for (Object fieldLoopIf: components) {
             if (fieldLoopIf instanceof  IfType) {
                 IfType ifType = (IfType) fieldLoopIf;
-                String condition = ifType.getCond();
-                System.out.println("Condition: " + ifType.getCond());
-                if (condition.endsWith("=!")) {
-                    throw new UnsupportedOperationException("Implement =! operator for iftype");
-                } else if (condition.contains("=")) {
-                    String[] conditionParts = condition.split("=");
-                    if (conditionParts.length != 2) {
-                        throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
-                    }
-                    System.out.println(String.format("Condition |%s|%s|", conditionParts[0], conditionParts[1]));
-                    String actualValue = treGroup.getFieldValue(conditionParts[0]);
-                    System.out.println("Comparing: " + actualValue + " with " + conditionParts[1]);
-                    if (actualValue.equals(conditionParts[1])) {
-                        throw new UnsupportedOperationException("Should recurse into if body - complete implementation");
-                    }
-                } else {
-                    throw new UnsupportedOperationException("Unsupported operator for iftype:" + condition);
-                }
+                evaluateIfType(ifType, treGroup, reader, parent);
             } else if (fieldLoopIf instanceof LoopType) {
                 // throw new UnsupportedOperationException("Implement LoopType support");
                 LoopType loop = (LoopType) fieldLoopIf;
@@ -131,10 +115,74 @@ public class TreParser {
         return treGroup;
     }
 
+    private void evaluateIfType(IfType ifType, TreGroup treGroup, NitfReader reader, TreEntryList parent) throws ParseException {
+        String condition = ifType.getCond();
+        // System.out.println("condition: " + condition);
+        if (evaluateCondition(condition, treGroup)) {
+            // System.out.println(String.format("[%s] evaluated to true", condition));
+            TreGroup ifGroup = parseTreComponents(ifType.getFieldOrLoopOrIf(), reader, parent);
+            treGroup.addAll(ifGroup.getEntries());
+        }
+    }
+
+    private boolean evaluateCondition(String condition, TreGroup treGroup) throws ParseException {
+        if (condition.contains(" AND ")) {
+            return evaluateConditionBooleanAnd(condition, treGroup);
+        } else if (condition.endsWith("!=")) {
+            return evaluateConditionIsNotEmpty(condition, treGroup);
+        } else if (condition.contains("!=")) {
+            return evaluateConditionIsNotEqual(condition, treGroup);
+        } else if (condition.contains("=")) {
+            return evaluateConditionIsEqual(condition, treGroup);
+        } else {
+            throw new UnsupportedOperationException("Unsupported operator for iftype:" + condition);
+        }
+    }
+
+    private boolean evaluateConditionBooleanAnd(String condition, TreGroup treGroup) throws ParseException {
+        String[] condParts = condition.split(" AND ");
+        if (condParts.length != 2) {
+            // This is an error
+            throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
+        }
+        boolean lhs = evaluateCondition(condParts[0], treGroup);
+        boolean rhs = evaluateCondition(condParts[1], treGroup);
+        return (lhs && rhs);
+    }
+
+    private boolean evaluateConditionIsNotEmpty(String condition, TreGroup treGroup) throws ParseException {
+        String conditionPart = condition.substring(0, condition.length() - "!=".length());
+        String actualValue = treGroup.getFieldValue(conditionPart);
+        return (! actualValue.trim().isEmpty());
+    }
+
+    private boolean evaluateConditionIsEqual(String condition, TreGroup treGroup) throws ParseException {
+        String[] conditionParts = condition.split("=");
+        if (conditionParts.length != 2) {
+            // This is an error
+            throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
+        }
+        // System.out.println(String.format("Condition |%s|%s|", conditionParts[0], conditionParts[1]));
+        String actualValue = treGroup.getFieldValue(conditionParts[0]);
+        // System.out.println("Comparing: actual=[" + actualValue + "] with conditionCriteria=[" + conditionParts[1] + "]");
+        // System.out.println("equality comparison:" + (conditionParts[1].equals(actualValue)));
+        return (conditionParts[1].equals(actualValue));
+    }
+
+    private boolean evaluateConditionIsNotEqual(String condition, TreGroup treGroup) throws ParseException {
+        String[] conditionParts = condition.split("!=");
+        if (conditionParts.length != 2) {
+            // This is an error
+            throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
+        }
+        String actualValue = treGroup.getFieldValue(conditionParts[0]);
+        return (!(conditionParts[1].equals(actualValue)));
+    }
+
     private TreEntry parseOneField(NitfReader reader, FieldType field, String parentName) throws ParseException {
         String fieldKey = field.getName();
         if (fieldKey == null) {
-            System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
+            // System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
             reader.skip(field.getLength().intValue());
             return null;
         } else {

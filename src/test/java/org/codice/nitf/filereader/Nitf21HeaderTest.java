@@ -662,6 +662,32 @@ public class Nitf21HeaderTest {
         }
     }
 
+    @Test
+    public void testDataExtendedSegmentParsing() throws IOException, ParseException {
+        final String testfile = "/autzen-utm10.ntf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+        InputStream is = getClass().getResourceAsStream(testfile);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("ENVI", reader.getOriginatingStationId());
+        assertEquals(1, reader.getNumberOfImageSegments());
+        assertEquals(0, reader.getNumberOfGraphicSegments());
+        assertEquals(0, reader.getNumberOfTextSegments());
+        assertEquals(1, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        assertEquals(457, reader.getExtendedHeaderDataLength());
+
+        NitfDataExtensionSegment des = reader.getDataExtensionSegment(1);
+        assertNotNull(des);
+        assertEquals("LIDARA DES", des.getDESIdentifier().trim());
+        assertEquals(1, des.getDESVersion());
+        assertUnclasAndEmpty(des.getSecurityMetadata());
+    }
+
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
         assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());

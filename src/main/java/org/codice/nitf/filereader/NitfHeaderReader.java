@@ -442,8 +442,8 @@ public class NitfHeaderReader extends AbstractNitfSegment
 
     private void readDataExtensionSegments() throws ParseException {
         for (int i = 0; i < numberDataExtensionSegments; ++i) {
-            throw new UnsupportedOperationException("Implement DES parsing");
-            // dataExtensionSegments.add(new NitfDataExtensionSegment(reader, ld.get(i)));
+            // throw new UnsupportedOperationException("Implement DES parsing at " + reader.numBytesRead);
+            dataExtensionSegments.add(new NitfDataExtensionSegment(reader, ld.get(i)));
         }
     }
 }
