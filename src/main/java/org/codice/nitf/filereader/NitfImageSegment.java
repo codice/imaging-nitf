@@ -58,7 +58,7 @@ public class NitfImageSegment extends AbstractNitfSegment
     private int imageAttachmentLevel = 0;
     private int imageLocationRow = 0;
     private int imageLocationColumn = 0;
-    private double imageMagnification = 0.0;
+    private String imageMagnification = null;
     private int userDefinedImageDataLength = 0;
     private int imageExtendedSubheaderDataLength = 0;
     private int imageExtendedSubheaderOverflow = 0;
@@ -289,8 +289,16 @@ public class NitfImageSegment extends AbstractNitfSegment
         return imageLocationColumn;
     }
 
-    public double getImageMagnification() {
+    public String getImageMagnification() {
         return imageMagnification;
+    }
+
+    public double getImageMagnificationAsDouble() {
+        if (imageMagnification.startsWith("/")) {
+            return (1.0 / Double.parseDouble(imageMagnification.substring("1".length())));
+        } else {
+            return (Double.parseDouble(imageMagnification));
+        }
     }
 
     public int getUserDefinedImageDataLength() {
@@ -470,7 +478,7 @@ public class NitfImageSegment extends AbstractNitfSegment
     }
 
     private void readIMAG() throws ParseException {
-        imageMagnification = reader.readBytesAsDouble(IMAG_LENGTH);
+        imageMagnification = reader.readBytes(IMAG_LENGTH);
     }
 
     private void readUDIDL() throws ParseException {

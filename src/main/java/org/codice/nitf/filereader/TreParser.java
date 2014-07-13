@@ -58,7 +58,7 @@ public class TreParser {
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);
-            System.out.println("reading tag:" + tag + "|");
+            // System.out.println("reading tag:" + tag + "|");
             bytesRead += TAG_LENGTH;
             int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
             bytesRead += TAGLEN_LENGTH;
@@ -229,10 +229,10 @@ public class TreParser {
             }
             String fieldValue = reader.readBytes(fieldLength);
             if (fieldKey.isEmpty()) {
-                System.out.println(String.format("parent |%s|%d|%s|", parent.getName(), fieldLength, fieldValue.trim()));
+                // System.out.println(String.format("parent |%s|%d|%s|", parent.getName(), fieldLength, fieldValue.trim()));
                 return new TreEntry(parent.getName(), fieldValue, parent);
             } else {
-                System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, fieldLength, fieldValue.trim()));
+                // System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, fieldLength, fieldValue.trim()));
                 return new TreEntry(fieldKey, fieldValue, parent);
             }
         }
