@@ -60,6 +60,7 @@ public class NitfImageSegment extends AbstractNitfSegment
     private int imageLocationColumn = 0;
     private String imageMagnification = null;
     private int userDefinedImageDataLength = 0;
+    private int userDefinedOverflow = 0;
     private int imageExtendedSubheaderDataLength = 0;
     private int imageExtendedSubheaderOverflow = 0;
     private long lengthOfImage = 0L;
@@ -97,6 +98,7 @@ public class NitfImageSegment extends AbstractNitfSegment
     private static final int ILOC_HALF_LENGTH = 5;
     private static final int IMAG_LENGTH = 4;
     private static final int UDIDL_LENGTH = 5;
+    private static final int UDOFL_LENGTH = 3;
     private static final int IXSHDL_LENGTH = 5;
     private static final int IXSOFL_LENGTH = 3;
 
@@ -151,7 +153,8 @@ public class NitfImageSegment extends AbstractNitfSegment
         readIMAG();
         readUDIDL();
         if (userDefinedImageDataLength > 0) {
-            throw new UnsupportedOperationException("IMPLEMENT UDOFL / UDID PARSING");
+            readUDOFL();
+            readUDID();
         }
         readIXSHDL();
         if (imageExtendedSubheaderDataLength > 0) {
@@ -483,6 +486,16 @@ public class NitfImageSegment extends AbstractNitfSegment
 
     private void readUDIDL() throws ParseException {
         userDefinedImageDataLength = reader.readBytesAsInteger(UDIDL_LENGTH);
+    }
+
+    private void readUDOFL() throws ParseException {
+        userDefinedOverflow = reader.readBytesAsInteger(UDOFL_LENGTH);
+    }
+
+    private void readUDID() throws ParseException {
+        TreParser treParser = new TreParser();
+        TreCollection userDefinedSubheaderTres = treParser.parse(reader, userDefinedImageDataLength - UDOFL_LENGTH);
+        mergeTREs(userDefinedSubheaderTres);
     }
 
     private void readIXSHDL() throws ParseException {
