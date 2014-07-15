@@ -84,8 +84,11 @@ public class ImageCoordinatePair {
         return degrees + ((minutes + (seconds / SECONDS_IN_ONE_MINUTE)) / MINUTES_IN_ONE_DEGREE);
     }
 
-    public void setFromUPSNorth(String ups) throws ParseException {
+    public void setFromUTMUPSNorth(String ups) throws ParseException {
         System.out.println("UPSNorth: [" + ups + "]");
+        if (ups.length() != "zzeeeeeennnnnnn".length()) {
+            throw new ParseException("Incorrect length for UPS North parsing", 0);
+        }
         // TODO: complete implementation
     }
 
