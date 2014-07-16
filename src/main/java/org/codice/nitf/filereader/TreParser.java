@@ -89,7 +89,6 @@ public class TreParser {
                 IfType ifType = (IfType) fieldLoopIf;
                 evaluateIfType(ifType, treGroup, reader, parent);
             } else if (fieldLoopIf instanceof LoopType) {
-                // throw new UnsupportedOperationException("Implement LoopType support");
                 LoopType loop = (LoopType) fieldLoopIf;
                 int numRepetitions = 0;
                 if (loop.getIterations() != null) {
