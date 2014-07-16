@@ -53,6 +53,7 @@ public class NitfHeaderReader extends AbstractNitfSegment
     private int numberDataExtensionSegments = 0;
     private int numberReservedExtensionSegments = 0;
     private int userDefinedHeaderDataLength = 0;
+    private int userDefinedHeaderOverflow = 0;
     private int extendedHeaderDataLength = 0;
     private int extendedHeaderOverflow = 0;
 
@@ -88,6 +89,7 @@ public class NitfHeaderReader extends AbstractNitfSegment
     private static final int LD_LENGTH = 9;
     private static final int NUMRES_LENGTH = 3;
     private static final int UDHDL_LENGTH = 5;
+    private static final int UDHOFL_LENGTH = 3;
     private static final int XHDL_LENGTH = 5;
     private static final int XHDLOFL_LENGTH = 3;
 
@@ -142,8 +144,8 @@ public class NitfHeaderReader extends AbstractNitfSegment
         }
         readUDHDL();
         if (userDefinedHeaderDataLength > 0) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT USER DEFINED SEGMENT PARSING");
+            readUDHOFL();
+            readUDHD();
         }
         readXHDL();
         if (extendedHeaderDataLength > 0) {
@@ -406,6 +408,16 @@ public class NitfHeaderReader extends AbstractNitfSegment
 
     private void readUDHDL() throws ParseException {
         userDefinedHeaderDataLength = reader.readBytesAsInteger(UDHDL_LENGTH);
+    }
+
+    private void readUDHOFL() throws ParseException {
+        userDefinedHeaderOverflow = reader.readBytesAsInteger(UDHOFL_LENGTH);
+    }
+
+    private void readUDHD() throws ParseException {
+        TreParser treParser = new TreParser();
+        TreCollection userDefinedHeaderTREs = treParser.parse(reader, userDefinedHeaderDataLength - UDHOFL_LENGTH);
+        mergeTREs(userDefinedHeaderTREs);
     }
 
     private void readXHDL() throws ParseException {
