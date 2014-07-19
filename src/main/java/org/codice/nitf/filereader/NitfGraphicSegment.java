@@ -16,7 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.text.ParseException;
 
-public class NitfGraphicSegment
+public class NitfGraphicSegment extends AbstractNitfSegment
 {
     NitfReader reader = null;
     int lengthOfGraphic = 0;
@@ -33,6 +33,7 @@ public class NitfGraphicSegment
     private int boundingBox2Row = 0;
     private int boundingBox2Column = 0;
     private int graphicExtendedSubheaderLength = 0;
+    private int graphicExtendedSubheaderOverflow = 0;
 
     private NitfSecurityMetadata securityMetadata = null;
 
@@ -49,6 +50,7 @@ public class NitfGraphicSegment
     private static final int SBND2_HALF_LENGTH = 5;
     private static final String SRES = "00";
     private static final int SXSHDL_LENGTH = 5;
+    private static final int SXSOFL_LENGTH = 3;
 
     public NitfGraphicSegment(NitfReader nitfReader, int graphicLength) throws ParseException {
         reader = nitfReader;
@@ -70,8 +72,9 @@ public class NitfGraphicSegment
         readSRES();
         readSXSHDL();
         if (graphicExtendedSubheaderLength > 0) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT SXSOFL / SXSHD PARSING");
+            // throw new UnsupportedOperationException("IMPLEMENT SXSOFL / SXSHD PARSING");
+            readSXSOFL();
+            readSXSHD();
         }
         readGraphicData();
     }
@@ -182,6 +185,16 @@ public class NitfGraphicSegment
 
     private void readSXSHDL() throws ParseException {
         graphicExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
+    }
+
+    private void readSXSOFL() throws ParseException {
+        graphicExtendedSubheaderOverflow = reader.readBytesAsInteger(SXSOFL_LENGTH);
+    }
+
+    private void readSXSHD() throws ParseException {
+        TreParser treParser = new TreParser();
+        TreCollection extendedSubheaderTREs = treParser.parse(reader, graphicExtendedSubheaderLength - SXSOFL_LENGTH);
+        mergeTREs(extendedSubheaderTREs);
     }
 
     private void readGraphicData() throws ParseException {

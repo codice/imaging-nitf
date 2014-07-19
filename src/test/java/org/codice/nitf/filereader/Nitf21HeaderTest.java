@@ -688,6 +688,124 @@ public class Nitf21HeaderTest {
         assertUnclasAndEmpty(des.getSecurityMetadata());
     }
 
+    @Test
+    public void testGraphicsSegmentExtendedHeaderParsing() throws IOException, ParseException {
+        final String testfile = "/gdal3453.ntf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+
+        InputStream is = getClass().getResourceAsStream(testfile);
+        NitfHeaderReader reader = new NitfHeaderReader(is);
+        assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
+        assertEquals(3, reader.getComplexityLevel());
+        assertEquals("BF01", reader.getStandardType());
+        assertEquals("Overwatch", reader.getOriginatingStationId());
+        assertEquals("2009-11-25 18:07:24", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("BLAUE MOSCHEE NITF", reader.getFileTitle());
+
+        NitfSecurityMetadata securityMetadata = reader.getFileSecurityMetadata();
+        assertEquals("NL", securityMetadata.getSecurityClassificationSystem());
+        assertEquals("", securityMetadata.getCodewords());
+        assertEquals("", securityMetadata.getControlAndHandling());
+        assertEquals("", securityMetadata.getReleaseInstructions());
+        assertEquals("", securityMetadata.getDeclassificationType());
+        assertEquals("", securityMetadata.getDeclassificationDate());
+        assertEquals("", securityMetadata.getDeclassificationExemption());
+        assertEquals("", securityMetadata.getDowngrade());
+        assertEquals("", securityMetadata.getDowngradeDate());
+        assertEquals("", securityMetadata.getClassificationText());
+        assertEquals("", securityMetadata.getClassificationAuthorityType());
+        assertEquals("", securityMetadata.getClassificationAuthority());
+        assertEquals("", securityMetadata.getClassificationReason());
+        assertEquals("", securityMetadata.getSecurityControlNumber());
+        
+        assertEquals("00000", reader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00000", reader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourRed());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourGreen());
+        assertEquals((byte)0xFF, reader.getFileBackgroundColourBlue());
+        assertEquals("", reader.getOriginatorsName());
+        assertEquals("", reader.getOriginatorsPhoneNumber());
+        assertEquals(193253L, reader.getFileLength());
+        assertEquals(810, reader.getHeaderLength());
+        assertEquals(1, reader.getNumberOfImageSegments());
+
+        // Checks for ImageSegment.
+        NitfImageSegment imageSegment = reader.getImageSegment(1);
+        assertNotNull(imageSegment);
+        assertEquals("Mosaic", imageSegment.getImageIdentifier1());
+        assertEquals("2009-10-16 05:20:40", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment.getImageDateTime()));
+        assertEquals("", imageSegment.getImageTargetId());
+        assertEquals("Versions: 6.0.6.1; 40; Mission: 0000 001 141009 001, AOI ID: 6/21/2", imageSegment.getImageIdentifier2());
+        securityMetadata = imageSegment.getSecurityMetadata();
+        assertEquals("NL", securityMetadata.getSecurityClassificationSystem());
+        assertEquals("", securityMetadata.getCodewords());
+        assertEquals("", securityMetadata.getControlAndHandling());
+        assertEquals("", securityMetadata.getReleaseInstructions());
+        assertEquals("", securityMetadata.getDeclassificationType());
+        assertEquals("", securityMetadata.getDeclassificationDate());
+        assertEquals("", securityMetadata.getDeclassificationExemption());
+        assertEquals("", securityMetadata.getDowngrade());
+        assertEquals("", securityMetadata.getDowngradeDate());
+        assertEquals("", securityMetadata.getClassificationText());
+        assertEquals("", securityMetadata.getClassificationAuthorityType());
+        assertEquals("", securityMetadata.getClassificationAuthority());
+        assertEquals("", securityMetadata.getClassificationReason());
+        assertEquals("", securityMetadata.getSecurityControlNumber());
+
+        assertEquals("", imageSegment.getImageSource());
+        assertEquals(937L, imageSegment.getNumberOfRows());
+        assertEquals(1563L, imageSegment.getNumberOfColumns());
+        assertEquals(PixelValueType.BILEVEL, imageSegment.getPixelValueType());
+        assertEquals(ImageRepresentation.MONOCHROME, imageSegment.getImageRepresentation());
+        assertEquals(ImageCategory.ELECTROOPTICAL, imageSegment.getImageCategory());
+        assertEquals(1, imageSegment.getActualBitsPerPixelPerBand());
+        assertEquals(PixelJustification.RIGHT, imageSegment.getPixelJustification());
+        assertEquals(ImageCoordinatesRepresentation.DECIMALDEGREES, imageSegment.getImageCoordinatesRepresentation());
+        ImageCoordinates imageCoords = imageSegment.getImageCoordinates();
+        assertNotNull(imageCoords);
+        assertEquals(36.709, imageCoords.getCoordinate00().getLatitude(), 0.000001);
+        assertEquals(67.105, imageCoords.getCoordinate00().getLongitude(), 0.000001);
+        assertEquals(36.714, imageCoords.getCoordinate0MaxCol().getLatitude(), 0.000001);
+        assertEquals(67.114, imageCoords.getCoordinate0MaxCol().getLongitude(), 0.000001);
+        assertEquals(36.709, imageCoords.getCoordinateMaxRowMaxCol().getLatitude(), 0.000001);
+        assertEquals(67.118, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
+        assertEquals(36.704, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
+        assertEquals(67.109, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
+        assertEquals(3, imageSegment.getNumberOfImageComments());
+        // TODO: comments?
+        assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment.getImageCompression());
+        assertEquals(1, imageSegment.getNumBands());
+
+        
+        assertEquals(8, reader.getNumberOfGraphicSegments());
+        // TODO: need to check 8 segments
+        assertEquals(619, reader.getLengthOfGraphicSubheader(0));
+        // TODO: update below this
+        assertEquals(216, reader.getLengthOfGraphic(0));
+        assertEquals(0, reader.getNumberOfTextSegments());
+        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
+        assertEquals(326, reader.getUserDefinedHeaderDataLength());
+        assertEquals(0, reader.getExtendedHeaderDataLength());
+
+        NitfGraphicSegment segment = reader.getGraphicSegment(1);
+        assertNotNull(segment);
+        assertEquals("30", segment.getGraphicIdentifier());
+        assertEquals("", segment.getGraphicName());
+        assertUnclasAndEmpty(segment.getSecurityMetadata());
+        assertEquals(2, segment.getGraphicDisplayLevel());
+        assertEquals(0, segment.getGraphicAttachmentLevel());
+        assertEquals(326, segment.getGraphicLocationRow());
+        assertEquals(713, segment.getGraphicLocationColumn());
+        assertEquals(326, segment.getBoundingBox1Row());
+        assertEquals(713, segment.getBoundingBox1Column());
+        assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
+        assertEquals(411, segment.getBoundingBox2Row());
+        assertEquals(788, segment.getBoundingBox2Column());
+        assertEquals(361, segment.getGraphicExtendedSubheaderLength());
+    }
+
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
         assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());
