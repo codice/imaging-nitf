@@ -773,15 +773,21 @@ public class Nitf21HeaderTest {
         assertEquals(36.704, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(67.109, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
         assertEquals(3, imageSegment.getNumberOfImageComments());
-        // TODO: comments?
+        assertEquals("", imageSegment.getImageComment(1));
+        assertEquals("", imageSegment.getImageComment(2));
+        assertEquals("", imageSegment.getImageComment(3));
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment.getImageCompression());
         assertEquals(1, imageSegment.getNumBands());
 
-        
         assertEquals(8, reader.getNumberOfGraphicSegments());
-        // TODO: need to check 8 segments
         assertEquals(619, reader.getLengthOfGraphicSubheader(0));
-        // TODO: update below this
+        assertEquals(748, reader.getLengthOfGraphicSubheader(1));
+        assertEquals(619, reader.getLengthOfGraphicSubheader(2));
+        assertEquals(746, reader.getLengthOfGraphicSubheader(3));
+        assertEquals(619, reader.getLengthOfGraphicSubheader(4));
+        assertEquals(748, reader.getLengthOfGraphicSubheader(5));
+        assertEquals(619, reader.getLengthOfGraphicSubheader(6));
+        assertEquals(748, reader.getLengthOfGraphicSubheader(7));
         assertEquals(216, reader.getLengthOfGraphic(0));
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
@@ -789,21 +795,36 @@ public class Nitf21HeaderTest {
         assertEquals(326, reader.getUserDefinedHeaderDataLength());
         assertEquals(0, reader.getExtendedHeaderDataLength());
 
-        NitfGraphicSegment segment = reader.getGraphicSegment(1);
-        assertNotNull(segment);
-        assertEquals("30", segment.getGraphicIdentifier());
-        assertEquals("", segment.getGraphicName());
-        assertUnclasAndEmpty(segment.getSecurityMetadata());
-        assertEquals(2, segment.getGraphicDisplayLevel());
-        assertEquals(0, segment.getGraphicAttachmentLevel());
-        assertEquals(326, segment.getGraphicLocationRow());
-        assertEquals(713, segment.getGraphicLocationColumn());
-        assertEquals(326, segment.getBoundingBox1Row());
-        assertEquals(713, segment.getBoundingBox1Column());
-        assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
-        assertEquals(411, segment.getBoundingBox2Row());
-        assertEquals(788, segment.getBoundingBox2Column());
-        assertEquals(361, segment.getGraphicExtendedSubheaderLength());
+        NitfGraphicSegment segment1 = reader.getGraphicSegment(1);
+        assertNotNull(segment1);
+        assertEquals("30", segment1.getGraphicIdentifier());
+        assertEquals("", segment1.getGraphicName());
+        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        assertEquals(2, segment1.getGraphicDisplayLevel());
+        assertEquals(0, segment1.getGraphicAttachmentLevel());
+        assertEquals(326, segment1.getGraphicLocationRow());
+        assertEquals(713, segment1.getGraphicLocationColumn());
+        assertEquals(326, segment1.getBoundingBox1Row());
+        assertEquals(713, segment1.getBoundingBox1Column());
+        assertEquals(GraphicColour.COLOUR, segment1.getGraphicColour());
+        assertEquals(411, segment1.getBoundingBox2Row());
+        assertEquals(788, segment1.getBoundingBox2Column());
+        assertEquals(361, segment1.getGraphicExtendedSubheaderLength());
+        NitfGraphicSegment segment2 = reader.getGraphicSegment(2);
+        assertNotNull(segment2);
+        assertEquals("35", segment2.getGraphicIdentifier());
+        assertEquals("", segment2.getGraphicName());
+        assertUnclasAndEmpty(segment2.getSecurityMetadata());
+        assertEquals(3, segment2.getGraphicDisplayLevel());
+        assertEquals(0, segment2.getGraphicAttachmentLevel());
+        assertEquals(275, segment2.getGraphicLocationRow());
+        assertEquals(762, segment2.getGraphicLocationColumn());
+        assertEquals(275, segment2.getBoundingBox1Row());
+        assertEquals(762, segment2.getBoundingBox1Column());
+        assertEquals(GraphicColour.COLOUR, segment2.getGraphicColour());
+        assertEquals(345, segment2.getBoundingBox2Row());
+        assertEquals(836, segment2.getBoundingBox2Column());
+        assertEquals(490, segment2.getGraphicExtendedSubheaderLength());
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
