@@ -85,7 +85,7 @@ public class ImageCoordinatePair {
     }
 
     public void setFromUTMUPSNorth(String ups) throws ParseException {
-        System.out.println("UPSNorth: [" + ups + "]");
+        // System.out.println("UPSNorth: [" + ups + "]");
         if (ups.length() != "zzeeeeeennnnnnn".length()) {
             throw new ParseException("Incorrect length for UPS North parsing", 0);
         }

@@ -86,17 +86,17 @@ public class NitfDataExtensionSegment extends AbstractNitfSegment
 
     private void readDESOFLW() throws ParseException {
         desOverflowedHeaderType = reader.readTrimmedBytes(DESOFLW_LENGTH);
-        System.out.println("DES Overflowed Header Type: " + desOverflowedHeaderType);
+        // System.out.println("DES Overflowed Header Type: " + desOverflowedHeaderType);
     }
 
     private void readDESITEM() throws ParseException {
         desItemOverflowed = reader.readBytesAsInteger(DESITEM_LENGTH);
-        System.out.println("Item: " + desItemOverflowed);
+        // System.out.println("Item: " + desItemOverflowed);
     }
 
     private void readDSSHL() throws ParseException {
         userDefinedSubheaderLength = reader.readBytesAsInteger(DESSHL_LENGTH);
-        System.out.println("User defined subheader length: " + userDefinedSubheaderLength);
+        // System.out.println("User defined subheader length: " + userDefinedSubheaderLength);
     }
 
     private void readDSSHF() throws ParseException {
