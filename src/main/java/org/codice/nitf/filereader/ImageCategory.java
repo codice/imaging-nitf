@@ -22,7 +22,7 @@ public enum ImageCategory
     THERMALINFRARED ("TI"),
     FLIR ("FL"),
     RADAR ("RD"),
-    ELECTROOPTICAL ("RO"),
+    ELECTROOPTICAL ("EO"),
     OPTICAL ("OP"),
     HIGRESRADAR ("HR"),
     HYPERSPECTRAL ("HS"),
