@@ -51,7 +51,7 @@ public class TreParser {
     private void unmarshal(InputStream inputStream) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Tres.class);
         Unmarshaller u = jc.createUnmarshaller();
-        tresStructure = (Tres)u.unmarshal( inputStream );
+        tresStructure = (Tres)u.unmarshal(inputStream);
     }
 
     public TreCollection parse(NitfReader reader, int treLength) throws ParseException {
@@ -184,7 +184,7 @@ public class TreParser {
     private boolean evaluateConditionIsNotEmpty(String condition, TreGroup treGroup) throws ParseException {
         String conditionPart = condition.substring(0, condition.length() - "!=".length());
         String actualValue = treGroup.getFieldValue(conditionPart);
-        return (! actualValue.trim().isEmpty());
+        return (!actualValue.trim().isEmpty());
     }
 
     private boolean evaluateConditionIsEqual(String condition, TreGroup treGroup) throws ParseException {
