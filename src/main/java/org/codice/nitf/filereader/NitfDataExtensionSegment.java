@@ -37,7 +37,7 @@ public class NitfDataExtensionSegment extends AbstractNitfSegment {
     private static final int DESITEM_LENGTH = 3;
     private static final int DESSHL_LENGTH = 4;
 
-    public NitfDataExtensionSegment(NitfReader nitfReader, int desLength) throws ParseException {
+    public NitfDataExtensionSegment(final NitfReader nitfReader, final int desLength) throws ParseException {
         reader = nitfReader;
         lengthOfDataExtension = desLength;
 

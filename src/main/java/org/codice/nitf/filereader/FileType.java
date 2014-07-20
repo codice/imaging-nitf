@@ -22,11 +22,11 @@ public enum FileType {
 
     private final String textEquivalent;
 
-    FileType(String abbreviation) {
+    FileType(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static FileType getEnumValue(String textEquivalent) {
+    public static FileType getEnumValue(final String textEquivalent) {
         for (FileType version : values()) {
             if (textEquivalent.equals(version.textEquivalent)) {
                 return version;

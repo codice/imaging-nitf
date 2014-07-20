@@ -26,11 +26,11 @@ public enum ImageCoordinatesRepresentation {
 
     private final String textEquivalent;
 
-    ImageCoordinatesRepresentation(String abbreviation) {
+    ImageCoordinatesRepresentation(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static ImageCoordinatesRepresentation getEnumValue(String textEquivalent) {
+    public static ImageCoordinatesRepresentation getEnumValue(final String textEquivalent) {
         for (ImageCoordinatesRepresentation icr : values()) {
             if (textEquivalent.equals(icr.textEquivalent)) {
                 return icr;

@@ -26,20 +26,20 @@ public class TreGroup {
         return entries;
     }
 
-    public void add(TreEntry entry) {
+    public void add(final TreEntry entry) {
         entries.add(entry);
     }
 
-    public void addAll(List<TreEntry> oneOrMoreEntries) {
+    public void addAll(final List<TreEntry> oneOrMoreEntries) {
         entries.addAll(oneOrMoreEntries);
     }
 
-    public void setEntries(List<TreEntry> treEntries) {
+    public void setEntries(final List<TreEntry> treEntries) {
         entries = new ArrayList<TreEntry>();
         entries.addAll(treEntries);
     }
 
-    public String getFieldValue(String tagName) throws ParseException {
+    public String getFieldValue(final String tagName) throws ParseException {
         for (TreEntry entry : entries) {
             if (entry.getName().equals(tagName)) {
                 return entry.getFieldValue();
@@ -48,7 +48,7 @@ public class TreGroup {
         throw new ParseException(String.format("Failed to look up %s", tagName), 0);
     }
 
-    public int getIntValue(String tagName) throws ParseException {
+    public int getIntValue(final String tagName) throws ParseException {
         try {
             return Integer.parseInt(getFieldValue(tagName));
         } catch (ParseException ex) {

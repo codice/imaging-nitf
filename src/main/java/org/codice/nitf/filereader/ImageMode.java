@@ -24,11 +24,11 @@ public enum ImageMode {
 
     private final String textEquivalent;
 
-    ImageMode(String abbreviation) {
+    ImageMode(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static ImageMode getEnumValue(String textEquivalent) {
+    public static ImageMode getEnumValue(final String textEquivalent) {
         for (ImageMode imode : values()) {
             if (textEquivalent.equals(imode.textEquivalent)) {
                 return imode;

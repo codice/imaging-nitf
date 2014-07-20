@@ -57,7 +57,7 @@ public class NitfSecurityMetadata {
     private static final int XSSRDT_LENGTH = 8;
     private static final int XSCTLN_LENGTH = 15;
 
-    public NitfSecurityMetadata(NitfReader nitfReader) throws ParseException {
+    public NitfSecurityMetadata(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
         readCommonSecurityMetadata();
     }

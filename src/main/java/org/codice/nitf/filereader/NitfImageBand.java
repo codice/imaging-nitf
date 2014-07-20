@@ -35,7 +35,7 @@ public class NitfImageBand {
     private static final int NLUTS_LENGTH = 1;
     private static final int NELUT_LENGTH = 5;
 
-    public NitfImageBand(NitfReader nitfReader) throws ParseException {
+    public NitfImageBand(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
         readIREPBAND();
         readISUBCAT();
@@ -72,11 +72,11 @@ public class NitfImageBand {
         return numEntriesLUT;
     }
 
-    public NitfImageBandLUT getLUT(int lutNumber) {
+    public NitfImageBandLUT getLUT(final int lutNumber) {
         return getLUTZeroBase(lutNumber - 1);
     }
 
-    public NitfImageBandLUT getLUTZeroBase(int lutNumberZeroBase) {
+    public NitfImageBandLUT getLUTZeroBase(final int lutNumberZeroBase) {
         return luts.get(lutNumberZeroBase);
     }
 

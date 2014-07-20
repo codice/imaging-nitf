@@ -32,11 +32,11 @@ public enum ImageCompression {
 
     private final String textEquivalent;
 
-    ImageCompression(String abbreviation) {
-        this.textEquivalent = abbreviation;
+    ImageCompression(final String abbreviation) {
+        textEquivalent = abbreviation;
     }
 
-    public static ImageCompression getEnumValue(String textEquivalent) {
+    public static ImageCompression getEnumValue(final String textEquivalent) {
         for (ImageCompression ic : values()) {
             if (textEquivalent.equals(ic.textEquivalent)) {
                 return ic;

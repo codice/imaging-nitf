@@ -46,13 +46,13 @@ public class TreParser {
         }
     }
 
-    private void unmarshal(InputStream inputStream) throws JAXBException {
+    private void unmarshal(final InputStream inputStream) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Tres.class);
         Unmarshaller u = jc.createUnmarshaller();
         tresStructure = (Tres) u.unmarshal(inputStream);
     }
 
-    public TreCollection parse(NitfReader reader, int treLength) throws ParseException {
+    public TreCollection parse(final NitfReader reader, final int treLength) throws ParseException {
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);
@@ -66,7 +66,7 @@ public class TreParser {
         return treCollection;
     }
 
-    private void parseOneTre(NitfReader reader, String tag, int fieldLength) throws ParseException {
+    private void parseOneTre(final NitfReader reader, final String tag, final int fieldLength) throws ParseException {
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
             if ((!tag.startsWith("PIX")) && (!tag.equals("JITCID"))) {
@@ -83,7 +83,7 @@ public class TreParser {
         treCollection.add(tre);
     }
 
-    private TreGroup parseTreComponents(List<Object> components, NitfReader reader, TreEntryList parent) throws ParseException {
+    private TreGroup parseTreComponents(final List<Object> components, final NitfReader reader, final TreEntryList parent) throws ParseException {
         TreGroup treGroup = new TreGroup();
         for (Object fieldLoopIf: components) {
             if (fieldLoopIf instanceof  IfType) {
@@ -120,7 +120,10 @@ public class TreParser {
         return treGroup;
     }
 
-    private void evaluateIfType(IfType ifType, TreGroup treGroup, NitfReader reader, TreEntryList parent) throws ParseException {
+    private void evaluateIfType(final IfType ifType,
+                                final TreGroup treGroup,
+                                final NitfReader reader,
+                                final TreEntryList parent) throws ParseException {
         String condition = ifType.getCond();
         // System.out.println("condition: " + condition);
         if (evaluateCondition(condition, treGroup)) {
@@ -130,7 +133,7 @@ public class TreParser {
         }
     }
 
-    private int computeFormula(String formula, TreGroup treGroup) throws ParseException {
+    private int computeFormula(final String formula, final TreGroup treGroup) throws ParseException {
         if ("(NPART+1)*(NPART)/2".equals(formula)) {
             int npart = treGroup.getIntValue("NPART");
             return ((npart + 1) * (npart) / 2);
@@ -154,7 +157,7 @@ public class TreParser {
         }
     }
 
-    private boolean evaluateCondition(String condition, TreGroup treGroup) throws ParseException {
+    private boolean evaluateCondition(final String condition, final TreGroup treGroup) throws ParseException {
         if (condition.contains(" AND ")) {
             return evaluateConditionBooleanAnd(condition, treGroup);
         } else if (condition.endsWith("!=")) {
@@ -168,7 +171,7 @@ public class TreParser {
         }
     }
 
-    private boolean evaluateConditionBooleanAnd(String condition, TreGroup treGroup) throws ParseException {
+    private boolean evaluateConditionBooleanAnd(final String condition, final TreGroup treGroup) throws ParseException {
         String[] condParts = condition.split(" AND ");
         if (condParts.length != 2) {
             // This is an error
@@ -179,13 +182,13 @@ public class TreParser {
         return (lhs && rhs);
     }
 
-    private boolean evaluateConditionIsNotEmpty(String condition, TreGroup treGroup) throws ParseException {
+    private boolean evaluateConditionIsNotEmpty(final String condition, final TreGroup treGroup) throws ParseException {
         String conditionPart = condition.substring(0, condition.length() - "!=".length());
         String actualValue = treGroup.getFieldValue(conditionPart);
         return (!actualValue.trim().isEmpty());
     }
 
-    private boolean evaluateConditionIsEqual(String condition, TreGroup treGroup) throws ParseException {
+    private boolean evaluateConditionIsEqual(final String condition, final TreGroup treGroup) throws ParseException {
         String[] conditionParts = condition.split("=");
         if (conditionParts.length != 2) {
             // This is an error
@@ -198,7 +201,7 @@ public class TreParser {
         return (conditionParts[1].equals(actualValue));
     }
 
-    private boolean evaluateConditionIsNotEqual(String condition, TreGroup treGroup) throws ParseException {
+    private boolean evaluateConditionIsNotEqual(final String condition, final TreGroup treGroup) throws ParseException {
         String[] conditionParts = condition.split("!=");
         if (conditionParts.length != 2) {
             // This is an error
@@ -208,7 +211,10 @@ public class TreParser {
         return (!(conditionParts[1].equals(actualValue)));
     }
 
-    private TreEntry parseOneField(NitfReader reader, FieldType field, TreEntryList parent, TreGroup treGroup) throws ParseException {
+    private TreEntry parseOneField(final NitfReader reader,
+                                   final FieldType field,
+                                   final TreEntryList parent,
+                                   final TreGroup treGroup) throws ParseException {
         String fieldKey = field.getName();
         if (fieldKey == null) {
             // System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
@@ -238,7 +244,7 @@ public class TreParser {
         }
     }
 
-    private TreType getTreTypeForTag(String tag) {
+    private TreType getTreTypeForTag(final String tag) {
         for (TreType treType : tresStructure.getTre()) {
             if (treType.getName().equals(tag.trim())) {
                 return treType;

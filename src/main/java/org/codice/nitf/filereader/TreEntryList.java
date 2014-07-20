@@ -18,7 +18,7 @@ public class TreEntryList extends TreGroup {
 
     private String name;
 
-    public TreEntryList(String tag) {
+    public TreEntryList(final String tag) {
         name = tag;
     }
 

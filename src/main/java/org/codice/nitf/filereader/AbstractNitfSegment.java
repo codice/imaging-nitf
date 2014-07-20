@@ -52,7 +52,7 @@ public class AbstractNitfSegment {
         return tresFlat;
     }
 
-    public void flattenOneTreEntry(Map<String, String> tresFlat, TreEntry treEntry, String parentName) {
+    public void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String parentName) {
         if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
             String key = String.format("%s_%s", parentName, treEntry.getName());
             String value = treEntry.getFieldValue().trim();
@@ -72,7 +72,8 @@ public class AbstractNitfSegment {
             }
         }
     }
-    protected void mergeTREs(TreCollection tresToAdd) {
+
+    protected void mergeTREs(final TreCollection tresToAdd) {
         treCollection.add(tresToAdd);
     }
 }

@@ -26,7 +26,7 @@ public class ImageCoordinates {
     private static final int COORDINATEMAXROWMAXCOL_INDEX = 2;
     private static final int COORDINATEMAXROW0_INDEX = 3;
 
-    public ImageCoordinates(ImageCoordinatePair[] coord) {
+    public ImageCoordinates(final ImageCoordinatePair[] coord) {
         coordinate00 = coord[COORDINATE00_INDEX];
         coordinate0MaxCol = coord[COORDINATE0MAXCOL_INDEX];
         coordinateMaxRowMaxCol = coord[COORDINATEMAXROWMAXCOL_INDEX];

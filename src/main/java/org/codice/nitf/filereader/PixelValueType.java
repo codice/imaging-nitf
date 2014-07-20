@@ -25,11 +25,11 @@ public enum PixelValueType {
 
     private final String textEquivalent;
 
-    PixelValueType(String abbreviation) {
+    PixelValueType(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static PixelValueType getEnumValue(String textEquivalent) {
+    public static PixelValueType getEnumValue(final String textEquivalent) {
         for (PixelValueType pv : values()) {
             if (textEquivalent.equals(pv.textEquivalent)) {
                 return pv;

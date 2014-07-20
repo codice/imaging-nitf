@@ -17,11 +17,11 @@ package org.codice.nitf.filereader;
 public class Tre extends TreEntryList {
     private String prefix = null;
 
-    public Tre(String tag) {
+    public Tre(final String tag) {
         super(tag);
     }
 
-    public void setPrefix(String mdPrefix) {
+    public void setPrefix(final String mdPrefix) {
         prefix = mdPrefix;
     }
 

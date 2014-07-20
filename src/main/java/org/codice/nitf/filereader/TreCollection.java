@@ -24,11 +24,11 @@ public class TreCollection {
         return treCollectionEntries;
     }
 
-    public void add(Tre tre) {
+    public void add(final Tre tre) {
         treCollectionEntries.add(tre);
     }
 
-    public void add(TreCollection collectionToAdd) {
+    public void add(final TreCollection collectionToAdd) {
         treCollectionEntries.addAll(collectionToAdd.getTREs());
     }
 
@@ -43,7 +43,7 @@ public class TreCollection {
         return treNames;
     }
 
-    public List<Tre> getTREsWithName(String nameToMatch) {
+    public List<Tre> getTREsWithName(final String nameToMatch) {
         List<Tre> tres = new ArrayList<Tre>();
         for (Tre tre : treCollectionEntries) {
             String treName = tre.getName();

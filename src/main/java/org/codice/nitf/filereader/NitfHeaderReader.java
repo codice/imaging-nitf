@@ -93,7 +93,7 @@ public class NitfHeaderReader extends AbstractNitfSegment {
 
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
-    public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
+    public NitfHeaderReader(final InputStream nitfInputStream) throws ParseException {
         reader = new NitfReader(new BufferedInputStream((nitfInputStream)), 0);
         readFHDRFVER();
         readCLEVEL();
@@ -217,11 +217,11 @@ public class NitfHeaderReader extends AbstractNitfSegment {
         return numberImageSegments;
     }
 
-    public int getLengthOfImageSubheader(int i) {
+    public int getLengthOfImageSubheader(final int i) {
         return lish.get(i);
     }
 
-    public long getLengthOfImage(int i) {
+    public long getLengthOfImage(final int i) {
         return li.get(i);
     }
 
@@ -229,11 +229,11 @@ public class NitfHeaderReader extends AbstractNitfSegment {
         return numberGraphicSegments;
     }
 
-    public int getLengthOfGraphicSubheader(int i) {
+    public int getLengthOfGraphicSubheader(final int i) {
         return lssh.get(i);
     }
 
-    public int getLengthOfGraphic(int i) {
+    public int getLengthOfGraphic(final int i) {
         return ls.get(i);
     }
 
@@ -241,11 +241,11 @@ public class NitfHeaderReader extends AbstractNitfSegment {
         return numberTextSegments;
     }
 
-    public int getLengthOfTextSubheader(int i) {
+    public int getLengthOfTextSubheader(final int i) {
         return ltsh.get(i);
     }
 
-    public int getLengthOfText(int i) {
+    public int getLengthOfText(final int i) {
         return lt.get(i);
     }
 
@@ -265,35 +265,35 @@ public class NitfHeaderReader extends AbstractNitfSegment {
         return extendedHeaderDataLength;
     }
 
-    public NitfImageSegment getImageSegment(int segmentNumber) {
+    public NitfImageSegment getImageSegment(final int segmentNumber) {
         return getImageSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfImageSegment getImageSegmentZeroBase(int segmentNumberZeroBase) {
+    public NitfImageSegment getImageSegmentZeroBase(final int segmentNumberZeroBase) {
         return imageSegments.get(segmentNumberZeroBase);
     }
 
-    public NitfGraphicSegment getGraphicSegment(int segmentNumber) {
+    public NitfGraphicSegment getGraphicSegment(final int segmentNumber) {
         return getGraphicSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfGraphicSegment getGraphicSegmentZeroBase(int segmentNumberZeroBase) {
+    public NitfGraphicSegment getGraphicSegmentZeroBase(final int segmentNumberZeroBase) {
         return graphicSegments.get(segmentNumberZeroBase);
     }
 
-    public NitfTextSegment getTextSegment(int segmentNumber) {
+    public NitfTextSegment getTextSegment(final int segmentNumber) {
         return getTextSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfTextSegment getTextSegmentZeroBase(int segmentNumberZeroBase) {
+    public NitfTextSegment getTextSegmentZeroBase(final int segmentNumberZeroBase) {
         return textSegments.get(segmentNumberZeroBase);
     }
 
-    public NitfDataExtensionSegment getDataExtensionSegment(int segmentNumber) {
+    public NitfDataExtensionSegment getDataExtensionSegment(final int segmentNumber) {
         return getDataExtensionSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfDataExtensionSegment getDataExtensionSegmentZeroBase(int segmentNumberZeroBase) {
+    public NitfDataExtensionSegment getDataExtensionSegmentZeroBase(final int segmentNumberZeroBase) {
         return dataExtensionSegments.get(segmentNumberZeroBase);
     }
 

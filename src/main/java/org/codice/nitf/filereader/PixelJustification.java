@@ -21,11 +21,11 @@ public enum PixelJustification {
 
     private final String textEquivalent;
 
-    PixelJustification(String abbreviation) {
-        this.textEquivalent = abbreviation;
+    PixelJustification(final String abbreviation) {
+        textEquivalent = abbreviation;
     }
 
-    public static PixelJustification getEnumValue(String textEquivalent) {
+    public static PixelJustification getEnumValue(final String textEquivalent) {
         for (PixelJustification pj : values()) {
             if (textEquivalent.equals(pj.textEquivalent)) {
                 return pj;

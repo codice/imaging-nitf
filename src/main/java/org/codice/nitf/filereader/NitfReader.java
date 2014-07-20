@@ -29,7 +29,7 @@ public class NitfReader {
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
     private static final int ENCRYP_LENGTH = 1;
 
-    public NitfReader(BufferedInputStream nitfInputStream, int offset) throws ParseException {
+    public NitfReader(final BufferedInputStream nitfInputStream, final int offset) throws ParseException {
         input = nitfInputStream;
         numBytesRead = offset;
     }
@@ -42,7 +42,7 @@ public class NitfReader {
         return numBytesRead;
     }
 
-    public void verifyHeaderMagic(String magicHeader) throws ParseException {
+    public void verifyHeaderMagic(final String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
             throw new ParseException(String.format("Missing %s magic header, got %s", magicHeader, actualHeader), numBytesRead);
@@ -64,7 +64,7 @@ public class NitfReader {
         return dateTime;
     }
 
-    public Integer readBytesAsInteger(int count) throws ParseException {
+    public Integer readBytesAsInteger(final int count) throws ParseException {
         String intString = readBytes(count);
         // System.out.println("Bytes to be converted to integer: |" + intString + "|");
         Integer intValue = 0;
@@ -76,7 +76,7 @@ public class NitfReader {
         return intValue;
     }
 
-    public Long readBytesAsLong(int count) throws ParseException {
+    public Long readBytesAsLong(final int count) throws ParseException {
         String longString = readBytes(count);
         Long longValue = 0L;
         try {
@@ -87,7 +87,7 @@ public class NitfReader {
         return longValue;
     }
 
-    public Double readBytesAsDouble(int count) throws ParseException {
+    public Double readBytesAsDouble(final int count) throws ParseException {
         String doubleString = readBytes(count);
         Double doubleValue = 0.0;
         try {
@@ -98,7 +98,7 @@ public class NitfReader {
         return doubleValue;
     }
 
-    public String readTrimmedBytes(int count) throws ParseException {
+    public String readTrimmedBytes(final int count) throws ParseException {
         return readBytes(count).trim();
     }
 
@@ -108,11 +108,11 @@ public class NitfReader {
         }
     }
 
-    public String readBytes(int count) throws ParseException {
+    public String readBytes(final int count) throws ParseException {
         return new String(readBytesRaw(count), UTF8_CHARSET);
     }
 
-    public byte[] readBytesRaw(int count) throws ParseException {
+    public byte[] readBytesRaw(final int count) throws ParseException {
         try {
             byte[] bytes = new byte[count];
             int thisRead = input.read(bytes, 0, count);
@@ -129,14 +129,15 @@ public class NitfReader {
         }
     }
 
-    public void skip(long count) throws ParseException {
+    public void skip(final long count) throws ParseException {
+        long bytesToRead = count;
         try {
             long thisRead = 0;
             do {
-                thisRead = input.skip(count);
+                thisRead = input.skip(bytesToRead);
                 numBytesRead += thisRead;
-                count -= thisRead;
-            } while (count > 0);
+                bytesToRead -= thisRead;
+            } while (bytesToRead > 0);
         } catch (IOException ex) {
             throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
         }

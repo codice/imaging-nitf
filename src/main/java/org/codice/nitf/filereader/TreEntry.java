@@ -22,19 +22,19 @@ public class TreEntry {
     private ArrayList<TreGroup> groups = null;
     private TreGroup entryParent = null;
 
-    public TreEntry(String fieldName, String fieldValue, TreGroup parent) {
+    public TreEntry(final String fieldName, final String fieldValue, final TreGroup parent) {
         name = fieldName;
         value = fieldValue;
         entryParent = parent;
     }
 
-    public TreEntry(String fieldName, TreGroup parent) {
+    public TreEntry(final String fieldName, final TreGroup parent) {
         name = fieldName;
         entryParent = parent;
         groups = new ArrayList<TreGroup>();
     }
 
-    public void setName(String fieldName) {
+    public void setName(final String fieldName) {
         name = fieldName;
     }
 
@@ -42,7 +42,7 @@ public class TreEntry {
         return name;
     }
 
-    public void setFieldValue(String fieldValue) {
+    public void setFieldValue(final String fieldValue) {
         value = fieldValue;
     }
 
@@ -60,7 +60,7 @@ public class TreEntry {
         return groups;
     }
 
-    public void addGroup(TreGroup group) {
+    public void addGroup(final TreGroup group) {
         groups.add(group);
     }
 

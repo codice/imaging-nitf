@@ -167,8 +167,7 @@
         <!-- See http://checkstyle.sf.net/config_design.html -->
         <!-- TODO: turn this back on -->
 <!--         <module name="DesignForExtension"/> -->
-        <!-- TODO: turn this back on -->
-<!--         <module name="FinalClass"/> -->
+        <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
         <module name="VisibilityModifier">
@@ -180,8 +179,7 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
-        <!-- TODO: turn this back on -->
-<!--         <module name="FinalParameters"/> -->
+        <module name="FinalParameters"/>
         <!-- TODO: turn this back on -->
 <!--         <module name="TodoComment"/> -->
         <module name="UpperEll"/>

@@ -52,7 +52,7 @@ public class NitfGraphicSegment extends AbstractNitfSegment {
     private static final int SXSHDL_LENGTH = 5;
     private static final int SXSOFL_LENGTH = 3;
 
-    public NitfGraphicSegment(NitfReader nitfReader, int graphicLength) throws ParseException {
+    public NitfGraphicSegment(final NitfReader nitfReader, final int graphicLength) throws ParseException {
         reader = nitfReader;
         lengthOfGraphic = graphicLength;
 

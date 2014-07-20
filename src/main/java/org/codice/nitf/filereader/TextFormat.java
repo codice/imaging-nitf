@@ -24,11 +24,11 @@ public enum TextFormat {
 
     private final String textEquivalent;
 
-    TextFormat(String abbreviation) {
+    TextFormat(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static TextFormat getEnumValue(String textEquivalent) {
+    public static TextFormat getEnumValue(final String textEquivalent) {
         for (TextFormat tf : values()) {
             if (textEquivalent.equals(tf.textEquivalent)) {
                 return tf;

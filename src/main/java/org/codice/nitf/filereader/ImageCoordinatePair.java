@@ -40,7 +40,7 @@ public class ImageCoordinatePair {
     public ImageCoordinatePair() {
     }
 
-    public ImageCoordinatePair(double latitude, double longitude) {
+    public ImageCoordinatePair(final double latitude, final double longitude) {
         lat = latitude;
         lon = longitude;
     }
@@ -58,7 +58,7 @@ public class ImageCoordinatePair {
 
         /param dms string representation in MIL-STD-2500C ddmmssXdddmmssY form
      */
-    public void setFromDMS(String dms) throws ParseException {
+    public void setFromDMS(final String dms) throws ParseException {
         if (dms.length() != "ddmmssXdddmmssY".length()) {
             throw new ParseException("Incorrect length for DMS parsing", 0);
         }
@@ -92,14 +92,14 @@ public class ImageCoordinatePair {
         }
     }
 
-    private double buildDecimalDegrees(String degStr, String minStr, String secStr) {
+    private double buildDecimalDegrees(final String degStr, final String minStr, final String secStr) {
         int degrees = Integer.parseInt(degStr);
         int minutes = Integer.parseInt(minStr);
         int seconds = Integer.parseInt(secStr);
         return degrees + ((minutes + (seconds / SECONDS_IN_ONE_MINUTE)) / MINUTES_IN_ONE_DEGREE);
     }
 
-    public void setFromUTMUPSNorth(String ups) throws ParseException {
+    public void setFromUTMUPSNorth(final String ups) throws ParseException {
         // System.out.println("UPSNorth: [" + ups + "]");
         if (ups.length() != "zzeeeeeennnnnnn".length()) {
             throw new ParseException("Incorrect length for UPS North parsing", 0);
@@ -112,7 +112,7 @@ public class ImageCoordinatePair {
 
         /param dd string representation in MIL-STD-2500C ±dd.ddd±ddd.ddd form
      */
-    public void setFromDecimalDegrees(String dd) throws ParseException {
+    public void setFromDecimalDegrees(final String dd) throws ParseException {
         if (dd.length() != "+dd.ddd+ddd.ddd".length()) {
             throw new ParseException("Incorrect length for decimal degrees parsing", 0);
         }

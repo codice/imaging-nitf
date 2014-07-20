@@ -36,7 +36,7 @@ public class NitfTextSegment {
     private static final int TXTFMT_LENGTH = 3;
     private static final int TXSHDL_LENGTH = 5;
 
-    public NitfTextSegment(NitfReader nitfReader, int textLength) throws ParseException {
+    public NitfTextSegment(final NitfReader nitfReader, final int textLength) throws ParseException {
         reader = nitfReader;
         lengthOfText = textLength;
 

@@ -22,11 +22,11 @@ public enum GraphicColour {
 
     private final String textEquivalent;
 
-    GraphicColour(String abbreviation) {
+    GraphicColour(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static GraphicColour getEnumValue(String textEquivalent) {
+    public static GraphicColour getEnumValue(final String textEquivalent) {
         for (GraphicColour scolor : values()) {
             if (textEquivalent.equals(scolor.textEquivalent)) {
                 return scolor;

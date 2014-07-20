@@ -23,7 +23,7 @@ public class NitfFileSecurityMetadata extends NitfSecurityMetadata {
     private static final int FSCOP_LENGTH = 5;
     private static final int FSCPYS_LENGTH = 5;
 
-    public NitfFileSecurityMetadata(NitfReader nitfReader) throws ParseException {
+    public NitfFileSecurityMetadata(final NitfReader nitfReader) throws ParseException {
         super(nitfReader);
         readFileSecurityMetadataExtras();
     }

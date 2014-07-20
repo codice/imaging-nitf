@@ -29,11 +29,11 @@ public enum ImageRepresentation {
 
     private final String textEquivalent;
 
-    ImageRepresentation(String abbreviation) {
+    ImageRepresentation(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static ImageRepresentation getEnumValue(String textEquivalent) {
+    public static ImageRepresentation getEnumValue(final String textEquivalent) {
         for (ImageRepresentation irep : values()) {
             if (textEquivalent.equals(irep.textEquivalent)) {
                 return irep;

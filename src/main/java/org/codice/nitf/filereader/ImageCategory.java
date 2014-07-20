@@ -50,11 +50,11 @@ public enum ImageCategory {
 
     private final String textEquivalent;
 
-    ImageCategory(String abbreviation) {
+    ImageCategory(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
-    public static ImageCategory getEnumValue(String textEquivalent) {
+    public static ImageCategory getEnumValue(final String textEquivalent) {
         for (ImageCategory icat : values()) {
             if (textEquivalent.equals(icat.textEquivalent)) {
                 return icat;
