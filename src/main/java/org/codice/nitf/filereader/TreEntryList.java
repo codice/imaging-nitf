@@ -16,7 +16,7 @@ package org.codice.nitf.filereader;
 
 public class TreEntryList extends TreGroup {
 
-    protected String name;
+    private String name;
 
     public TreEntryList(String tag) {
         name = tag;

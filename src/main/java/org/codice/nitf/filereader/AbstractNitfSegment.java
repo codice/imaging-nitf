@@ -22,7 +22,7 @@ public class AbstractNitfSegment {
 
     protected NitfReader reader = null;
 
-    TreCollection treCollection = new TreCollection();
+    private TreCollection treCollection = new TreCollection();
 
     public TreCollection getTREsRawStructure() {
         return treCollection;

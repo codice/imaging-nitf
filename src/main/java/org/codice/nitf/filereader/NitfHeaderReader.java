@@ -305,7 +305,7 @@ public class NitfHeaderReader extends AbstractNitfSegment {
     private void readCLEVEL() throws ParseException {
         nitfComplexityLevel = reader.readBytesAsInteger(CLEVEL_LENGTH);
         if ((nitfComplexityLevel < MIN_COMPLEXITY_LEVEL) || (nitfComplexityLevel > MAX_COMPLEXITY_LEVEL)) {
-            throw new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.numBytesRead);
+            throw new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.getNumBytesRead());
         }
     }
 

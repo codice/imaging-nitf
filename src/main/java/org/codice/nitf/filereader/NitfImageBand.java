@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class NitfImageBand {
 
-    NitfReader reader = null;
+    private NitfReader reader = null;
 
     // An enum might have been useful, but this is extensible
     private String imageRepresentation = null;

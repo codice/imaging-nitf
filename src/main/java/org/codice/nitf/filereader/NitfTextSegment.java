@@ -18,11 +18,11 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class NitfTextSegment {
-    NitfReader reader = null;
-    int lengthOfText = 0;
-    Date textDateTime = null;
-    NitfSecurityMetadata securityMetadata = null;
-    int textExtendedSubheaderLength = 0;
+    private NitfReader reader = null;
+    private int lengthOfText = 0;
+    private Date textDateTime = null;
+    private NitfSecurityMetadata securityMetadata = null;
+    private int textExtendedSubheaderLength = 0;
 
     private String textIdentifier = null;
     private int textAttachmentLevel = 0;

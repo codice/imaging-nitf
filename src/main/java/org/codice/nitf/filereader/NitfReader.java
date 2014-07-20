@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class NitfReader {
     private BufferedInputStream input = null;
-    int numBytesRead = 0;
+    private int numBytesRead = 0;
 
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
@@ -36,6 +36,10 @@ public class NitfReader {
 
     public Boolean canSeek() {
         return false;
+    }
+
+    public int getNumBytesRead() {
+        return numBytesRead;
     }
 
     public void verifyHeaderMagic(String magicHeader) throws ParseException {

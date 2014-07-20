@@ -15,7 +15,7 @@
 package org.codice.nitf.filereader;
 
 public class NitfImageBandLUT {
-    NitfReader reader = null;
+    private NitfReader reader = null;
 
     public NitfImageBandLUT() {
     }

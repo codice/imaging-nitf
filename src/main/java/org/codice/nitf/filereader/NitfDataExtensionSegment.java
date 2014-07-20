@@ -17,8 +17,8 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 
 public class NitfDataExtensionSegment extends AbstractNitfSegment {
-    NitfReader reader = null;
-    int lengthOfDataExtension = 0;
+    private NitfReader reader = null;
+    private int lengthOfDataExtension = 0;
 
     private String desIdentifier = null;
     private int desVersion = -1;

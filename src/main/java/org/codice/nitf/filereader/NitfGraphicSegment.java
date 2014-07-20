@@ -18,8 +18,8 @@ import java.text.ParseException;
 
 public class NitfGraphicSegment extends AbstractNitfSegment {
 
-    NitfReader reader = null;
-    int lengthOfGraphic = 0;
+    private NitfReader reader = null;
+    private int lengthOfGraphic = 0;
 
     private String graphicIdentifier = null;
     private String graphicName = null;
