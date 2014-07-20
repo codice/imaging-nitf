@@ -1,4 +1,4 @@
 nitf-file-reader
 ================
 
-Pure Java NITF File Reader
+Pure Java National Imagery Transmission Format (NITF) file support.
