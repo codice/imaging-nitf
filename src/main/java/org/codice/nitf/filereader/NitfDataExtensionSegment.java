@@ -55,15 +55,15 @@ public class NitfDataExtensionSegment extends AbstractNitfSegment {
         readDESDATA();
     }
 
-    public String getDESIdentifier() {
+    public final String getDESIdentifier() {
         return desIdentifier;
     }
 
-    public int getDESVersion() {
+    public final int getDESVersion() {
         return desVersion;
     }
 
-    public NitfSecurityMetadata getSecurityMetadata() {
+    public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 

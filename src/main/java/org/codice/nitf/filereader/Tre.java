@@ -21,11 +21,11 @@ public class Tre extends TreEntryList {
         super(tag);
     }
 
-    public void setPrefix(final String mdPrefix) {
+    public final void setPrefix(final String mdPrefix) {
         prefix = mdPrefix;
     }
 
-    public String getPrefix() {
+    public final String getPrefix() {
         return prefix;
     }
 }

@@ -56,31 +56,31 @@ public class NitfTextSegment {
         readTextData();
     }
 
-    public String getTextIdentifier() {
+    public final String getTextIdentifier() {
         return textIdentifier;
     }
 
-    public int getTextAttachmentLevel() {
+    public final int getTextAttachmentLevel() {
         return textAttachmentLevel;
     }
 
-    public Date getTextDateTime() {
+    public final Date getTextDateTime() {
         return textDateTime;
     }
 
-    public String getTextTitle() {
+    public final String getTextTitle() {
         return textTitle;
     }
 
-    public NitfSecurityMetadata getSecurityMetadata() {
+    public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 
-    public TextFormat getTextFormat() {
+    public final TextFormat getTextFormat() {
         return textFormat;
     }
 
-    public int getTextExtendedSubheaderLength() {
+    public final int getTextExtendedSubheaderLength() {
         return textExtendedSubheaderLength;
     }
 

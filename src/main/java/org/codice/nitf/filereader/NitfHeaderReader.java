@@ -156,144 +156,144 @@ public class NitfHeaderReader extends AbstractNitfSegment {
         readDataExtensionSegments();
     }
 
-    public FileType getFileType() {
+    public final FileType getFileType() {
         return fileType;
     }
 
-    public int getComplexityLevel() {
+    public final int getComplexityLevel() {
         return nitfComplexityLevel;
     }
 
-    public String getStandardType() {
+    public final String getStandardType() {
         return nitfStandardType;
     }
 
-    public String getOriginatingStationId() {
+    public final String getOriginatingStationId() {
         return nitfOriginatingStationId;
     }
 
-    public Date getFileDateTime() {
+    public final Date getFileDateTime() {
         return nitfFileDateTime;
     }
 
-    public String getFileTitle() {
+    public final String getFileTitle() {
         return nitfFileTitle;
     }
 
-    public NitfFileSecurityMetadata getFileSecurityMetadata() {
+    public final NitfFileSecurityMetadata getFileSecurityMetadata() {
         return fileSecurityMetadata;
     }
 
-    public byte getFileBackgroundColourRed() {
+    public final byte getFileBackgroundColourRed() {
         return nitfFileBackgroundColourRed;
     }
 
-    public byte getFileBackgroundColourGreen() {
+    public final byte getFileBackgroundColourGreen() {
         return nitfFileBackgroundColourGreen;
     }
 
-    public byte getFileBackgroundColourBlue() {
+    public final byte getFileBackgroundColourBlue() {
         return nitfFileBackgroundColourBlue;
     }
 
-    public String getOriginatorsName() {
+    public final String getOriginatorsName() {
         return nitfOriginatorsName;
     }
 
-    public String getOriginatorsPhoneNumber() {
+    public final String getOriginatorsPhoneNumber() {
         return nitfOriginatorsPhoneNumber;
     }
 
-    public long getFileLength() {
+    public final long getFileLength() {
         return nitfFileLength;
     }
 
-    public int getHeaderLength() {
+    public final int getHeaderLength() {
         return nitfHeaderLength;
     }
 
-    public int getNumberOfImageSegments() {
+    public final int getNumberOfImageSegments() {
         // TODO: this should be based on the number we actually found, not what the header claimed
         return numberImageSegments;
     }
 
-    public int getLengthOfImageSubheader(final int i) {
+    public final int getLengthOfImageSubheader(final int i) {
         return lish.get(i);
     }
 
-    public long getLengthOfImage(final int i) {
+    public final long getLengthOfImage(final int i) {
         return li.get(i);
     }
 
-    public int getNumberOfGraphicSegments() {
+    public final int getNumberOfGraphicSegments() {
         return numberGraphicSegments;
     }
 
-    public int getLengthOfGraphicSubheader(final int i) {
+    public final int getLengthOfGraphicSubheader(final int i) {
         return lssh.get(i);
     }
 
-    public int getLengthOfGraphic(final int i) {
+    public final int getLengthOfGraphic(final int i) {
         return ls.get(i);
     }
 
-    public int getNumberOfTextSegments() {
+    public final int getNumberOfTextSegments() {
         return numberTextSegments;
     }
 
-    public int getLengthOfTextSubheader(final int i) {
+    public final int getLengthOfTextSubheader(final int i) {
         return ltsh.get(i);
     }
 
-    public int getLengthOfText(final int i) {
+    public final int getLengthOfText(final int i) {
         return lt.get(i);
     }
 
-    public int getNumberOfDataExtensionSegments() {
+    public final int getNumberOfDataExtensionSegments() {
         return numberDataExtensionSegments;
     }
 
-    public int getNumberOfReservedExtensionSegments() {
+    public final int getNumberOfReservedExtensionSegments() {
         return numberReservedExtensionSegments;
     }
 
-    public int getUserDefinedHeaderDataLength() {
+    public final int getUserDefinedHeaderDataLength() {
         return userDefinedHeaderDataLength;
     }
 
-    public int getExtendedHeaderDataLength() {
+    public final int getExtendedHeaderDataLength() {
         return extendedHeaderDataLength;
     }
 
-    public NitfImageSegment getImageSegment(final int segmentNumber) {
+    public final NitfImageSegment getImageSegment(final int segmentNumber) {
         return getImageSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfImageSegment getImageSegmentZeroBase(final int segmentNumberZeroBase) {
+    public final NitfImageSegment getImageSegmentZeroBase(final int segmentNumberZeroBase) {
         return imageSegments.get(segmentNumberZeroBase);
     }
 
-    public NitfGraphicSegment getGraphicSegment(final int segmentNumber) {
+    public final NitfGraphicSegment getGraphicSegment(final int segmentNumber) {
         return getGraphicSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfGraphicSegment getGraphicSegmentZeroBase(final int segmentNumberZeroBase) {
+    public final NitfGraphicSegment getGraphicSegmentZeroBase(final int segmentNumberZeroBase) {
         return graphicSegments.get(segmentNumberZeroBase);
     }
 
-    public NitfTextSegment getTextSegment(final int segmentNumber) {
+    public final NitfTextSegment getTextSegment(final int segmentNumber) {
         return getTextSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfTextSegment getTextSegmentZeroBase(final int segmentNumberZeroBase) {
+    public final NitfTextSegment getTextSegmentZeroBase(final int segmentNumberZeroBase) {
         return textSegments.get(segmentNumberZeroBase);
     }
 
-    public NitfDataExtensionSegment getDataExtensionSegment(final int segmentNumber) {
+    public final NitfDataExtensionSegment getDataExtensionSegment(final int segmentNumber) {
         return getDataExtensionSegmentZeroBase(segmentNumber - 1);
     }
 
-    public NitfDataExtensionSegment getDataExtensionSegmentZeroBase(final int segmentNumberZeroBase) {
+    public final NitfDataExtensionSegment getDataExtensionSegmentZeroBase(final int segmentNumberZeroBase) {
         return dataExtensionSegments.get(segmentNumberZeroBase);
     }
 

@@ -28,11 +28,11 @@ public class NitfFileSecurityMetadata extends NitfSecurityMetadata {
         readFileSecurityMetadataExtras();
     }
 
-    public String getFileCopyNumber() {
+    public final String getFileCopyNumber() {
         return nitfFileCopyNumber;
     }
 
-    public String getFileNumberOfCopies() {
+    public final String getFileNumberOfCopies() {
         return nitfFileNumberOfCopies;
     }
 

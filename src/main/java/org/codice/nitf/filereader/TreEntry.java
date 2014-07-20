@@ -34,37 +34,37 @@ public class TreEntry {
         groups = new ArrayList<TreGroup>();
     }
 
-    public void setName(final String fieldName) {
+    public final void setName(final String fieldName) {
         name = fieldName;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public void setFieldValue(final String fieldValue) {
+    public final void setFieldValue(final String fieldValue) {
         value = fieldValue;
     }
 
-    public String getFieldValue() {
+    public final String getFieldValue() {
         return value;
     }
 
-    public void initGroups() {
+    public final void initGroups() {
         if (groups == null) {
             groups = new ArrayList<TreGroup>();
         }
     }
 
-    public ArrayList<TreGroup> getGroups() {
+    public final ArrayList<TreGroup> getGroups() {
         return groups;
     }
 
-    public void addGroup(final TreGroup group) {
+    public final void addGroup(final TreGroup group) {
         groups.add(group);
     }
 
-    public void dump() {
+    public final void dump() {
         System.out.println("\tName:" + name);
         if (value != null) {
             System.out.println("\tValue:" + value);

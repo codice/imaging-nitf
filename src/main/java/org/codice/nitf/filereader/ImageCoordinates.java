@@ -33,19 +33,19 @@ public class ImageCoordinates {
         coordinateMaxRow0 = coord[COORDINATEMAXROW0_INDEX];
     }
 
-    public ImageCoordinatePair getCoordinate00() {
+    public final ImageCoordinatePair getCoordinate00() {
         return coordinate00;
     }
 
-    public ImageCoordinatePair getCoordinate0MaxCol() {
+    public final ImageCoordinatePair getCoordinate0MaxCol() {
         return coordinate0MaxCol;
     }
 
-    public ImageCoordinatePair getCoordinateMaxRowMaxCol() {
+    public final ImageCoordinatePair getCoordinateMaxRowMaxCol() {
         return coordinateMaxRowMaxCol;
     }
 
-    public ImageCoordinatePair getCoordinateMaxRow0() {
+    public final ImageCoordinatePair getCoordinateMaxRow0() {
         return coordinateMaxRow0;
     }
 }

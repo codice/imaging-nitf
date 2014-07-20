@@ -20,19 +20,19 @@ import java.util.List;
 public class TreCollection {
     private ArrayList<Tre> treCollectionEntries = new ArrayList<Tre>();
 
-    public List<Tre> getTREs() {
+    public final List<Tre> getTREs() {
         return treCollectionEntries;
     }
 
-    public void add(final Tre tre) {
+    public final void add(final Tre tre) {
         treCollectionEntries.add(tre);
     }
 
-    public void add(final TreCollection collectionToAdd) {
+    public final void add(final TreCollection collectionToAdd) {
         treCollectionEntries.addAll(collectionToAdd.getTREs());
     }
 
-    public List<String> getUniqueNamesOfTRE() {
+    public final List<String> getUniqueNamesOfTRE() {
         List<String> treNames = new ArrayList<String>();
         for (Tre tre : treCollectionEntries) {
             String treName = tre.getName();
@@ -43,7 +43,7 @@ public class TreCollection {
         return treNames;
     }
 
-    public List<Tre> getTREsWithName(final String nameToMatch) {
+    public final List<Tre> getTREsWithName(final String nameToMatch) {
         List<Tre> tres = new ArrayList<Tre>();
         for (Tre tre : treCollectionEntries) {
             String treName = tre.getName();
@@ -54,7 +54,7 @@ public class TreCollection {
         return tres;
     }
 
-    public boolean hasTREs() {
+    public final boolean hasTREs() {
         return (treCollectionEntries.size() > 0);
     }
 }

@@ -158,139 +158,139 @@ public class NitfImageSegment extends AbstractNitfSegment {
         readImageData();
     }
 
-    public String getImageIdentifier1() {
+    public final String getImageIdentifier1() {
         return imageIdentifier1;
     }
 
-    public Date getImageDateTime() {
+    public final Date getImageDateTime() {
         return imageDateTime;
     }
 
-    public String getImageTargetId() {
+    public final String getImageTargetId() {
         return imageTargetId;
     }
 
-    public String getImageIdentifier2() {
+    public final String getImageIdentifier2() {
         return imageIdentifier2;
     }
 
-    public NitfSecurityMetadata getSecurityMetadata() {
+    public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 
-    public String getImageSource() {
+    public final String getImageSource() {
         return imageSource;
     }
 
-    public long getNumberOfRows() {
+    public final long getNumberOfRows() {
         return numRows;
     }
 
-    public long getNumberOfColumns() {
+    public final long getNumberOfColumns() {
         return numColumns;
     }
 
-    public PixelValueType getPixelValueType() {
+    public final PixelValueType getPixelValueType() {
         return pixelValueType;
     }
 
-    public ImageRepresentation getImageRepresentation() {
+    public final ImageRepresentation getImageRepresentation() {
         return imageRepresentation;
     }
 
-    public ImageCategory getImageCategory() {
+    public final ImageCategory getImageCategory() {
         return imageCategory;
     }
 
-    public int getActualBitsPerPixelPerBand() {
+    public final int getActualBitsPerPixelPerBand() {
         return actualBitsPerPixelPerBand;
     }
 
-    public PixelJustification getPixelJustification() {
+    public final PixelJustification getPixelJustification() {
         return pixelJustification;
     }
 
-    public ImageCoordinatesRepresentation getImageCoordinatesRepresentation() {
+    public final ImageCoordinatesRepresentation getImageCoordinatesRepresentation() {
         return imageCoordinatesRepresentation;
     }
 
-    public int getNumberOfImageComments() {
+    public final int getNumberOfImageComments() {
         return numImageComments;
     }
 
-    public String getImageComment(final int commentNumber) {
+    public final String getImageComment(final int commentNumber) {
         return getImageCommentZeroBase(commentNumber - 1);
     }
 
-    public String getImageCommentZeroBase(final int commentNumberZeroBase) {
+    public final String getImageCommentZeroBase(final int commentNumberZeroBase) {
         return imageComments.get(commentNumberZeroBase);
     }
 
-    public ImageCompression getImageCompression() {
+    public final ImageCompression getImageCompression() {
         return imageCompression;
     }
 
-    public String getCompressionRate() {
+    public final String getCompressionRate() {
         return compressionRate;
     }
 
-    public int getNumBands() {
+    public final int getNumBands() {
         return numBands;
     }
 
-    public NitfImageBand getImageBand(final int bandNumber) {
+    public final NitfImageBand getImageBand(final int bandNumber) {
         return getImageBandZeroBase(bandNumber - 1);
     }
 
-    public NitfImageBand getImageBandZeroBase(final int bandNumberZeroBase) {
+    public final NitfImageBand getImageBandZeroBase(final int bandNumberZeroBase) {
         return imageBands.get(bandNumberZeroBase);
     }
 
-    public ImageMode getImageMode() {
+    public final ImageMode getImageMode() {
         return imageMode;
     }
 
-    public int getNumberOfBlocksPerRow() {
+    public final int getNumberOfBlocksPerRow() {
         return numBlocksPerRow;
     }
 
-    public int getNumberOfBlocksPerColumn() {
+    public final int getNumberOfBlocksPerColumn() {
         return numBlocksPerColumn;
     }
 
-    public int getNumberOfPixelsPerBlockHorizontal() {
+    public final int getNumberOfPixelsPerBlockHorizontal() {
         return numPixelsPerBlockHorizontal;
     }
 
-    public int getNumberOfPixelsPerBlockVertical() {
+    public final int getNumberOfPixelsPerBlockVertical() {
         return numPixelsPerBlockVertical;
     }
 
-    public int getNumberOfBitsPerPixelPerBand() {
+    public final int getNumberOfBitsPerPixelPerBand() {
         return numBitsPerPixelPerBand;
     }
 
-    public int getImageDisplayLevel() {
+    public final int getImageDisplayLevel() {
         return imageDisplayLevel;
     }
 
-    public int getImageAttachmentLevel() {
+    public final int getImageAttachmentLevel() {
         return imageAttachmentLevel;
     }
 
-    public int getImageLocationRow() {
+    public final int getImageLocationRow() {
         return imageLocationRow;
     }
 
-    public int getImageLocationColumn() {
+    public final int getImageLocationColumn() {
         return imageLocationColumn;
     }
 
-    public String getImageMagnification() {
+    public final String getImageMagnification() {
         return imageMagnification;
     }
 
-    public double getImageMagnificationAsDouble() {
+    public final double getImageMagnificationAsDouble() {
         if (imageMagnification.startsWith("/")) {
             return (1.0 / Double.parseDouble(imageMagnification.substring("1".length())));
         } else {
@@ -298,19 +298,19 @@ public class NitfImageSegment extends AbstractNitfSegment {
         }
     }
 
-    public int getUserDefinedImageDataLength() {
+    public final int getUserDefinedImageDataLength() {
         return userDefinedImageDataLength;
     }
 
-    public int getImageExtendedSubheaderDataLength() {
+    public final int getImageExtendedSubheaderDataLength() {
         return imageExtendedSubheaderDataLength;
     }
 
-    public ImageCoordinates getImageCoordinates() {
+    public final ImageCoordinates getImageCoordinates() {
         return imageCoordinates;
     }
 
-    public long getLengthOfImage() {
+    public final long getLengthOfImage() {
         return lengthOfImage;
     }
 

@@ -45,11 +45,11 @@ public class ImageCoordinatePair {
         lon = longitude;
     }
 
-    public double getLatitude() {
+    public final double getLatitude() {
         return lat;
     }
 
-    public double getLongitude() {
+    public final double getLongitude() {
         return lon;
     }
 
@@ -58,7 +58,7 @@ public class ImageCoordinatePair {
 
         /param dms string representation in MIL-STD-2500C ddmmssXdddmmssY form
      */
-    public void setFromDMS(final String dms) throws ParseException {
+    public final void setFromDMS(final String dms) throws ParseException {
         if (dms.length() != "ddmmssXdddmmssY".length()) {
             throw new ParseException("Incorrect length for DMS parsing", 0);
         }
@@ -99,7 +99,7 @@ public class ImageCoordinatePair {
         return degrees + ((minutes + (seconds / SECONDS_IN_ONE_MINUTE)) / MINUTES_IN_ONE_DEGREE);
     }
 
-    public void setFromUTMUPSNorth(final String ups) throws ParseException {
+    public final void setFromUTMUPSNorth(final String ups) throws ParseException {
         // System.out.println("UPSNorth: [" + ups + "]");
         if (ups.length() != "zzeeeeeennnnnnn".length()) {
             throw new ParseException("Incorrect length for UPS North parsing", 0);
@@ -112,7 +112,7 @@ public class ImageCoordinatePair {
 
         /param dd string representation in MIL-STD-2500C ±dd.ddd±ddd.ddd form
      */
-    public void setFromDecimalDegrees(final String dd) throws ParseException {
+    public final void setFromDecimalDegrees(final String dd) throws ParseException {
         if (dd.length() != "+dd.ddd+ddd.ddd".length()) {
             throw new ParseException("Incorrect length for decimal degrees parsing", 0);
         }

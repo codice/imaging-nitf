@@ -56,27 +56,27 @@ public class NitfImageBand {
         }
     }
 
-    public String getImageRepresentation() {
+    public final String getImageRepresentation() {
         return imageRepresentation;
     }
 
-    public String getSubCategory() {
+    public final String getSubCategory() {
         return imageSubcategory;
     }
 
-    public int getNumLUTs() {
+    public final int getNumLUTs() {
         return numLUTs;
     }
 
-    public int getNumLUTEntries() {
+    public final int getNumLUTEntries() {
         return numEntriesLUT;
     }
 
-    public NitfImageBandLUT getLUT(final int lutNumber) {
+    public final NitfImageBandLUT getLUT(final int lutNumber) {
         return getLUTZeroBase(lutNumber - 1);
     }
 
-    public NitfImageBandLUT getLUTZeroBase(final int lutNumberZeroBase) {
+    public final NitfImageBandLUT getLUTZeroBase(final int lutNumberZeroBase) {
         return luts.get(lutNumberZeroBase);
     }
 

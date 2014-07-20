@@ -22,7 +22,7 @@ public class TreEntryList extends TreGroup {
         name = tag;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 

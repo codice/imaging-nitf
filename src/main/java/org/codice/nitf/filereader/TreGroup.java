@@ -22,24 +22,24 @@ public class TreGroup {
 
     private ArrayList<TreEntry> entries = new ArrayList<TreEntry>();
 
-    public List<TreEntry> getEntries() {
+    public final List<TreEntry> getEntries() {
         return entries;
     }
 
-    public void add(final TreEntry entry) {
+    public final void add(final TreEntry entry) {
         entries.add(entry);
     }
 
-    public void addAll(final List<TreEntry> oneOrMoreEntries) {
+    public final void addAll(final List<TreEntry> oneOrMoreEntries) {
         entries.addAll(oneOrMoreEntries);
     }
 
-    public void setEntries(final List<TreEntry> treEntries) {
+    public final void setEntries(final List<TreEntry> treEntries) {
         entries = new ArrayList<TreEntry>();
         entries.addAll(treEntries);
     }
 
-    public String getFieldValue(final String tagName) throws ParseException {
+    public final String getFieldValue(final String tagName) throws ParseException {
         for (TreEntry entry : entries) {
             if (entry.getName().equals(tagName)) {
                 return entry.getFieldValue();
@@ -48,7 +48,7 @@ public class TreGroup {
         throw new ParseException(String.format("Failed to look up %s", tagName), 0);
     }
 
-    public int getIntValue(final String tagName) throws ParseException {
+    public final int getIntValue(final String tagName) throws ParseException {
         try {
             return Integer.parseInt(getFieldValue(tagName));
         } catch (ParseException ex) {
@@ -56,7 +56,7 @@ public class TreGroup {
         }
     }
 
-    public void dump() {
+    public final void dump() {
         for (TreEntry entry : entries) {
             System.out.println("\t----Start Entry---");
             entry.dump();

@@ -78,55 +78,55 @@ public class NitfGraphicSegment extends AbstractNitfSegment {
         readGraphicData();
     }
 
-    public String getGraphicIdentifier() {
+    public final String getGraphicIdentifier() {
         return graphicIdentifier;
     }
 
-    public String getGraphicName() {
+    public final String getGraphicName() {
         return graphicName;
     }
 
-    public NitfSecurityMetadata getSecurityMetadata() {
+    public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 
-    public int getGraphicDisplayLevel() {
+    public final int getGraphicDisplayLevel() {
         return graphicDisplayLevel;
     }
 
-    public int getGraphicAttachmentLevel() {
+    public final int getGraphicAttachmentLevel() {
         return graphicAttachmentLevel;
     }
 
-    public int getGraphicLocationRow() {
+    public final int getGraphicLocationRow() {
         return graphicLocationRow;
     }
 
-    public int getGraphicLocationColumn() {
+    public final int getGraphicLocationColumn() {
         return graphicLocationColumn;
     }
 
-    public int getBoundingBox1Row() {
+    public final int getBoundingBox1Row() {
         return boundingBox1Row;
     }
 
-    public int getBoundingBox1Column() {
+    public final int getBoundingBox1Column() {
         return boundingBox1Column;
     }
 
-    public GraphicColour getGraphicColour() {
+    public final GraphicColour getGraphicColour() {
         return graphicColour;
     }
 
-    public int getBoundingBox2Row() {
+    public final int getBoundingBox2Row() {
         return boundingBox2Row;
     }
 
-    public int getBoundingBox2Column() {
+    public final int getBoundingBox2Column() {
         return boundingBox2Column;
     }
 
-    public int getGraphicExtendedSubheaderLength() {
+    public final int getGraphicExtendedSubheaderLength() {
         return graphicExtendedSubheaderLength;
     }
 

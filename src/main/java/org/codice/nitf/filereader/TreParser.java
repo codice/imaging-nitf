@@ -52,7 +52,7 @@ public class TreParser {
         tresStructure = (Tres) u.unmarshal(inputStream);
     }
 
-    public TreCollection parse(final NitfReader reader, final int treLength) throws ParseException {
+    public final TreCollection parse(final NitfReader reader, final int treLength) throws ParseException {
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);

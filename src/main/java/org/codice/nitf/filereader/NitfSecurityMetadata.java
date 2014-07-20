@@ -62,71 +62,71 @@ public class NitfSecurityMetadata {
         readCommonSecurityMetadata();
     }
 
-    public NitfSecurityClassification getSecurityClassification() {
+    public final NitfSecurityClassification getSecurityClassification() {
         return nitfSecurityClassification;
     }
 
-    public String getSecurityClassificationSystem() {
+    public final String getSecurityClassificationSystem() {
         return nitfSecurityClassificationSystem;
     }
 
-    public String getCodewords() {
+    public final String getCodewords() {
         return nitfCodewords;
     }
 
-    public String getControlAndHandling() {
+    public final String getControlAndHandling() {
         return nitfControlAndHandling;
     }
 
-    public String getReleaseInstructions() {
+    public final String getReleaseInstructions() {
         return nitfReleaseInstructions;
     }
 
-    public String getDeclassificationType() {
+    public final String getDeclassificationType() {
         return nitfDeclassificationType;
     }
 
-    public String getDeclassificationDate() {
+    public final String getDeclassificationDate() {
         return nitfDeclassificationDate;
     }
 
-    public String getDeclassificationExemption() {
+    public final String getDeclassificationExemption() {
         return nitfDeclassificationExemption;
     }
 
-    public String getDowngrade() {
+    public final String getDowngrade() {
         return nitfDowngrade;
     }
 
-    public String getDowngradeDate() {
+    public final String getDowngradeDate() {
         return nitfDowngradeDate;
     }
 
-    public String getClassificationText() {
+    public final String getClassificationText() {
         return nitfClassificationText;
     }
 
-    public String getClassificationAuthorityType() {
+    public final String getClassificationAuthorityType() {
         return nitfClassificationAuthorityType;
     }
 
-    public String getClassificationAuthority() {
+    public final String getClassificationAuthority() {
         return nitfClassificationAuthority;
     }
 
-    public String getClassificationReason() {
+    public final String getClassificationReason() {
         return nitfClassificationReason;
     }
 
-    public String getSecuritySourceDate() {
+    public final String getSecuritySourceDate() {
         return nitfSecuritySourceDate;
     }
 
-    public String getSecurityControlNumber() {
+    public final String getSecurityControlNumber() {
         return nitfSecurityControlNumber;
     }
 
-    protected void readCommonSecurityMetadata() throws ParseException {
+    protected final void readCommonSecurityMetadata() throws ParseException {
         readXSCLAS();
         readXSCLSY();
         readXSCODE();
