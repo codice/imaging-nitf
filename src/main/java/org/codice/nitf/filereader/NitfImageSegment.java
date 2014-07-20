@@ -412,7 +412,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
                     throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS: " + imageCoordinatesRepresentation);
             }
         }
-        imageCoordinates = new ImageCoordinates(coords[0], coords[1], coords[2], coords[3]);
+        imageCoordinates = new ImageCoordinates(coords);
     }
 
     private void readNICOM() throws ParseException {

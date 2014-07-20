@@ -23,6 +23,19 @@ public class ImageCoordinatePair {
 
     private static final double MINUTES_IN_ONE_DEGREE = 60.0;
     private static final double SECONDS_IN_ONE_MINUTE = 60.0;
+    private static final int LAT_DEGREES_OFFSET = 0;
+    private static final int LAT_DEGREES_LENGTH = 2;
+    private static final int LAT_MINUTES_OFFSET = LAT_DEGREES_OFFSET + LAT_DEGREES_LENGTH;
+    private static final int MINUTES_LENGTH = 2;
+    private static final int LAT_SECONDS_OFFSET = LAT_MINUTES_OFFSET + MINUTES_LENGTH;
+    private static final int SECONDS_LENGTH = 2;
+    private static final int LAT_HEMISPHERE_MARKER_OFFSET = LAT_SECONDS_OFFSET + SECONDS_LENGTH;
+    private static final int HEMISPHERE_MARKER_LENGTH = 1;
+    private static final int LON_DEGREES_OFFSET = LAT_HEMISPHERE_MARKER_OFFSET + HEMISPHERE_MARKER_LENGTH;
+    private static final int LON_DEGREES_LENGTH = 3;
+    private static final int LON_MINUTES_OFFSET = LON_DEGREES_OFFSET + LON_DEGREES_LENGTH;
+    private static final int LON_SECONDS_OFFSET = LON_MINUTES_OFFSET + SECONDS_LENGTH;
+    private static final int LON_HEMISPHERE_MARKER_OFFSET = LON_SECONDS_OFFSET + SECONDS_LENGTH;
 
     public ImageCoordinatePair() {
     }
@@ -49,19 +62,21 @@ public class ImageCoordinatePair {
         if (dms.length() != "ddmmssXdddmmssY".length()) {
             throw new ParseException("Incorrect length for DMS parsing", 0);
         }
-        String latDegrees = dms.substring(0, 2);
-        String latMinutes = dms.substring(2, 4);
-        String latSeconds = dms.substring(4, 6);
-        String latNS = dms.substring(6, 7);
-        String lonDegrees = dms.substring(7, 10);
-        String lonMinutes = dms.substring(10, 12);
-        String lonSeconds = dms.substring(12, 14);
-        String lonEW = dms.substring(14, 15);
+        String latDegrees = dms.substring(LAT_DEGREES_OFFSET, LAT_DEGREES_LENGTH);
+        String latMinutes = dms.substring(LAT_MINUTES_OFFSET, LAT_MINUTES_OFFSET + MINUTES_LENGTH);
+        String latSeconds = dms.substring(LAT_SECONDS_OFFSET, LAT_SECONDS_OFFSET + SECONDS_LENGTH);
+        String latNS = dms.substring(LAT_HEMISPHERE_MARKER_OFFSET, LAT_HEMISPHERE_MARKER_OFFSET + HEMISPHERE_MARKER_LENGTH);
+        String lonDegrees = dms.substring(LON_DEGREES_OFFSET, LON_DEGREES_OFFSET + LON_DEGREES_LENGTH);
+        String lonMinutes = dms.substring(LON_MINUTES_OFFSET, LON_MINUTES_OFFSET + MINUTES_LENGTH);
+        String lonSeconds = dms.substring(LON_SECONDS_OFFSET, LON_SECONDS_OFFSET + SECONDS_LENGTH);
+        String lonEW = dms.substring(LON_HEMISPHERE_MARKER_OFFSET, LON_HEMISPHERE_MARKER_OFFSET + HEMISPHERE_MARKER_LENGTH);
         if ((!latNS.equals("N")) && (!latNS.equals("S"))) {
-            throw new ParseException(String.format("Incorrect format for N/S flag while DMS parsing: %s(%s)", latNS, dms), 6);
+            throw new ParseException(String.format("Incorrect format for N/S flag while DMS parsing: %s(%s)", latNS, dms),
+                                     LAT_HEMISPHERE_MARKER_OFFSET);
         }
         if ((!lonEW.equals("E")) && (!lonEW.equals("W"))) {
-            throw new ParseException(String.format("Incorrect format for E/W flag while DMS parsing: %s(%s)", lonEW, dms), 14);
+            throw new ParseException(String.format("Incorrect format for E/W flag while DMS parsing: %s(%s)", lonEW, dms),
+                                     LON_HEMISPHERE_MARKER_OFFSET);
         }
         try {
             lat = buildDecimalDegrees(latDegrees, latMinutes, latSeconds);

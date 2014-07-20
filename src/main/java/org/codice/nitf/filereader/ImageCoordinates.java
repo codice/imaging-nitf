@@ -21,12 +21,16 @@ public class ImageCoordinates {
     private ImageCoordinatePair coordinateMaxRowMaxCol;
     private ImageCoordinatePair coordinateMaxRow0;
 
-    public ImageCoordinates(ImageCoordinatePair coord00, ImageCoordinatePair coord0MaxCol,
-                            ImageCoordinatePair coordMaxRowMaxCol, ImageCoordinatePair coordMaxRow0) {
-        coordinate00 = coord00;
-        coordinate0MaxCol = coord0MaxCol;
-        coordinateMaxRowMaxCol = coordMaxRowMaxCol;
-        coordinateMaxRow0 = coordMaxRow0;
+    private static final int COORDINATE00_INDEX = 0;
+    private static final int COORDINATE0MAXCOL_INDEX = 1;
+    private static final int COORDINATEMAXROWMAXCOL_INDEX = 2;
+    private static final int COORDINATEMAXROW0_INDEX = 3;
+
+    public ImageCoordinates(ImageCoordinatePair[] coord) {
+        coordinate00 = coord[COORDINATE00_INDEX];
+        coordinate0MaxCol = coord[COORDINATE0MAXCOL_INDEX];
+        coordinateMaxRowMaxCol = coord[COORDINATEMAXROWMAXCOL_INDEX];
+        coordinateMaxRow0 = coord[COORDINATEMAXROW0_INDEX];
     }
 
     public ImageCoordinatePair getCoordinate00() {

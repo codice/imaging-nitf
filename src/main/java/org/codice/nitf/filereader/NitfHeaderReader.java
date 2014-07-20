@@ -88,6 +88,8 @@ public class NitfHeaderReader extends AbstractNitfSegment {
     private static final int UDHOFL_LENGTH = 3;
     private static final int XHDL_LENGTH = 5;
     private static final int XHDLOFL_LENGTH = 3;
+    private static final int MIN_COMPLEXITY_LEVEL = 0;
+    private static final int MAX_COMPLEXITY_LEVEL = 99;
 
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
@@ -302,7 +304,7 @@ public class NitfHeaderReader extends AbstractNitfSegment {
 
     private void readCLEVEL() throws ParseException {
         nitfComplexityLevel = reader.readBytesAsInteger(CLEVEL_LENGTH);
-        if ((nitfComplexityLevel < 0) || (nitfComplexityLevel > 99)) {
+        if ((nitfComplexityLevel < MIN_COMPLEXITY_LEVEL) || (nitfComplexityLevel > MAX_COMPLEXITY_LEVEL)) {
             throw new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.numBytesRead);
         }
     }
