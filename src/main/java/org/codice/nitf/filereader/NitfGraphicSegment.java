@@ -72,7 +72,6 @@ public class NitfGraphicSegment extends AbstractNitfSegment
         readSRES();
         readSXSHDL();
         if (graphicExtendedSubheaderLength > 0) {
-            // throw new UnsupportedOperationException("IMPLEMENT SXSOFL / SXSHD PARSING");
             readSXSOFL();
             readSXSHD();
         }
