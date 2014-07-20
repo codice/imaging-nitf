@@ -391,13 +391,13 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     private void readIGEOLO() throws ParseException {
         // TODO: this really only handle the GEO and D cases, not the UTM / UPS representations.
-        final int NUM_COORDS = 4;
-        final int COORD_LENGTH = IGEOLO_LENGTH / NUM_COORDS;
+        final int numCoordinates = 4;
+        final int coordinatePairLength = IGEOLO_LENGTH / numCoordinates;
         String igeolo = reader.readBytes(IGEOLO_LENGTH);
-        ImageCoordinatePair[] coords = new ImageCoordinatePair[NUM_COORDS];
-        for (int i = 0; i < NUM_COORDS; ++i) {
+        ImageCoordinatePair[] coords = new ImageCoordinatePair[numCoordinates];
+        for (int i = 0; i < numCoordinates; ++i) {
             coords[i] = new ImageCoordinatePair();
-            String coordStr = igeolo.substring(i * COORD_LENGTH, (i + 1) * COORD_LENGTH);
+            String coordStr = igeolo.substring(i * coordinatePairLength, (i + 1) * coordinatePairLength);
             switch (imageCoordinatesRepresentation) {
                 case GEOGRAPHIC:
                     coords[i].setFromDMS(coordStr);
