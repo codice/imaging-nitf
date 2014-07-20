@@ -1,16 +1,16 @@
 /**
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  **/
 package org.codice.nitf.filereader;
 
@@ -21,8 +21,8 @@ public class ImageCoordinatePair {
     private double lat = 0.0;
     private double lon = 0.0;
 
-    private static double MINUTES_IN_ONE_DEGREE = 60.0;
-    private static double SECONDS_IN_ONE_MINUTE = 60.0;
+    private static final double MINUTES_IN_ONE_DEGREE = 60.0;
+    private static final double SECONDS_IN_ONE_MINUTE = 60.0;
 
     public ImageCoordinatePair() {
     }

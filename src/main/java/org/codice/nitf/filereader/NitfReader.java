@@ -1,16 +1,16 @@
 /**
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  **/
 package org.codice.nitf.filereader;
 
@@ -20,12 +20,9 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
-public class NitfReader
-{
-    BufferedInputStream input = null;
+public class NitfReader {
+    private BufferedInputStream input = null;
     int numBytesRead = 0;
 
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
@@ -118,7 +115,8 @@ public class NitfReader
             if (thisRead == -1) {
                 throw new ParseException("End of file reading from NITF stream.", numBytesRead);
             } else if (thisRead < count) {
-                throw new ParseException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count), numBytesRead + thisRead);
+                throw new ParseException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count),
+                                         numBytesRead + thisRead);
             }
             numBytesRead += thisRead;
             return bytes;
@@ -133,7 +131,8 @@ public class NitfReader
             do {
                 thisRead = input.skip(count);
                 numBytesRead += thisRead;
-            } while ((count -= thisRead) > 0);
+                count -= thisRead;
+            } while (count > 0);
         } catch (IOException ex) {
             throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
         }

@@ -1,31 +1,25 @@
 /**
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class AbstractNitfSegment
-{
+public class AbstractNitfSegment {
+
     protected NitfReader reader = null;
 
     TreCollection treCollection = new TreCollection();
@@ -58,7 +52,7 @@ public class AbstractNitfSegment
         return tresFlat;
     }
 
-    public void flattenOneTreEntry(Map<String,String> tresFlat, TreEntry treEntry, String parentName) {
+    public void flattenOneTreEntry(Map<String, String> tresFlat, TreEntry treEntry, String parentName) {
         if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
             String key = String.format("%s_%s", parentName, treEntry.getName());
             String value = treEntry.getFieldValue().trim();

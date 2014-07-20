@@ -1,31 +1,25 @@
 /**
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-public class NitfImageSegment extends AbstractNitfSegment
-{
+public class NitfImageSegment extends AbstractNitfSegment {
+
     private String imageIdentifier1 = null;
     private Date imageDateTime = null;
     // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples
@@ -121,8 +115,8 @@ public class NitfImageSegment extends AbstractNitfSegment
         readABPP();
         readPJUST();
         readICORDS();
-        if ((imageCoordinatesRepresentation != ImageCoordinatesRepresentation.UNKNOWN) &&
-            (imageCoordinatesRepresentation != ImageCoordinatesRepresentation.NONE)) {
+        if ((imageCoordinatesRepresentation != ImageCoordinatesRepresentation.UNKNOWN)
+            && (imageCoordinatesRepresentation != ImageCoordinatesRepresentation.NONE)) {
             readIGEOLO();
         }
         readNICOM();
@@ -321,17 +315,17 @@ public class NitfImageSegment extends AbstractNitfSegment
     }
 
     private Boolean hasCOMRAT() {
-        return ((imageCompression == ImageCompression.BILEVEL) ||
-                (imageCompression == ImageCompression.JPEG) ||
-                (imageCompression == ImageCompression.VECTORQUANTIZATION) ||
-                (imageCompression == ImageCompression.LOSSLESSJPEG) ||
-                (imageCompression == ImageCompression.JPEG2000) ||
-                (imageCompression == ImageCompression.DOWNSAMPLEDJPEG) || 
-                (imageCompression == ImageCompression.BILEVELMASK) ||
-                (imageCompression == ImageCompression.JPEGMASK) ||
-                (imageCompression == ImageCompression.VECTORQUANTIZATIONMASK) ||
-                (imageCompression == ImageCompression.LOSSLESSJPEGMASK) ||
-                (imageCompression == ImageCompression.JPEG2000MASK));
+        return ((imageCompression == ImageCompression.BILEVEL)
+                || (imageCompression == ImageCompression.JPEG)
+                || (imageCompression == ImageCompression.VECTORQUANTIZATION)
+                || (imageCompression == ImageCompression.LOSSLESSJPEG)
+                || (imageCompression == ImageCompression.JPEG2000)
+                || (imageCompression == ImageCompression.DOWNSAMPLEDJPEG)
+                || (imageCompression == ImageCompression.BILEVELMASK)
+                || (imageCompression == ImageCompression.JPEGMASK)
+                || (imageCompression == ImageCompression.VECTORQUANTIZATIONMASK)
+                || (imageCompression == ImageCompression.LOSSLESSJPEGMASK)
+                || (imageCompression == ImageCompression.JPEG2000MASK));
     }
 
     private void readIM() throws ParseException {
