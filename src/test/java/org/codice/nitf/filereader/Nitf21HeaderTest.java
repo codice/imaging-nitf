@@ -475,7 +475,7 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        exception.expect(UnsupportedOperationException.class);
+        exception.expect(ParseException.class);
         exception.expectMessage("No support for streaming mode unless input is seekable");
         NitfHeaderReader reader = new NitfHeaderReader(is);
     }

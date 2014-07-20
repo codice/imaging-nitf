@@ -160,9 +160,7 @@
         <!-- TODO: turn this back on -->
         <!--<module name="MagicNumber"/>-->
         <module name="MissingSwitchDefault"/>
-        <!-- TODO: turn this back on -->
-
-<!--         <module name="RedundantThrows"/> -->
+        <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 

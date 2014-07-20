@@ -91,7 +91,7 @@ public class NitfHeaderReader extends AbstractNitfSegment {
 
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
-    public NitfHeaderReader(InputStream nitfInputStream) throws ParseException, UnsupportedOperationException {
+    public NitfHeaderReader(InputStream nitfInputStream) throws ParseException {
         reader = new NitfReader(new BufferedInputStream((nitfInputStream)), 0);
         readFHDRFVER();
         readCLEVEL();
@@ -107,7 +107,7 @@ public class NitfHeaderReader extends AbstractNitfSegment {
         readFL();
         if (nitfFileLength == STREAMING_FILE_MODE) {
             if (!reader.canSeek()) {
-                throw new UnsupportedOperationException("No support for streaming mode unless input is seekable");
+                throw new ParseException("No support for streaming mode unless input is seekable", 0);
             }
             // TODO If we can ever seek, we need to read the streaming mode DES and update properties here.
         }
