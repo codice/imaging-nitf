@@ -36,6 +36,8 @@ public class ImageCoordinatePair {
     private static final int LON_MINUTES_OFFSET = LON_DEGREES_OFFSET + LON_DEGREES_LENGTH;
     private static final int LON_SECONDS_OFFSET = LON_MINUTES_OFFSET + SECONDS_LENGTH;
     private static final int LON_HEMISPHERE_MARKER_OFFSET = LON_SECONDS_OFFSET + SECONDS_LENGTH;
+    private static final String LAT_DECIMAL_DEGREES_FORMAT = "+dd.ddd";
+    private static final int LAT_DECIMAL_DEGREES_FORMAT_LENGTH = LAT_DECIMAL_DEGREES_FORMAT.length();
 
     public ImageCoordinatePair() {
     }
@@ -116,8 +118,8 @@ public class ImageCoordinatePair {
         if (dd.length() != "+dd.ddd+ddd.ddd".length()) {
             throw new ParseException("Incorrect length for decimal degrees parsing", 0);
         }
-        String latPart = dd.substring(0, "+dd.ddd".length());
-        String lonPart = dd.substring("+dd.ddd".length());
+        String latPart = dd.substring(0, LAT_DECIMAL_DEGREES_FORMAT_LENGTH);
+        String lonPart = dd.substring(LAT_DECIMAL_DEGREES_FORMAT_LENGTH);
         try {
             lat = Double.parseDouble(latPart);
             lon = Double.parseDouble(lonPart);

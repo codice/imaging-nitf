@@ -28,6 +28,9 @@ public class NitfReader {
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
     private static final int ENCRYP_LENGTH = 1;
+    private static final String DATE_ONLY_DAY_FORMAT = "yyyyMMdd";
+    private static final String DATE_FULL_FORMAT = "yyyyMMddHHmmss";
+    private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
     public NitfReader(final BufferedInputStream nitfInputStream, final int offset) throws ParseException {
         input = nitfInputStream;
@@ -52,10 +55,10 @@ public class NitfReader {
     public final Date readNitfDateTime() throws ParseException {
         String dateString = readTrimmedBytes(STANDARD_DATE_TIME_LENGTH);
         // TODO: check if NITF 2.0 uses the same format.
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        if (dateString.length() == "yyyyMMdd".length()) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FULL_FORMAT);
+        if (dateString.length() == DATE_ONLY_DAY_FORMAT.length()) {
             // Fallback for files that aren't spec compliant
-            dateFormat = new SimpleDateFormat("yyyyMMdd");
+            dateFormat = new SimpleDateFormat(DATE_ONLY_DAY_FORMAT);
         }
         Date dateTime = dateFormat.parse(dateString);
         if (dateTime == null) {
@@ -125,7 +128,7 @@ public class NitfReader {
             numBytesRead += thisRead;
             return bytes;
         } catch (IOException ex) {
-            throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
+            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
         }
     }
 
@@ -139,7 +142,7 @@ public class NitfReader {
                 bytesToRead -= thisRead;
             } while (bytesToRead > 0);
         } catch (IOException ex) {
-            throw new ParseException("Error reading from NITF stream: " + ex.getMessage(), numBytesRead);
+            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
         }
     }
 }

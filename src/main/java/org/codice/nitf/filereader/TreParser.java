@@ -34,6 +34,8 @@ public class TreParser {
 
     private static final int TAG_LENGTH = 6;
     private static final int TAGLEN_LENGTH = 5;
+    private static final String AND_CONDITION = " AND ";
+    private static final String UNSUPPORTED_IFTYPE_FORMAT_MESSAGE = "Unsupported format for iftype:";
 
     private TreCollection treCollection = new TreCollection();
 
@@ -158,7 +160,7 @@ public class TreParser {
     }
 
     private boolean evaluateCondition(final String condition, final TreGroup treGroup) throws ParseException {
-        if (condition.contains(" AND ")) {
+        if (condition.contains(AND_CONDITION)) {
             return evaluateConditionBooleanAnd(condition, treGroup);
         } else if (condition.endsWith("!=")) {
             return evaluateConditionIsNotEmpty(condition, treGroup);
@@ -167,15 +169,15 @@ public class TreParser {
         } else if (condition.contains("=")) {
             return evaluateConditionIsEqual(condition, treGroup);
         } else {
-            throw new UnsupportedOperationException("Unsupported operator for iftype:" + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
     }
 
     private boolean evaluateConditionBooleanAnd(final String condition, final TreGroup treGroup) throws ParseException {
-        String[] condParts = condition.split(" AND ");
+        String[] condParts = condition.split(AND_CONDITION);
         if (condParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         boolean lhs = evaluateCondition(condParts[0], treGroup);
         boolean rhs = evaluateCondition(condParts[1], treGroup);
