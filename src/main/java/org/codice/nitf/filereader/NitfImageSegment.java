@@ -60,7 +60,6 @@ public class NitfImageSegment extends AbstractNitfSegment {
     private long lengthOfImage = 0L;
 
     private static final String IM = "IM";
-    private static final int IM_LENGTH = 2;
     private static final int IID1_LENGTH = 10;
     private static final int TGTID_LENGTH = 17;
     private static final int IID2_LENGTH = 80;

@@ -59,7 +59,6 @@ public class NitfHeaderReader extends AbstractNitfSegment {
     private ArrayList<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
     private static final int FHDR_LENGTH = 4;
-    private static final String NITF_FHDR = "NITF";
     private static final int FVER_LENGTH = 5;
     private static final int CLEVEL_LENGTH = 2;
     private static final int STYPE_LENGTH = 4;
