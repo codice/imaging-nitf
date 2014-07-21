@@ -103,7 +103,7 @@ public class NitfReader {
     }
 
     public final void readENCRYP() throws ParseException {
-        if (!readBytes(ENCRYP_LENGTH).equals("0")) {
+        if (!"0".equals(readBytes(ENCRYP_LENGTH))) {
             throw new ParseException("Unexpected ENCRYP value", numBytesRead);
         }
     }

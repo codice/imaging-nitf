@@ -69,7 +69,7 @@ public class TreParser {
     private void parseOneTre(final NitfReader reader, final String tag, final int fieldLength) throws ParseException {
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
-            if ((!tag.startsWith("PIX")) && (!tag.equals("JITCID"))) {
+            if ((!tag.startsWith("PIX")) && (!"JITCID".equals(tag))) {
                 // We only care about something that we could handle and aren't.
                 System.out.println(String.format("Unhandled TRE %s, skipping over it", tag));
             }

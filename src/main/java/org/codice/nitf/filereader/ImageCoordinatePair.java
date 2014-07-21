@@ -70,21 +70,21 @@ public class ImageCoordinatePair {
         String lonMinutes = dms.substring(LON_MINUTES_OFFSET, LON_MINUTES_OFFSET + MINUTES_LENGTH);
         String lonSeconds = dms.substring(LON_SECONDS_OFFSET, LON_SECONDS_OFFSET + SECONDS_LENGTH);
         String lonEW = dms.substring(LON_HEMISPHERE_MARKER_OFFSET, LON_HEMISPHERE_MARKER_OFFSET + HEMISPHERE_MARKER_LENGTH);
-        if ((!latNS.equals("N")) && (!latNS.equals("S"))) {
+        if ((!"N".equals(latNS)) && (!"S".equals(latNS))) {
             throw new ParseException(String.format("Incorrect format for N/S flag while DMS parsing: %s(%s)", latNS, dms),
                                      LAT_HEMISPHERE_MARKER_OFFSET);
         }
-        if ((!lonEW.equals("E")) && (!lonEW.equals("W"))) {
+        if ((!"E".equals(lonEW)) && (!"W".equals(lonEW))) {
             throw new ParseException(String.format("Incorrect format for E/W flag while DMS parsing: %s(%s)", lonEW, dms),
                                      LON_HEMISPHERE_MARKER_OFFSET);
         }
         try {
             lat = buildDecimalDegrees(latDegrees, latMinutes, latSeconds);
-            if (latNS.equals("S")) {
+            if ("S".equals(latNS)) {
                 lat = -1.0 * lat;
             }
             lon = buildDecimalDegrees(lonDegrees, lonMinutes, lonSeconds);
-            if (lonEW.equals("W")) {
+            if ("W".equals(lonEW)) {
                 lon = -1.0 * lon;
             }
         } catch (NumberFormatException ex) {
