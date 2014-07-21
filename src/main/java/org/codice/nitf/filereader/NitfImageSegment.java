@@ -292,9 +292,9 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     public final double getImageMagnificationAsDouble() {
         if (imageMagnification.startsWith("/")) {
-            return (1.0 / Double.parseDouble(imageMagnification.substring("1".length())));
+            return 1.0 / Double.parseDouble(imageMagnification.substring("1".length()));
         } else {
-            return (Double.parseDouble(imageMagnification));
+            return Double.parseDouble(imageMagnification);
         }
     }
 
@@ -315,7 +315,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
     }
 
     private Boolean hasCOMRAT() {
-        return ((imageCompression == ImageCompression.BILEVEL)
+        return (imageCompression == ImageCompression.BILEVEL)
                 || (imageCompression == ImageCompression.JPEG)
                 || (imageCompression == ImageCompression.VECTORQUANTIZATION)
                 || (imageCompression == ImageCompression.LOSSLESSJPEG)
@@ -325,7 +325,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
                 || (imageCompression == ImageCompression.JPEGMASK)
                 || (imageCompression == ImageCompression.VECTORQUANTIZATIONMASK)
                 || (imageCompression == ImageCompression.LOSSLESSJPEGMASK)
-                || (imageCompression == ImageCompression.JPEG2000MASK));
+                || (imageCompression == ImageCompression.JPEG2000MASK);
     }
 
     private void readIM() throws ParseException {

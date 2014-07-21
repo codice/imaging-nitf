@@ -136,21 +136,21 @@ public class TreParser {
     private int computeFormula(final String formula, final TreGroup treGroup) throws ParseException {
         if ("(NPART+1)*(NPART)/2".equals(formula)) {
             int npart = treGroup.getIntValue("NPART");
-            return ((npart + 1) * (npart) / 2);
+            return (npart + 1) * (npart) / 2;
         } else if ("(NUMOPG+1)*(NUMOPG)/2".equals(formula)) {
             int numopg = treGroup.getIntValue("NUMOPG");
-            return ((numopg + 1) * (numopg) / 2);
+            return (numopg + 1) * (numopg) / 2;
         } else if ("NPAR*NPARO".equals(formula)) {
             int npar = treGroup.getIntValue("NPAR");
             int nparo = treGroup.getIntValue("NPARO");
-            return (npar * nparo);
+            return npar * nparo;
         } else if ("NPLN-1".equals(formula)) {
             int npln = treGroup.getIntValue("NPLN");
-            return (npln - 1);
+            return npln - 1;
         } else if ("NXPTS*NYPTS".equals(formula)) {
             int nxpts = treGroup.getIntValue("NXPTS");
             int nypts = treGroup.getIntValue("NYPTS");
-            return (nxpts * nypts);
+            return nxpts * nypts;
         } else {
             // There shouldn't be any others, so hitting this probably indicates a parse error
             throw new UnsupportedOperationException("Implement missing formula:" + formula);
@@ -179,13 +179,13 @@ public class TreParser {
         }
         boolean lhs = evaluateCondition(condParts[0], treGroup);
         boolean rhs = evaluateCondition(condParts[1], treGroup);
-        return (lhs && rhs);
+        return lhs && rhs;
     }
 
     private boolean evaluateConditionIsNotEmpty(final String condition, final TreGroup treGroup) throws ParseException {
         String conditionPart = condition.substring(0, condition.length() - "!=".length());
         String actualValue = treGroup.getFieldValue(conditionPart);
-        return (!actualValue.trim().isEmpty());
+        return !actualValue.trim().isEmpty();
     }
 
     private boolean evaluateConditionIsEqual(final String condition, final TreGroup treGroup) throws ParseException {
@@ -198,7 +198,7 @@ public class TreParser {
         String actualValue = treGroup.getFieldValue(conditionParts[0]);
         // System.out.println("Comparing: actual=[" + actualValue + "] with conditionCriteria=[" + conditionParts[1] + "]");
         // System.out.println("equality comparison:" + (conditionParts[1].equals(actualValue)));
-        return (conditionParts[1].equals(actualValue));
+        return conditionParts[1].equals(actualValue);
     }
 
     private boolean evaluateConditionIsNotEqual(final String condition, final TreGroup treGroup) throws ParseException {
@@ -208,7 +208,7 @@ public class TreParser {
             throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
         }
         String actualValue = treGroup.getFieldValue(conditionParts[0]);
-        return (!(conditionParts[1].equals(actualValue)));
+        return !conditionParts[1].equals(actualValue);
     }
 
     private TreEntry parseOneField(final NitfReader reader,

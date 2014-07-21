@@ -68,7 +68,7 @@ public class NitfDataExtensionSegment extends AbstractNitfSegment {
     }
 
     private boolean isTreOverflow() {
-        return (desIdentifier.trim().equals(TRE_OVERFLOW));
+        return desIdentifier.trim().equals(TRE_OVERFLOW);
     }
 
     private void readDE() throws ParseException {

@@ -94,7 +94,7 @@ public class NitfHeaderReader extends AbstractNitfSegment {
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
     public NitfHeaderReader(final InputStream nitfInputStream) throws ParseException {
-        reader = new NitfReader(new BufferedInputStream((nitfInputStream)), 0);
+        reader = new NitfReader(new BufferedInputStream(nitfInputStream), 0);
         readFHDRFVER();
         readCLEVEL();
         readSTYPE();
