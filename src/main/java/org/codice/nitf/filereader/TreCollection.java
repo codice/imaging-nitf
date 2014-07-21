@@ -55,6 +55,6 @@ public class TreCollection {
     }
 
     public final boolean hasTREs() {
-        return treCollectionEntries.size() > 0;
+        return !treCollectionEntries.isEmpty();
     }
 }
