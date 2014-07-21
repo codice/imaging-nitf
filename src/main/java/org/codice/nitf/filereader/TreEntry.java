@@ -15,11 +15,12 @@
 package org.codice.nitf.filereader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TreEntry {
     private String name = null;
     private String value = null;
-    private ArrayList<TreGroup> groups = null;
+    private List<TreGroup> groups = null;
     private TreGroup entryParent = null;
 
     public TreEntry(final String fieldName, final String fieldValue, final TreGroup parent) {
@@ -56,7 +57,7 @@ public class TreEntry {
         }
     }
 
-    public final ArrayList<TreGroup> getGroups() {
+    public final List<TreGroup> getGroups() {
         return groups;
     }
 

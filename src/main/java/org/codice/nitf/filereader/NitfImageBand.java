@@ -16,6 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NitfImageBand {
 
@@ -26,7 +27,7 @@ public class NitfImageBand {
     private String imageSubcategory = null;
     private int numLUTs = 0;
     private int numEntriesLUT = 0;
-    private ArrayList<NitfImageBandLUT> luts = new ArrayList<NitfImageBandLUT>();
+    private List<NitfImageBandLUT> luts = new ArrayList<NitfImageBandLUT>();
 
     private static final int IREPBAND_LENGTH = 2;
     private static final int ISUBCAT_LENGTH = 6;

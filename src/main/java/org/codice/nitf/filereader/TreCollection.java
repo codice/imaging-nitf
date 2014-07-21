@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreCollection {
-    private ArrayList<Tre> treCollectionEntries = new ArrayList<Tre>();
+    private List<Tre> treCollectionEntries = new ArrayList<Tre>();
 
     public final List<Tre> getTREs() {
         return treCollectionEntries;

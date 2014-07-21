@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class NitfHeaderReader extends AbstractNitfSegment {
     private FileType fileType = FileType.UNKNOWN;
@@ -36,14 +37,14 @@ public class NitfHeaderReader extends AbstractNitfSegment {
     private long nitfFileLength = -1;
     private int nitfHeaderLength = -1;
     private int numberImageSegments = 0;
-    private ArrayList<Integer> lish = new ArrayList<Integer>();
-    private ArrayList<Long> li = new ArrayList<Long>();
-    private ArrayList<Integer> lssh = new ArrayList<Integer>();
-    private ArrayList<Integer> ls = new ArrayList<Integer>();
-    private ArrayList<Integer> ltsh = new ArrayList<Integer>();
-    private ArrayList<Integer> lt = new ArrayList<Integer>();
-    private ArrayList<Integer> ldsh = new ArrayList<Integer>();
-    private ArrayList<Integer> ld = new ArrayList<Integer>();
+    private List<Integer> lish = new ArrayList<Integer>();
+    private List<Long> li = new ArrayList<Long>();
+    private List<Integer> lssh = new ArrayList<Integer>();
+    private List<Integer> ls = new ArrayList<Integer>();
+    private List<Integer> ltsh = new ArrayList<Integer>();
+    private List<Integer> lt = new ArrayList<Integer>();
+    private List<Integer> ldsh = new ArrayList<Integer>();
+    private List<Integer> ld = new ArrayList<Integer>();
     private int numberGraphicSegments = 0;
     private int numberTextSegments = 0;
     private int numberDataExtensionSegments = 0;
@@ -53,10 +54,10 @@ public class NitfHeaderReader extends AbstractNitfSegment {
     private int extendedHeaderDataLength = 0;
     private int extendedHeaderOverflow = 0;
 
-    private ArrayList<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
-    private ArrayList<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
-    private ArrayList<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
-    private ArrayList<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
+    private List<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
+    private List<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
+    private List<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
+    private List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
     private static final int FHDR_LENGTH = 4;
     private static final int FVER_LENGTH = 5;

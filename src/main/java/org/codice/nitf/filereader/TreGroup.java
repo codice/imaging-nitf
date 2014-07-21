@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TreGroup {
 
-    private ArrayList<TreEntry> entries = new ArrayList<TreEntry>();
+    private List<TreEntry> entries = new ArrayList<TreEntry>();
 
     public final List<TreEntry> getEntries() {
         return entries;
