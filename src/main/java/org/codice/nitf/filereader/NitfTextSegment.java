@@ -17,8 +17,7 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 import java.util.Date;
 
-public class NitfTextSegment {
-    private NitfReader reader = null;
+public class NitfTextSegment extends AbstractNitfSegment {
     private int lengthOfText = 0;
     private Date textDateTime = null;
     private NitfSecurityMetadata securityMetadata = null;
