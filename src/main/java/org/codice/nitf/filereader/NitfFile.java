@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class NitfHeaderReader extends AbstractNitfSegment {
+public class NitfFile extends AbstractNitfSegment {
     private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
@@ -93,7 +93,7 @@ public class NitfHeaderReader extends AbstractNitfSegment {
 
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
-    public NitfHeaderReader(final InputStream nitfInputStream) throws ParseException {
+    public NitfFile(final InputStream nitfInputStream) throws ParseException {
         reader = new NitfReader(new BufferedInputStream(nitfInputStream), 0);
         readFHDRFVER();
         readCLEVEL();
