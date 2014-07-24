@@ -35,13 +35,6 @@ public class NitfFile extends AbstractNitfSegment {
     private String nitfOriginatorsPhoneNumber = null;
     private long nitfFileLength = -1;
     private int nitfHeaderLength = -1;
-    private int numberImageSegments = 0;
-    private int numberGraphicSegments = 0;
-    private int numberTextSegments = 0;
-    private int numberDataExtensionSegments = 0;
-    private int numberReservedExtensionSegments = 0;
-    private int userDefinedHeaderDataLength = 0;
-    private int userDefinedHeaderOverflow = 0;
 
     private List<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private List<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
@@ -167,81 +160,24 @@ public class NitfFile extends AbstractNitfSegment {
         return nitfHeaderLength;
     }
 
-    public final void setNumberOfImageSegments(final int numberOfImageSegments) {
-        numberImageSegments = numberOfImageSegments;
-    }
-
     public final int getNumberOfImageSegments() {
-        // TODO: this should be based on the number we actually found, not what the header claimed
-        return numberImageSegments;
-    }
-
-//     public final int getLengthOfImageSubheader(final int i) {
-//         return lish.get(i);
-//     }
-//
-//     public final long getLengthOfImage(final int i) {
-//         return li.get(i);
-//     }
-
-    public final void setNumberOfGraphicSegments(final int numberOfGraphicSegments) {
-        numberGraphicSegments = numberOfGraphicSegments;
+        return imageSegments.size();
     }
 
     public final int getNumberOfGraphicSegments() {
-        return numberGraphicSegments;
-    }
-
-//     public final int getLengthOfGraphicSubheader(final int i) {
-//         return lssh.get(i);
-//     }
-//
-//     public final int getLengthOfGraphic(final int i) {
-//         return ls.get(i);
-//     }
-
-    public final void setNumberOfTextSegments(final int numberOfTextSegments) {
-        numberTextSegments = numberOfTextSegments;
+        return graphicSegments.size();
     }
 
     public final int getNumberOfTextSegments() {
-        return numberTextSegments;
-    }
-
-//     public final int getLengthOfTextSubheader(final int i) {
-//         return ltsh.get(i);
-//     }
-//
-//     public final int getLengthOfText(final int i) {
-//         return lt.get(i);
-//     }
-
-    public final void setNumberOfDataExtensionSegments(final int numberOfDataExtensionSegments) {
-        numberDataExtensionSegments = numberOfDataExtensionSegments;
+        return textSegments.size();
     }
 
     public final int getNumberOfDataExtensionSegments() {
-        return numberDataExtensionSegments;
+        return dataExtensionSegments.size();
     }
 
-    public final int getNumberOfReservedExtensionSegments() {
-        return numberReservedExtensionSegments;
-    }
-
-    public final void setUserDefinedHeaderDataLength(final int lengthOfUserDefinedHeader) {
-        userDefinedHeaderDataLength = lengthOfUserDefinedHeader;
-    }
-
-    public final int getUserDefinedHeaderDataLength() {
-        return userDefinedHeaderDataLength;
-    }
-
-    public final void setUserDefinedHeaderOverflow(final int userDefinedHeaderOverflowNumber) {
-        userDefinedHeaderOverflow = userDefinedHeaderOverflowNumber;
-    }
-
-//     public final int getExtendedHeaderDataLength() {
-//         return extendedHeaderDataLength;
+//     public final int getNumberOfReservedExtensionSegments() {
+//         return ;
 //     }
 
     public final void addImageSegment(final NitfImageSegment imageSegment) {
@@ -292,7 +228,7 @@ public class NitfFile extends AbstractNitfSegment {
         return dataExtensionSegments.get(segmentNumberZeroBase);
     }
 
-    public final void setNumberOfReservedExtensionSegments(final int numberOfReservedExtensionSegments) {
-        numberReservedExtensionSegments = numberOfReservedExtensionSegments;
-    }
+//     public final void setNumberOfReservedExtensionSegments(final int numberOfReservedExtensionSegments) {
+//         numberReservedExtensionSegments = numberOfReservedExtensionSegments;
+//     }
 }

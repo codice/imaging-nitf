@@ -60,8 +60,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -149,8 +148,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -213,8 +211,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -277,8 +274,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -418,8 +414,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(1, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         NitfTextSegment textSegment = reader.getTextSegment(1);
         assertNotNull(textSegment);
@@ -448,8 +443,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         // TODO: check TREs
     }
 
@@ -498,8 +492,7 @@ public class Nitf21HeaderTest {
         assertEquals(1, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         NitfGraphicSegment segment = reader.getGraphicSegment(1);
         assertNotNull(segment);
@@ -548,8 +541,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         Map<String, String> fileTresFlat = reader.getTREsFlat();
         Map<String, String> expectedFileTresFlat = new HashMap<String, String>() {
             {
@@ -664,8 +656,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(1, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(0, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         NitfDataExtensionSegment des = reader.getDataExtensionSegment(1);
         assertNotNull(des);
@@ -705,7 +696,7 @@ public class Nitf21HeaderTest {
         assertEquals("", securityMetadata.getClassificationAuthority());
         assertEquals("", securityMetadata.getClassificationReason());
         assertEquals("", securityMetadata.getSecurityControlNumber());
-        
+
         assertEquals("00000", reader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00000", reader.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals((byte)0xFF, reader.getFileBackgroundColourRed());
@@ -769,8 +760,7 @@ public class Nitf21HeaderTest {
         assertEquals(8, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        assertEquals(326, reader.getUserDefinedHeaderDataLength());
+        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
 
         NitfGraphicSegment segment1 = reader.getGraphicSegment(1);
         assertNotNull(segment1);

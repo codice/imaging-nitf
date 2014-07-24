@@ -24,6 +24,12 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
 
     private NitfReader reader = null;
 
+    private int numberImageSegments = 0;
+    private int numberGraphicSegments = 0;
+    private int numberTextSegments = 0;
+    private int numberDataExtensionSegments = 0;
+    private int numberReservedExtensionSegments = 0;
+
     private List<Integer> lish = new ArrayList<Integer>();
     private List<Long> li = new ArrayList<Long>();
     private List<Integer> lssh = new ArrayList<Integer>();
@@ -32,6 +38,8 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private List<Integer> lt = new ArrayList<Integer>();
     private List<Integer> ldsh = new ArrayList<Integer>();
     private List<Integer> ld = new ArrayList<Integer>();
+    private int userDefinedHeaderDataLength = 0;
+    private int userDefinedHeaderOverflow = 0;
     private int extendedHeaderDataLength = 0;
     private int extendedHeaderOverflow = 0;
 
@@ -95,33 +103,33 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
         readHL();
         readNUMI();
         // TODO: consider if we can avoid transferring that, and just keep it local
-        for (int i = 0; i < nitf.getNumberOfImageSegments(); ++i) {
+        for (int i = 0; i < numberImageSegments; ++i) {
             readLISH();
             readLI();
         }
         readNUMS();
-        for (int i = 0; i < nitf.getNumberOfGraphicSegments(); ++i) {
+        for (int i = 0; i < numberGraphicSegments; ++i) {
             readLSSH();
             readLS();
         }
         readNUMX();
         readNUMT();
-        for (int i = 0; i < nitf.getNumberOfTextSegments(); ++i) {
+        for (int i = 0; i < numberTextSegments; ++i) {
             readLTSH();
             readLT();
         }
         readNUMDES();
-        for (int i = 0; i < nitf.getNumberOfDataExtensionSegments(); ++i) {
+        for (int i = 0; i < numberDataExtensionSegments; ++i) {
             readLDSH();
             readLD();
         }
         readNUMRES();
-        for (int i = 0; i < nitf.getNumberOfReservedExtensionSegments(); ++i) {
+        for (int i = 0; i < numberReservedExtensionSegments; ++i) {
             // TODO: find a case that exercises this and implement it
             throw new UnsupportedOperationException("IMPLEMENT RES PARSING");
         }
         readUDHDL();
-        if (nitf.getUserDefinedHeaderDataLength() > 0) {
+        if (userDefinedHeaderDataLength > 0) {
             readUDHOFL();
             readUDHD();
         }
@@ -188,7 +196,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readNUMI() throws ParseException {
-        nitf.setNumberOfImageSegments(reader.readBytesAsInteger(NUMI_LENGTH));
+        numberImageSegments = reader.readBytesAsInteger(NUMI_LENGTH);
     }
 
     private void readLISH() throws ParseException {
@@ -200,7 +208,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readNUMS() throws ParseException {
-        nitf.setNumberOfGraphicSegments(reader.readBytesAsInteger(NUMS_LENGTH));
+        numberGraphicSegments = reader.readBytesAsInteger(NUMS_LENGTH);
     }
 
     private void readLSSH() throws ParseException {
@@ -216,7 +224,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readNUMT() throws ParseException {
-        nitf.setNumberOfTextSegments(reader.readBytesAsInteger(NUMT_LENGTH));
+       numberTextSegments = reader.readBytesAsInteger(NUMT_LENGTH);
     }
 
     private void readLTSH() throws ParseException {
@@ -228,7 +236,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readNUMDES() throws ParseException {
-        nitf.setNumberOfDataExtensionSegments(reader.readBytesAsInteger(NUMDES_LENGTH));
+        numberDataExtensionSegments = reader.readBytesAsInteger(NUMDES_LENGTH);
     }
 
     private void readLDSH() throws ParseException {
@@ -240,20 +248,23 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readNUMRES() throws ParseException {
-        nitf.setNumberOfReservedExtensionSegments(reader.readBytesAsInteger(NUMRES_LENGTH));
+        numberReservedExtensionSegments = reader.readBytesAsInteger(NUMRES_LENGTH);
     }
 
     private void readUDHDL() throws ParseException {
-        nitf.setUserDefinedHeaderDataLength(reader.readBytesAsInteger(UDHDL_LENGTH));
+        userDefinedHeaderDataLength = reader.readBytesAsInteger(UDHDL_LENGTH);
     }
 
     private void readUDHOFL() throws ParseException {
-        nitf.setUserDefinedHeaderOverflow(reader.readBytesAsInteger(UDHOFL_LENGTH));
+        userDefinedHeaderOverflow = reader.readBytesAsInteger(UDHOFL_LENGTH);
+        if (userDefinedHeaderOverflow != 0) {
+            throw new UnsupportedOperationException("Need to implement proper UDHOFL parsing");
+        }
     }
 
     private void readUDHD() throws ParseException {
         TreParser treParser = new TreParser();
-        TreCollection userDefinedHeaderTREs = treParser.parse(reader, nitf.getUserDefinedHeaderDataLength() - UDHOFL_LENGTH);
+        TreCollection userDefinedHeaderTREs = treParser.parse(reader, userDefinedHeaderDataLength - UDHOFL_LENGTH);
         nitf.mergeTREs(userDefinedHeaderTREs);
     }
 
@@ -263,6 +274,9 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
 
     private void readXHDLOFL() throws ParseException {
         extendedHeaderOverflow = reader.readBytesAsInteger(XHDLOFL_LENGTH);
+        if (extendedHeaderOverflow != 0) {
+            throw new UnsupportedOperationException("Need to implement proper XHDLOFL parsing");
+        }
     }
 
     private void readXHD() throws ParseException {
@@ -272,25 +286,25 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readImageSegments() throws ParseException {
-        for (int i = 0; i < nitf.getNumberOfImageSegments(); ++i) {
+        for (int i = 0; i < numberImageSegments; ++i) {
             nitf.addImageSegment(new NitfImageSegment(reader, li.get(i)));
         }
     }
 
     private void readGraphicSegments() throws ParseException {
-        for (int i = 0; i < nitf.getNumberOfGraphicSegments(); ++i) {
+        for (int i = 0; i < numberGraphicSegments; ++i) {
             nitf.addGraphicSegment(new NitfGraphicSegment(reader, ls.get(i)));
         }
     }
 
     private void readTextSegments() throws ParseException {
-        for (int i = 0; i < nitf.getNumberOfTextSegments(); ++i) {
+        for (int i = 0; i < numberTextSegments; ++i) {
             nitf.addTextSegment(new NitfTextSegment(reader, lt.get(i)));
         }
     }
 
     private void readDataExtensionSegments() throws ParseException {
-        for (int i = 0; i < nitf.getNumberOfDataExtensionSegments(); ++i) {
+        for (int i = 0; i < numberDataExtensionSegments; ++i) {
             nitf.addDataExtensionSegment(new NitfDataExtensionSegment(reader, ld.get(i)));
         }
     }
