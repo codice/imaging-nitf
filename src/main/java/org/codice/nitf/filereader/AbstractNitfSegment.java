@@ -20,8 +20,6 @@ import java.util.TreeMap;
 
 public class AbstractNitfSegment {
 
-    protected NitfReader reader = null;
-
     private TreCollection treCollection = new TreCollection();
 
     public final TreCollection getTREsRawStructure() {

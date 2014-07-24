@@ -18,6 +18,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class NitfTextSegment extends AbstractNitfSegment {
+    private NitfReader reader = null;
+
     private int lengthOfText = 0;
     private Date textDateTime = null;
     private NitfSecurityMetadata securityMetadata = null;

@@ -21,6 +21,8 @@ import java.util.List;
 
 public class NitfImageSegment extends AbstractNitfSegment {
 
+    private NitfReader reader = null;
+
     private String imageIdentifier1 = null;
     private Date imageDateTime = null;
     // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples

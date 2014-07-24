@@ -38,7 +38,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         InputStream is = getClass().getResourceAsStream(simpleNitf21File);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -56,13 +57,11 @@ public class Nitf21HeaderTest {
         assertEquals(933L, reader.getFileLength());
         assertEquals(404, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(450, reader.getLengthOfImageSubheader(0));
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(0, reader.getExtendedHeaderDataLength());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -128,7 +127,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(geoAirfieldNitf21File));
 
         InputStream is = getClass().getResourceAsStream(geoAirfieldNitf21File);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -146,14 +146,11 @@ public class Nitf21HeaderTest {
         assertEquals(1049479L, reader.getFileLength());
         assertEquals(404, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(499, reader.getLengthOfImageSubheader(0));
-        assertEquals(1048576, reader.getLengthOfImage(0));
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(0, reader.getExtendedHeaderDataLength());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -194,7 +191,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -212,14 +210,11 @@ public class Nitf21HeaderTest {
         assertEquals(10711L, reader.getFileLength());
         assertEquals(404, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(1163, reader.getLengthOfImageSubheader(0));
-        assertEquals(9144, reader.getLengthOfImage(0));
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(0, reader.getExtendedHeaderDataLength());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -260,7 +255,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -278,20 +274,11 @@ public class Nitf21HeaderTest {
         assertEquals(264592L, reader.getFileLength());
         assertEquals(452, reader.getHeaderLength());
         assertEquals(4, reader.getNumberOfImageSegments());
-        assertEquals(499, reader.getLengthOfImageSubheader(0));
-        assertEquals(65536, reader.getLengthOfImage(0));
-        assertEquals(499, reader.getLengthOfImageSubheader(1));
-        assertEquals(65536, reader.getLengthOfImage(1));
-        assertEquals(499, reader.getLengthOfImageSubheader(2));
-        assertEquals(65536, reader.getLengthOfImage(2));
-        assertEquals(499, reader.getLengthOfImageSubheader(3));
-        assertEquals(65536, reader.getLengthOfImage(3));
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(0, reader.getExtendedHeaderDataLength());
 
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
@@ -421,7 +408,8 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -432,7 +420,6 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(0, reader.getExtendedHeaderDataLength());
 
         NitfTextSegment textSegment = reader.getTextSegment(1);
         assertNotNull(textSegment);
@@ -451,7 +438,8 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -462,7 +450,6 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(214, reader.getExtendedHeaderDataLength());
         // TODO: check TREs
     }
 
@@ -475,9 +462,10 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
+        NitfFile reader = new NitfFile();
         exception.expect(ParseException.class);
         exception.expectMessage("No support for streaming mode unless input is seekable");
-        NitfFile reader = new NitfFile(is);
+        reader.parse(is);
     }
 
     @Test
@@ -487,7 +475,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -507,13 +496,10 @@ public class Nitf21HeaderTest {
         assertEquals(398, reader.getHeaderLength());
         assertEquals(0, reader.getNumberOfImageSegments());
         assertEquals(1, reader.getNumberOfGraphicSegments());
-        assertEquals(258, reader.getLengthOfGraphicSubheader(0));
-        assertEquals(936, reader.getLengthOfGraphic(0));
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(0, reader.getExtendedHeaderDataLength());
 
         NitfGraphicSegment segment = reader.getGraphicSegment(1);
         assertNotNull(segment);
@@ -539,7 +525,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -563,7 +550,6 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(1499, reader.getExtendedHeaderDataLength());
         Map<String, String> fileTresFlat = reader.getTREsFlat();
         Map<String, String> expectedFileTresFlat = new HashMap<String, String>() {
             {
@@ -668,7 +654,8 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -679,7 +666,6 @@ public class Nitf21HeaderTest {
         assertEquals(1, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(0, reader.getUserDefinedHeaderDataLength());
-        assertEquals(457, reader.getExtendedHeaderDataLength());
 
         NitfDataExtensionSegment des = reader.getDataExtensionSegment(1);
         assertNotNull(des);
@@ -695,7 +681,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = new NitfFile(is);
+        NitfFile reader = new NitfFile();
+        reader.parse(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -780,20 +767,10 @@ public class Nitf21HeaderTest {
         assertEquals(1, imageSegment.getNumBands());
 
         assertEquals(8, reader.getNumberOfGraphicSegments());
-        assertEquals(619, reader.getLengthOfGraphicSubheader(0));
-        assertEquals(748, reader.getLengthOfGraphicSubheader(1));
-        assertEquals(619, reader.getLengthOfGraphicSubheader(2));
-        assertEquals(746, reader.getLengthOfGraphicSubheader(3));
-        assertEquals(619, reader.getLengthOfGraphicSubheader(4));
-        assertEquals(748, reader.getLengthOfGraphicSubheader(5));
-        assertEquals(619, reader.getLengthOfGraphicSubheader(6));
-        assertEquals(748, reader.getLengthOfGraphicSubheader(7));
-        assertEquals(216, reader.getLengthOfGraphic(0));
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         assertEquals(326, reader.getUserDefinedHeaderDataLength());
-        assertEquals(0, reader.getExtendedHeaderDataLength());
 
         NitfGraphicSegment segment1 = reader.getGraphicSegment(1);
         assertNotNull(segment1);

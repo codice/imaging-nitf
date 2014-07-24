@@ -14,7 +14,6 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -37,179 +36,139 @@ public class NitfFile extends AbstractNitfSegment {
     private long nitfFileLength = -1;
     private int nitfHeaderLength = -1;
     private int numberImageSegments = 0;
-    private List<Integer> lish = new ArrayList<Integer>();
-    private List<Long> li = new ArrayList<Long>();
-    private List<Integer> lssh = new ArrayList<Integer>();
-    private List<Integer> ls = new ArrayList<Integer>();
-    private List<Integer> ltsh = new ArrayList<Integer>();
-    private List<Integer> lt = new ArrayList<Integer>();
-    private List<Integer> ldsh = new ArrayList<Integer>();
-    private List<Integer> ld = new ArrayList<Integer>();
     private int numberGraphicSegments = 0;
     private int numberTextSegments = 0;
     private int numberDataExtensionSegments = 0;
     private int numberReservedExtensionSegments = 0;
     private int userDefinedHeaderDataLength = 0;
     private int userDefinedHeaderOverflow = 0;
-    private int extendedHeaderDataLength = 0;
-    private int extendedHeaderOverflow = 0;
 
     private List<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private List<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
     private List<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
     private List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
-    private static final int FHDR_LENGTH = 4;
-    private static final int FVER_LENGTH = 5;
-    private static final int CLEVEL_LENGTH = 2;
-    private static final int STYPE_LENGTH = 4;
-    private static final int OSTAID_LENGTH = 10;
-    private static final int FTITLE_LENGTH = 80;
-    private static final int FBKGC_LENGTH = 3;
-    private static final int ONAME_LENGTH = 24;
-    private static final int OPHONE_LENGTH = 18;
-    private static final int FL_LENGTH = 12;
-    private static final int HL_LENGTH = 6;
-    private static final int NUMI_LENGTH = 3;
-    private static final int LISH_LENGTH = 6;
-    private static final int LI_LENGTH = 10;
-    private static final int NUMS_LENGTH = 3;
-    private static final int LSSH_LENGTH = 4;
-    private static final int LS_LENGTH = 6;
-    private static final int NUMX_LENGTH = 3;
-    private static final int NUMT_LENGTH = 3;
-    private static final int LTSH_LENGTH = 4;
-    private static final int LT_LENGTH = 5;
-    private static final int NUMDES_LENGTH = 3;
-    private static final int LDSH_LENGTH = 4;
-    private static final int LD_LENGTH = 9;
-    private static final int NUMRES_LENGTH = 3;
-    private static final int UDHDL_LENGTH = 5;
-    private static final int UDHOFL_LENGTH = 3;
-    private static final int XHDL_LENGTH = 5;
-    private static final int XHDLOFL_LENGTH = 3;
-    private static final int MIN_COMPLEXITY_LEVEL = 0;
-    private static final int MAX_COMPLEXITY_LEVEL = 99;
+    public NitfFile() {
+    }
 
-    private static final long STREAMING_FILE_MODE = 999999999999L;
+    public final void parse(final InputStream nitfInputStream) throws ParseException {
+        new NitfFileParser(nitfInputStream, this);
+    }
 
-    public NitfFile(final InputStream nitfInputStream) throws ParseException {
-        reader = new NitfReader(new BufferedInputStream(nitfInputStream), 0);
-        readFHDRFVER();
-        readCLEVEL();
-        readSTYPE();
-        readOSTAID();
-        readFDT();
-        readFTITLE();
-        fileSecurityMetadata = new NitfFileSecurityMetadata(reader);
-        reader.readENCRYP();
-        readFBKGC();
-        readONAME();
-        readOPHONE();
-        readFL();
-        if (nitfFileLength == STREAMING_FILE_MODE) {
-            if (!reader.canSeek()) {
-                throw new ParseException("No support for streaming mode unless input is seekable", 0);
-            }
-            // TODO If we can ever seek, we need to read the streaming mode DES and update properties here.
-        }
-        readHL();
-        readNUMI();
-        for (int i = 0; i < numberImageSegments; ++i) {
-            readLISH();
-            readLI();
-        }
-        readNUMS();
-        for (int i = 0; i < numberGraphicSegments; ++i) {
-            readLSSH();
-            readLS();
-        }
-        readNUMX();
-        readNUMT();
-        for (int i = 0; i < numberTextSegments; ++i) {
-            readLTSH();
-            readLT();
-        }
-        readNUMDES();
-        for (int i = 0; i < numberDataExtensionSegments; ++i) {
-            readLDSH();
-            readLD();
-        }
-        readNUMRES();
-        for (int i = 0; i < numberReservedExtensionSegments; ++i) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT RES PARSING");
-        }
-        readUDHDL();
-        if (userDefinedHeaderDataLength > 0) {
-            readUDHOFL();
-            readUDHD();
-        }
-        readXHDL();
-        if (extendedHeaderDataLength > 0) {
-            readXHDLOFL();
-            readXHD();
-        }
-        readImageSegments();
-        readGraphicSegments();
-        readTextSegments();
-        readDataExtensionSegments();
+    public final void setFileType(final FileType type) {
+        fileType = type;
     }
 
     public final FileType getFileType() {
         return fileType;
     }
 
+    public final void setComplexityLevel(final int complexityLevel) {
+        nitfComplexityLevel = complexityLevel;
+    }
+
     public final int getComplexityLevel() {
         return nitfComplexityLevel;
+    }
+
+    public final void setStandardType(final String standardType) {
+        nitfStandardType = standardType;
     }
 
     public final String getStandardType() {
         return nitfStandardType;
     }
 
+    public final void setOriginatingStationId(final String originatingStationId) {
+        nitfOriginatingStationId = originatingStationId;
+    }
+
     public final String getOriginatingStationId() {
         return nitfOriginatingStationId;
+    }
+
+    public final void setFileDateTime(final Date fileDateTime) {
+        nitfFileDateTime = fileDateTime;
     }
 
     public final Date getFileDateTime() {
         return nitfFileDateTime;
     }
 
+    public final void setFileTitle(final String fileTitle) {
+        nitfFileTitle = fileTitle;
+    }
+
     public final String getFileTitle() {
         return nitfFileTitle;
+    }
+
+    public final void setFileSecurityMetadata(final NitfFileSecurityMetadata nitfFileSecurityMetadata) {
+        fileSecurityMetadata = nitfFileSecurityMetadata;
     }
 
     public final NitfFileSecurityMetadata getFileSecurityMetadata() {
         return fileSecurityMetadata;
     }
 
+    public final void setFileBackgroundColourRed(final byte red) {
+        nitfFileBackgroundColourRed = red;
+    }
+
     public final byte getFileBackgroundColourRed() {
         return nitfFileBackgroundColourRed;
+    }
+
+    public final void setFileBackgroundColourGreen(final byte green) {
+        nitfFileBackgroundColourGreen = green;
     }
 
     public final byte getFileBackgroundColourGreen() {
         return nitfFileBackgroundColourGreen;
     }
 
+    public final void setFileBackgroundColourBlue(final byte blue) {
+        nitfFileBackgroundColourBlue = blue;
+    }
+
     public final byte getFileBackgroundColourBlue() {
         return nitfFileBackgroundColourBlue;
+    }
+
+    public final void setOriginatorsName(final String originatorsName) {
+        nitfOriginatorsName = originatorsName;
     }
 
     public final String getOriginatorsName() {
         return nitfOriginatorsName;
     }
 
+    public final void setOriginatorsPhoneNumber(final String originatorsPhoneNumber) {
+        nitfOriginatorsPhoneNumber = originatorsPhoneNumber;
+    }
+
     public final String getOriginatorsPhoneNumber() {
         return nitfOriginatorsPhoneNumber;
+    }
+
+    public final void setFileLength(final long fileLength) {
+        nitfFileLength = fileLength;
     }
 
     public final long getFileLength() {
         return nitfFileLength;
     }
 
+    public final void setHeaderLength(final int headerLength) {
+        nitfHeaderLength = headerLength;
+    }
+
     public final int getHeaderLength() {
         return nitfHeaderLength;
+    }
+
+    public final void setNumberOfImageSegments(final int numberOfImageSegments) {
+        numberImageSegments = numberOfImageSegments;
     }
 
     public final int getNumberOfImageSegments() {
@@ -217,36 +176,48 @@ public class NitfFile extends AbstractNitfSegment {
         return numberImageSegments;
     }
 
-    public final int getLengthOfImageSubheader(final int i) {
-        return lish.get(i);
-    }
+//     public final int getLengthOfImageSubheader(final int i) {
+//         return lish.get(i);
+//     }
+//
+//     public final long getLengthOfImage(final int i) {
+//         return li.get(i);
+//     }
 
-    public final long getLengthOfImage(final int i) {
-        return li.get(i);
+    public final void setNumberOfGraphicSegments(final int numberOfGraphicSegments) {
+        numberGraphicSegments = numberOfGraphicSegments;
     }
 
     public final int getNumberOfGraphicSegments() {
         return numberGraphicSegments;
     }
 
-    public final int getLengthOfGraphicSubheader(final int i) {
-        return lssh.get(i);
-    }
+//     public final int getLengthOfGraphicSubheader(final int i) {
+//         return lssh.get(i);
+//     }
+//
+//     public final int getLengthOfGraphic(final int i) {
+//         return ls.get(i);
+//     }
 
-    public final int getLengthOfGraphic(final int i) {
-        return ls.get(i);
+    public final void setNumberOfTextSegments(final int numberOfTextSegments) {
+        numberTextSegments = numberOfTextSegments;
     }
 
     public final int getNumberOfTextSegments() {
         return numberTextSegments;
     }
 
-    public final int getLengthOfTextSubheader(final int i) {
-        return ltsh.get(i);
-    }
+//     public final int getLengthOfTextSubheader(final int i) {
+//         return ltsh.get(i);
+//     }
+//
+//     public final int getLengthOfText(final int i) {
+//         return lt.get(i);
+//     }
 
-    public final int getLengthOfText(final int i) {
-        return lt.get(i);
+    public final void setNumberOfDataExtensionSegments(final int numberOfDataExtensionSegments) {
+        numberDataExtensionSegments = numberOfDataExtensionSegments;
     }
 
     public final int getNumberOfDataExtensionSegments() {
@@ -257,12 +228,24 @@ public class NitfFile extends AbstractNitfSegment {
         return numberReservedExtensionSegments;
     }
 
+    public final void setUserDefinedHeaderDataLength(final int lengthOfUserDefinedHeader) {
+        userDefinedHeaderDataLength = lengthOfUserDefinedHeader;
+    }
+
     public final int getUserDefinedHeaderDataLength() {
         return userDefinedHeaderDataLength;
     }
 
-    public final int getExtendedHeaderDataLength() {
-        return extendedHeaderDataLength;
+    public final void setUserDefinedHeaderOverflow(final int userDefinedHeaderOverflowNumber) {
+        userDefinedHeaderOverflow = userDefinedHeaderOverflowNumber;
+    }
+
+//     public final int getExtendedHeaderDataLength() {
+//         return extendedHeaderDataLength;
+//     }
+
+    public final void addImageSegment(final NitfImageSegment imageSegment) {
+        imageSegments.add(imageSegment);
     }
 
     public final NitfImageSegment getImageSegment(final int segmentNumber) {
@@ -273,12 +256,20 @@ public class NitfFile extends AbstractNitfSegment {
         return imageSegments.get(segmentNumberZeroBase);
     }
 
+    public final void addGraphicSegment(final NitfGraphicSegment graphicSegment) {
+        graphicSegments.add(graphicSegment);
+    }
+
     public final NitfGraphicSegment getGraphicSegment(final int segmentNumber) {
         return getGraphicSegmentZeroBase(segmentNumber - 1);
     }
 
     public final NitfGraphicSegment getGraphicSegmentZeroBase(final int segmentNumberZeroBase) {
         return graphicSegments.get(segmentNumberZeroBase);
+    }
+
+    public final void addTextSegment(final NitfTextSegment textSegment) {
+        textSegments.add(textSegment);
     }
 
     public final NitfTextSegment getTextSegment(final int segmentNumber) {
@@ -289,6 +280,10 @@ public class NitfFile extends AbstractNitfSegment {
         return textSegments.get(segmentNumberZeroBase);
     }
 
+    public final void addDataExtensionSegment(final NitfDataExtensionSegment dataExtensionSegment) {
+        dataExtensionSegments.add(dataExtensionSegment);
+    }
+
     public final NitfDataExtensionSegment getDataExtensionSegment(final int segmentNumber) {
         return getDataExtensionSegmentZeroBase(segmentNumber - 1);
     }
@@ -297,162 +292,7 @@ public class NitfFile extends AbstractNitfSegment {
         return dataExtensionSegments.get(segmentNumberZeroBase);
     }
 
-    private void readFHDRFVER() throws ParseException {
-        String fhdrfver = reader.readBytes(FHDR_LENGTH + FVER_LENGTH);
-        fileType = FileType.getEnumValue(fhdrfver);
-    }
-
-    private void readCLEVEL() throws ParseException {
-        nitfComplexityLevel = reader.readBytesAsInteger(CLEVEL_LENGTH);
-        if ((nitfComplexityLevel < MIN_COMPLEXITY_LEVEL) || (nitfComplexityLevel > MAX_COMPLEXITY_LEVEL)) {
-            throw new ParseException(String.format("CLEVEL out of range: %i", nitfComplexityLevel), reader.getNumBytesRead());
-        }
-    }
-
-    private void readSTYPE() throws ParseException {
-        nitfStandardType = reader.readBytes(STYPE_LENGTH);
-    }
-
-    private void readOSTAID() throws ParseException {
-        nitfOriginatingStationId = reader.readTrimmedBytes(OSTAID_LENGTH);
-    }
-
-    private void readFDT() throws ParseException {
-        nitfFileDateTime = reader.readNitfDateTime();
-    }
-
-    private void readFTITLE() throws ParseException {
-        nitfFileTitle = reader.readTrimmedBytes(FTITLE_LENGTH);
-    }
-
-    private void readFBKGC() throws ParseException {
-        byte[] fbkgc = reader.readBytesRaw(FBKGC_LENGTH);
-        nitfFileBackgroundColourRed = fbkgc[0];
-        nitfFileBackgroundColourGreen = fbkgc[1];
-        nitfFileBackgroundColourBlue = fbkgc[2];
-    }
-
-    private void readONAME() throws ParseException {
-        nitfOriginatorsName = reader.readTrimmedBytes(ONAME_LENGTH);
-    }
-
-    private void readOPHONE() throws ParseException {
-        nitfOriginatorsPhoneNumber = reader.readTrimmedBytes(OPHONE_LENGTH);
-    }
-
-    private void readFL() throws ParseException {
-        nitfFileLength = reader.readBytesAsLong(FL_LENGTH);
-    }
-
-    private void readHL() throws ParseException {
-        nitfHeaderLength = reader.readBytesAsInteger(HL_LENGTH);
-    }
-
-    private void readNUMI() throws ParseException {
-        numberImageSegments = reader.readBytesAsInteger(NUMI_LENGTH);
-    }
-
-    private void readLISH() throws ParseException {
-        lish.add(reader.readBytesAsInteger(LISH_LENGTH));
-    }
-
-    private void readLI() throws ParseException {
-        li.add(reader.readBytesAsLong(LI_LENGTH));
-    }
-
-    private void readNUMS() throws ParseException {
-        numberGraphicSegments = reader.readBytesAsInteger(NUMS_LENGTH);
-    }
-
-    private void readLSSH() throws ParseException {
-        lssh.add(reader.readBytesAsInteger(LSSH_LENGTH));
-    }
-
-    private void readLS() throws ParseException {
-        ls.add(reader.readBytesAsInteger(LS_LENGTH));
-    }
-
-    private void readNUMX() throws ParseException {
-        reader.skip(NUMX_LENGTH);
-    }
-
-    private void readNUMT() throws ParseException {
-        numberTextSegments = reader.readBytesAsInteger(NUMT_LENGTH);
-    }
-
-    private void readLTSH() throws ParseException {
-        ltsh.add(reader.readBytesAsInteger(LTSH_LENGTH));
-    }
-
-    private void readLT() throws ParseException {
-        lt.add(reader.readBytesAsInteger(LT_LENGTH));
-    }
-
-    private void readNUMDES() throws ParseException {
-        numberDataExtensionSegments = reader.readBytesAsInteger(NUMDES_LENGTH);
-    }
-
-    private void readLDSH() throws ParseException {
-        ldsh.add(reader.readBytesAsInteger(LDSH_LENGTH));
-    }
-
-    private void readLD() throws ParseException {
-        ld.add(reader.readBytesAsInteger(LD_LENGTH));
-    }
-
-    private void readNUMRES() throws ParseException {
-        numberReservedExtensionSegments = reader.readBytesAsInteger(NUMRES_LENGTH);
-    }
-
-    private void readUDHDL() throws ParseException {
-        userDefinedHeaderDataLength = reader.readBytesAsInteger(UDHDL_LENGTH);
-    }
-
-    private void readUDHOFL() throws ParseException {
-        userDefinedHeaderOverflow = reader.readBytesAsInteger(UDHOFL_LENGTH);
-    }
-
-    private void readUDHD() throws ParseException {
-        TreParser treParser = new TreParser();
-        TreCollection userDefinedHeaderTREs = treParser.parse(reader, userDefinedHeaderDataLength - UDHOFL_LENGTH);
-        mergeTREs(userDefinedHeaderTREs);
-    }
-
-    private void readXHDL() throws ParseException {
-        extendedHeaderDataLength = reader.readBytesAsInteger(XHDL_LENGTH);
-    }
-
-    private void readXHDLOFL() throws ParseException {
-        extendedHeaderOverflow = reader.readBytesAsInteger(XHDLOFL_LENGTH);
-    }
-
-    private void readXHD() throws ParseException {
-        TreParser treParser = new TreParser();
-        TreCollection extendedHeaderTres = treParser.parse(reader, extendedHeaderDataLength - XHDLOFL_LENGTH);
-        mergeTREs(extendedHeaderTres);
-    }
-
-    private void readImageSegments() throws ParseException {
-        for (int i = 0; i < numberImageSegments; ++i) {
-            imageSegments.add(new NitfImageSegment(reader, li.get(i)));
-        }
-    }
-
-    private void readGraphicSegments() throws ParseException {
-        for (int i = 0; i < numberGraphicSegments; ++i) {
-            graphicSegments.add(new NitfGraphicSegment(reader, ls.get(i)));
-        }
-    }
-
-    private void readTextSegments() throws ParseException {
-        for (int i = 0; i < numberTextSegments; ++i) {
-            textSegments.add(new NitfTextSegment(reader, lt.get(i)));
-        }
-    }
-
-    private void readDataExtensionSegments() throws ParseException {
-        for (int i = 0; i < numberDataExtensionSegments; ++i) {
-            dataExtensionSegments.add(new NitfDataExtensionSegment(reader, ld.get(i)));
-        }
+    public final void setNumberOfReservedExtensionSegments(final int numberOfReservedExtensionSegments) {
+        numberReservedExtensionSegments = numberOfReservedExtensionSegments;
     }
 }
