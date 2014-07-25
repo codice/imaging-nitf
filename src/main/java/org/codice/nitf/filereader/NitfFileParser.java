@@ -24,6 +24,9 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
 
     private NitfReader reader = null;
 
+    private long nitfFileLength = -1;
+    private int nitfHeaderLength = -1;
+
     private int numberImageSegments = 0;
     private int numberGraphicSegments = 0;
     private int numberTextSegments = 0;
@@ -94,7 +97,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
         readONAME();
         readOPHONE();
         readFL();
-        if (nitf.getFileLength() == STREAMING_FILE_MODE) {
+        if (nitfFileLength == STREAMING_FILE_MODE) {
             if (!reader.canSeek()) {
                 throw new ParseException("No support for streaming mode unless input is seekable", 0);
             }
@@ -188,11 +191,11 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readFL() throws ParseException {
-        nitf.setFileLength(reader.readBytesAsLong(FL_LENGTH));
+        nitfFileLength = reader.readBytesAsLong(FL_LENGTH);
     }
 
     private void readHL() throws ParseException {
-        nitf.setHeaderLength(reader.readBytesAsInteger(HL_LENGTH));
+        nitfHeaderLength = reader.readBytesAsInteger(HL_LENGTH);
     }
 
     private void readNUMI() throws ParseException {

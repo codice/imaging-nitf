@@ -33,8 +33,6 @@ public class NitfFile extends AbstractNitfSegment {
     private byte nitfFileBackgroundColourBlue = 0;
     private String nitfOriginatorsName = null;
     private String nitfOriginatorsPhoneNumber = null;
-    private long nitfFileLength = -1;
-    private int nitfHeaderLength = -1;
 
     private List<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private List<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
@@ -142,22 +140,6 @@ public class NitfFile extends AbstractNitfSegment {
 
     public final String getOriginatorsPhoneNumber() {
         return nitfOriginatorsPhoneNumber;
-    }
-
-    public final void setFileLength(final long fileLength) {
-        nitfFileLength = fileLength;
-    }
-
-    public final long getFileLength() {
-        return nitfFileLength;
-    }
-
-    public final void setHeaderLength(final int headerLength) {
-        nitfHeaderLength = headerLength;
-    }
-
-    public final int getHeaderLength() {
-        return nitfHeaderLength;
     }
 
     public final int getNumberOfImageSegments() {

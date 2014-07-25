@@ -54,8 +54,6 @@ public class Nitf21HeaderTest {
         assertEquals(0x20, reader.getFileBackgroundColourBlue());
         assertEquals("JITC", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(933L, reader.getFileLength());
-        assertEquals(404, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
@@ -142,8 +140,6 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0xFF, reader.getFileBackgroundColourBlue());
         assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(1049479L, reader.getFileLength());
-        assertEquals(404, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
@@ -205,8 +201,6 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0xFF, reader.getFileBackgroundColourBlue());
         assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(10711L, reader.getFileLength());
-        assertEquals(404, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
@@ -268,8 +262,6 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0x00, reader.getFileBackgroundColourBlue());
         assertEquals("JITC NITF LAB", reader.getOriginatorsName());
         assertEquals("(520) 538-4858", reader.getOriginatorsPhoneNumber());
-        assertEquals(264592L, reader.getFileLength());
-        assertEquals(452, reader.getHeaderLength());
         assertEquals(4, reader.getNumberOfImageSegments());
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
@@ -486,8 +478,6 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getFileBackgroundColourBlue());
         assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(1592L, reader.getFileLength());
-        assertEquals(398, reader.getHeaderLength());
         assertEquals(0, reader.getNumberOfImageSegments());
         assertEquals(1, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
@@ -535,8 +525,6 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getFileBackgroundColourBlue());
         assertEquals("JITC FT HUACHUCA", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(248762L, reader.getFileLength());
-        assertEquals(1903, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
@@ -704,8 +692,6 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0xFF, reader.getFileBackgroundColourBlue());
         assertEquals("", reader.getOriginatorsName());
         assertEquals("", reader.getOriginatorsPhoneNumber());
-        assertEquals(193253L, reader.getFileLength());
-        assertEquals(810, reader.getHeaderLength());
         assertEquals(1, reader.getNumberOfImageSegments());
 
         // Checks for ImageSegment.
