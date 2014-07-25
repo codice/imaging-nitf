@@ -416,7 +416,6 @@ public class Nitf21HeaderTest {
         assertEquals("Paragon Imaging Comment File", textSegment.getTextTitle());
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
-        assertEquals(0, textSegment.getTextExtendedSubheaderLength());
     }
 
     @Test

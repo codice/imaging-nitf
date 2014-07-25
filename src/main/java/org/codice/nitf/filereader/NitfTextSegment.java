@@ -18,104 +18,66 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class NitfTextSegment extends AbstractNitfSegment {
-    private NitfReader reader = null;
-
-    private int lengthOfText = 0;
-    private Date textDateTime = null;
-    private NitfSecurityMetadata securityMetadata = null;
-    private int textExtendedSubheaderLength = 0;
 
     private String textIdentifier = null;
     private int textAttachmentLevel = 0;
+    private Date textDateTime = null;
     private String textTitle = null;
+    private NitfSecurityMetadata securityMetadata = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
 
-    private static final String TE = "TE";
-    private static final int TEXTID_LENGTH = 7;
-    private static final int TXTALVL_LENGTH = 3;
-    private static final int TXTITL_LENGTH = 80;
-    private static final int TXTFMT_LENGTH = 3;
-    private static final int TXSHDL_LENGTH = 5;
+    public NitfTextSegment() {
+    }
 
-    public NitfTextSegment(final NitfReader nitfReader, final int textLength) throws ParseException {
-        reader = nitfReader;
-        lengthOfText = textLength;
+    public final void parse(final NitfReader nitfReader, final int textLength) throws ParseException {
+        new NitfTextSegmentParser(nitfReader, textLength, this);
+    }
 
-        readTE();
-        readTEXTID();
-        readTXTALVL();
-        readTEXTDT();
-        readTXTITL();
-        securityMetadata = new NitfSecurityMetadata(reader);
-        reader.readENCRYP();
-        readTXTFMT();
-        readTXSHDL();
-        if (textExtendedSubheaderLength > 0) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT TXSOFL / TXSHD PARSING");
-        }
-        readTextData();
+    public final void setTextIdentifier(final String identifier) {
+        textIdentifier = identifier;
     }
 
     public final String getTextIdentifier() {
         return textIdentifier;
     }
 
+    public final void setTextAttachmentLevel(final int attachmentLevel) {
+        textAttachmentLevel = attachmentLevel;
+    }
+
     public final int getTextAttachmentLevel() {
         return textAttachmentLevel;
+    }
+
+    public final void setTextDateTime(final Date dateTime) {
+        textDateTime = dateTime;
     }
 
     public final Date getTextDateTime() {
         return textDateTime;
     }
 
+    public final void setTextTitle(final String title) {
+        textTitle = title;
+    }
+
     public final String getTextTitle() {
         return textTitle;
+    }
+
+    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
+        securityMetadata = nitfSecurityMetadata;
     }
 
     public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 
+    public final void setTextFormat(final TextFormat format) {
+        textFormat = format;
+    }
+
     public final TextFormat getTextFormat() {
         return textFormat;
-    }
-
-    public final int getTextExtendedSubheaderLength() {
-        return textExtendedSubheaderLength;
-    }
-
-    private void readTE() throws ParseException {
-       reader.verifyHeaderMagic(TE);
-    }
-
-    private void readTEXTID() throws ParseException {
-        textIdentifier = reader.readBytes(TEXTID_LENGTH);
-    }
-
-    private void readTXTALVL() throws ParseException {
-        textAttachmentLevel = reader.readBytesAsInteger(TXTALVL_LENGTH);
-    }
-
-    private void readTEXTDT() throws ParseException {
-        textDateTime = reader.readNitfDateTime();
-    }
-
-    private void readTXTITL() throws ParseException {
-        textTitle = reader.readTrimmedBytes(TXTITL_LENGTH);
-    }
-
-    private void readTXTFMT() throws ParseException {
-        String txtfmt = reader.readTrimmedBytes(TXTFMT_LENGTH);
-        textFormat = TextFormat.getEnumValue(txtfmt);
-    }
-
-    private void readTXSHDL() throws ParseException {
-        textExtendedSubheaderLength = reader.readBytesAsInteger(TXSHDL_LENGTH);
-    }
-
-    private void readTextData() throws ParseException {
-        // TODO: we could use this if needed later
-        reader.skip(lengthOfText);
     }
 }
