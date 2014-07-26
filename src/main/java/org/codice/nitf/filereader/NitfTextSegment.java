@@ -16,6 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.EnumSet;
 
 public class NitfTextSegment extends AbstractNitfSegment {
 
@@ -26,11 +27,15 @@ public class NitfTextSegment extends AbstractNitfSegment {
     private NitfSecurityMetadata securityMetadata = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
 
+    private String data = null;
+
     public NitfTextSegment() {
     }
 
-    public final void parse(final NitfReader nitfReader, final int textLength) throws ParseException {
-        new NitfTextSegmentParser(nitfReader, textLength, this);
+    public final void parse(final NitfReader nitfReader,
+                            final int textLength,
+                            final EnumSet<ParseOption> parseOptions) throws ParseException {
+        new NitfTextSegmentParser(nitfReader, textLength, parseOptions, this);
     }
 
     public final void setTextIdentifier(final String identifier) {
@@ -79,5 +84,13 @@ public class NitfTextSegment extends AbstractNitfSegment {
 
     public final TextFormat getTextFormat() {
         return textFormat;
+    }
+
+    public final void setTextData(final String textData) {
+        data = textData;
+    }
+
+    public final String getTextData() {
+        return data;
     }
 }

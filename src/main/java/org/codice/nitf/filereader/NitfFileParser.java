@@ -18,6 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class NitfFileParser extends AbstractNitfSegmentParser {
@@ -81,9 +82,14 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
     private NitfFile nitf = null;
+    private EnumSet<ParseOption> parseOptionSet = null;
 
-    public NitfFileParser(final InputStream nitfInputStream, final NitfFile nitfFile) throws ParseException {
+    public NitfFileParser(final InputStream nitfInputStream,
+                          final EnumSet<ParseOption> parseOptions,
+                          final NitfFile nitfFile) throws ParseException {
         nitf = nitfFile;
+        parseOptionSet = parseOptions;
+
         reader = new NitfReader(new BufferedInputStream(nitfInputStream), 0);
         readFHDRFVER();
         readCLEVEL();
@@ -307,7 +313,8 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private void readTextSegments() throws ParseException {
         for (int i = 0; i < numberTextSegments; ++i) {
             NitfTextSegment textSegment = new NitfTextSegment();
-            textSegment.parse(reader, lt.get(i));
+            // TODO: the enumset should be passed in
+            textSegment.parse(reader, lt.get(i), parseOptionSet);
             nitf.addTextSegment(textSegment);
         }
     }

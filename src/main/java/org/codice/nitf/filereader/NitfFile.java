@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 
 public class NitfFile extends AbstractNitfSegment {
@@ -43,7 +44,11 @@ public class NitfFile extends AbstractNitfSegment {
     }
 
     public final void parse(final InputStream nitfInputStream) throws ParseException {
-        new NitfFileParser(nitfInputStream, this);
+        new NitfFileParser(nitfInputStream, EnumSet.noneOf(ParseOption.class), this);
+    }
+
+    public final void parse(final InputStream nitfInputStream, final EnumSet<ParseOption> parseOptions) throws ParseException {
+        new NitfFileParser(nitfInputStream, parseOptions, this);
     }
 
     public final void setFileType(final FileType type) {

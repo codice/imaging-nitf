@@ -15,6 +15,7 @@
 package org.codice.nitf.filereader;
 
 import java.text.ParseException;
+import java.util.EnumSet;
 
 public class NitfTextSegmentParser extends AbstractNitfSegmentParser {
 
@@ -28,12 +29,18 @@ public class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     private static final int TXTFMT_LENGTH = 3;
     private static final int TXSHDL_LENGTH = 5;
 
+    private boolean shouldParseTextData = false;
+
     private NitfTextSegment segment = null;
 
-    public NitfTextSegmentParser(final NitfReader nitfReader, final int textLength, final NitfTextSegment textSegment) throws ParseException {
+    public NitfTextSegmentParser(final NitfReader nitfReader,
+                                 final int textLength,
+                                 final EnumSet<ParseOption> parseOptions,
+                                 final NitfTextSegment textSegment) throws ParseException {
         reader = nitfReader;
         lengthOfText = textLength;
         segment = textSegment;
+        shouldParseTextData = parseOptions.contains(ParseOption.ExtractTextSegmentData);
 
         readTE();
         readTEXTID();
@@ -81,7 +88,13 @@ public class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readTextData() throws ParseException {
-        // TODO: we could use this if needed later
-        reader.skip(lengthOfText);
+        if (lengthOfText == 0) {
+            return;
+        }
+        if (shouldParseTextData) {
+            segment.setTextData(reader.readBytes(lengthOfText));
+        } else {
+            reader.skip(lengthOfText);
+        }
     }
 }
