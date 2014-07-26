@@ -21,8 +21,6 @@ import java.util.List;
 
 public class NitfImageSegment extends AbstractNitfSegment {
 
-    private NitfReader reader = null;
-
     private String imageIdentifier1 = null;
     private Date imageDateTime = null;
     // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples
@@ -56,171 +54,132 @@ public class NitfImageSegment extends AbstractNitfSegment {
     private int imageLocationRow = 0;
     private int imageLocationColumn = 0;
     private String imageMagnification = null;
-    private int userDefinedImageDataLength = 0;
-    private int userDefinedOverflow = 0;
-    private int imageExtendedSubheaderDataLength = 0;
-    private int imageExtendedSubheaderOverflow = 0;
-    private long lengthOfImage = 0L;
-
-    private static final String IM = "IM";
-    private static final int IID1_LENGTH = 10;
-    private static final int TGTID_LENGTH = 17;
-    private static final int IID2_LENGTH = 80;
-    private static final int ISORCE_LENGTH = 42;
-    private static final int NROWS_LENGTH = 8;
-    private static final int NCOLS_LENGTH = 8;
-    private static final int PVTYPE_LENGTH = 3;
-    private static final int IREP_LENGTH = 8;
-    private static final int ICAT_LENGTH = 8;
-    private static final int ABPP_LENGTH = 2;
-    private static final int PJUST_LENGTH = 1;
-    private static final int ICORDS_LENGTH = 1;
-    private static final int IGEOLO_LENGTH = 60;
-    private static final int NICOM_LENGTH = 1;
-    private static final int ICOM_LENGTH = 80;
-    private static final int IC_LENGTH = 2;
-    private static final int COMRAT_LENGTH = 4;
-    private static final int NBANDS_LENGTH = 1;
-    private static final int XBANDS_LENGTH = 5;
-    private static final int ISYNC_LENGTH = 1;
-    private static final int IMODE_LENGTH = 1;
-    private static final int NBPR_LENGTH = 4;
-    private static final int NBPC_LENGTH = 4;
-    private static final int NPPBH_LENGTH = 4;
-    private static final int NPPBV_LENGTH = 4;
-    private static final int NBPP_LENGTH = 2;
-    private static final int IDLVL_LENGTH = 3;
-    private static final int IALVL_LENGTH = 3;
-    private static final int ILOC_HALF_LENGTH = 5;
-    private static final int IMAG_LENGTH = 4;
-    private static final int UDIDL_LENGTH = 5;
-    private static final int UDOFL_LENGTH = 3;
-    private static final int IXSHDL_LENGTH = 5;
-    private static final int IXSOFL_LENGTH = 3;
 
     public NitfImageSegment() {
     }
 
     public final void parse(final NitfReader nitfReader, final long imageLength) throws ParseException {
-        reader = nitfReader;
-        lengthOfImage = imageLength;
-        readIM();
-        readIID1();
-        readIDATIM();
-        readTGTID();
-        readIID2();
-        securityMetadata = new NitfSecurityMetadata(reader);
-        reader.readENCRYP();
-        readISORCE();
-        readNROWS();
-        readNCOLS();
-        readPVTYPE();
-        readIREP();
-        readICAT();
-        readABPP();
-        readPJUST();
-        readICORDS();
-        if ((imageCoordinatesRepresentation != ImageCoordinatesRepresentation.UNKNOWN)
-            && (imageCoordinatesRepresentation != ImageCoordinatesRepresentation.NONE)) {
-            readIGEOLO();
-        }
-        readNICOM();
-        for (int i = 0; i < numImageComments; ++i) {
-            imageComments.add(reader.readTrimmedBytes(ICOM_LENGTH));
-        }
-        readIC();
-        if (hasCOMRAT()) {
-            readCOMRAT();
-        }
-        readNBANDS();
-        if (numBands == 0) {
-            readXBANDS();
-        }
-        for (int i = 0; i < numBands; ++i) {
-            imageBands.add(new NitfImageBand(reader));
-        }
-        readISYNC();
-        readIMODE();
-        readNBPR();
-        readNBPC();
-        readNPPBH();
-        readNPPBV();
-        readNBPP();
-        readIDLVL();
-        readIALVL();
-        readILOC();
-        readIMAG();
-        readUDIDL();
-        if (userDefinedImageDataLength > 0) {
-            readUDOFL();
-            readUDID();
-        }
-        readIXSHDL();
-        if (imageExtendedSubheaderDataLength > 0) {
-            readIXSOFL();
-            readIXSHD();
-        }
-        readImageData();
+        new NitfImageSegmentParser(nitfReader, imageLength, this);
+    }
+
+    public final void setImageIdentifier1(final String identifier) {
+        imageIdentifier1 = identifier;
     }
 
     public final String getImageIdentifier1() {
         return imageIdentifier1;
     }
 
+    public final void setImageDateTime(final Date dateTime) {
+        imageDateTime = dateTime;
+    }
+
     public final Date getImageDateTime() {
         return imageDateTime;
+    }
+
+    public final void setImageTargetId(final String targetId) {
+        imageTargetId = targetId;
     }
 
     public final String getImageTargetId() {
         return imageTargetId;
     }
 
+    public final void setImageIdentifier2(final String identifier) {
+        imageIdentifier2 = identifier;
+    }
+
     public final String getImageIdentifier2() {
         return imageIdentifier2;
+    }
+
+    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
+        securityMetadata = nitfSecurityMetadata;
     }
 
     public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 
+    public final void setImageSource(final String source) {
+        imageSource = source;
+    }
+
     public final String getImageSource() {
         return imageSource;
+    }
+
+    public final void setNumberOfRows(final long numberOfRows) {
+        numRows = numberOfRows;
     }
 
     public final long getNumberOfRows() {
         return numRows;
     }
 
+    public final void setNumberOfColumns(final long numberOfColumns) {
+        numColumns = numberOfColumns;
+    }
+
     public final long getNumberOfColumns() {
         return numColumns;
+    }
+
+    public final void setPixelValueType(final PixelValueType valueType) {
+        pixelValueType = valueType;
     }
 
     public final PixelValueType getPixelValueType() {
         return pixelValueType;
     }
 
+    public final void setImageRepresentation(final ImageRepresentation representation) {
+        imageRepresentation = representation;
+    }
+
     public final ImageRepresentation getImageRepresentation() {
         return imageRepresentation;
+    }
+
+    public final void setImageCategory(final ImageCategory category) {
+        imageCategory = category;
     }
 
     public final ImageCategory getImageCategory() {
         return imageCategory;
     }
 
+    public final void setActualBitsPerPixelPerBand(final int abpb) {
+        actualBitsPerPixelPerBand = abpb;
+    }
+
     public final int getActualBitsPerPixelPerBand() {
         return actualBitsPerPixelPerBand;
+    }
+
+    public final void setPixelJustification(final PixelJustification justification) {
+        pixelJustification = justification;
     }
 
     public final PixelJustification getPixelJustification() {
         return pixelJustification;
     }
 
+    public final void setImageCoordinatesRepresentation(final ImageCoordinatesRepresentation representation) {
+        imageCoordinatesRepresentation = representation;
+    }
+
     public final ImageCoordinatesRepresentation getImageCoordinatesRepresentation() {
         return imageCoordinatesRepresentation;
     }
 
+    public final void addImageComment(final String imageComment) {
+        imageComments.add(imageComment);
+    }
+
     public final int getNumberOfImageComments() {
-        return numImageComments;
+        return imageComments.size();
     }
 
     public final String getImageComment(final int commentNumber) {
@@ -231,8 +190,16 @@ public class NitfImageSegment extends AbstractNitfSegment {
         return imageComments.get(commentNumberZeroBase);
     }
 
+    public final void setImageCompression(final ImageCompression compression) {
+        imageCompression = compression;
+    }
+
     public final ImageCompression getImageCompression() {
         return imageCompression;
+    }
+
+    public final void setCompressionRate(final String rate) {
+        compressionRate = rate;
     }
 
     public final String getCompressionRate() {
@@ -243,6 +210,9 @@ public class NitfImageSegment extends AbstractNitfSegment {
         return imageBands.size();
     }
 
+    public final void addImageBand(final NitfImageBand imageBand) {
+        imageBands.add(imageBand);
+    }
     public final NitfImageBand getImageBand(final int bandNumber) {
         return getImageBandZeroBase(bandNumber - 1);
     }
@@ -251,44 +221,88 @@ public class NitfImageSegment extends AbstractNitfSegment {
         return imageBands.get(bandNumberZeroBase);
     }
 
+    public final void setImageMode(final ImageMode mode) {
+        imageMode = mode;
+    }
+
     public final ImageMode getImageMode() {
         return imageMode;
+    }
+
+    public final void setNumberOfBlocksPerRow(final int numberOfBlocksPerRow) {
+        numBlocksPerRow = numberOfBlocksPerRow;
     }
 
     public final int getNumberOfBlocksPerRow() {
         return numBlocksPerRow;
     }
 
+    public final void setNumberOfBlocksPerColumn(final int numberOfBlocksPerColumn) {
+        numBlocksPerColumn = numberOfBlocksPerColumn;
+    }
+
     public final int getNumberOfBlocksPerColumn() {
         return numBlocksPerColumn;
+    }
+
+    public final void setNumberOfPixelsPerBlockHorizontal(final int numberOfPixelsPerBlockHorizontal) {
+        numPixelsPerBlockHorizontal = numberOfPixelsPerBlockHorizontal;
     }
 
     public final int getNumberOfPixelsPerBlockHorizontal() {
         return numPixelsPerBlockHorizontal;
     }
 
+    public final void setNumberOfPixelsPerBlockVertical(final int numberOfPixelsPerBlockVertical) {
+        numPixelsPerBlockVertical = numberOfPixelsPerBlockVertical;
+    }
+
     public final int getNumberOfPixelsPerBlockVertical() {
         return numPixelsPerBlockVertical;
+    }
+
+    public final void setNumberOfBitsPerPixelPerBand(final int numberOfBitsPerPixelPerBand) {
+        numBitsPerPixelPerBand = numberOfBitsPerPixelPerBand;
     }
 
     public final int getNumberOfBitsPerPixelPerBand() {
         return numBitsPerPixelPerBand;
     }
 
+    public final void setImageDisplayLevel(final int displayLevel) {
+        imageDisplayLevel = displayLevel;
+    }
+
     public final int getImageDisplayLevel() {
         return imageDisplayLevel;
+    }
+
+    public final void setImageAttachmentLevel(final int attachmentLevel) {
+        imageAttachmentLevel = attachmentLevel;
     }
 
     public final int getImageAttachmentLevel() {
         return imageAttachmentLevel;
     }
 
+    public final void setImageLocationRow(final int locationRow) {
+        imageLocationRow = locationRow;
+    }
+
     public final int getImageLocationRow() {
         return imageLocationRow;
     }
 
+    public final void setImageLocationColumn(final int locationColumn) {
+        imageLocationColumn = locationColumn;
+    }
+
     public final int getImageLocationColumn() {
         return imageLocationColumn;
+    }
+
+    public final void setImageMagnification(final String magnification) {
+        imageMagnification = magnification;
     }
 
     public final String getImageMagnification() {
@@ -303,212 +317,11 @@ public class NitfImageSegment extends AbstractNitfSegment {
         }
     }
 
+    public final void setImageCoordinates(final ImageCoordinates coordinates) {
+        imageCoordinates = coordinates;
+    }
+
     public final ImageCoordinates getImageCoordinates() {
         return imageCoordinates;
-    }
-
-    public final long getLengthOfImage() {
-        return lengthOfImage;
-    }
-
-    private Boolean hasCOMRAT() {
-        return (imageCompression == ImageCompression.BILEVEL)
-                || (imageCompression == ImageCompression.JPEG)
-                || (imageCompression == ImageCompression.VECTORQUANTIZATION)
-                || (imageCompression == ImageCompression.LOSSLESSJPEG)
-                || (imageCompression == ImageCompression.JPEG2000)
-                || (imageCompression == ImageCompression.DOWNSAMPLEDJPEG)
-                || (imageCompression == ImageCompression.BILEVELMASK)
-                || (imageCompression == ImageCompression.JPEGMASK)
-                || (imageCompression == ImageCompression.VECTORQUANTIZATIONMASK)
-                || (imageCompression == ImageCompression.LOSSLESSJPEGMASK)
-                || (imageCompression == ImageCompression.JPEG2000MASK);
-    }
-
-    private void readIM() throws ParseException {
-       reader.verifyHeaderMagic(IM);
-    }
-
-    private void readIID1() throws ParseException {
-        imageIdentifier1 = reader.readTrimmedBytes(IID1_LENGTH);
-    }
-
-    private void readIDATIM() throws ParseException {
-        imageDateTime = reader.readNitfDateTime();
-    }
-
-    private void readTGTID() throws ParseException {
-        imageTargetId = reader.readTrimmedBytes(TGTID_LENGTH);
-    }
-
-    private void readIID2() throws ParseException {
-        imageIdentifier2 = reader.readTrimmedBytes(IID2_LENGTH);
-    }
-
-    private void readISORCE() throws ParseException {
-        imageSource = reader.readTrimmedBytes(ISORCE_LENGTH);
-    }
-
-    private void readNROWS() throws ParseException {
-        numRows = reader.readBytesAsLong(NROWS_LENGTH);
-    }
-
-    private void readNCOLS() throws ParseException {
-        numColumns = reader.readBytesAsLong(NCOLS_LENGTH);
-    }
-
-    private void readPVTYPE() throws ParseException {
-        String pvtype = reader.readTrimmedBytes(PVTYPE_LENGTH);
-        pixelValueType = PixelValueType.getEnumValue(pvtype);
-    }
-
-    private void readIREP() throws ParseException {
-        String irep = reader.readTrimmedBytes(IREP_LENGTH);
-        imageRepresentation = ImageRepresentation.getEnumValue(irep);
-    }
-
-    private void readICAT() throws ParseException {
-        String icat = reader.readTrimmedBytes(ICAT_LENGTH);
-        imageCategory = ImageCategory.getEnumValue(icat);
-    }
-
-    private void readABPP() throws ParseException {
-        actualBitsPerPixelPerBand = reader.readBytesAsInteger(ABPP_LENGTH);
-    }
-
-    private void readPJUST() throws ParseException {
-        String pjust = reader.readTrimmedBytes(PJUST_LENGTH);
-        pixelJustification = PixelJustification.getEnumValue(pjust);
-    }
-
-    private void readICORDS() throws ParseException {
-        String icords = reader.readBytes(ICORDS_LENGTH);
-        imageCoordinatesRepresentation = ImageCoordinatesRepresentation.getEnumValue(icords);
-    }
-
-    private void readIGEOLO() throws ParseException {
-        // TODO: this really only handle the GEO and D cases, not the UTM / UPS representations.
-        final int numCoordinates = 4;
-        final int coordinatePairLength = IGEOLO_LENGTH / numCoordinates;
-        String igeolo = reader.readBytes(IGEOLO_LENGTH);
-        ImageCoordinatePair[] coords = new ImageCoordinatePair[numCoordinates];
-        for (int i = 0; i < numCoordinates; ++i) {
-            coords[i] = new ImageCoordinatePair();
-            String coordStr = igeolo.substring(i * coordinatePairLength, (i + 1) * coordinatePairLength);
-            switch (imageCoordinatesRepresentation) {
-                case GEOGRAPHIC:
-                    coords[i].setFromDMS(coordStr);
-                    break;
-                case DECIMALDEGREES:
-                    coords[i].setFromDecimalDegrees(coordStr);
-                    break;
-                case UTMUPSNORTH:
-                    coords[i].setFromUTMUPSNorth(coordStr);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS: " + imageCoordinatesRepresentation);
-            }
-        }
-        imageCoordinates = new ImageCoordinates(coords);
-    }
-
-    private void readNICOM() throws ParseException {
-        numImageComments = reader.readBytesAsInteger(NICOM_LENGTH);
-    }
-
-    private void readIC() throws ParseException {
-        String ic = reader.readBytes(IC_LENGTH);
-        imageCompression = ImageCompression.getEnumValue(ic);
-    }
-
-    private void readNBANDS() throws ParseException {
-        numBands = reader.readBytesAsInteger(NBANDS_LENGTH);
-    }
-
-    private void readXBANDS() throws ParseException {
-        numBands = reader.readBytesAsInteger(XBANDS_LENGTH);
-    }
-
-    private void readISYNC() throws ParseException {
-        reader.readBytes(ISYNC_LENGTH);
-    }
-
-    private void readIMODE() throws ParseException {
-        String imode = reader.readBytes(IMODE_LENGTH);
-        imageMode = ImageMode.getEnumValue(imode);
-    }
-
-    private void readNBPR() throws ParseException {
-        numBlocksPerRow = reader.readBytesAsInteger(NBPR_LENGTH);
-    }
-
-    private void readNBPC() throws ParseException {
-        numBlocksPerColumn = reader.readBytesAsInteger(NBPC_LENGTH);
-    }
-
-    private void readNPPBH() throws ParseException {
-        numPixelsPerBlockHorizontal = reader.readBytesAsInteger(NPPBH_LENGTH);
-    }
-
-    private void readNPPBV() throws ParseException {
-        numPixelsPerBlockVertical = reader.readBytesAsInteger(NPPBV_LENGTH);
-    }
-
-    private void readNBPP() throws ParseException {
-        numBitsPerPixelPerBand = reader.readBytesAsInteger(NBPP_LENGTH);
-    }
-
-    private void readIDLVL() throws ParseException {
-        imageDisplayLevel = reader.readBytesAsInteger(IDLVL_LENGTH);
-    }
-
-    private void readIALVL() throws ParseException {
-        imageAttachmentLevel = reader.readBytesAsInteger(IALVL_LENGTH);
-    }
-
-    private void readILOC() throws ParseException {
-        imageLocationRow = reader.readBytesAsInteger(ILOC_HALF_LENGTH);
-        imageLocationColumn = reader.readBytesAsInteger(ILOC_HALF_LENGTH);
-    }
-
-    private void readIMAG() throws ParseException {
-        imageMagnification = reader.readBytes(IMAG_LENGTH);
-    }
-
-    private void readUDIDL() throws ParseException {
-        userDefinedImageDataLength = reader.readBytesAsInteger(UDIDL_LENGTH);
-    }
-
-    private void readUDOFL() throws ParseException {
-        userDefinedOverflow = reader.readBytesAsInteger(UDOFL_LENGTH);
-    }
-
-    private void readUDID() throws ParseException {
-        TreParser treParser = new TreParser();
-        TreCollection userDefinedSubheaderTres = treParser.parse(reader, userDefinedImageDataLength - UDOFL_LENGTH);
-        mergeTREs(userDefinedSubheaderTres);
-    }
-
-    private void readIXSHDL() throws ParseException {
-        imageExtendedSubheaderDataLength = reader.readBytesAsInteger(IXSHDL_LENGTH);
-    }
-
-    private void readIXSOFL() throws ParseException {
-        imageExtendedSubheaderOverflow = reader.readBytesAsInteger(IXSOFL_LENGTH);
-    }
-
-    private void readIXSHD() throws ParseException {
-        TreParser treParser = new TreParser();
-        TreCollection extendedSubheaderTres = treParser.parse(reader, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
-        mergeTREs(extendedSubheaderTres);
-    }
-
-    private void readCOMRAT() throws ParseException {
-        compressionRate = reader.readTrimmedBytes(COMRAT_LENGTH);
-    }
-
-    private void readImageData() throws ParseException {
-        // TODO: we could use this if needed later
-        reader.skip(lengthOfImage);
     }
 }

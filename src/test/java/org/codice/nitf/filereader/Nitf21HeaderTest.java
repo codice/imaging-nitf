@@ -110,7 +110,6 @@ public class Nitf21HeaderTest {
         assertEquals(100, segment1.getImageLocationRow());
         assertEquals(100, segment1.getImageLocationColumn());
         assertEquals("1.0 ", segment1.getImageMagnification());
-        assertEquals(79, segment1.getLengthOfImage());
 
         is.close();
     }
