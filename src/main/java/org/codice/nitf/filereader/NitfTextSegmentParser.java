@@ -17,7 +17,6 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 
 public class NitfTextSegmentParser extends AbstractNitfSegmentParser {
-    private NitfReader reader = null;
 
     private int lengthOfText = 0;
     private int textExtendedSubheaderLength = 0;
