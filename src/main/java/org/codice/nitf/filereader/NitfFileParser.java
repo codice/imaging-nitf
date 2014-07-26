@@ -290,7 +290,9 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
 
     private void readImageSegments() throws ParseException {
         for (int i = 0; i < numberImageSegments; ++i) {
-            nitf.addImageSegment(new NitfImageSegment(reader, li.get(i)));
+            NitfImageSegment imageSegment = new NitfImageSegment();
+            imageSegment.parse(reader, li.get(i));
+            nitf.addImageSegment(imageSegment);
         }
     }
 

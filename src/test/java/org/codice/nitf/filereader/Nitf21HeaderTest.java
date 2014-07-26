@@ -110,8 +110,6 @@ public class Nitf21HeaderTest {
         assertEquals(100, segment1.getImageLocationRow());
         assertEquals(100, segment1.getImageLocationColumn());
         assertEquals("1.0 ", segment1.getImageMagnification());
-        assertEquals(0, segment1.getUserDefinedImageDataLength());
-        assertEquals(0, segment1.getImageExtendedSubheaderDataLength());
         assertEquals(79, segment1.getLengthOfImage());
 
         is.close();
@@ -586,7 +584,6 @@ public class Nitf21HeaderTest {
         assertEquals(0, image.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, image.getImageCompression());
         assertEquals(1, image.getNumBands());
-        assertEquals(660, image.getImageExtendedSubheaderDataLength());
         Map<String, String> tresImageFlat = image.getTREsFlat();
         Map<String, String> expectedTresImageFlat = new HashMap<String, String>() {
             {

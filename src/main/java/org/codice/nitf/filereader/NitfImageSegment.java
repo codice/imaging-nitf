@@ -98,7 +98,10 @@ public class NitfImageSegment extends AbstractNitfSegment {
     private static final int IXSHDL_LENGTH = 5;
     private static final int IXSOFL_LENGTH = 3;
 
-    public NitfImageSegment(final NitfReader nitfReader, final long imageLength) throws ParseException {
+    public NitfImageSegment() {
+    }
+
+    public final void parse(final NitfReader nitfReader, final long imageLength) throws ParseException {
         reader = nitfReader;
         lengthOfImage = imageLength;
         readIM();
@@ -237,7 +240,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
     }
 
     public final int getNumBands() {
-        return numBands;
+        return imageBands.size();
     }
 
     public final NitfImageBand getImageBand(final int bandNumber) {
@@ -298,14 +301,6 @@ public class NitfImageSegment extends AbstractNitfSegment {
         } else {
             return Double.parseDouble(imageMagnification);
         }
-    }
-
-    public final int getUserDefinedImageDataLength() {
-        return userDefinedImageDataLength;
-    }
-
-    public final int getImageExtendedSubheaderDataLength() {
-        return imageExtendedSubheaderDataLength;
     }
 
     public final ImageCoordinates getImageCoordinates() {
