@@ -24,17 +24,27 @@ import java.util.Date;
 public class NitfReader {
     private BufferedInputStream input = null;
     private int numBytesRead = 0;
+    private FileType nitfFileType = FileType.UNKNOWN;
 
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
     private static final int ENCRYP_LENGTH = 1;
     private static final String DATE_ONLY_DAY_FORMAT = "yyyyMMdd";
     private static final String DATE_FULL_FORMAT = "yyyyMMddHHmmss";
+    private static final String NITF20_DATE_FORMAT = "ddHHmmss'Z'MMMyy";
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
     public NitfReader(final BufferedInputStream nitfInputStream, final int offset) throws ParseException {
         input = nitfInputStream;
         numBytesRead = offset;
+    }
+
+    public final void setFileType(final FileType fileType) {
+        nitfFileType = fileType;
+    }
+
+    public final FileType getFileType() {
+        return nitfFileType;
     }
 
     public final Boolean canSeek() {
@@ -55,7 +65,19 @@ public class NitfReader {
     public final Date readNitfDateTime() throws ParseException {
         String dateString = readTrimmedBytes(STANDARD_DATE_TIME_LENGTH);
         // TODO: check if NITF 2.0 uses the same format.
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FULL_FORMAT);
+        SimpleDateFormat dateFormat = null;
+        switch (nitfFileType) {
+            case NITF_TWO_ZERO:
+                dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
+                break;
+            case NITF_TWO_ONE:
+            case NSIF_ONE_ZERO:
+                dateFormat = new SimpleDateFormat(DATE_FULL_FORMAT);
+                break;
+            case UNKNOWN:
+            default:
+                throw new ParseException("Need to set NITF file type prior to reading dates", numBytesRead);
+        }
         if (dateString.length() == DATE_ONLY_DAY_FORMAT.length()) {
             // Fallback for files that aren't spec compliant
             dateFormat = new SimpleDateFormat(DATE_ONLY_DAY_FORMAT);

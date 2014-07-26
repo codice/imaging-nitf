@@ -40,6 +40,10 @@ public class NitfSecurityMetadata {
     private String nitfSecuritySourceDate = null;
     private String nitfSecurityControlNumber = null;
 
+    // NITF 2.0 values
+    private String downgradeDateOrSpecialCase = null;
+    private String downgradeEvent = null;
+
     private static final int XSCLAS_LENGTH = 1;
     private static final int XSCLSY_LENGTH = 2;
     private static final int XSCODE_LENGTH = 11;
@@ -57,9 +61,31 @@ public class NitfSecurityMetadata {
     private static final int XSSRDT_LENGTH = 8;
     private static final int XSCTLN_LENGTH = 15;
 
+    // NITF 2.0 field lengths
+    private static final int FSCODE20_LENGTH = 40;
+    private static final int FSCTLH20_LENGTH = 40;
+    private static final int FSREL20_LENGTH = 40;
+    private static final int FSCAUT20_LENGTH = 20;
+    private static final int FSCTLN20_LENGTH = 20;
+    private static final int FSDWNG20_LENGTH = 6;
+    private static final int FSDEVT20_LENGTH = 40;
+
+    private static final String DOWNGRADE_EVENT_MAGIC = "999998";
+
     public NitfSecurityMetadata(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
-        readCommonSecurityMetadata();
+        switch (nitfReader.getFileType()) {
+            case NITF_TWO_ZERO:
+                readNitf20FileSecurityItems();
+                break;
+            case NITF_TWO_ONE:
+            case NSIF_ONE_ZERO:
+                readCommonSecurityMetadata();
+                break;
+            case UNKNOWN:
+            default:
+                throw new ParseException("Need to set NITF version before reading metadata", reader.getNumBytesRead());
+         }
     }
 
     public final NitfSecurityClassification getSecurityClassification() {
@@ -100,6 +126,33 @@ public class NitfSecurityMetadata {
 
     public final String getDowngradeDate() {
         return nitfDowngradeDate;
+    }
+
+    /**
+      Get the downgrade date or special case for this file.
+
+      This is not valid on NITF 2.1 or NSIF 1.0 files.
+
+      The valid values are:
+      (1) the calendar date in the format YYMMDD
+      (2) the code "999999" when the originating agency's determination is required (OADR)
+      (3) the code "999998" when a specific event determines at what point declassification or downgrading is to take place.
+
+      If the third case (999998) occurs, use getDowngradeEvent() to determine the downgrade event.
+    */
+    public final String getDowngradeDateOrSpecialCase() {
+        return downgradeDateOrSpecialCase;
+    }
+
+    /**
+      Get the specific downgrade event for this file.
+
+      This is not valid on NITF 2.1 or NSIF 1.0 files.
+
+      This is only valid if getDowngradeDateOrSpecialCase() is equal to 999998.
+     */
+    public final String getDowngradeEvent() {
+        return downgradeEvent;
     }
 
     public final String getClassificationText() {
@@ -143,6 +196,17 @@ public class NitfSecurityMetadata {
         readXSCRSN();
         readXSSRDT();
         readXSCTLN();
+    }
+
+    protected final void readNitf20FileSecurityItems() throws ParseException {
+        readXSCLAS();
+        readFSCODE20();
+        readFSCTLH20();
+        readFSREL20();
+        readFSCAUT20();
+        readFSCTLN20();
+        readFSDWNG20();
+        readFSDEVT20();
     }
 
     private void readXSCLAS() throws ParseException {
@@ -208,6 +272,36 @@ public class NitfSecurityMetadata {
 
     private void readXSCTLN() throws ParseException {
         nitfSecurityControlNumber = reader.readTrimmedBytes(XSCTLN_LENGTH);
+    }
+
+    private void readFSCODE20() throws ParseException {
+        nitfCodewords = reader.readTrimmedBytes(FSCODE20_LENGTH);
+    }
+
+    private void readFSCTLH20() throws ParseException {
+        nitfControlAndHandling = reader.readTrimmedBytes(FSCTLH20_LENGTH);
+    }
+
+    private void readFSREL20() throws ParseException {
+        nitfReleaseInstructions = reader.readTrimmedBytes(FSREL20_LENGTH);
+    }
+
+    private void readFSCAUT20() throws ParseException {
+        nitfClassificationAuthority = reader.readTrimmedBytes(FSCAUT20_LENGTH);
+    }
+
+    private void readFSCTLN20() throws ParseException {
+        nitfSecurityControlNumber = reader.readTrimmedBytes(FSCTLN20_LENGTH);
+    }
+
+    private void readFSDWNG20() throws ParseException {
+        downgradeDateOrSpecialCase = reader.readBytes(FSDWNG20_LENGTH);
+    }
+
+    private void readFSDEVT20() throws ParseException {
+        if (DOWNGRADE_EVENT_MAGIC.equals(downgradeDateOrSpecialCase)) {
+            downgradeEvent = reader.readTrimmedBytes(FSDEVT20_LENGTH);
+        }
     }
 
 };

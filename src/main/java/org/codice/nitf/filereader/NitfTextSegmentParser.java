@@ -25,6 +25,7 @@ public class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     private static final String TE = "TE";
     private static final int TEXTID_LENGTH = 7;
     private static final int TXTALVL_LENGTH = 3;
+    private static final int TEXTID20_LENGTH = 10;
     private static final int TXTITL_LENGTH = 80;
     private static final int TXTFMT_LENGTH = 3;
     private static final int TXSHDL_LENGTH = 5;
@@ -63,11 +64,24 @@ public class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readTEXTID() throws ParseException {
-        segment.setTextIdentifier(reader.readBytes(TEXTID_LENGTH));
+        switch (reader.getFileType()) {
+            case NITF_TWO_ZERO:
+                segment.setTextIdentifier(reader.readBytes(TEXTID20_LENGTH));
+                break;
+            case NITF_TWO_ONE:
+            case NSIF_ONE_ZERO:
+                segment.setTextIdentifier(reader.readBytes(TEXTID_LENGTH));
+                break;
+            case UNKNOWN:
+            default:
+                throw new ParseException("Unsupported reader version", reader.getNumBytesRead());
+        }
     }
 
     private void readTXTALVL() throws ParseException {
-        segment.setTextAttachmentLevel(reader.readBytesAsInteger(TXTALVL_LENGTH));
+        if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
+            segment.setTextAttachmentLevel(reader.readBytesAsInteger(TXTALVL_LENGTH));
+        }
     }
 
     private void readTEXTDT() throws ParseException {

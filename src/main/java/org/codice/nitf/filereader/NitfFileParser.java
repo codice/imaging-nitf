@@ -55,6 +55,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private static final int FTITLE_LENGTH = 80;
     private static final int FBKGC_LENGTH = 3;
     private static final int ONAME_LENGTH = 24;
+    private static final int ONAME20_LENGTH = 27;
     private static final int OPHONE_LENGTH = 18;
     private static final int FL_LENGTH = 12;
     private static final int HL_LENGTH = 6;
@@ -92,6 +93,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
 
         reader = new NitfReader(new BufferedInputStream(nitfInputStream), 0);
         readFHDRFVER();
+        reader.setFileType(nitf.getFileType());
         readCLEVEL();
         readSTYPE();
         readOSTAID();
@@ -99,7 +101,9 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
         readFTITLE();
         nitf.setFileSecurityMetadata(new NitfFileSecurityMetadata(reader));
         reader.readENCRYP();
-        readFBKGC();
+        if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
+            readFBKGC();
+        }
         readONAME();
         readOPHONE();
         readFL();
@@ -166,7 +170,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readSTYPE() throws ParseException {
-        nitf.setStandardType(reader.readBytes(STYPE_LENGTH));
+        nitf.setStandardType(reader.readTrimmedBytes(STYPE_LENGTH));
     }
 
     private void readOSTAID() throws ParseException {
@@ -189,7 +193,11 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readONAME() throws ParseException {
-        nitf.setOriginatorsName(reader.readTrimmedBytes(ONAME_LENGTH));
+        if ((nitf.getFileType() == FileType.NITF_TWO_ONE) || (nitf.getFileType() == FileType.NSIF_ONE_ZERO)) {
+            nitf.setOriginatorsName(reader.readTrimmedBytes(ONAME_LENGTH));
+        } else {
+            nitf.setOriginatorsName(reader.readTrimmedBytes(ONAME20_LENGTH));
+        }
     }
 
     private void readOPHONE() throws ParseException {
