@@ -312,7 +312,9 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
 
     private void readDataExtensionSegments() throws ParseException {
         for (int i = 0; i < numberDataExtensionSegments; ++i) {
-            nitf.addDataExtensionSegment(new NitfDataExtensionSegment(reader, ld.get(i)));
+            NitfDataExtensionSegment segment = new NitfDataExtensionSegment();
+            segment.parse(reader, ld.get(i));
+            nitf.addDataExtensionSegment(segment);
         }
     }
 }
