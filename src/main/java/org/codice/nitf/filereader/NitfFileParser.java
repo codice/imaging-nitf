@@ -296,7 +296,9 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
 
     private void readGraphicSegments() throws ParseException {
         for (int i = 0; i < numberGraphicSegments; ++i) {
-            nitf.addGraphicSegment(new NitfGraphicSegment(reader, ls.get(i)));
+            NitfGraphicSegment graphicSegment = new NitfGraphicSegment();
+            graphicSegment.parse(reader, ls.get(i));
+            nitf.addGraphicSegment(graphicSegment);
         }
     }
 

@@ -18,9 +18,6 @@ import java.text.ParseException;
 
 public class NitfGraphicSegment extends AbstractNitfSegment {
 
-    private NitfReader reader = null;
-    private int lengthOfGraphic = 0;
-
     private String graphicIdentifier = null;
     private String graphicName = null;
     private int graphicDisplayLevel = 0;
@@ -32,172 +29,109 @@ public class NitfGraphicSegment extends AbstractNitfSegment {
     private GraphicColour graphicColour = GraphicColour.UNKNOWN;
     private int boundingBox2Row = 0;
     private int boundingBox2Column = 0;
-    private int graphicExtendedSubheaderLength = 0;
-    private int graphicExtendedSubheaderOverflow = 0;
 
     private NitfSecurityMetadata securityMetadata = null;
 
-    private static final String SY = "SY";
-    private static final int SID_LENGTH = 10;
-    private static final int SNAME_LENGTH = 20;
-    private static final String SFMT_CGM = "C";
-    private static final String SSTRUCT = "0000000000000";
-    private static final int SDLVL_LENGTH = 3;
-    private static final int SALVL_LENGTH = 3;
-    private static final int SLOC_HALF_LENGTH = 5;
-    private static final int SBND1_HALF_LENGTH = 5;
-    private static final int SCOLOR_LENGTH = 1;
-    private static final int SBND2_HALF_LENGTH = 5;
-    private static final String SRES = "00";
-    private static final int SXSHDL_LENGTH = 5;
-    private static final int SXSOFL_LENGTH = 3;
+    public NitfGraphicSegment() {
+    }
 
-    public NitfGraphicSegment(final NitfReader nitfReader, final int graphicLength) throws ParseException {
-        reader = nitfReader;
-        lengthOfGraphic = graphicLength;
+    public final void parse(final NitfReader nitfReader, final int graphicLength) throws ParseException {
+        new NitfGraphicSegmentParser(nitfReader, graphicLength, this);
+    }
 
-        readSY();
-        readSID();
-        readSNAME();
-        securityMetadata = new NitfSecurityMetadata(reader);
-        reader.readENCRYP();
-        readSFMT();
-        readSSTRUCT();
-        readSDLVL();
-        readSALVL();
-        readSLOC();
-        readSBND1();
-        readSCOLOR();
-        readSBND2();
-        readSRES();
-        readSXSHDL();
-        if (graphicExtendedSubheaderLength > 0) {
-            readSXSOFL();
-            readSXSHD();
-        }
-        readGraphicData();
+    public final void setGraphicIdentifier(final String identifier) {
+        graphicIdentifier = identifier;
     }
 
     public final String getGraphicIdentifier() {
         return graphicIdentifier;
     }
 
+    public final void setGraphicName(final String name) {
+        graphicName = name;
+    }
+
     public final String getGraphicName() {
         return graphicName;
+    }
+
+    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
+        securityMetadata = nitfSecurityMetadata;
     }
 
     public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 
+    public final void setGraphicDisplayLevel(final int displayLevel) {
+        graphicDisplayLevel = displayLevel;
+    }
+
     public final int getGraphicDisplayLevel() {
         return graphicDisplayLevel;
+    }
+
+    public final void setGraphicAttachmentLevel(final int attachmentLevel) {
+        graphicAttachmentLevel = attachmentLevel;
     }
 
     public final int getGraphicAttachmentLevel() {
         return graphicAttachmentLevel;
     }
 
+    public final void setGraphicLocationRow(final int rowNumber) {
+        graphicLocationRow = rowNumber;
+    }
+
     public final int getGraphicLocationRow() {
         return graphicLocationRow;
+    }
+
+    public final void setGraphicLocationColumn(final int columnNumber) {
+        graphicLocationColumn = columnNumber;
     }
 
     public final int getGraphicLocationColumn() {
         return graphicLocationColumn;
     }
 
+    public final void setBoundingBox1Row(final int rowNumber) {
+        boundingBox1Row = rowNumber;
+    }
+
     public final int getBoundingBox1Row() {
         return boundingBox1Row;
+    }
+
+    public final void setBoundingBox1Column(final int columnNumber) {
+        boundingBox1Column = columnNumber;
     }
 
     public final int getBoundingBox1Column() {
         return boundingBox1Column;
     }
 
+    public final void setGraphicColour(final GraphicColour colour) {
+        graphicColour = colour;
+    }
+
     public final GraphicColour getGraphicColour() {
         return graphicColour;
+    }
+
+    public final void setBoundingBox2Row(final int rowNumber) {
+        boundingBox2Row = rowNumber;
     }
 
     public final int getBoundingBox2Row() {
         return boundingBox2Row;
     }
 
+    public final void setBoundingBox2Column(final int columnNumber) {
+        boundingBox2Column = columnNumber;
+    }
+
     public final int getBoundingBox2Column() {
         return boundingBox2Column;
-    }
-
-    public final int getGraphicExtendedSubheaderLength() {
-        return graphicExtendedSubheaderLength;
-    }
-
-    private void readSY() throws ParseException {
-        reader.verifyHeaderMagic(SY);
-    }
-
-    private void readSID() throws ParseException {
-        graphicIdentifier = reader.readTrimmedBytes(SID_LENGTH);
-    }
-
-    private void readSNAME() throws ParseException {
-        graphicName = reader.readTrimmedBytes(SNAME_LENGTH);
-    }
-
-    private void readSFMT() throws ParseException {
-        reader.verifyHeaderMagic(SFMT_CGM);
-    }
-
-    private void readSSTRUCT() throws ParseException {
-        reader.verifyHeaderMagic(SSTRUCT);
-    }
-
-    private void readSDLVL() throws ParseException {
-        graphicDisplayLevel = reader.readBytesAsInteger(SDLVL_LENGTH);
-    }
-
-    private void readSALVL() throws ParseException {
-        graphicAttachmentLevel = reader.readBytesAsInteger(SALVL_LENGTH);
-    }
-
-    private void readSLOC() throws ParseException {
-        graphicLocationRow = reader.readBytesAsInteger(SLOC_HALF_LENGTH);
-        graphicLocationColumn = reader.readBytesAsInteger(SLOC_HALF_LENGTH);
-    }
-
-    private void readSBND1() throws ParseException {
-        boundingBox1Row = reader.readBytesAsInteger(SBND1_HALF_LENGTH);
-        boundingBox1Column = reader.readBytesAsInteger(SBND1_HALF_LENGTH);
-    }
-
-    private void readSCOLOR() throws ParseException {
-        String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
-        graphicColour = GraphicColour.getEnumValue(scolor);
-    }
-
-    private void readSBND2() throws ParseException {
-        boundingBox2Row = reader.readBytesAsInteger(SBND2_HALF_LENGTH);
-        boundingBox2Column = reader.readBytesAsInteger(SBND2_HALF_LENGTH);
-    }
-
-    private void readSRES() throws ParseException {
-        reader.verifyHeaderMagic(SRES);
-    }
-
-    private void readSXSHDL() throws ParseException {
-        graphicExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
-    }
-
-    private void readSXSOFL() throws ParseException {
-        graphicExtendedSubheaderOverflow = reader.readBytesAsInteger(SXSOFL_LENGTH);
-    }
-
-    private void readSXSHD() throws ParseException {
-        TreParser treParser = new TreParser();
-        TreCollection extendedSubheaderTREs = treParser.parse(reader, graphicExtendedSubheaderLength - SXSOFL_LENGTH);
-        mergeTREs(extendedSubheaderTREs);
-    }
-
-    private void readGraphicData() throws ParseException {
-        // TODO: we could use this if needed later
-        reader.skip(lengthOfGraphic);
     }
 }

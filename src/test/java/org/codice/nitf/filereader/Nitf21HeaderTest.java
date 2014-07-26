@@ -497,7 +497,6 @@ public class Nitf21HeaderTest {
         assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
         assertEquals(1075, segment.getBoundingBox2Row());
         assertEquals(825, segment.getBoundingBox2Column());
-        assertEquals(0, segment.getGraphicExtendedSubheaderLength());
     }
 
     @Test
@@ -761,7 +760,6 @@ public class Nitf21HeaderTest {
         assertEquals(GraphicColour.COLOUR, segment1.getGraphicColour());
         assertEquals(411, segment1.getBoundingBox2Row());
         assertEquals(788, segment1.getBoundingBox2Column());
-        assertEquals(361, segment1.getGraphicExtendedSubheaderLength());
         NitfGraphicSegment segment2 = reader.getGraphicSegment(2);
         assertNotNull(segment2);
         assertEquals("35", segment2.getGraphicIdentifier());
@@ -776,7 +774,6 @@ public class Nitf21HeaderTest {
         assertEquals(GraphicColour.COLOUR, segment2.getGraphicColour());
         assertEquals(345, segment2.getBoundingBox2Row());
         assertEquals(836, segment2.getBoundingBox2Column());
-        assertEquals(490, segment2.getGraphicExtendedSubheaderLength());
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
