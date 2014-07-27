@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="rpfs">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="unbounded" name="rpf">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="code" type="xsd:string" />
+              <xsd:element name="abbreviation" type="xsd:string" />
+              <xsd:element name="scaleResolution" type="xsd:string" />
+              <xsd:element name="name" type="xsd:string" />
+              <xsd:element name="dataType" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

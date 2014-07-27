@@ -1,0 +1,1288 @@
+<?xml version="1.0"?>
+<!--
+    TODO: license
+    -->
+<rpfs>
+    <rpf>
+        <code>A1</code>
+        <abbreviation>CM</abbreviation>
+        <scaleResolution>1:10,000</scaleResolution>
+        <name>Combat Charts, 1:10,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>A2</code>
+        <abbreviation>CM</abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Combat Charts, 1:25,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>A3</code>
+        <abbreviation>CM</abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Combat Charts, 1:50,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>A4</code>
+        <abbreviation>CM</abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Combat Charts, 1:100,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>AT</code>
+        <abbreviation>ATC</abbreviation>
+        <scaleResolution>1:200,000</scaleResolution>
+        <name>Series 200 Air Target Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C1</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:10,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C2</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:10,560</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C3</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:11,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C4</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:11,800</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C5</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:12,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C6</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:12,500</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C7</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:12,800</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C8</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:14,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>C9</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:14,700</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CA</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:15,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CB</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:15,500</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CC</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:16,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CD</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:16,666</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CE</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:17,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CF</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:17,500</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CG</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CH</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:18,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CJ</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:20,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CK</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:21,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CL</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:21,120</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CM</code>
+        <abbreviation>CM</abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>Combat Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CN</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:22,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CO</code>
+        <abbreviation>CO</abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>Coastal Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CP</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:23,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CQ</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CR</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:26,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CS</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:35,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>CT</code>
+        <abbreviation>CG</abbreviation>
+        <scaleResolution>1:36,000</scaleResolution>
+        <name>City Graphics</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>D11</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>100m</scaleResolution>
+        <name>Elevation Data from DTED Level 1</name>
+        <dataType>CDTED</dataType>
+    </rpf>
+    <rpf>
+        <code>D21</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>30m</scaleResolution>
+        <name>Elevation Data from DTED Level 2</name>
+        <dataType>CDTED</dataType>
+    </rpf>
+    <rpf>
+        <code>EG</code>
+        <abbreviation>NARC</abbreviation>
+        <scaleResolution>1:11,000,000</scaleResolution>
+        <name>North Atlantic Route Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ES</code>
+        <abbreviation>SEC</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>VFR Sectional</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ET</code>
+        <abbreviation>SEC</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>VFR Sectional Insets</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>F1</code>
+        <abbreviation>TFC-1</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Transit Flying Chart (TBD #1)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>F2</code>
+        <abbreviation>TFC-2</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Transit Flying Chart (TBD #2)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>F3</code>
+        <abbreviation>TFC-3</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Transit Flying Chart (TBD #3)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>F4</code>
+        <abbreviation>TFC-4</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Transit Flying Chart (TBD #4)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>F5</code>
+        <abbreviation>TFC-5</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Transit Flying Chart (TBD #5)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>GN</code>
+        <abbreviation>GNC</abbreviation>
+        <scaleResolution>1:5,000,000</scaleResolution>
+        <name>Global Navigation Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>HA</code>
+        <abbreviation>HA</abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>Harbor and Approach Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>I1</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>10m</scaleResolution>
+        <name>Imagery, 10 meter resolution</name>
+        <dataType>CIB</dataType>
+    </rpf>
+    <rpf>
+        <code>I2</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>5m</scaleResolution>
+        <name>Imagery, 5 meter resolution</name>
+        <dataType>CIB</dataType>
+    </rpf>
+    <rpf>
+        <code>I3</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>2m</scaleResolution>
+        <name>Imagery, 2 meter resolution</name>
+        <dataType>CIB</dataType>
+    </rpf>
+    <rpf>
+        <code>I4</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1m</scaleResolution>
+        <name>Imagery, 1 meter resolution</name>
+        <dataType>CIB</dataType>
+    </rpf>
+    <rpf>
+        <code>I5</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>.5m</scaleResolution>
+        <name>Imagery, .5 (half) meter resolution</name>
+        <dataType>CIB</dataType>
+    </rpf>
+    <rpf>
+        <code>IV</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>Various > 10m</scaleResolution>
+        <name>Imagery, > 10 meter resolution</name>
+        <dataType>CIB</dataType>
+    </rpf>
+    <rpf>
+        <code>JA</code>
+        <abbreviation>JOG-A</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Joint Operations Graphic - Air</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>JG</code>
+        <abbreviation>JOG</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Joint Operations Graphic</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>JN</code>
+        <abbreviation>JNC</abbreviation>
+        <scaleResolution>1:2,000,000</scaleResolution>
+        <name>Jet Navigation Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>JO</code>
+        <abbreviation>OPG</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Operational Planning Graphic</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>JR</code>
+        <abbreviation>JOG-R</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Joint Operations Graphic - Radar</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>K1</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:8,000</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>K2</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:10,000</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>K3</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:10,560</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>K7</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:12,500</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>K8</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:12,800</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>KB</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:15,000</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>KE</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:16,666</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>KM</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:21,120</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>KR</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>KS</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:26,000</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>KU</code>
+        <abbreviation>ICM</abbreviation>
+        <scaleResolution>1:36,000</scaleResolution>
+        <name>Image City Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>L1</code>
+        <abbreviation>LFC-1</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Low Flying Chart (TBD #1)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>L2</code>
+        <abbreviation>LFC-2</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Low Flying Chart (TBD #2)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>L3</code>
+        <abbreviation>LFC-3</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Low Flying Chart (TBD #3)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>L4</code>
+        <abbreviation>LFC-4</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Low Flying Chart (TBD #4)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>L5</code>
+        <abbreviation>LFC-5</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Low Flying Chart (TBD #5)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>LF</code>
+        <abbreviation>LFC-FR (Day)</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Low Flying Chart (Day) - Host Nation</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>LN</code>
+        <abbreviation>LFC (Night)</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Low Flying Chart (Night) - Host Nation</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>M1</code>
+        <abbreviation>MIM</abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>Military Installation Map (TBD #1)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>M2</code>
+        <abbreviation>MIM</abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>Military Installation Map (TBD #2)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>MH</code>
+        <abbreviation>MIM</abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Military Installation Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>MI</code>
+        <abbreviation>MIM</abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Military Installation Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>MJ</code>
+        <abbreviation>MIM</abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Military Installation Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>MM</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>(Miscellaneous Maps &amp; Charts)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>OA</code>
+        <abbreviation>OPAREA</abbreviation>
+        <scaleResolution>Various</scaleResolution>
+        <name>Naval Range Operating Area Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>OH</code>
+        <abbreviation>VHRC</abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>VFR Helicopter Route Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ON</code>
+        <abbreviation>ONC</abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>Operational Navigation Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>OW</code>
+        <abbreviation>WAC</abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>High Flying Chart – Host Nation</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P12</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P2</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P3</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P4</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P52</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P6</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P7</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P8</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>P92</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PA</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PB</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PC</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PD2</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PE</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PF</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PG</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PH</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PI</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PJ</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PK</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PL</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1000000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PM</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PN</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PO</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PP</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2000000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PQ</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PR</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PS</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:5000000</scaleResolution>
+        <name>Special Military Map - Overlay</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PT</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:5000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PU</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:5000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>PV</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:5000000</scaleResolution>
+        <name>Special Military Purpose</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>R1</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Range Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>R2</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Range Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>R3</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Range Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>R4</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Range Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>R5</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>Range Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>RC</code>
+        <abbreviation>RGS-100</abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Russian General Staff Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>RL</code>
+        <abbreviation>RGS-50</abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Russian General Staff Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>RR</code>
+        <abbreviation>RGS-200</abbreviation>
+        <scaleResolution>1:200,000</scaleResolution>
+        <name>Russian General Staff Maps</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>RV</code>
+        <abbreviation>Riverine</abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Riverine Map 1:50,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TC</code>
+        <abbreviation>TLM100</abbreviation>
+        <scaleResolution>1:100,000</scaleResolution>
+        <name>Topographic Line Map 1:100,0000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TF</code>
+        <abbreviation>TFC (Day)</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Transit Flying Chart (Day)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TL</code>
+        <abbreviation>TLM50</abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Topographic Line Map</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TN</code>
+        <abbreviation>TFC (Night)</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Transit Flying Chart (Night) - Host nation</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TP</code>
+        <abbreviation>TPC</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Tactical Pilotage Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TQ</code>
+        <abbreviation>TLM24</abbreviation>
+        <scaleResolution>1:24,000</scaleResolution>
+        <name>Topographic Line Map 1:24,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TR</code>
+        <abbreviation>TLM200</abbreviation>
+        <scaleResolution>1:200,000</scaleResolution>
+        <name>Topographic Line Map 1:200,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>TT</code>
+        <abbreviation>TLM25</abbreviation>
+        <scaleResolution>1:25,000</scaleResolution>
+        <name>Topographic Line Map 1:25,000 scale</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>UL</code>
+        <abbreviation>TLM50-Other</abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Topographic Line Map (other 1:50,000 scale)</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>V1</code>
+        <abbreviation>HRC Inset</abbreviation>
+        <scaleResolution>1:50,000</scaleResolution>
+        <name>Helicopter Route Chart Inset</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>V2</code>
+        <abbreviation>HRC Inset</abbreviation>
+        <scaleResolution>1:62,500</scaleResolution>
+        <name>Helicopter Route Chart Inset</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>V3</code>
+        <abbreviation>HRC Inset</abbreviation>
+        <scaleResolution>1:90,000</scaleResolution>
+        <name>Helicopter Route Chart Inset</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>V4</code>
+        <abbreviation>HRC Inset</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>Helicopter Route Chart Inset</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>VH</code>
+        <abbreviation>HRC</abbreviation>
+        <scaleResolution>1:125,000</scaleResolution>
+        <name>Helicopter Route Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>VN</code>
+        <abbreviation>VNC</abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>Visual Navigation Charts</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>VT</code>
+        <abbreviation>VTAC</abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>VFR Terminal Area Chart</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WA</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WB</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WC</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:750,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WD</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WE</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,500,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WF</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2,000,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WG</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2,500,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WH</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:3,000,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WI</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:3,500,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>WK</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:4,500,000</scaleResolution>
+        <name>IFR Enroute Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XD</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XE</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,500,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XF</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2,000,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XG</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2,500,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XH</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:3,000,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XI</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:3,500,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XJ</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:4,000,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>XK</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:4,500,000</scaleResolution>
+        <name>IFR Enroute High</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>Y9</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:16,500,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YA</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YB</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YC</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:750,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YD</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YE</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,500,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YF</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2,000,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YI</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:3,500,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YJ</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:4,000,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>YZ</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:12,000,000</scaleResolution>
+        <name>IFR Enroute Area</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>Z8</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:16,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZA</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:250,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZB</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:500,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZC</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:750,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZD</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZE</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:1,500,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZF</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZG</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:2,500,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZH</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:3,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZI</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:3,500,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZJ</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:4,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZK</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:4,500,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZT</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:9,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZV</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:10,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+    <rpf>
+        <code>ZZ</code>
+        <abbreviation></abbreviation>
+        <scaleResolution>1:12,000,000</scaleResolution>
+        <name>IFR Enroute High/Low</name>
+        <dataType>CADRG</dataType>
+    </rpf>
+</rpfs>
+
