@@ -52,4 +52,11 @@ public class RasterProductFormatUtilitiesTest {
         assertEquals("Low Flying Chart (Day) - Host Nation", rpfUtils.getNameForFileName("foo.LF2"));
     }
 
+    @Test
+    public void checkBadExtension() throws IOException, ParseException {
+        RasterProductFormatUtilities rpfUtils = new RasterProductFormatUtilities();
+        assertNull(rpfUtils.getAbbreviationForFileName("foo"));
+        assertNull(rpfUtils.getNameForFileName("foo.A1"));
+    }
+
 }
