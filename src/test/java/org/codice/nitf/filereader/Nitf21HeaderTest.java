@@ -270,7 +270,7 @@ public class Nitf21HeaderTest {
         assertNotNull(segment1);
         assertEquals("GRT BOSTON", segment1.getImageIdentifier1());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
-        assertEquals("US", segment1.getImageTargetId());
+        assertEquals("               US", segment1.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON Located at 256,256, display level 4 first image file.", segment1.getImageIdentifier2());
         assertUnclasAndEmpty(segment1.getSecurityMetadata());
         assertEquals("", segment1.getImageSource());
@@ -300,7 +300,7 @@ public class Nitf21HeaderTest {
         assertNotNull(segment2);
         assertEquals("GRT BOSTON", segment2.getImageIdentifier1());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment2.getImageDateTime()));
-        assertEquals("US", segment2.getImageTargetId());
+        assertEquals("               US", segment2.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,256, display level 2, second image file.", segment2.getImageIdentifier2());
         assertUnclasAndEmpty(segment2.getSecurityMetadata());
         assertEquals("", segment2.getImageSource());
@@ -330,7 +330,7 @@ public class Nitf21HeaderTest {
         assertNotNull(segment3);
         assertEquals("GRT BOSTON", segment3.getImageIdentifier1());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment3.getImageDateTime()));
-        assertEquals("US", segment3.getImageTargetId());
+        assertEquals("               US", segment3.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 256,000, display level 3, third image file.", segment3.getImageIdentifier2());
         assertUnclasAndEmpty(segment3.getSecurityMetadata());
         assertEquals("", segment3.getImageSource());
@@ -360,7 +360,7 @@ public class Nitf21HeaderTest {
         assertNotNull(segment4);
         assertEquals("GRT BOSTON", segment4.getImageIdentifier1());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment4.getImageDateTime()));
-        assertEquals("US", segment4.getImageTargetId());
+        assertEquals("               US", segment4.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,000, display level 1, fourth image file.", segment4.getImageIdentifier2());
         assertUnclasAndEmpty(segment4.getSecurityMetadata());
         assertEquals("", segment4.getImageSource());
