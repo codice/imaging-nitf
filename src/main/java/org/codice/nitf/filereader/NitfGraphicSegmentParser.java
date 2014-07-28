@@ -15,6 +15,7 @@
 package org.codice.nitf.filereader;
 
 import java.text.ParseException;
+import java.util.EnumSet;
 
 public class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
 
@@ -38,15 +39,20 @@ public class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     private static final int SXSHDL_LENGTH = 5;
     private static final int SXSOFL_LENGTH = 3;
 
+    private boolean shouldParseGraphicData = false;
+
     private NitfGraphicSegment segment = null;
 
     public NitfGraphicSegmentParser(final NitfReader nitfReader,
                                     final int graphicLength,
+                                    final EnumSet<ParseOption> parseOptions,
                                     final NitfGraphicSegment graphicSegment) throws ParseException {
 
         reader = nitfReader;
         lengthOfGraphic = graphicLength;
         segment = graphicSegment;
+
+        shouldParseGraphicData = parseOptions.contains(ParseOption.ExtractGraphicSegmentData);
 
         readSY();
         readSID();
@@ -137,7 +143,13 @@ public class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readGraphicData() throws ParseException {
-        // TODO: we could use this if needed later
-        reader.skip(lengthOfGraphic);
+        if (lengthOfGraphic == 0) {
+            return;
+        }
+        if (shouldParseGraphicData) {
+            segment.setGraphicData(reader.readBytesRaw(lengthOfGraphic));
+        } else {
+            reader.skip(lengthOfGraphic);
+        }
     }
 }

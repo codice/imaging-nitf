@@ -15,6 +15,7 @@
 package org.codice.nitf.filereader;
 
 import java.text.ParseException;
+import java.util.EnumSet;
 
 public class NitfGraphicSegment extends AbstractNitfSegment {
 
@@ -29,14 +30,15 @@ public class NitfGraphicSegment extends AbstractNitfSegment {
     private GraphicColour graphicColour = GraphicColour.UNKNOWN;
     private int boundingBox2Row = 0;
     private int boundingBox2Column = 0;
+    private byte[] data = null;
 
     private NitfSecurityMetadata securityMetadata = null;
 
     public NitfGraphicSegment() {
     }
 
-    public final void parse(final NitfReader nitfReader, final int graphicLength) throws ParseException {
-        new NitfGraphicSegmentParser(nitfReader, graphicLength, this);
+    public final void parse(final NitfReader nitfReader, final int graphicLength, final EnumSet<ParseOption> parseOptions) throws ParseException {
+        new NitfGraphicSegmentParser(nitfReader, graphicLength, parseOptions, this);
     }
 
     public final void setGraphicIdentifier(final String identifier) {
@@ -133,5 +135,13 @@ public class NitfGraphicSegment extends AbstractNitfSegment {
 
     public final int getBoundingBox2Column() {
         return boundingBox2Column;
+    }
+
+    public final void setGraphicData(final byte[] graphicData) {
+        data = graphicData;
+    }
+
+    public final byte[] getGraphicData() {
+        return data;
     }
 }

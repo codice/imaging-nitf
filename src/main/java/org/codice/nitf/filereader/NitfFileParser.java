@@ -313,7 +313,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private void readGraphicSegments() throws ParseException {
         for (int i = 0; i < numberGraphicSegments; ++i) {
             NitfGraphicSegment graphicSegment = new NitfGraphicSegment();
-            graphicSegment.parse(reader, ls.get(i));
+            graphicSegment.parse(reader, ls.get(i), parseOptionSet);
             nitf.addGraphicSegment(graphicSegment);
         }
     }
@@ -321,7 +321,6 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private void readTextSegments() throws ParseException {
         for (int i = 0; i < numberTextSegments; ++i) {
             NitfTextSegment textSegment = new NitfTextSegment();
-            // TODO: the enumset should be passed in
             textSegment.parse(reader, lt.get(i), parseOptionSet);
             nitf.addTextSegment(textSegment);
         }

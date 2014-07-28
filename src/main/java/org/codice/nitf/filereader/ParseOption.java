@@ -15,5 +15,6 @@
 package org.codice.nitf.filereader;
 
 public enum ParseOption {
-    ExtractTextSegmentData;
+    ExtractTextSegmentData,
+    ExtractGraphicSegmentData;
 }
