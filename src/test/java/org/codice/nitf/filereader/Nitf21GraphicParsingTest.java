@@ -39,6 +39,17 @@ public class Nitf21GraphicParsingTest {
         assertEquals(780, graphicSegment.getGraphicData().length);
     }
 
+    @Test
+    public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
+        NitfFile file = new NitfFile();
+        file.parse(getInputStream(), EnumSet.noneOf(ParseOption.class));
+        assertEquals(1, file.getNumberOfGraphicSegments());
+
+        NitfGraphicSegment graphicSegment = file.getGraphicSegment(1);
+        assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
+        assertNull(graphicSegment.getGraphicData());
+    }
+
     private void assertGraphicSegmentMetadataIsAsExpected(NitfGraphicSegment graphicSegment) {
         assertNotNull(graphicSegment);
         // TODO: check all the graphic bits
