@@ -17,6 +17,7 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 
 public class NitfImageSegment extends AbstractNitfSegment {
@@ -54,12 +55,13 @@ public class NitfImageSegment extends AbstractNitfSegment {
     private int imageLocationRow = 0;
     private int imageLocationColumn = 0;
     private String imageMagnification = null;
+    private byte[] data = null;
 
     public NitfImageSegment() {
     }
 
-    public final void parse(final NitfReader nitfReader, final long imageLength) throws ParseException {
-        new NitfImageSegmentParser(nitfReader, imageLength, this);
+    public final void parse(final NitfReader nitfReader, final long imageLength, final EnumSet<ParseOption> parseOptions) throws ParseException {
+        new NitfImageSegmentParser(nitfReader, imageLength, parseOptions, this);
     }
 
     public final void setImageIdentifier1(final String identifier) {
@@ -323,5 +325,13 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     public final ImageCoordinates getImageCoordinates() {
         return imageCoordinates;
+    }
+
+    public final void setImageData(final byte[] imageData) {
+        data = imageData;
+    }
+
+    public final byte[] getImageData() {
+        return data;
     }
 }

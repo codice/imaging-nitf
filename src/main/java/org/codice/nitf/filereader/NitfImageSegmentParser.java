@@ -15,6 +15,7 @@
 package org.codice.nitf.filereader;
 
 import java.text.ParseException;
+import java.util.EnumSet;
 
 public class NitfImageSegmentParser extends AbstractNitfSegmentParser {
 
@@ -64,10 +65,17 @@ public class NitfImageSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfImageSegment segment = null;
 
-    public NitfImageSegmentParser(final NitfReader nitfReader, final long imageLength, final NitfImageSegment imageSegment) throws ParseException {
+    private boolean shouldParseImageData = false;
+
+    public NitfImageSegmentParser(final NitfReader nitfReader,
+                                  final long imageLength,
+                                  final EnumSet<ParseOption> parseOptions,
+                                  final NitfImageSegment imageSegment) throws ParseException {
         reader = nitfReader;
         lengthOfImage = imageLength;
         segment = imageSegment;
+
+        shouldParseImageData = parseOptions.contains(ParseOption.ExtractImageSegmentData);
 
         readIM();
         readIID1();
@@ -335,7 +343,14 @@ public class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readImageData() throws ParseException {
-        // TODO: we could use this if needed later
-        reader.skip(lengthOfImage);
+        if (lengthOfImage == 0) {
+            return;
+        }
+        if (shouldParseImageData) {
+            // TODO: we need to remove this case
+            segment.setImageData(reader.readBytesRaw((int) lengthOfImage));
+        } else {
+            reader.skip(lengthOfImage);
+        }
     }
 }
