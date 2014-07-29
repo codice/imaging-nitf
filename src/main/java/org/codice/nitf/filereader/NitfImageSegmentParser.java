@@ -106,7 +106,7 @@ public class NitfImageSegmentParser extends AbstractNitfSegmentParser {
             readCOMRAT();
         }
         readNBANDS();
-        if (numBands == 0) {
+        if ((reader.getFileType() != FileType.NITF_TWO_ZERO) && (numBands == 0)) {
             readXBANDS();
         }
         for (int i = 0; i < numBands; ++i) {
@@ -217,7 +217,7 @@ public class NitfImageSegmentParser extends AbstractNitfSegmentParser {
 
     private void readICORDS() throws ParseException {
         String icords = reader.readBytes(ICORDS_LENGTH);
-        segment.setImageCoordinatesRepresentation(ImageCoordinatesRepresentation.getEnumValue(icords));
+        segment.setImageCoordinatesRepresentation(ImageCoordinatesRepresentation.getEnumValue(icords, reader.getFileType()));
     }
 
     private void readIGEOLO() throws ParseException {

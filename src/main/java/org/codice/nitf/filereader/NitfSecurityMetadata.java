@@ -62,13 +62,13 @@ public class NitfSecurityMetadata {
     private static final int XSCTLN_LENGTH = 15;
 
     // NITF 2.0 field lengths
-    private static final int FSCODE20_LENGTH = 40;
-    private static final int FSCTLH20_LENGTH = 40;
-    private static final int FSREL20_LENGTH = 40;
-    private static final int FSCAUT20_LENGTH = 20;
-    private static final int FSCTLN20_LENGTH = 20;
-    private static final int FSDWNG20_LENGTH = 6;
-    private static final int FSDEVT20_LENGTH = 40;
+    private static final int XSCODE20_LENGTH = 40;
+    private static final int XSCTLH20_LENGTH = 40;
+    private static final int XSREL20_LENGTH = 40;
+    private static final int XSCAUT20_LENGTH = 20;
+    private static final int XSCTLN20_LENGTH = 20;
+    private static final int XSDWNG20_LENGTH = 6;
+    private static final int XSDEVT20_LENGTH = 40;
 
     private static final String DOWNGRADE_EVENT_MAGIC = "999998";
 
@@ -275,32 +275,32 @@ public class NitfSecurityMetadata {
     }
 
     private void readFSCODE20() throws ParseException {
-        nitfCodewords = reader.readTrimmedBytes(FSCODE20_LENGTH);
+        nitfCodewords = reader.readTrimmedBytes(XSCODE20_LENGTH);
     }
 
     private void readFSCTLH20() throws ParseException {
-        nitfControlAndHandling = reader.readTrimmedBytes(FSCTLH20_LENGTH);
+        nitfControlAndHandling = reader.readTrimmedBytes(XSCTLH20_LENGTH);
     }
 
     private void readFSREL20() throws ParseException {
-        nitfReleaseInstructions = reader.readTrimmedBytes(FSREL20_LENGTH);
+        nitfReleaseInstructions = reader.readTrimmedBytes(XSREL20_LENGTH);
     }
 
     private void readFSCAUT20() throws ParseException {
-        nitfClassificationAuthority = reader.readTrimmedBytes(FSCAUT20_LENGTH);
+        nitfClassificationAuthority = reader.readTrimmedBytes(XSCAUT20_LENGTH);
     }
 
     private void readFSCTLN20() throws ParseException {
-        nitfSecurityControlNumber = reader.readTrimmedBytes(FSCTLN20_LENGTH);
+        nitfSecurityControlNumber = reader.readTrimmedBytes(XSCTLN20_LENGTH);
     }
 
     private void readFSDWNG20() throws ParseException {
-        downgradeDateOrSpecialCase = reader.readBytes(FSDWNG20_LENGTH);
+        downgradeDateOrSpecialCase = reader.readBytes(XSDWNG20_LENGTH);
     }
 
     private void readFSDEVT20() throws ParseException {
         if (DOWNGRADE_EVENT_MAGIC.equals(downgradeDateOrSpecialCase)) {
-            downgradeEvent = reader.readTrimmedBytes(FSDEVT20_LENGTH);
+            downgradeEvent = reader.readTrimmedBytes(XSDEVT20_LENGTH);
         }
     }
 

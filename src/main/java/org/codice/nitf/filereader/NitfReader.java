@@ -64,8 +64,8 @@ public class NitfReader {
 
     public final Date readNitfDateTime() throws ParseException {
         String dateString = readTrimmedBytes(STANDARD_DATE_TIME_LENGTH);
-        // TODO: check if NITF 2.0 uses the same format.
         SimpleDateFormat dateFormat = null;
+        Date dateTime = null;
         switch (nitfFileType) {
             case NITF_TWO_ZERO:
                 dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
@@ -81,10 +81,19 @@ public class NitfReader {
         if (dateString.length() == DATE_ONLY_DAY_FORMAT.length()) {
             // Fallback for files that aren't spec compliant
             dateFormat = new SimpleDateFormat(DATE_ONLY_DAY_FORMAT);
+        } else if (dateString.length() == 0) {
+            // This can't work
+            dateFormat = null;
+        } else if (dateString.length() != DATE_FULL_FORMAT.length()) {
+            System.out.println("Unhandled date format:" + dateString);
         }
-        Date dateTime = dateFormat.parse(dateString);
-        if (dateTime == null) {
-            throw new ParseException(String.format("Bad DATETIME format: %s", dateString), numBytesRead);
+        if (dateFormat == null) {
+            dateTime = new Date();
+        } else {
+            dateTime = dateFormat.parse(dateString);
+            if (dateTime == null) {
+                throw new ParseException(String.format("Bad DATETIME format: %s", dateString), numBytesRead);
+            }
         }
         return dateTime;
     }
