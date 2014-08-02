@@ -110,11 +110,6 @@ public class ImageCoordinatePair {
         sourceString = utm;
     }
 
-    public final void setFromGeocentric(final String geocentric) throws ParseException {
-        sourceString = geocentric;
-        // TODO: add conversion to degrees
-    }
-
     /**
         Set latitude and longitude from Decimal Degrees string
 

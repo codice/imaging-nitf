@@ -245,7 +245,7 @@ public class NitfImageSegmentParser extends AbstractNitfSegmentParser {
                     coords[i].setFromUTMUPSNorth(coordStr);
                     break;
                 case GEOCENTRIC:
-                    coords[i].setFromGeocentric(coordStr);
+                    coords[i].setFromDMS(coordStr);
                     break;
                 default:
                     throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS: "
