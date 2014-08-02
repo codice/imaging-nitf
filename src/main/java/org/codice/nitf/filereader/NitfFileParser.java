@@ -31,6 +31,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private int numberImageSegments = 0;
     private int numberGraphicSegments = 0;
     private int numberTextSegments = 0;
+    private int numberLabelSegments = 0;
     private int numberDataExtensionSegments = 0;
     private int numberReservedExtensionSegments = 0;
 
@@ -38,6 +39,8 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private List<Long> li = new ArrayList<Long>();
     private List<Integer> lssh = new ArrayList<Integer>();
     private List<Integer> ls = new ArrayList<Integer>();
+    private List<Integer> llsh = new ArrayList<Integer>();
+    private List<Integer> ll = new ArrayList<Integer>();
     private List<Integer> ltsh = new ArrayList<Integer>();
     private List<Integer> lt = new ArrayList<Integer>();
     private List<Integer> ldsh = new ArrayList<Integer>();
@@ -66,6 +69,9 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private static final int LSSH_LENGTH = 4;
     private static final int LS_LENGTH = 6;
     private static final int NUMX_LENGTH = 3;
+    private static final int NUML20_LENGTH = 3;
+    private static final int LLSH_LENGTH = 4;
+    private static final int LL_LENGTH = 3;
     private static final int NUMT_LENGTH = 3;
     private static final int LTSH_LENGTH = 4;
     private static final int LT_LENGTH = 5;
@@ -126,6 +132,10 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
             readLS();
         }
         readNUMX();
+        for (int i = 0; i < numberLabelSegments; ++i) {
+            readLLSH();
+            readLL();
+        }
         readNUMT();
         for (int i = 0; i < numberTextSegments; ++i) {
             readLTSH();
@@ -152,7 +162,12 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
             readXHD();
         }
         readImageSegments();
-        readGraphicSegments();
+        if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
+            readSymbolSegments();
+            readLabelSegments();
+        } else {
+            readGraphicSegments();
+        }
         readTextSegments();
         readDataExtensionSegments();
     }
@@ -186,10 +201,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readFBKGC() throws ParseException {
-        byte[] fbkgc = reader.readBytesRaw(FBKGC_LENGTH);
-        nitf.setFileBackgroundColourRed(fbkgc[0]);
-        nitf.setFileBackgroundColourGreen(fbkgc[1]);
-        nitf.setFileBackgroundColourBlue(fbkgc[2]);
+        nitf.setFileBackgroundColour(reader.readRGBColour());
     }
 
     private void readONAME() throws ParseException {
@@ -224,6 +236,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
         li.add(reader.readBytesAsLong(LI_LENGTH));
     }
 
+    // The next three methods are also used for NITF 2.0 Symbol segment lengths
     private void readNUMS() throws ParseException {
         numberGraphicSegments = reader.readBytesAsInteger(NUMS_LENGTH);
     }
@@ -237,7 +250,20 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readNUMX() throws ParseException {
-        reader.skip(NUMX_LENGTH);
+        if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
+            numberLabelSegments = reader.readBytesAsInteger(NUML20_LENGTH);
+            System.out.println("NUMT:" + numberLabelSegments);
+        } else {
+            reader.skip(NUMX_LENGTH);
+        }
+    }
+
+    private void readLLSH() throws ParseException {
+        llsh.add(reader.readBytesAsInteger(LLSH_LENGTH));
+    }
+
+    private void readLL() throws ParseException {
+        ll.add(reader.readBytesAsInteger(LL_LENGTH));
     }
 
     private void readNUMT() throws ParseException {
@@ -315,6 +341,25 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
             NitfGraphicSegment graphicSegment = new NitfGraphicSegment();
             graphicSegment.parse(reader, ls.get(i), parseOptionSet);
             nitf.addGraphicSegment(graphicSegment);
+        }
+    }
+
+    // We reuse the Graphic Segment length values here, but generate different type
+    private void readSymbolSegments() throws ParseException {
+        for (int i = 0; i < numberGraphicSegments; ++i) {
+            System.out.println("Symbol Segment:" + i);
+            NitfSymbolSegment symbolSegment = new NitfSymbolSegment();
+            symbolSegment.parse(reader, ls.get(i), parseOptionSet);
+            nitf.addSymbolSegment(symbolSegment);
+        }
+    }
+
+    private void readLabelSegments() throws ParseException {
+        for (int i = 0; i < numberLabelSegments; ++i) {
+            System.out.println("Label Segment:" + i);
+            NitfLabelSegment labelSegment = new NitfLabelSegment();
+            labelSegment.parse(reader, ll.get(i), parseOptionSet);
+            nitf.addLabelSegment(labelSegment);
         }
     }
 

@@ -1134,6 +1134,18 @@
         <field length="8"/>
     </tre>
 
+    <tre name="STREOB" length="94" location="image">
+        <field name="ST_ID" length="60" type="string"/>
+        <field name="N_MATES" length="1" type="integer"/>
+        <field name="MATE_INSTANCE" length="1" type="integer"/>
+        <field name="B_CONV" length="5" type="real"/>
+        <field name="E_CONV" length="5" type="real"/>
+        <field name="B_ASYM" length="5" type="real"/>
+        <field name="E_ASYM" length="5" type="real"/>
+        <field name="B_BIE" length="6" type="real"/>
+        <field name="E_BIE" length="6" type="real"/>
+    </tre>
+
     <tre name="USE00A" md_prefix="NITF_USE00A_" length="107" location="image">
         <field name="ANGLE_TO_NORTH" length="3"/>
         <field name="MEAN_GSD" length="5"/>
@@ -1160,4 +1172,18 @@
         <field name="SUN_EL" length="5"/>
         <field name="SUN_AZ" length="5"/>
     </tre>
+
+    <tre name="RPFHDR" length="62" location="file">
+        <field name="ENDIANESS_FLAG" length="1"/>
+        <field name="HEADER_SECT_LENGTH" length="2"/>
+        <field name="FILENAME" length="12"/>
+        <field name="INDICATOR" length="1"/>
+        <field name="STANDARD" length="15"/>
+        <field name="STANDARD_DATE" length="8"/>
+        <field name="CLASSIFICATION" length="1"/>
+        <field name="COUNTRYCODE" length="2"/>
+        <field name="RELEASABLE" length="2"/>
+        <field name="LOCATIONSECT" length="4"/>
+    </tre>
+
 </tres>

@@ -20,6 +20,7 @@ public class ImageCoordinatePair {
 
     private double lat = 0.0;
     private double lon = 0.0;
+    private String sourceString = null;
 
     private static final double MINUTES_IN_ONE_DEGREE = 60.0;
     private static final double SECONDS_IN_ONE_MINUTE = 60.0;
@@ -61,6 +62,7 @@ public class ImageCoordinatePair {
         /param dms string representation in MIL-STD-2500C ddmmssXdddmmssY form
      */
     public final void setFromDMS(final String dms) throws ParseException {
+        sourceString = dms;
         if (dms.length() != "ddmmssXdddmmssY".length()) {
             throw new ParseException("Incorrect length for DMS parsing", 0);
         }
@@ -101,12 +103,16 @@ public class ImageCoordinatePair {
         return degrees + ((minutes + (seconds / SECONDS_IN_ONE_MINUTE)) / MINUTES_IN_ONE_DEGREE);
     }
 
-    public final void setFromUTMUPSNorth(final String ups) throws ParseException {
-        // System.out.println("UPSNorth: [" + ups + "]");
-        if (ups.length() != "zzeeeeeennnnnnn".length()) {
-            throw new ParseException("Incorrect length for UPS North parsing", 0);
+    public final void setFromUTMUPSNorth(final String utm) throws ParseException {
+        if (utm.length() != "zzeeeeeennnnnnn".length()) {
+            throw new ParseException("Incorrect length for UTM / UPS North String", 0);
         }
-        // TODO: complete implementation
+        sourceString = utm;
+    }
+
+    public final void setFromGeocentric(final String geocentric) throws ParseException {
+        sourceString = geocentric;
+        // TODO: add conversion to degrees
     }
 
     /**
@@ -118,6 +124,7 @@ public class ImageCoordinatePair {
         if (dd.length() != "+dd.ddd+ddd.ddd".length()) {
             throw new ParseException("Incorrect length for decimal degrees parsing", 0);
         }
+        sourceString = dd;
         String latPart = dd.substring(0, LAT_DECIMAL_DEGREES_FORMAT_LENGTH);
         String lonPart = dd.substring(LAT_DECIMAL_DEGREES_FORMAT_LENGTH);
         try {
@@ -126,5 +133,9 @@ public class ImageCoordinatePair {
         } catch (NumberFormatException ex) {
             throw new ParseException(String.format("Incorrect decimal degrees format: %s", dd), 0);
         }
+    }
+
+    public final String getSourceFormat() {
+        return sourceString;
     }
 }

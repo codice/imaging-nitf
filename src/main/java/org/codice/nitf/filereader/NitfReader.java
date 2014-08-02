@@ -32,6 +32,7 @@ public class NitfReader {
     private static final String DATE_ONLY_DAY_FORMAT = "yyyyMMdd";
     private static final String DATE_FULL_FORMAT = "yyyyMMddHHmmss";
     private static final String NITF20_DATE_FORMAT = "ddHHmmss'Z'MMMyy";
+    private static final int RGB_COLOUR_LENGTH = 3;
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
     public NitfReader(final BufferedInputStream nitfInputStream, final int offset) throws ParseException {
@@ -58,8 +59,13 @@ public class NitfReader {
     public final void verifyHeaderMagic(final String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
-            throw new ParseException(String.format("Missing %s magic header, got %s", magicHeader, actualHeader), numBytesRead);
+            throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), numBytesRead);
         }
+    }
+
+    public final RGBColour readRGBColour() throws ParseException {
+        byte[] rgb = readBytesRaw(RGB_COLOUR_LENGTH);
+        return new RGBColour(rgb);
     }
 
     public final Date readNitfDateTime() throws ParseException {

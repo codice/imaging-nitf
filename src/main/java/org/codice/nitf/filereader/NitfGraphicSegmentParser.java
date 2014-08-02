@@ -82,6 +82,7 @@ public class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
 
     private void readSID() throws ParseException {
         segment.setGraphicIdentifier(reader.readTrimmedBytes(SID_LENGTH));
+        // System.out.println("Graphic Identifier:" + segment.getGraphicIdentifier());
     }
 
     private void readSNAME() throws ParseException {

@@ -29,14 +29,14 @@ public class NitfFile extends AbstractNitfSegment {
     private Date nitfFileDateTime = null;
     private String nitfFileTitle = null;
     private NitfFileSecurityMetadata fileSecurityMetadata = null;
-    private byte nitfFileBackgroundColourRed = 0;
-    private byte nitfFileBackgroundColourGreen = 0;
-    private byte nitfFileBackgroundColourBlue = 0;
+    private RGBColour nitfFileBackgroundColour = null;
     private String nitfOriginatorsName = null;
     private String nitfOriginatorsPhoneNumber = null;
 
     private List<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private List<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
+    private List<NitfSymbolSegment> symbolSegments = new ArrayList<NitfSymbolSegment>();
+    private List<NitfLabelSegment> labelSegments = new ArrayList<NitfLabelSegment>();
     private List<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
     private List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
@@ -107,28 +107,12 @@ public class NitfFile extends AbstractNitfSegment {
         return fileSecurityMetadata;
     }
 
-    public final void setFileBackgroundColourRed(final byte red) {
-        nitfFileBackgroundColourRed = red;
+    public final void setFileBackgroundColour(final RGBColour backgroundColour) {
+        nitfFileBackgroundColour = backgroundColour;
     }
 
-    public final byte getFileBackgroundColourRed() {
-        return nitfFileBackgroundColourRed;
-    }
-
-    public final void setFileBackgroundColourGreen(final byte green) {
-        nitfFileBackgroundColourGreen = green;
-    }
-
-    public final byte getFileBackgroundColourGreen() {
-        return nitfFileBackgroundColourGreen;
-    }
-
-    public final void setFileBackgroundColourBlue(final byte blue) {
-        nitfFileBackgroundColourBlue = blue;
-    }
-
-    public final byte getFileBackgroundColourBlue() {
-        return nitfFileBackgroundColourBlue;
+    public final RGBColour getFileBackgroundColour() {
+        return nitfFileBackgroundColour;
     }
 
     public final void setOriginatorsName(final String originatorsName) {
@@ -153,6 +137,10 @@ public class NitfFile extends AbstractNitfSegment {
 
     public final int getNumberOfGraphicSegments() {
         return graphicSegments.size();
+    }
+
+    public final int getNumberOfSymbolSegments() {
+        return symbolSegments.size();
     }
 
     public final int getNumberOfTextSegments() {
@@ -189,6 +177,30 @@ public class NitfFile extends AbstractNitfSegment {
 
     public final NitfGraphicSegment getGraphicSegmentZeroBase(final int segmentNumberZeroBase) {
         return graphicSegments.get(segmentNumberZeroBase);
+    }
+
+    public final void addSymbolSegment(final NitfSymbolSegment symbolSegment) {
+        symbolSegments.add(symbolSegment);
+    }
+
+    public final NitfSymbolSegment getSymbolSegment(final int segmentNumber) {
+        return getSymbolSegmentZeroBase(segmentNumber - 1);
+    }
+
+    public final NitfSymbolSegment getSymbolSegmentZeroBase(final int segmentNumberZeroBase) {
+        return symbolSegments.get(segmentNumberZeroBase);
+    }
+
+    public final void addLabelSegment(final NitfLabelSegment labelSegment) {
+        labelSegments.add(labelSegment);
+    }
+
+    public final NitfLabelSegment getLabelSegment(final int segmentNumber) {
+        return getLabelSegmentZeroBase(segmentNumber - 1);
+    }
+
+    public final NitfLabelSegment getLabelSegmentZeroBase(final int segmentNumberZeroBase) {
+        return labelSegments.get(segmentNumberZeroBase);
     }
 
     public final void addTextSegment(final NitfTextSegment textSegment) {
