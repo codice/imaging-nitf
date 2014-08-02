@@ -296,13 +296,11 @@ public class NitfSecurityMetadata {
 
     private void readFSDWNG20() throws ParseException {
         downgradeDateOrSpecialCase = reader.readBytes(XSDWNG20_LENGTH);
-        System.out.println("FSDWNG20:" + downgradeDateOrSpecialCase);
     }
 
     private void readFSDEVT20() throws ParseException {
         if (DOWNGRADE_EVENT_MAGIC.equals(downgradeDateOrSpecialCase)) {
             downgradeEvent = reader.readTrimmedBytes(XSDEVT20_LENGTH);
-            System.out.println("FSDEVT20:" + downgradeEvent);
         }
     }
 

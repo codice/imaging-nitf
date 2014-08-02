@@ -31,6 +31,8 @@ public class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     private static final int DESSHL_LENGTH = 4;
 
     private static final String TRE_OVERFLOW = "TRE_OVERFLOW";
+    private static final String REGISTERED_EXTENSIONS = "Registered Extensions";
+    private static final String CONTROLLED_EXTENSIONS = "Controlled Extensions";
 
     private NitfDataExtensionSegment segment = null;
 
@@ -84,7 +86,12 @@ public class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private boolean isTreOverflow() {
-        return segment.getDESIdentifier().trim().equals(TRE_OVERFLOW);
+        if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
+            return (segment.getDESIdentifier().trim().equals(REGISTERED_EXTENSIONS)
+                    || segment.getDESIdentifier().trim().equals(CONTROLLED_EXTENSIONS));
+        } else {
+            return segment.getDESIdentifier().trim().equals(TRE_OVERFLOW);
+        }
     }
 
     private void readDESDATA() throws ParseException {

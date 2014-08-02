@@ -30,11 +30,12 @@ public class NitfSymbolSegment extends AbstractNitfSegment {
     private int symbolAttachmentLevel = 0;
     private int symbolLocationRow = 0;
     private int symbolLocationColumn = 0;
-//     private int boundingBox1Row = 0;
-//     private int boundingBox1Column = 0;
-//     private GraphicColour graphicColour = GraphicColour.UNKNOWN;
-//     private int boundingBox2Row = 0;
-//     private int boundingBox2Column = 0;
+    private int symbolLocation2Row = 0;
+    private int symbolLocation2Column = 0;
+    private String symbolNumber = "000000";
+    private int symbolRotation = 0;
+    private SymbolColour symbolColourFormat = SymbolColour.UNKNOWN;
+
     private byte[] data = null;
 
     private NitfSecurityMetadata securityMetadata = null;
@@ -76,6 +77,10 @@ public class NitfSymbolSegment extends AbstractNitfSegment {
 
     public final String getSymbolType() {
         return symbolType;
+    }
+
+    public final void setSymbolColourFormat(final SymbolColour colourFormat) {
+        symbolColourFormat = colourFormat;
     }
 
     public final void setNumberOfLinesPerSymbol(final int numLinesPerSymbol) {
@@ -126,46 +131,38 @@ public class NitfSymbolSegment extends AbstractNitfSegment {
         return symbolLocationColumn;
     }
 
-//     public final void setBoundingBox1Row(final int rowNumber) {
-//         boundingBox1Row = rowNumber;
-//     }
-//
-//     public final int getBoundingBox1Row() {
-//         return boundingBox1Row;
-//     }
-//
-//     public final void setBoundingBox1Column(final int columnNumber) {
-//         boundingBox1Column = columnNumber;
-//     }
-//
-//     public final int getBoundingBox1Column() {
-//         return boundingBox1Column;
-//     }
-//
-//     public final void setGraphicColour(final GraphicColour colour) {
-//         graphicColour = colour;
-//     }
-//
-//     public final GraphicColour getGraphicColour() {
-//         return graphicColour;
-//     }
-//
-//     public final void setBoundingBox2Row(final int rowNumber) {
-//         boundingBox2Row = rowNumber;
-//     }
-//
-//     public final int getBoundingBox2Row() {
-//         return boundingBox2Row;
-//     }
-//
-//     public final void setBoundingBox2Column(final int columnNumber) {
-//         boundingBox2Column = columnNumber;
-//     }
-//
-//     public final int getBoundingBox2Column() {
-//         return boundingBox2Column;
-//     }
-//
+    public final void setSymbolLocation2Row(final int rowNumber) {
+        symbolLocation2Row = rowNumber;
+    }
+
+    public final int getSymbolLocation2Row() {
+        return symbolLocation2Row;
+    }
+
+    public final void setSymbolLocation2Column(final int columnNumber) {
+        symbolLocation2Column = columnNumber;
+    }
+
+    public final int getSymbolLocation2Column() {
+        return symbolLocation2Column;
+    }
+
+    public final void setSymbolNumber(final String number) {
+        symbolNumber = number;
+    }
+
+    public final String getSymbolNumber() {
+        return symbolNumber;
+    }
+
+    public final void setSymbolRotation(final int rotation) {
+        symbolRotation = rotation;
+    }
+
+    public final int getSymbolRotation() {
+        return symbolRotation;
+    }
+
     public final void setSymbolData(final byte[] symbolData) {
         data = symbolData;
     }

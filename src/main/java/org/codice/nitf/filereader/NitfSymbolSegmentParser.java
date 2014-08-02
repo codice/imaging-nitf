@@ -21,6 +21,7 @@ public class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
 
     private int lengthOfSymbol = 0;
 
+    private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
     private int symbolExtendedSubheaderOverflow = 0;
 
@@ -75,6 +76,9 @@ public class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
         readSNUM();
         readSROT();
         readNELUT();
+        for (int i = 0; i < numberOfEntriesInLUT; ++i) {
+            throw new UnsupportedOperationException("TODO: Implement LUT parsing when we have an example");
+        }
         readSXSHDL();
         if (symbolExtendedSubheaderLength > 0) {
             readSXSOFL();
@@ -89,7 +93,6 @@ public class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
 
     private void readSID() throws ParseException {
         segment.setSymbolIdentifier(reader.readTrimmedBytes(SID_LENGTH));
-        System.out.println("Symbol Identifier:" + segment.getSymbolIdentifier());
     }
 
     private void readSNAME() throws ParseException {
@@ -131,33 +134,29 @@ public class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSLOC2() throws ParseException {
-        System.out.println("SLOC2:" + reader.readBytes(2 * SLOC_HALF_LENGTH));
+        segment.setSymbolLocation2Row(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
+        segment.setSymbolLocation2Column(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
     }
 
     private void readSCOLOR() throws ParseException {
-        System.out.println("SCOLOR:" + reader.readBytes(SCOLOR_LENGTH));
+        String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
+        segment.setSymbolColourFormat(SymbolColour.getEnumValue(scolor));
     }
 
-//     private void readSCOLOR() throws ParseException {
-//         String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
-//         segment.setGraphicColour(GraphicColour.getEnumValue(scolor));
-//     }
-
     private void readSNUM() throws ParseException {
-        System.out.println("SNUM:" + reader.readBytes(SNUM_LENGTH));
+        segment.setSymbolNumber(reader.readBytes(SNUM_LENGTH));
     }
 
     private void readSROT() throws ParseException {
-        System.out.println("SROT:" + reader.readBytes(SROT_LENGTH));
+        segment.setSymbolRotation(reader.readBytesAsInteger(SROT_LENGTH));
     }
 
     private void readNELUT() throws ParseException {
-        System.out.println("NELUT:" + reader.readBytes(NELUT_LENGTH));
+        numberOfEntriesInLUT = reader.readBytesAsInteger(NELUT_LENGTH);
     }
 
     private void readSXSHDL() throws ParseException {
         symbolExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
-        System.out.println("SXSHDL:" + symbolExtendedSubheaderLength);
     }
 
     private void readSXSOFL() throws ParseException {

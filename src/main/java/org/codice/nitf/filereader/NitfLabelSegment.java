@@ -117,7 +117,6 @@ public class NitfLabelSegment extends AbstractNitfSegment {
 
     public final void setLabelTextColour(final RGBColour textColour) {
         labelTextColour = textColour;
-        System.out.println("LTC:" + textColour);
     }
 
     public final RGBColour getLabelTextColour() {
@@ -126,7 +125,6 @@ public class NitfLabelSegment extends AbstractNitfSegment {
 
     public final void setLabelBackgroundColour(final RGBColour backgroundColour) {
         labelBackgroundColour = backgroundColour;
-        System.out.println("LBC:" + backgroundColour);
     }
 
     public final RGBColour getLabelBackgroundColour() {
