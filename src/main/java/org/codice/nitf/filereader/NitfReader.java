@@ -94,7 +94,7 @@ public class NitfReader {
             System.out.println("Unhandled date format:" + dateString);
         }
         if (dateFormat == null) {
-            dateTime = new Date();
+            dateTime = null;
         } else {
             dateTime = dateFormat.parse(dateString);
             if (dateTime == null) {
