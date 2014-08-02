@@ -200,13 +200,13 @@ public class NitfSecurityMetadata {
 
     protected final void readNitf20FileSecurityItems() throws ParseException {
         readXSCLAS();
-        readFSCODE20();
-        readFSCTLH20();
-        readFSREL20();
-        readFSCAUT20();
-        readFSCTLN20();
-        readFSDWNG20();
-        readFSDEVT20();
+        readXSCODE20();
+        readXSCTLH20();
+        readXSREL20();
+        readXSCAUT20();
+        readXSCTLN20();
+        readXSDWNG20();
+        readXSDEVT20();
     }
 
     private void readXSCLAS() throws ParseException {
@@ -274,31 +274,31 @@ public class NitfSecurityMetadata {
         nitfSecurityControlNumber = reader.readTrimmedBytes(XSCTLN_LENGTH);
     }
 
-    private void readFSCODE20() throws ParseException {
+    private void readXSCODE20() throws ParseException {
         nitfCodewords = reader.readTrimmedBytes(XSCODE20_LENGTH);
     }
 
-    private void readFSCTLH20() throws ParseException {
+    private void readXSCTLH20() throws ParseException {
         nitfControlAndHandling = reader.readTrimmedBytes(XSCTLH20_LENGTH);
     }
 
-    private void readFSREL20() throws ParseException {
+    private void readXSREL20() throws ParseException {
         nitfReleaseInstructions = reader.readTrimmedBytes(XSREL20_LENGTH);
     }
 
-    private void readFSCAUT20() throws ParseException {
+    private void readXSCAUT20() throws ParseException {
         nitfClassificationAuthority = reader.readTrimmedBytes(XSCAUT20_LENGTH);
     }
 
-    private void readFSCTLN20() throws ParseException {
+    private void readXSCTLN20() throws ParseException {
         nitfSecurityControlNumber = reader.readTrimmedBytes(XSCTLN20_LENGTH);
     }
 
-    private void readFSDWNG20() throws ParseException {
+    private void readXSDWNG20() throws ParseException {
         downgradeDateOrSpecialCase = reader.readBytes(XSDWNG20_LENGTH);
     }
 
-    private void readFSDEVT20() throws ParseException {
+    private void readXSDEVT20() throws ParseException {
         if (DOWNGRADE_EVENT_MAGIC.equals(downgradeDateOrSpecialCase)) {
             downgradeEvent = reader.readTrimmedBytes(XSDEVT20_LENGTH);
         }
