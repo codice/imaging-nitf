@@ -16,7 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.text.ParseException;
 
-public class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
+class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfDataExtension = 0;
     private String desOverflowedHeaderType = null;
     private int desItemOverflowed = 0;
@@ -36,7 +36,7 @@ public class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfDataExtensionSegment segment = null;
 
-    public NitfDataExtensionSegmentParser(final NitfReader nitfReader,
+    NitfDataExtensionSegmentParser(final NitfReader nitfReader,
                                           final int desLength,
                                           final NitfDataExtensionSegment desSegment) throws ParseException {
         reader = nitfReader;

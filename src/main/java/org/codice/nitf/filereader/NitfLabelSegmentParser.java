@@ -17,7 +17,7 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 import java.util.EnumSet;
 
-public class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
+class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
 
     private int lengthOfLabel = 0;
 
@@ -41,7 +41,7 @@ public class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfLabelSegment segment = null;
 
-    public NitfLabelSegmentParser(final NitfReader nitfReader,
+    NitfLabelSegmentParser(final NitfReader nitfReader,
                                     final int labelLength,
                                     final EnumSet<ParseOption> parseOptions,
                                     final NitfLabelSegment labelSegment) throws ParseException {

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class NitfFileParser extends AbstractNitfSegmentParser {
+class NitfFileParser extends AbstractNitfSegmentParser {
 
     private NitfReader reader = null;
 
@@ -91,7 +91,7 @@ public class NitfFileParser extends AbstractNitfSegmentParser {
     private NitfFile nitf = null;
     private EnumSet<ParseOption> parseOptionSet = null;
 
-    public NitfFileParser(final InputStream nitfInputStream,
+    NitfFileParser(final InputStream nitfInputStream,
                           final EnumSet<ParseOption> parseOptions,
                           final NitfFile nitfFile) throws ParseException {
         nitf = nitfFile;
