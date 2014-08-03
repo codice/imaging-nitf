@@ -70,13 +70,13 @@ public class NitfLabelSegment extends AbstractNitfSegment {
     }
 
     /**
-      Getter for the label cell width (LCW) property of the label
-
+      Returns the label cell width (LCW) of the label.
+      <p>
        "This field shall contain the width in pixels of the character cell (rectangular array
        used to contain a single character in monospaced fonts) used by the file originator.
        The default value of 00 indicates the file originator has not included this information."
 
-      \return cell width (default 0, not set)
+      @return cell width (default 0, not set)
     **/
     public final int getLabelCellWidth() {
         return labelCellWidth;
@@ -87,13 +87,13 @@ public class NitfLabelSegment extends AbstractNitfSegment {
     }
 
     /**
-      Getter for the label cell height (LCH) property of the label
-
+      Returns the label cell height (LCH) of the label.
+      <p>
         "This field shall contain the height in pixels of the character cell (rectangular array
         used to contain a single character in monospaced fonts) used by the file originator.
         The default value of 00 indicates the file originator has not included this information."
 
-      \return cell height (default 0, not set)
+      @return cell height (default 0, not set)
     **/
     public final int getLabelCellHeight() {
         return labelCellHeight;

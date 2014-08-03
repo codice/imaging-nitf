@@ -15,6 +15,7 @@
     </properties>
 
     <build>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -27,7 +28,9 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
         <plugins>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
@@ -44,6 +47,7 @@
                     <packageName>org.codice.nitf.filereader.schema</packageName>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -65,7 +69,18 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <excludePackageNames>org.codice.nitf.filereader.schema</excludePackageNames>
+                </configuration>
+            </plugin>
+
         </plugins>
+
     </build>
     <dependencies>
         <dependency>
