@@ -14,6 +14,6 @@
  **/
 package org.codice.nitf.filereader;
 
-public class AbstractNitfSegmentParser {
+class AbstractNitfSegmentParser {
     protected NitfReader reader = null;
 }
