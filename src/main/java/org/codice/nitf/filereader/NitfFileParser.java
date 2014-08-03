@@ -121,7 +121,6 @@ class NitfFileParser extends AbstractNitfSegmentParser {
         }
         readHL();
         readNUMI();
-        // TODO: consider if we can avoid transferring that, and just keep it local
         for (int i = 0; i < numberImageSegments; ++i) {
             readLISH();
             readLI();
