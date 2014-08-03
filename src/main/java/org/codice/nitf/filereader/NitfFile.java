@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,7 +11,7 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.nitf.filereader;
 
 import java.io.InputStream;
@@ -51,18 +51,45 @@ public class NitfFile extends AbstractNitfSegment {
         new NitfFileParser(nitfInputStream, parseOptions, this);
     }
 
+    /**
+        Sets the file type (NITF/NSIF version) for the file.
+
+        @see FileType FileType enumeration for valid values of the type
+        @param type the file type to set
+    */
     public final void setFileType(final FileType type) {
         fileType = type;
     }
 
+    /**
+        Return the file type (NITF/NSIF version) for the file.
+
+        @see FileType FileType enumeration for valid value of the type
+        @return the file type
+    */
     public final FileType getFileType() {
         return fileType;
     }
 
+    /**
+        Set the complexity level (CLEVEL) for the file.
+
+        This should not be done arbitrarily - it needs to match the reality of the file properties,
+        including all images. See MIL-STD-2500C Table A-10 for NITF 2.1 and NSIF 1.0 files.
+
+        @param complexityLevel the complexity level of the document.
+    */
     public final void setComplexityLevel(final int complexityLevel) {
         nitfComplexityLevel = complexityLevel;
     }
 
+    /**
+        Return the complexity level (CLEVEL) for the file.
+
+        Complexity level is provided in MIL-STD-2500C Table A-10 for NITF 2.1 and NSIF 1.0 files.
+
+        @return complexity level
+    */
     public final int getComplexityLevel() {
         return nitfComplexityLevel;
     }
