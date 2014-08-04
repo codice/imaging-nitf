@@ -198,7 +198,7 @@ public class NitfFile extends AbstractNitfSegment {
 
         This is only valid for NITF 2.1 and NSIF 1.0 files.
 
-        @param background colour to set
+        @param backgroundColour colour to set
     */
     public final void setFileBackgroundColour(final RGBColour backgroundColour) {
         nitfFileBackgroundColour = backgroundColour;
@@ -253,22 +253,69 @@ public class NitfFile extends AbstractNitfSegment {
         return nitfOriginatorsPhoneNumber;
     }
 
+    /**
+        Return the number of image segments attached to this file.
+
+        @return the number of image segments
+    */
     public final int getNumberOfImageSegments() {
         return imageSegments.size();
     }
+
+    /**
+        Return the number of graphic segments attached to this file.
+
+        This will only be non-zero for NITF 2.1 / NSIF 1.0 files. The
+        equivalent for NITF 2.0 files is getNumberOfSymbolSegments().
+
+        @return the number of graphic segments
+    */
 
     public final int getNumberOfGraphicSegments() {
         return graphicSegments.size();
     }
 
+    /**
+        Return the number of symbol segments attached to this file.
+
+        This will only be non-zero for NITF 2.0 files. The equivalent
+        for NITF 2.1 / NSIF 1.0 files is getNumberOfGraphicSegments().
+
+        @return the number of graphic segments
+    */
     public final int getNumberOfSymbolSegments() {
         return symbolSegments.size();
     }
 
+    /**
+        Return the number of label segments attached to this file.
+
+        This will only be non-zero for NITF 2.0 files. There is no
+        equivalent for NITF 2.1 / NSIF 1.0 files.
+
+        @return the number of label segments
+    */
+    public final int getNumberOfLabelSegments() {
+        return labelSegments.size();
+    }
+
+    /**
+        Return the number of text segments attached to this file.
+
+        @return the number of text segments
+    */
     public final int getNumberOfTextSegments() {
         return textSegments.size();
     }
 
+    /**
+        Return the number of data extension segments (DES) attached to this file.
+
+        Note that DES can also be attached to image, graphic, symbol, label and
+        text segments. This method only counts the number attached at the file level.
+
+        @return the number of data extension segments
+    */
     public final int getNumberOfDataExtensionSegments() {
         return dataExtensionSegments.size();
     }
@@ -277,6 +324,11 @@ public class NitfFile extends AbstractNitfSegment {
 //         return ;
 //     }
 
+    /**
+        Add an image segment to the file
+
+        @param imageSegment the image segment to add
+    */
     public final void addImageSegment(final NitfImageSegment imageSegment) {
         imageSegments.add(imageSegment);
     }
@@ -289,6 +341,13 @@ public class NitfFile extends AbstractNitfSegment {
         return imageSegments.get(segmentNumberZeroBase);
     }
 
+    /**
+        Add a graphic segment to the file.
+
+        This is only supported for NITF 2.1 / NSIF 1.0 files.
+
+        @param graphicSegment the graphic segment to add
+    */
     public final void addGraphicSegment(final NitfGraphicSegment graphicSegment) {
         graphicSegments.add(graphicSegment);
     }
@@ -301,6 +360,13 @@ public class NitfFile extends AbstractNitfSegment {
         return graphicSegments.get(segmentNumberZeroBase);
     }
 
+    /**
+        Add a symbol segment to the file.
+
+        This is only supported for NITF 2.0 files.
+
+        @param symbolSegment the symbol segment to add
+    */
     public final void addSymbolSegment(final NitfSymbolSegment symbolSegment) {
         symbolSegments.add(symbolSegment);
     }
@@ -313,6 +379,13 @@ public class NitfFile extends AbstractNitfSegment {
         return symbolSegments.get(segmentNumberZeroBase);
     }
 
+    /**
+        Add a label segment to the file.
+
+        This is only supported for NITF 2.0 files.
+
+        @param labelSegment the label segment to add
+    */
     public final void addLabelSegment(final NitfLabelSegment labelSegment) {
         labelSegments.add(labelSegment);
     }
@@ -325,6 +398,11 @@ public class NitfFile extends AbstractNitfSegment {
         return labelSegments.get(segmentNumberZeroBase);
     }
 
+    /**
+        Add a text segment to the file.
+
+        @param textSegment the text segment to add
+    */
     public final void addTextSegment(final NitfTextSegment textSegment) {
         textSegments.add(textSegment);
     }
@@ -337,6 +415,11 @@ public class NitfFile extends AbstractNitfSegment {
         return textSegments.get(segmentNumberZeroBase);
     }
 
+    /**
+        Add a data extension segment (DES) to the file.
+
+        @param dataExtensionSegment the data extension segment to add
+    */
     public final void addDataExtensionSegment(final NitfDataExtensionSegment dataExtensionSegment) {
         dataExtensionSegments.add(dataExtensionSegment);
     }

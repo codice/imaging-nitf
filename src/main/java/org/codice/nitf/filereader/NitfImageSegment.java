@@ -64,74 +64,260 @@ public class NitfImageSegment extends AbstractNitfSegment {
         new NitfImageSegmentParser(nitfReader, imageLength, parseOptions, this);
     }
 
+    /**
+        Set the first image identifier (IID1) for the image.
+
+        "This field shall contain a valid alphanumeric identification code associated with the
+         image. The valid codes are determined by the application."
+
+         @param identifier the first image identifier for the image (10 character maximum)
+    */
     public final void setImageIdentifier1(final String identifier) {
         imageIdentifier1 = identifier;
     }
 
+    /**
+        Return the first image identifier (IID1) for the image.
+
+        "This field shall contain a valid alphanumeric identification code associated with the
+         image. The valid codes are determined by the application."
+
+        @return the identifier
+    */
     public final String getImageIdentifier1() {
         return imageIdentifier1;
     }
 
+    /**
+        Set the date / time (IDATIM) for the image.
+
+        This is supposed to be the date and time that the image was captured.
+
+        @param dateTime the date time for the image.
+    */
     public final void setImageDateTime(final Date dateTime) {
         imageDateTime = dateTime;
     }
 
+    /**
+        Return the date / time (IDATIM) for the image.
+
+        This is supposed to be the date and time that the image was captured.
+
+        @return the date / time that the image was captured, or null if unknown.
+    */
     public final Date getImageDateTime() {
         return imageDateTime;
     }
 
+    /**
+        Set the target identifier (TGTID) for the image.
+
+        "This field shall contain the identification of the primary target in the format,
+        BBBBBBBBBBOOOOOCC, consisting of ten characters of Basic Encyclopedia (BE) identifier,
+        followed by five characters of facility OSUFFIX, followed by the two character country code as
+        specified in FIPS PUB 10-4."
+
+        It is common for some or all of the identifier to be filled with default spaces.
+
+        @param targetId the target identifier as a concatenated string
+    */
     public final void setImageTargetId(final String targetId) {
         imageTargetId = targetId;
     }
 
+    /**
+        Return the target identifier (TGTID) for the image.
+
+        "This field shall contain the identification of the primary target in the format,
+        BBBBBBBBBBOOOOOCC, consisting of ten characters of Basic Encyclopedia (BE) identifier,
+        followed by five characters of facility OSUFFIX, followed by the two character country code as
+        specified in FIPS PUB 10-4."
+
+        It is common for some or all of the identifier to be filled with default spaces.
+
+        @return the target identifier as a concatenated string
+    */
     public final String getImageTargetId() {
         return imageTargetId;
     }
 
+    /**
+        Set the second image identifier (IID2) for the image.
+
+        "This field can contain the identification of additional information about the image."
+
+         In NITF 2.0 files, this is the image title (ITITLE) field.
+
+         @param identifier the second image identifier for the image (80 character maximum)
+    */
     public final void setImageIdentifier2(final String identifier) {
         imageIdentifier2 = identifier;
     }
 
+    /**
+        Return the second image identifier (IID2) for the image.
+
+        "This field can contain the identification of additional information about the image."
+
+        In NITF 2.0 files, this is the image title (ITITLE) field.
+
+        @return the identifier
+    */
     public final String getImageIdentifier2() {
         return imageIdentifier2;
     }
 
+    /**
+        Set the security metadata elements for the image.
+
+        See NitfSecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
+
+        @param nitfSecurityMetadata the security metadata values to set.
+    */
     public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
         securityMetadata = nitfSecurityMetadata;
     }
 
+    /**
+        Return the security metadata for the image.
+
+        @return security metadata
+    */
     public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 
+    /**
+        Set the image source (ISORCE) for the image.
+
+        "This field shall contain a description of the source of the image. If the source of the data is
+        classified, then the description shall be preceded by the classification, including codeword(s)
+        contained in table A-4. If this field is all spaces (0x20), it shall imply that no image source
+        data applies."
+
+        @param source image source (42 characters maximum)
+    */
     public final void setImageSource(final String source) {
         imageSource = source;
     }
 
+    /**
+        Return the image source (ISORCE) for the image.
+
+        "This field shall contain a description of the source of the image. If the source of the data is
+        classified, then the description shall be preceded by the classification, including codeword(s)
+        contained in table A-4. If this field is all spaces (0x20), it shall imply that no image source
+        data applies."
+
+        @return the image source
+    */
     public final String getImageSource() {
         return imageSource;
     }
 
+    /**
+        Set the number of significant rows (NROWS) in the image.
+
+        "This field shall contain the total number of rows of significant pixels in the image. When the product of the values
+        of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC > NROWS), the rows
+        indexed with the value of the NROWS field to (NPPBV * NBPC) minus 1 shall contain fill data. NOTE: Only the rows
+        indexed 0 to the value of the NROWS field minus 1 of the image contain significant data. The pixel fill values are
+        determined by the application."
+
+        @param numberOfRows the number of significant rows
+    */
     public final void setNumberOfRows(final long numberOfRows) {
         numRows = numberOfRows;
     }
 
+    /**
+        Returns the number of significant rows (NROWS) in the image.
+
+        "This field shall contain the total number of rows of significant pixels in the image. When the product of the values
+        of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC > NROWS), the rows
+        indexed with the value of the NROWS field to (NPPBV * NBPC) minus 1 shall contain fill data. NOTE: Only the rows
+        indexed 0 to the value of the NROWS field minus 1 of the image contain significant data. The pixel fill values are
+        determined by the application."
+
+        @return the number of significant rows
+    */
     public final long getNumberOfRows() {
         return numRows;
     }
 
+    /**
+        Set the number of significant columns (NCOLS) in the image.
+
+        "This field shall contain the total number of columns of significant pixels in the image. When the product of
+        the values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR > NCOLS), the
+        columns indexed with the value of the NCOLS field to (NPPBH * NBPR) minus 1 shall contain fill data. NOTE: Only
+        the columns indexed 0 to the value of the NCOLS field minus 1 of the image contain significant data. The pixel
+        fill values are determined by the application."
+
+        @param numberOfColumns the number of significant columns
+    */
     public final void setNumberOfColumns(final long numberOfColumns) {
         numColumns = numberOfColumns;
     }
 
+    /**
+        Returns the number of significant columns (NCOLS) in the image.
+
+        "This field shall contain the total number of columns of significant pixels in the image. When the product of
+        the values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR > NCOLS), the
+        columns indexed with the value of the NCOLS field to (NPPBH * NBPR) minus 1 shall contain fill data. NOTE: Only
+        the columns indexed 0 to the value of the NCOLS field minus 1 of the image contain significant data. The pixel
+        fill values are determined by the application."
+
+        @return the number of significant columns
+    */
     public final long getNumberOfColumns() {
         return numColumns;
     }
 
+    /**
+        Set the pixel value type (PVTYPE) for the image.
+
+        "This field shall contain an indicator of the type of computer representation
+        used for the value for each pixel for each band in the image. Valid entries
+        are INT for integer, B for bi-level, SI for 2’s complement signed integer, R
+        for real, and C for complex. The data bits of INT and SI values shall appear
+        in the file in order of significance, beginning with the MSB and ending with
+        the LSB. Except when the data is JPEG 2000 compressed, INT and SI data types
+        shall be limited to 8, 12, 16, 32, or 64-bits (see field NBPP). R values shall
+        be represented according to IEEE 32 or 64-bit floating point representation
+        (IEEE 754). C values shall be represented with the Real and Imaginary parts,
+        each represented in IEEE 32 or 64-bit floating point representation (IEEE 754)
+        and appearing in adjacent four or eight-byte blocks, first Real, then Imaginary.
+        B (bi-level) pixel values shall be represented as single bits with binary value
+        1 or 0."
+
+        @param valueType the pixel value type
+    */
     public final void setPixelValueType(final PixelValueType valueType) {
         pixelValueType = valueType;
     }
 
+    /**
+        Return the pixel value type (PVTYPE) for the image.
+
+        "This field shall contain an indicator of the type of computer representation
+        used for the value for each pixel for each band in the image. Valid entries
+        are INT for integer, B for bi-level, SI for 2’s complement signed integer, R
+        for real, and C for complex. The data bits of INT and SI values shall appear
+        in the file in order of significance, beginning with the MSB and ending with
+        the LSB. Except when the data is JPEG 2000 compressed, INT and SI data types
+        shall be limited to 8, 12, 16, 32, or 64-bits (see field NBPP). R values shall
+        be represented according to IEEE 32 or 64-bit floating point representation
+        (IEEE 754). C values shall be represented with the Real and Imaginary parts,
+        each represented in IEEE 32 or 64-bit floating point representation (IEEE 754)
+        and appearing in adjacent four or eight-byte blocks, first Real, then Imaginary.
+        B (bi-level) pixel values shall be represented as single bits with binary value
+        1 or 0."
+
+        @return the pixel value type
+    */
     public final PixelValueType getPixelValueType() {
         return pixelValueType;
     }
