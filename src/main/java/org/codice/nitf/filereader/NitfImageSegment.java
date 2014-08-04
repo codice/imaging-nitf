@@ -66,7 +66,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the first image identifier (IID1) for the image.
-
+        <p>
         "This field shall contain a valid alphanumeric identification code associated with the
          image. The valid codes are determined by the application."
 
@@ -78,7 +78,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Return the first image identifier (IID1) for the image.
-
+        <p>
         "This field shall contain a valid alphanumeric identification code associated with the
          image. The valid codes are determined by the application."
 
@@ -90,7 +90,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the date / time (IDATIM) for the image.
-
+        <p>
         This is supposed to be the date and time that the image was captured.
 
         @param dateTime the date time for the image.
@@ -101,7 +101,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Return the date / time (IDATIM) for the image.
-
+        <p>
         This is supposed to be the date and time that the image was captured.
 
         @return the date / time that the image was captured, or null if unknown.
@@ -112,7 +112,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the target identifier (TGTID) for the image.
-
+        <p>
         "This field shall contain the identification of the primary target in the format,
         BBBBBBBBBBOOOOOCC, consisting of ten characters of Basic Encyclopedia (BE) identifier,
         followed by five characters of facility OSUFFIX, followed by the two character country code as
@@ -128,7 +128,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Return the target identifier (TGTID) for the image.
-
+        <p>
         "This field shall contain the identification of the primary target in the format,
         BBBBBBBBBBOOOOOCC, consisting of ten characters of Basic Encyclopedia (BE) identifier,
         followed by five characters of facility OSUFFIX, followed by the two character country code as
@@ -144,7 +144,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the second image identifier (IID2) for the image.
-
+        <p>
         "This field can contain the identification of additional information about the image."
 
          In NITF 2.0 files, this is the image title (ITITLE) field.
@@ -157,7 +157,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Return the second image identifier (IID2) for the image.
-
+        <p>
         "This field can contain the identification of additional information about the image."
 
         In NITF 2.0 files, this is the image title (ITITLE) field.
@@ -190,7 +190,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the image source (ISORCE) for the image.
-
+        <p>
         "This field shall contain a description of the source of the image. If the source of the data is
         classified, then the description shall be preceded by the classification, including codeword(s)
         contained in table A-4. If this field is all spaces (0x20), it shall imply that no image source
@@ -204,7 +204,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Return the image source (ISORCE) for the image.
-
+        <p>
         "This field shall contain a description of the source of the image. If the source of the data is
         classified, then the description shall be preceded by the classification, including codeword(s)
         contained in table A-4. If this field is all spaces (0x20), it shall imply that no image source
@@ -218,7 +218,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the number of significant rows (NROWS) in the image.
-
+        <p>
         "This field shall contain the total number of rows of significant pixels in the image. When the product of the values
         of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC > NROWS), the rows
         indexed with the value of the NROWS field to (NPPBV * NBPC) minus 1 shall contain fill data. NOTE: Only the rows
@@ -233,7 +233,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Returns the number of significant rows (NROWS) in the image.
-
+        <p>
         "This field shall contain the total number of rows of significant pixels in the image. When the product of the values
         of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC > NROWS), the rows
         indexed with the value of the NROWS field to (NPPBV * NBPC) minus 1 shall contain fill data. NOTE: Only the rows
@@ -248,7 +248,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the number of significant columns (NCOLS) in the image.
-
+        <p>
         "This field shall contain the total number of columns of significant pixels in the image. When the product of
         the values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR > NCOLS), the
         columns indexed with the value of the NCOLS field to (NPPBH * NBPR) minus 1 shall contain fill data. NOTE: Only
@@ -263,7 +263,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Returns the number of significant columns (NCOLS) in the image.
-
+        <p>
         "This field shall contain the total number of columns of significant pixels in the image. When the product of
         the values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR > NCOLS), the
         columns indexed with the value of the NCOLS field to (NPPBH * NBPR) minus 1 shall contain fill data. NOTE: Only
@@ -278,7 +278,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Set the pixel value type (PVTYPE) for the image.
-
+        <p>
         "This field shall contain an indicator of the type of computer representation
         used for the value for each pixel for each band in the image. Valid entries
         are INT for integer, B for bi-level, SI for 2’s complement signed integer, R
@@ -301,7 +301,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     /**
         Return the pixel value type (PVTYPE) for the image.
-
+        <p>
         "This field shall contain an indicator of the type of computer representation
         used for the value for each pixel for each band in the image. Valid entries
         are INT for integer, B for bi-level, SI for 2’s complement signed integer, R
@@ -322,26 +322,122 @@ public class NitfImageSegment extends AbstractNitfSegment {
         return pixelValueType;
     }
 
+    /**
+        Set the image representation (IREP) for the image.
+        <p>
+        "This field shall contain a valid indicator of the processing required in order to
+        display an image. Valid representation indicators are MONO for monochrome; RGB for
+        red, green, or blue true color, RGB/LUT for mapped color; MULTI for multiband imagery,
+        NODISPLY for an image not intended for display, NVECTOR and POLAR for vectors with
+        Cartesian and polar coordinates respectively, and VPH for SAR video phase history.
+        In addition, compressed imagery can have this field set to YCbCr601 when compressed
+        in the ITU-R Recommendation BT.601-5 color space using JPEG (IC field = C3). This
+        field should be used in conjunction with the IREPBANDn field to interpret the
+        processing required to display each band in the image."
+
+        @param representation the image representation to apply
+    */
     public final void setImageRepresentation(final ImageRepresentation representation) {
         imageRepresentation = representation;
     }
 
+    /**
+        Return the image representation (IREP) for the image.
+        <p>
+        "This field shall contain a valid indicator of the processing required in order to
+        display an image. Valid representation indicators are MONO for monochrome; RGB for
+        red, green, or blue true color, RGB/LUT for mapped color; MULTI for multiband imagery,
+        NODISPLY for an image not intended for display, NVECTOR and POLAR for vectors with
+        Cartesian and polar coordinates respectively, and VPH for SAR video phase history.
+        In addition, compressed imagery can have this field set to YCbCr601 when compressed
+        in the ITU-R Recommendation BT.601-5 color space using JPEG (IC field = C3). This
+        field should be used in conjunction with the IREPBANDn field to interpret the
+        processing required to display each band in the image."
+
+        @return the image representation to apply
+    */
     public final ImageRepresentation getImageRepresentation() {
         return imageRepresentation;
     }
 
+    /**
+        Set the image category (ICAT) for the image.
+        <p>
+        "This field shall contain a valid indicator of the specific category of image, raster or
+        grid data. The specific category of an IS reveals its intended use or the nature of its collector. Valid
+        categories include VIS for visible imagery, SL for side-looking radar, TI for thermal infrared, FL for
+        forward looking infrared, RD for radar, EO for electro-optical, OP for optical, HR for high
+        resolution radar, HS for hyperspectral, CP for color frame photography, BP for black/white frame
+        photography, SAR for synthetic aperture radar, SARIQ for SAR radio hologram, IR for infrared,
+        MS for multispectral, FP for fingerprints, MRI for magnetic resonance imagery, XRAY for x-rays,
+        CAT for CAT scans, VD for video, BARO for barometric pressure, CURRENT for water current,
+        DEPTH for water depth, and WIND for air wind charts. Valid categories for geographic products or
+        geo-reference support data are MAP for raster maps, PAT for color patch, LEG for legends, DTEM for
+        elevation models, MATR for other types of matrix data, and LOCG for location grids. This field
+        should be used in conjunction with the ISUBCATn field to interpret the significance of each band in the
+        image."
+
+        @param category the image category
+    */
     public final void setImageCategory(final ImageCategory category) {
         imageCategory = category;
     }
 
+    /**
+        Return the image category (ICAT) for the image.
+        <p>
+        "This field shall contain a valid indicator of the specific category of image, raster or
+        grid data. The specific category of an IS reveals its intended use or the nature of its collector. Valid
+        categories include VIS for visible imagery, SL for side-looking radar, TI for thermal infrared, FL for
+        forward looking infrared, RD for radar, EO for electro-optical, OP for optical, HR for high
+        resolution radar, HS for hyperspectral, CP for color frame photography, BP for black/white frame
+        photography, SAR for synthetic aperture radar, SARIQ for SAR radio hologram, IR for infrared,
+        MS for multispectral, FP for fingerprints, MRI for magnetic resonance imagery, XRAY for x-rays,
+        CAT for CAT scans, VD for video, BARO for barometric pressure, CURRENT for water current,
+        DEPTH for water depth, and WIND for air wind charts. Valid categories for geographic products or
+        geo-reference support data are MAP for raster maps, PAT for color patch, LEG for legends, DTEM for
+        elevation models, MATR for other types of matrix data, and LOCG for location grids. This field
+        should be used in conjunction with the ISUBCATn field to interpret the significance of each band in the
+        image."
+
+        @return the image category
+    */
     public final ImageCategory getImageCategory() {
         return imageCategory;
     }
 
+    /**
+        Set actual bits-per-pixel per band (ABPP) for the image.
+        <p>
+        "This field shall contain the number of significant bits for the value in each band of each pixel without
+        compression. Even when the image is compressed, ABPP contains the number of significant bits per
+        pixel that were present in the image before compression. This field shall be less than or equal
+        to Number of Bits Per Pixel (field NBPP). The number of adjacent bits within each NBPP is used
+        to represent the value. These representation bits shall be left justified or right justified within the bits
+        of the NBPP bits field, according to the value in the PJUST field. For example, if 11-bit pixels are
+        stored in 16 bits, this field shall contain 11 and NBPP shall contain 16. The default number of
+        significant bits to be used is the value contained in NBPP."
+
+        @param abpb number of actual bits-per-pixel per band
+    */
     public final void setActualBitsPerPixelPerBand(final int abpb) {
         actualBitsPerPixelPerBand = abpb;
     }
 
+    /**
+        Return the actual bits-per-pixel per band (ABPP) for the image.
+        <p>
+        "This field shall contain the number of significant bits for the value in each band of each pixel without
+        compression. Even when the image is compressed, ABPP contains the number of significant bits per
+        pixel that were present in the image before compression. This field shall be less than or equal
+        to Number of Bits Per Pixel (field NBPP). The number of adjacent bits within each NBPP is used
+        to represent the value. These representation bits shall be left justified or right justified within the bits
+        of the NBPP bits field, according to the value in the PJUST field. For example, if 11-bit pixels are
+        stored in 16 bits, this field shall contain 11 and NBPP shall contain 16. The default number of
+        significant bits to be used is the value contained in NBPP."
+
+        @return number of actual bits-per-pixel per band
+    */
     public final int getActualBitsPerPixelPerBand() {
         return actualBitsPerPixelPerBand;
     }
