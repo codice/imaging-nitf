@@ -410,7 +410,7 @@ public class Nitf21HeaderTest {
         assertEquals(" PIDF T", textSegment.getTextIdentifier());
         assertEquals(1, textSegment.getTextAttachmentLevel());
         assertEquals("1998-02-17 10:19:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
-        assertEquals("Paragon Imaging Comment File", textSegment.getTextTitle());
+        assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
     }

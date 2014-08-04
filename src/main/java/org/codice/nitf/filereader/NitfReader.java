@@ -139,7 +139,15 @@ public class NitfReader {
     }
 
     public final String readTrimmedBytes(final int count) throws ParseException {
-        return readBytes(count).trim();
+        return rightTrim(readBytes(count));
+    }
+
+    public static String rightTrim(final String s) {
+        int i = s.length() - 1;
+        while ((i >= 0) && Character.isWhitespace(s.charAt(i))) {
+            i--;
+        }
+        return s.substring(0, i + 1);
     }
 
     public final void readENCRYP() throws ParseException {

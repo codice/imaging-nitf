@@ -88,6 +88,11 @@ public class NitfSecurityMetadata {
          }
     }
 
+    /**
+        Return the security classification of the entire file.
+
+        @return security classification
+    */
     public final NitfSecurityClassification getSecurityClassification() {
         return nitfSecurityClassification;
     }
