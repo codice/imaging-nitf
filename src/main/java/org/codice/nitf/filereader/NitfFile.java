@@ -102,58 +102,153 @@ public class NitfFile extends AbstractNitfSegment {
         return nitfStandardType;
     }
 
+    /**
+        Set the originating station identifier (OSTAID) for the file.
+
+        "This field shall contain the identification code or name of the originating
+        organization, system, station, or product. It shall not be
+        filled with BCS spaces (0x20)."
+
+        This field should not exceed 10 characters in length.
+
+        @param originatingStationId the originating station identifier to set
+    */
     public final void setOriginatingStationId(final String originatingStationId) {
         nitfOriginatingStationId = originatingStationId;
     }
 
+    /**
+        Return the originating station identifier (OSTAID) for the file.
+
+        "This field shall contain the identification code or name of the originating
+        organization, system, station, or product. It shall not be
+        filled with BCS spaces (0x20)."
+
+        @return the originating station identifier
+    */
     public final String getOriginatingStationId() {
         return nitfOriginatingStationId;
     }
 
+    /**
+        Set the date / time (FDT) for the file.
+
+        "This field shall contain the time (UTC) (Zulu) of the file’s origination."
+
+        @param fileDateTime the date and time for the file
+    */
     public final void setFileDateTime(final Date fileDateTime) {
         nitfFileDateTime = fileDateTime;
     }
 
+    /**
+        Return the date / time (FDT) for the file.
+
+        "This field shall contain the time (UTC) (Zulu) of the file’s origination."
+
+        @return date time for the file
+    */
     public final Date getFileDateTime() {
         return nitfFileDateTime;
     }
 
+    /**
+        Set the title (FTITLE) for the file.
+
+        The file title is 80 characters maximum.
+
+        @param fileTitle the file title
+    */
     public final void setFileTitle(final String fileTitle) {
         nitfFileTitle = fileTitle;
     }
 
+    /**
+        Return the title (FTITLE) for the file.
+
+        @return the title of the file, or an empty string if not set
+    */
     public final String getFileTitle() {
         return nitfFileTitle;
     }
 
+    /**
+        Set the file security metadata elements for the file.
+
+        See NitfFileSecurityMetadata and NitfSecurityMetadata for the various elements, which
+        differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
+
+        @param nitfFileSecurityMetadata the security metadata values to set.
+    */
     public final void setFileSecurityMetadata(final NitfFileSecurityMetadata nitfFileSecurityMetadata) {
         fileSecurityMetadata = nitfFileSecurityMetadata;
     }
 
+    /**
+        Return the file security metadata for the file.
+
+        @return file security metadata.
+    */
     public final NitfFileSecurityMetadata getFileSecurityMetadata() {
         return fileSecurityMetadata;
     }
 
+    /**
+        Set the background colour (FBKGC) for the file.
+
+        This is only valid for NITF 2.1 and NSIF 1.0 files.
+
+        @param background colour to set
+    */
     public final void setFileBackgroundColour(final RGBColour backgroundColour) {
         nitfFileBackgroundColour = backgroundColour;
     }
 
+    /**
+        Return the background colour (FBKGC) for the file.
+
+        This is only valid for NITF 2.1 and NSIF 1.0 files.
+    */
     public final RGBColour getFileBackgroundColour() {
         return nitfFileBackgroundColour;
     }
 
+    /**
+        Set the originator's name (ONAME) for the file.
+
+        The originator's name is 24 characters maximum.
+
+        @param originatorsName the originator's name.
+    */
     public final void setOriginatorsName(final String originatorsName) {
         nitfOriginatorsName = originatorsName;
     }
 
+    /**
+        Return the originator's name (ONAME) for the file.
+
+        @return originator's name
+    */
     public final String getOriginatorsName() {
         return nitfOriginatorsName;
     }
 
+    /**
+        Set the originator's phone number (OPHONE) for the file.
+
+        The originator's phone is 18 characters maximum.
+
+        @param originatorsPhoneNumber the originator's phone number.
+    */
     public final void setOriginatorsPhoneNumber(final String originatorsPhoneNumber) {
         nitfOriginatorsPhoneNumber = originatorsPhoneNumber;
     }
 
+    /**
+        Return the originator's phone number (OPHONE) for the file.
+
+        @return the originator's phone number
+    */
     public final String getOriginatorsPhoneNumber() {
         return nitfOriginatorsPhoneNumber;
     }
