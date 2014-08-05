@@ -442,54 +442,393 @@ public class NitfImageSegment extends AbstractNitfSegment {
         return actualBitsPerPixelPerBand;
     }
 
+    /**
+        Set the pixel justification (PJUST) for the image.
+        <p>
+        "When ABPP is not equal to NBPP, this field indicates whether the significant bits are left justified (L)
+        or right justified (R). Nonsignificant bits in each pixel shall contain the binary value 0. Right
+        justification is recommended."
+
+        @param justification the justification of the significant bits
+    */
     public final void setPixelJustification(final PixelJustification justification) {
         pixelJustification = justification;
     }
 
+    /**
+        Return the pixel justification (PJUST) for the image.
+        <p>
+        "When ABPP is not equal to NBPP, this field indicates whether the significant bits are left justified (L)
+        or right justified (R). Nonsignificant bits in each pixel shall contain the binary value 0. Right
+        justification is recommended."
+
+        @return the justification of the significant bits
+    */
     public final PixelJustification getPixelJustification() {
         return pixelJustification;
     }
 
+    /**
+        Set the image coordinate representation (ICORDS) for the image.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "This field shall contain a valid code indicating the type of
+        coordinate representation used for providing an approximate location of the image in the Image
+        Geographic Location field (IGEOLO). The valid values for this field are: U = UTM expressed in
+        Military Grid Reference System (MGRS) form, N = UTM/UPS (Northern hemisphere), S = UTM/UPS
+        (Southern hemisphere), G = GEOGRAPHIC, and D = Decimal degrees. (Choice between N and S is
+        based on hemisphere of northernmost point.) The default Geodetic reference system is WGS84
+        (appendix B, paragraph B.4.12 and figure B-1). If no coordinate system is identified, the space (BCS
+        0x20) shall be used."
+        <p>
+        For NITF 2.0: "This field shall contain a valid code indicating the geo-referenced coordinate
+        system for the image. The valid values for this field are: U=UTM, G=Geodetic (Geographic),
+        C=Geocentric, N=None."
+        <p>
+        Note that those codes are translated into enumerated values to avoid the ambiguity associated with N,
+        however the valid representations do differ between NITF 2.1 / NSIF 1.0 and NITF 2.0.
+
+        @param representation the image coordinate representation
+    */
     public final void setImageCoordinatesRepresentation(final ImageCoordinatesRepresentation representation) {
         imageCoordinatesRepresentation = representation;
     }
 
+    /**
+        Return the image coordinate representation (ICORDS) for the image.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "This field shall contain a valid code indicating the type of
+        coordinate representation used for providing an approximate location of the image in the Image
+        Geographic Location field (IGEOLO). The valid values for this field are: U = UTM expressed in
+        Military Grid Reference System (MGRS) form, N = UTM/UPS (Northern hemisphere), S = UTM/UPS
+        (Southern hemisphere), G = GEOGRAPHIC, and D = Decimal degrees. (Choice between N and S is
+        based on hemisphere of northernmost point.) The default Geodetic reference system is WGS84
+        (appendix B, paragraph B.4.12 and figure B-1). If no coordinate system is identified, the space (BCS
+        0x20) shall be used."
+        <p>
+        For NITF 2.0: "This field shall contain a valid code indicating the geo-referenced coordinate
+        system for the image. The valid values for this field are: U=UTM, G=Geodetic (Geographic),
+        C=Geocentric, N=None."
+
+        @return the image coordinate representation
+    */
     public final ImageCoordinatesRepresentation getImageCoordinatesRepresentation() {
         return imageCoordinatesRepresentation;
     }
 
+    /**
+        Add an image comment to the image.
+
+        @param imageComment the image comment to add
+    */
     public final void addImageComment(final String imageComment) {
         imageComments.add(imageComment);
     }
 
+    /**
+        Return the number of image comments attached to this image.
+
+        @return the number of image comments
+    */
     public final int getNumberOfImageComments() {
         return imageComments.size();
     }
 
+    /**
+        Return a selected image comment.
+        <p>
+        The NITF convention is that image comments are numbered from 1 to N, where
+        N is the number of image comments (which you can get from getNumberOfImageComments()).
+        If you'd prefer to work with a zero base (i.e. images are numbered from 0 to N-1),
+        getImageCommentZeroBase() is likely to be more useful.
+
+        @param commentNumber the comment number, starting from 1.
+    */
     public final String getImageComment(final int commentNumber) {
         return getImageCommentZeroBase(commentNumber - 1);
     }
 
+    /**
+        Return a selected image comment.
+        <p>
+        This method selects image comments numbering from a zero base (i.e. if there
+        are N image comments, the valid range is 0 through to N-1).
+        <p>
+        The NITF convention is that image comments are numbered from 1 to N, where
+        N is the number of image comments (which you can get from getNumberOfImageComments()).
+        If you'd prefer to work with that convention, getImageComment() is likely to be more
+        useful.
+
+        @param commentNumberZeroBase the comment number, starting from 0.
+    */
     public final String getImageCommentZeroBase(final int commentNumberZeroBase) {
         return imageComments.get(commentNumberZeroBase);
     }
 
+    /**
+        Set the image compression format (IC) for the image.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "This field shall contain a valid
+        code indicating the form of compression used in
+        representing the image data. Valid values for this
+        field are, C1 to represent bi-level, C3 to represent
+        JPEG, C4 to represent Vector Quantization, C5 to
+        represent lossless JPEG, I1 to represent down
+        sampled JPEG, and NC to represent the image is
+        not compressed. Also valid are M1, M3, M4, and
+        M5 for compressed images, and NM for
+        uncompressed images indicating an image that
+        contains a block mask and/or a pad pixel mask. C6
+        and M6 are reserved values that will represent a
+        future correlated multicomponent compression
+        algorithm. C7 and M7 are reserved values that will
+        represent a future complex SAR compression. C8
+        and M8 are the values for ISO standard
+        compression JPEG 2000. The format of a mask
+        image is identical to the format of its corresponding
+        non-masked image except for the presence of an
+        Image Data Mask at the beginning of the image data
+        area. The format of the Image Data Mask is
+        described in paragraph 5.4.3.2 and is shown in table
+        A-3(A). The definitions of the compression
+        schemes associated with codes C1/M1, C3/M3,
+        C4/M4, and C5/M5 are given, respectively, in ITU-
+        T T.4, AMD2, MIL-STD-188-198A, MIL-STD-
+        188-199, and NGA N0106-97. C1 is found in ITU-
+        T T.4 AMD2, C3 is found in MIL-STD-188-198A,
+        C4 = is found in MIL-STD-188-199, and C5 and I1
+        are found in NGA N0106-97. (NOTE: C2
+        (ARIDPCM) is not valid in NITF 2.1.) The
+        definition of the compression scheme associated
+        with codes C8/M8 is found in ISO/IEC 15444-
+        1:2000 (with amendments 1 and 2)."
+        <p>
+        For NITF 2.0: "This field shall contain a valid code indicating the form of compression used in
+        representing the image data. Valid values for this field are C0, to mean
+        compressed with a user specified algorithm, C1 to mean bi-level, C2 to mean
+        ARIDPCM, C3 to mean JPEG, C4 to mean Vector Quantization and NC to mean
+        the image is not compressed. Also valid are the codes M0, M3 and M4 for
+        compressed images, and NM for uncompressed images, indicating a blocked
+        image that contains a block mask and/or a transparent pixel mask. The format of
+        a mask image is identical to the format of its corresponding non-masked image,
+        except for the presence of an Image Data Mask Subheader at the beginning of
+        the image data area. The format of the Image Data Mask Subheader is described
+        in 5.5.1.5 and is shown in Table IV(A). The definitions of the compression
+        schemes associated with codes C1, C2, C3, and C4 are given, respectively, in
+        MIL-STD-188-196, MIL-STD-188-197A, MIL-STD-188-198A, and MIL-STD-
+        188-199. This field shall not contain C1 or C2 if NBANDS > 1 or NBLOCKS > 1."
+        <p>
+        Obviously this needs to be consistent with the actual format of the data.
+
+        @param compression the compression format used
+    */
     public final void setImageCompression(final ImageCompression compression) {
         imageCompression = compression;
     }
 
+    /**
+        Return the image compression format (IC) for the image.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "This field shall contain a valid
+        code indicating the form of compression used in
+        representing the image data. Valid values for this
+        field are, C1 to represent bi-level, C3 to represent
+        JPEG, C4 to represent Vector Quantization, C5 to
+        represent lossless JPEG, I1 to represent down
+        sampled JPEG, and NC to represent the image is
+        not compressed. Also valid are M1, M3, M4, and
+        M5 for compressed images, and NM for
+        uncompressed images indicating an image that
+        contains a block mask and/or a pad pixel mask. C6
+        and M6 are reserved values that will represent a
+        future correlated multicomponent compression
+        algorithm. C7 and M7 are reserved values that will
+        represent a future complex SAR compression. C8
+        and M8 are the values for ISO standard
+        compression JPEG 2000. The format of a mask
+        image is identical to the format of its corresponding
+        non-masked image except for the presence of an
+        Image Data Mask at the beginning of the image data
+        area. The format of the Image Data Mask is
+        described in paragraph 5.4.3.2 and is shown in table
+        A-3(A). The definitions of the compression
+        schemes associated with codes C1/M1, C3/M3,
+        C4/M4, and C5/M5 are given, respectively, in ITU-
+        T T.4, AMD2, MIL-STD-188-198A, MIL-STD-
+        188-199, and NGA N0106-97. C1 is found in ITU-
+        T T.4 AMD2, C3 is found in MIL-STD-188-198A,
+        C4 = is found in MIL-STD-188-199, and C5 and I1
+        are found in NGA N0106-97. (NOTE: C2
+        (ARIDPCM) is not valid in NITF 2.1.) The
+        definition of the compression scheme associated
+        with codes C8/M8 is found in ISO/IEC 15444-
+        1:2000 (with amendments 1 and 2)."
+        <p>
+        For NITF 2.0: "This field shall contain a valid code indicating the form of compression used in
+        representing the image data. Valid values for this field are C0, to mean
+        compressed with a user specified algorithm, C1 to mean bi-level, C2 to mean
+        ARIDPCM, C3 to mean JPEG, C4 to mean Vector Quantization and NC to mean
+        the image is not compressed. Also valid are the codes M0, M3 and M4 for
+        compressed images, and NM for uncompressed images, indicating a blocked
+        image that contains a block mask and/or a transparent pixel mask. The format of
+        a mask image is identical to the format of its corresponding non-masked image,
+        except for the presence of an Image Data Mask Subheader at the beginning of
+        the image data area. The format of the Image Data Mask Subheader is described
+        in 5.5.1.5 and is shown in Table IV(A). The definitions of the compression
+        schemes associated with codes C1, C2, C3, and C4 are given, respectively, in
+        MIL-STD-188-196, MIL-STD-188-197A, MIL-STD-188-198A, and MIL-STD-
+        188-199. This field shall not contain C1 or C2 if NBANDS > 1 or NBLOCKS > 1."
+
+        @return the compression format used
+    */
     public final ImageCompression getImageCompression() {
         return imageCompression;
     }
 
+    /**
+        Set the compression rate (COMRAT) for the image.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "Compression Rate Code. If the IC field contains
+        C1, C3, C4, C5, C8, M1, M3, M4, M5, M8, or I1,
+        this field shall be present and contain a code
+        indicating the compression rate for the image.
+        If the value in IC is C1 or M1, the valid codes are
+        1D, 2DS, and 2DH, where:
+        1D represents One-dimensional Coding;
+        2DS represents Two-dimensional Coding, Standard Vertical Resolution (K=2);
+        2DH represents Two-dimensional Coding High Vertical Resolution (K=4);
+        Explanation of these codes can be found in ITU-T T.4, AMD2.
+        If the value in IC is C3, M3, C5, M5, or I1, the
+        value of the field shall identify the embedded
+        quantization table(s) used by the JPEG compression
+        algorithm. In this case, the format of this field is
+        XX.Y where XX is the image data type, and Y
+        represents the quality level 1 to 5. The image data
+        types are represented by:
+        00 represents General Purpose;
+        01 represents VIS;
+        02 represents IR;
+        03 represents SAR;
+        04 represents Downsample (DS) JPEG;
+        Explanation of the optimized tables can be found in
+        MIL-STD-188-198A and NGA N0106-97. The
+        value of Y shall be 0 if customized tables are used.
+        It is optional but highly recommended that the value
+        of XX still be used for the image type with
+        customized tables.
+        If the value of IC is C5 or M5, then the value of Y
+        shall be 0. It is optional but highly recommended
+        that the value of XX still be used for the image
+        type.
+        If the value in IC is C4 or M4, this field shall
+        contain a value given in the form n.nn representing
+        the number of bits-per-pixel for the compressed
+        image. Explanation of the compression rate for
+        vector quantization can be found in MIL-STD-188-
+        199."
+        <p>
+        For NITF 2.0: "If the Image Compression (IC) field contains C0, C1, C2, C3, C4, M0, M3, or
+        M4, this field shall be present and contain a code indicating the compression rate
+        for the image. If the value in IC is C0 or M0, the code shall be user defined but
+        shall not be all blanks. If the value in IC is C1 or M1, the valid codes are 1D,
+        2DS, and 2DH, where: 1D means one Dimensional Coding; 2DS means two Dimensional Coding
+        Standard Vertical Resolution, K=2; and 2DH means two Dimensional Coding High Vertical Resolution, K=4.
+        Explanation of these codes can be found in MIL-STD-188-196. If the value in
+        IC is C2 or M2, this field shall contain a value given in the form n.nn
+        representing the number of bits-per-pixel for the compressed image. Explanation
+        of the compression rate for vector quantization can be found in MIL-STD-188-199.
+        Valid codes in this case are 0.75, 1.40, 2.30, and 4.50. Explanation of
+        these codes can be found in MIL-STD-188-197A. If the value in IC is C3 or
+        M3, this field is used to identify the default quantization table(s) used by the
+        JPEG compression algorithm. In this case, the format of this field is XX.Y
+        where XX is the image data type (00 = general purpose, 01 through 99 are
+        reserved), and Y represents the quality level 1 through 5. Explanation of these
+        codes can be found in MIL-STD-188-198A. If the value in IC is C4 or M4, this
+        field shall contain a value given in the form n.nn representing the number of bits-
+        per-pixel for the compressed image. Explanation of the compression rate for
+        vector quantization can be found in MIL-STD-188-199. This field is omitted if
+        the value in IC is NC or NM."
+
+        @param rate string representation of the compression rate
+    */
     public final void setCompressionRate(final String rate) {
         compressionRate = rate;
     }
 
+    /**
+        Return the compression rate (COMRAT) for the image.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "Compression Rate Code. If the IC field contains
+        C1, C3, C4, C5, C8, M1, M3, M4, M5, M8, or I1,
+        this field shall be present and contain a code
+        indicating the compression rate for the image.
+        If the value in IC is C1 or M1, the valid codes are
+        1D, 2DS, and 2DH, where:
+        1D represents One-dimensional Coding;
+        2DS represents Two-dimensional Coding, Standard Vertical Resolution (K=2);
+        2DH represents Two-dimensional Coding High Vertical Resolution (K=4);
+        Explanation of these codes can be found in ITU-T T.4, AMD2.
+        If the value in IC is C3, M3, C5, M5, or I1, the
+        value of the field shall identify the embedded
+        quantization table(s) used by the JPEG compression
+        algorithm. In this case, the format of this field is
+        XX.Y where XX is the image data type, and Y
+        represents the quality level 1 to 5. The image data
+        types are represented by:
+        00 represents General Purpose;
+        01 represents VIS;
+        02 represents IR;
+        03 represents SAR;
+        04 represents Downsample (DS) JPEG;
+        Explanation of the optimized tables can be found in
+        MIL-STD-188-198A and NGA N0106-97. The
+        value of Y shall be 0 if customized tables are used.
+        It is optional but highly recommended that the value
+        of XX still be used for the image type with
+        customized tables.
+        If the value of IC is C5 or M5, then the value of Y
+        shall be 0. It is optional but highly recommended
+        that the value of XX still be used for the image
+        type.
+        If the value in IC is C4 or M4, this field shall
+        contain a value given in the form n.nn representing
+        the number of bits-per-pixel for the compressed
+        image. Explanation of the compression rate for
+        vector quantization can be found in MIL-STD-188-
+        199."
+        <p>
+        For NITF 2.0: "If the Image Compression (IC) field contains C0, C1, C2, C3, C4, M0, M3, or
+        M4, this field shall be present and contain a code indicating the compression rate
+        for the image. If the value in IC is C0 or M0, the code shall be user defined but
+        shall not be all blanks. If the value in IC is C1 or M1, the valid codes are 1D,
+        2DS, and 2DH, where: 1D means one Dimensional Coding; 2DS means two Dimensional Coding
+        Standard Vertical Resolution, K=2; and 2DH means two Dimensional Coding High Vertical Resolution, K=4.
+        Explanation of these codes can be found in MIL-STD-188-196. If the value in
+        IC is C2 or M2, this field shall contain a value given in the form n.nn
+        representing the number of bits-per-pixel for the compressed image. Explanation
+        of the compression rate for vector quantization can be found in MIL-STD-188-199.
+        Valid codes in this case are 0.75, 1.40, 2.30, and 4.50. Explanation of
+        these codes can be found in MIL-STD-188-197A. If the value in IC is C3 or
+        M3, this field is used to identify the default quantization table(s) used by the
+        JPEG compression algorithm. In this case, the format of this field is XX.Y
+        where XX is the image data type (00 = general purpose, 01 through 99 are
+        reserved), and Y represents the quality level 1 through 5. Explanation of these
+        codes can be found in MIL-STD-188-198A. If the value in IC is C4 or M4, this
+        field shall contain a value given in the form n.nn representing the number of bits-
+        per-pixel for the compressed image. Explanation of the compression rate for
+        vector quantization can be found in MIL-STD-188-199. This field is omitted if
+        the value in IC is NC or NM."
+
+        @return string representation of the compression rate
+    */
     public final String getCompressionRate() {
         return compressionRate;
     }
 
+    /**
+        Return the number of bands (NBANDS/XBANDS) in the image.
+
+        @return number of bands
+    */
     public final int getNumBands() {
         return imageBands.size();
     }
@@ -497,6 +836,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
     public final void addImageBand(final NitfImageBand imageBand) {
         imageBands.add(imageBand);
     }
+
     public final NitfImageBand getImageBand(final int bandNumber) {
         return getImageBandZeroBase(bandNumber - 1);
     }
@@ -505,10 +845,89 @@ public class NitfImageSegment extends AbstractNitfSegment {
         return imageBands.get(bandNumberZeroBase);
     }
 
+    /**
+        Set the image mode (IMODE) for the image.
+        <p>
+        "This field shall indicate how the
+        Image Pixels are stored in the NITF file. Valid
+        values are B, P, R, and S. The interpretation of
+        IMODE is dependent on whether the image is JPEG
+        compressed (IC = C3, C5, I1, M3, or M5), VQ
+        compressed (IC = C4, or M4), or uncompressed (IC
+        = NC or NM).
+        a. Uncompressed. The value S indicates band
+        sequential, where all blocks for the first band
+        are followed by all blocks for the second band,
+        and so on: [(block1, band1), (block2, band1), ...
+        (blockM, band1)], [(block1, band2), (block2,
+        band 2), ... (blockM, band2)] ... [(block1,
+        bandN), (block2, bandN), ... (blockM,
+        bandN)]. Note that, in each block, the pixels of
+        the first line appears first, followed by the
+        pixels of the second line, and so on.
+        The value B indicates band interleaved by
+        block. This implies that within each block, the
+        bands follow one another: [(block1, band1),
+        (block1, band2), ...(block1, bandN)], [(block2,
+        band1), (block2, band2), ... (block2, bandN)],
+        ... [(blockM, band1), (blockM, band2), ...
+        (blockM, bandN)]. Note that, in each block,
+        the pixels of the first line appears first and the
+        pixels of the last line appears last.
+        The value P indicates band interleaved by pixel
+        within each block: such as, for each block, one
+        after the other, the full pixel vector (all band
+        values) appears for every pixel in the block, one
+        pixel after another, the block column index
+        varying faster than the block row index.
+        The value R indicates band interleaved by row.
+        The ordering mechanism for this case stores the
+        pixel values of each band in row sequential
+        order. Within each block, all pixel values of the
+        first row of the first band are followed by pixel
+        values of the first row of the second band
+        continuing until all values of the first row are
+        stored The remaining rows are stored in a similar
+        fashion until the last row of values has been
+        stored. Each block shall be zero-filled to the
+        next octet boundary when necessary.
+        If the value of the NBANDS field is 1, the cases
+        B and S coincide. In this case, this field shall
+        contain B. If the Number of Blocks is 1 (the
+        NBPR field and the NBPC field contain 1), this
+        field shall contain B for non-interleaved by
+        pixel, and P for interleaved by pixel. The value
+        S is only valid for images with multiple blocks
+        and multiple bands.
+        b. JPEG-compressed. The presence of B, P, or
+        S implies specific ordering of data within the
+        JPEG image data representation. For this case
+        the interpretation of the various values of the
+        IMODE field is specified in MIL-STD-188-
+        198A. When IC contains C8, M8, or I1,
+        IMODE contains B.
+        c. Vector Quantization compressed. VQ
+        compressed images are normally either RGB
+        with a color look-up table or monochromatic. In
+        either case, the image is single band, and the
+        IMODE field defaults to B.
+        d. Bi-Level Compressed. When the value of the
+        IC field is C1 or M1, the value of the IMODE
+        field is B."
+
+        @param mode the image mode
+    */
     public final void setImageMode(final ImageMode mode) {
         imageMode = mode;
     }
 
+    /**
+        Return the image mode (IMODE) for the image.
+        <p>
+        See setImageMode() for image mode interpretation rules.
+
+        @return the image mode
+    */
     public final ImageMode getImageMode() {
         return imageMode;
     }
