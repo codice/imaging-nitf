@@ -16,7 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.text.ParseException;
 
-public class NitfFileSecurityMetadataParser extends NitfSecurityMetadataParser {
+class NitfFileSecurityMetadataParser extends NitfSecurityMetadataParser {
 
     private static final int FSCOP_LENGTH = 5;
     private static final int FSCPYS_LENGTH = 5;
