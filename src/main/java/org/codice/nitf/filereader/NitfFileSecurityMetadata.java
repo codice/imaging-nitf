@@ -20,33 +20,26 @@ public class NitfFileSecurityMetadata extends NitfSecurityMetadata {
     private String nitfFileCopyNumber = null;
     private String nitfFileNumberOfCopies = null;
 
-    private static final int FSCOP_LENGTH = 5;
-    private static final int FSCPYS_LENGTH = 5;
-
     public NitfFileSecurityMetadata(final NitfReader nitfReader) throws ParseException {
-        super(nitfReader);
-        readFileSecurityMetadataExtras();
+        NitfFileSecurityMetadataParser parser = new NitfFileSecurityMetadataParser();
+        parser.parse(nitfReader, this);
+    }
+
+    public final void setFileCopyNumber(final String copyNumber) {
+        nitfFileCopyNumber = copyNumber;
     }
 
     public final String getFileCopyNumber() {
         return nitfFileCopyNumber;
     }
 
+    public final void setFileNumberOfCopies(final String numberOfCopies) {
+        nitfFileNumberOfCopies = numberOfCopies;
+    }
+
     public final String getFileNumberOfCopies() {
         return nitfFileNumberOfCopies;
     }
 
-    private void readFileSecurityMetadataExtras() throws ParseException {
-        readFSCOP();
-        readFSCPYS();
-    }
-
-    private void readFSCOP() throws ParseException {
-        nitfFileCopyNumber = reader.readTrimmedBytes(FSCOP_LENGTH);
-    }
-
-    private void readFSCPYS() throws ParseException {
-        nitfFileNumberOfCopies = reader.readTrimmedBytes(FSCPYS_LENGTH);
-    }
 };
 
