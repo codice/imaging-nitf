@@ -58,7 +58,6 @@ public class TreParser {
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);
-            // System.out.println("reading tag:" + tag + "|");
             bytesRead += TAG_LENGTH;
             int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
             bytesRead += TAGLEN_LENGTH;
@@ -106,7 +105,6 @@ public class TreParser {
                 }
                 TreEntry treEntry = new TreEntry(loop.getName(), parent);
                 for (int i = 0; i < numRepetitions; ++i) {
-                    // System.out.println(String.format("Looping under %s, count %d of %d", treEntry.getName(), i, numRepetitions));
                     TreGroup subGroup = parseTreComponents(loop.getFieldOrLoopOrIf(), reader, parent);
                     treEntry.addGroup(subGroup);
                 }
@@ -127,9 +125,7 @@ public class TreParser {
                                 final NitfReader reader,
                                 final TreEntryList parent) throws ParseException {
         String condition = ifType.getCond();
-        // System.out.println("condition: " + condition);
         if (evaluateCondition(condition, treGroup)) {
-            // System.out.println(String.format("[%s] evaluated to true", condition));
             TreGroup ifGroup = parseTreComponents(ifType.getFieldOrLoopOrIf(), reader, parent);
             treGroup.addAll(ifGroup.getEntries());
         }
@@ -196,10 +192,7 @@ public class TreParser {
             // This is an error
             throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
         }
-        // System.out.println(String.format("Condition |%s|%s|", conditionParts[0], conditionParts[1]));
         String actualValue = treGroup.getFieldValue(conditionParts[0]);
-        // System.out.println("Comparing: actual=[" + actualValue + "] with conditionCriteria=[" + conditionParts[1] + "]");
-        // System.out.println("equality comparison:" + (conditionParts[1].equals(actualValue)));
         return conditionParts[1].equals(actualValue);
     }
 
@@ -219,7 +212,6 @@ public class TreParser {
                                    final TreGroup treGroup) throws ParseException {
         String fieldKey = field.getName();
         if (fieldKey == null) {
-            // System.out.println("Null fieldKey, skipping " + field.getLength().intValue());
             reader.skip(field.getLength().intValue());
             return null;
         } else {
@@ -237,10 +229,8 @@ public class TreParser {
             }
             String fieldValue = reader.readBytes(fieldLength);
             if (fieldKey.isEmpty()) {
-                // System.out.println(String.format("parent |%s|%d|%s|", parent.getName(), fieldLength, fieldValue.trim()));
                 return new TreEntry(parent.getName(), fieldValue, parent);
             } else {
-                // System.out.println(String.format("Parsed |%s|%d|%s|", fieldKey, fieldLength, fieldValue.trim()));
                 return new TreEntry(fieldKey, fieldValue, parent);
             }
         }
