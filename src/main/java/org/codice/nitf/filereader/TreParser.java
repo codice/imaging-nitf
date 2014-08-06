@@ -190,7 +190,7 @@ public class TreParser {
         String[] conditionParts = condition.split("=");
         if (conditionParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         String actualValue = treGroup.getFieldValue(conditionParts[0]);
         return conditionParts[1].equals(actualValue);
@@ -200,7 +200,7 @@ public class TreParser {
         String[] conditionParts = condition.split("!=");
         if (conditionParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException("Unsupported format for iftype:" + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         String actualValue = treGroup.getFieldValue(conditionParts[0]);
         return !conditionParts[1].equals(actualValue);
