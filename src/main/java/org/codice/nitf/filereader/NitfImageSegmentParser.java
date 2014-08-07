@@ -177,29 +177,24 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
 
     private void readNROWS() throws ParseException {
         segment.setNumberOfRows(reader.readBytesAsLong(NROWS_LENGTH));
-        // System.out.println("NROWS:" + segment.getNumberOfRows());
     }
 
     private void readNCOLS() throws ParseException {
         segment.setNumberOfColumns(reader.readBytesAsLong(NCOLS_LENGTH));
-        // System.out.println("NCOLS:" + segment.getNumberOfColumns());
     }
 
     private void readPVTYPE() throws ParseException {
         String pvtype = reader.readTrimmedBytes(PVTYPE_LENGTH);
-        // System.out.println("PVTYPE:" + pvtype);
         segment.setPixelValueType(PixelValueType.getEnumValue(pvtype));
     }
 
     private void readIREP() throws ParseException {
         String irep = reader.readTrimmedBytes(IREP_LENGTH);
-        // System.out.println("IREP:" + irep);
         segment.setImageRepresentation(ImageRepresentation.getEnumValue(irep));
     }
 
     private void readICAT() throws ParseException {
         String icat = reader.readTrimmedBytes(ICAT_LENGTH);
-        // System.out.println("ICAT:" + icat);
         segment.setImageCategory(ImageCategory.getEnumValue(icat));
     }
 
@@ -316,12 +311,10 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
 
     private void readUDOFL() throws ParseException {
         userDefinedOverflow = reader.readBytesAsInteger(UDOFL_LENGTH);
-        // System.out.println("UDOFL:" + userDefinedOverflow);
     }
 
     private void readUDID() throws ParseException {
         TreParser treParser = new TreParser();
-        // System.out.println("Reading UDID of length:" + (userDefinedImageDataLength - UDOFL_LENGTH));
         TreCollection userDefinedSubheaderTres = treParser.parse(reader, userDefinedImageDataLength - UDOFL_LENGTH);
         segment.mergeTREs(userDefinedSubheaderTres);
     }
@@ -349,7 +342,6 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
             return;
         }
         if (shouldParseImageData) {
-            // TODO: we need to remove this case
             segment.setImageData(reader.readBytesRaw((int) lengthOfImage));
         } else {
             reader.skip(lengthOfImage);

@@ -106,7 +106,6 @@ public class NitfReader {
 
     public final Integer readBytesAsInteger(final int count) throws ParseException {
         String intString = readBytes(count);
-        // System.out.println("Bytes to be converted to integer: |" + intString + "|");
         Integer intValue = 0;
         try {
             intValue = Integer.parseInt(intString);

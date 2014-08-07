@@ -14,8 +14,6 @@
  **/
 package org.codice.nitf.filereader;
 
-// import java.text.ParseException;
-
 public class RGBColour {
 
     private byte red = 0x00;
