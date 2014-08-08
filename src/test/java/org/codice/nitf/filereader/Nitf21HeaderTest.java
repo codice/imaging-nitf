@@ -173,6 +173,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment1.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
+        assertEquals("1.0 ", segment1.getImageMagnification());
     }
 
     @Test
@@ -234,6 +235,7 @@ public class Nitf21HeaderTest {
         assertEquals(ImageCompression.JPEG, segment1.getImageCompression());
         assertEquals("00.0", segment1.getCompressionRate());
         assertEquals(1, segment1.getNumBands());
+        assertEquals("1.0 ", segment1.getImageMagnification());
     }
 
     @Test
@@ -295,6 +297,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment1.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
+        assertEquals("1.0 ", segment1.getImageMagnification());
 
         NitfImageSegment segment2 = reader.getImageSegment(2);
         assertNotNull(segment2);
@@ -325,6 +328,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment2.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment2.getImageCompression());
         assertEquals(1, segment2.getNumBands());
+        assertEquals("1.0 ", segment2.getImageMagnification());
 
         NitfImageSegment segment3 = reader.getImageSegment(3);
         assertNotNull(segment3);
@@ -355,6 +359,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment3.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment3.getImageCompression());
         assertEquals(1, segment3.getNumBands());
+        assertEquals("1.0 ", segment3.getImageMagnification());
 
         NitfImageSegment segment4 = reader.getImageSegment(4);
         assertNotNull(segment4);
@@ -385,6 +390,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment4.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment4.getImageCompression());
         assertEquals(1, segment4.getNumBands());
+        assertEquals("1.0 ", segment4.getImageMagnification());
     }
 
     @Test
