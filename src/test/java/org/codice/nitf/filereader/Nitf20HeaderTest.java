@@ -47,22 +47,7 @@ public class Nitf20HeaderTest {
         assertEquals("1994-04-03 19:16:36", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.getFileDateTime()));
         assertEquals("checks the handling of an NITF file w/ only a text file.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
-        assertNotNull(securityMetadata);
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
-        assertNull(securityMetadata.getSecurityClassificationSystem());
-        assertEquals("", securityMetadata.getCodewords());
-        assertEquals("", securityMetadata.getControlAndHandling());
-        assertEquals("", securityMetadata.getReleaseInstructions());
-        assertNull(securityMetadata.getDeclassificationType());
-        assertNull(securityMetadata.getDeclassificationDate());
-        assertNull(securityMetadata.getDeclassificationExemption());
-        assertNull(securityMetadata.getDowngrade());
-        assertNull(securityMetadata.getDowngradeDate());
-        assertNull(securityMetadata.getClassificationText());
-        assertNull(securityMetadata.getClassificationAuthorityType());
-        assertEquals("", securityMetadata.getClassificationAuthority());
-        assertNull(securityMetadata.getClassificationReason());
-        assertEquals("", securityMetadata.getSecurityControlNumber());
+        assertUnclasAndEmpty(securityMetadata);
         assertEquals("999998", securityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This  file   will not need a downgrade.", securityMetadata.getDowngradeEvent());
 
@@ -82,21 +67,7 @@ public class Nitf20HeaderTest {
         assertEquals("1993-03-27 23:55:36", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
         assertEquals("This is the title of unclassified text file #1 in NITF  file   U21H00N1.", textSegment.getTextTitle());
         NitfSecurityMetadata textSecurityMetadata = textSegment.getSecurityMetadata();
-        assertNotNull(textSecurityMetadata);
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, textSecurityMetadata.getSecurityClassification());
-        assertNull(textSecurityMetadata.getSecurityClassificationSystem());
-        assertEquals("", textSecurityMetadata.getCodewords());
-        assertEquals("", textSecurityMetadata.getControlAndHandling());
-        assertEquals("", textSecurityMetadata.getReleaseInstructions());
-        assertNull(textSecurityMetadata.getDeclassificationType());
-        assertNull(textSecurityMetadata.getDeclassificationDate());
-        assertNull(textSecurityMetadata.getDeclassificationExemption());
-        assertNull(textSecurityMetadata.getDowngrade());
-        assertNull(textSecurityMetadata.getDowngradeDate());
-        assertNull(textSecurityMetadata.getClassificationText());
-        assertNull(textSecurityMetadata.getClassificationAuthorityType());
-        assertEquals("", textSecurityMetadata.getClassificationAuthority());
-        assertNull(textSecurityMetadata.getClassificationReason());
+        assertUnclasAndEmpty(textSecurityMetadata);
         assertEquals("", textSecurityMetadata.getSecurityControlNumber());
         assertEquals("999998", textSecurityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This text will never need downgrading.", textSecurityMetadata.getDowngradeEvent());
@@ -122,22 +93,7 @@ public class Nitf20HeaderTest {
         assertEquals("1992-11-03 13:52:26", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.getFileDateTime()));
         assertEquals("This NITF message contains 5 images, 4 symbols, 4 labels and 1 text.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
-        assertNotNull(securityMetadata);
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
-        assertNull(securityMetadata.getSecurityClassificationSystem());
-        assertEquals("", securityMetadata.getCodewords());
-        assertEquals("", securityMetadata.getControlAndHandling());
-        assertEquals("", securityMetadata.getReleaseInstructions());
-        assertNull(securityMetadata.getDeclassificationType());
-        assertNull(securityMetadata.getDeclassificationDate());
-        assertNull(securityMetadata.getDeclassificationExemption());
-        assertNull(securityMetadata.getDowngrade());
-        assertNull(securityMetadata.getDowngradeDate());
-        assertNull(securityMetadata.getClassificationText());
-        assertNull(securityMetadata.getClassificationAuthorityType());
-        assertEquals("", securityMetadata.getClassificationAuthority());
-        assertNull(securityMetadata.getClassificationReason());
-        assertEquals("", securityMetadata.getSecurityControlNumber());
+        assertUnclasAndEmpty(securityMetadata);
         assertEquals("999998", securityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This message will not need a downgrade.", securityMetadata.getDowngradeEvent());
 
@@ -154,18 +110,33 @@ public class Nitf20HeaderTest {
 
         NitfImageSegment imageSegment1 = file.getImageSegment(1);
         assertNotNull(imageSegment1);
+        assertEquals("Missing ID", imageSegment1.getImageIdentifier1());
+        assertEquals("1993-03-25 15:25:59",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment1.getImageDateTime()));
+        assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
 
         NitfImageSegment imageSegment2 = file.getImageSegment(2);
         assertNotNull(imageSegment2);
+        assertEquals("Missing ID", imageSegment2.getImageIdentifier1());
+        assertEquals("1993-03-25 15:25:59",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment2.getImageDateTime()));
+        assertEquals("- GROUP 3 -", imageSegment2.getImageIdentifier2());
 
         NitfImageSegment imageSegment3 = file.getImageSegment(3);
         assertNotNull(imageSegment3);
+        assertEquals("0000000003", imageSegment3.getImageIdentifier1());
+        assertEquals("1989-01-01 12:00:00",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment3.getImageDateTime()));
+        assertEquals("This is an unclassified image in an unclassified NITF message called U227C2J0", imageSegment3.getImageIdentifier2());
 
         NitfImageSegment imageSegment4 = file.getImageSegment(4);
         assertNotNull(imageSegment4);
+        assertEquals("0000000001", imageSegment4.getImageIdentifier1());
+        assertEquals("1989-01-01 12:00:00",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment4.getImageDateTime()));
+        assertEquals("This is an unclassified image in an unclassified NITF file.", imageSegment4.getImageIdentifier2());
 
         NitfImageSegment imageSegment5 = file.getImageSegment(5);
         assertNotNull(imageSegment5);
+        assertEquals("0000000001", imageSegment5.getImageIdentifier1());
+        assertEquals("1989-01-01 12:00:00",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment5.getImageDateTime()));
+        assertEquals("This is an unclassified image in an unclassified NITF file Q3.", imageSegment5.getImageIdentifier2());
 
         NitfTextSegment textSegment = file.getTextSegment(1);
         assertNotNull(textSegment);
@@ -174,27 +145,31 @@ public class Nitf20HeaderTest {
         assertEquals("1990-06-07 21:11:36", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
         assertEquals("This is the title of unclassified text file #1 in NITF message JR1_B.", textSegment.getTextTitle());
         NitfSecurityMetadata textSecurityMetadata = textSegment.getSecurityMetadata();
-        assertNotNull(textSecurityMetadata);
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, textSecurityMetadata.getSecurityClassification());
-        assertNull(textSecurityMetadata.getSecurityClassificationSystem());
-        assertEquals("", textSecurityMetadata.getCodewords());
-        assertEquals("", textSecurityMetadata.getControlAndHandling());
-        assertEquals("", textSecurityMetadata.getReleaseInstructions());
-        assertNull(textSecurityMetadata.getDeclassificationType());
-        assertNull(textSecurityMetadata.getDeclassificationDate());
-        assertNull(textSecurityMetadata.getDeclassificationExemption());
-        assertNull(textSecurityMetadata.getDowngrade());
-        assertNull(textSecurityMetadata.getDowngradeDate());
-        assertNull(textSecurityMetadata.getClassificationText());
-        assertNull(textSecurityMetadata.getClassificationAuthorityType());
-        assertEquals("", textSecurityMetadata.getClassificationAuthority());
-        assertNull(textSecurityMetadata.getClassificationReason());
-        assertEquals("", textSecurityMetadata.getSecurityControlNumber());
+        assertUnclasAndEmpty(textSecurityMetadata);
         assertEquals("999998", textSecurityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This text will never need downgrading.", textSecurityMetadata.getDowngradeEvent());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
         assertEquals("123456\r\n", textSegment.getTextData());
 
         is.close();
+    }
+
+    void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
+        assertNotNull(securityMetadata);
+        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+        assertNull(securityMetadata.getSecurityClassificationSystem());
+        assertEquals("", securityMetadata.getCodewords());
+        assertEquals("", securityMetadata.getControlAndHandling());
+        assertEquals("", securityMetadata.getReleaseInstructions());
+        assertNull(securityMetadata.getDeclassificationType());
+        assertNull(securityMetadata.getDeclassificationDate());
+        assertNull(securityMetadata.getDeclassificationExemption());
+        assertNull(securityMetadata.getDowngrade());
+        assertNull(securityMetadata.getDowngradeDate());
+        assertNull(securityMetadata.getClassificationText());
+        assertNull(securityMetadata.getClassificationAuthorityType());
+        assertEquals("", securityMetadata.getClassificationAuthority());
+        assertNull(securityMetadata.getClassificationReason());
+        assertEquals("", securityMetadata.getSecurityControlNumber());
     }
 }
