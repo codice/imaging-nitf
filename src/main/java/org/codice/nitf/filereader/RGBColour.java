@@ -29,6 +29,12 @@ public class RGBColour {
         blue = rgb[2];
     }
 
+    public RGBColour(final byte r, final byte g, final byte b) {
+        red = r;
+        green = g;
+        blue = b;
+    }
+
     public final byte getRed() {
         return red;
     }

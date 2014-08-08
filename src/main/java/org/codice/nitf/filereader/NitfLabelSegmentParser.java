@@ -132,7 +132,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
             return;
         }
         if (shouldParseLabelData) {
-            segment.setLabelData(reader.readBytesRaw(lengthOfLabel));
+            segment.setLabelData(reader.readBytes(lengthOfLabel));
         } else {
             reader.skip(lengthOfLabel);
         }

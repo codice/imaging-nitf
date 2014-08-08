@@ -30,7 +30,7 @@ public class NitfLabelSegment extends AbstractNitfSegment {
     private RGBColour labelBackgroundColour = null;
     private NitfSecurityMetadata securityMetadata = null;
 
-    private byte[] data = null;
+    private String data = null;
 
     public NitfLabelSegment() {
     }
@@ -139,11 +139,11 @@ public class NitfLabelSegment extends AbstractNitfSegment {
         return securityMetadata;
     }
 
-    public final void setLabelData(final byte[] labelData) {
+    public final void setLabelData(final String labelData) {
         data = labelData;
     }
 
-    public final byte[] getLabelData() {
+    public final String getLabelData() {
         return data;
     }
 }

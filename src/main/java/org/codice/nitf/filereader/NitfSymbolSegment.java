@@ -83,20 +83,40 @@ public class NitfSymbolSegment extends AbstractNitfSegment {
         symbolColourFormat = colourFormat;
     }
 
+    public final SymbolColour getSymbolColour() {
+        return symbolColourFormat;
+    }
+
     public final void setNumberOfLinesPerSymbol(final int numLinesPerSymbol) {
         numberOfLinesPerSymbol = numLinesPerSymbol;
+    }
+
+    public final int getNumberOfLinesPerSymbol() {
+        return numberOfLinesPerSymbol;
     }
 
     public final void setNumberOfPixelsPerLine(final int numPixelsPerLine) {
         numberofPixelsPerLine = numPixelsPerLine;
     }
 
+    public final int getNumberOfPixelsPerLine() {
+        return numberofPixelsPerLine;
+    }
+
     public final void setLineWidth(final int width) {
         lineWidth = width;
     }
 
+    public final int getLineWidth() {
+        return lineWidth;
+    }
+
     public final void setNumberOfBitsPerPixel(final int bitsPerPixel) {
         numberOfBitsPerPixel = bitsPerPixel;
+    }
+
+    public final int getNumberOfBitsPerPixel() {
+        return numberOfBitsPerPixel;
     }
 
     public final void setSymbolDisplayLevel(final int displayLevel) {
