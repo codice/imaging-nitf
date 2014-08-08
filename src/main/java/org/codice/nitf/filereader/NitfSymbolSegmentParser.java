@@ -15,7 +15,7 @@
 package org.codice.nitf.filereader;
 
 import java.text.ParseException;
-import java.util.EnumSet;
+import java.util.Set;
 
 class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
 
@@ -49,7 +49,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
 
     NitfSymbolSegmentParser(final NitfReader nitfReader,
                                     final int symbolLength,
-                                    final EnumSet<ParseOption> parseOptions,
+                                    final Set<ParseOption> parseOptions,
                                     final NitfSymbolSegment symbolSegment) throws ParseException {
 
         reader = nitfReader;

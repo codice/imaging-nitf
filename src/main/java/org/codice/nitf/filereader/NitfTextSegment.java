@@ -16,7 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.EnumSet;
+import java.util.Set;
 
 public class NitfTextSegment extends AbstractNitfSegment {
 
@@ -34,7 +34,7 @@ public class NitfTextSegment extends AbstractNitfSegment {
 
     public final void parse(final NitfReader nitfReader,
                             final int textLength,
-                            final EnumSet<ParseOption> parseOptions) throws ParseException {
+                            final Set<ParseOption> parseOptions) throws ParseException {
         new NitfTextSegmentParser(nitfReader, textLength, parseOptions, this);
     }
 

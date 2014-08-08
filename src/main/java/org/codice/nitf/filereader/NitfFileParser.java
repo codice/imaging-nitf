@@ -18,8 +18,8 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 class NitfFileParser extends AbstractNitfSegmentParser {
 
@@ -89,10 +89,10 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
     private NitfFile nitf = null;
-    private EnumSet<ParseOption> parseOptionSet = null;
+    private Set<ParseOption> parseOptionSet = null;
 
     NitfFileParser(final InputStream nitfInputStream,
-                          final EnumSet<ParseOption> parseOptions,
+                          final Set<ParseOption> parseOptions,
                           final NitfFile nitfFile) throws ParseException {
         nitf = nitfFile;
         parseOptionSet = parseOptions;
