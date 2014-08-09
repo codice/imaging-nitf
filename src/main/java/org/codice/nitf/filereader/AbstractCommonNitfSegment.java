@@ -14,7 +14,7 @@
  */
 package org.codice.nitf.filereader;
 
-public class AbstractCommonNitfSegment extends AbstractNitfSegment {
+public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment {
 
     private String segmentIdentifier = null;
     private NitfSecurityMetadata securityMetadata = null;

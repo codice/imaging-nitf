@@ -14,7 +14,7 @@
  */
 package org.codice.nitf.filereader;
 
-public class AbstractNitfSubSegment extends AbstractCommonNitfSegment {
+public abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment {
 
     private int extendedHeaderDataOverflow = 0;
     private int segmentAttachmentLevel = 0;
