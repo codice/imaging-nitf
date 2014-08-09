@@ -14,16 +14,21 @@
  **/
 package org.codice.nitf.filereader;
 
+import java.text.ParseException;
+
 public class RGBColour {
 
     private byte red = 0x00;
     private byte green = 0x00;
     private byte blue = 0x00;
 
+    private static final int REQUIRED_DATA_LENGTH = 3;
     private static final int UNSIGNED_BYTE_MASK = 0xFF;
 
-    public RGBColour(final byte[] rgb) {
-        // TODO: check array length = 3;
+    public RGBColour(final byte[] rgb) throws ParseException {
+        if (rgb.length != REQUIRED_DATA_LENGTH) {
+            throw new ParseException("Incorrect number of bytes in RGB constructor array", 0);
+        }
         red = rgb[0];
         green = rgb[1];
         blue = rgb[2];
