@@ -16,7 +16,7 @@ package org.codice.nitf.filereader;
 
 import java.text.ParseException;
 
-public class NitfDataExtensionSegment extends AbstractNitfSegment {
+public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
 
     private String desIdentifier = null;
     private int desVersion = -1;
@@ -30,28 +30,12 @@ public class NitfDataExtensionSegment extends AbstractNitfSegment {
         new NitfDataExtensionSegmentParser(nitfReader, desLength, this);
     }
 
-    public final void setIdentifier(final String identifier) {
-        desIdentifier = identifier;
-    }
-
-    public final String getIdentifier() {
-        return desIdentifier;
-    }
-
     public final void setDESVersion(final int version) {
         desVersion = version;
     }
 
     public final int getDESVersion() {
         return desVersion;
-    }
-
-    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
-        securityMetadata = nitfSecurityMetadata;
-    }
-
-    public final NitfSecurityMetadata getSecurityMetadata() {
-        return securityMetadata;
     }
 
     public final void setData(final String data) {
