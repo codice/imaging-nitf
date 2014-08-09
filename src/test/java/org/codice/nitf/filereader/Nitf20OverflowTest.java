@@ -100,7 +100,25 @@ public class Nitf20OverflowTest {
         assertEquals(0, imageSegment1.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment1.getImageMagnification());
         assertEquals(1.0, imageSegment1.getImageMagnificationAsDouble(), 0.00000001);
+        assertEquals(3, imageSegment1.getUserDefinedHeaderOverflow());
         assertEquals(4, imageSegment1.getExtendedHeaderDataOverflow());
+
+        NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
+        assertNotNull(symbolSegment1);
+        // TODO: check the rest of this
+        assertEquals(5, symbolSegment1.getExtendedHeaderDataOverflow());
+
+        NitfLabelSegment labelSegment1 = file.getLabelSegment(1);
+        assertNotNull(labelSegment1);
+        // TODO: check the rest of this
+        assertEquals(6, labelSegment1.getExtendedHeaderDataOverflow());
+
+        NitfTextSegment textSegment1 = file.getTextSegment(1);
+        assertNotNull(textSegment1);
+        // TODO: check the rest of this
+        assertEquals(7, textSegment1.getExtendedHeaderDataOverflow());
+
+        // TODO: DES segments.
 
         is.close();
     }

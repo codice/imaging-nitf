@@ -52,6 +52,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     private int imageDisplayLevel = 0;
     private int imageLocationRow = 0;
     private int imageLocationColumn = 0;
+    private int imageUserDefinedHeaderOverflow = 0;
     private String imageMagnification = null;
     private byte[] data = null;
 
@@ -972,6 +973,30 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
 
     public final ImageCoordinates getImageCoordinates() {
         return imageCoordinates;
+    }
+
+    /**
+        Set the user defined header overflow (UDHOFL) for the image.
+        <p>
+        This is the (1-base) index of the TRE into which user defined header data
+        overflows.
+
+        @param overflow the user defined header overflow index
+    */
+    public final void setUserDefinedHeaderOverflow(final int overflow) {
+        imageUserDefinedHeaderOverflow = overflow;
+    }
+
+    /**
+        Return the user defined header overflow (UDHOFL) for the image.
+        <p>
+        This is the (1-base) index of the TRE into which user defined header data
+        overflows.
+
+        @return the user defined header overflow index
+    */
+    public final int getUserDefinedHeaderOverflow() {
+        return imageUserDefinedHeaderOverflow;
     }
 
     public final void setImageData(final byte[] imageData) {

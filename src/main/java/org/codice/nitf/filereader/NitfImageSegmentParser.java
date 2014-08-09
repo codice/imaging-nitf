@@ -309,7 +309,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDOFL() throws ParseException {
-        userDefinedOverflow = reader.readBytesAsInteger(UDOFL_LENGTH);
+        segment.setUserDefinedHeaderOverflow(reader.readBytesAsInteger(UDOFL_LENGTH));
     }
 
     private void readUDID() throws ParseException {
