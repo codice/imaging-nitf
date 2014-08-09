@@ -18,8 +18,6 @@ import java.text.ParseException;
 
 class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfDataExtension = 0;
-    private String desOverflowedHeaderType = null;
-    private int desItemOverflowed = 0;
     private int userDefinedSubheaderLength = 0;
     private String userDefinedSubheaderField = null;
 
@@ -70,11 +68,11 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readDESOFLW() throws ParseException {
-        desOverflowedHeaderType = reader.readTrimmedBytes(DESOFLW_LENGTH);
+        segment.setOverflowedHeaderType(reader.readTrimmedBytes(DESOFLW_LENGTH));
     }
 
     private void readDESITEM() throws ParseException {
-        desItemOverflowed = reader.readBytesAsInteger(DESITEM_LENGTH);
+        segment.setItemOverflowed(reader.readBytesAsInteger(DESITEM_LENGTH));
     }
 
     private void readDSSHL() throws ParseException {
@@ -82,13 +80,13 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readDSSHF() throws ParseException {
-        userDefinedSubheaderField = reader.readBytes(userDefinedSubheaderLength);
+        segment.setUserDefinedSubheaderField(reader.readBytes(userDefinedSubheaderLength));
     }
 
     private boolean isTreOverflow() {
         if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
-            return (segment.getIdentifier().trim().equals(REGISTERED_EXTENSIONS)
-                    || segment.getIdentifier().trim().equals(CONTROLLED_EXTENSIONS));
+            return segment.getIdentifier().trim().equals(REGISTERED_EXTENSIONS)
+                || segment.getIdentifier().trim().equals(CONTROLLED_EXTENSIONS);
         } else {
             return segment.getIdentifier().trim().equals(TRE_OVERFLOW);
         }
@@ -100,7 +98,7 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
             TreCollection overflowTres = treParser.parse(reader, lengthOfDataExtension);
             segment.mergeTREs(overflowTres);
         } else {
-            segment.setData(reader.readBytes(lengthOfDataExtension));
+            segment.setData(reader.readBytesRaw(lengthOfDataExtension));
         }
     }
 }

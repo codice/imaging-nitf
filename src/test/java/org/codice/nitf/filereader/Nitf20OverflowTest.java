@@ -164,7 +164,54 @@ public class Nitf20OverflowTest {
         assertEquals("Example of a SideArm text file.  Marc Smelser\r\nCreated this NITFText file 07/07/95", textSegment.getTextData());
         assertEquals(7, textSegment.getExtendedHeaderDataOverflow());
 
-        // TODO: DES segments.
+        NitfDataExtensionSegment des1 = file.getDataExtensionSegment(1);
+        assertNotNull(des1);
+        assertEquals("Registered Extensions    ", des1.getIdentifier());
+        assertEquals(99, des1.getDESVersion());
+        assertEquals("UDHD", des1.getOverflowedHeaderType());
+        assertEquals(0, des1.getItemOverflowed());
+
+        NitfDataExtensionSegment des2 = file.getDataExtensionSegment(2);
+        assertNotNull(des2);
+        assertEquals("Controlled Extensions    ", des2.getIdentifier());
+        assertEquals(99, des2.getDESVersion());
+        assertEquals("UDHD", des1.getOverflowedHeaderType());
+        assertEquals(0, des1.getItemOverflowed());
+
+        NitfDataExtensionSegment des3 = file.getDataExtensionSegment(3);
+        assertNotNull(des3);
+        assertEquals("Registered Extensions    ", des3.getIdentifier());
+        assertEquals(99, des3.getDESVersion());
+        assertEquals("UDID", des3.getOverflowedHeaderType());
+        assertEquals(1, des3.getItemOverflowed());
+
+        NitfDataExtensionSegment des4 = file.getDataExtensionSegment(4);
+        assertNotNull(des4);
+        assertEquals("Controlled Extensions    ", des4.getIdentifier());
+        assertEquals(99, des4.getDESVersion());
+        assertEquals("IXSHD", des4.getOverflowedHeaderType());
+        assertEquals(1, des4.getItemOverflowed());
+
+        NitfDataExtensionSegment des5 = file.getDataExtensionSegment(5);
+        assertNotNull(des5);
+        assertEquals("Controlled Extensions    ", des5.getIdentifier());
+        assertEquals(99, des5.getDESVersion());
+        assertEquals("SXSHD", des5.getOverflowedHeaderType());
+        assertEquals(1, des5.getItemOverflowed());
+
+        NitfDataExtensionSegment des6 = file.getDataExtensionSegment(6);
+        assertNotNull(des6);
+        assertEquals("Controlled Extensions    ", des6.getIdentifier());
+        assertEquals(99, des6.getDESVersion());
+        assertEquals("LXSHD", des6.getOverflowedHeaderType());
+        assertEquals(1, des6.getItemOverflowed());
+
+        NitfDataExtensionSegment des7 = file.getDataExtensionSegment(7);
+        assertNotNull(des7);
+        assertEquals("Controlled Extensions    ", des7.getIdentifier());
+        assertEquals(99, des7.getDESVersion());
+        assertEquals("TXSHD", des7.getOverflowedHeaderType());
+        assertEquals(1, des7.getItemOverflowed());
 
         is.close();
     }
