@@ -37,11 +37,9 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     private PixelJustification pixelJustification = PixelJustification.UNKNOWN;
     private ImageCoordinatesRepresentation imageCoordinatesRepresentation = ImageCoordinatesRepresentation.UNKNOWN;
     private ImageCoordinates imageCoordinates = null;
-    private int numImageComments;
     private List<String> imageComments = new ArrayList<String>();
     private ImageCompression imageCompression = ImageCompression.UNKNOWN;
     private String compressionRate = null;
-    private int numBands = 0;
     private List<NitfImageBand> imageBands = new ArrayList<NitfImageBand>();
     private ImageMode imageMode = ImageMode.UNKNOWN;
     private int numBlocksPerRow = 0;
