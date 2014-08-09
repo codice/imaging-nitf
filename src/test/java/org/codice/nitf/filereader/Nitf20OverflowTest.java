@@ -105,18 +105,64 @@ public class Nitf20OverflowTest {
 
         NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
         assertNotNull(symbolSegment1);
-        // TODO: check the rest of this
+        assertEquals("Text", symbolSegment1.getIdentifier());
+        assertEquals("", symbolSegment1.getSymbolName());
+        assertUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
+        assertEquals("      ", symbolSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
+        assertEquals(SymbolType.CGM, symbolSegment1.getSymbolType());
+        assertEquals(SymbolColour.UNKNOWN, symbolSegment1.getSymbolColour());
+        assertEquals(0, symbolSegment1.getNumberOfLinesPerSymbol());
+        assertEquals(0, symbolSegment1.getNumberOfPixelsPerLine());
+        assertEquals(0, symbolSegment1.getLineWidth());
+        assertEquals(0, symbolSegment1.getNumberOfBitsPerPixel());
+        assertEquals(2, symbolSegment1.getSymbolDisplayLevel());
+        assertEquals(0, symbolSegment1.getAttachmentLevel());
+        assertEquals(20, symbolSegment1.getSymbolLocationRow());
+        assertEquals(20, symbolSegment1.getSymbolLocationColumn());
+        assertEquals(0, symbolSegment1.getSymbolLocation2Row());
+        assertEquals(0, symbolSegment1.getSymbolLocation2Column());
+        assertEquals("000000", symbolSegment1.getSymbolNumber());
+        assertEquals(0, symbolSegment1.getSymbolRotation());
+        assertEquals(210, symbolSegment1.getSymbolData().length);
         assertEquals(5, symbolSegment1.getExtendedHeaderDataOverflow());
 
         NitfLabelSegment labelSegment1 = file.getLabelSegment(1);
         assertNotNull(labelSegment1);
-        // TODO: check the rest of this
+        assertEquals("label", labelSegment1.getIdentifier());
+        assertNotNull(labelSegment1.getSecurityMetadata());
+        assertEquals(NitfSecurityClassification.UNCLASSIFIED, labelSegment1.getSecurityMetadata().getSecurityClassification());
+        assertNull(labelSegment1.getSecurityMetadata().getSecurityClassificationSystem());
+        assertEquals("", labelSegment1.getSecurityMetadata().getCodewords());
+        assertEquals("Control and Handling", labelSegment1.getSecurityMetadata().getControlAndHandling());
+        assertEquals("Releasing Instructions", labelSegment1.getSecurityMetadata().getReleaseInstructions());
+        assertNull(labelSegment1.getSecurityMetadata().getDeclassificationType());
+        assertNull(labelSegment1.getSecurityMetadata().getDeclassificationDate());
+        assertNull(labelSegment1.getSecurityMetadata().getDeclassificationExemption());
+        assertNull(labelSegment1.getSecurityMetadata().getDowngrade());
+        assertNull(labelSegment1.getSecurityMetadata().getDowngradeDate());
+        assertNull(labelSegment1.getSecurityMetadata().getClassificationText());
+        assertNull(labelSegment1.getSecurityMetadata().getClassificationAuthorityType());
+        assertEquals("Classification", labelSegment1.getSecurityMetadata().getClassificationAuthority());
+        assertNull(labelSegment1.getSecurityMetadata().getClassificationReason());
+        assertEquals("0", labelSegment1.getSecurityMetadata().getSecurityControlNumber());
+        assertEquals("999999", labelSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
+        assertEquals(40, labelSegment1.getLabelLocationRow());
+        assertEquals(20, labelSegment1.getLabelLocationColumn());
+        assertEquals(12, labelSegment1.getLabelCellWidth());
+        assertEquals(25, labelSegment1.getLabelCellHeight());
+        assertEquals(8, labelSegment1.getLabelDisplayLevel());
+        assertEquals(0, labelSegment1.getAttachmentLevel());
+        assertEquals("This is a label on Lenna in an \"OverflowTestFile\"!", labelSegment1.getLabelData());
         assertEquals(6, labelSegment1.getExtendedHeaderDataOverflow());
 
-        NitfTextSegment textSegment1 = file.getTextSegment(1);
-        assertNotNull(textSegment1);
-        // TODO: check the rest of this
-        assertEquals(7, textSegment1.getExtendedHeaderDataOverflow());
+        NitfTextSegment textSegment = file.getTextSegment(1);
+        assertNotNull(textSegment);
+        assertEquals("Text ID   ", textSegment.getIdentifier());
+        assertEquals(0, textSegment.getAttachmentLevel());
+        assertEquals("Text Title", textSegment.getTextTitle());
+        assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
+        assertEquals("Example of a SideArm text file.  Marc Smelser\r\nCreated this NITFText file 07/07/95", textSegment.getTextData());
+        assertEquals(7, textSegment.getExtendedHeaderDataOverflow());
 
         // TODO: DES segments.
 
