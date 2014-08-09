@@ -88,7 +88,7 @@ public enum SymbolType {
         Return the text equivalent for a symbol type.
         <p>
         This is intended for debug output and output writing, and is not usually
-        neccessary for other purposes.
+        necessary for other purposes.
 
         @return the single character text equivalent for a symbol type.
     */
