@@ -18,9 +18,7 @@ import java.text.ParseException;
 
 public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
 
-    private String desIdentifier = null;
     private int desVersion = -1;
-    private NitfSecurityMetadata securityMetadata = null;
     private String desData = null;
 
     public NitfDataExtensionSegment() {
