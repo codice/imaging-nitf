@@ -21,7 +21,7 @@ public class NitfSymbolSegment extends AbstractNitfSegment {
 
     private String symbolIdentifier = null;
     private String symbolName = null;
-    private String symbolType = null;
+    private SymbolType symbolType = null;
     private int numberOfLinesPerSymbol = 0;
     private int numberofPixelsPerLine = 0;
     private int lineWidth = 0;
@@ -71,11 +71,11 @@ public class NitfSymbolSegment extends AbstractNitfSegment {
         return securityMetadata;
     }
 
-    public final void setSymbolType(final String type) {
+    public final void setSymbolType(final SymbolType type) {
         symbolType = type;
     }
 
-    public final String getSymbolType() {
+    public final SymbolType getSymbolType() {
         return symbolType;
     }
 

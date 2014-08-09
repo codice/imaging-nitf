@@ -100,8 +100,8 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSTYPE() throws ParseException {
-        // TODO: consider making this an enum
-        segment.setSymbolType(reader.readTrimmedBytes(STYPE_LENGTH));
+        String stype = reader.readTrimmedBytes(STYPE_LENGTH);
+        segment.setSymbolType(SymbolType.getEnumValue(stype));
     }
 
     private void readNLIPS() throws ParseException {

@@ -312,7 +312,7 @@ public class Nitf20HeaderTest {
         assertUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
         assertEquals("999998", symbolSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals("This symbol will never need downgrading.", symbolSegment1.getSecurityMetadata().getDowngradeEvent());
-        assertEquals("B", symbolSegment1.getSymbolType());
+        assertEquals(SymbolType.BITMAP, symbolSegment1.getSymbolType());
         assertEquals(SymbolColour.ZERO_TRANSPARENT_ONE_BLACK, symbolSegment1.getSymbolColour());
         assertEquals(7, symbolSegment1.getNumberOfLinesPerSymbol());
         assertEquals(7, symbolSegment1.getNumberOfPixelsPerLine());
@@ -335,7 +335,7 @@ public class Nitf20HeaderTest {
         assertUnclasAndEmpty(symbolSegment2.getSecurityMetadata());
         assertEquals("999998", symbolSegment2.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals("This symbol will never need downgrading.", symbolSegment2.getSecurityMetadata().getDowngradeEvent());
-        assertEquals("B", symbolSegment2.getSymbolType());
+        assertEquals(SymbolType.BITMAP, symbolSegment2.getSymbolType());
         assertEquals(SymbolColour.ZERO_TRANSPARENT_ONE_BLACK, symbolSegment2.getSymbolColour());
         assertEquals(18, symbolSegment2.getNumberOfLinesPerSymbol());
         assertEquals(35, symbolSegment2.getNumberOfPixelsPerLine());
@@ -358,7 +358,7 @@ public class Nitf20HeaderTest {
         assertUnclasAndEmpty(symbolSegment3.getSecurityMetadata());
         assertEquals("999998", symbolSegment3.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals("This symbol will never need downgrading.", symbolSegment3.getSecurityMetadata().getDowngradeEvent());
-        assertEquals("B", symbolSegment3.getSymbolType());
+        assertEquals(SymbolType.BITMAP, symbolSegment3.getSymbolType());
         assertEquals(SymbolColour.ZERO_TRANSPARENT_ONE_BLACK, symbolSegment3.getSymbolColour());
         assertEquals(18, symbolSegment3.getNumberOfLinesPerSymbol());
         assertEquals(35, symbolSegment3.getNumberOfPixelsPerLine());
@@ -381,7 +381,7 @@ public class Nitf20HeaderTest {
         assertUnclasAndEmpty(symbolSegment4.getSecurityMetadata());
         assertEquals("999998", symbolSegment4.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals("This symbol will never need downgrading.", symbolSegment4.getSecurityMetadata().getDowngradeEvent());
-        assertEquals("B", symbolSegment4.getSymbolType());
+        assertEquals(SymbolType.BITMAP, symbolSegment4.getSymbolType());
         assertEquals(SymbolColour.ZERO_TRANSPARENT_ONE_BLACK, symbolSegment4.getSymbolColour());
         assertEquals(17, symbolSegment4.getNumberOfLinesPerSymbol());
         assertEquals(35, symbolSegment4.getNumberOfPixelsPerLine());
