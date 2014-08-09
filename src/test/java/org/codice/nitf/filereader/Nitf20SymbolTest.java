@@ -63,7 +63,7 @@ public class Nitf20SymbolTest {
 
         NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
         assertNotNull(symbolSegment1);
-        assertEquals("0000000001", symbolSegment1.getSymbolIdentifier());
+        assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());
         assertUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
         assertEquals("999998", symbolSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
@@ -75,7 +75,7 @@ public class Nitf20SymbolTest {
         assertEquals(0, symbolSegment1.getLineWidth());
         assertEquals(0, symbolSegment1.getNumberOfBitsPerPixel());
         assertEquals(1, symbolSegment1.getSymbolDisplayLevel());
-        assertEquals(0, symbolSegment1.getSymbolAttachmentLevel());
+        assertEquals(0, symbolSegment1.getAttachmentLevel());
         assertEquals(0, symbolSegment1.getSymbolLocationRow());
         assertEquals(0, symbolSegment1.getSymbolLocationColumn());
         assertEquals(0, symbolSegment1.getSymbolLocation2Row());

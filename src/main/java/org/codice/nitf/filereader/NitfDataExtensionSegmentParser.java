@@ -62,7 +62,7 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readDESID() throws ParseException {
-        segment.setDESIdentifier(reader.readBytes(DESID_LENGTH));
+        segment.setIdentifier(reader.readBytes(DESID_LENGTH));
     }
 
     private void readDESVER() throws ParseException {
@@ -87,10 +87,10 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
 
     private boolean isTreOverflow() {
         if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
-            return (segment.getDESIdentifier().trim().equals(REGISTERED_EXTENSIONS)
-                    || segment.getDESIdentifier().trim().equals(CONTROLLED_EXTENSIONS));
+            return (segment.getIdentifier().trim().equals(REGISTERED_EXTENSIONS)
+                    || segment.getIdentifier().trim().equals(CONTROLLED_EXTENSIONS));
         } else {
-            return segment.getDESIdentifier().trim().equals(TRE_OVERFLOW);
+            return segment.getIdentifier().trim().equals(TRE_OVERFLOW);
         }
     }
 

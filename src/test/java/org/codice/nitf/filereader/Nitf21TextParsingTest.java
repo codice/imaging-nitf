@@ -63,8 +63,8 @@ public class Nitf21TextParsingTest {
 
     private void assertTextSegmentMetadataIsAsExpected(NitfTextSegment textSegment) {
         assertNotNull(textSegment);
-        assertEquals(" PIDF T", textSegment.getTextIdentifier());
-        assertEquals(1, textSegment.getTextAttachmentLevel());
+        assertEquals(" PIDF T", textSegment.getIdentifier());
+        assertEquals(1, textSegment.getAttachmentLevel());
         assertEquals("1998-02-17 10:19:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
         assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());

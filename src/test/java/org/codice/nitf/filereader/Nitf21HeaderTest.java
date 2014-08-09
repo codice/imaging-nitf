@@ -63,7 +63,7 @@ public class Nitf21HeaderTest {
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
-        assertEquals("Missing ID", segment1.getImageIdentifier1());
+        assertEquals("Missing ID", segment1.getIdentifier());
         assertEquals("1996-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
@@ -106,7 +106,7 @@ public class Nitf21HeaderTest {
         assertEquals(18, segment1.getNumberOfPixelsPerBlockVertical());
         assertEquals(1, segment1.getNumberOfBitsPerPixelPerBand());
         assertEquals(1, segment1.getImageDisplayLevel());
-        assertEquals(0, segment1.getImageAttachmentLevel());
+        assertEquals(0, segment1.getAttachmentLevel());
         assertEquals(100, segment1.getImageLocationRow());
         assertEquals(100, segment1.getImageLocationColumn());
         assertEquals("1.0 ", segment1.getImageMagnification());
@@ -146,7 +146,7 @@ public class Nitf21HeaderTest {
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
-        assertEquals("Missing ID", segment1.getImageIdentifier1());
+        assertEquals("Missing ID", segment1.getIdentifier());
         assertEquals("1996-12-17 10:26:30", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
@@ -208,7 +208,7 @@ public class Nitf21HeaderTest {
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
-        assertEquals("0000000001", segment1.getImageIdentifier1());
+        assertEquals("0000000001", segment1.getIdentifier());
         assertEquals("1996-12-17 16:00:28", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("This is an unclassified image in an unclassified NITF file Q3.", segment1.getImageIdentifier2());
@@ -270,7 +270,7 @@ public class Nitf21HeaderTest {
         // Checks for ImageSegment.
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
-        assertEquals("GRT BOSTON", segment1.getImageIdentifier1());
+        assertEquals("GRT BOSTON", segment1.getIdentifier());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
         assertEquals("               US", segment1.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON Located at 256,256, display level 4 first image file.", segment1.getImageIdentifier2());
@@ -301,7 +301,7 @@ public class Nitf21HeaderTest {
 
         NitfImageSegment segment2 = reader.getImageSegment(2);
         assertNotNull(segment2);
-        assertEquals("GRT BOSTON", segment2.getImageIdentifier1());
+        assertEquals("GRT BOSTON", segment2.getIdentifier());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment2.getImageDateTime()));
         assertEquals("               US", segment2.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,256, display level 2, second image file.", segment2.getImageIdentifier2());
@@ -332,7 +332,7 @@ public class Nitf21HeaderTest {
 
         NitfImageSegment segment3 = reader.getImageSegment(3);
         assertNotNull(segment3);
-        assertEquals("GRT BOSTON", segment3.getImageIdentifier1());
+        assertEquals("GRT BOSTON", segment3.getIdentifier());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment3.getImageDateTime()));
         assertEquals("               US", segment3.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 256,000, display level 3, third image file.", segment3.getImageIdentifier2());
@@ -363,7 +363,7 @@ public class Nitf21HeaderTest {
 
         NitfImageSegment segment4 = reader.getImageSegment(4);
         assertNotNull(segment4);
-        assertEquals("GRT BOSTON", segment4.getImageIdentifier1());
+        assertEquals("GRT BOSTON", segment4.getIdentifier());
         assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment4.getImageDateTime()));
         assertEquals("               US", segment4.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,000, display level 1, fourth image file.", segment4.getImageIdentifier2());
@@ -413,8 +413,8 @@ public class Nitf21HeaderTest {
 
         NitfTextSegment textSegment = reader.getTextSegment(1);
         assertNotNull(textSegment);
-        assertEquals(" PIDF T", textSegment.getTextIdentifier());
-        assertEquals(1, textSegment.getTextAttachmentLevel());
+        assertEquals(" PIDF T", textSegment.getIdentifier());
+        assertEquals(1, textSegment.getAttachmentLevel());
         assertEquals("1998-02-17 10:19:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
         assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
@@ -488,11 +488,11 @@ public class Nitf21HeaderTest {
 
         NitfGraphicSegment segment = reader.getGraphicSegment(1);
         assertNotNull(segment);
-        assertEquals("POLYGONSET", segment.getGraphicIdentifier());
+        assertEquals("POLYGONSET", segment.getIdentifier());
         assertEquals("POLYGON_SET", segment.getGraphicName());
         assertUnclasAndEmpty(segment.getSecurityMetadata());
         assertEquals(1, segment.getGraphicDisplayLevel());
-        assertEquals(0, segment.getGraphicAttachmentLevel());
+        assertEquals(0, segment.getAttachmentLevel());
         assertEquals(1100, segment.getGraphicLocationRow());
         assertEquals(100, segment.getGraphicLocationColumn());
         assertEquals(175, segment.getBoundingBox1Row());
@@ -572,7 +572,7 @@ public class Nitf21HeaderTest {
 
         NitfImageSegment image = reader.getImageSegmentZeroBase(0);
         assertNotNull(image);
-        assertEquals("Missing ID", image.getImageIdentifier1());
+        assertEquals("Missing ID", image.getIdentifier());
         assertEquals("1998-02-10 14:01:44", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(image.getImageDateTime()));
         assertEquals("", image.getImageTargetId());
         assertEquals("- BASE IMAGE -", image.getImageIdentifier2());
@@ -648,7 +648,7 @@ public class Nitf21HeaderTest {
 
         NitfDataExtensionSegment des = reader.getDataExtensionSegment(1);
         assertNotNull(des);
-        assertEquals("LIDARA DES", des.getDESIdentifier().trim());
+        assertEquals("LIDARA DES", des.getIdentifier().trim());
         assertEquals(1, des.getDESVersion());
         assertUnclasAndEmpty(des.getSecurityMetadata());
     }
@@ -697,7 +697,7 @@ public class Nitf21HeaderTest {
         // Checks for ImageSegment.
         NitfImageSegment imageSegment = reader.getImageSegment(1);
         assertNotNull(imageSegment);
-        assertEquals("Mosaic", imageSegment.getImageIdentifier1());
+        assertEquals("Mosaic", imageSegment.getIdentifier());
         assertEquals("2009-10-16 05:20:40", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment.getImageDateTime()));
         assertEquals("", imageSegment.getImageTargetId());
         assertEquals("Versions: 6.0.6.1; 40; Mission: 0000 001 141009 001, AOI ID: 6/21/2", imageSegment.getImageIdentifier2());
@@ -750,11 +750,11 @@ public class Nitf21HeaderTest {
 
         NitfGraphicSegment segment1 = reader.getGraphicSegment(1);
         assertNotNull(segment1);
-        assertEquals("30", segment1.getGraphicIdentifier());
+        assertEquals("30", segment1.getIdentifier());
         assertEquals("", segment1.getGraphicName());
         assertUnclasAndEmpty(segment1.getSecurityMetadata());
         assertEquals(2, segment1.getGraphicDisplayLevel());
-        assertEquals(0, segment1.getGraphicAttachmentLevel());
+        assertEquals(0, segment1.getAttachmentLevel());
         assertEquals(326, segment1.getGraphicLocationRow());
         assertEquals(713, segment1.getGraphicLocationColumn());
         assertEquals(326, segment1.getBoundingBox1Row());
@@ -764,11 +764,11 @@ public class Nitf21HeaderTest {
         assertEquals(788, segment1.getBoundingBox2Column());
         NitfGraphicSegment segment2 = reader.getGraphicSegment(2);
         assertNotNull(segment2);
-        assertEquals("35", segment2.getGraphicIdentifier());
+        assertEquals("35", segment2.getIdentifier());
         assertEquals("", segment2.getGraphicName());
         assertUnclasAndEmpty(segment2.getSecurityMetadata());
         assertEquals(3, segment2.getGraphicDisplayLevel());
-        assertEquals(0, segment2.getGraphicAttachmentLevel());
+        assertEquals(0, segment2.getAttachmentLevel());
         assertEquals(275, segment2.getGraphicLocationRow());
         assertEquals(762, segment2.getGraphicLocationColumn());
         assertEquals(275, segment2.getBoundingBox1Row());

@@ -20,11 +20,8 @@ import java.util.Set;
 
 public class NitfTextSegment extends AbstractNitfSubSegment {
 
-    private String textIdentifier = null;
-    private int textAttachmentLevel = 0;
     private Date textDateTime = null;
     private String textTitle = null;
-    private NitfSecurityMetadata securityMetadata = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
 
     private String data = null;
@@ -36,22 +33,6 @@ public class NitfTextSegment extends AbstractNitfSubSegment {
                             final int textLength,
                             final Set<ParseOption> parseOptions) throws ParseException {
         new NitfTextSegmentParser(nitfReader, textLength, parseOptions, this);
-    }
-
-    public final void setTextIdentifier(final String identifier) {
-        textIdentifier = identifier;
-    }
-
-    public final String getTextIdentifier() {
-        return textIdentifier;
-    }
-
-    public final void setTextAttachmentLevel(final int attachmentLevel) {
-        textAttachmentLevel = attachmentLevel;
-    }
-
-    public final int getTextAttachmentLevel() {
-        return textAttachmentLevel;
     }
 
     public final void setTextDateTime(final Date dateTime) {
@@ -68,14 +49,6 @@ public class NitfTextSegment extends AbstractNitfSubSegment {
 
     public final String getTextTitle() {
         return textTitle;
-    }
-
-    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
-        securityMetadata = nitfSecurityMetadata;
-    }
-
-    public final NitfSecurityMetadata getSecurityMetadata() {
-        return securityMetadata;
     }
 
     public final void setTextFormat(final TextFormat format) {

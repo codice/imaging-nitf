@@ -19,7 +19,6 @@ import java.util.Set;
 
 public class NitfSymbolSegment extends AbstractNitfSubSegment {
 
-    private String symbolIdentifier = null;
     private String symbolName = null;
     private SymbolType symbolType = null;
     private int numberOfLinesPerSymbol = 0;
@@ -27,7 +26,6 @@ public class NitfSymbolSegment extends AbstractNitfSubSegment {
     private int lineWidth = 0;
     private int numberOfBitsPerPixel = 0;
     private int symbolDisplayLevel = 0;
-    private int symbolAttachmentLevel = 0;
     private int symbolLocationRow = 0;
     private int symbolLocationColumn = 0;
     private int symbolLocation2Row = 0;
@@ -38,21 +36,11 @@ public class NitfSymbolSegment extends AbstractNitfSubSegment {
 
     private byte[] data = null;
 
-    private NitfSecurityMetadata securityMetadata = null;
-
     public NitfSymbolSegment() {
     }
 
     public final void parse(final NitfReader nitfReader, final int symbolLength, final Set<ParseOption> parseOptions) throws ParseException {
         new NitfSymbolSegmentParser(nitfReader, symbolLength, parseOptions, this);
-    }
-
-    public final void setSymbolIdentifier(final String identifier) {
-        symbolIdentifier = identifier;
-    }
-
-    public final String getSymbolIdentifier() {
-        return symbolIdentifier;
     }
 
     public final void setSymbolName(final String name) {
@@ -61,14 +49,6 @@ public class NitfSymbolSegment extends AbstractNitfSubSegment {
 
     public final String getSymbolName() {
         return symbolName;
-    }
-
-    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
-        securityMetadata = nitfSecurityMetadata;
-    }
-
-    public final NitfSecurityMetadata getSecurityMetadata() {
-        return securityMetadata;
     }
 
     public final void setSymbolType(final SymbolType type) {
@@ -125,14 +105,6 @@ public class NitfSymbolSegment extends AbstractNitfSubSegment {
 
     public final int getSymbolDisplayLevel() {
         return symbolDisplayLevel;
-    }
-
-    public final void setSymbolAttachmentLevel(final int attachmentLevel) {
-        symbolAttachmentLevel = attachmentLevel;
-    }
-
-    public final int getSymbolAttachmentLevel() {
-        return symbolAttachmentLevel;
     }
 
     public final void setSymbolLocationRow(final int rowNumber) {

@@ -17,6 +17,9 @@ package org.codice.nitf.filereader;
 public class AbstractNitfSubSegment extends AbstractNitfSegment {
 
     private int extendedHeaderDataOverflow = 0;
+    private String segmentIdentifier = null;
+    private NitfSecurityMetadata securityMetadata = null;
+    private int segmentAttachmentLevel = 0;
 
     /**
         Set the extended subheader overflow index (IXSOFL/SXSOFL/LXSOFL/TXSOFL).
@@ -41,4 +44,75 @@ public class AbstractNitfSubSegment extends AbstractNitfSegment {
     public final int getExtendedHeaderDataOverflow() {
         return extendedHeaderDataOverflow;
     }
+
+    /**
+        Set the identifier (IID1/SID/LID/TEXTID) for the segment.
+        <p>
+        This field shall contain a valid alphanumeric identification code associated with the
+        segment. The valid codes are determined by the application.
+
+         @param identifier the identifier for the segment
+    */
+    public final void setIdentifier(final String identifier) {
+        segmentIdentifier = identifier;
+    }
+
+    /**
+        Return the identifier (IID1/SID/LID/TEXTID) for the segment.
+        <p>
+        This field shall contain a valid alphanumeric identification code associated with the
+        segment. The valid codes are determined by the application.
+
+        @return the identifier
+    */
+    public final String getIdentifier() {
+        return segmentIdentifier;
+    }
+
+    /**
+        Set the security metadata elements for the segment.
+
+        See NitfSecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
+
+        @param nitfSecurityMetadata the security metadata values to set.
+    */
+    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
+        securityMetadata = nitfSecurityMetadata;
+    }
+
+    /**
+        Return the security metadata for the segment.
+
+        @return security metadata
+    */
+    public final NitfSecurityMetadata getSecurityMetadata() {
+        return securityMetadata;
+    }
+
+    /**
+        Set the attachment level for the segment.
+        <p>
+        The valid values for this are zero (not attached) or the display level
+        for an image, graphic, symbol or label (as appropriate to the NITF file type)
+        in the file.
+
+        @param attachmentLevel the attachment level
+    */
+    public final void setAttachmentLevel(final int attachmentLevel) {
+        segmentAttachmentLevel = attachmentLevel;
+    }
+
+    /**
+        Return the attachment level for the segment.
+        <p>
+        The valid values for this are zero (not attached) or the display level
+        for an image, graphic, symbol or label (as appropriate to the NITF file type)
+        in the file.
+
+        @return the attachment level
+    */
+    public final int getAttachmentLevel() {
+        return segmentAttachmentLevel;
+    }
+
 }

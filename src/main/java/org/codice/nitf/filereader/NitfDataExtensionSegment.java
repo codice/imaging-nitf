@@ -30,11 +30,11 @@ public class NitfDataExtensionSegment extends AbstractNitfSegment {
         new NitfDataExtensionSegmentParser(nitfReader, desLength, this);
     }
 
-    public final void setDESIdentifier(final String identifier) {
+    public final void setIdentifier(final String identifier) {
         desIdentifier = identifier;
     }
 
-    public final String getDESIdentifier() {
+    public final String getIdentifier() {
         return desIdentifier;
     }
 

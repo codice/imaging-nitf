@@ -67,11 +67,11 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     private void readTEXTID() throws ParseException {
         switch (reader.getFileType()) {
             case NITF_TWO_ZERO:
-                segment.setTextIdentifier(reader.readBytes(TEXTID20_LENGTH));
+                segment.setIdentifier(reader.readBytes(TEXTID20_LENGTH));
                 break;
             case NITF_TWO_ONE:
             case NSIF_ONE_ZERO:
-                segment.setTextIdentifier(reader.readBytes(TEXTID_LENGTH));
+                segment.setIdentifier(reader.readBytes(TEXTID_LENGTH));
                 break;
             case UNKNOWN:
             default:
@@ -81,7 +81,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
 
     private void readTXTALVL() throws ParseException {
         if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
-            segment.setTextAttachmentLevel(reader.readBytesAsInteger(TXTALVL_LENGTH));
+            segment.setAttachmentLevel(reader.readBytesAsInteger(TXTALVL_LENGTH));
         }
     }
 

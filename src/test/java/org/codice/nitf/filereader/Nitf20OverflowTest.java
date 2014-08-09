@@ -65,7 +65,7 @@ public class Nitf20OverflowTest {
 
         NitfImageSegment imageSegment1 = file.getImageSegment(1);
         assertNotNull(imageSegment1);
-        assertEquals("512 Lenna", imageSegment1.getImageIdentifier1());
+        assertEquals("512 Lenna", imageSegment1.getIdentifier());
         assertEquals("1993-03-25 15:25:59",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment1.getImageDateTime()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
         assertEquals("", imageSegment1.getImageTargetId());
@@ -95,7 +95,7 @@ public class Nitf20OverflowTest {
         assertEquals(512, imageSegment1.getNumberOfPixelsPerBlockVertical());
         assertEquals(8, imageSegment1.getNumberOfBitsPerPixelPerBand());
         assertEquals(1, imageSegment1.getImageDisplayLevel());
-        assertEquals(0, imageSegment1.getImageAttachmentLevel());
+        assertEquals(0, imageSegment1.getAttachmentLevel());
         assertEquals(0, imageSegment1.getImageLocationRow());
         assertEquals(0, imageSegment1.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment1.getImageMagnification());

@@ -52,7 +52,7 @@ public class Nitf21ImageParsingTest {
 
     private void assertImageSegmentMetadataIsAsExpected(NitfImageSegment imageSegment) {
         assertNotNull(imageSegment);
-        assertEquals("Missing ID", imageSegment.getImageIdentifier1());
+        assertEquals("Missing ID", imageSegment.getIdentifier());
         assertEquals("1996-12-17 10:26:30", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment.getImageDateTime()));
         assertEquals("", imageSegment.getImageTargetId());
         assertEquals("- BASE IMAGE -", imageSegment.getImageIdentifier2());

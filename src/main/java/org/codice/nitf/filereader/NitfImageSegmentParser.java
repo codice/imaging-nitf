@@ -155,7 +155,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readIID1() throws ParseException {
-        segment.setImageIdentifier1(reader.readTrimmedBytes(IID1_LENGTH));
+        segment.setIdentifier(reader.readTrimmedBytes(IID1_LENGTH));
     }
 
     private void readIDATIM() throws ParseException {
@@ -292,7 +292,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readIALVL() throws ParseException {
-        segment.setImageAttachmentLevel(reader.readBytesAsInteger(IALVL_LENGTH));
+        segment.setAttachmentLevel(reader.readBytesAsInteger(IALVL_LENGTH));
     }
 
     private void readILOC() throws ParseException {

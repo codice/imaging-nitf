@@ -19,10 +19,8 @@ import java.util.Set;
 
 public class NitfGraphicSegment extends AbstractNitfSubSegment {
 
-    private String graphicIdentifier = null;
     private String graphicName = null;
     private int graphicDisplayLevel = 0;
-    private int graphicAttachmentLevel = 0;
     private int graphicLocationRow = 0;
     private int graphicLocationColumn = 0;
     private int boundingBox1Row = 0;
@@ -32,21 +30,11 @@ public class NitfGraphicSegment extends AbstractNitfSubSegment {
     private int boundingBox2Column = 0;
     private byte[] data = null;
 
-    private NitfSecurityMetadata securityMetadata = null;
-
     public NitfGraphicSegment() {
     }
 
     public final void parse(final NitfReader nitfReader, final int graphicLength, final Set<ParseOption> parseOptions) throws ParseException {
         new NitfGraphicSegmentParser(nitfReader, graphicLength, parseOptions, this);
-    }
-
-    public final void setGraphicIdentifier(final String identifier) {
-        graphicIdentifier = identifier;
-    }
-
-    public final String getGraphicIdentifier() {
-        return graphicIdentifier;
     }
 
     public final void setGraphicName(final String name) {
@@ -57,28 +45,12 @@ public class NitfGraphicSegment extends AbstractNitfSubSegment {
         return graphicName;
     }
 
-    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
-        securityMetadata = nitfSecurityMetadata;
-    }
-
-    public final NitfSecurityMetadata getSecurityMetadata() {
-        return securityMetadata;
-    }
-
     public final void setGraphicDisplayLevel(final int displayLevel) {
         graphicDisplayLevel = displayLevel;
     }
 
     public final int getGraphicDisplayLevel() {
         return graphicDisplayLevel;
-    }
-
-    public final void setGraphicAttachmentLevel(final int attachmentLevel) {
-        graphicAttachmentLevel = attachmentLevel;
-    }
-
-    public final int getGraphicAttachmentLevel() {
-        return graphicAttachmentLevel;
     }
 
     public final void setGraphicLocationRow(final int rowNumber) {

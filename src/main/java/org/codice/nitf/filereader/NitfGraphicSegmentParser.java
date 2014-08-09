@@ -80,7 +80,7 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSID() throws ParseException {
-        segment.setGraphicIdentifier(reader.readTrimmedBytes(SID_LENGTH));
+        segment.setIdentifier(reader.readTrimmedBytes(SID_LENGTH));
     }
 
     private void readSNAME() throws ParseException {
@@ -100,7 +100,7 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSALVL() throws ParseException {
-        segment.setGraphicAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
+        segment.setAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
     }
 
     private void readSLOC() throws ParseException {

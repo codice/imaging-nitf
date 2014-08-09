@@ -27,7 +27,6 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples
     private String imageTargetId = null;
     private String imageIdentifier2 = null;
-    private NitfSecurityMetadata securityMetadata = null;
     private String imageSource = null;
     private long numRows = 0L;
     private long numColumns = 0L;
@@ -51,7 +50,6 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     private int numPixelsPerBlockVertical = 0;
     private int numBitsPerPixelPerBand = 0;
     private int imageDisplayLevel = 0;
-    private int imageAttachmentLevel = 0;
     private int imageLocationRow = 0;
     private int imageLocationColumn = 0;
     private String imageMagnification = null;
@@ -62,30 +60,6 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
 
     public final void parse(final NitfReader nitfReader, final long imageLength, final Set<ParseOption> parseOptions) throws ParseException {
         new NitfImageSegmentParser(nitfReader, imageLength, parseOptions, this);
-    }
-
-    /**
-        Set the first image identifier (IID1) for the image.
-        <p>
-        "This field shall contain a valid alphanumeric identification code associated with the
-         image. The valid codes are determined by the application."
-
-         @param identifier the first image identifier for the image (10 character maximum)
-    */
-    public final void setImageIdentifier1(final String identifier) {
-        imageIdentifier1 = identifier;
-    }
-
-    /**
-        Return the first image identifier (IID1) for the image.
-        <p>
-        "This field shall contain a valid alphanumeric identification code associated with the
-         image. The valid codes are determined by the application."
-
-        @return the identifier
-    */
-    public final String getImageIdentifier1() {
-        return imageIdentifier1;
     }
 
     /**
@@ -166,26 +140,6 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     */
     public final String getImageIdentifier2() {
         return imageIdentifier2;
-    }
-
-    /**
-        Set the security metadata elements for the image.
-
-        See NitfSecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
-
-        @param nitfSecurityMetadata the security metadata values to set.
-    */
-    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
-        securityMetadata = nitfSecurityMetadata;
-    }
-
-    /**
-        Return the security metadata for the image.
-
-        @return security metadata
-    */
-    public final NitfSecurityMetadata getSecurityMetadata() {
-        return securityMetadata;
     }
 
     /**
@@ -978,14 +932,6 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
 
     public final int getImageDisplayLevel() {
         return imageDisplayLevel;
-    }
-
-    public final void setImageAttachmentLevel(final int attachmentLevel) {
-        imageAttachmentLevel = attachmentLevel;
-    }
-
-    public final int getImageAttachmentLevel() {
-        return imageAttachmentLevel;
     }
 
     public final void setImageLocationRow(final int locationRow) {

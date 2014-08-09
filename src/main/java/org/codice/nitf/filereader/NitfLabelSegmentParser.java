@@ -76,7 +76,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readLID() throws ParseException {
-        segment.setLabelIdentifier(reader.readTrimmedBytes(LID_LENGTH));
+        segment.setIdentifier(reader.readTrimmedBytes(LID_LENGTH));
     }
 
     private void readLFS() throws ParseException {
@@ -96,7 +96,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readLALVL() throws ParseException {
-        segment.setLabelAttachmentLevel(reader.readBytesAsInteger(LALVL_LENGTH));
+        segment.setAttachmentLevel(reader.readBytesAsInteger(LALVL_LENGTH));
     }
 
     private void readLLOC() throws ParseException {

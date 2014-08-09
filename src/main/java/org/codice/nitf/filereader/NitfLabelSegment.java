@@ -19,7 +19,6 @@ import java.util.Set;
 
 public class NitfLabelSegment extends AbstractNitfSubSegment {
 
-    private String labelIdentifier = null;
     private int labelLocationRow = 0;
     private int labelLocationColumn = 0;
     private int labelCellWidth = 0;
@@ -28,7 +27,6 @@ public class NitfLabelSegment extends AbstractNitfSubSegment {
     private int labelAttachmentLevel = 0;
     private RGBColour labelTextColour = null;
     private RGBColour labelBackgroundColour = null;
-    private NitfSecurityMetadata securityMetadata = null;
 
     private String data = null;
 
@@ -39,14 +37,6 @@ public class NitfLabelSegment extends AbstractNitfSubSegment {
                             final int labelLength,
                             final Set<ParseOption> parseOptions) throws ParseException {
         new NitfLabelSegmentParser(nitfReader, labelLength, parseOptions, this);
-    }
-
-    public final void setLabelIdentifier(final String identifier) {
-        labelIdentifier = identifier;
-    }
-
-    public final String getLabelIdentifier() {
-        return labelIdentifier;
     }
 
     public final void setLabelLocationRow(final int rowNumber) {
@@ -107,14 +97,6 @@ public class NitfLabelSegment extends AbstractNitfSubSegment {
         return labelDisplayLevel;
     }
 
-    public final void setLabelAttachmentLevel(final int attachmentLevel) {
-        labelAttachmentLevel = attachmentLevel;
-    }
-
-    public final int getLabelAttachmentLevel() {
-        return labelAttachmentLevel;
-    }
-
     public final void setLabelTextColour(final RGBColour textColour) {
         labelTextColour = textColour;
     }
@@ -129,14 +111,6 @@ public class NitfLabelSegment extends AbstractNitfSubSegment {
 
     public final RGBColour getLabelBackgroundColour() {
         return labelBackgroundColour;
-    }
-
-    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
-        securityMetadata = nitfSecurityMetadata;
-    }
-
-    public final NitfSecurityMetadata getSecurityMetadata() {
-        return securityMetadata;
     }
 
     public final void setLabelData(final String labelData) {

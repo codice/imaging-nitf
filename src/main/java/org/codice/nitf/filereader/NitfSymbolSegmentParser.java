@@ -91,7 +91,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSID() throws ParseException {
-        segment.setSymbolIdentifier(reader.readTrimmedBytes(SID_LENGTH));
+        segment.setIdentifier(reader.readTrimmedBytes(SID_LENGTH));
     }
 
     private void readSNAME() throws ParseException {
@@ -124,7 +124,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSALVL() throws ParseException {
-        segment.setSymbolAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
+        segment.setAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
     }
 
     private void readSLOC() throws ParseException {
