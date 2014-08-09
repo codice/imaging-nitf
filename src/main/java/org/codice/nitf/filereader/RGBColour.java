@@ -43,10 +43,9 @@ public class RGBColour {
 
     @Override
     public final String toString() {
-        String str = String.format("[0x%02x,0x%02x,0x%02x]",
+        return String.format("[0x%02x,0x%02x,0x%02x]",
                             (int) (red & UNSIGNED_BYTE_MASK),
                             (int) (green & UNSIGNED_BYTE_MASK),
                             (int) (blue & UNSIGNED_BYTE_MASK));
-        return str;
     }
 }
