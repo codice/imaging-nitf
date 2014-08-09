@@ -31,8 +31,6 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
     private static final int LDLVL_LENGTH = 3;
     private static final int LALVL_LENGTH = 3;
     private static final int LLOC_HALF_LENGTH = 5;
-    private static final int LTC_LENGTH = 3;
-    private static final int LBC_LENGTH = 3;
     private static final int LXSHDL_LENGTH = 5;
     private static final int LXSOFL_LENGTH = 3;
 
