@@ -103,7 +103,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readTXSOFL() throws ParseException {
-        segment.setTextExtendedSubheaderOverflow(reader.readBytesAsInteger(TXSOFL_LENGTH));
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(TXSOFL_LENGTH));
     }
 
     private void readTXSHD() throws ParseException {

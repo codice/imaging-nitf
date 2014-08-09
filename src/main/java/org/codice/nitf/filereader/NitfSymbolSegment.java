@@ -17,7 +17,7 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 import java.util.Set;
 
-public class NitfSymbolSegment extends AbstractNitfSegment {
+public class NitfSymbolSegment extends AbstractNitfSubSegment {
 
     private String symbolIdentifier = null;
     private String symbolName = null;

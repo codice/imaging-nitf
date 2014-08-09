@@ -22,7 +22,6 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfLabel = 0;
 
     private int labelExtendedSubheaderLength = 0;
-    private int labelExtendedSubheaderOverflow = 0;
 
     private static final String LA = "LA";
     private static final int LID_LENGTH = 10;
@@ -118,7 +117,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readLXSOFL() throws ParseException {
-        labelExtendedSubheaderOverflow = reader.readBytesAsInteger(LXSOFL_LENGTH);
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(LXSOFL_LENGTH));
     }
 
     private void readLXSHD() throws ParseException {

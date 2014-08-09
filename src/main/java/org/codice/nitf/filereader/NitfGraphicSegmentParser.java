@@ -22,7 +22,6 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfGraphic = 0;
 
     private int graphicExtendedSubheaderLength = 0;
-    private int graphicExtendedSubheaderOverflow = 0;
 
     private static final String SY = "SY";
     private static final int SID_LENGTH = 10;
@@ -133,7 +132,7 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSXSOFL() throws ParseException {
-        graphicExtendedSubheaderOverflow = reader.readBytesAsInteger(SXSOFL_LENGTH);
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(SXSOFL_LENGTH));
     }
 
     private void readSXSHD() throws ParseException {

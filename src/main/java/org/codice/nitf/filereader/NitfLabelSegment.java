@@ -17,7 +17,7 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 import java.util.Set;
 
-public class NitfLabelSegment extends AbstractNitfSegment {
+public class NitfLabelSegment extends AbstractNitfSubSegment {
 
     private String labelIdentifier = null;
     private int labelLocationRow = 0;

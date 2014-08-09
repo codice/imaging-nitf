@@ -17,7 +17,7 @@ package org.codice.nitf.filereader;
 import java.text.ParseException;
 import java.util.Set;
 
-public class NitfGraphicSegment extends AbstractNitfSegment {
+public class NitfGraphicSegment extends AbstractNitfSubSegment {
 
     private String graphicIdentifier = null;
     private String graphicName = null;

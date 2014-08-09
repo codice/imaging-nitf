@@ -23,7 +23,6 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
 
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
-    private int symbolExtendedSubheaderOverflow = 0;
 
     private static final String SY = "SY";
     private static final int SID_LENGTH = 10;
@@ -160,7 +159,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSXSOFL() throws ParseException {
-        symbolExtendedSubheaderOverflow = reader.readBytesAsInteger(SXSOFL_LENGTH);
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(SXSOFL_LENGTH));
     }
 
     private void readSXSHD() throws ParseException {

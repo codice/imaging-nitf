@@ -18,7 +18,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Set;
 
-public class NitfTextSegment extends AbstractNitfSegment {
+public class NitfTextSegment extends AbstractNitfSubSegment {
 
     private String textIdentifier = null;
     private int textAttachmentLevel = 0;
@@ -26,7 +26,6 @@ public class NitfTextSegment extends AbstractNitfSegment {
     private String textTitle = null;
     private NitfSecurityMetadata securityMetadata = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
-    private int textExtendedSubheaderOverflow = 0;
 
     private String data = null;
 
@@ -85,30 +84,6 @@ public class NitfTextSegment extends AbstractNitfSegment {
 
     public final TextFormat getTextFormat() {
         return textFormat;
-    }
-
-    /**
-        Set the text extended subheader overflow index (TXSOFL).
-        <p>
-        This is the (1-base) index of the TRE into which extended header data
-        overflows.
-
-        @param overflow the extended header data overflow index
-    */
-    public final void setTextExtendedSubheaderOverflow(final int overflow) {
-        textExtendedSubheaderOverflow = overflow;
-    }
-
-    /**
-        Return the text extended subheader overflow index (TXSOFL).
-        <p>
-        This is the (1-base) index of the TRE into which extended header data
-        overflows.
-
-        @return the extended header data overflow index
-    */
-    public final int getTextExtendedSubheaderOverflow() {
-        return textExtendedSubheaderOverflow;
     }
 
     public final void setTextData(final String textData) {
