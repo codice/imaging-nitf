@@ -29,6 +29,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     private static final int TXTITL_LENGTH = 80;
     private static final int TXTFMT_LENGTH = 3;
     private static final int TXSHDL_LENGTH = 5;
+    private static final int TXSOFL_LENGTH = 3;
 
     private boolean shouldParseTextData = false;
 
@@ -53,8 +54,8 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
         readTXTFMT();
         readTXSHDL();
         if (textExtendedSubheaderLength > 0) {
-            // TODO: find a case that exercises this and implement it
-            throw new UnsupportedOperationException("IMPLEMENT TXSOFL / TXSHD PARSING");
+            readTXSOFL();
+            readTXSHD();
         }
         readTextData();
     }
@@ -99,6 +100,16 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
 
     private void readTXSHDL() throws ParseException {
         textExtendedSubheaderLength = reader.readBytesAsInteger(TXSHDL_LENGTH);
+    }
+
+    private void readTXSOFL() throws ParseException {
+        segment.setTextExtendedSubheaderOverflow(reader.readBytesAsInteger(TXSOFL_LENGTH));
+    }
+
+    private void readTXSHD() throws ParseException {
+        TreParser treParser = new TreParser();
+        TreCollection extendedSubheaderTREs = treParser.parse(reader, textExtendedSubheaderLength - TXSOFL_LENGTH);
+        segment.mergeTREs(extendedSubheaderTREs);
     }
 
     private void readTextData() throws ParseException {

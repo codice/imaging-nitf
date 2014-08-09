@@ -46,9 +46,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private List<Integer> ldsh = new ArrayList<Integer>();
     private List<Integer> ld = new ArrayList<Integer>();
     private int userDefinedHeaderDataLength = 0;
-    private int userDefinedHeaderOverflow = 0;
     private int extendedHeaderDataLength = 0;
-    private int extendedHeaderOverflow = 0;
 
     private static final int FHDR_LENGTH = 4;
     private static final int FVER_LENGTH = 5;
@@ -297,10 +295,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDHOFL() throws ParseException {
-        userDefinedHeaderOverflow = reader.readBytesAsInteger(UDHOFL_LENGTH);
-        if (userDefinedHeaderOverflow != 0) {
-            throw new UnsupportedOperationException("Need to implement proper UDHOFL parsing");
-        }
+        nitf.setUserDefinedHeaderOverflow(reader.readBytesAsInteger(UDHOFL_LENGTH));
     }
 
     private void readUDHD() throws ParseException {
@@ -314,10 +309,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readXHDLOFL() throws ParseException {
-        extendedHeaderOverflow = reader.readBytesAsInteger(XHDLOFL_LENGTH);
-        if (extendedHeaderOverflow != 0) {
-            throw new UnsupportedOperationException("Need to implement proper XHDLOFL parsing");
-        }
+        nitf.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(XHDLOFL_LENGTH));
     }
 
     private void readXHD() throws ParseException {

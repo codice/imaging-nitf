@@ -33,6 +33,8 @@ public class NitfFile extends AbstractNitfSegment {
     private RGBColour nitfFileBackgroundColour = null;
     private String nitfOriginatorsName = null;
     private String nitfOriginatorsPhoneNumber = null;
+    private int nitfUserDefinedHeaderOverflow = 0;
+    private int nitfExtendedHeaderDataOverflow = 0;
 
     private List<NitfImageSegment> imageSegments = new ArrayList<NitfImageSegment>();
     private List<NitfGraphicSegment> graphicSegments = new ArrayList<NitfGraphicSegment>();
@@ -252,6 +254,54 @@ public class NitfFile extends AbstractNitfSegment {
     */
     public final String getOriginatorsPhoneNumber() {
         return nitfOriginatorsPhoneNumber;
+    }
+
+    /**
+        Set the user defined header overflow (UDHOFL) for the file.
+        <p>
+        This is the (1-base) index of the TRE into which user defined header data
+        overflows.
+
+        @param overflow the user defined header overflow index
+    */
+    public final void setUserDefinedHeaderOverflow(final int overflow) {
+        nitfUserDefinedHeaderOverflow = overflow;
+    }
+
+    /**
+        Return the user defined header overflow (UDHOFL) for the file.
+        <p>
+        This is the (1-base) index of the TRE into which user defined header data
+        overflows.
+
+        @return the user defined header overflow index
+    */
+    public final int getUserDefinedHeaderOverflow() {
+        return nitfUserDefinedHeaderOverflow;
+    }
+
+    /**
+        Set the extended header data overflow (XHDOFL) for the file.
+        <p>
+        This is the (1-base) index of the TRE into which extended header data
+        overflows.
+
+        @param overflow the extended header data overflow index
+    */
+    public final void setExtendedHeaderDataOverflow(final int overflow) {
+        nitfExtendedHeaderDataOverflow = overflow;
+    }
+
+    /**
+        Return the extended header overflow (XHDOFL) for the file.
+        <p>
+        This is the (1-base) index of the TRE into which extended header data
+        overflows.
+
+        @return the extended header data overflow index
+    */
+    public final int getExtendedHeaderDataOverflow() {
+        return nitfExtendedHeaderDataOverflow;
     }
 
     /**

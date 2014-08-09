@@ -24,7 +24,6 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     private int userDefinedImageDataLength = 0;
     private int userDefinedOverflow = 0;
     private int imageExtendedSubheaderDataLength = 0;
-    private int imageExtendedSubheaderOverflow = 0;
     private long lengthOfImage = 0L;
 
     private static final String IM = "IM";
@@ -324,7 +323,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readIXSOFL() throws ParseException {
-        imageExtendedSubheaderOverflow = reader.readBytesAsInteger(IXSOFL_LENGTH);
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(IXSOFL_LENGTH));
     }
 
     private void readIXSHD() throws ParseException {

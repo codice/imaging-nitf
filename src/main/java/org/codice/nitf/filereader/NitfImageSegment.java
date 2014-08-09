@@ -55,6 +55,7 @@ public class NitfImageSegment extends AbstractNitfSegment {
     private int imageLocationRow = 0;
     private int imageLocationColumn = 0;
     private String imageMagnification = null;
+    private int imageExtendedSubheaderOverflow = 0;
     private byte[] data = null;
 
     public NitfImageSegment() {
@@ -1026,6 +1027,30 @@ public class NitfImageSegment extends AbstractNitfSegment {
 
     public final ImageCoordinates getImageCoordinates() {
         return imageCoordinates;
+    }
+
+    /**
+        Set the image extended subheader overflow index (IXSOFL).
+        <p>
+        This is the (1-base) index of the TRE into which extended header data
+        overflows.
+
+        @param overflow the extended header data overflow index
+    */
+    public final void setExtendedHeaderDataOverflow(final int overflow) {
+        imageExtendedSubheaderOverflow = overflow;
+    }
+
+    /**
+        Return the text extended subheader overflow index (IXSOFL).
+        <p>
+        This is the (1-base) index of the TRE into which extended header data
+        overflows.
+
+        @return the extended header data overflow index
+    */
+    public final int getExtendedHeaderDataOverflow() {
+        return imageExtendedSubheaderOverflow;
     }
 
     public final void setImageData(final byte[] imageData) {
