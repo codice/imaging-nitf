@@ -52,7 +52,18 @@ public class Nitf21GraphicParsingTest {
 
     private void assertGraphicSegmentMetadataIsAsExpected(NitfGraphicSegment graphicSegment) {
         assertNotNull(graphicSegment);
-        // TODO: check all the graphic bits
+        assertEquals("0000000001", graphicSegment.getIdentifier());
+        assertEquals("multi.cgm  SYMBOL.", graphicSegment.getGraphicName());
+        assertUnclasAndEmpty(graphicSegment.getSecurityMetadata());
+        assertEquals(1, graphicSegment.getGraphicDisplayLevel());
+        assertEquals(0, graphicSegment.getAttachmentLevel());
+        assertEquals(0, graphicSegment.getGraphicLocationRow());
+        assertEquals(0, graphicSegment.getGraphicLocationColumn());
+        assertEquals(25, graphicSegment.getBoundingBox1Row());
+        assertEquals(25, graphicSegment.getBoundingBox1Column());
+        assertEquals(GraphicColour.COLOUR, graphicSegment.getGraphicColour());
+        assertEquals(79, graphicSegment.getBoundingBox2Row());
+        assertEquals(430, graphicSegment.getBoundingBox2Column());
     }
 
     private InputStream getInputStream() {
@@ -60,6 +71,24 @@ public class Nitf21GraphicParsingTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         return getClass().getResourceAsStream(testfile);
+    }
+
+    void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
+        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+        assertEquals("", securityMetadata.getSecurityClassificationSystem());
+        assertEquals("", securityMetadata.getCodewords());
+        assertEquals("", securityMetadata.getControlAndHandling());
+        assertEquals("", securityMetadata.getReleaseInstructions());
+        assertEquals("", securityMetadata.getDeclassificationType());
+        assertEquals("", securityMetadata.getDeclassificationDate());
+        assertEquals("", securityMetadata.getDeclassificationExemption());
+        assertEquals("", securityMetadata.getDowngrade());
+        assertEquals("", securityMetadata.getDowngradeDate());
+        assertEquals("", securityMetadata.getClassificationText());
+        assertEquals("", securityMetadata.getClassificationAuthorityType());
+        assertEquals("", securityMetadata.getClassificationAuthority());
+        assertEquals("", securityMetadata.getClassificationReason());
+        assertEquals("", securityMetadata.getSecurityControlNumber());
     }
 
 }
