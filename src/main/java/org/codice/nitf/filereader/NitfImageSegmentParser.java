@@ -74,7 +74,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
         lengthOfImage = imageLength;
         segment = imageSegment;
 
-        shouldParseImageData = parseOptions.contains(ParseOption.ExtractImageSegmentData);
+        shouldParseImageData = parseOptions.contains(ParseOption.EXTRACT_IMAGE_SEGMENT_DATA);
 
         readIM();
         readIID1();

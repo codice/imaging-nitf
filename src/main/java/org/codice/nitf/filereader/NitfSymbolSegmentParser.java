@@ -55,7 +55,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
         lengthOfSymbol = symbolLength;
         segment = symbolSegment;
 
-        shouldParseSymbolData = parseOptions.contains(ParseOption.ExtractSymbolSegmentData);
+        shouldParseSymbolData = parseOptions.contains(ParseOption.EXTRACT_SYMBOL_SEGMENT_DATA);
 
         readSY();
         readSID();

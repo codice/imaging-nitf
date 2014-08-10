@@ -51,7 +51,7 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
         lengthOfGraphic = graphicLength;
         segment = graphicSegment;
 
-        shouldParseGraphicData = parseOptions.contains(ParseOption.ExtractGraphicSegmentData);
+        shouldParseGraphicData = parseOptions.contains(ParseOption.EXTRACT_GRAPHIC_SEGMENT_DATA);
 
         readSY();
         readSID();

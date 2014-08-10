@@ -42,7 +42,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
         reader = nitfReader;
         lengthOfText = textLength;
         segment = textSegment;
-        shouldParseTextData = parseOptions.contains(ParseOption.ExtractTextSegmentData);
+        shouldParseTextData = parseOptions.contains(ParseOption.EXTRACT_TEXT_SEGMENT_DATA);
 
         readTE();
         readTEXTID();

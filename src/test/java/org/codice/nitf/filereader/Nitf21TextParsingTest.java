@@ -31,7 +31,7 @@ public class Nitf21TextParsingTest {
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
         NitfFile file = new NitfFile();
-        file.parse(getInputStream(), EnumSet.of(ParseOption.ExtractTextSegmentData));
+        file.parse(getInputStream(), EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
         assertEquals(1, file.getNumberOfTextSegments());
 
         NitfTextSegment textSegment = file.getTextSegment(1);

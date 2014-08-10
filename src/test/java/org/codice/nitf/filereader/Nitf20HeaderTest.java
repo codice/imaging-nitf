@@ -39,7 +39,7 @@ public class Nitf20HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(simpleNitf20File);
         NitfFile file = new NitfFile();
-        file.parse(is, EnumSet.of(ParseOption.ExtractTextSegmentData));
+        file.parse(is, EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());

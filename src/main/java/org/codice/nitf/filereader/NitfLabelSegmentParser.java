@@ -47,7 +47,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
         lengthOfLabel = labelLength;
         segment = labelSegment;
 
-        shouldParseLabelData = parseOptions.contains(ParseOption.ExtractLabelSegmentData);
+        shouldParseLabelData = parseOptions.contains(ParseOption.EXTRACT_LABEL_SEGMENT_DATA);
 
         readLA();
         readLID();

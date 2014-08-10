@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,13 +11,50 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.nitf.filereader;
 
+/**
+    Potential parse-time settings for a NITF file.
+    <p>
+    This enumeration is intended to be passed as a variable
+    of type Set to the main parse method.
+    Constructing the Set from an EnumSet is likely to be the
+    most useful method.
+ */
 public enum ParseOption {
-    ExtractImageSegmentData,
-    ExtractGraphicSegmentData,
-    ExtractSymbolSegmentData,
-    ExtractLabelSegmentData,
-    ExtractTextSegmentData;
+
+    /**
+        Extract the data associated with each image segment.
+     */
+    EXTRACT_IMAGE_SEGMENT_DATA,
+
+    /**
+        Extract the data associated with each graphic segment.
+        <p>
+        This is only meaningful for NITF 2.1 / NSIF 1.0 files,
+        since NITF 2.0 files do not have graphic segments.
+     */
+    EXTRACT_GRAPHIC_SEGMENT_DATA,
+
+    /**
+        Extract the data associated with each symbol segment.
+        <p>
+        This is only meaningful for NITF 2.0 files, since
+        NITF 2.1 / NSIF 1.0 files do not have symbol segments.
+     */
+    EXTRACT_SYMBOL_SEGMENT_DATA,
+
+    /**
+        Extract the data associated with each label segment.
+        <p>
+        This is only meaningful for NITF 2.0 files, since
+        NITF 2.1 / NSIF 1.0 files do not have label segments.
+     */
+    EXTRACT_LABEL_SEGMENT_DATA,
+
+    /**
+        Extract the data associated with each label segment.
+     */
+    EXTRACT_TEXT_SEGMENT_DATA;
 }
