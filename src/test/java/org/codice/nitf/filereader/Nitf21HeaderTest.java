@@ -15,6 +15,7 @@
 package org.codice.nitf.filereader;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -22,6 +23,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -461,7 +463,11 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
         // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
-        // TODO: check TREs
+        TreCollection fileTres = reader.getTREsRawStructure();
+        assertNotNull(fileTres);
+        assertFalse(fileTres.hasTREs());
+        List<Tre> treList = fileTres.getTREs();
+        assertEquals(0, treList.size());
     }
 
     @Rule
@@ -492,7 +498,6 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("NS3051V", reader.getOriginatingStationId());
-        // TODO: update below this
         assertEquals("1997-09-24 11:25:10", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
         assertEquals("Checks for new nitf 2.1 polygon set element, NIST polygonset test 06.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
@@ -538,7 +543,6 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("I_3128b", reader.getOriginatingStationId());
-        // TODO: update below this
         assertEquals("1999-02-10 14:01:44", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
         assertEquals("Checks an uncomp. 512x480 w/PIAPR_,PIAIM_ & 3 PIAPE_tags conf. to STD. Lab Gang.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
