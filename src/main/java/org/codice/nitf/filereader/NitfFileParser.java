@@ -54,7 +54,6 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private static final int STYPE_LENGTH = 4;
     private static final int OSTAID_LENGTH = 10;
     private static final int FTITLE_LENGTH = 80;
-    private static final int FBKGC_LENGTH = 3;
     private static final int ONAME_LENGTH = 24;
     private static final int ONAME20_LENGTH = 27;
     private static final int OPHONE_LENGTH = 18;

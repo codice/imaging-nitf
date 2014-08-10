@@ -22,7 +22,6 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     private int numImageComments = 0;
     private int numBands = 0;
     private int userDefinedImageDataLength = 0;
-    private int userDefinedOverflow = 0;
     private int imageExtendedSubheaderDataLength = 0;
     private long lengthOfImage = 0L;
 

@@ -22,7 +22,6 @@ import java.util.Set;
 
 public class NitfImageSegment extends AbstractNitfSubSegment {
 
-    private String imageIdentifier1 = null;
     private Date imageDateTime = null;
     // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples
     private String imageTargetId = null;

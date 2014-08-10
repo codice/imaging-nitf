@@ -19,7 +19,6 @@ import java.text.ParseException;
 class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfDataExtension = 0;
     private int userDefinedSubheaderLength = 0;
-    private String userDefinedSubheaderField = null;
 
     private static final String DE = "DE";
     private static final int DESID_LENGTH = 25;

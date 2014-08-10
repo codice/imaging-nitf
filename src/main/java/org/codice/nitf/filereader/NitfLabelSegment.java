@@ -24,7 +24,6 @@ public class NitfLabelSegment extends AbstractNitfSubSegment {
     private int labelCellWidth = 0;
     private int labelCellHeight = 0;
     private int labelDisplayLevel = 0;
-    private int labelAttachmentLevel = 0;
     private RGBColour labelTextColour = null;
     private RGBColour labelBackgroundColour = null;
 
