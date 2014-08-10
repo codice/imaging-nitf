@@ -46,13 +46,8 @@ public class NitfImageBand {
         if (numLUTs > 0) {
             readNELUT();
             for (int i = 0; i < numLUTs; ++i) {
-                luts.add(new NitfImageBandLUT());
-            }
-            for (int i = 0; i < numLUTs; ++i) {
-                for (int j = 0; j < numEntriesLUT; ++j) {
-                    // TODO: read bytes for real
-                    reader.skip(1);
-                }
+                NitfImageBandLUT lut = new NitfImageBandLUT(reader.readBytesRaw(numEntriesLUT));
+                luts.add(lut);
             }
         }
     }

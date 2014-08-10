@@ -16,6 +16,30 @@ package org.codice.nitf.filereader;
 
 public class NitfImageBandLUT {
 
-    public NitfImageBandLUT() {
+    private byte[] entries = null;
+
+    /**
+        Create a new image band lookup table (LUT).
+
+        @param lutEntries the LUT data, in order.
+    */
+    public NitfImageBandLUT(final byte[] lutEntries) {
+        entries = lutEntries;
+    }
+
+    /**
+        Return the number of entries in the LUT.
+    */
+    public final int getNumberOfEntries() {
+        return entries.length;
+    }
+
+    /**
+        Return a select entry from the LUT.
+
+        @param i the index of the LUT entry, zero base
+    */
+    public final byte getEntry(final int i) {
+        return entries[i];
     }
 }

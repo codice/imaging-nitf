@@ -91,13 +91,19 @@ public class Nitf21HeaderTest {
         // Checks for lookup tables
         NitfImageBandLUT lut1 = band1.getLUT(1);
         assertNotNull(lut1);
-        // TODO: check values
+        assertEquals(2, lut1.getNumberOfEntries());
+        assertEquals((byte)0xFF, lut1.getEntry(0));
+        assertEquals((byte)0x00, lut1.getEntry(1));
         NitfImageBandLUT lut2 = band1.getLUT(2);
         assertNotNull(lut2);
-        // TODO check values
+        assertEquals(2, lut2.getNumberOfEntries());
+        assertEquals((byte)0x00, lut2.getEntry(0));
+        assertEquals((byte)0xFF, lut2.getEntry(1));
         NitfImageBandLUT lut3 = band1.getLUT(3);
         assertNotNull(lut3);
-        // TODO check values
+        assertEquals(2, lut3.getNumberOfEntries());
+        assertEquals((byte)0x00, lut3.getEntry(0));
+        assertEquals((byte)0x00, lut3.getEntry(1));
 
         assertEquals(ImageMode.BLOCKINTERLEVE, segment1.getImageMode());
         assertEquals(1, segment1.getNumberOfBlocksPerRow());
@@ -173,6 +179,13 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment1.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
+        // Checks for ImageBand
+        NitfImageBand band1 = segment1.getImageBand(1);
+        assertNotNull(band1);
+        assertEquals("M", band1.getImageRepresentation());
+        assertEquals("", band1.getSubCategory());
+        assertEquals(0, band1.getNumLUTs());
+
         assertEquals("1.0 ", segment1.getImageMagnification());
     }
 
@@ -235,6 +248,11 @@ public class Nitf21HeaderTest {
         assertEquals(ImageCompression.JPEG, segment1.getImageCompression());
         assertEquals("00.0", segment1.getCompressionRate());
         assertEquals(1, segment1.getNumBands());
+        NitfImageBand band1 = segment1.getImageBand(1);
+        assertNotNull(band1);
+        assertEquals("M", band1.getImageRepresentation());
+        assertEquals("", band1.getSubCategory());
+        assertEquals(0, band1.getNumLUTs());
         assertEquals("1.0 ", segment1.getImageMagnification());
     }
 
@@ -328,6 +346,11 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment2.getNumberOfImageComments());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment2.getImageCompression());
         assertEquals(1, segment2.getNumBands());
+        NitfImageBand band1 = segment1.getImageBand(1);
+        assertNotNull(band1);
+        assertEquals("M", band1.getImageRepresentation());
+        assertEquals("", band1.getSubCategory());
+        assertEquals(0, band1.getNumLUTs());
         assertEquals("1.0 ", segment2.getImageMagnification());
 
         NitfImageSegment segment3 = reader.getImageSegment(3);
@@ -742,6 +765,11 @@ public class Nitf21HeaderTest {
         assertEquals("", imageSegment.getImageComment(3));
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment.getImageCompression());
         assertEquals(1, imageSegment.getNumBands());
+        NitfImageBand band1 = imageSegment.getImageBand(1);
+        assertNotNull(band1);
+        assertEquals("M", band1.getImageRepresentation());
+        assertEquals("", band1.getSubCategory());
+        assertEquals(0, band1.getNumLUTs());
 
         assertEquals(8, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
