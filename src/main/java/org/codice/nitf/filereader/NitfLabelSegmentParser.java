@@ -52,7 +52,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
         readLA();
         readLID();
         segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        reader.readENCRYP();
+        readENCRYP();
         readLFS();
         readLCW();
         readLCH();
@@ -103,11 +103,11 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readLTC() throws ParseException {
-        segment.setLabelTextColour(reader.readRGBColour());
+        segment.setLabelTextColour(readRGBColour());
     }
 
     private void readLBC() throws ParseException {
-        segment.setLabelBackgroundColour(reader.readRGBColour());
+        segment.setLabelBackgroundColour(readRGBColour());
     }
 
     private void readLXSHDL() throws ParseException {

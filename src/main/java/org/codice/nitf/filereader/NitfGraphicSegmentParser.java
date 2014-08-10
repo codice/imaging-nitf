@@ -57,7 +57,7 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
         readSID();
         readSNAME();
         segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        reader.readENCRYP();
+        readENCRYP();
         readSFMT();
         readSSTRUCT();
         readSDLVL();

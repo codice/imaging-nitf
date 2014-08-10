@@ -23,8 +23,6 @@ import java.util.Set;
 
 class NitfFileParser extends AbstractNitfSegmentParser {
 
-    private NitfReader reader = null;
-
     private long nitfFileLength = -1;
     private int nitfHeaderLength = -1;
 
@@ -103,7 +101,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
         readFDT();
         readFTITLE();
         nitf.setFileSecurityMetadata(new NitfFileSecurityMetadata(reader));
-        reader.readENCRYP();
+        readENCRYP();
         if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
             readFBKGC();
         }
@@ -176,7 +174,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private void readCLEVEL() throws ParseException {
         nitf.setComplexityLevel(reader.readBytesAsInteger(CLEVEL_LENGTH));
         if ((nitf.getComplexityLevel() < MIN_COMPLEXITY_LEVEL) || (nitf.getComplexityLevel() > MAX_COMPLEXITY_LEVEL)) {
-            throw new ParseException(String.format("CLEVEL out of range: %i", nitf.getComplexityLevel()), reader.getNumBytesRead());
+            throw new ParseException(String.format("CLEVEL out of range: %i", nitf.getComplexityLevel()), reader.getCurrentOffset());
         }
     }
 
@@ -197,7 +195,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readFBKGC() throws ParseException {
-        nitf.setFileBackgroundColour(reader.readRGBColour());
+        nitf.setFileBackgroundColour(readRGBColour());
     }
 
     private void readONAME() throws ParseException {

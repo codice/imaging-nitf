@@ -14,6 +14,22 @@
  **/
 package org.codice.nitf.filereader;
 
+import java.text.ParseException;
+
 abstract class AbstractNitfSegmentParser {
     protected NitfReader reader = null;
+
+    private static final int ENCRYP_LENGTH = 1;
+    private static final int RGB_COLOUR_LENGTH = 3;
+
+    protected final void readENCRYP() throws ParseException {
+        if (!"0".equals(reader.readBytes(ENCRYP_LENGTH))) {
+            throw new ParseException("Unexpected ENCRYP value", reader.getCurrentOffset());
+        }
+    }
+
+    public final RGBColour readRGBColour() throws ParseException {
+        byte[] rgb = reader.readBytesRaw(RGB_COLOUR_LENGTH);
+        return new RGBColour(rgb);
+    }
 }

@@ -50,7 +50,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
         readTEXTDT();
         readTXTITL();
         segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        reader.readENCRYP();
+        readENCRYP();
         readTXTFMT();
         readTXSHDL();
         if (textExtendedSubheaderLength > 0) {
@@ -75,7 +75,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
                 break;
             case UNKNOWN:
             default:
-                throw new ParseException("Unsupported reader version", reader.getNumBytesRead());
+                throw new ParseException("Unsupported reader version", reader.getCurrentOffset());
         }
     }
 

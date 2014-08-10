@@ -61,7 +61,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
         readSID();
         readSNAME();
         segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        reader.readENCRYP();
+        readENCRYP();
         readSTYPE();
         readNLIPS();
         readNPIXPL();

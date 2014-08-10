@@ -81,7 +81,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
         readTGTID();
         readIID2();
         segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        reader.readENCRYP();
+        readENCRYP();
         readISORCE();
         readNROWS();
         readNCOLS();

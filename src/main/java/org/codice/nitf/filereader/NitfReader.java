@@ -28,11 +28,9 @@ public class NitfReader {
 
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
-    private static final int ENCRYP_LENGTH = 1;
     private static final String DATE_ONLY_DAY_FORMAT = "yyyyMMdd";
     private static final String DATE_FULL_FORMAT = "yyyyMMddHHmmss";
     private static final String NITF20_DATE_FORMAT = "ddHHmmss'Z'MMMyy";
-    private static final int RGB_COLOUR_LENGTH = 3;
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
     public NitfReader(final BufferedInputStream nitfInputStream, final int offset) throws ParseException {
@@ -52,7 +50,7 @@ public class NitfReader {
         return false;
     }
 
-    public final int getNumBytesRead() {
+    public final int getCurrentOffset() {
         return numBytesRead;
     }
 
@@ -61,11 +59,6 @@ public class NitfReader {
         if (!actualHeader.equals(magicHeader)) {
             throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), numBytesRead);
         }
-    }
-
-    public final RGBColour readRGBColour() throws ParseException {
-        byte[] rgb = readBytesRaw(RGB_COLOUR_LENGTH);
-        return new RGBColour(rgb);
     }
 
     public final Date readNitfDateTime() throws ParseException {
@@ -147,12 +140,6 @@ public class NitfReader {
             i--;
         }
         return s.substring(0, i + 1);
-    }
-
-    public final void readENCRYP() throws ParseException {
-        if (!"0".equals(readBytes(ENCRYP_LENGTH))) {
-            throw new ParseException("Unexpected ENCRYP value", numBytesRead);
-        }
     }
 
     public final String readBytes(final int count) throws ParseException {
