@@ -14,29 +14,14 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class NitfReader {
-    private BufferedInputStream input = null;
-    private int numBytesRead = 0;
+public abstract class NitfReader {
     private FileType nitfFileType = FileType.UNKNOWN;
 
     private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-    private static final int STANDARD_DATE_TIME_LENGTH = 14;
-    private static final String DATE_ONLY_DAY_FORMAT = "yyyyMMdd";
-    private static final String DATE_FULL_FORMAT = "yyyyMMddHHmmss";
-    private static final String NITF20_DATE_FORMAT = "ddHHmmss'Z'MMMyy";
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
-
-    public NitfReader(final BufferedInputStream nitfInputStream, final int offset) throws ParseException {
-        input = nitfInputStream;
-        numBytesRead = offset;
-    }
 
     public final void setFileType(final FileType fileType) {
         nitfFileType = fileType;
@@ -46,91 +31,59 @@ public class NitfReader {
         return nitfFileType;
     }
 
-    public final Boolean canSeek() {
-        return false;
-    }
+    abstract Boolean canSeek();
 
-    public final int getCurrentOffset() {
-        return numBytesRead;
-    }
+    abstract int getCurrentOffset();
 
     public final void verifyHeaderMagic(final String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
-            throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), numBytesRead);
+            throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), getCurrentOffset());
         }
     }
 
-    public final Date readNitfDateTime() throws ParseException {
-        String dateString = readTrimmedBytes(STANDARD_DATE_TIME_LENGTH);
-        SimpleDateFormat dateFormat = null;
-        Date dateTime = null;
-        switch (nitfFileType) {
-            case NITF_TWO_ZERO:
-                dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
-                break;
-            case NITF_TWO_ONE:
-            case NSIF_ONE_ZERO:
-                dateFormat = new SimpleDateFormat(DATE_FULL_FORMAT);
-                break;
-            case UNKNOWN:
-            default:
-                throw new ParseException("Need to set NITF file type prior to reading dates", numBytesRead);
-        }
-        if (dateString.length() == DATE_ONLY_DAY_FORMAT.length()) {
-            // Fallback for files that aren't spec compliant
-            dateFormat = new SimpleDateFormat(DATE_ONLY_DAY_FORMAT);
-        } else if (dateString.length() == 0) {
-            // This can't work
-            dateFormat = null;
-        } else if (dateString.length() != DATE_FULL_FORMAT.length()) {
-            System.out.println("Unhandled date format:" + dateString);
-        }
-        if (dateFormat == null) {
-            dateTime = null;
-        } else {
-            dateTime = dateFormat.parse(dateString);
-            if (dateTime == null) {
-                throw new ParseException(String.format("Bad DATETIME format: %s", dateString), numBytesRead);
-            }
-        }
-        return dateTime;
-    }
+    abstract Integer readBytesAsInteger(final int count) throws ParseException;
 
-    public final Integer readBytesAsInteger(final int count) throws ParseException {
+    protected final Integer defaultReadBytesAsInteger(final int count) throws ParseException {
         String intString = readBytes(count);
         Integer intValue = 0;
         try {
             intValue = Integer.parseInt(intString);
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Integer format: [%s]", intString), numBytesRead);
+            throw new ParseException(String.format("Bad Integer format: [%s]", intString), getCurrentOffset());
         }
         return intValue;
     }
 
-    public final Long readBytesAsLong(final int count) throws ParseException {
+    abstract Long readBytesAsLong(final int count) throws ParseException;
+
+    protected final Long defaultReadBytesAsLong(final int count) throws ParseException {
         String longString = readBytes(count);
         Long longValue = 0L;
         try {
             longValue = Long.parseLong(longString);
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Long format: %s", longString), numBytesRead);
+            throw new ParseException(String.format("Bad Long format: %s", longString), getCurrentOffset());
         }
         return longValue;
     }
 
-    public final Double readBytesAsDouble(final int count) throws ParseException {
+    abstract Double readBytesAsDouble(final int count) throws ParseException;
+
+    protected final Double defaultReadBytesAsDouble(final int count) throws ParseException {
         String doubleString = readBytes(count);
         Double doubleValue = 0.0;
         try {
             doubleValue = Double.parseDouble(doubleString.trim());
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Double format: %s", doubleString), numBytesRead);
+            throw new ParseException(String.format("Bad Double format: %s", doubleString), getCurrentOffset());
         }
         return doubleValue;
     }
 
-    public final String readTrimmedBytes(final int count) throws ParseException {
+    abstract String readTrimmedBytes(final int count) throws ParseException;
+
+    protected final String defaultReadTrimmedBytes(final int count) throws ParseException {
         return rightTrim(readBytes(count));
     }
 
@@ -142,38 +95,13 @@ public class NitfReader {
         return s.substring(0, i + 1);
     }
 
-    public final String readBytes(final int count) throws ParseException {
+    abstract String readBytes(final int count) throws ParseException;
+
+    protected final String defaultReadBytes(final int count) throws ParseException {
         return new String(readBytesRaw(count), UTF8_CHARSET);
     }
 
-    public final byte[] readBytesRaw(final int count) throws ParseException {
-        try {
-            byte[] bytes = new byte[count];
-            int thisRead = input.read(bytes, 0, count);
-            if (thisRead == -1) {
-                throw new ParseException("End of file reading from NITF stream.", numBytesRead);
-            } else if (thisRead < count) {
-                throw new ParseException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count),
-                                         numBytesRead + thisRead);
-            }
-            numBytesRead += thisRead;
-            return bytes;
-        } catch (IOException ex) {
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
-        }
-    }
+    public abstract byte[] readBytesRaw(final int count) throws ParseException;
 
-    public final void skip(final long count) throws ParseException {
-        long bytesToRead = count;
-        try {
-            long thisRead = 0;
-            do {
-                thisRead = input.skip(bytesToRead);
-                numBytesRead += thisRead;
-                bytesToRead -= thisRead;
-            } while (bytesToRead > 0);
-        } catch (IOException ex) {
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
-        }
-    }
+    public abstract void skip(final long count) throws ParseException;
 }

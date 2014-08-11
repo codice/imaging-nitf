@@ -92,7 +92,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
         nitf = nitfFile;
         parseOptionSet = parseOptions;
 
-        reader = new NitfReader(new BufferedInputStream(nitfInputStream), 0);
+        reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream), 0);
         readFHDRFVER();
         reader.setFileType(nitf.getFileType());
         readCLEVEL();
@@ -187,7 +187,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readFDT() throws ParseException {
-        nitf.setFileDateTime(reader.readNitfDateTime());
+        nitf.setFileDateTime(readNitfDateTime());
     }
 
     private void readFTITLE() throws ParseException {

@@ -86,7 +86,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readTEXTDT() throws ParseException {
-        segment.setTextDateTime(reader.readNitfDateTime());
+        segment.setTextDateTime(readNitfDateTime());
     }
 
     private void readTXTITL() throws ParseException {

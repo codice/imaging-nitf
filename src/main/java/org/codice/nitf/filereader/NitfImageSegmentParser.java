@@ -158,7 +158,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readIDATIM() throws ParseException {
-        segment.setImageDateTime(reader.readNitfDateTime());
+        segment.setImageDateTime(readNitfDateTime());
     }
 
     private void readTGTID() throws ParseException {
