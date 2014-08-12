@@ -92,7 +92,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
         nitf = nitfFile;
         parseOptionSet = parseOptions;
 
-        reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream), 0);
+        reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream));
         readFHDRFVER();
         reader.setFileType(nitf.getFileType());
         readCLEVEL();

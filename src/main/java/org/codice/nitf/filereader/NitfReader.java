@@ -14,94 +14,30 @@
  **/
 package org.codice.nitf.filereader;
 
-import java.nio.charset.Charset;
 import java.text.ParseException;
 
-public abstract class NitfReader {
-    private FileType nitfFileType = FileType.UNKNOWN;
+public interface NitfReader {
+    void setFileType(final FileType fileType);
 
-    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-    private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
+    FileType getFileType();
 
-    public final void setFileType(final FileType fileType) {
-        nitfFileType = fileType;
-    }
+    Boolean canSeek();
 
-    public final FileType getFileType() {
-        return nitfFileType;
-    }
+    int getCurrentOffset();
 
-    abstract Boolean canSeek();
+    void verifyHeaderMagic(final String magicHeader) throws ParseException;
 
-    abstract int getCurrentOffset();
+    Integer readBytesAsInteger(final int count) throws ParseException;
 
-    public final void verifyHeaderMagic(final String magicHeader) throws ParseException {
-        String actualHeader = readBytes(magicHeader.length());
-        if (!actualHeader.equals(magicHeader)) {
-            throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), getCurrentOffset());
-        }
-    }
+    Long readBytesAsLong(final int count) throws ParseException;
 
-    abstract Integer readBytesAsInteger(final int count) throws ParseException;
+    Double readBytesAsDouble(final int count) throws ParseException;
 
-    protected final Integer defaultReadBytesAsInteger(final int count) throws ParseException {
-        String intString = readBytes(count);
-        Integer intValue = 0;
-        try {
-            intValue = Integer.parseInt(intString);
-        } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Integer format: [%s]", intString), getCurrentOffset());
-        }
-        return intValue;
-    }
+    String readTrimmedBytes(final int count) throws ParseException;
 
-    abstract Long readBytesAsLong(final int count) throws ParseException;
+    String readBytes(final int count) throws ParseException;
 
-    protected final Long defaultReadBytesAsLong(final int count) throws ParseException {
-        String longString = readBytes(count);
-        Long longValue = 0L;
-        try {
-            longValue = Long.parseLong(longString);
-        } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Long format: %s", longString), getCurrentOffset());
-        }
-        return longValue;
-    }
+    byte[] readBytesRaw(final int count) throws ParseException;
 
-    abstract Double readBytesAsDouble(final int count) throws ParseException;
-
-    protected final Double defaultReadBytesAsDouble(final int count) throws ParseException {
-        String doubleString = readBytes(count);
-        Double doubleValue = 0.0;
-        try {
-            doubleValue = Double.parseDouble(doubleString.trim());
-        } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Double format: %s", doubleString), getCurrentOffset());
-        }
-        return doubleValue;
-    }
-
-    abstract String readTrimmedBytes(final int count) throws ParseException;
-
-    protected final String defaultReadTrimmedBytes(final int count) throws ParseException {
-        return rightTrim(readBytes(count));
-    }
-
-    public static String rightTrim(final String s) {
-        int i = s.length() - 1;
-        while ((i >= 0) && Character.isWhitespace(s.charAt(i))) {
-            i--;
-        }
-        return s.substring(0, i + 1);
-    }
-
-    abstract String readBytes(final int count) throws ParseException;
-
-    protected final String defaultReadBytes(final int count) throws ParseException {
-        return new String(readBytesRaw(count), UTF8_CHARSET);
-    }
-
-    public abstract byte[] readBytesRaw(final int count) throws ParseException;
-
-    public abstract void skip(final long count) throws ParseException;
+    void skip(final long count) throws ParseException;
 }
