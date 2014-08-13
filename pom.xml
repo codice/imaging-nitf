@@ -2,12 +2,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.codice.nitf.filereader</groupId>
-    <artifactId>nitf-file-reader</artifactId>
+    <groupId>org.codice.imaging.nitf</groupId>
+    <artifactId>codice-imaging-nitf</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>nitf-file-reader</name>
+    <name>codice-imaging-nitf</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -44,7 +44,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <packageName>org.codice.nitf.filereader.schema</packageName>
+                    <packageName>org.codice.imaging.nitf.core.schema</packageName>
                 </configuration>
             </plugin>
 
@@ -75,7 +75,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
-                    <excludePackageNames>org.codice.nitf.filereader.schema</excludePackageNames>
+                    <excludePackageNames>org.codice.imaging.nitf.core.schema</excludePackageNames>
                 </configuration>
             </plugin>
 
