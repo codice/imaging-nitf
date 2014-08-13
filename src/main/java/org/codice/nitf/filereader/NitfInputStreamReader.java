@@ -16,14 +16,12 @@ package org.codice.nitf.filereader;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.ParseException;
 
 public class NitfInputStreamReader extends NitfReaderDefaultImpl implements NitfReader {
     private BufferedInputStream input = null;
     private int numBytesRead = 0;
 
-    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
     public NitfInputStreamReader(final BufferedInputStream nitfInputStream) throws ParseException {

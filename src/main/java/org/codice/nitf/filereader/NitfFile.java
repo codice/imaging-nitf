@@ -14,13 +14,9 @@
  */
 package org.codice.nitf.filereader;
 
-import java.io.InputStream;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 public class NitfFile extends AbstractNitfSegment {
     private FileType fileType = FileType.UNKNOWN;
@@ -44,14 +40,6 @@ public class NitfFile extends AbstractNitfSegment {
     private List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
     public NitfFile() {
-    }
-
-    public final void parse(final InputStream nitfInputStream) throws ParseException {
-        new NitfFileParser(nitfInputStream, EnumSet.noneOf(ParseOption.class), this);
-    }
-
-    public final void parse(final InputStream nitfInputStream, final Set<ParseOption> parseOptions) throws ParseException {
-        new NitfFileParser(nitfInputStream, parseOptions, this);
     }
 
     /**

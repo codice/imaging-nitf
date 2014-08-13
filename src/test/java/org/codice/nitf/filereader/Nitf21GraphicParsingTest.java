@@ -30,8 +30,7 @@ public class Nitf21GraphicParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        NitfFile file = new NitfFile();
-        file.parse(getInputStream(), EnumSet.of(ParseOption.EXTRACT_GRAPHIC_SEGMENT_DATA));
+        NitfFile file = NitfFileFactory.parse(getInputStream(), EnumSet.of(ParseOption.EXTRACT_GRAPHIC_SEGMENT_DATA));
         assertEquals(1, file.getNumberOfGraphicSegments());
 
         NitfGraphicSegment graphicSegment = file.getGraphicSegment(1);
@@ -41,8 +40,7 @@ public class Nitf21GraphicParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        NitfFile file = new NitfFile();
-        file.parse(getInputStream(), EnumSet.noneOf(ParseOption.class));
+        NitfFile file = NitfFileFactory.parse(getInputStream());
         assertEquals(1, file.getNumberOfGraphicSegments());
 
         NitfGraphicSegment graphicSegment = file.getGraphicSegment(1);

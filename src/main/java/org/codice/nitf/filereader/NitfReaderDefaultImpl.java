@@ -20,8 +20,7 @@ import java.text.ParseException;
 public abstract class NitfReaderDefaultImpl implements NitfReader {
     private FileType nitfFileType = FileType.UNKNOWN;
 
-    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-    private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
+    protected static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
     public final void setFileType(final FileType fileType) {
         nitfFileType = fileType;
