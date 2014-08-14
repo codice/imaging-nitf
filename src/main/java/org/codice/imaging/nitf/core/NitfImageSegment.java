@@ -965,62 +965,333 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         return numBlocksPerColumn;
     }
 
+    /**
+        Set the number of pixels per block - horizontal direction (NPPBH).
+        <p>
+        From MIL-STD-2500C: "This field
+        shall contain the number of pixels horizontally in
+        each block of the image. It shall be the case that the
+        product of the values of the NBPR field and the
+        NPPBH field is greater than or equal to the value of
+        the NCOLS field (NBPR * NPPBH ≥ NCOLS).
+        When NBPR is "0001", setting the NPPBH value to
+        "0000" designates that the number of pixels
+        horizontally is specified by the value in NCOLS."
+
+        @param numberOfPixelsPerBlockHorizontal the number of pixels per block, horizontal.
+    */
     public final void setNumberOfPixelsPerBlockHorizontal(final int numberOfPixelsPerBlockHorizontal) {
         numPixelsPerBlockHorizontal = numberOfPixelsPerBlockHorizontal;
     }
 
+    /**
+        Return the number of pixels per block - horizontal direction (NPPBH).
+        <p>
+        From MIL-STD-2500C: "This field
+        shall contain the number of pixels horizontally in
+        each block of the image. It shall be the case that the
+        product of the values of the NBPR field and the
+        NPPBH field is greater than or equal to the value of
+        the NCOLS field (NBPR * NPPBH ≥ NCOLS).
+        When NBPR is "0001", setting the NPPBH value to
+        "0000" designates that the number of pixels
+        horizontally is specified by the value in NCOLS."
+
+        @return the number of pixels per block, horizontal.
+    */
     public final int getNumberOfPixelsPerBlockHorizontal() {
         return numPixelsPerBlockHorizontal;
     }
 
+    /**
+        Set the number of pixels per block - vertical direction (NPPBV).
+        <p>
+        From MIL-STD-2500C: "This field
+        shall contain the number of pixels vertically in each
+        block of the image. It shall be the case that the
+        product of the values of the NBPC field and the
+        NPPBV field is greater than or equal to the value of
+        the NROWS field (NBPC * NPPBV ≥ NROWS).
+        When NBPC is "0001", setting the NPPBV value to
+        "0000" designates that the number of pixels
+        vertically is specified by the value in NROWS."
+
+        @param numberOfPixelsPerBlockVertical the number of pixels per block, vertical.
+    */
     public final void setNumberOfPixelsPerBlockVertical(final int numberOfPixelsPerBlockVertical) {
         numPixelsPerBlockVertical = numberOfPixelsPerBlockVertical;
     }
 
+    /**
+        Return the number of pixels per block - vertical direction (NPPBV).
+        <p>
+        From MIL-STD-2500C: "This field
+        shall contain the number of pixels vertically in each
+        block of the image. It shall be the case that the
+        product of the values of the NBPC field and the
+        NPPBV field is greater than or equal to the value of
+        the NROWS field (NBPC * NPPBV ≥ NROWS).
+        When NBPC is "0001", setting the NPPBV value to
+        "0000" designates that the number of pixels
+        vertically is specified by the value in NROWS."
+
+        @return the number of pixels per block, vertical.
+    */
     public final int getNumberOfPixelsPerBlockVertical() {
         return numPixelsPerBlockVertical;
     }
 
+    /**
+        Set the number of bits per pixel per band (NBPP).
+        <p>
+        From MIL-STD-2500C: "If IC contains
+        NC, NM, C4, or M4, this field shall contain the
+        number of storage bits used for the value from each
+        component of a pixel vector. The value in this field
+        always shall be greater than or equal to Actual Bits
+        Per Pixel (ABPP). For example, if 11-bit pixels are
+        stored in 16 bits, this field shall contain 16 and
+        Actual Bits Per Pixel shall contain 11. If IC = C3,
+        M3, C5, M5, or I1 this field shall contain the value
+        8 or the value 12. If IC = C1, this field shall
+        contain the value 1. If IC = C8 or M8, this field
+        shall contain the number of bits of precision (01-38)
+        used in the JPEG 2000 compression of the data."
+
+        @param numberOfBitsPerPixelPerBand the number of bits per pixel per band.
+    */
     public final void setNumberOfBitsPerPixelPerBand(final int numberOfBitsPerPixelPerBand) {
         numBitsPerPixelPerBand = numberOfBitsPerPixelPerBand;
     }
 
+    /**
+        Return the number of bits per pixel per band (NBPP).
+        <p>
+        From MIL-STD-2500C: "If IC contains
+        NC, NM, C4, or M4, this field shall contain the
+        number of storage bits used for the value from each
+        component of a pixel vector. The value in this field
+        always shall be greater than or equal to Actual Bits
+        Per Pixel (ABPP). For example, if 11-bit pixels are
+        stored in 16 bits, this field shall contain 16 and
+        Actual Bits Per Pixel shall contain 11. If IC = C3,
+        M3, C5, M5, or I1 this field shall contain the value
+        8 or the value 12. If IC = C1, this field shall
+        contain the value 1. If IC = C8 or M8, this field
+        shall contain the number of bits of precision (01-38)
+        used in the JPEG 2000 compression of the data."
+
+        @return the number of bits per pixel per band.
+    */
     public final int getNumberOfBitsPerPixelPerBand() {
         return numBitsPerPixelPerBand;
     }
 
+    /**
+        Set the image display level (IDLVL).
+        <p>
+        From MIL-STD-2500C: "This field shall contain a
+        valid value that indicates the display level of the
+        image relative to other displayed file components in
+        a composite display. The valid values are 001 to
+        999. The display level of each displayable segment
+        (image or graphic) within a file shall be unique; that
+        is, each number from 001 to 999 is the display level
+        of, at most, one segment. Display level is discussed
+        in paragraph 5.3.3. The image or graphic segment
+        in the file having the minimum display level shall
+        have attachment level 0 (ALVL000) (BCS zeros
+        (code 0x30))."
+        <p>
+        Note that explanation mixes display level and attachment level.
+
+        @param displayLevel the display level (integer format).
+    */
     public final void setImageDisplayLevel(final int displayLevel) {
         imageDisplayLevel = displayLevel;
     }
 
+    /**
+        Return the image display level (IDLVL).
+        <p>
+        From MIL-STD-2500C: "This field shall contain a
+        valid value that indicates the display level of the
+        image relative to other displayed file components in
+        a composite display. The valid values are 001 to
+        999. The display level of each displayable segment
+        (image or graphic) within a file shall be unique; that
+        is, each number from 001 to 999 is the display level
+        of, at most, one segment. Display level is discussed
+        in paragraph 5.3.3. The image or graphic segment
+        in the file having the minimum display level shall
+        have attachment level 0 (ALVL000) (BCS zeros
+        (code 0x30))."
+        <p>
+        Note that explanation mixes display level and attachment level.
+
+        @return the display level (integer format).
+    */
     public final int getImageDisplayLevel() {
         return imageDisplayLevel;
     }
 
+    /**
+        Set the image location row (part of ILOC).
+        <p>
+        From MIL-STD-2500C: "The image location is the location
+        of the first pixel of the first line of the image. This
+        field shall contain the image location offset from
+        the ILOC or SLOC value of the segment to which
+        the image is attached or from the origin of the CCS
+        when the image is unattached (IALVL contains
+        000). A row or column value of 00000 indicates no
+        offset. Positive row and column values indicate
+        offsets down and to the right while negative row
+        and column values indicate offsets up and to the
+        left."
+
+        @param locationRow the image location row number
+    */
     public final void setImageLocationRow(final int locationRow) {
         imageLocationRow = locationRow;
     }
 
+    /**
+        Return the image location row (part of ILOC).
+        <p>
+        From MIL-STD-2500C: "The image location is the location
+        of the first pixel of the first line of the image. This
+        field shall contain the image location offset from
+        the ILOC or SLOC value of the segment to which
+        the image is attached or from the origin of the CCS
+        when the image is unattached (IALVL contains
+        000). A row or column value of 00000 indicates no
+        offset. Positive row and column values indicate
+        offsets down and to the right while negative row
+        and column values indicate offsets up and to the
+        left."
+
+        @return the image location row number
+    */
     public final int getImageLocationRow() {
         return imageLocationRow;
     }
 
+    /**
+        Set the image location column (part of ILOC).
+        <p>
+        From MIL-STD-2500C: "The image location is the location
+        of the first pixel of the first line of the image. This
+        field shall contain the image location offset from
+        the ILOC or SLOC value of the segment to which
+        the image is attached or from the origin of the CCS
+        when the image is unattached (IALVL contains
+        000). A row or column value of 00000 indicates no
+        offset. Positive row and column values indicate
+        offsets down and to the right while negative row
+        and column values indicate offsets up and to the
+        left."
+
+        @param locationColumn the image location column number
+    */
     public final void setImageLocationColumn(final int locationColumn) {
         imageLocationColumn = locationColumn;
     }
 
+    /**
+        Return the image location column (part of ILOC).
+        <p>
+        From MIL-STD-2500C: "The image location is the location
+        of the first pixel of the first line of the image. This
+        field shall contain the image location offset from
+        the ILOC or SLOC value of the segment to which
+        the image is attached or from the origin of the CCS
+        when the image is unattached (IALVL contains
+        000). A row or column value of 00000 indicates no
+        offset. Positive row and column values indicate
+        offsets down and to the right while negative row
+        and column values indicate offsets up and to the
+        left."
+
+        @return the image location column number
+    */
     public final int getImageLocationColumn() {
         return imageLocationColumn;
     }
 
+    /**
+        Set the image magnification (IMAG).
+        <p>
+        From MIL-STD-2500C: "This field shall contain the
+        magnification (or reduction) factor of the image
+        relative to the original source image. Decimal
+        values are used to indicate magnification, and
+        decimal fraction values indicate reduction. For
+        example, “2.30” indicates the original image has
+        been magnified by a factor of “2.30,” while “0.5”
+        indicates the original image has been reduced by a
+        factor of 2. The default value is 1.0, indicating no
+        magnification or reduction. In addition, the
+        reductions can be represented as reciprocals of any
+        non-negative integer: /2 (for 1/2), /3 (for 1/3), /4
+        (for 1/4), /5 (for 1/5), through /999 (for 1/999). The
+        values are left justified and BCS spaces (0x20)
+        filled to the right."
+
+        @param magnification the magnification level
+    */
     public final void setImageMagnification(final String magnification) {
         imageMagnification = magnification;
     }
 
+    /**
+        Return the image magnification (IMAG).
+        <p>
+        From MIL-STD-2500C: "This field shall contain the
+        magnification (or reduction) factor of the image
+        relative to the original source image. Decimal
+        values are used to indicate magnification, and
+        decimal fraction values indicate reduction. For
+        example, “2.30” indicates the original image has
+        been magnified by a factor of “2.30,” while “0.5”
+        indicates the original image has been reduced by a
+        factor of 2. The default value is 1.0, indicating no
+        magnification or reduction. In addition, the
+        reductions can be represented as reciprocals of any
+        non-negative integer: /2 (for 1/2), /3 (for 1/3), /4
+        (for 1/4), /5 (for 1/5), through /999 (for 1/999). The
+        values are left justified and BCS spaces (0x20)
+        filled to the right."
+
+        @return the magnification level
+    */
     public final String getImageMagnification() {
         return imageMagnification;
     }
 
+    /**
+        Return the image magnification (IMAG) as a numerical value.
+        <p>
+        From MIL-STD-2500C: "This field shall contain the
+        magnification (or reduction) factor of the image
+        relative to the original source image. Decimal
+        values are used to indicate magnification, and
+        decimal fraction values indicate reduction. For
+        example, “2.30” indicates the original image has
+        been magnified by a factor of “2.30,” while “0.5”
+        indicates the original image has been reduced by a
+        factor of 2. The default value is 1.0, indicating no
+        magnification or reduction. In addition, the
+        reductions can be represented as reciprocals of any
+        non-negative integer: /2 (for 1/2), /3 (for 1/3), /4
+        (for 1/4), /5 (for 1/5), through /999 (for 1/999). The
+        values are left justified and BCS spaces (0x20)
+        filled to the right."
+        <p>
+        This method converts the IMAG string to numerical value.
+
+        @return the magnification level
+    */
     public final double getImageMagnificationAsDouble() {
         if (imageMagnification.startsWith("/")) {
             return 1.0 / Double.parseDouble(imageMagnification.substring("1".length()));
@@ -1029,10 +1300,36 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         }
     }
 
+    /**
+        Set the image coordinates (IGEOLO) for the image.
+        <p>
+        From MIL-STD-2500C: "This field, when
+        present, shall contain an approximate geographic
+        location which is not intended for analytical
+        purposes (e.g., targeting, mensuration, distance
+        calculation); it is intended to support general user
+        appreciation for the image location (e.g.,
+        cataloguing)."
+
+        @param coordinates the coordinates value.
+    */
     public final void setImageCoordinates(final ImageCoordinates coordinates) {
         imageCoordinates = coordinates;
     }
 
+    /**
+        Return the image coordinates (IGEOLO) for the image.
+        <p>
+        From MIL-STD-2500C: "This field, when
+        present, shall contain an approximate geographic
+        location which is not intended for analytical
+        purposes (e.g., targeting, mensuration, distance
+        calculation); it is intended to support general user
+        appreciation for the image location (e.g.,
+        cataloguing)."
+
+        @return the coordinates value.
+    */
     public final ImageCoordinates getImageCoordinates() {
         return imageCoordinates;
     }
@@ -1061,10 +1358,25 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         return imageUserDefinedHeaderOverflow;
     }
 
+    /**
+        Set the image data.
+        <p>
+        This is the contents of the data segment.
+
+        @param imageData the image data
+    */
     public final void setImageData(final byte[] imageData) {
         data = imageData;
     }
 
+    /**
+        Return the image data.
+        <p>
+        This is the contents of the data segment. Depending on how the
+        parsing was configured, this can be null.
+
+        @return the image data
+    */
     public final byte[] getImageData() {
         return data;
     }
