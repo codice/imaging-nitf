@@ -786,7 +786,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     }
 
     /**
-        Add an image band to the image
+        Add an image band to the image.
 
         @param imageBand the image band to add
     */

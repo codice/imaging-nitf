@@ -364,7 +364,7 @@ public class NitfFile extends AbstractNitfSegment {
 //     }
 
     /**
-        Add an image segment to the file
+        Add an image segment to the file.
 
         @param imageSegment the image segment to add
     */

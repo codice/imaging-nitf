@@ -20,7 +20,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
-    Factory class for NitfFile instances
+    Factory class for NitfFile instances.
  */
 public final class NitfFileFactory {
 

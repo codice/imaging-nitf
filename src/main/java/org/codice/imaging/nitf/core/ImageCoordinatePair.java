@@ -57,9 +57,9 @@ public class ImageCoordinatePair {
     }
 
     /**
-        Set latitude and longitude from Degrees/Minutes/Seconds string
+        Set latitude and longitude from Degrees/Minutes/Seconds string.
 
-        /param dms string representation in MIL-STD-2500C ddmmssXdddmmssY form
+        @param dms string representation in MIL-STD-2500C ddmmssXdddmmssY form
      */
     public final void setFromDMS(final String dms) throws ParseException {
         sourceString = dms;
@@ -111,9 +111,9 @@ public class ImageCoordinatePair {
     }
 
     /**
-        Set latitude and longitude from Decimal Degrees string
+        Set latitude and longitude from Decimal Degrees string.
 
-        /param dd string representation in MIL-STD-2500C ±dd.ddd±ddd.ddd form
+        @param dd string representation in MIL-STD-2500C ±dd.ddd±ddd.ddd form
      */
     public final void setFromDecimalDegrees(final String dd) throws ParseException {
         if (dd.length() != "+dd.ddd+ddd.ddd".length()) {

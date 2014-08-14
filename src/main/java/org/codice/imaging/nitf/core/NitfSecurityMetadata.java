@@ -52,7 +52,7 @@ public class NitfSecurityMetadata {
     }
 
     /**
-        Set the security classification
+        Set the security classification.
 
         @param securityClassification security classification
     */
