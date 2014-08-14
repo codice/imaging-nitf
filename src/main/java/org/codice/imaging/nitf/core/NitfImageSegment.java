@@ -785,14 +785,35 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         return imageBands.size();
     }
 
+    /**
+        Add an image band to the image
+
+        @param imageBand the image band to add
+    */
     public final void addImageBand(final NitfImageBand imageBand) {
         imageBands.add(imageBand);
     }
 
+    /**
+        Return the image band.
+        <p>
+        This method is 1-based, so the valid range is 1 through N, where N is the
+        number of bands (see getNumBands() for how to determine the number of bands).
+
+        @param bandNumber the index of the band to return.
+    */
     public final NitfImageBand getImageBand(final int bandNumber) {
         return getImageBandZeroBase(bandNumber - 1);
     }
 
+    /**
+        Return the image band (zero base).
+        <p>
+        This method is 0-based, so the valid range is 0 through N-1, where N is the
+        number of bands.
+
+        @param bandNumberZeroBase the index of the band to return (0 base).
+    */
     public final NitfImageBand getImageBandZeroBase(final int bandNumberZeroBase) {
         return imageBands.get(bandNumberZeroBase);
     }
@@ -884,18 +905,62 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         return imageMode;
     }
 
+    /**
+        Set the number of blocks per row (NBPR).
+        <p>
+        From MIL-STD-2500C: "This field shall
+        contain the number of image blocks in a row of
+        blocks (paragraph 5.4.2.2) in the horizontal
+        direction. If the image consists of only a single
+        block, this field shall contain the value one."
+
+        @param numberOfBlocksPerRow the number of blocks per row.
+    */
     public final void setNumberOfBlocksPerRow(final int numberOfBlocksPerRow) {
         numBlocksPerRow = numberOfBlocksPerRow;
     }
 
+    /**
+        Return the number of blocks per row (NBPR).
+        <p>
+        From MIL-STD-2500C: "This field shall
+        contain the number of image blocks in a row of
+        blocks (paragraph 5.4.2.2) in the horizontal
+        direction. If the image consists of only a single
+        block, this field shall contain the value one."
+
+        @return the number of blocks per row.
+    */
     public final int getNumberOfBlocksPerRow() {
         return numBlocksPerRow;
     }
 
+    /**
+        Set the number of blocks per column (NBPC).
+        <p>
+        From MIL-STD-2500C: "This field shall
+        contain the number of image blocks in a column of
+        blocks (paragraph 5.4.2.2) in the vertical direction.
+        If the image consists of only a single block, this
+        field shall contain the value one."
+
+        @param numberOfBlocksPerColumn the number of blocks per column.
+    */
     public final void setNumberOfBlocksPerColumn(final int numberOfBlocksPerColumn) {
         numBlocksPerColumn = numberOfBlocksPerColumn;
     }
 
+    /**
+        Return the number of blocks per column (NBPC).
+        <p>
+        From MIL-STD-2500C: "This field shall
+        contain the number of image blocks in a column of
+        blocks (paragraph 5.4.2.2) in the vertical direction.
+        If the image consists of only a single block, this
+        field shall contain the value one."
+
+        @return the number of blocks per column.
+    */
     public final int getNumberOfBlocksPerColumn() {
         return numBlocksPerColumn;
     }
