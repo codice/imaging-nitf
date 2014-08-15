@@ -14,6 +14,9 @@
  **/
 package org.codice.imaging.nitf.core;
 
+/**
+    NITF 2.0 Symbol colour encoding.
+*/
 public enum SymbolColour {
 
     UNKNOWN (""),

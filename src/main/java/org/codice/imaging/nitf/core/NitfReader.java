@@ -16,6 +16,9 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 
+/**
+    Interface for reader.
+*/
 public interface NitfReader {
     void setFileType(final FileType fileType);
 

@@ -16,6 +16,9 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 
+/**
+    Security metadata for a NITF file header or segment subheader.
+*/
 public class NitfSecurityMetadata {
 
     private NitfSecurityClassification nitfSecurityClassification = NitfSecurityClassification.UNKNOWN;

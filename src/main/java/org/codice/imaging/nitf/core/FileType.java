@@ -14,10 +14,41 @@
  **/
 package org.codice.imaging.nitf.core;
 
+/**
+    Type of NITF file.
+    <p>
+    This is the version of NITF that the file claims to comply with.
+*/
 public enum FileType {
+
+    /**
+        Unknown file format.
+        <p>
+        This indicates an unknown format, and typically indicates a broken file or
+        an error during parsing. This is not a valid value in a NITF file header,
+        and will probably cause other problems during parsing.
+    */
     UNKNOWN (""),
+
+    /**
+        NITF 2.0 file.
+        <p>
+        This means a file complying with MIL-STD-2500A or MIL-STD-2500B.
+    */
     NITF_TWO_ZERO ("NITF02.00"),
+
+    /**
+        NITF 2.1 file.
+        <p>
+        This means a file complying with MIL-STD-2500C.
+    */
     NITF_TWO_ONE ("NITF02.10"),
+
+    /**
+        NATO Secondary Image Format (NSIF) 1.0.
+        <p>
+        This means a file complying with NATO STANAG 4545, which is basically identical to MIL-STD-2500C.
+    */
     NSIF_ONE_ZERO ("NSIF01.00");
 
     private final String textEquivalent;
@@ -26,6 +57,14 @@ public enum FileType {
         this.textEquivalent = abbreviation;
     }
 
+    /**
+        Create file type from the text equivalent.
+        <p>
+        This is intended to support file parsing, and is not usually necessary
+        for other purposes.
+
+        @param textEquivalent the text equivalent for a file type
+    */
     public static FileType getEnumValue(final String textEquivalent) {
         for (FileType version : values()) {
             if (textEquivalent.equals(version.textEquivalent)) {

@@ -18,6 +18,9 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 
+/**
+    NitfReader implementation for an InputStream.
+*/
 public class NitfInputStreamReader extends NitfReaderDefaultImpl implements NitfReader {
     private BufferedInputStream input = null;
     private int numBytesRead = 0;
