@@ -18,6 +18,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+    Image Band.
+*/
 public class NitfImageBand {
 
     private NitfReader reader = null;

@@ -18,6 +18,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Set;
 
+/**
+    Text segment subheader information.
+*/
 public class NitfTextSegment extends AbstractNitfSubSegment {
 
     private Date textDateTime = null;

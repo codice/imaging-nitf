@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,11 +11,17 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 
+/**
+    Parser for the file security metadata.
+    <p>
+    The security metadata at the file level is the same as the subheaders, except for
+    two extra fields (copy number, and number of copies).
+*/
 class NitfFileSecurityMetadataParser extends NitfSecurityMetadataParser {
 
     private static final int FSCOP_LENGTH = 5;

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,12 +11,15 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 import java.util.Set;
 
+/**
+    Label segment subheader information (NITF 2.0 only).
+*/
 public class NitfLabelSegment extends AbstractNitfSubSegment {
 
     private int labelLocationRow = 0;

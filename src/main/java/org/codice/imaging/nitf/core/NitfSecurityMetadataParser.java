@@ -16,6 +16,9 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 
+/**
+    Parser for security metadata.
+*/
 class NitfSecurityMetadataParser {
     protected NitfReader reader = null;
     private NitfSecurityMetadata metadata = null;

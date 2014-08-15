@@ -14,6 +14,9 @@
  **/
 package org.codice.imaging.nitf.core;
 
+/**
+    Named list of entries within a TRE.
+*/
 public class TreEntryList extends TreGroup {
 
     private String name;

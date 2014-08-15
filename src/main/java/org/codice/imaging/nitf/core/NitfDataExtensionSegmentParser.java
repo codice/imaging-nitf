@@ -16,6 +16,9 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 
+/**
+    Parser for a data extension segment (DES) subheader in a NITF file.
+*/
 class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfDataExtension = 0;
     private int userDefinedSubheaderLength = 0;

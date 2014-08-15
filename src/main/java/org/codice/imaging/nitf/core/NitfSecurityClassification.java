@@ -14,6 +14,9 @@
  **/
 package org.codice.imaging.nitf.core;
 
+/**
+    Security classification.
+*/
 public enum NitfSecurityClassification {
 
     UNKNOWN (""),

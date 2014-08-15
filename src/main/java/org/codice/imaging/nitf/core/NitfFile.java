@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+    NITF file data.
+*/
 public class NitfFile extends AbstractNitfSegment {
     private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;

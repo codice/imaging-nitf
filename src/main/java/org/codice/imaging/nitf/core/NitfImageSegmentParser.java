@@ -17,6 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.Set;
 
+/**
+    Parser for an image segment subheader in a NITF file.
+*/
 class NitfImageSegmentParser extends AbstractNitfSegmentParser {
 
     private int numImageComments = 0;

@@ -14,6 +14,9 @@
  **/
 package org.codice.imaging.nitf.core;
 
+/**
+    Tagged registered extension (TRE).
+*/
 public class Tre extends TreEntryList {
     private String prefix = null;
 

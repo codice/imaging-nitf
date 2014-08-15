@@ -18,7 +18,7 @@ import java.text.ParseException;
 import java.util.Set;
 
 /**
-    Text segment subheader and associated data.
+    Parser for a text segment subheader in a NITF file.
 */
 class NitfTextSegmentParser extends AbstractNitfSegmentParser {
 

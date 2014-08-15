@@ -18,6 +18,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+    A group of values within a TreEntry.
+*/
 public class TreGroup {
 
     private List<TreEntry> entries = new ArrayList<TreEntry>();

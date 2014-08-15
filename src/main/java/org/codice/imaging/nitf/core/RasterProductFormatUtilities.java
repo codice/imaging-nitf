@@ -22,6 +22,9 @@ import javax.xml.bind.Unmarshaller;
 
 import org.codice.imaging.nitf.core.schema.Rpfs;
 
+/**
+    Utility classes for Raster Product Format (RPF) handling.
+*/
 public class RasterProductFormatUtilities {
 
     private Rpfs rpfs = null;

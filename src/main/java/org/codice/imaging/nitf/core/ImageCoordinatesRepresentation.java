@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,18 +11,66 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.imaging.nitf.core;
 
+/**
+    Image coordinates representation (ICORDS).
+    <p>
+    Indicates the type of coordinate representation used for providing an
+    approximate location of the image in the Image Geographic Location field (IGEOLO).
+*/
 public enum ImageCoordinatesRepresentation {
 
+    /**
+        Unknown image coordinate representation.
+        <p>
+        This indicates an unknown representation, and typically indicates a broken file or
+        an error during parsing. This is not a valid value in a NITF image subheader.
+    */
     UNKNOWN ("", ""),
+
+    /**
+        No coordinate representation.
+    */
     NONE (" ", "N"),
+
+    /**
+        UTM expressed in Military Grid Reference System (MGRS) form.
+    */
     MGRS ("U", "U"),
+
+    /**
+        UTM, Northern Hemisphere.
+        <p>
+        This is not valid in NITF 2.0 files.
+    */
     UTMUPSNORTH ("N", null),
+
+    /**
+        UTM, Southern Hemisphere.
+        <p>
+        This is not valid in NITF 2.0 files.
+    */
     UTMUPSSOUTH ("S", null),
+
+    /**
+        Geographic representation.
+        <p>
+        This means degrees, minutes, seconds.
+    */
     GEOGRAPHIC ("G", "G"),
+
+    /**
+        Decimal degrees.
+    */
     DECIMALDEGREES ("D", null),
+
+    /**
+        Geocentric representation.
+        <p>
+        This is only valid for NITF 2.0 files.
+    */
     GEOCENTRIC (null, "C");
 
     private final String textEquivalent;
@@ -33,6 +81,14 @@ public enum ImageCoordinatesRepresentation {
         this.textEquivalentNitf20 = nitf20Abbreviation;
     }
 
+    /**
+        Create an image coordinate representation from the text equivalent.
+        <p>
+        This is intended to support file parsing, and is not usually necessary
+        for other purposes.
+
+        @param textEquivalent the single character text equivalent for an image coordinate representation.
+    */
     public static ImageCoordinatesRepresentation getEnumValue(final String textEquivalent, final FileType nitfFileType) {
         for (ImageCoordinatesRepresentation icr : values()) {
             if (nitfFileType == FileType.NITF_TWO_ZERO) {
@@ -48,6 +104,14 @@ public enum ImageCoordinatesRepresentation {
         return UNKNOWN;
     }
 
+    /**
+        Return the text equivalent for an image coordinate representation.
+        <p>
+        This is intended for debug output and output writing, and is not usually
+        necessary for other purposes.
+
+        @return the single character text equivalent for an image coordinate representation.
+    */
     public String getTextEquivalent(final FileType nitfFileType) {
         if (nitfFileType == FileType.NITF_TWO_ZERO) {
             return textEquivalentNitf20;

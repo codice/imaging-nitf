@@ -28,6 +28,9 @@ import org.codice.imaging.nitf.core.schema.LoopType;
 import org.codice.imaging.nitf.core.schema.Tres;
 import org.codice.imaging.nitf.core.schema.TreType;
 
+/**
+    Parser for Tagged Registered Extension (TRE) data.
+*/
 public class TreParser {
 
     private Tres tresStructure = null;

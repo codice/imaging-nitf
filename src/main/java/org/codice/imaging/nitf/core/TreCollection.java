@@ -17,6 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+    Collection of TREs.
+*/
 public class TreCollection {
     private List<Tre> treCollectionEntries = new ArrayList<Tre>();
 

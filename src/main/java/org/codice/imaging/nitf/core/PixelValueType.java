@@ -14,6 +14,9 @@
  **/
 package org.codice.imaging.nitf.core;
 
+/**
+    Pixel value type (PVTYPE).
+*/
 public enum PixelValueType {
 
     UNKNOWN (""),

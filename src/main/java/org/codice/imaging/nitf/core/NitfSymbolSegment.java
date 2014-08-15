@@ -17,6 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.Set;
 
+/**
+    Symbol segment subheader information (NITF 2.0 only).
+*/
 public class NitfSymbolSegment extends AbstractNitfSubSegment {
 
     private String symbolName = null;

@@ -17,6 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.Set;
 
+/**
+    Graphic segment subheader information (NITF 2.1 / NSIF 1.0 only).
+*/
 public class NitfGraphicSegment extends AbstractNitfSubSegment {
 
     private String graphicName = null;

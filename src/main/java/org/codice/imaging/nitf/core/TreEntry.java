@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,12 +11,17 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+    Entry within a TRE.
+    <p>
+    This is a name and a value, or a name and a group of entries.
+*/
 public class TreEntry {
     private String name = null;
     private String value = null;

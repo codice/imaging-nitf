@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,7 +11,7 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
@@ -20,6 +20,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+/**
+    Image segment subheader information.
+*/
 public class NitfImageSegment extends AbstractNitfSubSegment {
 
     private Date imageDateTime = null;

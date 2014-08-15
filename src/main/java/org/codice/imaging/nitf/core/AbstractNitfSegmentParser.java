@@ -18,6 +18,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+    Common segment parsing functionality.
+*/
 abstract class AbstractNitfSegmentParser {
     protected NitfReader reader = null;
 
