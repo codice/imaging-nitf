@@ -87,6 +87,13 @@ public enum TextFormat {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     TextFormat(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
@@ -98,6 +105,7 @@ public enum TextFormat {
         for other purposes.
 
         @param textEquivalent the text equivalent for a text format
+        @return the text format enumerated type.
     */
     public static TextFormat getEnumValue(final String textEquivalent) {
         for (TextFormat tf : values()) {

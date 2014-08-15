@@ -258,6 +258,13 @@ public enum ImageCategory {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     ImageCategory(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
@@ -269,6 +276,7 @@ public enum ImageCategory {
         for other purposes.
 
         @param textEquivalent the text equivalent for an image category
+        @return the image category enumerated value.
     */
     public static ImageCategory getEnumValue(final String textEquivalent) {
         for (ImageCategory icat : values()) {

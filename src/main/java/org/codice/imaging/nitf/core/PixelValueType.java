@@ -28,10 +28,26 @@ public enum PixelValueType {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     PixelValueType(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
+    /**
+        Create pixel value type from the text equivalent.
+        <p>
+        This is intended to support file parsing, and is not usually necessary
+        for other purposes.
+
+        @param textEquivalent the text equivalent for a pixel value type
+        @return the pixel value type enumerated value.
+    */
     public static PixelValueType getEnumValue(final String textEquivalent) {
         for (PixelValueType pv : values()) {
             if (textEquivalent.equals(pv.textEquivalent)) {
@@ -41,6 +57,14 @@ public enum PixelValueType {
         return UNKNOWN;
     }
 
+    /**
+        Return the text equivalent for a pixel value type.
+        <p>
+        This is intended for debug output and output writing, and is not usually
+        necessary for other purposes.
+
+        @return the text equivalent for a pixel value type.
+    */
     public String getTextEquivalent() {
         return textEquivalent;
     }

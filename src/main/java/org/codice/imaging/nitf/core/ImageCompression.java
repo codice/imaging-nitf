@@ -35,10 +35,26 @@ public enum ImageCompression {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     ImageCompression(final String abbreviation) {
         textEquivalent = abbreviation;
     }
 
+    /**
+        Create image compression enumerated value from the text equivalent.
+        <p>
+        This is intended to support file parsing, and is not usually necessary
+        for other purposes.
+
+        @param textEquivalent the single character text equivalent for image compression.
+        @return the image compression enumerated value.
+    */
     public static ImageCompression getEnumValue(final String textEquivalent) {
         for (ImageCompression ic : values()) {
             if (textEquivalent.equals(ic.textEquivalent)) {
@@ -48,6 +64,14 @@ public enum ImageCompression {
         return UNKNOWN;
     }
 
+    /**
+        Return the text equivalent for an image compression type.
+        <p>
+        This is intended for debug output and output writing, and is not usually
+        necessary for other purposes.
+
+        @return the text equivalent for an image compression type.
+    */
     public String getTextEquivalent() {
         return textEquivalent;
     }

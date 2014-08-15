@@ -45,6 +45,13 @@ public enum PixelJustification {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     PixelJustification(final String abbreviation) {
         textEquivalent = abbreviation;
     }
@@ -56,6 +63,7 @@ public enum PixelJustification {
         for other purposes.
 
         @param textEquivalent the single character text equivalent for pixel justification.
+        @return the pixel justification enumerated value.
     */
     public static PixelJustification getEnumValue(final String textEquivalent) {
         for (PixelJustification pj : values()) {

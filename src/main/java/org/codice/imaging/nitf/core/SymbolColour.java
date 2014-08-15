@@ -33,10 +33,26 @@ public enum SymbolColour {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     SymbolColour(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
+    /**
+        Create symbol colour from the text equivalent.
+        <p>
+        This is intended to support file parsing, and is not usually necessary
+        for other purposes.
+
+        @param textEquivalent the single character text equivalent for a symbol colour
+        @return the symbol colour enumerated value.
+    */
     public static SymbolColour getEnumValue(final String textEquivalent) {
         for (SymbolColour sc : values()) {
             if (textEquivalent.equals(sc.textEquivalent)) {
@@ -46,6 +62,14 @@ public enum SymbolColour {
         return UNKNOWN;
     }
 
+    /**
+        Return the text equivalent for a symbol colour.
+        <p>
+        This is intended for debug output and output writing, and is not usually
+        necessary for other purposes.
+
+        @return the single character text equivalent for a symbol colour.
+    */
     public String getTextEquivalent() {
         return textEquivalent;
     }

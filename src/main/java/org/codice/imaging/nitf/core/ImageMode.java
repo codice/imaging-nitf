@@ -55,6 +55,13 @@ public enum ImageMode {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     ImageMode(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
@@ -66,6 +73,7 @@ public enum ImageMode {
         for other purposes.
 
         @param textEquivalent the single character text equivalent for an image mode
+        @return the image mode enumerated value corresponding to textEquivalent.
     */
     public static ImageMode getEnumValue(final String textEquivalent) {
         for (ImageMode imode : values()) {

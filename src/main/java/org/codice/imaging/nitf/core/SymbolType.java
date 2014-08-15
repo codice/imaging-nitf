@@ -63,6 +63,13 @@ public enum SymbolType {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     SymbolType(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
@@ -74,6 +81,7 @@ public enum SymbolType {
         for other purposes.
 
         @param textEquivalent the single character text equivalent for a symbol type
+        @return symbol type enumerated equivalent
     */
     public static SymbolType getEnumValue(final String textEquivalent) {
         for (SymbolType st : values()) {

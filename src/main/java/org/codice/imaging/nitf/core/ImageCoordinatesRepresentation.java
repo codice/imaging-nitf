@@ -76,6 +76,14 @@ public enum ImageCoordinatesRepresentation {
     private final String textEquivalent;
     private final String textEquivalentNitf20;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value for NITF 2.1 / NSIF 1.0.
+        @param nitf20Abbreviation the text abbreviation for the enumeration value for NITF 2.0.
+    */
     ImageCoordinatesRepresentation(final String abbreviation, final String nitf20Abbreviation) {
         this.textEquivalent = abbreviation;
         this.textEquivalentNitf20 = nitf20Abbreviation;

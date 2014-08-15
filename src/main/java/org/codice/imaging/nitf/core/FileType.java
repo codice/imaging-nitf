@@ -53,6 +53,13 @@ public enum FileType {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     FileType(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
@@ -64,6 +71,7 @@ public enum FileType {
         for other purposes.
 
         @param textEquivalent the text equivalent for a file type
+        @return the file type enumerated value.
     */
     public static FileType getEnumValue(final String textEquivalent) {
         for (FileType version : values()) {

@@ -50,6 +50,13 @@ public enum GraphicColour {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     GraphicColour(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
