@@ -14,9 +14,33 @@
  **/
 package org.codice.imaging.nitf.core;
 
+/**
+    Pixel justification (PJUST) options.
+    <p>
+    NITF images can have different "actual bits per pixel" to "number of
+    bits per pixel" (e.g. 12 bits per pixel packed into 16 bits). To determine
+    where the data (as opposed to the padding) is to be found, there is a
+    pixel justification (left or right) setting.
+*/
 public enum PixelJustification {
+    /**
+        Unknown justification.
+        <p>
+        This indicates an unknown justification, and typically indicates a broken file or
+        an error during parsing. This is not a valid value in a NITF .
+    */
     UNKNOWN (""),
+
+    /**
+        Left justification.
+    */
     LEFT ("L"),
+
+    /**
+        Right justification.
+        <p>
+        This is the preferred setting.
+    */
     RIGHT ("R");
 
     private final String textEquivalent;
@@ -25,6 +49,14 @@ public enum PixelJustification {
         textEquivalent = abbreviation;
     }
 
+    /**
+        Create pixel justification from the text equivalent.
+        <p>
+        This is intended to support file parsing, and is not usually necessary
+        for other purposes.
+
+        @param textEquivalent the single character text equivalent for pixel justification.
+    */
     public static PixelJustification getEnumValue(final String textEquivalent) {
         for (PixelJustification pj : values()) {
             if (textEquivalent.equals(pj.textEquivalent)) {
@@ -34,6 +66,14 @@ public enum PixelJustification {
         return UNKNOWN;
     }
 
+    /**
+        Return the text equivalent for a pixel justification
+        <p>
+        This is intended for debug output and output writing, and is not usually
+        necessary for other purposes.
+
+        @return the single character text equivalent for a pixel justification.
+    */
     public String getTextEquivalent() {
         return textEquivalent;
     }

@@ -17,9 +17,26 @@ package org.codice.imaging.nitf.core;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
+/**
+    Default implementation for a NitfReader.
+    <p>
+    This is intended to help with implementing the NitfReader interface, with a
+    combination of shared methods and default implementation methods that a concrete
+    implementation class can call.
+*/
 public abstract class NitfReaderDefaultImpl implements NitfReader {
+
+    /**
+        The type (version) of NITF file.
+        <p>
+        This tracks the NITF file type / version. UNKNOWN is the "not set" or
+        parse error state.
+    */
     private FileType nitfFileType = FileType.UNKNOWN;
 
+    /**
+        Standard byte to UTF-8 charset conversion.
+    */
     protected static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
     public final void setFileType(final FileType fileType) {
