@@ -32,6 +32,8 @@ public class NitfImageBandLUT {
 
     /**
         Return the number of entries in the LUT.
+
+        @return the number of entries in the LUT
     */
     public final int getNumberOfEntries() {
         return entries.length;
@@ -41,6 +43,7 @@ public class NitfImageBandLUT {
         Return a select entry from the LUT.
 
         @param i the index of the LUT entry, zero base
+        @return the LUT content for the specified index
     */
     public final byte getEntry(final int i) {
         return entries[i];

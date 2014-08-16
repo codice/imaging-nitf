@@ -68,6 +68,7 @@ public enum GraphicColour {
         for other purposes.
 
         @param textEquivalent the single character text equivalent for a graphic colour
+        @return the corresponding graphic colour
     */
     public static GraphicColour getEnumValue(final String textEquivalent) {
         for (GraphicColour scolor : values()) {

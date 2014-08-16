@@ -46,9 +46,20 @@ public class NitfSecurityMetadata {
     private String downgradeDateOrSpecialCase = null;
     private String downgradeEvent = null;
 
+    /**
+        Default constructor.
+    */
     public NitfSecurityMetadata() {
     }
 
+    /**
+        Constructor.
+        <p>
+        This builds a new object using the specified NitfReader.
+
+        @param nitfReader the reader to use, positioned at the start of the security metadata.
+        @throws ParseException if any error in the metadata is detected.
+    */
     public NitfSecurityMetadata(final NitfReader nitfReader) throws ParseException {
         NitfSecurityMetadataParser parser = new NitfSecurityMetadataParser();
         parser.parse(nitfReader, this);
@@ -424,6 +435,8 @@ public class NitfSecurityMetadata {
         (3) the code "999998" when a specific event determines at what point declassification or downgrading is to take place.
         <p>
         If the third case (999998) occurs, use getDowngradeEvent() to determine the downgrade event.
+
+        @return the downgrade date or special case flag value
     */
     public final String getDowngradeDateOrSpecialCase() {
         return downgradeDateOrSpecialCase;
@@ -448,6 +461,8 @@ public class NitfSecurityMetadata {
       This field is only valid for NITF 2.0 files.
       <p>
       This is only valid if getDowngradeDateOrSpecialCase() is equal to 999998.
+
+      @return the downgrade event
     */
     public final String getDowngradeEvent() {
         return downgradeEvent;
