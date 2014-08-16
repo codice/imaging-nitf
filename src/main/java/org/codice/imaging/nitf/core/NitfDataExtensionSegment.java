@@ -14,8 +14,6 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
-
 /**
     Data Extension Segment (DES) subheader and associated data.
 */
@@ -27,17 +25,36 @@ public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
     private String userDefinedSubheaderField = null;
     private byte[] desData = null;
 
+    /**
+        Default constructor.
+    */
     public NitfDataExtensionSegment() {
     }
 
-    public final void parse(final NitfReader nitfReader, final int desLength) throws ParseException {
-        new NitfDataExtensionSegmentParser(nitfReader, desLength, this);
-    }
+    /**
+        Set the DES version (DESVER).
+        <p>
+        "This field shall contain
+        the alphanumeric version number of the use of the tag.
+        The version number is assigned as part of the
+        registration process."
 
+        @param version the version (valid range 1 to 99).
+    */
     public final void setDESVersion(final int version) {
         desVersion = version;
     }
 
+    /**
+        Return the DES version (DESVER).
+        <p>
+        "This field shall contain
+        the alphanumeric version number of the use of the tag.
+        The version number is assigned as part of the
+        registration process."
+
+        @return the DES version.
+    */
     public final int getDESVersion() {
         return desVersion;
     }
@@ -177,6 +194,13 @@ public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
         return userDefinedSubheaderField;
     }
 
+    /**
+        Set the DES data.
+        <p>
+        This is the contents of the data segment.
+
+        @param data the DES data
+    */
     public final void setData(final byte[] data) {
         desData = data;
     }

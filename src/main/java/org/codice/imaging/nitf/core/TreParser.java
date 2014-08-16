@@ -31,7 +31,7 @@ import org.codice.imaging.nitf.core.schema.TreType;
 /**
     Parser for Tagged Registered Extension (TRE) data.
 */
-public class TreParser {
+class TreParser {
 
     private Tres tresStructure = null;
 
@@ -42,6 +42,13 @@ public class TreParser {
 
     private TreCollection treCollection = new TreCollection();
 
+    /**
+        Constructor for TRE parser.
+        <p>
+        This does initialisation, so try to re-use it if possible.
+
+        @throws ParseException if the initialisation fails.
+    */
     public TreParser() throws ParseException {
         InputStream is = getClass().getResourceAsStream("/nitf_spec.xml");
         try {
@@ -57,6 +64,14 @@ public class TreParser {
         tresStructure = (Tres) u.unmarshal(inputStream);
     }
 
+    /**
+        Parse the TRE from the current reader.
+
+        @param reader the reader to use.
+        @param treLength the length of the TRE.
+        @return TRE collection.
+        @throws ParseException if the TRE parsing fails (e.g. end of file or TRE that is clearly incorrect.
+    */
     public final TreCollection parse(final NitfReader reader, final int treLength) throws ParseException {
         int bytesRead = 0;
         while (bytesRead < treLength) {
