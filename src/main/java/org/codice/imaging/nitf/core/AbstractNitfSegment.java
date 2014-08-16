@@ -34,22 +34,28 @@ public abstract class AbstractNitfSegment {
         for (String treName : treCollection.getUniqueNamesOfTRE()) {
             List<Tre> tresWithName = treCollection.getTREsWithName(treName);
             if (tresWithName.size() == 1) {
-                Tre onlyTre = tresWithName.get(0);
-                List<TreEntry> treEntries = onlyTre.getEntries();
-                for (TreEntry treEntry : treEntries) {
-                    flattenOneTreEntry(tresFlat, treEntry, onlyTre.getName());
-                }
+                flattenOnlyTre(tresWithName.get(0), tresFlat);
             } else {
                 for (int i = 0; i < tresWithName.size(); ++i) {
-                    Tre thisTre = tresWithName.get(i);
-                    List<TreEntry> treEntries = thisTre.getEntries();
-                    for (TreEntry treEntry : treEntries) {
-                        tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treEntry.getName()), treEntry.getFieldValue().trim());
-                    }
+                    flattenThisTre(tresWithName.get(i), i, tresFlat);
                 }
             }
         }
         return tresFlat;
+    }
+
+    private void flattenOnlyTre(final Tre onlyTre, final Map<String, String> tresFlat) {
+        List<TreEntry> treEntries = onlyTre.getEntries();
+        for (TreEntry treEntry : treEntries) {
+            flattenOneTreEntry(tresFlat, treEntry, onlyTre.getName());
+        }
+    }
+
+    private void flattenThisTre(final Tre thisTre, final int i, final Map<String, String> tresFlat) {
+        List<TreEntry> treEntries = thisTre.getEntries();
+        for (TreEntry treEntry : treEntries) {
+            tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treEntry.getName()), treEntry.getFieldValue().trim());
+        }
     }
 
     public final void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String parentName) {
