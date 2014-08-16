@@ -14,9 +14,6 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
-import java.util.Set;
-
 /**
     Graphic segment subheader information (NITF 2.1 / NSIF 1.0 only).
 */
@@ -33,11 +30,10 @@ public class NitfGraphicSegment extends AbstractNitfSubSegment {
     private int boundingBox2Column = 0;
     private byte[] data = null;
 
+    /**
+        Default constructor.
+    */
     public NitfGraphicSegment() {
-    }
-
-    public final void parse(final NitfReader nitfReader, final int graphicLength, final Set<ParseOption> parseOptions) throws ParseException {
-        new NitfGraphicSegmentParser(nitfReader, graphicLength, parseOptions, this);
     }
 
     public final void setGraphicName(final String name) {

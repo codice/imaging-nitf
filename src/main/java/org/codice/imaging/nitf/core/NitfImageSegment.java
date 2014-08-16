@@ -14,11 +14,9 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
     Image segment subheader information.
@@ -56,11 +54,10 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     private String imageMagnification = null;
     private byte[] data = null;
 
+    /**
+        Default constructor.
+    */
     public NitfImageSegment() {
-    }
-
-    public final void parse(final NitfReader nitfReader, final long imageLength, final Set<ParseOption> parseOptions) throws ParseException {
-        new NitfImageSegmentParser(nitfReader, imageLength, parseOptions, this);
     }
 
     /**

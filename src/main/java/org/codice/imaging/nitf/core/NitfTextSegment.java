@@ -14,9 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
 import java.util.Date;
-import java.util.Set;
 
 /**
     Text segment subheader information.
@@ -29,13 +27,10 @@ public class NitfTextSegment extends AbstractNitfSubSegment {
 
     private String data = null;
 
+    /**
+        Default constructor.
+    */
     public NitfTextSegment() {
-    }
-
-    public final void parse(final NitfReader nitfReader,
-                            final int textLength,
-                            final Set<ParseOption> parseOptions) throws ParseException {
-        new NitfTextSegmentParser(nitfReader, textLength, parseOptions, this);
     }
 
     public final void setTextDateTime(final Date dateTime) {

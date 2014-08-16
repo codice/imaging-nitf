@@ -26,10 +26,17 @@ public class NitfFileSecurityMetadata extends NitfSecurityMetadata {
     private String nitfFileCopyNumber = null;
     private String nitfFileNumberOfCopies = null;
 
+    /**
+        Constructor.
+        <p>
+        This builds a new object using the specified NitfReader.
+
+        @param nitfReader the reader to use, positioned at the start of the file security metadata.
+        @throws ParseException if any error in the metadata is detected.
+    */
     public NitfFileSecurityMetadata(final NitfReader nitfReader) throws ParseException {
         NitfFileSecurityMetadataParser parser = new NitfFileSecurityMetadataParser();
         parser.parse(nitfReader, this);
-
     }
 
     /**

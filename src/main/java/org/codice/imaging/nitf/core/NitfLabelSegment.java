@@ -14,9 +14,6 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
-import java.util.Set;
-
 /**
     Label segment subheader information (NITF 2.0 only).
 */
@@ -32,13 +29,10 @@ public class NitfLabelSegment extends AbstractNitfSubSegment {
 
     private String data = null;
 
+    /**
+        Default constructor.
+    */
     public NitfLabelSegment() {
-    }
-
-    public final void parse(final NitfReader nitfReader,
-                            final int labelLength,
-                            final Set<ParseOption> parseOptions) throws ParseException {
-        new NitfLabelSegmentParser(nitfReader, labelLength, parseOptions, this);
     }
 
     public final void setLabelLocationRow(final int rowNumber) {

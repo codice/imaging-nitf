@@ -321,7 +321,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private void readImageSegments() throws ParseException {
         for (int i = 0; i < numberImageSegments; ++i) {
             NitfImageSegment imageSegment = new NitfImageSegment();
-            imageSegment.parse(reader, li.get(i), parseOptionSet);
+            new NitfImageSegmentParser(reader, li.get(i), parseOptionSet, imageSegment);
             nitf.addImageSegment(imageSegment);
         }
     }
@@ -329,7 +329,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private void readGraphicSegments() throws ParseException {
         for (int i = 0; i < numberGraphicSegments; ++i) {
             NitfGraphicSegment graphicSegment = new NitfGraphicSegment();
-            graphicSegment.parse(reader, ls.get(i), parseOptionSet);
+            new NitfGraphicSegmentParser(reader, ls.get(i), parseOptionSet, graphicSegment);
             nitf.addGraphicSegment(graphicSegment);
         }
     }
@@ -338,7 +338,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private void readSymbolSegments() throws ParseException {
         for (int i = 0; i < numberGraphicSegments; ++i) {
             NitfSymbolSegment symbolSegment = new NitfSymbolSegment();
-            symbolSegment.parse(reader, ls.get(i), parseOptionSet);
+            new NitfSymbolSegmentParser(reader, ls.get(i), parseOptionSet, symbolSegment);
             nitf.addSymbolSegment(symbolSegment);
         }
     }
@@ -346,7 +346,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private void readLabelSegments() throws ParseException {
         for (int i = 0; i < numberLabelSegments; ++i) {
             NitfLabelSegment labelSegment = new NitfLabelSegment();
-            labelSegment.parse(reader, ll.get(i), parseOptionSet);
+            new NitfLabelSegmentParser(reader, ll.get(i), parseOptionSet, labelSegment);
             nitf.addLabelSegment(labelSegment);
         }
     }
@@ -354,7 +354,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private void readTextSegments() throws ParseException {
         for (int i = 0; i < numberTextSegments; ++i) {
             NitfTextSegment textSegment = new NitfTextSegment();
-            textSegment.parse(reader, lt.get(i), parseOptionSet);
+            new NitfTextSegmentParser(reader, lt.get(i), parseOptionSet, textSegment);
             nitf.addTextSegment(textSegment);
         }
     }

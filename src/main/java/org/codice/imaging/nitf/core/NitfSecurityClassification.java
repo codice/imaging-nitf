@@ -19,19 +19,61 @@ package org.codice.imaging.nitf.core;
 */
 public enum NitfSecurityClassification {
 
+    /**
+        Unknown security classification.
+        <p>
+        This indicates an unknown classification, and typically indicates a broken file or
+        an error during parsing. This is not a valid value in a NITF file.
+    */
     UNKNOWN (""),
+
+    /**
+        Unclassified.
+    */
     UNCLASSIFIED ("U"),
+
+    /**
+        Restricted.
+    */
     RESTRICTED ("R"),
+
+    /**
+        Confidential.
+    */
     CONFIDENTIAL ("C"),
+
+    /**
+        Secret.
+    */
     SECRET ("S"),
+
+    /**
+        Top Secret.
+    */
     TOP_SECRET ("T");
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     NitfSecurityClassification(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
+    /**
+        Create a security classification from the text equivalent.
+        <p>
+        This is intended to support file parsing, and is not usually necessary
+        for other purposes.
+
+        @param textEquivalent the single character text equivalent for a security classification.
+        @return the security classification (enumerated type)
+    */
     public static NitfSecurityClassification getEnumValue(final String textEquivalent) {
         for (NitfSecurityClassification classification : values()) {
             if (textEquivalent.equals(classification.textEquivalent)) {
@@ -41,6 +83,14 @@ public enum NitfSecurityClassification {
         return UNKNOWN;
     }
 
+    /**
+        Return the text equivalent for a security classification.
+        <p>
+        This is intended for debug output and output writing, and is not usually
+        necessary for other purposes.
+
+        @return the single character text equivalent for a security classification.
+    */
     public String getTextEquivalent() {
         return textEquivalent;
     }

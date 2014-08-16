@@ -14,9 +14,6 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
-import java.util.Set;
-
 /**
     Symbol segment subheader information (NITF 2.0 only).
 */
@@ -39,11 +36,10 @@ public class NitfSymbolSegment extends AbstractNitfSubSegment {
 
     private byte[] data = null;
 
+    /**
+        Default constructor.
+    */
     public NitfSymbolSegment() {
-    }
-
-    public final void parse(final NitfReader nitfReader, final int symbolLength, final Set<ParseOption> parseOptions) throws ParseException {
-        new NitfSymbolSegmentParser(nitfReader, symbolLength, parseOptions, this);
     }
 
     public final void setSymbolName(final String name) {

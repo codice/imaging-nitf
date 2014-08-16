@@ -96,6 +96,8 @@ public enum ImageCoordinatesRepresentation {
         for other purposes.
 
         @param textEquivalent the single character text equivalent for an image coordinate representation.
+        @param nitfFileType the type (version) of NITF file
+        @return the image coordinate representation (enumerated type)
     */
     public static ImageCoordinatesRepresentation getEnumValue(final String textEquivalent, final FileType nitfFileType) {
         for (ImageCoordinatesRepresentation icr : values()) {
@@ -118,6 +120,7 @@ public enum ImageCoordinatesRepresentation {
         This is intended for debug output and output writing, and is not usually
         necessary for other purposes.
 
+        @param nitfFileType the type (version) of NITF file
         @return the single character text equivalent for an image coordinate representation.
     */
     public String getTextEquivalent(final FileType nitfFileType) {
