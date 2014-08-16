@@ -494,6 +494,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         getImageCommentZeroBase() is likely to be more useful.
 
         @param commentNumber the comment number, starting from 1.
+        @return image comment corresponding to commentNumber index.
     */
     public final String getImageComment(final int commentNumber) {
         return getImageCommentZeroBase(commentNumber - 1);
@@ -511,6 +512,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         useful.
 
         @param commentNumberZeroBase the comment number, starting from 0.
+        @return image comment corresponding to commentNumberZeroBase index.
     */
     public final String getImageCommentZeroBase(final int commentNumberZeroBase) {
         return imageComments.get(commentNumberZeroBase);
@@ -801,6 +803,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         number of bands (see getNumBands() for how to determine the number of bands).
 
         @param bandNumber the index of the band to return.
+        @return image band corresponding to the bandNumber index
     */
     public final NitfImageBand getImageBand(final int bandNumber) {
         return getImageBandZeroBase(bandNumber - 1);
@@ -813,6 +816,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
         number of bands.
 
         @param bandNumberZeroBase the index of the band to return (0 base).
+        @return image band corresponding to the bandNumberZeroBase index
     */
     public final NitfImageBand getImageBandZeroBase(final int bandNumberZeroBase) {
         return imageBands.get(bandNumberZeroBase);

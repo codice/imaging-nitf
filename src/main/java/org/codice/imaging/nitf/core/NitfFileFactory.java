@@ -24,6 +24,11 @@ import java.util.Set;
  */
 public final class NitfFileFactory {
 
+    /**
+        Private constructor.
+        <p>
+        This class is not intended to be instantiated.
+    */
     private NitfFileFactory() {
     }
 
@@ -38,6 +43,8 @@ public final class NitfFileFactory {
         thrown in this case.
 
         @param nitfInputStream the input stream to parse over.
+        @return NitfFile structure corresponding to the input stream.
+        @throws ParseException on detecting an invalid file or other parse error.
     */
     public static NitfFile parseHeadersOnly(final InputStream nitfInputStream) throws ParseException {
         NitfFile file = new NitfFile();
@@ -55,7 +62,9 @@ public final class NitfFileFactory {
         thrown in this case.
 
         @param nitfInputStream the input stream to parse over.
-        @param parseOptions the data segments to extract
+        @param parseOptions the data segments to extract.
+        @return NitfFile structure corresponding to the input stream.
+        @throws ParseException on detecting an invalid file or other parse error.
     */
     public static NitfFile parseSelectedDataSegments(final InputStream nitfInputStream, final Set<ParseOption> parseOptions) throws ParseException {
         NitfFile file = new NitfFile();

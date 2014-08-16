@@ -42,6 +42,9 @@ public class NitfFile extends AbstractNitfSegment {
     private List<NitfTextSegment> textSegments = new ArrayList<NitfTextSegment>();
     private List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<NitfDataExtensionSegment>();
 
+    /**
+        Default constructor.
+    */
     public NitfFile() {
     }
 
@@ -88,10 +91,38 @@ public class NitfFile extends AbstractNitfSegment {
         return nitfComplexityLevel;
     }
 
+    /**
+        Set the standard type (STYPE) for the file.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "Standard type or capability. A BCS-A character string BF01 which indicates that this file is
+        formatted using ISO/IEC IS 12087-5. NITF02.10 is intended to be registered as a profile of ISO/IEC IS
+        12087-5." [MIL-STD-2500C]
+        <p>
+        For NITF 2.0: "System type or capability. This field is reserved for future use and shall be filled
+        with spaces (ASCII 32, decimal)."
+        <p>
+        That is, the only valid value for NITF 2.1 / NSIF 1.0 is "BF01", and the only valid value for NITF 2.0 is "    " (four spaces).
+
+        @param standardType the standard type (four characters maximum).
+    */
     public final void setStandardType(final String standardType) {
         nitfStandardType = standardType;
     }
 
+    /**
+        Return the standard type (STYPE) for the file.
+        <p>
+        For NITF 2.1 / NSIF 1.0: "Standard type or capability. A BCS-A character string BF01 which indicates that this file is
+        formatted using ISO/IEC IS 12087-5. NITF02.10 is intended to be registered as a profile of ISO/IEC IS
+        12087-5." [MIL-STD-2500C]
+        <p>
+        For NITF 2.0: "System type or capability. This field is reserved for future use and shall be filled
+        with spaces (ASCII 32, decimal)."
+        <p>
+        That is, the only valid value for NITF 2.1 / NSIF 1.0 is "BF01", and the only valid value for NITF 2.0 is "    " (four spaces).
+
+        @return the standard type.
+    */
     public final String getStandardType() {
         return nitfStandardType;
     }
@@ -202,6 +233,8 @@ public class NitfFile extends AbstractNitfSegment {
         Return the background colour (FBKGC) for the file.
 
         This is only valid for NITF 2.1 and NSIF 1.0 files.
+
+        @return background colour
     */
     public final RGBColour getFileBackgroundColour() {
         return nitfFileBackgroundColour;
@@ -375,10 +408,22 @@ public class NitfFile extends AbstractNitfSegment {
         imageSegments.add(imageSegment);
     }
 
+    /**
+        Return the specified image segment.
+
+        @param segmentNumber the index of the image segment to return (1 base).
+        @return the image segment corresponding to segmentNumber.
+    */
     public final NitfImageSegment getImageSegment(final int segmentNumber) {
         return getImageSegmentZeroBase(segmentNumber - 1);
     }
 
+    /**
+        Return the specified image segment.
+
+        @param segmentNumberZeroBase the index of the image segment to return (0 base).
+        @return the image segment corresponding to segmentNumberZeroBase.
+    */
     public final NitfImageSegment getImageSegmentZeroBase(final int segmentNumberZeroBase) {
         return imageSegments.get(segmentNumberZeroBase);
     }
@@ -394,10 +439,26 @@ public class NitfFile extends AbstractNitfSegment {
         graphicSegments.add(graphicSegment);
     }
 
+    /**
+        Return the specified graphic segment.
+        <p>
+        Only NITF 2.1 / NSIF 1.0 files will have graphic segments.
+
+        @param segmentNumber the index of the graphic segment to return (1 base).
+        @return the graphic segment corresponding to segmentNumberZeroBase.
+    */
     public final NitfGraphicSegment getGraphicSegment(final int segmentNumber) {
         return getGraphicSegmentZeroBase(segmentNumber - 1);
     }
 
+    /**
+        Return the specified graphic segment.
+        <p>
+        Only NITF 2.1 / NSIF 1.0 files will have graphic segments.
+
+        @param segmentNumberZeroBase the index of the graphic segment to return (0 base).
+        @return the graphic segment corresponding to segmentNumberZeroBase.
+    */
     public final NitfGraphicSegment getGraphicSegmentZeroBase(final int segmentNumberZeroBase) {
         return graphicSegments.get(segmentNumberZeroBase);
     }
@@ -413,10 +474,26 @@ public class NitfFile extends AbstractNitfSegment {
         symbolSegments.add(symbolSegment);
     }
 
+    /**
+        Return the specified symbol segment.
+        <p>
+        Only NITF 2.0 files will have symbol segments.
+
+        @param segmentNumber the index of the symbol segment to return (1 base).
+        @return the symbol segment corresponding to segmentNumber.
+    */
     public final NitfSymbolSegment getSymbolSegment(final int segmentNumber) {
         return getSymbolSegmentZeroBase(segmentNumber - 1);
     }
 
+    /**
+        Return the specified symbol segment.
+        <p>
+        Only NITF 2.0 files will have symbol segments.
+
+        @param segmentNumberZeroBase the index of the symbol segment to return (0 base).
+        @return the symbol segment corresponding to segmentNumberZeroBase.
+    */
     public final NitfSymbolSegment getSymbolSegmentZeroBase(final int segmentNumberZeroBase) {
         return symbolSegments.get(segmentNumberZeroBase);
     }
@@ -432,10 +509,26 @@ public class NitfFile extends AbstractNitfSegment {
         labelSegments.add(labelSegment);
     }
 
+    /**
+        Return the specified label segment.
+        <p>
+        Only NITF 2.0 files will have label segments.
+
+        @param segmentNumber the index of the label segment to return (1 base).
+        @return the label segment corresponding to segmentNumber.
+    */
     public final NitfLabelSegment getLabelSegment(final int segmentNumber) {
         return getLabelSegmentZeroBase(segmentNumber - 1);
     }
 
+    /**
+        Return the specified label segment.
+        <p>
+        Only NITF 2.0 files will have label segments.
+
+        @param segmentNumberZeroBase the index of the label segment to return (0 base).
+        @return the label segment corresponding to segmentNumberZeroBase.
+    */
     public final NitfLabelSegment getLabelSegmentZeroBase(final int segmentNumberZeroBase) {
         return labelSegments.get(segmentNumberZeroBase);
     }
@@ -449,10 +542,22 @@ public class NitfFile extends AbstractNitfSegment {
         textSegments.add(textSegment);
     }
 
+    /**
+        Return the specified text segment.
+
+        @param segmentNumber the index of the text segment to return (1 base).
+        @return the text segment corresponding to segmentNumber.
+    */
     public final NitfTextSegment getTextSegment(final int segmentNumber) {
         return getTextSegmentZeroBase(segmentNumber - 1);
     }
 
+    /**
+        Return the specified text segment.
+
+        @param segmentNumberZeroBase the index of the text segment to return (0 base).
+        @return the text segment corresponding to segmentNumberZeroBase.
+    */
     public final NitfTextSegment getTextSegmentZeroBase(final int segmentNumberZeroBase) {
         return textSegments.get(segmentNumberZeroBase);
     }
@@ -466,10 +571,22 @@ public class NitfFile extends AbstractNitfSegment {
         dataExtensionSegments.add(dataExtensionSegment);
     }
 
+    /**
+        Return the specified data extension segment (DES).
+
+        @param segmentNumber the index of the data extension segment to return (1 base).
+        @return the data extension segment corresponding to segmentNumber.
+    */
     public final NitfDataExtensionSegment getDataExtensionSegment(final int segmentNumber) {
         return getDataExtensionSegmentZeroBase(segmentNumber - 1);
     }
 
+    /**
+        Return the specified data extension segment (DES).
+
+        @param segmentNumberZeroBase the index of the data extension segment to return (0 base).
+        @return the data extension segment corresponding to segmentNumberZeroBase.
+    */
     public final NitfDataExtensionSegment getDataExtensionSegmentZeroBase(final int segmentNumberZeroBase) {
         return dataExtensionSegments.get(segmentNumberZeroBase);
     }

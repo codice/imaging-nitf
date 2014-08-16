@@ -92,6 +92,13 @@ public enum ImageRepresentation {
 
     private final String textEquivalent;
 
+    /**
+        Constructor.
+        <p>
+        This is required for enumeration initialisation.
+
+        @param abbreviation the text abbreviation for the enumeration value.
+    */
     ImageRepresentation(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
@@ -103,6 +110,7 @@ public enum ImageRepresentation {
         for other purposes.
 
         @param textEquivalent the text equivalent for an image representation
+        @return the corresponding image representation (enumerated type)
     */
     public static ImageRepresentation getEnumValue(final String textEquivalent) {
         for (ImageRepresentation irep : values()) {

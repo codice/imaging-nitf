@@ -29,6 +29,11 @@ public class ImageCoordinates {
     private static final int COORDINATEMAXROWMAXCOL_INDEX = 2;
     private static final int COORDINATEMAXROW0_INDEX = 3;
 
+    /**
+        Constructor.
+
+        @param coord array of four coordinate pairs, in the order [0,0], [0, MaxCol], [MaxRow, MaxCol], [MaxRow, 0].
+    */
     public ImageCoordinates(final ImageCoordinatePair[] coord) {
         coordinate00 = coord[COORDINATE00_INDEX];
         coordinate0MaxCol = coord[COORDINATE0MAXCOL_INDEX];
@@ -36,18 +41,38 @@ public class ImageCoordinates {
         coordinateMaxRow0 = coord[COORDINATEMAXROW0_INDEX];
     }
 
+    /**
+        Get the coordinate pair for [0,0].
+
+        @return corresponding coordinate pair.
+    */
     public final ImageCoordinatePair getCoordinate00() {
         return coordinate00;
     }
 
+    /**
+        Get the coordinate pair for [0,MaxCol].
+
+        @return corresponding coordinate pair.
+    */
     public final ImageCoordinatePair getCoordinate0MaxCol() {
         return coordinate0MaxCol;
     }
 
+    /**
+        Get the coordinate pair for [MaxRow,MaxCol].
+
+        @return corresponding coordinate pair.
+    */
     public final ImageCoordinatePair getCoordinateMaxRowMaxCol() {
         return coordinateMaxRowMaxCol;
     }
 
+    /**
+        Get the coordinate pair for [MaxRow,0].
+
+        @return corresponding coordinate pair.
+    */
     public final ImageCoordinatePair getCoordinateMaxRow0() {
         return coordinateMaxRow0;
     }

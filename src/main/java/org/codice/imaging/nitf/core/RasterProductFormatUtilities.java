@@ -23,7 +23,7 @@ import javax.xml.bind.Unmarshaller;
 import org.codice.imaging.nitf.core.schema.Rpfs;
 
 /**
-    Utility classes for Raster Product Format (RPF) handling.
+    Utility class for Raster Product Format (RPF) handling.
 */
 public class RasterProductFormatUtilities {
 
@@ -32,6 +32,13 @@ public class RasterProductFormatUtilities {
     static final int CODE_LENGTH = 2;
     static final int EXPECTED_FILE_SUFFIX_LENGTH = 3;
 
+    /**
+        Construct utilities class.
+        <p>
+        This performs internal initialisation.
+
+        @throws ParseException if the internal initialisation fails.
+    */
     public RasterProductFormatUtilities() throws ParseException {
         InputStream is = getClass().getResourceAsStream("/rpf_codes.xml");
         try {
@@ -41,12 +48,26 @@ public class RasterProductFormatUtilities {
         }
     }
 
+    /**
+        Unmarshal input stream to RPFs list.
+
+        @param inputStream the input stream to parse.
+        @throws JAXBException if the unmarshalling of the XML fails.
+    */
     private void unmarshal(final InputStream inputStream) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Rpfs.class);
         Unmarshaller u = jc.createUnmarshaller();
         rpfs = (Rpfs) u.unmarshal(inputStream);
     }
 
+    /**
+        Return the data series abbreviation for an RPF file name.
+        <p>
+        This encodes MIL-STD-2411-1 Section 5.1.4 data series abbreviations.
+
+        @param fileName the filename to look-up the abbreviation for.
+        @return standard abbreviation for the data series.
+    */
     public final String getAbbreviationForFileName(final String fileName) {
         Rpfs.Rpf rpf = getRpfForFileName(fileName);
         if (rpf == null) {
@@ -55,6 +76,14 @@ public class RasterProductFormatUtilities {
         return rpf.getAbbreviation();
     }
 
+    /**
+        Return the data series name for an RPF file name.
+        <p>
+        This encodes MIL-STD-2411-1 Section 5.1.4 data series names.
+
+        @param fileName the filename to look-up the name for.
+        @return standard name for the data series.
+    */
     public final String getNameForFileName(final String fileName) {
         Rpfs.Rpf rpf = getRpfForFileName(fileName);
         if (rpf == null) {
@@ -63,6 +92,12 @@ public class RasterProductFormatUtilities {
         return rpf.getName();
     }
 
+    /**
+        Find RPF entry corresponding to a file name.
+
+        @param fileName the filename
+        @return corresponding RPF.
+    */
     private Rpfs.Rpf getRpfForFileName(final String fileName) {
         String fileSuffix = null;
         int dotPosition = fileName.lastIndexOf('.');
