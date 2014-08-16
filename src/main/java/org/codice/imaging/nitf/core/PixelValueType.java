@@ -19,11 +19,37 @@ package org.codice.imaging.nitf.core;
 */
 public enum PixelValueType {
 
+    /**
+        Unknown pixel value type.
+        <p>
+        This indicates an unknown format, and typically indicates a broken file or
+        an error during parsing. This is not a valid value in a NITF image.
+    */
     UNKNOWN (""),
+
+    /**
+        Integer.
+    */
     INTEGER ("INT"),
+
+    /**
+        Bi-level.
+    */
     BILEVEL ("B"),
+
+    /**
+        Signed integer.
+    */
     SIGNEDINTEGER ("SI"),
+
+    /**
+        Real (floating point).
+    */
     REAL ("R"),
+
+    /**
+        Complex (real and imaginary floating point).
+    */
     COMPLEX ("C");
 
     private final String textEquivalent;

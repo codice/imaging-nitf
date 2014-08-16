@@ -27,7 +27,12 @@ public class NitfInputStreamReader extends NitfReaderDefaultImpl implements Nitf
 
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
-    public NitfInputStreamReader(final BufferedInputStream nitfInputStream) throws ParseException {
+    /**
+        Constructor.
+
+        @param nitfInputStream the input stream to read the NITF file contents from.
+    */
+    public NitfInputStreamReader(final BufferedInputStream nitfInputStream) {
         input = nitfInputStream;
     }
 
@@ -66,6 +71,7 @@ public class NitfInputStreamReader extends NitfReaderDefaultImpl implements Nitf
         return defaultReadBytes(count);
     }
 
+    @Override
     public final byte[] readBytesRaw(final int count) throws ParseException {
         try {
             byte[] bytes = new byte[count];
@@ -83,6 +89,7 @@ public class NitfInputStreamReader extends NitfReaderDefaultImpl implements Nitf
         }
     }
 
+    @Override
     public final void skip(final long count) throws ParseException {
         long bytesToRead = count;
         try {

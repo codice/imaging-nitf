@@ -19,16 +19,78 @@ package org.codice.imaging.nitf.core;
 */
 public enum SymbolColour {
 
+    /**
+        Unknown colour encoding.
+        <p>
+        This indicates an unknown colour encoding, and typically indicates a broken file or
+        an error during parsing. This is not a valid value in a NITF symbol subheader.
+    */
     UNKNOWN (""),
+
+    /**
+        Use colour lookup table.
+    */
     USE_COLOUR_LUT ("C"),
+
+    /**
+        Use grayscale lookup table.
+    */
     USE_GRAYSCALE_LUT ("G"),
+
+    /**
+        Zero black, one white.
+        <p>
+        This is only valid if the number of bits per pixel is 1.
+    */
     ZERO_BLACK_ONE_WHITE ("N"),
+
+    /**
+        Zero transparent, one black.
+        <p>
+        This is only valid if the number of bits per pixel is 1.
+    */
     ZERO_TRANSPARENT_ONE_BLACK ("K"),
+
+    /**
+        Zero transparent, one white.
+        <p>
+        This is only valid if the number of bits per pixel is 1.
+    */
     ZERO_TRANSPARENT_ONE_WHITE ("W"),
+
+    /**
+        Zero transparent, one red.
+        <p>
+        This is only valid if the number of bits per pixel is 1.
+    */
     ZERO_TRANSPARENT_ONE_RED ("R"),
+
+    /**
+        Zero transparent, one orange.
+        <p>
+        This is only valid if the number of bits per pixel is 1.
+    */
     ZERO_TRANSPARENT_ONE_ORANGE ("O"),
+
+    /**
+        Zero transparent, one blue.
+        <p>
+        This is only valid if the number of bits per pixel is 1.
+    */
     ZERO_TRANSPARENT_ONE_BLUE ("B"),
+
+    /**
+        Zero transparent, one yellow.
+        <p>
+        This is only valid if the number of bits per pixel is 1.
+    */
     ZERO_TRANSPARENT_ONE_YELLOW ("Y"),
+
+    /**
+        Not applicable.
+        <p>
+        This is the only valid code for CGM.
+    */
     NOT_APPLICABLE (" ");
 
     private final String textEquivalent;

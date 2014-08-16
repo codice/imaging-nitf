@@ -83,10 +83,16 @@
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-        <!-- TODO: turn these back on -->
-<!--        <module name="JavadocMethod"/>-->
-        <module name="JavadocType"/>
-<!--        <module name="JavadocVariable"/> -->
+        <!-- TODO: turn this back on , set scope to be protected -->
+<!--        <module name="JavadocMethod">
+            <property name="scope" value="public"/>
+        </module>-->
+        <module name="JavadocType">
+            <property name="scope" value="protected"/>
+        </module>
+        <module name="JavadocVariable">
+            <property name="scope" value="protected"/>
+        </module>
         <module name="JavadocStyle"/>
 
         <!-- Checks for Naming Conventions.                  -->

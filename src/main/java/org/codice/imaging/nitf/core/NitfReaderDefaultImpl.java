@@ -39,26 +39,23 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
     */
     protected static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
+    /** {@inheritDoc} */
     public final void setFileType(final FileType fileType) {
         nitfFileType = fileType;
     }
 
+    /** {@inheritDoc} */
     public final FileType getFileType() {
         return nitfFileType;
     }
 
-    public abstract Boolean canSeek();
-
-    public abstract int getCurrentOffset();
-
+    /** {@inheritDoc} */
     public final void verifyHeaderMagic(final String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
             throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), getCurrentOffset());
         }
     }
-
-    public abstract Integer readBytesAsInteger(final int count) throws ParseException;
 
     protected final Integer defaultReadBytesAsInteger(final int count) throws ParseException {
         String intString = readBytes(count);
@@ -71,8 +68,6 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         return intValue;
     }
 
-    public abstract Long readBytesAsLong(final int count) throws ParseException;
-
     protected final Long defaultReadBytesAsLong(final int count) throws ParseException {
         String longString = readBytes(count);
         Long longValue = 0L;
@@ -83,8 +78,6 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         }
         return longValue;
     }
-
-    public abstract Double readBytesAsDouble(final int count) throws ParseException;
 
     protected final Double defaultReadBytesAsDouble(final int count) throws ParseException {
         String doubleString = readBytes(count);
@@ -97,12 +90,16 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         return doubleValue;
     }
 
-    public abstract String readTrimmedBytes(final int count) throws ParseException;
-
     protected final String defaultReadTrimmedBytes(final int count) throws ParseException {
         return rightTrim(readBytes(count));
     }
 
+    /**
+        Convenience routine to remove whitespace only from the right hand end of the string.
+
+        @param s the string to trim.
+        @return the string with all whitespace on the right hand end removed.
+    */
     public static String rightTrim(final String s) {
         int i = s.length() - 1;
         while ((i >= 0) && Character.isWhitespace(s.charAt(i))) {
@@ -111,13 +108,8 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         return s.substring(0, i + 1);
     }
 
-    public abstract String readBytes(final int count) throws ParseException;
-
     protected final String defaultReadBytes(final int count) throws ParseException {
         return new String(readBytesRaw(count), UTF8_CHARSET);
     }
 
-    public abstract byte[] readBytesRaw(final int count) throws ParseException;
-
-    public abstract void skip(final long count) throws ParseException;
 }

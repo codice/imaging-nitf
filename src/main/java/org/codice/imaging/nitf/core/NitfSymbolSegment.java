@@ -154,10 +154,25 @@ public class NitfSymbolSegment extends AbstractNitfSubSegment {
         return symbolRotation;
     }
 
+    /**
+        Set the symbol data.
+        <p>
+        This is the contents of the data segment.
+
+        @param symbolData the symbol data
+    */
     public final void setSymbolData(final byte[] symbolData) {
         data = symbolData;
     }
 
+    /**
+        Return the symbol data.
+        <p>
+        This is the contents of the data segment. Depending on how the
+        parsing was configured, this can be null.
+
+        @return the symbol data
+    */
     public final byte[] getSymbolData() {
         return data;
     }

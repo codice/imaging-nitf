@@ -25,10 +25,22 @@ public abstract class AbstractNitfSegment {
 
     private TreCollection treCollection = new TreCollection();
 
+    /**
+        Return the TREs for this segment, in raw form.
+
+        @return TRE collection
+    */
     public final TreCollection getTREsRawStructure() {
         return treCollection;
     }
 
+    /**
+        Return the TREs for this segment, flattened into a key-value pair map.
+        <p>
+        This will build appropriate namespaces for each entry.
+
+        @return TRE map.
+    */
     public final Map<String, String> getTREsFlat() {
         Map<String, String> tresFlat = new TreeMap<String, String>();
         for (String treName : treCollection.getUniqueNamesOfTRE()) {
@@ -44,6 +56,12 @@ public abstract class AbstractNitfSegment {
         return tresFlat;
     }
 
+    /**
+        Flatten out a single TRE.
+
+        @param onlyTre the TRE to flatten.
+        @param tresFlat the map to flatten the TRE into.
+    */
     private void flattenOnlyTre(final Tre onlyTre, final Map<String, String> tresFlat) {
         List<TreEntry> treEntries = onlyTre.getEntries();
         for (TreEntry treEntry : treEntries) {
@@ -51,6 +69,13 @@ public abstract class AbstractNitfSegment {
         }
     }
 
+    /**
+        Flatten out a single TRE, where other TREs have the same name.
+
+        @param thisTre the TRE to flatten.
+        @param i the index of this TRE (zero base), required for namespacing.
+        @param tresFlat the map to flatten the TRE into.
+    */
     private void flattenThisTre(final Tre thisTre, final int i, final Map<String, String> tresFlat) {
         List<TreEntry> treEntries = thisTre.getEntries();
         for (TreEntry treEntry : treEntries) {
@@ -58,6 +83,13 @@ public abstract class AbstractNitfSegment {
         }
     }
 
+    /**
+        Flatten out a TreEntry.
+
+        @param tresFlat the map to flatten into.
+        @param treEntry the TreEntry to flatten.
+        @param parentName the name of the parent, required for namespacing.
+    */
     public final void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String parentName) {
         if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
             String key = String.format("%s_%s", parentName, treEntry.getName());
@@ -76,6 +108,11 @@ public abstract class AbstractNitfSegment {
         }
     }
 
+    /**
+        Merge a TreCollection into the TREs already associated with this segment.
+
+        @param tresToAdd the TRE collection to add.
+    */
     protected final void mergeTREs(final TreCollection tresToAdd) {
         treCollection.add(tresToAdd);
     }
