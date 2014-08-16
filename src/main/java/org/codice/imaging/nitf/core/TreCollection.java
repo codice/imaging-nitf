@@ -23,18 +23,41 @@ import java.util.List;
 public class TreCollection {
     private List<Tre> treCollectionEntries = new ArrayList<Tre>();
 
+    /**
+        Return the TREs.
+
+        @return list of TREs
+    */
     public final List<Tre> getTREs() {
         return treCollectionEntries;
     }
 
+    /**
+        Add a TRE to the collection.
+
+        @param tre the TRE to add to the collection.
+    */
     public final void add(final Tre tre) {
         treCollectionEntries.add(tre);
     }
 
+    /**
+        Add multiple TREs to the collection.
+
+        @param collectionToAdd the TREs to add.
+    */
     public final void add(final TreCollection collectionToAdd) {
         treCollectionEntries.addAll(collectionToAdd.getTREs());
     }
 
+    /**
+        Get the names of the TREs in the collection.
+        <p>
+        This method returns a unique list of TRE names. That list can be
+        iterated over with getTREsWithName() to get the TREs.
+
+        @return the TRE names.
+    */
     public final List<String> getUniqueNamesOfTRE() {
         List<String> treNames = new ArrayList<String>();
         for (Tre tre : treCollectionEntries) {
@@ -46,6 +69,12 @@ public class TreCollection {
         return treNames;
     }
 
+    /**
+        Get the TREs that have a specific name.
+
+        @param nameToMatch the name of the TREs to match.
+        @return list of TREs with a specific name.
+    */
     public final List<Tre> getTREsWithName(final String nameToMatch) {
         List<Tre> tres = new ArrayList<Tre>();
         for (Tre tre : treCollectionEntries) {
@@ -57,6 +86,11 @@ public class TreCollection {
         return tres;
     }
 
+    /**
+        Check whether this collection has any TREs.
+
+        @return true if there are any TREs, or false if there no TREs in the collection
+    */
     public final boolean hasTREs() {
         return !treCollectionEntries.isEmpty();
     }

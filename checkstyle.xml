@@ -84,9 +84,9 @@
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <!-- TODO: turn this back on, set scope to be protected -->
-<!--        <module name="JavadocMethod">
-            <property name="scope" value="public"/>
-        </module>-->
+        <module name="JavadocMethod">
+            <property name="scope" value="protected"/>
+        </module>
         <module name="JavadocType">
             <property name="scope" value="protected"/>
         </module>

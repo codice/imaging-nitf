@@ -20,14 +20,29 @@ package org.codice.imaging.nitf.core;
 public class Tre extends TreEntryList {
     private String prefix = null;
 
+    /**
+        Construct TRE with specific tag name.
+
+        @param tag the name for the TRE.
+    */
     public Tre(final String tag) {
         super(tag);
     }
 
+    /**
+        Set the metadata prefix format string.
+
+        @param mdPrefix the metadata prefix.
+    */
     public final void setPrefix(final String mdPrefix) {
         prefix = mdPrefix;
     }
 
+    /**
+        Return the metadata prefix format string.
+
+        @return the metadata prefix.
+    */
     public final String getPrefix() {
         return prefix;
     }

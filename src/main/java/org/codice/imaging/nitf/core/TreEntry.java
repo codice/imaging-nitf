@@ -28,48 +28,101 @@ public class TreEntry {
     private List<TreGroup> groups = null;
     private TreGroup entryParent = null;
 
+    /**
+        Construct a TRE entry with a specific field name, field value and parent.
+        <p>
+        This is the simple (not-repeating) TRE entry form.
+
+        @param fieldName the field name of the new TRE entry.
+        @param fieldValue the field value for the new TRE entry.
+        @param parent the parent of the TRE entry (e.g. a TRE, or a group of values somewhere within a TRE)
+    */
     public TreEntry(final String fieldName, final String fieldValue, final TreGroup parent) {
         name = fieldName;
         value = fieldValue;
         entryParent = parent;
     }
 
+    /**
+        Construct a TRE entry with a specific field name and parent.
+        <p>
+        This is the repeating TRE entry form of an entry, initialised with an empty group list.
+
+        @param fieldName the field name of the new TRE entry.
+        @param parent the parent of the TRE entry (e.g. a TRE, or a group of values somewhere within a TRE)
+    */
     public TreEntry(final String fieldName, final TreGroup parent) {
         name = fieldName;
         entryParent = parent;
         groups = new ArrayList<TreGroup>();
     }
 
+    /**
+        Set the name of the TRE entry.
+
+        @param fieldName the name of the TRE entry.
+    */
     public final void setName(final String fieldName) {
         name = fieldName;
     }
 
+    /**
+        Return the name of the TRE entry.
+
+        @return the name of the TRE entry
+    */
     public final String getName() {
         return name;
     }
 
+    /**
+        Set the field value of the TRE entry.
+
+        @param fieldValue the value of the TRE
+    */
     public final void setFieldValue(final String fieldValue) {
         value = fieldValue;
     }
 
+    /**
+        Return the field value of the TRE entry.
+
+        @return the value of the TRE
+    */
     public final String getFieldValue() {
         return value;
     }
 
+    /**
+        Initialise the groups for this TRE entry.
+    */
     public final void initGroups() {
         if (groups == null) {
             groups = new ArrayList<TreGroup>();
         }
     }
 
+    /**
+        Return the groups for this TRE entry.
+
+        @return the groups for this TRE entry.
+    */
     public final List<TreGroup> getGroups() {
         return groups;
     }
 
+    /**
+        Add a group to the groups in this TRE entry.
+
+        @param group the group to add.
+    */
     public final void addGroup(final TreGroup group) {
         groups.add(group);
     }
 
+    /**
+        Debug dump of the TRE entry.
+    */
     public final void dump() {
         System.out.println("\tName:" + name);
         if (value != null) {

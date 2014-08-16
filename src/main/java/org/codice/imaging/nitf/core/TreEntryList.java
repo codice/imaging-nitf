@@ -21,10 +21,20 @@ public class TreEntryList extends TreGroup {
 
     private String name;
 
+    /**
+        Constructor.
+
+        @param tag the name of the entry list key
+    */
     public TreEntryList(final String tag) {
         name = tag;
     }
 
+    /**
+        Return the name of the entry list key.
+
+        @return the entry list key name
+    */
     public final String getName() {
         return name;
     }

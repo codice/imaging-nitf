@@ -28,6 +28,12 @@ public class RGBColour {
     private static final int REQUIRED_DATA_LENGTH = 3;
     private static final int UNSIGNED_BYTE_MASK = 0xFF;
 
+    /**
+        Constructor.
+
+        @param rgb three element array of the red, green and blue component values for the colour
+        @throws ParseException if the array does not have the right length.
+    */
     public RGBColour(final byte[] rgb) throws ParseException {
         if (rgb.length != REQUIRED_DATA_LENGTH) {
             throw new ParseException("Incorrect number of bytes in RGB constructor array", 0);
@@ -37,14 +43,29 @@ public class RGBColour {
         blue = rgb[2];
     }
 
+    /**
+        Return the red component of the colour.
+
+        @return red component of the colour
+    */
     public final byte getRed() {
         return red;
     }
 
+    /**
+        Return the green component of the colour.
+
+        @return green component of the colour
+    */
     public final byte getGreen() {
         return green;
     }
 
+    /**
+        Return the blue component of the colour.
+
+        @return blue component of the colour
+*/
     public final byte getBlue() {
         return blue;
     }

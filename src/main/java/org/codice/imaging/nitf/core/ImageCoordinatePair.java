@@ -43,18 +43,41 @@ public class ImageCoordinatePair {
     private static final String LAT_DECIMAL_DEGREES_FORMAT = "+dd.ddd";
     private static final int LAT_DECIMAL_DEGREES_FORMAT_LENGTH = LAT_DECIMAL_DEGREES_FORMAT.length();
 
+    /**
+        Default constructor.
+    */
     public ImageCoordinatePair() {
     }
 
+    /**
+        Constructor from a latitude / longitude pair.
+
+        @param latitude the latitude value (positive for North).
+        @param longitude the longitude value (positive for East).
+    */
     public ImageCoordinatePair(final double latitude, final double longitude) {
         lat = latitude;
         lon = longitude;
     }
 
+    /**
+        Return the latitude value.
+        <p>
+        North is positive.
+
+        @return the latitude value.
+    */
     public final double getLatitude() {
         return lat;
     }
 
+    /**
+        Return the longitude value.
+        <p>
+        East is positive.
+
+        @return the longitude value.
+    */
     public final double getLongitude() {
         return lon;
     }
@@ -107,6 +130,15 @@ public class ImageCoordinatePair {
         return degrees + ((minutes + (seconds / SECONDS_IN_ONE_MINUTE)) / MINUTES_IN_ONE_DEGREE);
     }
 
+    /**
+        Set the value from UTM / UPS North.
+        <p>
+        This format will not be converted to degrees, so getLatitude and getLongitude() will return
+        default (0) values.
+
+        @param utm the string representation of the coordinates.
+        @throws ParseException if the string does not have the correct length / format.
+    */
     public final void setFromUTMUPSNorth(final String utm) throws ParseException {
         if (utm.length() != "zzeeeeeennnnnnn".length()) {
             throw new ParseException("Incorrect length for UTM / UPS North String", 0);
@@ -135,6 +167,11 @@ public class ImageCoordinatePair {
         }
     }
 
+    /**
+        Return the original source format.
+
+        @return the original source format.
+    */
     public final String getSourceFormat() {
         return sourceString;
     }

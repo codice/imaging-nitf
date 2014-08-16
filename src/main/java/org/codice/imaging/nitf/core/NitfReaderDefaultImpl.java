@@ -57,6 +57,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         }
     }
 
+    /**
+        Default implementation for readBytesAsInteger.
+        <p>
+        This implements the readBytesAsInteger interface in terms of the underlying readBytes() implementation.
+
+        @param count the number of bytes to read and convert to an integer.
+        @return integer representation of the specified number of bytes.
+        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+    */
     protected final Integer defaultReadBytesAsInteger(final int count) throws ParseException {
         String intString = readBytes(count);
         Integer intValue = 0;
@@ -68,6 +77,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         return intValue;
     }
 
+    /**
+        Default implementation for readBytesAsLong.
+        <p>
+        This implements the readBytesAsLong interface in terms of the underlying readBytes() implementation.
+
+        @param count the number of bytes to read and convert to a long integer.
+        @return long integer representation of the specified number of bytes.
+        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+    */
     protected final Long defaultReadBytesAsLong(final int count) throws ParseException {
         String longString = readBytes(count);
         Long longValue = 0L;
@@ -79,6 +97,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         return longValue;
     }
 
+    /**
+        Default implementation for readBytesAsDouble.
+        <p>
+        This implements the readBytesAsDouble interface in terms of the underlying readBytes() implementation.
+
+        @param count the number of bytes to read and convert to a double.
+        @return double representation of the specified number of bytes.
+        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+    */
     protected final Double defaultReadBytesAsDouble(final int count) throws ParseException {
         String doubleString = readBytes(count);
         Double doubleValue = 0.0;
@@ -90,6 +117,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         return doubleValue;
     }
 
+    /**
+        Default implementation for readTrimmedBytes.
+        <p>
+        This implements the readTrimmedBytes() interface in terms of the underlying readBytes() implementation.
+
+        @param count the number of bytes to read.
+        @return trimmed string contents.
+        @throws ParseException if something went wrong during parsing (e.g. end of file).
+    */
     protected final String defaultReadTrimmedBytes(final int count) throws ParseException {
         return rightTrim(readBytes(count));
     }
@@ -108,6 +144,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         return s.substring(0, i + 1);
     }
 
+    /**
+        Default implementation for readBytes.
+        <p>
+        This implements the readBytes interface in terms of the underlying readBytesRaw() implementation.
+
+        @param count the number of bytes to read.
+        @return string contents.
+        @throws ParseException if something went wrong during parsing (e.g. end of file).
+    */
     protected final String defaultReadBytes(final int count) throws ParseException {
         return new String(readBytesRaw(count), UTF8_CHARSET);
     }
