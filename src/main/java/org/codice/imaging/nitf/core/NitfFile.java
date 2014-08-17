@@ -395,10 +395,6 @@ public class NitfFile extends AbstractNitfSegment {
         return dataExtensionSegments.size();
     }
 
-//     public final int getNumberOfReservedExtensionSegments() {
-//         return ;
-//     }
-
     /**
         Add an image segment to the file.
 
@@ -591,7 +587,4 @@ public class NitfFile extends AbstractNitfSegment {
         return dataExtensionSegments.get(segmentNumberZeroBase);
     }
 
-//     public final void setNumberOfReservedExtensionSegments(final int numberOfReservedExtensionSegments) {
-//         numberReservedExtensionSegments = numberOfReservedExtensionSegments;
-//     }
 }
