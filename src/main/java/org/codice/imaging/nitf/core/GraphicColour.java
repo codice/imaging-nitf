@@ -31,8 +31,9 @@ public enum GraphicColour {
     /**
         Unknown format of symbol.
         <p>
-        This indicates an unknown format, and typically indicates a broken file or
-        an error during parsing. This is not a valid value in a NITF graphic subheader.
+        This indicates an unknown format, and may indicate a broken file or
+        an error during parsing. This is not a valid value in a NITF graphic subheader,
+        but there are software products that produce it.
     */
     UNKNOWN (""),
     /**

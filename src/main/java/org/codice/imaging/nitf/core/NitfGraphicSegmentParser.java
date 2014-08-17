@@ -117,7 +117,7 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSCOLOR() throws ParseException {
-        String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
+        String scolor = reader.readBytes(SCOLOR_LENGTH);
         segment.setGraphicColour(GraphicColour.getEnumValue(scolor));
     }
 
