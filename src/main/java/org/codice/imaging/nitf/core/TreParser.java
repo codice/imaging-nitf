@@ -86,19 +86,17 @@ class TreParser {
     }
 
     private void parseOneTre(final NitfReader reader, final String tag, final int fieldLength) throws ParseException {
+        Tre tre = new Tre(tag);
+
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
-            if ((!tag.startsWith("PIX")) && (!"JITCID".equals(tag))) {
-                // We only care about something that we could handle and aren't.
-                System.out.println(String.format("Unhandled TRE %s, skipping over it", tag));
-            }
-            reader.skip(fieldLength);
-            return;
+            tre.setRawData(reader.readBytesRaw(fieldLength));
+        } else {
+            tre.setPrefix(treType.getMdPrefix());
+            TreGroup group = parseTreComponents(treType.getFieldOrLoopOrIf(), reader, tre);
+            tre.setEntries(group.getEntries());
         }
-        Tre tre = new Tre(tag);
-        tre.setPrefix(treType.getMdPrefix());
-        TreGroup group = parseTreComponents(treType.getFieldOrLoopOrIf(), reader, tre);
-        tre.setEntries(group.getEntries());
+
         treCollection.add(tre);
     }
 

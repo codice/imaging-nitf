@@ -456,12 +456,16 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getNumberOfGraphicSegments());
         assertEquals(0, reader.getNumberOfTextSegments());
         assertEquals(0, reader.getNumberOfDataExtensionSegments());
-        // assertEquals(0, reader.getNumberOfReservedExtensionSegments());
         TreCollection fileTres = reader.getTREsRawStructure();
         assertNotNull(fileTres);
-        assertFalse(fileTres.hasTREs());
+        assertTrue(fileTres.hasTREs());
         List<Tre> treList = fileTres.getTREs();
-        assertEquals(0, treList.size());
+        assertEquals(1, treList.size());
+        Tre tre = treList.get(0);
+        assertNotNull(tre);
+        assertEquals("JITCID", tre.getName());
+        assertEquals("I_3228D, Checks multi spectral image of 6 bands, the image subheader tells the receiving system to display band 2 as red, band 4 as green, and band 6 as blue.                                          ", new String(tre.getRawData(), "UTF-8"));
+        assertEquals(0, tre.getEntries().size());
     }
 
     @Rule

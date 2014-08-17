@@ -19,6 +19,7 @@ package org.codice.imaging.nitf.core;
 */
 public class Tre extends TreEntryList {
     private String prefix = null;
+    private byte[] rawData = null;
 
     /**
         Construct TRE with specific tag name.
@@ -45,5 +46,27 @@ public class Tre extends TreEntryList {
     */
     public final String getPrefix() {
         return prefix;
+    }
+
+    /**
+        Set the raw data for this TRE.
+        <p>
+        This is only used for TREs that we couldn't parse.
+
+        @param treDataRaw the raw bytes for the TRE.
+    */
+    public final void setRawData(final byte[] treDataRaw) {
+        rawData = treDataRaw;
+    }
+
+    /**
+        Get the raw data for this TRE.
+        <p>
+        This is only used for TREs that we couldn't parse.
+
+        @return the raw bytes for the TRE.
+    */
+    public final byte[] getRawData() {
+        return rawData;
     }
 }
