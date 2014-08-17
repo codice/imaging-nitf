@@ -14,7 +14,6 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,43 +22,28 @@ import java.util.List;
 */
 public class NitfImageBand {
 
-    private NitfReader reader = null;
-
     // An enum might have been useful, but this is extensible
     private String imageRepresentation = null;
     private String imageSubcategory = null;
-    private int numLUTs = 0;
     private int numEntriesLUT = 0;
     private List<NitfImageBandLUT> luts = new ArrayList<NitfImageBandLUT>();
 
-    private static final int IREPBAND_LENGTH = 2;
-    private static final int ISUBCAT_LENGTH = 6;
-    private static final int IFC_LENGTH = 1;
-    private static final int IMFLT_LENGTH = 3;
-    private static final int NLUTS_LENGTH = 1;
-    private static final int NELUT_LENGTH = 5;
+    /**
+        Default constructor.
+    */
+    public NitfImageBand() {
+    }
 
     /**
-        Construct from a NitfReader instance.
+        Set the image representation for the band (IREPBAND).
+        <p>
+        This provides information on the properties of this band.
+        See MIL-STD-2500C Table A-3 for the interpretation of this field.
 
-        @param nitfReader the reader, positioned to read an image band.
-        @throws ParseException if an obviously invalid value is detected during parsing,
-        or if another problem occurs during parsing (e.g. end of file).
+        @param representation the image representation for the band.
     */
-    public NitfImageBand(final NitfReader nitfReader) throws ParseException {
-        reader = nitfReader;
-        readIREPBAND();
-        readISUBCAT();
-        readIFC();
-        readIMFLT();
-        readNLUTS();
-        if (numLUTs > 0) {
-            readNELUT();
-            for (int i = 0; i < numLUTs; ++i) {
-                NitfImageBandLUT lut = new NitfImageBandLUT(reader.readBytesRaw(numEntriesLUT));
-                luts.add(lut);
-            }
-        }
+    public final void setImageRepresentation(final String representation) {
+        imageRepresentation = representation;
     }
 
     /**
@@ -72,6 +56,18 @@ public class NitfImageBand {
     */
     public final String getImageRepresentation() {
         return imageRepresentation;
+    }
+
+    /**
+        Set the image band subcategory (ISUBCAT).
+        <p>
+        This provides interpretation of this band within the image
+        category. See MIL-STD-2500C for the interpretation of this band.
+
+        @param subcategory the image band subcategory.
+    */
+    public final void setImageSubcategory(final String subcategory) {
+        imageSubcategory = subcategory;
     }
 
     /**
@@ -115,7 +111,24 @@ public class NitfImageBand {
         @return the number of lookup tables.
     */
     public final int getNumLUTs() {
-        return numLUTs;
+        return luts.size();
+    }
+
+    /**
+        Set the number of entries in each lookup table (NELUTn).
+        <p>
+        This field shall contain the number of entries in
+        each of the LUTs for the nth image band. This field
+        shall be omitted if the value in NLUTSn is BCS
+        zero (0x30).
+        <p>
+        This field will be zero if there are no entries or no
+        lookup tables.
+
+        @param numLUTEntries the number of lookup table entries.
+    */
+    public final void setNumLUTEntries(final int numLUTEntries) {
+        numEntriesLUT = numLUTEntries;
     }
 
     /**
@@ -136,6 +149,15 @@ public class NitfImageBand {
     }
 
     /**
+        Add a lookup table to this image band.
+
+        @param lut the lookup table to add.
+    */
+    public final void addLUT(final NitfImageBandLUT lut) {
+        luts.add(lut);
+    }
+
+    /**
         Get a specific lookup table.
 
         @param lutNumber the index of the lookup table (1-base).
@@ -153,29 +175,5 @@ public class NitfImageBand {
     */
     public final NitfImageBandLUT getLUTZeroBase(final int lutNumberZeroBase) {
         return luts.get(lutNumberZeroBase);
-    }
-
-    private void readIREPBAND() throws ParseException {
-        imageRepresentation = reader.readTrimmedBytes(IREPBAND_LENGTH);
-    }
-
-    private void readISUBCAT() throws ParseException {
-        imageSubcategory = reader.readTrimmedBytes(ISUBCAT_LENGTH);
-    }
-
-    private void readIFC() throws ParseException {
-        reader.skip(IFC_LENGTH);
-    }
-
-    private void readIMFLT() throws ParseException {
-        reader.skip(IMFLT_LENGTH);
-    }
-
-    private void readNLUTS() throws ParseException {
-        numLUTs = reader.readBytesAsInteger(NLUTS_LENGTH);
-    }
-
-    private void readNELUT() throws ParseException {
-        numEntriesLUT = reader.readBytesAsInteger(NELUT_LENGTH);
     }
 }
