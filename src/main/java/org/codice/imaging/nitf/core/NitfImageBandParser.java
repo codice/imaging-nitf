@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 
 /**
-    Image Band parser.
+    Image Band and Image Band LUT parser.
 */
 class NitfImageBandParser {
 
