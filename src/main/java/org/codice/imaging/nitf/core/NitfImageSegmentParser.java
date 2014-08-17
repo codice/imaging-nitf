@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -63,6 +64,12 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     private static final int UDOFL_LENGTH = 3;
     private static final int IXSHDL_LENGTH = 5;
     private static final int IXSOFL_LENGTH = 3;
+
+    private static final Set<ImageCompression> HAS_COMRAT = EnumSet.of(ImageCompression.BILEVEL, ImageCompression.JPEG,
+        ImageCompression.VECTORQUANTIZATION, ImageCompression.LOSSLESSJPEG, ImageCompression.JPEG2000, ImageCompression.DOWNSAMPLEDJPEG,
+        ImageCompression.BILEVELMASK, ImageCompression.JPEGMASK, ImageCompression.VECTORQUANTIZATIONMASK,
+        ImageCompression.LOSSLESSJPEGMASK, ImageCompression.JPEG2000MASK, ImageCompression.USERDEFINED, ImageCompression.USERDEFINEDMASK,
+        ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
 
     private NitfImageSegment segment = null;
 
@@ -140,18 +147,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private Boolean hasCOMRAT() {
-        ImageCompression imageCompression = segment.getImageCompression();
-        return (imageCompression == ImageCompression.BILEVEL)
-                || (imageCompression == ImageCompression.JPEG)
-                || (imageCompression == ImageCompression.VECTORQUANTIZATION)
-                || (imageCompression == ImageCompression.LOSSLESSJPEG)
-                || (imageCompression == ImageCompression.JPEG2000)
-                || (imageCompression == ImageCompression.DOWNSAMPLEDJPEG)
-                || (imageCompression == ImageCompression.BILEVELMASK)
-                || (imageCompression == ImageCompression.JPEGMASK)
-                || (imageCompression == ImageCompression.VECTORQUANTIZATIONMASK)
-                || (imageCompression == ImageCompression.LOSSLESSJPEGMASK)
-                || (imageCompression == ImageCompression.JPEG2000MASK);
+        return HAS_COMRAT.contains(segment.getImageCompression());
     }
 
     private void readIM() throws ParseException {

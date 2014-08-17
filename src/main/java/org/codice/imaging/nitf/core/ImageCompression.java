@@ -26,6 +26,7 @@ public enum ImageCompression {
         an error during parsing. This is not a valid value in a NITF image subheader.
     */
     UNKNOWN (""),
+
     /**
         User specified compression.
         <p>
@@ -87,11 +88,27 @@ public enum ImageCompression {
     NOTCOMPRESSED ("NC"),
 
     /**
+        User specified compression mask.
+        <p>
+        This is only valid for NITF 2.0 files.
+    */
+    USERDEFINEDMASK ("M0"),
+
+    /**
         Bi-level mask.
         <p>
         This is specified in ITU-T T.4, AMD2.
     */
     BILEVELMASK ("M1"),
+
+    /**
+        Compressed ARIDPCM MASK
+        <p>
+        This is specified in MIL-STD-188-197A.
+        <p>
+        This is only valid for NITF 2.0 files.
+    */
+    ARIDPCMMASK ("M2"),
 
     /**
         JPEG mask.
