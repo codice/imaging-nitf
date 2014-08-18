@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.core;
 import static org.junit.Assert.assertNotNull;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import org.junit.rules.ExpectedException;
 import org.junit.Rule;
@@ -41,5 +42,18 @@ public class AbstractParserTest {
         exception.expect(ParseException.class);
         exception.expectMessage("Unexpected ENCRYP value");
         parser.readENCRYP();
+    }
+
+    @Test
+    public void testDateParsingWithoutReaderVersion() throws ParseException {
+        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
+
+        NitfReader mockReader = Mockito.mock(NitfReader.class);
+        parser.reader = mockReader;
+        Mockito.when(mockReader.getFileType()).thenReturn(FileType.UNKNOWN);
+
+        exception.expect(ParseException.class);
+        exception.expectMessage("Need to set NITF file type prior to reading dates");
+        Date date = parser.readNitfDateTime();
     }
 }
