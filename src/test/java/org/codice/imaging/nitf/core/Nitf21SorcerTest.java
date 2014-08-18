@@ -23,10 +23,20 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.EnumSet;
+import java.util.TimeZone;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class Nitf21SorcerTest {
+
+    private SimpleDateFormat formatter = null;
+
+    @Before
+    public void beforeTest() {
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     @Test
     public void testSorcerParse() throws IOException, ParseException {
@@ -42,7 +52,7 @@ public class Nitf21SorcerTest {
         NitfImageSegment imageSegment = file.getImageSegment(1);
         assertNotNull(imageSegment);
         assertEquals("Image Id1", imageSegment.getIdentifier());
-        assertEquals("2002-10-06 22:03:20", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment.getImageDateTime()));
+        assertEquals("2002-10-06 22:03:20", formatter.format(imageSegment.getImageDateTime()));
         assertEquals("1234-56789A1234AU", imageSegment.getImageTargetId());
         assertEquals("Another title", imageSegment.getImageIdentifier2());
         assertUnclasAndEmpty(imageSegment.getSecurityMetadata());
@@ -111,7 +121,7 @@ public class Nitf21SorcerTest {
         assertNotNull(textSegment);
         assertEquals("       ", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
-        assertEquals("2002-10-06 22:03:20", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
+        assertEquals("2002-10-06 22:03:20", formatter.format(textSegment.getTextDateTime()));
         assertEquals("", textSegment.getTextTitle());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
         assertEquals("****************LOCATION INFORMATION (GPS/USER INPUTS)*****************\r\nInput Parameters:\r\nLatitude: \r\nLongitude: \r\nRange: 0 m (0 ft)\r\nBearing: 0 deg (0 mils)\r\nInclination: 0 deg (0 mils)\r\n\r\nOutput Coordinates:\r\nN/A\r\n\r\n***************************PHOTO INFORMATION***********************************\r\n\r\nCamera Make: Canon\r\nCamera Model: Canon PowerShot S30\r\nDate/Time Original: 2002:10:07 08:03:20\r\nDate/Time Digitized: 2002:10:07 08:03:20\r\nExif Version: 0210\r\nComponent Configuration: YCbCr\r\nPixel Width x Height: 683 x 512\r\nX Resolution (dpi): 180.0\r\nY Resolution (dpi): 180.0\r\nOrientation: Top Left\r\nYCbCr Positioning: Centered\r\nColor Space:  RGB\r\nFlash Used: No\r\nFocal Length:  7.1mm\r\nExposure Time:  0.002 s  (1/640)\r\nF-Number: 2.8\r\nFocus Distance: 3.11m\r\nExposure Bias: 0.00\r\nLight Source: Unknown\r\nWhite Balance:  Auto White Balance\r\nMetering Mode: Matrix\r\nShutter Speed: 0.00157 s\r\nAperture Value: 2.96875\r\nEncoding: Baseline\r\nSensing Method:  One-chip color area sensor\r\n\r\n", textSegment.getTextData());

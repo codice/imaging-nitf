@@ -23,15 +23,25 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TimeZone;
 
 import org.junit.rules.ExpectedException;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf21HeaderTest {
+
+    private SimpleDateFormat formatter = null;
+
+    @Before
+    public void beforeTest() {
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     @Test
     public void testCompliantHeaderRead() throws IOException, ParseException {
@@ -45,7 +55,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("I_3034C", reader.getOriginatingStationId());
-        assertEquals("1997-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("1997-12-18 12:15:39", formatter.format(reader.getFileDateTime()));
         assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
@@ -64,7 +74,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
         assertEquals("Missing ID", segment1.getIdentifier());
-        assertEquals("1996-12-18 12:15:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
+        assertEquals("1996-12-18 12:15:39", formatter.format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
         assertUnclasAndEmpty(segment1.getSecurityMetadata());
@@ -132,7 +142,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("i_3001a", reader.getOriginatingStationId());
-        assertEquals("1997-12-17 10:26:30", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("1997-12-17 10:26:30", formatter.format(reader.getFileDateTime()));
         assertEquals("Checks an uncompressed 1024x1024 8 bit mono image with GEOcentric data. Airfield", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00000", reader.getFileSecurityMetadata().getFileCopyNumber());
@@ -151,7 +161,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
         assertEquals("Missing ID", segment1.getIdentifier());
-        assertEquals("1996-12-17 10:26:30", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
+        assertEquals("1996-12-17 10:26:30", formatter.format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
         assertUnclasAndEmpty(segment1.getSecurityMetadata());
@@ -199,7 +209,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("NS3010A", reader.getOriginatingStationId());
-        assertEquals("1997-12-17 16:00:28", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("1997-12-17 16:00:28", formatter.format(reader.getFileDateTime()));
         assertEquals("Checks a JPEG-compressed 231x191 8-bit mono image. blimp. Not divisable by 8.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
@@ -218,7 +228,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
         assertEquals("0000000001", segment1.getIdentifier());
-        assertEquals("1996-12-17 16:00:28", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
+        assertEquals("1996-12-17 16:00:28", formatter.format(segment1.getImageDateTime()));
         assertEquals("", segment1.getImageTargetId());
         assertEquals("This is an unclassified image in an unclassified NITF file Q3.", segment1.getImageIdentifier2());
         assertUnclasAndEmpty(segment1.getSecurityMetadata());
@@ -264,7 +274,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("NS3361c", reader.getOriginatingStationId());
-        assertEquals("2000-12-12 12:12:12", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("2000-12-12 12:12:12", formatter.format(reader.getFileDateTime()));
         assertEquals("Boston_1 CONTAINS Four Sub-images lined up to show as a single image, dec data.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
@@ -283,7 +293,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment segment1 = reader.getImageSegment(1);
         assertNotNull(segment1);
         assertEquals("GRT BOSTON", segment1.getIdentifier());
-        assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment1.getImageDateTime()));
+        assertEquals("2000-12-12 12:12:11", formatter.format(segment1.getImageDateTime()));
         assertEquals("               US", segment1.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON Located at 256,256, display level 4 first image file.", segment1.getImageIdentifier2());
         assertUnclasAndEmpty(segment1.getSecurityMetadata());
@@ -314,7 +324,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment segment2 = reader.getImageSegment(2);
         assertNotNull(segment2);
         assertEquals("GRT BOSTON", segment2.getIdentifier());
-        assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment2.getImageDateTime()));
+        assertEquals("2000-12-12 12:12:11", formatter.format(segment2.getImageDateTime()));
         assertEquals("               US", segment2.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,256, display level 2, second image file.", segment2.getImageIdentifier2());
         assertUnclasAndEmpty(segment2.getSecurityMetadata());
@@ -350,7 +360,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment segment3 = reader.getImageSegment(3);
         assertNotNull(segment3);
         assertEquals("GRT BOSTON", segment3.getIdentifier());
-        assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment3.getImageDateTime()));
+        assertEquals("2000-12-12 12:12:11", formatter.format(segment3.getImageDateTime()));
         assertEquals("               US", segment3.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 256,000, display level 3, third image file.", segment3.getImageIdentifier2());
         assertUnclasAndEmpty(segment3.getSecurityMetadata());
@@ -381,7 +391,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment segment4 = reader.getImageSegment(4);
         assertNotNull(segment4);
         assertEquals("GRT BOSTON", segment4.getIdentifier());
-        assertEquals("2000-12-12 12:12:11", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(segment4.getImageDateTime()));
+        assertEquals("2000-12-12 12:12:11", formatter.format(segment4.getImageDateTime()));
         assertEquals("               US", segment4.getImageTargetId());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,000, display level 1, fourth image file.", segment4.getImageIdentifier2());
         assertUnclasAndEmpty(segment4.getSecurityMetadata());
@@ -430,7 +440,7 @@ public class Nitf21HeaderTest {
         assertNotNull(textSegment);
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());
-        assertEquals("1998-02-17 10:19:39", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
+        assertEquals("1998-02-17 10:19:39", formatter.format(textSegment.getTextDateTime()));
         assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
@@ -489,7 +499,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("NS3051V", reader.getOriginatingStationId());
-        assertEquals("1997-09-24 11:25:10", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("1997-09-24 11:25:10", formatter.format(reader.getFileDateTime()));
         assertEquals("Checks for new nitf 2.1 polygon set element, NIST polygonset test 06.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
@@ -532,7 +542,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("I_3128b", reader.getOriginatingStationId());
-        assertEquals("1999-02-10 14:01:44", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("1999-02-10 14:01:44", formatter.format(reader.getFileDateTime()));
         assertEquals("Checks an uncomp. 512x480 w/PIAPR_,PIAIM_ & 3 PIAPE_tags conf. to STD. Lab Gang.", reader.getFileTitle());
         assertUnclasAndEmpty(reader.getFileSecurityMetadata());
         assertEquals("00000", reader.getFileSecurityMetadata().getFileCopyNumber());
@@ -588,7 +598,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment image = reader.getImageSegmentZeroBase(0);
         assertNotNull(image);
         assertEquals("Missing ID", image.getIdentifier());
-        assertEquals("1998-02-10 14:01:44", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(image.getImageDateTime()));
+        assertEquals("1998-02-10 14:01:44", formatter.format(image.getImageDateTime()));
         assertEquals("", image.getImageTargetId());
         assertEquals("- BASE IMAGE -", image.getImageIdentifier2());
         assertUnclasAndEmpty(image.getSecurityMetadata());
@@ -678,7 +688,7 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("Overwatch", reader.getOriginatingStationId());
-        assertEquals("2009-11-25 18:07:24", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(reader.getFileDateTime()));
+        assertEquals("2009-11-25 18:07:24", formatter.format(reader.getFileDateTime()));
         assertEquals("BLAUE MOSCHEE NITF", reader.getFileTitle());
 
         NitfSecurityMetadata securityMetadata = reader.getFileSecurityMetadata();
@@ -710,7 +720,7 @@ public class Nitf21HeaderTest {
         NitfImageSegment imageSegment = reader.getImageSegment(1);
         assertNotNull(imageSegment);
         assertEquals("Mosaic", imageSegment.getIdentifier());
-        assertEquals("2009-10-16 05:20:40", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment.getImageDateTime()));
+        assertEquals("2009-10-16 05:20:40", formatter.format(imageSegment.getImageDateTime()));
         assertEquals("", imageSegment.getImageTargetId());
         assertEquals("Versions: 6.0.6.1; 40; Mission: 0000 001 141009 001, AOI ID: 6/21/2", imageSegment.getImageIdentifier2());
         securityMetadata = imageSegment.getSecurityMetadata();

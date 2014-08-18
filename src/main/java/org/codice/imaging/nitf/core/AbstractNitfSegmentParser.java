@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
     Common segment parsing functionality.
@@ -70,6 +71,7 @@ abstract class AbstractNitfSegmentParser {
         if (dateFormat == null) {
             dateTime = null;
         } else {
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             dateTime = dateFormat.parse(dateString);
             if (dateTime == null) {
                 throw new ParseException(String.format("Bad DATETIME format: %s", dateString), reader.getCurrentOffset());

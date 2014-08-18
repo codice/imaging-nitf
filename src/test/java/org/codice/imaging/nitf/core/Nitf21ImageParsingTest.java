@@ -23,10 +23,20 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.EnumSet;
+import java.util.TimeZone;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class Nitf21ImageParsingTest {
+
+    private SimpleDateFormat formatter = null;
+
+    @Before
+    public void beforeTest() {
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
@@ -51,7 +61,7 @@ public class Nitf21ImageParsingTest {
     private void assertImageSegmentMetadataIsAsExpected(NitfImageSegment imageSegment) {
         assertNotNull(imageSegment);
         assertEquals("Missing ID", imageSegment.getIdentifier());
-        assertEquals("1996-12-17 10:26:30", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment.getImageDateTime()));
+        assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime()));
         assertEquals("", imageSegment.getImageTargetId());
         assertEquals("- BASE IMAGE -", imageSegment.getImageIdentifier2());
         assertEquals("Unknown", imageSegment.getImageSource());

@@ -24,12 +24,23 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.EnumSet;
+import java.util.TimeZone;
 
 import org.junit.rules.ExpectedException;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf20SymbolTest {
+
+    private SimpleDateFormat formatter = null;
+
+    @Before
+    public void beforeTest() {
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
     @Test
     public void testU1060A() throws IOException, ParseException {
         final String nitf20File = "/U_1060A.NTF";
@@ -42,7 +53,7 @@ public class Nitf20SymbolTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("PLYLIN2", file.getOriginatingStationId());
-        assertEquals("1993-09-03 19:16:36", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.getFileDateTime()));
+        assertEquals("1993-09-03 19:16:36", formatter.format(file.getFileDateTime()));
         assertEquals("checks for rendering of polyline. line width 1, line type 3,4,5. def line type.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);

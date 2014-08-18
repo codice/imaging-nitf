@@ -24,12 +24,23 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.EnumSet;
+import java.util.TimeZone;
 
 import org.junit.rules.ExpectedException;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf20OverflowTest {
+
+    private SimpleDateFormat formatter = null;
+
+    @Before
+    public void beforeTest() {
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
     @Test
     public void testU1130F() throws IOException, ParseException {
         final String nitf20File = "/U_1130F.NTF";
@@ -42,7 +53,7 @@ public class Nitf20OverflowTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("ALLOVERFLO", file.getOriginatingStationId());
-        assertEquals("1997-09-15 09:00:00", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.getFileDateTime()));
+        assertEquals("1997-09-15 09:00:00", formatter.format(file.getFileDateTime()));
         assertEquals("Checks overflow from all possible areas. Created by George Levy.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
@@ -65,7 +76,7 @@ public class Nitf20OverflowTest {
         NitfImageSegment imageSegment1 = file.getImageSegment(1);
         assertNotNull(imageSegment1);
         assertEquals("512 Lenna", imageSegment1.getIdentifier());
-        assertEquals("1993-03-25 15:25:59",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment1.getImageDateTime()));
+        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
         assertEquals("", imageSegment1.getImageTargetId());
         assertUnclasAndEmpty(imageSegment1.getSecurityMetadata());

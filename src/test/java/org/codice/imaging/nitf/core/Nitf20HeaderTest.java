@@ -24,12 +24,22 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.EnumSet;
+import java.util.TimeZone;
 
 import org.junit.rules.ExpectedException;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf20HeaderTest {
+
+    private SimpleDateFormat formatter = null;
+
+    @Before
+    public void beforeTest() {
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     @Test
     public void testCompliantHeaderRead() throws IOException, ParseException {
@@ -43,7 +53,7 @@ public class Nitf20HeaderTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("U21H00N1", file.getOriginatingStationId());
-        assertEquals("1994-04-03 19:16:36", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.getFileDateTime()));
+        assertEquals("1994-04-03 19:16:36", formatter.format(file.getFileDateTime()));
         assertEquals("checks the handling of an NITF file w/ only a text file.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
@@ -63,7 +73,7 @@ public class Nitf20HeaderTest {
         assertNotNull(textSegment);
         assertEquals("0000000001", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
-        assertEquals("1993-03-27 23:55:36", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
+        assertEquals("1993-03-27 23:55:36", formatter.format(textSegment.getTextDateTime()));
         assertEquals("This is the title of unclassified text file #1 in NITF  file   U21H00N1.", textSegment.getTextTitle());
         NitfSecurityMetadata textSecurityMetadata = textSegment.getSecurityMetadata();
         assertUnclasAndEmpty(textSecurityMetadata);
@@ -88,7 +98,7 @@ public class Nitf20HeaderTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("U217G0J1", file.getOriginatingStationId());
-        assertEquals("1992-11-03 13:52:26", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.getFileDateTime()));
+        assertEquals("1992-11-03 13:52:26", formatter.format(file.getFileDateTime()));
         assertEquals("This NITF message contains 5 images, 4 symbols, 4 labels and 1 text.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
@@ -109,7 +119,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment1 = file.getImageSegment(1);
         assertNotNull(imageSegment1);
         assertEquals("Missing ID", imageSegment1.getIdentifier());
-        assertEquals("1993-03-25 15:25:59",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment1.getImageDateTime()));
+        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
         assertEquals("", imageSegment1.getImageTargetId());
         assertUnclasAndEmpty(imageSegment1.getSecurityMetadata());
@@ -147,7 +157,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment2 = file.getImageSegment(2);
         assertNotNull(imageSegment2);
         assertEquals("Missing ID", imageSegment2.getIdentifier());
-        assertEquals("1993-03-25 15:25:59",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment2.getImageDateTime()));
+        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment2.getImageDateTime()));
         assertEquals("- GROUP 3 -", imageSegment2.getImageIdentifier2());
         assertEquals("", imageSegment2.getImageTargetId());
         assertUnclasAndEmpty(imageSegment2.getSecurityMetadata());
@@ -184,7 +194,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment3 = file.getImageSegment(3);
         assertNotNull(imageSegment3);
         assertEquals("0000000003", imageSegment3.getIdentifier());
-        assertEquals("1989-01-01 12:00:00",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment3.getImageDateTime()));
+        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment3.getImageDateTime()));
         assertEquals("This is an unclassified image in an unclassified NITF message called U227C2J0", imageSegment3.getImageIdentifier2());
         assertEquals("", imageSegment3.getImageTargetId());
         assertUnclasAndEmpty(imageSegment3.getSecurityMetadata());
@@ -230,7 +240,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment4 = file.getImageSegment(4);
         assertNotNull(imageSegment4);
         assertEquals("0000000001", imageSegment4.getIdentifier());
-        assertEquals("1989-01-01 12:00:00",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment4.getImageDateTime()));
+        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment4.getImageDateTime()));
         assertEquals("This is an unclassified image in an unclassified NITF file.", imageSegment4.getImageIdentifier2());
         assertEquals("", imageSegment4.getImageTargetId());
         assertUnclasAndEmpty(imageSegment4.getSecurityMetadata());
@@ -267,7 +277,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment5 = file.getImageSegment(5);
         assertNotNull(imageSegment5);
         assertEquals("0000000001", imageSegment5.getIdentifier());
-        assertEquals("1989-01-01 12:00:00",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(imageSegment5.getImageDateTime()));
+        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment5.getImageDateTime()));
         assertEquals("This is an unclassified image in an unclassified NITF file Q3.", imageSegment5.getImageIdentifier2());
         assertEquals("", imageSegment5.getImageTargetId());
         assertUnclasAndEmpty(imageSegment5.getSecurityMetadata());
@@ -483,7 +493,7 @@ public class Nitf20HeaderTest {
         assertNotNull(textSegment);
         assertEquals("0000000001", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
-        assertEquals("1990-06-07 21:11:36", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(textSegment.getTextDateTime()));
+        assertEquals("1990-06-07 21:11:36", formatter.format(textSegment.getTextDateTime()));
         assertEquals("This is the title of unclassified text file #1 in NITF message JR1_B.", textSegment.getTextTitle());
         NitfSecurityMetadata textSecurityMetadata = textSegment.getSecurityMetadata();
         assertUnclasAndEmpty(textSecurityMetadata);
