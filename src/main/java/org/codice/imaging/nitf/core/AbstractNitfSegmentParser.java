@@ -37,12 +37,12 @@ abstract class AbstractNitfSegmentParser {
         }
     }
 
-    public final RGBColour readRGBColour() throws ParseException {
+    protected final RGBColour readRGBColour() throws ParseException {
         byte[] rgb = reader.readBytesRaw(RGB_COLOUR_LENGTH);
         return new RGBColour(rgb);
     }
 
-    public final Date readNitfDateTime() throws ParseException {
+    protected final Date readNitfDateTime() throws ParseException {
         String dateString = reader.readTrimmedBytes(STANDARD_DATE_TIME_LENGTH);
         SimpleDateFormat dateFormat = null;
         Date dateTime = null;
