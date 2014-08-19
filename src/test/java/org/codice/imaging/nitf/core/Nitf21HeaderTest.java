@@ -19,6 +19,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -44,34 +45,48 @@ public class Nitf21HeaderTest {
     }
 
     @Test
-    public void testCompliantHeaderRead() throws IOException, ParseException {
+    public void testCompliantHeaderReadInputStream() throws IOException, ParseException {
         final String simpleNitf21File = "/i_3034c.ntf";
-
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         InputStream is = getClass().getResourceAsStream(simpleNitf21File);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
-        assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
-        assertEquals(3, reader.getComplexityLevel());
-        assertEquals("BF01", reader.getStandardType());
-        assertEquals("I_3034C", reader.getOriginatingStationId());
-        assertEquals("1997-12-18 12:15:39", formatter.format(reader.getFileDateTime()));
-        assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", reader.getFileTitle());
-        assertUnclasAndEmpty(reader.getFileSecurityMetadata());
-        assertEquals("00001", reader.getFileSecurityMetadata().getFileCopyNumber());
-        assertEquals("00001", reader.getFileSecurityMetadata().getFileNumberOfCopies());
-        assertEquals(0x20, reader.getFileBackgroundColour().getRed());
-        assertEquals(0x20, reader.getFileBackgroundColour().getGreen());
-        assertEquals(0x20, reader.getFileBackgroundColour().getBlue());
-        assertEquals("JITC", reader.getOriginatorsName());
-        assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        NitfFile file = NitfFileFactory.parseHeadersOnly(is);
+        checkCompliantHeaderResults(file);
+        is.close();
+    }
+
+    @Test
+    public void testCompliantHeaderReadFile() throws IOException, ParseException {
+        final String simpleNitf21File = "/i_3034c.ntf";
+        assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
+
+        File resourceFile = new File(getClass().getResource(simpleNitf21File).getFile());
+        NitfFile file = NitfFileFactory.parseHeadersOnly(resourceFile);
+        checkCompliantHeaderResults(file);
+    }
+
+    private void checkCompliantHeaderResults(NitfFile file) {
+        assertEquals(FileType.NITF_TWO_ONE, file.getFileType());
+        assertEquals(3, file.getComplexityLevel());
+        assertEquals("BF01", file.getStandardType());
+        assertEquals("I_3034C", file.getOriginatingStationId());
+        assertEquals("1997-12-18 12:15:39", formatter.format(file.getFileDateTime()));
+        assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", file.getFileTitle());
+        assertUnclasAndEmpty(file.getFileSecurityMetadata());
+        assertEquals("00001", file.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals(0x20, file.getFileBackgroundColour().getRed());
+        assertEquals(0x20, file.getFileBackgroundColour().getGreen());
+        assertEquals(0x20, file.getFileBackgroundColour().getBlue());
+        assertEquals("JITC", file.getOriginatorsName());
+        assertEquals("(520) 538-5458", file.getOriginatorsPhoneNumber());
+        assertEquals(1, file.getNumberOfImageSegments());
+        assertEquals(0, file.getNumberOfGraphicSegments());
+        assertEquals(0, file.getNumberOfTextSegments());
+        assertEquals(0, file.getNumberOfDataExtensionSegments());
 
         // Checks for ImageSegment.
-        NitfImageSegment segment1 = reader.getImageSegment(1);
+        NitfImageSegment segment1 = file.getImageSegment(1);
         assertNotNull(segment1);
         assertEquals("Missing ID", segment1.getIdentifier());
         assertEquals("1996-12-18 12:15:39", formatter.format(segment1.getImageDateTime()));
@@ -126,8 +141,6 @@ public class Nitf21HeaderTest {
         assertEquals(100, segment1.getImageLocationRow());
         assertEquals(100, segment1.getImageLocationColumn());
         assertEquals("1.0 ", segment1.getImageMagnification());
-
-        is.close();
     }
 
     @Test
@@ -473,11 +486,24 @@ public class Nitf21HeaderTest {
         assertEquals(0, tre.getEntries().size());
     }
 
+    @Test
+    public void testStreamingModeParsingFromFile() throws IOException, ParseException {
+        final String testfile = "/ns3321a.nsf";
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+
+        File resourceFile = new File(getClass().getResource(testfile).getFile());
+        NitfFile file = NitfFileFactory.parseHeadersOnly(resourceFile);
+        assertEquals(1, file.getNumberOfImageSegments());
+        assertEquals(0, file.getNumberOfGraphicSegments());
+        assertEquals(0, file.getNumberOfTextSegments());
+        assertEquals(1, file.getNumberOfDataExtensionSegments());
+    }
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testStreamingModeParsing() throws IOException, ParseException {
+    public void testStreamingModeParsingFromStream() throws IOException, ParseException {
         final String testfile = "/ns3321a.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));

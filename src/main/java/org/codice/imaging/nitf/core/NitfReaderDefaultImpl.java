@@ -53,7 +53,7 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
     public final void verifyHeaderMagic(final String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
-            throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), getCurrentOffset());
+            throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), (int) getCurrentOffset());
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         try {
             intValue = Integer.parseInt(intString);
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Integer format: [%s]", intString), getCurrentOffset());
+            throw new ParseException(String.format("Bad Integer format: [%s]", intString), (int) getCurrentOffset());
         }
         return intValue;
     }
@@ -92,7 +92,7 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         try {
             longValue = Long.parseLong(longString);
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Long format: %s", longString), getCurrentOffset());
+            throw new ParseException(String.format("Bad Long format: %s", longString), (int) getCurrentOffset());
         }
         return longValue;
     }
@@ -112,7 +112,7 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         try {
             doubleValue = Double.parseDouble(doubleString.trim());
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Double format: %s", doubleString), getCurrentOffset());
+            throw new ParseException(String.format("Bad Double format: %s", doubleString), (int) getCurrentOffset());
         }
         return doubleValue;
     }

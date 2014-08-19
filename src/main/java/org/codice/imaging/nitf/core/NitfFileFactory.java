@@ -14,6 +14,9 @@
  */
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.EnumSet;
@@ -48,7 +51,28 @@ public final class NitfFileFactory {
     */
     public static NitfFile parseHeadersOnly(final InputStream nitfInputStream) throws ParseException {
         NitfFile file = new NitfFile();
-        new NitfFileParser(nitfInputStream, EnumSet.noneOf(ParseOption.class), file);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream));
+        new NitfFileParser(reader, EnumSet.noneOf(ParseOption.class), file);
+        return file;
+    }
+
+    /**
+        Parse NITF file headers out of a File.
+        <p>
+        This only extracts the headers from the main file, and the attached segment headers. The actual
+        data segments are skipped over.
+        <p>
+        This takes a File, so it can handle the "streaming mode" layout.
+
+        @param nitfFile the file to parse.
+        @return NitfFile structure corresponding to the input stream.
+        @throws FileNotFoundException if the file is not present or not able to be opened.
+        @throws ParseException on detecting an invalid file or other parse error.
+    */
+    public static NitfFile parseHeadersOnly(final File nitfFile) throws ParseException, FileNotFoundException {
+        NitfFile file = new NitfFile();
+        NitfReader reader = new NitfFileReader(nitfFile);
+        new NitfFileParser(reader, EnumSet.noneOf(ParseOption.class), file);
         return file;
     }
 
@@ -68,7 +92,29 @@ public final class NitfFileFactory {
     */
     public static NitfFile parseSelectedDataSegments(final InputStream nitfInputStream, final Set<ParseOption> parseOptions) throws ParseException {
         NitfFile file = new NitfFile();
-        new NitfFileParser(nitfInputStream, parseOptions, file);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream));
+        new NitfFileParser(reader, parseOptions, file);
+        return file;
+    }
+
+    /**
+        Parse NITF file headers and selected data from a File.
+        <p>
+        This extracts the headers and any selected data segments. Any segments that are not selected will be skipped over.
+        <p>
+        This takes a File, so it can handle the "streaming mode" layout
+
+        @param nitfFile the file to parse.
+        @param parseOptions the data segments to extract.
+        @return NitfFile structure corresponding to the input stream.
+        @throws FileNotFoundException if the file is not present or not able to be opened.
+        @throws ParseException on detecting an invalid file or other parse error.
+    */
+    public static NitfFile parseSelectedDataSegments(final File nitfFile, final Set<ParseOption> parseOptions)
+        throws ParseException, FileNotFoundException {
+        NitfFile file = new NitfFile();
+        NitfReader reader = new NitfFileReader(nitfFile);
+        new NitfFileParser(reader, parseOptions, file);
         return file;
     }
 }

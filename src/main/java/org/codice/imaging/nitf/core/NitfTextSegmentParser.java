@@ -78,7 +78,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
                 break;
             case UNKNOWN:
             default:
-                throw new ParseException("Unsupported reader version", reader.getCurrentOffset());
+                throw new ParseException("Unsupported reader version", (int) reader.getCurrentOffset());
         }
     }
 

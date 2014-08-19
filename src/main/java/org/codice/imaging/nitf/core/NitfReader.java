@@ -43,11 +43,40 @@ public interface NitfReader {
     Boolean canSeek();
 
     /**
+        Seek to the end of the file.
+        <p>
+        This is only valid if the reader can seek.
+
+        @throws ParseException if there was a problem performing the required operation.
+    */
+    void seekToEndOfFile() throws ParseException;
+
+    /**
+        Seek backwards from the current position.
+        <p>
+        This is only valid if the reader can seek.
+
+        @param relativeOffset the number of bytes to seek backwards.
+        @throws ParseException if there was a problem performing the required operation.
+    */
+    void seekBackwards(final long relativeOffset) throws ParseException;
+
+    /**
+        Seek to an absolute position.
+        <p>
+        This is only valid if the reader can seek.
+
+        @param absoluteOffset the position to.
+        @throws ParseException if there was a problem performing the required operation.
+    */
+    void seekToAbsoluteOffset(final long absoluteOffset) throws ParseException;
+
+    /**
         Return the current offset into the NITF file.
 
         @return the number of bytes from the start of the NITF file
     */
-    int getCurrentOffset();
+    long getCurrentOffset();
 
     /**
         Check if the NITF file contains an expected "magic" header value.

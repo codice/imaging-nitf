@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,7 +11,7 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ */
 package org.codice.imaging.nitf.core;
 
 import java.io.BufferedInputStream;
@@ -19,11 +19,11 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
-    NitfReader implementation for an InputStream.
+    NitfReader implementation using an InputStream.
 */
-public class NitfInputStreamReader extends NitfReaderDefaultImpl implements NitfReader {
+class NitfInputStreamReader extends NitfReaderDefaultImpl implements NitfReader {
     private BufferedInputStream input = null;
-    private int numBytesRead = 0;
+    private long numBytesRead = 0;
 
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
@@ -42,7 +42,22 @@ public class NitfInputStreamReader extends NitfReaderDefaultImpl implements Nitf
     }
 
     @Override
-    public final int getCurrentOffset() {
+    public final void seekToEndOfFile() {
+        // Nothing - we can't seek.
+    }
+
+    @Override
+    public final void seekBackwards(final long relativeOffset) {
+        // Nothing - we can't seek.
+    }
+
+    @Override
+    public final void seekToAbsoluteOffset(final long absoluteOffset) {
+        // Nothing - we can't seek.
+    }
+
+    @Override
+    public final long getCurrentOffset() {
         return numBytesRead;
     }
 
@@ -77,15 +92,15 @@ public class NitfInputStreamReader extends NitfReaderDefaultImpl implements Nitf
             byte[] bytes = new byte[count];
             int thisRead = input.read(bytes, 0, count);
             if (thisRead == -1) {
-                throw new ParseException("End of file reading from NITF stream.", numBytesRead);
+                throw new ParseException("End of file reading from NITF stream.", (int) numBytesRead);
             } else if (thisRead < count) {
                 throw new ParseException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count),
-                                         numBytesRead + thisRead);
+                                         (int) (numBytesRead + thisRead));
             }
             numBytesRead += thisRead;
             return bytes;
         } catch (IOException ex) {
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
+            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), (int) numBytesRead);
         }
     }
 
@@ -100,7 +115,7 @@ public class NitfInputStreamReader extends NitfReaderDefaultImpl implements Nitf
                 bytesToRead -= thisRead;
             } while (bytesToRead > 0);
         } catch (IOException ex) {
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
+            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), (int) numBytesRead);
         }
     }
 }

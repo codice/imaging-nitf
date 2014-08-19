@@ -14,10 +14,9 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -83,19 +82,33 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private static final int XHDLOFL_LENGTH = 3;
     private static final int MIN_COMPLEXITY_LEVEL = 0;
     private static final int MAX_COMPLEXITY_LEVEL = 99;
+    private static final int SFH_L1_LENGTH = 7;
+    private static final int SFH_DELIM1_LENGTH = 4;
+    private static final byte[] SFH_DELIM1 = new byte[] {0x0a, (byte) 0x6e, 0x1d, (byte) 0x97};
+    private static final int SFH_DELIM2_LENGTH = 4;
+    private static final byte[] SFH_DELIM2 = new byte[] {0x0e, (byte) 0xca, 0x14, (byte) 0xbf};
+    private static final int SFH_L2_LENGTH = 7;
 
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
     private NitfFile nitf = null;
     private Set<ParseOption> parseOptionSet = null;
 
-    NitfFileParser(final InputStream nitfInputStream,
+    NitfFileParser(final NitfReader nitfReader,
                           final Set<ParseOption> parseOptions,
                           final NitfFile nitfFile) throws ParseException {
         nitf = nitfFile;
         parseOptionSet = parseOptions;
+        reader = nitfReader;
 
-        reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream));
+        readBaseHeaders();
+        if (isStreamingMode()) {
+            handleStreamingMode();
+        }
+        readDataSegments();
+    }
+
+    private void readBaseHeaders() throws ParseException {
         readFHDRFVER();
         reader.setFileType(nitf.getFileType());
         readCLEVEL();
@@ -111,17 +124,11 @@ class NitfFileParser extends AbstractNitfSegmentParser {
         readONAME();
         readOPHONE();
         readFL();
-        if (nitfFileLength == STREAMING_FILE_MODE) {
-            if (!reader.canSeek()) {
-                throw new ParseException("No support for streaming mode unless input is seekable", 0);
-            }
-            // TODO If we can ever seek, we need to read the streaming mode DES and update properties here.
-        }
         readHL();
         readNUMI();
         for (int i = 0; i < numberImageSegments; ++i) {
-            readLISH();
-            readLI();
+            readLISH(i);
+            readLI(i);
         }
         readNUMS();
         for (int i = 0; i < numberGraphicSegments; ++i) {
@@ -158,6 +165,74 @@ class NitfFileParser extends AbstractNitfSegmentParser {
             readXHDLOFL();
             readXHD();
         }
+    }
+
+    private boolean isStreamingMode() {
+        return nitfFileLength == STREAMING_FILE_MODE;
+    }
+
+    private void handleStreamingMode() throws ParseException {
+        if (reader.canSeek()) {
+            readStreamingModeHeader();
+        } else {
+            throw new ParseException("No support for streaming mode unless input is seekable", 0);
+        }
+    }
+
+    // This code will probably make more sense if you read MIL-STD-2500C Section 5.8.3.2 and then have
+    // MIL-STD-2500C Table A-8(B) open.
+    private void readStreamingModeHeader() throws ParseException {
+        // Store the current position
+        long dataSegmentsOffset = reader.getCurrentOffset();
+
+        seekToSfhDelim2();
+
+        verifySfhDelim2();
+
+        long sfhL2 = reader.readBytesAsLong(SFH_L2_LENGTH);
+
+        seekToSfhDelim1(sfhL2);
+
+        // verify the lengths match.
+        long sfhL1 = reader.readBytesAsLong(SFH_L1_LENGTH);
+        if (sfhL1 != sfhL2) {
+            throw new ParseException("Mismatch between SFH_L1 and SFH_L2", (int) reader.getCurrentOffset());
+        }
+
+        verifySfhDelim1();
+
+        // Read the replacement header content
+        // This assumes that the streaming mode header will contain the full "base" headers from MIL-STD-2500C Table A-1.
+        readBaseHeaders();
+
+        // Continue to read the subheaders and associated data
+        reader.seekToAbsoluteOffset(dataSegmentsOffset);
+    }
+
+    private void seekToSfhDelim2() throws ParseException {
+        reader.seekToEndOfFile();
+        reader.seekBackwards(SFH_DELIM2_LENGTH + SFH_L2_LENGTH);
+    }
+
+    private void verifySfhDelim2() throws ParseException {
+        byte[] sfhDelim2 = reader.readBytesRaw(SFH_DELIM2_LENGTH);
+        if (!Arrays.equals(SFH_DELIM2, sfhDelim2)) {
+            throw new ParseException("Unexpected SFH_DELIM2 value read from file", (int) reader.getCurrentOffset());
+        }
+    }
+
+    private void seekToSfhDelim1(final long sfhDrLength) throws ParseException {
+        reader.seekBackwards(SFH_L1_LENGTH + SFH_DELIM1_LENGTH + sfhDrLength + SFH_DELIM2_LENGTH + SFH_L2_LENGTH);
+    }
+
+    private void verifySfhDelim1() throws ParseException {
+        byte[] sfhDelim1 = reader.readBytesRaw(SFH_DELIM1_LENGTH);
+        if (!Arrays.equals(SFH_DELIM1, sfhDelim1)) {
+            throw new ParseException("Unexpected SFH_DELIM1 value read from file", (int) reader.getCurrentOffset());
+        }
+    }
+
+    private void readDataSegments() throws ParseException {
         readImageSegments();
         if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
             readSymbolSegments();
@@ -177,7 +252,7 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private void readCLEVEL() throws ParseException {
         nitf.setComplexityLevel(reader.readBytesAsInteger(CLEVEL_LENGTH));
         if ((nitf.getComplexityLevel() < MIN_COMPLEXITY_LEVEL) || (nitf.getComplexityLevel() > MAX_COMPLEXITY_LEVEL)) {
-            throw new ParseException(String.format("CLEVEL out of range: %i", nitf.getComplexityLevel()), reader.getCurrentOffset());
+            throw new ParseException(String.format("CLEVEL out of range: %i", nitf.getComplexityLevel()), (int) reader.getCurrentOffset());
         }
     }
 
@@ -225,12 +300,20 @@ class NitfFileParser extends AbstractNitfSegmentParser {
         numberImageSegments = reader.readBytesAsInteger(NUMI_LENGTH);
     }
 
-    private void readLISH() throws ParseException {
-        lish.add(reader.readBytesAsInteger(LISH_LENGTH));
+    private void readLISH(final int i) throws ParseException {
+        if (i < lish.size()) {
+            lish.set(i, reader.readBytesAsInteger(LISH_LENGTH));
+        } else {
+            lish.add(reader.readBytesAsInteger(LISH_LENGTH));
+        }
     }
 
-    private void readLI() throws ParseException {
-        li.add(reader.readBytesAsLong(LI_LENGTH));
+    private void readLI(final int i) throws ParseException {
+        if (i < li.size()) {
+            li.set(i, reader.readBytesAsLong(LI_LENGTH));
+        } else {
+            li.add(reader.readBytesAsLong(LI_LENGTH));
+        }
     }
 
     // The next three methods are also used for NITF 2.0 Symbol segment lengths

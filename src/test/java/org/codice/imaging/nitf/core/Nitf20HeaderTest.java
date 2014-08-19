@@ -19,6 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
@@ -42,13 +43,29 @@ public class Nitf20HeaderTest {
     }
 
     @Test
-    public void testCompliantHeaderRead() throws IOException, ParseException {
+    public void testCompliantHeaderReadInputStream() throws IOException, ParseException {
         final String simpleNitf20File = "/U_1114A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
 
         InputStream is = getClass().getResourceAsStream(simpleNitf20File);
         NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
+        checkCompliantHeaderReadResults(file);
+        is.close();
+    }
+
+    @Test
+    public void testCompliantHeaderReadFile() throws IOException, ParseException {
+        final String simpleNitf20File = "/U_1114A.NTF";
+
+        assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
+
+        File resourceFile = new File(getClass().getResource(simpleNitf20File).getFile());
+        NitfFile file = NitfFileFactory.parseSelectedDataSegments(resourceFile, EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
+        checkCompliantHeaderReadResults(file);
+    }
+
+    private void checkCompliantHeaderReadResults(NitfFile file) throws ParseException {
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
@@ -82,8 +99,6 @@ public class Nitf20HeaderTest {
         assertEquals("This text will never need downgrading.", textSecurityMetadata.getDowngradeEvent());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
         assertEquals("A", textSegment.getTextData());
-
-        is.close();
     }
 
     @Test

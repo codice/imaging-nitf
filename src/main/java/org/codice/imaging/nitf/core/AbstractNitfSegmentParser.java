@@ -34,7 +34,7 @@ abstract class AbstractNitfSegmentParser {
 
     protected final void readENCRYP() throws ParseException {
         if (!"0".equals(reader.readBytes(ENCRYP_LENGTH))) {
-            throw new ParseException("Unexpected ENCRYP value", reader.getCurrentOffset());
+            throw new ParseException("Unexpected ENCRYP value", (int) reader.getCurrentOffset());
         }
     }
 
@@ -57,7 +57,7 @@ abstract class AbstractNitfSegmentParser {
                 break;
             case UNKNOWN:
             default:
-                throw new ParseException("Need to set NITF file type prior to reading dates", reader.getCurrentOffset());
+                throw new ParseException("Need to set NITF file type prior to reading dates", (int) reader.getCurrentOffset());
         }
         if (dateString.length() == DATE_ONLY_DAY_FORMAT.length()) {
             // Fallback for files that aren't spec compliant
@@ -74,7 +74,7 @@ abstract class AbstractNitfSegmentParser {
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             dateTime = dateFormat.parse(dateString);
             if (dateTime == null) {
-                throw new ParseException(String.format("Bad DATETIME format: %s", dateString), reader.getCurrentOffset());
+                throw new ParseException(String.format("Bad DATETIME format: %s", dateString), (int) reader.getCurrentOffset());
             }
         }
         return dateTime;

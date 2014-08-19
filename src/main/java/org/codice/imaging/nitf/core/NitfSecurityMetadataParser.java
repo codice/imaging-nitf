@@ -72,7 +72,7 @@ class NitfSecurityMetadataParser {
                 break;
             case UNKNOWN:
             default:
-                throw new ParseException("Need to set NITF version before reading metadata", reader.getCurrentOffset());
+                throw new ParseException("Need to set NITF version before reading metadata", (int) reader.getCurrentOffset());
          }
     }
 
