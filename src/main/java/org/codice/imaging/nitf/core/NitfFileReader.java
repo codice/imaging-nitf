@@ -65,7 +65,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         try {
             return nitfFile.getFilePointer();
         } catch (IOException ex) {
-            LOG.warn("IO Exception getting file pointer: {}", ex.getMessage());
+            LOG.warn("IO Exception getting file pointer", ex);
             return 0;
         }
     }
@@ -100,7 +100,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         try {
             nitfFile.seek(nitfFile.length());
         } catch (IOException ex) {
-            LOG.warn("IO Exception seeking to end of file: {}", ex.getMessage());
+            LOG.warn("IO Exception seeking to end of file: {}", ex);
             throw new ParseException("Unable to seek to end of file: " + ex.getMessage(), 0);
         }
     }
@@ -110,7 +110,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         try {
             nitfFile.seek(nitfFile.getFilePointer() - relativeOffset);
         } catch (IOException ex) {
-            LOG.warn("IO Exception seeking backwards: {}", ex.getMessage());
+            LOG.warn("IO Exception seeking backwards", ex);
             throw new ParseException("Unable to seek backwards: " + ex.getMessage(), 0);
         }
     }
@@ -120,7 +120,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         try {
             nitfFile.seek(absoluteOffset);
         } catch (IOException ex) {
-            LOG.warn("IO Exception seeking to absolute offset: {}", ex.getMessage());
+            LOG.warn("IO Exception seeking to absolute offset", ex);
             throw new ParseException("Unable to seek to absolute offset: " + ex.getMessage(), 0);
         }
     }
@@ -134,7 +134,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
             nitfFile.readFully(bytes);
             return bytes;
         } catch (IOException ex) {
-            LOG.warn("IO Exception reading raw bytes: {}", ex.getMessage());
+            LOG.warn("IO Exception reading raw bytes", ex);
             throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
@@ -151,7 +151,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
                 bytesToRead -= thisRead;
             } while (bytesToRead > 0);
         } catch (IOException ex) {
-            LOG.warn("IO Exception skipping bytes: {}", ex.getMessage());
+            LOG.warn("IO Exception skipping bytes", ex);
             throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
