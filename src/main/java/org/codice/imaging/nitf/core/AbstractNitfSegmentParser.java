@@ -19,10 +19,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
     Common segment parsing functionality.
 */
 abstract class AbstractNitfSegmentParser {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractNitfSegmentParser.class);
+
     protected NitfReader reader = null;
 
     private static final int ENCRYP_LENGTH = 1;
@@ -34,6 +40,7 @@ abstract class AbstractNitfSegmentParser {
 
     protected final void readENCRYP() throws ParseException {
         if (!"0".equals(reader.readBytes(ENCRYP_LENGTH))) {
+            LOG.warn("Mismatch while reading ENCRYP");
             throw new ParseException("Unexpected ENCRYP value", (int) reader.getCurrentOffset());
         }
     }
@@ -57,6 +64,7 @@ abstract class AbstractNitfSegmentParser {
                 break;
             case UNKNOWN:
             default:
+                LOG.warn("Unknown NITF file type while reading date: " + reader.getFileType());
                 throw new ParseException("Need to set NITF file type prior to reading dates", (int) reader.getCurrentOffset());
         }
         if (dateString.length() == DATE_ONLY_DAY_FORMAT.length()) {
@@ -66,7 +74,7 @@ abstract class AbstractNitfSegmentParser {
             // This can't work
             dateFormat = null;
         } else if (dateString.length() != DATE_FULL_FORMAT.length()) {
-            System.out.println("Unhandled date format:" + dateString);
+            LOG.warn("Unhandled date format: {}", dateString);
         }
         if (dateFormat == null) {
             dateTime = null;
