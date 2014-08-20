@@ -53,7 +53,9 @@ public class Nitf21SorcerTest {
         assertNotNull(imageSegment);
         assertEquals("Image Id1", imageSegment.getIdentifier());
         assertEquals("2002-10-06 22:03:20", formatter.format(imageSegment.getImageDateTime()));
-        assertEquals("1234-56789A1234AU", imageSegment.getImageTargetId());
+        assertEquals("1234-56789", imageSegment.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("A1234", imageSegment.getImageTargetId().getOSuffix());
+        assertEquals("AU", imageSegment.getImageTargetId().getCountryCode());
         assertEquals("Another title", imageSegment.getImageIdentifier2());
         assertUnclasAndEmpty(imageSegment.getSecurityMetadata());
         assertEquals("", imageSegment.getImageSource());

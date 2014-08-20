@@ -24,8 +24,7 @@ import java.util.List;
 public class NitfImageSegment extends AbstractNitfSubSegment {
 
     private Date imageDateTime = null;
-    // TODO: consider making this a class (BE + O-suffix + country code) if we can find examples
-    private String imageTargetId = null;
+    private TargetId imageTargetId = null;
     private String imageIdentifier2 = null;
     private String imageSource = null;
     private long numRows = 0L;
@@ -85,32 +84,22 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     /**
         Set the target identifier (TGTID) for the image.
         <p>
-        "This field shall contain the identification of the primary target in the format,
-        BBBBBBBBBBOOOOOCC, consisting of ten characters of Basic Encyclopedia (BE) identifier,
-        followed by five characters of facility OSUFFIX, followed by the two character country code as
-        specified in FIPS PUB 10-4."
-
         It is common for some or all of the identifier to be filled with default spaces.
 
-        @param targetId the target identifier as a concatenated string
+        @param targetId the target identifier
     */
-    public final void setImageTargetId(final String targetId) {
+    public final void setImageTargetId(final TargetId targetId) {
         imageTargetId = targetId;
     }
 
     /**
         Return the target identifier (TGTID) for the image.
         <p>
-        "This field shall contain the identification of the primary target in the format,
-        BBBBBBBBBBOOOOOCC, consisting of ten characters of Basic Encyclopedia (BE) identifier,
-        followed by five characters of facility OSUFFIX, followed by the two character country code as
-        specified in FIPS PUB 10-4."
-
         It is common for some or all of the identifier to be filled with default spaces.
 
-        @return the target identifier as a concatenated string
+        @return the target identifier
     */
-    public final String getImageTargetId() {
+    public final TargetId getImageTargetId() {
         return imageTargetId;
     }
 

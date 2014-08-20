@@ -78,7 +78,9 @@ public class Nitf20OverflowTest {
         assertEquals("512 Lenna", imageSegment1.getIdentifier());
         assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
-        assertEquals("", imageSegment1.getImageTargetId());
+        assertEquals("          ", imageSegment1.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("     ", imageSegment1.getImageTargetId().getOSuffix());
+        assertEquals("  ", imageSegment1.getImageTargetId().getCountryCode());
         assertUnclasAndEmpty(imageSegment1.getSecurityMetadata());
         assertEquals("Unknown", imageSegment1.getImageSource());
         assertEquals(512L, imageSegment1.getNumberOfRows());

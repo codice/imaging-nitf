@@ -136,7 +136,9 @@ public class Nitf20HeaderTest {
         assertEquals("Missing ID", imageSegment1.getIdentifier());
         assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
-        assertEquals("", imageSegment1.getImageTargetId());
+        assertEquals("          ", imageSegment1.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("     ", imageSegment1.getImageTargetId().getOSuffix());
+        assertEquals("  ", imageSegment1.getImageTargetId().getCountryCode());
         assertUnclasAndEmpty(imageSegment1.getSecurityMetadata());
         assertEquals("Unknown", imageSegment1.getImageSource());
         assertEquals(1024L, imageSegment1.getNumberOfRows());
@@ -174,7 +176,9 @@ public class Nitf20HeaderTest {
         assertEquals("Missing ID", imageSegment2.getIdentifier());
         assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment2.getImageDateTime()));
         assertEquals("- GROUP 3 -", imageSegment2.getImageIdentifier2());
-        assertEquals("", imageSegment2.getImageTargetId());
+        assertEquals("          ", imageSegment2.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("     ", imageSegment2.getImageTargetId().getOSuffix());
+        assertEquals("  ", imageSegment2.getImageTargetId().getCountryCode());
         assertUnclasAndEmpty(imageSegment2.getSecurityMetadata());
         assertEquals("123456789012345678901234567890123456789012", imageSegment2.getImageSource());
         assertEquals(64L, imageSegment2.getNumberOfRows());
@@ -211,7 +215,9 @@ public class Nitf20HeaderTest {
         assertEquals("0000000003", imageSegment3.getIdentifier());
         assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment3.getImageDateTime()));
         assertEquals("This is an unclassified image in an unclassified NITF message called U227C2J0", imageSegment3.getImageIdentifier2());
-        assertEquals("", imageSegment3.getImageTargetId());
+        assertEquals("          ", imageSegment3.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("     ", imageSegment3.getImageTargetId().getOSuffix());
+        assertEquals("  ", imageSegment3.getImageTargetId().getCountryCode());
         assertUnclasAndEmpty(imageSegment3.getSecurityMetadata());
         assertEquals("", imageSegment3.getImageSource());
         assertEquals(64L, imageSegment3.getNumberOfRows());
@@ -257,7 +263,9 @@ public class Nitf20HeaderTest {
         assertEquals("0000000001", imageSegment4.getIdentifier());
         assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment4.getImageDateTime()));
         assertEquals("This is an unclassified image in an unclassified NITF file.", imageSegment4.getImageIdentifier2());
-        assertEquals("", imageSegment4.getImageTargetId());
+        assertEquals("          ", imageSegment4.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("     ", imageSegment4.getImageTargetId().getOSuffix());
+        assertEquals("  ", imageSegment4.getImageTargetId().getCountryCode());
         assertUnclasAndEmpty(imageSegment4.getSecurityMetadata());
         assertEquals("", imageSegment4.getImageSource());
         assertEquals(191L, imageSegment4.getNumberOfRows());
@@ -294,7 +302,9 @@ public class Nitf20HeaderTest {
         assertEquals("0000000001", imageSegment5.getIdentifier());
         assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment5.getImageDateTime()));
         assertEquals("This is an unclassified image in an unclassified NITF file Q3.", imageSegment5.getImageIdentifier2());
-        assertEquals("", imageSegment5.getImageTargetId());
+        assertEquals("          ", imageSegment5.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("     ", imageSegment5.getImageTargetId().getOSuffix());
+        assertEquals("  ", imageSegment5.getImageTargetId().getCountryCode());
         assertUnclasAndEmpty(imageSegment5.getSecurityMetadata());
         assertEquals("", imageSegment5.getImageSource());
         assertEquals(73L, imageSegment5.getNumberOfRows());

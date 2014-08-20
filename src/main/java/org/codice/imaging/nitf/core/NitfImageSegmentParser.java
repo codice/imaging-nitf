@@ -163,7 +163,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readTGTID() throws ParseException {
-        segment.setImageTargetId(reader.readTrimmedBytes(TGTID_LENGTH));
+        segment.setImageTargetId(new TargetId(reader.readBytes(TGTID_LENGTH)));
     }
 
     private void readIID2() throws ParseException {

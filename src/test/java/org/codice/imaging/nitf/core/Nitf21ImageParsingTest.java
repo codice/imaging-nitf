@@ -62,7 +62,9 @@ public class Nitf21ImageParsingTest {
         assertNotNull(imageSegment);
         assertEquals("Missing ID", imageSegment.getIdentifier());
         assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime()));
-        assertEquals("", imageSegment.getImageTargetId());
+        assertEquals("          ", imageSegment.getImageTargetId().getBasicEncyclopediaNumber());
+        assertEquals("     ", imageSegment.getImageTargetId().getOSuffix());
+        assertEquals("  ", imageSegment.getImageTargetId().getCountryCode());
         assertEquals("- BASE IMAGE -", imageSegment.getImageIdentifier2());
         assertEquals("Unknown", imageSegment.getImageSource());
         assertEquals(1024L, imageSegment.getNumberOfRows());
