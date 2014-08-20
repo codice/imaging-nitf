@@ -28,10 +28,15 @@ import org.codice.imaging.nitf.core.schema.LoopType;
 import org.codice.imaging.nitf.core.schema.Tres;
 import org.codice.imaging.nitf.core.schema.TreType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
     Parser for Tagged Registered Extension (TRE) data.
 */
 class TreParser {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TreParser.class);
 
     private Tres tresStructure = null;
 
@@ -45,7 +50,7 @@ class TreParser {
     /**
         Constructor for TRE parser.
         <p>
-        This does initialisation, so try to re-use it if possible.
+        This does reasonably complex initialisation, so try to re-use it if possible.
 
         @throws ParseException if the initialisation fails.
     */
@@ -53,8 +58,9 @@ class TreParser {
         InputStream is = getClass().getResourceAsStream("/nitf_spec.xml");
         try {
             unmarshal(is);
-        } catch (JAXBException e) {
-            throw new ParseException("Exception while loading TRE XML" + e.getMessage(), 0);
+        } catch (JAXBException ex) {
+            LOG.warn("JAXBException parsing TRE XML specification: {}", ex.getMessage());
+            throw new ParseException("Exception while loading TRE XML" + ex.getMessage(), 0);
         }
     }
 

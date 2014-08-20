@@ -20,12 +20,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.codice.imaging.nitf.core.schema.Rpfs;
 
 /**
     Utility class for Raster Product Format (RPF) handling.
 */
 public class RasterProductFormatUtilities {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RasterProductFormatUtilities.class);
 
     private Rpfs rpfs = null;
 
@@ -43,8 +48,9 @@ public class RasterProductFormatUtilities {
         InputStream is = getClass().getResourceAsStream("/rpf_codes.xml");
         try {
             unmarshal(is);
-        } catch (JAXBException e) {
-            throw new ParseException("Exception while loading RPF codes XML" + e.getMessage(), 0);
+        } catch (JAXBException ex) {
+            LOG.warn("JAXBException parsing RPF codes: {}", ex.getMessage());
+            throw new ParseException("Exception while loading RPF codes XML" + ex.getMessage(), 0);
         }
     }
 

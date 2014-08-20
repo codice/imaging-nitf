@@ -18,10 +18,16 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
     NitfReader implementation using an InputStream.
 */
 class NitfInputStreamReader extends NitfReaderDefaultImpl implements NitfReader {
+
+    private static final Logger LOG = LoggerFactory.getLogger(NitfInputStreamReader.class);
+
     private BufferedInputStream input = null;
     private long numBytesRead = 0;
 
@@ -100,6 +106,7 @@ class NitfInputStreamReader extends NitfReaderDefaultImpl implements NitfReader 
             numBytesRead += thisRead;
             return bytes;
         } catch (IOException ex) {
+            LOG.warn("IO Exception reading raw bytes: {}", ex.getMessage());
             throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), (int) numBytesRead);
         }
     }
@@ -115,6 +122,7 @@ class NitfInputStreamReader extends NitfReaderDefaultImpl implements NitfReader 
                 bytesToRead -= thisRead;
             } while (bytesToRead > 0);
         } catch (IOException ex) {
+            LOG.warn("IO Exception skipping bytes: {}", ex.getMessage());
             throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), (int) numBytesRead);
         }
     }
