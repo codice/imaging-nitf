@@ -33,6 +33,8 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
     private RandomAccessFile nitfFile = null;
 
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF file: ";
+    private static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File Not Found Exception opening file:";
+    private static final String NOT_FOUND_MESSAGE_JOINER = " not found:";
     private static final String READ_MODE = "r";
 
     /**
@@ -45,8 +47,8 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         try {
             nitfFile = new RandomAccessFile(file, READ_MODE);
         } catch (FileNotFoundException ex) {
-            LOG.warn("File Not Found Exception opening file:" + file.getPath(), ex);
-            throw new ParseException(file.getPath() + " not found:" +  ex.getMessage(), 0);
+            LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
+            throw new ParseException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
@@ -60,8 +62,8 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         try {
             nitfFile = new RandomAccessFile(filename, READ_MODE);
         } catch (FileNotFoundException ex) {
-            LOG.warn("File Not Found Exception opening file:" + filename, ex);
-            throw new ParseException(filename + " not found:" +  ex.getMessage(), 0);
+            LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
+            throw new ParseException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
