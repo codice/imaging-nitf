@@ -59,7 +59,7 @@ class TreParser {
         try {
             unmarshal(is);
         } catch (JAXBException ex) {
-            LOG.warn("JAXBException parsing TRE XML specification: {}", ex.getMessage());
+            LOG.warn("JAXBException parsing TRE XML specification", ex);
             throw new ParseException("Exception while loading TRE XML" + ex.getMessage(), 0);
         }
     }

@@ -49,7 +49,7 @@ public class RasterProductFormatUtilities {
         try {
             unmarshal(is);
         } catch (JAXBException ex) {
-            LOG.warn("JAXBException parsing RPF codes: {}", ex.getMessage());
+            LOG.warn("JAXBException parsing RPF codes", ex);
             throw new ParseException("Exception while loading RPF codes XML" + ex.getMessage(), 0);
         }
     }
