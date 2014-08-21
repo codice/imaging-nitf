@@ -39,20 +39,30 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         Constructor for File.
 
         @param file the File to read the NITF file contents from.
-        @throws FileNotFoundException if file does not exist as a regular file, or some other errors occurs during opening of the file.
+        @throws ParseException if file does not exist as a regular file, or some other errors occurs during opening of the file.
     */
-    public NitfFileReader(final File file) throws FileNotFoundException {
-        nitfFile = new RandomAccessFile(file, READ_MODE);
+    public NitfFileReader(final File file) throws ParseException {
+        try {
+            nitfFile = new RandomAccessFile(file, READ_MODE);
+        } catch (FileNotFoundException ex) {
+            LOG.warn("File Not Found Exception opening file:" + file.getPath(), ex);
+            throw new ParseException(file.getPath() + " not found:" +  ex.getMessage(), 0);
+        }
     }
 
     /**
         Constructor for string file name.
 
         @param filename the name of the file to read the NITF file contents from.
-        @throws FileNotFoundException if file does not exist as a regular file, or some other errors occurs during opening of the file.
+        @throws ParseException if file does not exist as a regular file, or some other errors occurs during opening of the file.
     */
-    public NitfFileReader(final String filename) throws FileNotFoundException {
-        nitfFile = new RandomAccessFile(filename, READ_MODE);
+    public NitfFileReader(final String filename) throws ParseException {
+        try {
+            nitfFile = new RandomAccessFile(filename, READ_MODE);
+        } catch (FileNotFoundException ex) {
+            LOG.warn("File Not Found Exception opening file:" + filename, ex);
+            throw new ParseException(filename + " not found:" +  ex.getMessage(), 0);
+        }
     }
 
     @Override

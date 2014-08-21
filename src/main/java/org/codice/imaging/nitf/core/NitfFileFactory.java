@@ -16,7 +16,6 @@ package org.codice.imaging.nitf.core;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.EnumSet;
@@ -66,10 +65,9 @@ public final class NitfFileFactory {
 
         @param nitfFile the file to parse.
         @return NitfFile structure corresponding to the input stream.
-        @throws FileNotFoundException if the file is not present or not able to be opened.
-        @throws ParseException on detecting an invalid file or other parse error.
+        @throws ParseException if the file is not present, for an invalid file or other parse error.
     */
-    public static NitfFile parseHeadersOnly(final File nitfFile) throws ParseException, FileNotFoundException {
+    public static NitfFile parseHeadersOnly(final File nitfFile) throws ParseException {
         NitfFile file = new NitfFile();
         NitfReader reader = new NitfFileReader(nitfFile);
         new NitfFileParser(reader, EnumSet.noneOf(ParseOption.class), file);
@@ -107,11 +105,9 @@ public final class NitfFileFactory {
         @param nitfFile the file to parse.
         @param parseOptions the data segments to extract.
         @return NitfFile structure corresponding to the input stream.
-        @throws FileNotFoundException if the file is not present or not able to be opened.
-        @throws ParseException on detecting an invalid file or other parse error.
+        @throws ParseException if the file is not present, for an invalid file or other parse error.
     */
-    public static NitfFile parseSelectedDataSegments(final File nitfFile, final Set<ParseOption> parseOptions)
-        throws ParseException, FileNotFoundException {
+    public static NitfFile parseSelectedDataSegments(final File nitfFile, final Set<ParseOption> parseOptions) throws ParseException {
         NitfFile file = new NitfFile();
         NitfReader reader = new NitfFileReader(nitfFile);
         new NitfFileParser(reader, parseOptions, file);
