@@ -17,12 +17,18 @@ package org.codice.imaging.nitf.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
     Entry within a TRE.
     <p>
     This is a name and a value, or a name and a group of entries.
 */
 public class TreEntry {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TreEntry.class);
+
     private String name = null;
     private String value = null;
     private List<TreGroup> groups = null;
@@ -124,14 +130,14 @@ public class TreEntry {
         Debug dump of the TRE entry.
     */
     public final void dump() {
-        System.out.println("\tName:" + name);
+        LOG.debug("\tName: " + name);
         if (value != null) {
-            System.out.println("\tValue:" + value);
+            LOG.debug("\tValue: " + value);
         } else if (groups != null) {
             for (TreGroup group : groups) {
-                System.out.println("\t--New Group--");
+                LOG.debug("\t--New Group--");
                 group.dump();
-                System.out.println("\t--End Group--");
+                LOG.debug("\t--End Group--");
             }
         }
     }

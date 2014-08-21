@@ -18,10 +18,15 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
     A group of values within a TreEntry.
 */
 public class TreGroup {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TreGroup.class);
 
     private List<TreEntry> entries = new ArrayList<TreEntry>();
 
@@ -98,9 +103,9 @@ public class TreGroup {
     */
     public final void dump() {
         for (TreEntry entry : entries) {
-            System.out.println("\t----Start Entry---");
+            LOG.debug("\t----Start Entry---");
             entry.dump();
-            System.out.println("\t----End Entry---");
+            LOG.debug("\t----End Entry---");
         }
     }
 }

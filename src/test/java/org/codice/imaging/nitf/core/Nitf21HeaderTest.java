@@ -17,26 +17,37 @@ package org.codice.imaging.nitf.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import static org.hamcrest.Matchers.is;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
 import org.junit.rules.ExpectedException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import uk.org.lidalia.slf4jtest.LoggingEvent;
+import uk.org.lidalia.slf4jtest.TestLogger;
+import uk.org.lidalia.slf4jtest.TestLoggerFactory;
+
 public class Nitf21HeaderTest {
 
     private SimpleDateFormat formatter = null;
+
+    TestLogger logger = TestLoggerFactory.getTestLogger(TreEntry.class);
 
     @Before
     public void beforeTest() {
@@ -693,6 +704,23 @@ public class Nitf21HeaderTest {
         for (String fieldName : expectedTresImageFlat.keySet()) {
             assertEquals(expectedTresImageFlat.get(fieldName), tresImageFlat.get(fieldName));
         }
+        TreCollection tres = image.getTREsRawStructure();
+        assertNotNull(tres);
+        assertEquals(4, tres.getTREs().size());
+        Tre lastTre = tres.getTREs().get(3);
+        lastTre.dump();
+        assertThat(logger.getLoggingEvents(), is(Arrays.asList(
+            LoggingEvent.debug("\tName: LASTNME"),
+            LoggingEvent.debug("\tValue: WEBB                        "),
+            LoggingEvent.debug("\tName: FIRSTNME"),
+            LoggingEvent.debug("\tValue: DAVE                        "),
+            LoggingEvent.debug("\tName: MIDNME"),
+            LoggingEvent.debug("\tValue: L.                          "),
+            LoggingEvent.debug("\tName: DOB"),
+            LoggingEvent.debug("\tValue: 061856"),
+            LoggingEvent.debug("\tName: ASSOCTRY"),
+            LoggingEvent.debug("\tValue: US")
+        )));
     }
 
     @Test
@@ -865,4 +893,10 @@ public class Nitf21HeaderTest {
         assertEquals("", securityMetadata.getClassificationReason());
         assertEquals("", securityMetadata.getSecurityControlNumber());
     }
+
+    @After
+    public void clearLoggers() {
+        TestLoggerFactory.clear();
+    }
+
 }
