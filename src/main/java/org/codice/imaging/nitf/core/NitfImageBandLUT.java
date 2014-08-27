@@ -48,4 +48,13 @@ public class NitfImageBandLUT {
     public final byte getEntry(final int i) {
         return entries[i];
     }
+
+    /**
+        Return data for the LUT.
+
+        @return the LUT content
+    */
+    public final byte[] getEntries() {
+        return entries;
+    }
 }
