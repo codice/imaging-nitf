@@ -43,12 +43,39 @@ public class Nitf20SymbolTest {
 
     @Test
     public void testU1060A() throws IOException, ParseException {
+        InputStream is = getInputStream();
+        NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
+        assertFileSegmentDataIsAsExpected(file);
+
+        NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
+        assertSymbolSegmentDataIsAsExpected(symbolSegment1);
+        assertEquals(930, symbolSegment1.getSymbolData().length);
+
+        is.close();
+    }
+
+    @Test
+    public void testNoSegmentDataU1060A() throws IOException, ParseException {
+        InputStream is = getInputStream();
+        NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.noneOf(ParseOption.class));
+        assertFileSegmentDataIsAsExpected(file);
+
+        NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
+        assertSymbolSegmentDataIsAsExpected(symbolSegment1);
+        assertNull(symbolSegment1.getSymbolData());
+
+        is.close();
+    }
+
+    private InputStream getInputStream() {
         final String nitf20File = "/U_1060A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 
-        InputStream is = getClass().getResourceAsStream(nitf20File);
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
+        return getClass().getResourceAsStream(nitf20File);
+    }
+
+    private void assertFileSegmentDataIsAsExpected(NitfFile file) {
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
@@ -70,8 +97,9 @@ public class Nitf20SymbolTest {
         assertEquals(0, file.getNumberOfLabelSegments());
         assertEquals(0, file.getNumberOfTextSegments());
         assertEquals(0, file.getNumberOfDataExtensionSegments());
+    }
 
-        NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
+    private void assertSymbolSegmentDataIsAsExpected(NitfSymbolSegment symbolSegment1) {
         assertNotNull(symbolSegment1);
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());
@@ -92,12 +120,9 @@ public class Nitf20SymbolTest {
         assertEquals(0, symbolSegment1.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment1.getSymbolNumber());
         assertEquals(0, symbolSegment1.getSymbolRotation());
-        assertEquals(930, symbolSegment1.getSymbolData().length);
-
-        is.close();
     }
 
-    void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
+    private void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
         assertNotNull(securityMetadata);
         assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertNull(securityMetadata.getSecurityClassificationSystem());
