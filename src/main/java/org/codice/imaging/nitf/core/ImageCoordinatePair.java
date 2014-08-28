@@ -90,8 +90,11 @@ public class ImageCoordinatePair {
      */
     public final void setFromDMS(final String dms) throws ParseException {
         sourceString = dms;
+        if (dms == null) {
+            throw new ParseException("Null argument for DMS parsing", 0);
+        }
         if (dms.length() != "ddmmssXdddmmssY".length()) {
-            throw new ParseException("Incorrect length for DMS parsing", 0);
+            throw new ParseException("Incorrect length for DMS parsing:" + dms.length(), 0);
         }
         String latDegrees = dms.substring(LAT_DEGREES_OFFSET, LAT_DEGREES_LENGTH);
         String latMinutes = dms.substring(LAT_MINUTES_OFFSET, LAT_MINUTES_OFFSET + MINUTES_LENGTH);
