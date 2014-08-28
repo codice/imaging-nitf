@@ -809,6 +809,7 @@ public class Nitf21HeaderTest {
         assertEquals("", securityMetadata.getClassificationAuthorityType());
         assertEquals("", securityMetadata.getClassificationAuthority());
         assertEquals("", securityMetadata.getClassificationReason());
+        assertEquals("", securityMetadata.getSecuritySourceDate());
         assertEquals("", securityMetadata.getSecurityControlNumber());
 
         assertEquals("", imageSegment.getImageSource());

@@ -400,7 +400,7 @@ public class NitfSecurityMetadata {
         <p>
         An empty string indicates that a security downgrading date does not apply.
 
-        @return the downgrade date (format CCYYMMDD), or an empty string if downgrading does not apply.
+        @return the downgrade date (format CCYYMMDD), an empty string if downgrading does not apply, null for NITF 2.0 files.
     */
     public final String getDowngradeDate() {
         return nitfDowngradeDate;

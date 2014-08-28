@@ -86,6 +86,7 @@ public class Nitf20SymbolTest {
         assertUnclasAndEmpty(securityMetadata);
         assertEquals("999998", securityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This  file   will not need a downgrade.", securityMetadata.getDowngradeEvent());
+        assertNull(securityMetadata.getSecuritySourceDate());
 
         assertEquals("00001", file.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
