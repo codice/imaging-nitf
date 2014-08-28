@@ -61,6 +61,14 @@ public class TargetIdTest {
     }
 
     @Test
+    public void testNullTargetIdConstructorArgument() throws ParseException {
+        String targetIdArgument = null;
+        exception.expect(ParseException.class);
+        exception.expectMessage("Null argument for TargetId");
+        TargetId tgtid = new TargetId(targetIdArgument);
+    }
+
+    @Test
     public void testBadTargetIdConstructorArgumentLength() throws ParseException {
         String targetIdArgument = "ABCDEFGHIJUVWXYA";
         exception.expect(ParseException.class);

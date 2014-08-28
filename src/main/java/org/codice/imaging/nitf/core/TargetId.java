@@ -57,6 +57,9 @@ public class TargetId {
         @throws ParseException if the identifier is not of the expected length.
     */
     public TargetId(final String identifier) throws ParseException {
+        if (identifier == null) {
+            throw new ParseException("Null argument for TargetId", 0);
+        }
         if (identifier.length() != TGTID_LENGTH) {
             throw new ParseException("Incorrect length for TargetId:" + identifier.length(), 0);
         }
