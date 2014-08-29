@@ -54,13 +54,24 @@ public class NitfDateTime {
     /**
         Set the original source value.
         <p>
-        This is the value parsed out of the file, including any whitespace and hyphens. If the
-        value was not parsed from the file, it will be null.
+        This is the value parsed out of the file, including any whitespace and hyphens.
 
         @param sourceValue the original source value.
     */
     public final void setSourceString(final String sourceValue) {
         sourceString = sourceValue;
+    }
+
+    /**
+        Return the original source value.
+        <p>
+        This is the value parsed out of the file, including any whitespace and hyphens. If the
+        value was not parsed from the file, it will be null.
+
+        @return the original source value.
+    */
+    public final String getSourceString() {
+        return sourceString;
     }
 
     /**

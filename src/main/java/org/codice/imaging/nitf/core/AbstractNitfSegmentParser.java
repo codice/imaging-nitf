@@ -67,7 +67,7 @@ abstract class AbstractNitfSegmentParser {
     protected final NitfDateTime readNitfDateTime() throws ParseException {
         NitfDateTime dateTime = new NitfDateTime();
 
-        String sourceString = reader.readTrimmedBytes(STANDARD_DATE_TIME_LENGTH);
+        String sourceString = reader.readBytes(STANDARD_DATE_TIME_LENGTH);
         dateTime.setSourceString(sourceString);
 
         switch (reader.getFileType()) {
@@ -88,22 +88,12 @@ abstract class AbstractNitfSegmentParser {
     }
 
     private void parseNitf20Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        parseDateString(sourceString, dateFormat, dateTime);
-    }
-
-    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final NitfDateTime dateTime) throws ParseException {
-        Date date = dateFormat.parse(sourceString);
-        if (date == null) {
-            throw new ParseException(String.format("Bad DATETIME format: %s", sourceString), (int) reader.getCurrentOffset());
+        String strippedSourceString = sourceString.trim();
+        SimpleDateFormat dateFormat = null;
+        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
+            dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
         }
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(date);
-        dateTime.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH),
-                     calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+        parseDateString(sourceString, dateFormat, dateTime);
     }
 
     private void parseNitf21Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
@@ -115,10 +105,22 @@ abstract class AbstractNitfSegmentParser {
         } else if (strippedSourceString.length() == NITF21_DATE_ONLY_DAY_FORMAT.length()) {
             dateFormat = new SimpleDateFormat(NITF21_DATE_ONLY_DAY_FORMAT);
         }
+        parseDateString(sourceString, dateFormat, dateTime);
+    }
 
+    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final NitfDateTime dateTime) throws ParseException {
         if (dateFormat != null) {
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            parseDateString(sourceString, dateFormat, dateTime);
+            Date date = dateFormat.parse(sourceString);
+            if (date == null) {
+                throw new ParseException(String.format("Bad DATETIME format: %s", sourceString), (int) reader.getCurrentOffset());
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.clear();
+            calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+            calendar.setTime(date);
+            dateTime.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
         } else {
             LOG.warn("Unhandled date format: {}", sourceString);
         }
