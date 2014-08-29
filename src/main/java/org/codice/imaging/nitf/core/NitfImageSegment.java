@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ import java.util.List;
 */
 public class NitfImageSegment extends AbstractNitfSubSegment {
 
-    private Date imageDateTime = null;
+    private NitfDateTime imageDateTime = null;
     private TargetId imageTargetId = null;
     private String imageIdentifier2 = null;
     private String imageSource = null;
@@ -66,7 +65,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
 
         @param dateTime the date time for the image.
     */
-    public final void setImageDateTime(final Date dateTime) {
+    public final void setImageDateTime(final NitfDateTime dateTime) {
         imageDateTime = dateTime;
     }
 
@@ -77,7 +76,7 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
 
         @return the date / time that the image was captured, or null if unknown.
     */
-    public final Date getImageDateTime() {
+    public final NitfDateTime getImageDateTime() {
         return imageDateTime;
     }
 

@@ -70,7 +70,7 @@ public class Nitf20HeaderTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("U21H00N1", file.getOriginatingStationId());
-        assertEquals("1994-04-03 19:16:36", formatter.format(file.getFileDateTime()));
+        assertEquals("1994-04-03 19:16:36", formatter.format(file.getFileDateTime().toDate()));
         assertEquals("checks the handling of an NITF file w/ only a text file.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
@@ -90,7 +90,7 @@ public class Nitf20HeaderTest {
         assertNotNull(textSegment);
         assertEquals("0000000001", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
-        assertEquals("1993-03-27 23:55:36", formatter.format(textSegment.getTextDateTime()));
+        assertEquals("1993-03-27 23:55:36", formatter.format(textSegment.getTextDateTime().toDate()));
         assertEquals("This is the title of unclassified text file #1 in NITF  file   U21H00N1.", textSegment.getTextTitle());
         NitfSecurityMetadata textSecurityMetadata = textSegment.getSecurityMetadata();
         assertUnclasAndEmpty(textSecurityMetadata);
@@ -113,7 +113,7 @@ public class Nitf20HeaderTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("U217G0J1", file.getOriginatingStationId());
-        assertEquals("1992-11-03 13:52:26", formatter.format(file.getFileDateTime()));
+        assertEquals("1992-11-03 13:52:26", formatter.format(file.getFileDateTime().toDate()));
         assertEquals("This NITF message contains 5 images, 4 symbols, 4 labels and 1 text.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
@@ -134,7 +134,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment1 = file.getImageSegment(1);
         assertNotNull(imageSegment1);
         assertEquals("Missing ID", imageSegment1.getIdentifier());
-        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime()));
+        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime().toDate()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
         assertEquals("          ", imageSegment1.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment1.getImageTargetId().getOSuffix());
@@ -174,7 +174,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment2 = file.getImageSegment(2);
         assertNotNull(imageSegment2);
         assertEquals("Missing ID", imageSegment2.getIdentifier());
-        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment2.getImageDateTime()));
+        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment2.getImageDateTime().toDate()));
         assertEquals("- GROUP 3 -", imageSegment2.getImageIdentifier2());
         assertEquals("          ", imageSegment2.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment2.getImageTargetId().getOSuffix());
@@ -213,7 +213,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment3 = file.getImageSegment(3);
         assertNotNull(imageSegment3);
         assertEquals("0000000003", imageSegment3.getIdentifier());
-        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment3.getImageDateTime()));
+        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment3.getImageDateTime().toDate()));
         assertEquals("This is an unclassified image in an unclassified NITF message called U227C2J0", imageSegment3.getImageIdentifier2());
         assertEquals("          ", imageSegment3.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment3.getImageTargetId().getOSuffix());
@@ -261,7 +261,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment4 = file.getImageSegment(4);
         assertNotNull(imageSegment4);
         assertEquals("0000000001", imageSegment4.getIdentifier());
-        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment4.getImageDateTime()));
+        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment4.getImageDateTime().toDate()));
         assertEquals("This is an unclassified image in an unclassified NITF file.", imageSegment4.getImageIdentifier2());
         assertEquals("          ", imageSegment4.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment4.getImageTargetId().getOSuffix());
@@ -300,7 +300,7 @@ public class Nitf20HeaderTest {
         NitfImageSegment imageSegment5 = file.getImageSegment(5);
         assertNotNull(imageSegment5);
         assertEquals("0000000001", imageSegment5.getIdentifier());
-        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment5.getImageDateTime()));
+        assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment5.getImageDateTime().toDate()));
         assertEquals("This is an unclassified image in an unclassified NITF file Q3.", imageSegment5.getImageIdentifier2());
         assertEquals("          ", imageSegment5.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment5.getImageTargetId().getOSuffix());
@@ -518,7 +518,7 @@ public class Nitf20HeaderTest {
         assertNotNull(textSegment);
         assertEquals("0000000001", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
-        assertEquals("1990-06-07 21:11:36", formatter.format(textSegment.getTextDateTime()));
+        assertEquals("1990-06-07 21:11:36", formatter.format(textSegment.getTextDateTime().toDate()));
         assertEquals("This is the title of unclassified text file #1 in NITF message JR1_B.", textSegment.getTextTitle());
         NitfSecurityMetadata textSecurityMetadata = textSegment.getSecurityMetadata();
         assertUnclasAndEmpty(textSecurityMetadata);

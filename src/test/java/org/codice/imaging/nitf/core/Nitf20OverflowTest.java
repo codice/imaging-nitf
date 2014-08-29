@@ -53,7 +53,7 @@ public class Nitf20OverflowTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("ALLOVERFLO", file.getOriginatingStationId());
-        assertEquals("1997-09-15 09:00:00", formatter.format(file.getFileDateTime()));
+        assertEquals("1997-09-15 09:00:00", formatter.format(file.getFileDateTime().toDate()));
         assertEquals("Checks overflow from all possible areas. Created by George Levy.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
@@ -76,7 +76,7 @@ public class Nitf20OverflowTest {
         NitfImageSegment imageSegment1 = file.getImageSegment(1);
         assertNotNull(imageSegment1);
         assertEquals("512 Lenna", imageSegment1.getIdentifier());
-        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime()));
+        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime().toDate()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
         assertEquals("          ", imageSegment1.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment1.getImageTargetId().getOSuffix());

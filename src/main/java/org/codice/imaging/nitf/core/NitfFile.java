@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +25,7 @@ public class NitfFile extends AbstractNitfSegment {
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
     private String nitfOriginatingStationId = null;
-    private Date nitfFileDateTime = null;
+    private NitfDateTime nitfFileDateTime = null;
     private String nitfFileTitle = null;
     private NitfFileSecurityMetadata fileSecurityMetadata = null;
     private RGBColour nitfFileBackgroundColour = null;
@@ -162,7 +161,7 @@ public class NitfFile extends AbstractNitfSegment {
 
         @param fileDateTime the date and time for the file
     */
-    public final void setFileDateTime(final Date fileDateTime) {
+    public final void setFileDateTime(final NitfDateTime fileDateTime) {
         nitfFileDateTime = fileDateTime;
     }
 
@@ -173,7 +172,7 @@ public class NitfFile extends AbstractNitfSegment {
 
         @return date time for the file
     */
-    public final Date getFileDateTime() {
+    public final NitfDateTime getFileDateTime() {
         return nitfFileDateTime;
     }
 

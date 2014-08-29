@@ -80,7 +80,7 @@ public class Nitf20SymbolTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("PLYLIN2", file.getOriginatingStationId());
-        assertEquals("1993-09-03 19:16:36", formatter.format(file.getFileDateTime()));
+        assertEquals("1993-09-03 19:16:36", formatter.format(file.getFileDateTime().toDate()));
         assertEquals("checks for rendering of polyline. line width 1, line type 3,4,5. def line type.", file.getFileTitle());
         NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);

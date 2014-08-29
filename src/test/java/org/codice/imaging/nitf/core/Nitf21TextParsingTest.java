@@ -72,7 +72,7 @@ public class Nitf21TextParsingTest {
         assertNotNull(textSegment);
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());
-        assertEquals("1998-02-17 10:19:39", formatter.format(textSegment.getTextDateTime()));
+        assertEquals("1998-02-17 10:19:39", formatter.format(textSegment.getTextDateTime().toDate()));
         assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
     }

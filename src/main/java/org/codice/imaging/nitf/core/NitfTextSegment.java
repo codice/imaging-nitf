@@ -14,14 +14,12 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import java.util.Date;
-
 /**
     Text segment subheader information.
 */
 public class NitfTextSegment extends AbstractNitfSubSegment {
 
-    private Date textDateTime = null;
+    private NitfDateTime textDateTime = null;
     private String textTitle = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
 
@@ -40,7 +38,7 @@ public class NitfTextSegment extends AbstractNitfSubSegment {
 
         @param dateTime the date and time of the text.
     */
-    public final void setTextDateTime(final Date dateTime) {
+    public final void setTextDateTime(final NitfDateTime dateTime) {
         textDateTime = dateTime;
     }
 
@@ -51,7 +49,7 @@ public class NitfTextSegment extends AbstractNitfSubSegment {
 
         @return the date and time of the text.
     */
-    public final Date getTextDateTime() {
+    public final NitfDateTime getTextDateTime() {
         return textDateTime;
     }
 

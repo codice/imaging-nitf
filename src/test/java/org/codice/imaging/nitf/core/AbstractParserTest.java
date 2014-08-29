@@ -77,7 +77,7 @@ public class AbstractParserTest {
         try {
             exception.expect(ParseException.class);
             exception.expectMessage("Need to set NITF file type prior to reading dates");
-            Date date = parser.readNitfDateTime();
+            NitfDateTime date = parser.readNitfDateTime();
         } finally {
             assertThat(logger.getLoggingEvents(), is(Arrays.asList(LoggingEvent.warn("Unknown NITF file type while reading date: UNKNOWN"))));
         }
@@ -97,7 +97,7 @@ public class AbstractParserTest {
         calendar.clear();
         calendar.set(2014, Calendar.JULY, 4);
         Date expectedDate = calendar.getTime();
-        assertEquals(expectedDate, parser.readNitfDateTime());
+        assertEquals(expectedDate, parser.readNitfDateTime().toDate());
     }
 
     @After
