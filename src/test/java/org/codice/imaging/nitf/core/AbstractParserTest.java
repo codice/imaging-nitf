@@ -91,11 +91,45 @@ public class AbstractParserTest {
         NitfReader mockReader = Mockito.mock(NitfReader.class);
         Mockito.when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         parser.reader = mockReader;
-        Mockito.when(mockReader.readTrimmedBytes(STANDARD_DATE_TIME_LENGTH)).thenReturn("20140704");
+        Mockito.when(mockReader.readBytes(STANDARD_DATE_TIME_LENGTH)).thenReturn("20140704");
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"),  Locale.US);
         calendar.clear();
         calendar.set(2014, Calendar.JULY, 4);
+        Date expectedDate = calendar.getTime();
+        assertEquals(expectedDate, parser.readNitfDateTime().toDate());
+    }
+
+    // Test when we have yyyyMMdd------
+    @Test
+    public void testPaddedDateParsing() throws ParseException {
+        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
+
+        NitfReader mockReader = Mockito.mock(NitfReader.class);
+        Mockito.when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
+        parser.reader = mockReader;
+        Mockito.when(mockReader.readBytes(STANDARD_DATE_TIME_LENGTH)).thenReturn("20140704------");
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"),  Locale.US);
+        calendar.clear();
+        calendar.set(2014, Calendar.JULY, 4, 0, 0);
+        Date expectedDate = calendar.getTime();
+        assertEquals(expectedDate, parser.readNitfDateTime().toDate());
+    }
+
+    // Test when we have yyyyMMddHH----
+    @Test
+    public void testPaddedDateHourParsing() throws ParseException {
+        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
+
+        NitfReader mockReader = Mockito.mock(NitfReader.class);
+        Mockito.when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
+        parser.reader = mockReader;
+        Mockito.when(mockReader.readBytes(STANDARD_DATE_TIME_LENGTH)).thenReturn("2014070423----");
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"),  Locale.US);
+        calendar.clear();
+        calendar.set(2014, Calendar.JULY, 4, 23, 0, 0);
         Date expectedDate = calendar.getTime();
         assertEquals(expectedDate, parser.readNitfDateTime().toDate());
     }

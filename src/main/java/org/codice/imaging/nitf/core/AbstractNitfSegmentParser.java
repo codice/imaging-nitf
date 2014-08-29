@@ -35,7 +35,6 @@ abstract class AbstractNitfSegmentParser {
     private static final int ENCRYP_LENGTH = 1;
     private static final int RGB_COLOUR_LENGTH = 3;
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
-    private static final String NITF21_DATE_ONLY_DAY_FORMAT = "yyyyMMdd";
     private static final String NITF21_DATE_FORMAT = "yyyyMMddHHmmss";
     private static final int YEAR_OFFSET = 0;
     private static final int YEAR_LENGTH = "yyyy".length();
@@ -97,15 +96,23 @@ abstract class AbstractNitfSegmentParser {
     }
 
     private void parseNitf21Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
-        String strippedSourceString = sourceString.trim();
+        String strippedSourceString = removeHyphens(sourceString.trim());
 
         SimpleDateFormat dateFormat = null;
-        if (strippedSourceString.length() == NITF21_DATE_FORMAT.length()) {
+        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
             dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT);
-        } else if (strippedSourceString.length() == NITF21_DATE_ONLY_DAY_FORMAT.length()) {
-            dateFormat = new SimpleDateFormat(NITF21_DATE_ONLY_DAY_FORMAT);
+        } else if ((strippedSourceString.length() < STANDARD_DATE_TIME_LENGTH) && (strippedSourceString.length() % 2 == 0)) {
+            dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT.substring(0, strippedSourceString.length()));
         }
         parseDateString(sourceString, dateFormat, dateTime);
+    }
+
+    public static String removeHyphens(final String s) {
+        int i = s.length() - 1;
+        while ((i >= 0) && (s.charAt(i) == '-')) {
+            i--;
+        }
+        return s.substring(0, i + 1);
     }
 
     private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final NitfDateTime dateTime) throws ParseException {
