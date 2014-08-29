@@ -50,7 +50,7 @@ public final class NitfFileFactory {
     */
     public static NitfFile parseHeadersOnly(final InputStream nitfInputStream) throws ParseException {
         NitfFile file = new NitfFile();
-        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream));
+        NitfReader reader = new InputStreamReader(new BufferedInputStream(nitfInputStream));
         new NitfFileParser(reader, EnumSet.noneOf(ParseOption.class), file);
         return file;
     }
@@ -69,7 +69,7 @@ public final class NitfFileFactory {
     */
     public static NitfFile parseHeadersOnly(final File nitfFile) throws ParseException {
         NitfFile file = new NitfFile();
-        NitfReader reader = new NitfFileReader(nitfFile);
+        NitfReader reader = new FileReader(nitfFile);
         new NitfFileParser(reader, EnumSet.noneOf(ParseOption.class), file);
         return file;
     }
@@ -90,7 +90,7 @@ public final class NitfFileFactory {
     */
     public static NitfFile parseSelectedDataSegments(final InputStream nitfInputStream, final Set<ParseOption> parseOptions) throws ParseException {
         NitfFile file = new NitfFile();
-        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(nitfInputStream));
+        NitfReader reader = new InputStreamReader(new BufferedInputStream(nitfInputStream));
         new NitfFileParser(reader, parseOptions, file);
         return file;
     }
@@ -109,7 +109,7 @@ public final class NitfFileFactory {
     */
     public static NitfFile parseSelectedDataSegments(final File nitfFile, final Set<ParseOption> parseOptions) throws ParseException {
         NitfFile file = new NitfFile();
-        NitfReader reader = new NitfFileReader(nitfFile);
+        NitfReader reader = new FileReader(nitfFile);
         new NitfFileParser(reader, parseOptions, file);
         return file;
     }

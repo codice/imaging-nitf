@@ -26,9 +26,9 @@ import org.slf4j.LoggerFactory;
 /**
     NitfReader implementation using a (random access) File.
 */
-class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
+class FileReader extends SharedReader implements NitfReader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NitfFileReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileReader.class);
 
     private RandomAccessFile nitfFile = null;
 
@@ -43,7 +43,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         @param file the File to read the NITF file contents from.
         @throws ParseException if file does not exist as a regular file, or some other errors occurs during opening of the file.
     */
-    public NitfFileReader(final File file) throws ParseException {
+    public FileReader(final File file) throws ParseException {
         try {
             nitfFile = new RandomAccessFile(file, READ_MODE);
         } catch (FileNotFoundException ex) {
@@ -58,7 +58,7 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
         @param filename the name of the file to read the NITF file contents from.
         @throws ParseException if file does not exist as a regular file, or some other errors occurs during opening of the file.
     */
-    public NitfFileReader(final String filename) throws ParseException {
+    public FileReader(final String filename) throws ParseException {
         try {
             nitfFile = new RandomAccessFile(filename, READ_MODE);
         } catch (FileNotFoundException ex) {
@@ -80,31 +80,6 @@ class NitfFileReader extends NitfReaderDefaultImpl implements NitfReader {
             LOG.warn("IO Exception getting file pointer", ex);
             return 0;
         }
-    }
-
-    @Override
-    public final Integer readBytesAsInteger(final int count) throws ParseException {
-        return defaultReadBytesAsInteger(count);
-    }
-
-    @Override
-    public final Long readBytesAsLong(final int count) throws ParseException {
-        return defaultReadBytesAsLong(count);
-    }
-
-    @Override
-    public final Double readBytesAsDouble(final int count) throws ParseException {
-        return defaultReadBytesAsDouble(count);
-    }
-
-    @Override
-    public final String readTrimmedBytes(final int count) throws ParseException {
-        return defaultReadTrimmedBytes(count);
-    }
-
-    @Override
-    public final String readBytes(final int count) throws ParseException {
-        return defaultReadBytes(count);
     }
 
     @Override
