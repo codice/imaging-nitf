@@ -36,18 +36,6 @@ abstract class AbstractNitfSegmentParser {
     private static final int RGB_COLOUR_LENGTH = 3;
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
     private static final String NITF21_DATE_FORMAT = "yyyyMMddHHmmss";
-    private static final int YEAR_OFFSET = 0;
-    private static final int YEAR_LENGTH = "yyyy".length();
-    private static final int MONTH_OFFSET = YEAR_OFFSET + YEAR_LENGTH;
-    private static final int MONTH_LENGTH = "MM".length();
-    private static final int DAY_OFFSET = MONTH_OFFSET + MONTH_LENGTH;
-    private static final int DAY_LENGTH = "dd".length();
-    private static final int HOUR_OFFSET = DAY_OFFSET + DAY_LENGTH;
-    private static final int HOUR_LENGTH = "HH".length();
-    private static final int MINUTE_OFFSET = HOUR_OFFSET + HOUR_LENGTH;
-    private static final int MINUTE_LENGTH = "mm".length();
-    private static final int SECOND_OFFSET = MINUTE_OFFSET + MINUTE_LENGTH;
-    private static final int SECOND_LENGTH = "ss".length();
 
     private static final String NITF20_DATE_FORMAT = "ddHHmmss'Z'MMMyy";
 
