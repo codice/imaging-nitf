@@ -113,33 +113,43 @@ class TreParser {
                 IfType ifType = (IfType) fieldLoopIf;
                 evaluateIfType(ifType, treGroup, reader, parent);
             } else if (fieldLoopIf instanceof LoopType) {
-                LoopType loop = (LoopType) fieldLoopIf;
-                int numRepetitions = 0;
-                if (loop.getIterations() != null) {
-                    numRepetitions = loop.getIterations().intValue();
-                } else if (loop.getCounter() != null) {
-                    String repetitionCounter = loop.getCounter();
-                    numRepetitions = treGroup.getIntValue(repetitionCounter);
-                } else if (loop.getFormula() != null) {
-                    numRepetitions = computeFormula(loop.getFormula(), treGroup);
-                } else {
-                    throw new UnsupportedOperationException("Need to implement other loop type");
-                }
-                TreEntry treEntry = new TreEntry(loop.getName(), parent);
-                for (int i = 0; i < numRepetitions; ++i) {
-                    TreGroup subGroup = parseTreComponents(loop.getFieldOrLoopOrIf(), reader, parent);
-                    treEntry.addGroup(subGroup);
-                }
-                treGroup.add(treEntry);
+                LoopType loopType = (LoopType) fieldLoopIf;
+                evaluateLoopType(loopType, treGroup, parent, reader);
             } else if (fieldLoopIf instanceof FieldType) {
                 FieldType field = (FieldType) fieldLoopIf;
-                TreEntry treEntry = parseOneField(reader, field, parent, treGroup);
-                if (treEntry != null) {
-                    treGroup.add(treEntry);
-                }
+                evaluateFieldType(reader, field, parent, treGroup);
             }
         }
         return treGroup;
+    }
+
+    private void evaluateFieldType(final NitfReader reader, final FieldType field, final TreEntryList parent, final TreGroup treGroup)
+            throws ParseException {
+        TreEntry treEntry = parseOneField(reader, field, parent, treGroup);
+        if (treEntry != null) {
+            treGroup.add(treEntry);
+        }
+    }
+
+    private void evaluateLoopType(final LoopType loopType, final TreGroup treGroup, final TreEntryList parent, final NitfReader reader)
+            throws ParseException {
+        int numRepetitions = 0;
+        if (loopType.getIterations() != null) {
+            numRepetitions = loopType.getIterations().intValue();
+        } else if (loopType.getCounter() != null) {
+            String repetitionCounter = loopType.getCounter();
+            numRepetitions = treGroup.getIntValue(repetitionCounter);
+        } else if (loopType.getFormula() != null) {
+            numRepetitions = computeFormula(loopType.getFormula(), treGroup);
+        } else {
+            throw new UnsupportedOperationException("Need to implement other loop type");
+        }
+        TreEntry treEntry = new TreEntry(loopType.getName(), parent);
+        for (int i = 0; i < numRepetitions; ++i) {
+            TreGroup subGroup = parseTreComponents(loopType.getFieldOrLoopOrIf(), reader, parent);
+            treEntry.addGroup(subGroup);
+        }
+        treGroup.add(treEntry);
     }
 
     private void evaluateIfType(final IfType ifType,
@@ -155,26 +165,45 @@ class TreParser {
 
     private int computeFormula(final String formula, final TreGroup treGroup) throws ParseException {
         if ("(NPART+1)*(NPART)/2".equals(formula)) {
-            int npart = treGroup.getIntValue("NPART");
-            return (npart + 1) * (npart) / 2;
+            return computeAverageNPart(treGroup);
         } else if ("(NUMOPG+1)*(NUMOPG)/2".equals(formula)) {
-            int numopg = treGroup.getIntValue("NUMOPG");
-            return (numopg + 1) * (numopg) / 2;
+            return computeAverageNumOrg(treGroup);
         } else if ("NPAR*NPARO".equals(formula)) {
-            int npar = treGroup.getIntValue("NPAR");
-            int nparo = treGroup.getIntValue("NPARO");
-            return npar * nparo;
+            return computeProductNParNParo(treGroup);
         } else if ("NPLN-1".equals(formula)) {
-            int npln = treGroup.getIntValue("NPLN");
-            return npln - 1;
+            return computeNplnMinus(treGroup);
         } else if ("NXPTS*NYPTS".equals(formula)) {
-            int nxpts = treGroup.getIntValue("NXPTS");
-            int nypts = treGroup.getIntValue("NYPTS");
-            return nxpts * nypts;
+            return computeProductNxptsNypts(treGroup);
         } else {
             // There shouldn't be any others, so hitting this probably indicates a parse error
             throw new UnsupportedOperationException("Implement missing formula:" + formula);
         }
+    }
+
+    private int computeAverageNPart(final TreGroup treGroup) throws ParseException {
+        int npart = treGroup.getIntValue("NPART");
+        return (npart + 1) * (npart) / 2;
+    }
+
+    private int computeAverageNumOrg(final TreGroup treGroup) throws ParseException {
+        int numopg = treGroup.getIntValue("NUMOPG");
+        return (numopg + 1) * (numopg) / 2;
+    }
+    private int computeProductNParNParo(final TreGroup treGroup) throws ParseException {
+        int npar = treGroup.getIntValue("NPAR");
+        int nparo = treGroup.getIntValue("NPARO");
+        return npar * nparo;
+    }
+
+    private int computeNplnMinus(final TreGroup treGroup) throws ParseException {
+        int npln = treGroup.getIntValue("NPLN");
+        return npln - 1;
+    }
+
+    private int computeProductNxptsNypts(final TreGroup treGroup) throws ParseException {
+        int nxpts = treGroup.getIntValue("NXPTS");
+        int nypts = treGroup.getIntValue("NYPTS");
+        return nxpts * nypts;
     }
 
     private boolean evaluateCondition(final String condition, final TreGroup treGroup) throws ParseException {
