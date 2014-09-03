@@ -125,41 +125,73 @@ class NitfFileParser extends AbstractNitfSegmentParser {
         readOPHONE();
         readFL();
         readHL();
+        readBaseHeaderImageParts();
+        readBaseHeaderGraphicParts();
+        readBaseHeaderLabelParts();
+        readBaseHeaderTextParts();
+        readBaseHeaderDataExtensionSegmentParts();
+        readBaseHeaderReservedExtensionParts();
+        readBaseHeaderUserDefinedHeaderData();
+        readBaseHeaderExtendedHeader();
+    }
+
+    private void readBaseHeaderImageParts() throws ParseException {
         readNUMI();
         for (int i = 0; i < numberImageSegments; ++i) {
             readLISH(i);
             readLI(i);
         }
+    }
+
+    private void readBaseHeaderGraphicParts() throws ParseException {
         readNUMS();
         for (int i = 0; i < numberGraphicSegments; ++i) {
             readLSSH();
             readLS();
         }
+    }
+
+    private void readBaseHeaderLabelParts() throws ParseException {
         readNUMX();
         for (int i = 0; i < numberLabelSegments; ++i) {
             readLLSH();
             readLL();
         }
+    }
+
+    private void readBaseHeaderTextParts() throws ParseException {
         readNUMT();
         for (int i = 0; i < numberTextSegments; ++i) {
             readLTSH();
             readLT();
         }
+    }
+
+    private void readBaseHeaderDataExtensionSegmentParts() throws ParseException {
         readNUMDES();
         for (int i = 0; i < numberDataExtensionSegments; ++i) {
             readLDSH();
             readLD();
         }
+    }
+
+    private void readBaseHeaderReservedExtensionParts() throws ParseException {
         readNUMRES();
         for (int i = 0; i < numberReservedExtensionSegments; ++i) {
             // TODO: find a case that exercises this and implement it
             throw new UnsupportedOperationException("IMPLEMENT RES PARSING");
         }
+    }
+
+    private void readBaseHeaderUserDefinedHeaderData() throws ParseException {
         readUDHDL();
         if (userDefinedHeaderDataLength > 0) {
             readUDHOFL();
             readUDHD();
         }
+    }
+
+     private void readBaseHeaderExtendedHeader() throws ParseException {
         readXHDL();
         if (extendedHeaderDataLength > 0) {
             readXHDLOFL();
