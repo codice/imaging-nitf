@@ -90,12 +90,7 @@ public class ImageCoordinatePair {
      */
     public final void setFromDMS(final String dms) throws ParseException {
         sourceString = dms;
-        if (dms == null) {
-            throw new ParseException("Null argument for DMS parsing", 0);
-        }
-        if (dms.length() != "ddmmssXdddmmssY".length()) {
-            throw new ParseException("Incorrect length for DMS parsing:" + dms.length(), 0);
-        }
+        checkDMSparameterIsProbablyValid(dms);
         String latDegrees = dms.substring(LAT_DEGREES_OFFSET, LAT_DEGREES_LENGTH);
         String latMinutes = dms.substring(LAT_MINUTES_OFFSET, LAT_MINUTES_OFFSET + MINUTES_LENGTH);
         String latSeconds = dms.substring(LAT_SECONDS_OFFSET, LAT_SECONDS_OFFSET + SECONDS_LENGTH);
@@ -104,25 +99,49 @@ public class ImageCoordinatePair {
         String lonMinutes = dms.substring(LON_MINUTES_OFFSET, LON_MINUTES_OFFSET + MINUTES_LENGTH);
         String lonSeconds = dms.substring(LON_SECONDS_OFFSET, LON_SECONDS_OFFSET + SECONDS_LENGTH);
         String lonEW = dms.substring(LON_HEMISPHERE_MARKER_OFFSET, LON_HEMISPHERE_MARKER_OFFSET + HEMISPHERE_MARKER_LENGTH);
-        if ((!"N".equals(latNS)) && (!"S".equals(latNS))) {
-            throw new ParseException(String.format("Incorrect format for N/S flag while DMS parsing: %s(%s)", latNS, dms),
-                                     LAT_HEMISPHERE_MARKER_OFFSET);
-        }
-        if ((!"E".equals(lonEW)) && (!"W".equals(lonEW))) {
-            throw new ParseException(String.format("Incorrect format for E/W flag while DMS parsing: %s(%s)", lonEW, dms),
-                                     LON_HEMISPHERE_MARKER_OFFSET);
-        }
+        checkNSFlagIsValid(latNS, dms);
+        checkEWFlagIsValid(lonEW, dms);
         try {
-            lat = buildDecimalDegrees(latDegrees, latMinutes, latSeconds);
-            if ("S".equals(latNS)) {
-                lat = -1.0 * lat;
-            }
-            lon = buildDecimalDegrees(lonDegrees, lonMinutes, lonSeconds);
-            if ("W".equals(lonEW)) {
-                lon = -1.0 * lon;
-            }
+            buildLatitudeFromDecimalDegrees(latDegrees, latMinutes, latSeconds, latNS);
+            buildLongitudeFromDecimalDegrees(lonDegrees, lonMinutes, lonSeconds, lonEW);
         } catch (NumberFormatException ex) {
             throw new ParseException(String.format("Incorrect DMS format: %s", dms), 0);
+        }
+    }
+
+    private void checkDMSparameterIsProbablyValid(final String dms) throws ParseException {
+        if (dms == null) {
+            throw new ParseException("Null argument for DMS parsing", 0);
+        }
+        if (dms.length() != "ddmmssXdddmmssY".length()) {
+            throw new ParseException("Incorrect length for DMS parsing:" + dms.length(), 0);
+        }
+    }
+    private void checkNSFlagIsValid(final String latNS, final String dms) throws ParseException {
+        if ((!"N".equals(latNS)) && (!"S".equals(latNS))) {
+            throw new ParseException(String.format("Incorrect format for N/S flag while DMS parsing: %s(%s)", latNS, dms),
+                    LAT_HEMISPHERE_MARKER_OFFSET);
+        }
+    }
+
+    private void checkEWFlagIsValid(final String lonEW, final String dms) throws ParseException {
+        if ((!"E".equals(lonEW)) && (!"W".equals(lonEW))) {
+            throw new ParseException(String.format("Incorrect format for E/W flag while DMS parsing: %s(%s)", lonEW, dms),
+                    LON_HEMISPHERE_MARKER_OFFSET);
+        }
+    }
+
+    private void buildLatitudeFromDecimalDegrees(final String latDegrees, final String latMinutes, final String latSeconds, final String latNS) {
+        lat = buildDecimalDegrees(latDegrees, latMinutes, latSeconds);
+        if ("S".equals(latNS)) {
+            lat = -1.0 * lat;
+        }
+    }
+
+    private void buildLongitudeFromDecimalDegrees(final String lonDegrees, final String lonMinutes, final String lonSeconds, final String lonEW) {
+        lon = buildDecimalDegrees(lonDegrees, lonMinutes, lonSeconds);
+        if ("W".equals(lonEW)) {
+            lon = -1.0 * lon;
         }
     }
 
