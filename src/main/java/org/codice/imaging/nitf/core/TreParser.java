@@ -164,20 +164,28 @@ class TreParser {
     }
 
     private int computeFormula(final String formula, final TreGroup treGroup) throws ParseException {
-        if ("(NPART+1)*(NPART)/2".equals(formula)) {
-            return computeAverageNPart(treGroup);
-        } else if ("(NUMOPG+1)*(NUMOPG)/2".equals(formula)) {
-            return computeAverageNumOrg(treGroup);
-        } else if ("NPAR*NPARO".equals(formula)) {
-            return computeProductNParNParo(treGroup);
-        } else if ("NPLN-1".equals(formula)) {
-            return computeNplnMinus(treGroup);
-        } else if ("NXPTS*NYPTS".equals(formula)) {
-            return computeProductNxptsNypts(treGroup);
-        } else {
-            // There shouldn't be any others, so hitting this probably indicates a parse error
-            throw new UnsupportedOperationException("Implement missing formula:" + formula);
+        int result = 0;
+        switch (formula) {
+            case "(NPART+1)*(NPART)/2":
+                result = computeAverageNPart(treGroup);
+                break;
+            case "(NUMOPG+1)*(NUMOPG)/2":
+                result = computeAverageNumOrg(treGroup);
+                break;
+            case "NPAR*NPARO":
+                result = computeProductNParNParo(treGroup);
+                break;
+            case "NPLN-1":
+                result = computeNplnMinus(treGroup);
+                break;
+            case "NXPTS*NYPTS":
+                result = computeProductNxptsNypts(treGroup);
+                break;
+            default:
+                // There shouldn't be any others, so hitting this probably indicates a parse error
+                throw new UnsupportedOperationException("Implement missing formula:" + formula);
         }
+        return result;
     }
 
     private int computeAverageNPart(final TreGroup treGroup) throws ParseException {
