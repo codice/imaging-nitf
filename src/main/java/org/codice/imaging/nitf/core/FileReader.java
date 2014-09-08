@@ -34,7 +34,7 @@ class FileReader extends SharedReader implements NitfReader {
 
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF file: ";
     private static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File Not Found Exception opening file:";
-    private static final String NOT_FOUND_MESSAGE_JOINER = " not found:";
+    private static final String NOT_FOUND_MESSAGE_JOINER = " not found: ";
     private static final String READ_MODE = "r";
 
     /**
