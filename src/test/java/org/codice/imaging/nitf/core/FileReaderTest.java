@@ -40,4 +40,17 @@ public class FileReaderTest {
         exception.expectMessage("no such file not found: no such file (No such file or directory)");
         FileReader badReader = new FileReader("no such file");
     }
+
+    @Test
+    public void testBadFileConstructorArgument() throws ParseException, URISyntaxException {
+        final String testfile = "/WithBE.ntf";
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+
+        FileReader goodReader = new FileReader(new File(getClass().getResource(testfile).toURI()));
+        assertNotNull(goodReader);
+
+        exception.expect(ParseException.class);
+        exception.expectMessage("no such file not found: no such file (No such file or directory)");
+        FileReader badReader = new FileReader(new File("no such file"));
+    }
 }
