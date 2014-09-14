@@ -60,7 +60,7 @@ public class TreEntry {
     public TreEntry(final String fieldName, final TreGroup parent) {
         name = fieldName;
         entryParent = parent;
-        groups = new ArrayList<TreGroup>();
+        initGroups();
     }
 
     /**

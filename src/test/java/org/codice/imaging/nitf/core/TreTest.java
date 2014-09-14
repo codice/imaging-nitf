@@ -47,4 +47,20 @@ public class TreTest {
         assertEquals(1, entry.getGroups().size());
     }
 
+    @Test
+    public void testTreEntry() {
+        TreEntry entry = new TreEntry("ANAME", null);
+        assertNotNull(entry);
+
+        entry.initGroups();
+        assertEquals(0, entry.getGroups().size());
+        TreGroup group1 = new TreGroup();
+        entry.addGroup(group1);
+        TreGroup group2 = new TreGroup();
+        entry.addGroup(group2);
+        TreEntry subEntry = new TreEntry("SubEntry", group2);
+        group2.add(subEntry);
+        subEntry.addGroup(new TreGroup());
+        entry.dump();
+    }
 }
