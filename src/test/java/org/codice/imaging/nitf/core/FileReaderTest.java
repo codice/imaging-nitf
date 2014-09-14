@@ -33,7 +33,7 @@ public class FileReaderTest {
         final String testfile = "/WithBE.ntf";
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
-        FileReader goodReader = new FileReader(new File(getClass().getResource(testfile).toURI()));
+        FileReader goodReader = new FileReader(getClass().getResource(testfile).getPath());
         assertNotNull(goodReader);
 
         exception.expect(ParseException.class);
