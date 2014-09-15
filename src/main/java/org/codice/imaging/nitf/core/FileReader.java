@@ -45,7 +45,7 @@ class FileReader extends SharedReader implements NitfReader {
     */
     public FileReader(final File file) throws ParseException {
         try {
-            nitfFile = new RandomAccessFile(file, READ_MODE);
+            nitfFile = makeRandomAccessFile(file, READ_MODE);
         } catch (FileNotFoundException ex) {
             LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
             throw new ParseException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
@@ -60,7 +60,7 @@ class FileReader extends SharedReader implements NitfReader {
     */
     public FileReader(final String filename) throws ParseException {
         try {
-            nitfFile = new RandomAccessFile(filename, READ_MODE);
+            nitfFile = makeRandomAccessFile(filename, READ_MODE);
         } catch (FileNotFoundException ex) {
             LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
             throw new ParseException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
@@ -141,5 +141,13 @@ class FileReader extends SharedReader implements NitfReader {
             LOG.warn("IO Exception skipping bytes", ex);
             throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
+    }
+
+    private RandomAccessFile makeRandomAccessFile(final File file, final String mode) throws FileNotFoundException {
+        return new RandomAccessFile(file, mode);
+    }
+
+    private RandomAccessFile makeRandomAccessFile(final String filename, final String mode) throws FileNotFoundException {
+        return new RandomAccessFile(filename, mode);
     }
 }
