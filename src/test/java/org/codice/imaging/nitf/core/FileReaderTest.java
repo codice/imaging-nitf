@@ -25,12 +25,14 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class FileReaderTest {
+
+    private final String testfile = "/WithBE.ntf";
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testBadFilenameConstructorArgument() throws ParseException, URISyntaxException {
-        final String testfile = "/WithBE.ntf";
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         FileReader goodReader = new FileReader(getClass().getResource(testfile).getPath());
@@ -43,7 +45,6 @@ public class FileReaderTest {
 
     @Test
     public void testBadFileConstructorArgument() throws ParseException, URISyntaxException {
-        final String testfile = "/WithBE.ntf";
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         FileReader goodReader = new FileReader(new File(getClass().getResource(testfile).toURI()));
