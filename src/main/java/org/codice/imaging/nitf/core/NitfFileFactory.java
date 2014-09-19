@@ -49,10 +49,8 @@ public final class NitfFileFactory {
         @throws ParseException on detecting an invalid file or other parse error.
     */
     public static NitfFile parseHeadersOnly(final InputStream nitfInputStream) throws ParseException {
-        NitfFile file = new NitfFile();
         NitfReader reader = new InputStreamReader(new BufferedInputStream(nitfInputStream));
-        new NitfFileParser(reader, EnumSet.noneOf(ParseOption.class), file);
-        return file;
+        return NitfFileParser.parse(reader, EnumSet.noneOf(ParseOption.class));
     }
 
     /**
@@ -68,10 +66,8 @@ public final class NitfFileFactory {
         @throws ParseException if the file is not present, for an invalid file or other parse error.
     */
     public static NitfFile parseHeadersOnly(final File nitfFile) throws ParseException {
-        NitfFile file = new NitfFile();
         NitfReader reader = new FileReader(nitfFile);
-        new NitfFileParser(reader, EnumSet.noneOf(ParseOption.class), file);
-        return file;
+        return NitfFileParser.parse(reader, EnumSet.noneOf(ParseOption.class));
     }
 
     /**
@@ -89,10 +85,8 @@ public final class NitfFileFactory {
         @throws ParseException on detecting an invalid file or other parse error.
     */
     public static NitfFile parseSelectedDataSegments(final InputStream nitfInputStream, final Set<ParseOption> parseOptions) throws ParseException {
-        NitfFile file = new NitfFile();
         NitfReader reader = new InputStreamReader(new BufferedInputStream(nitfInputStream));
-        new NitfFileParser(reader, parseOptions, file);
-        return file;
+        return NitfFileParser.parse(reader, parseOptions);
     }
 
     /**
@@ -108,9 +102,7 @@ public final class NitfFileFactory {
         @throws ParseException if the file is not present, for an invalid file or other parse error.
     */
     public static NitfFile parseSelectedDataSegments(final File nitfFile, final Set<ParseOption> parseOptions) throws ParseException {
-        NitfFile file = new NitfFile();
         NitfReader reader = new FileReader(nitfFile);
-        new NitfFileParser(reader, parseOptions, file);
-        return file;
+        return NitfFileParser.parse(reader, parseOptions);
     }
 }

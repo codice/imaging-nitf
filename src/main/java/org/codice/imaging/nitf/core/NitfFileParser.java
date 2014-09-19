@@ -23,7 +23,7 @@ import java.util.Set;
 /**
     Parser for a NITF file.
 */
-class NitfFileParser extends AbstractNitfSegmentParser {
+final class NitfFileParser extends AbstractNitfSegmentParser {
 
     private long nitfFileLength = -1;
     private int nitfHeaderLength = -1;
@@ -94,18 +94,21 @@ class NitfFileParser extends AbstractNitfSegmentParser {
     private NitfFile nitf = null;
     private Set<ParseOption> parseOptionSet = null;
 
-    NitfFileParser(final NitfReader nitfReader,
-                          final Set<ParseOption> parseOptions,
-                          final NitfFile nitfFile) throws ParseException {
-        nitf = nitfFile;
+    private NitfFileParser(final NitfReader nitfReader, final Set<ParseOption> parseOptions) {
+        nitf = new NitfFile();
         parseOptionSet = parseOptions;
         reader = nitfReader;
+    };
 
-        readBaseHeaders();
-        if (isStreamingMode()) {
-            handleStreamingMode();
+    public static NitfFile parse(final NitfReader nitfReader, final Set<ParseOption> parseOptions) throws ParseException {
+        NitfFileParser parser = new NitfFileParser(nitfReader, parseOptions);
+
+        parser.readBaseHeaders();
+        if (parser.isStreamingMode()) {
+            parser.handleStreamingMode();
         }
-        readDataSegments();
+        parser.readDataSegments();
+        return parser.nitf;
     }
 
     private void readBaseHeaders() throws ParseException {
