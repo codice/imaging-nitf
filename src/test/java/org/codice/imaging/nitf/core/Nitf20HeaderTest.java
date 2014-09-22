@@ -49,7 +49,7 @@ public class Nitf20HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
 
         InputStream is = getClass().getResourceAsStream(simpleNitf20File);
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
         checkCompliantHeaderReadResults(file);
         is.close();
     }
@@ -61,11 +61,11 @@ public class Nitf20HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
 
         File resourceFile = new File(getClass().getResource(simpleNitf20File).getFile());
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(resourceFile, EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(resourceFile, EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
         checkCompliantHeaderReadResults(file);
     }
 
-    private void checkCompliantHeaderReadResults(NitfFile file) throws ParseException {
+    private void checkCompliantHeaderReadResults(Nitf file) throws ParseException {
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
@@ -108,7 +108,7 @@ public class Nitf20HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 
         InputStream is = getClass().getResourceAsStream(nitf20File);
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());

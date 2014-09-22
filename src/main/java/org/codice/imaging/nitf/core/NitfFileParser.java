@@ -91,16 +91,16 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
 
     private static final long STREAMING_FILE_MODE = 999999999999L;
 
-    private NitfFile nitf = null;
+    private Nitf nitf = null;
     private Set<ParseOption> parseOptionSet = null;
 
     private NitfFileParser(final NitfReader nitfReader, final Set<ParseOption> parseOptions) {
-        nitf = new NitfFile();
+        nitf = new Nitf();
         parseOptionSet = parseOptions;
         reader = nitfReader;
     };
 
-    public static NitfFile parse(final NitfReader nitfReader, final Set<ParseOption> parseOptions) throws ParseException {
+    public static Nitf parse(final NitfReader nitfReader, final Set<ParseOption> parseOptions) throws ParseException {
         NitfFileParser parser = new NitfFileParser(nitfReader, parseOptions);
 
         parser.readBaseHeaders();

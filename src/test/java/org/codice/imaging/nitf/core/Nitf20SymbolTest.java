@@ -44,7 +44,7 @@ public class Nitf20SymbolTest {
     @Test
     public void testU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
         assertFileSegmentDataIsAsExpected(file);
 
         NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
@@ -57,7 +57,7 @@ public class Nitf20SymbolTest {
     @Test
     public void testNoSegmentDataU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.noneOf(ParseOption.class));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.noneOf(ParseOption.class));
         assertFileSegmentDataIsAsExpected(file);
 
         NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
@@ -75,7 +75,7 @@ public class Nitf20SymbolTest {
         return getClass().getResourceAsStream(nitf20File);
     }
 
-    private void assertFileSegmentDataIsAsExpected(NitfFile file) {
+    private void assertFileSegmentDataIsAsExpected(Nitf file) {
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());

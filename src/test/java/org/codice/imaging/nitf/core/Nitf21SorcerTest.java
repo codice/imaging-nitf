@@ -40,7 +40,7 @@ public class Nitf21SorcerTest {
 
     @Test
     public void testSorcerParse() throws IOException, ParseException {
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.allOf(ParseOption.class));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.allOf(ParseOption.class));
         assertEquals(1, file.getNumberOfImageSegments());
         assertEquals(1, file.getNumberOfGraphicSegments());
         assertEquals(0, file.getNumberOfSymbolSegments());

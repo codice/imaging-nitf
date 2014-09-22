@@ -20,7 +20,7 @@ import java.util.List;
 /**
     NITF file data.
 */
-public class NitfFile extends AbstractNitfSegment {
+public class Nitf extends AbstractNitfSegment {
     private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
@@ -44,7 +44,7 @@ public class NitfFile extends AbstractNitfSegment {
     /**
         Default constructor.
     */
-    public NitfFile() {
+    public Nitf() {
     }
 
     /**

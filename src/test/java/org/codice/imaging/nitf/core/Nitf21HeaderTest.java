@@ -61,7 +61,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         InputStream is = getClass().getResourceAsStream(simpleNitf21File);
-        NitfFile file = NitfFileFactory.parseHeadersOnly(is);
+        Nitf file = NitfFileFactory.parseHeadersOnly(is);
         checkCompliantHeaderResults(file);
         is.close();
     }
@@ -72,11 +72,11 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         File resourceFile = new File(getClass().getResource(simpleNitf21File).getFile());
-        NitfFile file = NitfFileFactory.parseHeadersOnly(resourceFile);
+        Nitf file = NitfFileFactory.parseHeadersOnly(resourceFile);
         checkCompliantHeaderResults(file);
     }
 
-    private void checkCompliantHeaderResults(NitfFile file) {
+    private void checkCompliantHeaderResults(Nitf file) {
         assertEquals(FileType.NITF_TWO_ONE, file.getFileType());
         assertEquals(3, file.getComplexityLevel());
         assertEquals("BF01", file.getStandardType());
@@ -163,7 +163,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(geoAirfieldNitf21File));
 
         InputStream is = getClass().getResourceAsStream(geoAirfieldNitf21File);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -232,7 +232,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -299,7 +299,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -464,7 +464,7 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -490,7 +490,7 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -517,7 +517,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         File resourceFile = new File(getClass().getResource(testfile).getFile());
-        NitfFile file = NitfFileFactory.parseHeadersOnly(resourceFile);
+        Nitf file = NitfFileFactory.parseHeadersOnly(resourceFile);
         assertEquals(1, file.getNumberOfImageSegments());
         assertEquals(0, file.getNumberOfGraphicSegments());
         assertEquals(0, file.getNumberOfTextSegments());
@@ -535,7 +535,7 @@ public class Nitf21HeaderTest {
         InputStream is = getClass().getResourceAsStream(testfile);
         exception.expect(ParseException.class);
         exception.expectMessage("No support for streaming mode unless input is seekable");
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
     }
 
     @Test
@@ -545,7 +545,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NSIF_ONE_ZERO, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -588,7 +588,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -729,7 +729,7 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
@@ -753,7 +753,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfFile reader = NitfFileFactory.parseHeadersOnly(is);
+        Nitf reader = NitfFileFactory.parseHeadersOnly(is);
         assertEquals(FileType.NITF_TWO_ONE, reader.getFileType());
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());

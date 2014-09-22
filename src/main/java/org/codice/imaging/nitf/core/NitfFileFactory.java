@@ -48,7 +48,7 @@ public final class NitfFileFactory {
         @return NitfFile structure corresponding to the input stream.
         @throws ParseException on detecting an invalid file or other parse error.
     */
-    public static NitfFile parseHeadersOnly(final InputStream nitfInputStream) throws ParseException {
+    public static Nitf parseHeadersOnly(final InputStream nitfInputStream) throws ParseException {
         NitfReader reader = new InputStreamReader(new BufferedInputStream(nitfInputStream));
         return NitfFileParser.parse(reader, EnumSet.noneOf(ParseOption.class));
     }
@@ -65,7 +65,7 @@ public final class NitfFileFactory {
         @return NitfFile structure corresponding to the input stream.
         @throws ParseException if the file is not present, for an invalid file or other parse error.
     */
-    public static NitfFile parseHeadersOnly(final File nitfFile) throws ParseException {
+    public static Nitf parseHeadersOnly(final File nitfFile) throws ParseException {
         NitfReader reader = new FileReader(nitfFile);
         return NitfFileParser.parse(reader, EnumSet.noneOf(ParseOption.class));
     }
@@ -84,7 +84,7 @@ public final class NitfFileFactory {
         @return NitfFile structure corresponding to the input stream.
         @throws ParseException on detecting an invalid file or other parse error.
     */
-    public static NitfFile parseSelectedDataSegments(final InputStream nitfInputStream, final Set<ParseOption> parseOptions) throws ParseException {
+    public static Nitf parseSelectedDataSegments(final InputStream nitfInputStream, final Set<ParseOption> parseOptions) throws ParseException {
         NitfReader reader = new InputStreamReader(new BufferedInputStream(nitfInputStream));
         return NitfFileParser.parse(reader, parseOptions);
     }
@@ -101,7 +101,7 @@ public final class NitfFileFactory {
         @return NitfFile structure corresponding to the input stream.
         @throws ParseException if the file is not present, for an invalid file or other parse error.
     */
-    public static NitfFile parseSelectedDataSegments(final File nitfFile, final Set<ParseOption> parseOptions) throws ParseException {
+    public static Nitf parseSelectedDataSegments(final File nitfFile, final Set<ParseOption> parseOptions) throws ParseException {
         NitfReader reader = new FileReader(nitfFile);
         return NitfFileParser.parse(reader, parseOptions);
     }

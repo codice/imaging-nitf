@@ -40,7 +40,7 @@ public class Nitf21TextParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
         assertEquals(1, file.getNumberOfTextSegments());
 
         NitfTextSegment textSegment = file.getTextSegment(1);
@@ -50,7 +50,7 @@ public class Nitf21TextParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        NitfFile file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.noneOf(ParseOption.class));
+        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.noneOf(ParseOption.class));
         assertEquals(1, file.getNumberOfTextSegments());
 
         NitfTextSegment textSegment = file.getTextSegment(1);
@@ -60,7 +60,7 @@ public class Nitf21TextParsingTest {
 
     @Test
     public void testExtractionWithDefault() throws IOException, ParseException {
-        NitfFile file = NitfFileFactory.parseHeadersOnly(getInputStream());
+        Nitf file = NitfFileFactory.parseHeadersOnly(getInputStream());
         assertEquals(1, file.getNumberOfTextSegments());
 
         NitfTextSegment textSegment = file.getTextSegment(1);
