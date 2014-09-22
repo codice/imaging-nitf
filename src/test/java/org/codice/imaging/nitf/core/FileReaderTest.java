@@ -39,7 +39,7 @@ public class FileReaderTest {
         assertNotNull(goodReader);
 
         exception.expect(ParseException.class);
-        exception.expectMessage("no such file not found: no such file (No such file or directory)");
+        exception.expectMessage("no such file not found: no such file");
         FileReader badReader = new FileReader("no such file");
     }
 
@@ -51,7 +51,7 @@ public class FileReaderTest {
         assertNotNull(goodReader);
 
         exception.expect(ParseException.class);
-        exception.expectMessage("no such file not found: no such file (No such file or directory)");
+        exception.expectMessage("no such file not found: no such file");
         FileReader badReader = new FileReader(new File("no such file"));
     }
 }
