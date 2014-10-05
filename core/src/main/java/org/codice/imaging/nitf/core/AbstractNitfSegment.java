@@ -21,7 +21,7 @@ import java.util.TreeMap;
 /**
     Common data elements for NITF segment subheaders and file header.
 */
-abstract class AbstractNitfSegment {
+public abstract class AbstractNitfSegment {
 
     private final TreCollection treCollection = new TreCollection();
 
