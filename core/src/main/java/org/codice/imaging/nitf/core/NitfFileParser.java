@@ -287,7 +287,7 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     private void readCLEVEL() throws ParseException {
         nitf.setComplexityLevel(reader.readBytesAsInteger(CLEVEL_LENGTH));
         if ((nitf.getComplexityLevel() < MIN_COMPLEXITY_LEVEL) || (nitf.getComplexityLevel() > MAX_COMPLEXITY_LEVEL)) {
-            throw new ParseException(String.format("CLEVEL out of range: %i", nitf.getComplexityLevel()), (int) reader.getCurrentOffset());
+            throw new ParseException(String.format("CLEVEL out of range: %d", nitf.getComplexityLevel()), (int) reader.getCurrentOffset());
         }
     }
 

@@ -22,7 +22,7 @@ public enum ImageCategory {
     /**
         Unknown format of image category.
         <p>
-        This indicates an unknown catagory, and typically indicates a broken file or
+        This indicates an unknown category, and typically indicates a broken file or
         an error during parsing. This is not a valid value in a NITF file.
     */
     UNKNOWN (""),

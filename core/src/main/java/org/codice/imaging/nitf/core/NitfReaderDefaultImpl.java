@@ -40,16 +40,19 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
     protected static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
     /** {@inheritDoc} */
+    @Override
     public final void setFileType(final FileType fileType) {
         nitfFileType = fileType;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final FileType getFileType() {
         return nitfFileType;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void verifyHeaderMagic(final String magicHeader) throws ParseException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {

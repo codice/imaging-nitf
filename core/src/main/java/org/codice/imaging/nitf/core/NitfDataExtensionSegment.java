@@ -79,7 +79,7 @@ public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
         type to which the enclosed TRE is relevant.</i> [From MIL-STD-2500C TABLE A-8. NITF Data Extension
         Segment (DES) subheader].
         <p>
-        The vald values for NITF 2.1 / NSIF 1.0 are XHD, IXSHD, SXSHD, TXSHD, UDHD and UDID.
+        The valid values for NITF 2.1 / NSIF 1.0 are XHD, IXSHD, SXSHD, TXSHD, UDHD and UDID.
 
         @param headerType the overflowed header type.
     */
@@ -109,7 +109,7 @@ public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
         type to which the enclosed TRE is relevant.</i>
         [From MIL-STD-2500C TABLE A-8. NITF Data Extension Segment (DES) subheader].
         <p>
-        The vald values for NITF 2.1 / NSIF 1.0 are XHD, IXSHD, SXSHD, TXSHD, UDHD and UDID.
+        The valid values for NITF 2.1 / NSIF 1.0 are XHD, IXSHD, SXSHD, TXSHD, UDHD and UDID.
 
         @return the overflowed header type.
     */
