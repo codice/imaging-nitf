@@ -32,7 +32,7 @@ import java.io.IOException;
  *
  */
 interface AbstractElement {
-    void readParameters(final DataInputStream dataStream, final int parameterListLength) throws IOException;
+    void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException;
     
     boolean matches(final int elementClass, final int elementId);
     

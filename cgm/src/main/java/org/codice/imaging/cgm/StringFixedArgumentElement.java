@@ -25,7 +25,6 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
@@ -44,20 +43,8 @@ class StringFixedArgumentElement extends ElementHelpers implements AbstractEleme
     }
 
     @Override
-    public void readParameters(final DataInputStream dataStream, final int parameterLength) throws IOException {
-        text = getStringFixed(dataStream);
+    public void readParameters(final CgmInputReader dataReader, final int parameterLength) throws IOException {
+        text = dataReader.getStringFixed();
         System.out.println("\tRead text:" + text);
-    }
-
-    private String getStringFixed(DataInputStream dataStream) throws IOException {
-        int count = dataStream.readUnsignedByte();
-        if (count > 254) {
-            System.out.println("Need to handle long count");
-        }
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < count; ++i) {
-            builder.append((char)dataStream.readByte());
-        }
-        return builder.toString();
     }
 }

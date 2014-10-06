@@ -25,7 +25,6 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
@@ -46,8 +45,8 @@ class LineWidthSpecificationElement extends ElementHelpers implements AbstractEl
     Mode mode = Mode.Absolute;
     
     @Override
-    public void readParameters(DataInputStream dataStream, int parameterListLength) throws IOException {
-        int data = dataStream.readShort();
+    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
+        int data = inputReader.readShort();
         switch (data) {
             case 0:
                 mode = Mode.Absolute;

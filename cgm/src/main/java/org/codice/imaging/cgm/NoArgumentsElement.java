@@ -38,11 +38,8 @@ class NoArgumentsElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void readParameters(DataInputStream dataStream, final int parameterListLength) throws IOException {
-        int numBytesSkipped = 0;
-        while (numBytesSkipped < parameterListLength) {
-            numBytesSkipped += dataStream.skipBytes(parameterListLength);
-        }
+    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
+        dataReader.skipBytes(parameterListLength);
     }
 
 }

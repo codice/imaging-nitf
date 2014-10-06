@@ -25,15 +25,12 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 
 public class CgmParser {
 
-    private NitfGraphicSegment mGraphicSegment = null;
-    private DataInputStream dataStream = null;
+    private CgmInputReader dataReader = null;
 
     private final static int CLASS_DELIMITER = 0;
     private final static int CLASS_METAFILE_DESCRIPTOR = 1;
@@ -213,33 +210,32 @@ public class CgmParser {
     };
 
     CgmParser(NitfGraphicSegment graphicSegment) {
-        mGraphicSegment = graphicSegment;
+        dataReader = new CgmInputReader(graphicSegment);
     }
 
     void dump() throws IOException {
-        byte[] data = mGraphicSegment.getGraphicData();
-        dataStream = new DataInputStream(new ByteArrayInputStream(data));
+        
         int elementClass;
         int elementId;
         do {
-            int commandHeader = dataStream.readUnsignedShort();
+            int commandHeader = dataReader.readUnsignedShort();
             elementClass = (commandHeader & 0xF000) >> 12;
             elementId = (commandHeader & 0x0FE0) >> 5;
             int parameterListLength = (commandHeader & 0x001F);
             System.out.println(String.format("Raw commandHeader: 0x%04x", commandHeader));
             System.out.println(String.format("\tElement: %s", getElementName(elementClass, elementId)));
             if (parameterListLength == 31) {
-                int longFormWord2 = dataStream.readUnsignedShort();
+                int longFormWord2 = dataReader.readUnsignedShort();
                 if ((longFormWord2 & 0x8000) == 0x8000) {
                     System.out.println("Not last partition");
                 }
                 parameterListLength = longFormWord2 & 0x7FFF;
             }
             AbstractElement elementCode = getElementCode(elementClass, elementId);
-            elementCode.readParameters(dataStream, parameterListLength);
+            elementCode.readParameters(dataReader, parameterListLength);
             if (parameterListLength % 2 == 1) {
                 // Skip over the undeclared pad octet
-                dataStream.skipBytes(1);
+                dataReader.skipBytes(1);
             }
         } while (!isEndMetaFile(elementClass, elementId));
     }
