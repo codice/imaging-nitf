@@ -13,7 +13,7 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Codice Imaging: NITF</name>
+    <name>Codice Imaging: NITF Core</name>
     <url>http://www.codice.org</url>
 
     <properties>

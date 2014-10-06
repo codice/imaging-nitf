@@ -13,8 +13,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>nitf-metadata-comparison</name>
-    <url>http://maven.apache.org</url>
+    <name>Codice Imaging: NITF Metadata Comparison (Engineering Tool)</name>
+    <url>http://www.codice.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
