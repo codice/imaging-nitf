@@ -25,23 +25,11 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.IOException;
 
-/**
- *
- */
-class NoArgumentsElement extends ElementHelpers implements AbstractElement {
+public class TextColourElement extends CommonColourElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
-        super(cgmIdentifier);
+    public TextColourElement() {
+        super(CgmIdentifier.TEXT_COLOUR);
     }
-
-    @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
-        if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
-            dataReader.skipBytes(parameterListLength);
-        }
-    }
-
+    
 }

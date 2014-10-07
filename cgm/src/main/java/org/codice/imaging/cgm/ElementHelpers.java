@@ -28,24 +28,20 @@ package org.codice.imaging.cgm;
 /**
  *
  */
-class ElementHelpers {
-    private final int elementClassAndId;
-    final String name;
+abstract class ElementHelpers implements AbstractElement {
+    CgmIdentifier cgmIdent;
     
-    protected ElementHelpers(int elementClass, int elementId, String elementName) {
-        elementClassAndId = combineClassAndId(elementClass, elementId);
-        name = elementName;
+    protected ElementHelpers(CgmIdentifier cgmIdentifier) {
+        cgmIdent = cgmIdentifier;
     }
 
-    protected static int combineClassAndId(int elementClass, int elementId) {
-        return (elementClass << 12) | (elementId << 4);
+    @Override
+    public boolean matches(final CgmIdentifier cgmIdentifier) {
+        return ((cgmIdentifier.getClassIdentifier() == cgmIdent.getClassIdentifier()) && (cgmIdentifier.getElementIdentifier() == cgmIdent.getElementIdentifier()));
     }
-
-    public boolean matches(final int elementClass, final int elementId) {
-        return (elementClassAndId == combineClassAndId(elementClass, elementId));
-    }
-
-    public String getName() {
-        return name;
+    
+    @Override
+    public String getFriendlyName() {
+        return cgmIdent.getFriendlyName();
     }
 }

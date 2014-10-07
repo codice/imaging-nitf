@@ -26,6 +26,8 @@
 
 package org.codice.imaging.cgm;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -70,4 +72,53 @@ class CgmInputReader {
         return builder.toString();
     }
     
+    int readSignedIntegerAtIntegerPrecision() throws IOException {
+        // TODO: integer precision should be read from some defaults singleton
+        // The default is 16 bits
+        return dataStream.readShort();
+    }
+
+    int readSignedIntegerAtVdcIntegerPrecision() throws IOException {
+        // TODO: integer precision should be read from some defaults singleton
+        // The default is 16 bits
+        return dataStream.readShort();
+    }
+
+    Point readPoint() throws IOException {
+        int x = readSignedIntegerAtVdcIntegerPrecision();
+        int y = readSignedIntegerAtVdcIntegerPrecision();
+        return new Point(x, y);
+    }
+
+    Color readColour(int length) throws IOException {
+        // TODO: this should depend on the default mode for Colour Selection and the default size for direct colour precision
+        // This assumes direct colour
+        int red = dataStream.readUnsignedByte();
+        int green = dataStream.readUnsignedByte();
+        int blue = dataStream.readUnsignedByte();
+        return new Color(red, green, blue);
+    }
+
+    int readSizeSpecification() throws IOException {
+        // TODO: this should depend on the mode for VDC
+        // This assume integer and the default of 16 bits
+        return dataStream.readShort();
+    }
+
+    int getIndexValue() throws IOException {
+        // TODO: this should depend on the mode for indexed values
+        // This assumes the default of 16 bits
+        return dataStream.readShort();
+    }
+
+    void readPoints(int parameterListLength) throws IOException {
+        // TODO: size should be per VdcPrecision
+        // TODO: build a list of points.
+        int bytesRead = 0;
+        while (bytesRead < parameterListLength) {
+            Point point = readPoint();
+            System.out.println("\tPoint: " + point);
+            bytesRead += 4;
+        }
+    }
 }

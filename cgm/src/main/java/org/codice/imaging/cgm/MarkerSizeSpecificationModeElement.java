@@ -25,23 +25,11 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.IOException;
 
-/**
- *
- */
-class NoArgumentsElement extends ElementHelpers implements AbstractElement {
+class MarkerSizeSpecificationModeElement extends CommonSpecificationModeElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
-        super(cgmIdentifier);
+    MarkerSizeSpecificationModeElement() {
+        super(CgmIdentifier.MARKER_SIZE_SPECIFICATION_MODE);
     }
-
-    @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
-        if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
-            dataReader.skipBytes(parameterListLength);
-        }
-    }
-
+    
 }

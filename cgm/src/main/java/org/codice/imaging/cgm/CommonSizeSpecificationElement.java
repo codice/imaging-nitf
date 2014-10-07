@@ -27,21 +27,19 @@ package org.codice.imaging.cgm;
 
 import java.io.IOException;
 
-/**
- *
- */
-class NoArgumentsElement extends ElementHelpers implements AbstractElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
+abstract class CommonSizeSpecificationElement extends ElementHelpers {
+
+    private int size;
+
+    protected CommonSizeSpecificationElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
-        if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
-            dataReader.skipBytes(parameterListLength);
-        }
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        size = dataReader.readSizeSpecification();
+        System.out.println("\tSize:" + size);
     }
-
+    
 }

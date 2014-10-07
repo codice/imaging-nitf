@@ -27,21 +27,10 @@ package org.codice.imaging.cgm;
 
 import java.io.IOException;
 
-/**
- *
- */
-class NoArgumentsElement extends ElementHelpers implements AbstractElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
-        super(cgmIdentifier);
+class LineTypeElement extends CommonIndexedElement implements AbstractElement {
+
+    public LineTypeElement() {
+        super(CgmIdentifier.LINE_TYPE);
     }
-
-    @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
-        if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
-            dataReader.skipBytes(parameterListLength);
-        }
-    }
-
 }

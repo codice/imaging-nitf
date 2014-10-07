@@ -25,46 +25,10 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.IOException;
 
-/**
- * 
- */
-class LineWidthSpecificationElement extends ElementHelpers implements AbstractElement {
+class LineWidthElement extends CommonSizeSpecificationElement {
 
-    LineWidthSpecificationElement(int elementClass, int elementId, String elementName) {
-        super(elementClass, elementId, elementName);
+    public LineWidthElement() {
+        super(CgmIdentifier.LINE_WIDTH);
     }
-
-    enum Mode {
-        Absolute,
-        Scaled,
-        Fractional,
-        Millimetres
-    }
-    Mode mode = Mode.Absolute;
-    
-    @Override
-    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
-        int data = inputReader.readShort();
-        switch (data) {
-            case 0:
-                mode = Mode.Absolute;
-                break;
-            case 1:
-                mode = Mode.Scaled;
-                break;
-            case 2:
-                mode = Mode.Fractional;
-                break;
-            case 3:
-                mode = Mode.Millimetres;
-                break;
-            default:
-                System.out.println("Unknown Line Width Specification value" + data);
-                break;
-        }
-        System.out.println("\tLine width specification:" + mode);
-    }
-    
 }

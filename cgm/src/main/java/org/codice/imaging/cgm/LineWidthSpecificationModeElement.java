@@ -25,23 +25,12 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.IOException;
-
 /**
- *
+ * 
  */
-class NoArgumentsElement extends ElementHelpers implements AbstractElement {
+class LineWidthSpecificationModeElement extends CommonSpecificationModeElement implements AbstractElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
-        super(cgmIdentifier);
+    LineWidthSpecificationModeElement() {
+        super(CgmIdentifier.LINE_WIDTH_SPECIFICATION_MODE);
     }
-
-    @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
-        if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
-            dataReader.skipBytes(parameterListLength);
-        }
-    }
-
 }

@@ -31,182 +31,83 @@ import org.codice.imaging.nitf.core.NitfGraphicSegment;
 public class CgmParser {
 
     private CgmInputReader dataReader = null;
+    
+//    private static String getElementName(int elementClass, int elementId) {
+//        CgmClass cgmClass = CgmClass.lookup(elementClass);
+//        return getElementName(cgmClass, elementId);
+//    }
+//
+//    private static String getElementName(CgmClass cgmClass, int elementId) {
+//        AbstractElement elementCode = getElementCode(cgmClass, elementId);
+//        if (elementCode != null) {
+//            return elementCode.getName();
+//        } else {
+//            return String.format("missing element name for %d, %d", cgmClass.getClassIdentifier(), elementId);
+//        }
+//    }
 
-    private final static int CLASS_DELIMITER = 0;
-    private final static int CLASS_METAFILE_DESCRIPTOR = 1;
-    private final static int CLASS_PICTURE_DESCRIPTOR = 2;
-    private final static int CLASS_CONTROL = 3;
-    private final static int CLASS_GRAPHICAL_PRIMITIVE = 4;
-    private final static int CLASS_ATTRIBUTE = 5;
-    private final static int CLASS_ESCAPE = 6;
-    private final static int CLASS_EXTERNAL = 7;
-    private final static int CLASS_SEGMENT = 8;
-    private final static int CLASS_APPLICATION_STRUCTURE_DESCRIPTOR = 9;
-    
-    private final static int ID_NO_OP = 0;
-    private final static int ID_BEGIN_METAFILE = 1;
-    private final static int ID_END_METAFILE = 2;
-    private final static int ID_BEGIN_PICTURE = 3;
-    private final static int ID_BEGIN_PICTURE_BODY = 4;
-    private final static int ID_END_PICTURE = 5;
-    private final static int ID_BEGIN_SEGMENT = 6;
-    private final static int ID_END_SEGMENT = 7;
-    private final static int ID_BEGIN_FIGURE = 8;
-    private final static int ID_END_FIGURE = 9;
-    private final static int ID_BEGIN_PROTECTION_REGION = 13;
-    private final static int ID_END_PROTECTION_REGION = 14;
-    private final static int ID_BEGIN_COMPOUND_LINE = 15;
-    private final static int ID_END_COMPOUND_LINE = 16;
-    private final static int ID_BEGIN_COMPOUND_TEXT_PATH = 17;
-    private final static int ID_END_COMPOUND_TEXT_PATH = 18;
-    private final static int ID_BEGIN_TILE_ARRAY = 19;
-    private final static int ID_END_TILE_ARRAY = 20;
-    private final static int ID_BEGIN_APPLICATION_STRUCTURE = 21;
-    private final static int ID_BEGIN_APPLICATION_STRUCTURE_BODY = 22;
-    private final static int ID_END_APPLICATION_STRUCTURE = 23;
-    
-    private final static int ID_METAFILE_VERSION = 1;
-    private final static int ID_METAFILE_DESCRIPTION = 2;
-    private final static int ID_VDC_TYPE = 3;
-    private final static int ID_INTEGER_PRECISION = 4;
-    private final static int ID_REAL_PRECISION = 5; 
-    private final static int ID_INDEX_PRECISION = 6;
-    private final static int ID_COLOUR_PRECISION = 7;
-    private final static int ID_COLOUR_INDEX_PRECISION = 8;
-    private final static int ID_MAXIMUM_COLOUR_INDEX = 9;
-    private final static int ID_COLOUR_VALUE_EXTENT = 10;
-    private final static int ID_METAFILE_ELEMENT_LIST = 11;
-    private final static int ID_METAFILE_DEFAULTS_REPLACEMENT = 12;
-    private final static int ID_FONT_LIST = 13;
-    private final static int ID_CHARACTER_SET_LIST = 14;
-    private final static int ID_CHARACTER_CODING_ANNOUNCER = 15;
-    private final static int ID_NAME_PRECISION = 16;
-    private final static int ID_MAXIMUM_VDC_EXTENT = 17;
-    private final static int ID_SEGMENT_PRIORITY_EXTENT = 18;
-    private final static int ID_COLOUR_MODEL = 19;
-    private final static int ID_COLOUR_CALIBRATION = 20;
-    private final static int ID_FONT_PROPERTIES = 21;
-    private final static int ID_GLYPH_MAPPING = 22;
-    private final static int ID_SYMBOL_LIBRARY_LIST = 23;
-    private final static int ID_PICTURE_DIRECTORY = 24;
-    
-    // Picture Descriptor Elements: Class 2
-    private final static int ID_SCALING_MODE = 1;
-    private final static int ID_COLOUR_SELECTION_MODE = 2;
-    private final static int ID_LINE_WIDTH_SPECIFICATION_MODE = 3;
-    private final static int ID_MARKER_SIZE_SPECIFICATION_MODE = 4;
-    private final static int ID_EDGE_WIDTH_SPECIFICATION_MODE = 5;
-    private final static int ID_VDC_EXTENT = 6;
-    private final static int ID_BACKGROUND_COLOUR = 7;
-    private final static int ID_DEVICE_VIEWPORT = 8;
-    private final static int ID_DEVICE_VIEWPORT_SPECIFICATION_MODE = 9;
-    private final static int ID_DEVICE_VIEWPORT_MAPPING = 10;
-    private final static int ID_LINE_REPRESENTATION = 11;
-    private final static int ID_MARKER_REPRESENTATION = 12;
-    private final static int ID_TEXT_REPRESENTATION = 13;
-    private final static int ID_FILL_REPRESENTATION = 14;
-    private final static int ID_EDGE_REPRESENTATION = 15;
-    private final static int ID_INTERIOR_STYLE_REPRESENTATION = 16;
-    private final static int ID_LINE_AND_EDGE_TYPE_DEFINITION = 17;
-    private final static int ID_HATCH_STYLE_DEFINITION = 18;
-    private final static int ID_GEOMETRIC_PATTERN_DEFINITION = 19;
-    private final static int ID_APPLICATION_STRUCTURE_DIRECTORY = 20;
-    
-    // Control Elements: Class 3
-    private final static int ID_VDC_INTEGER_PRECISION = 1;
-    
-    // Graphical Primitive Elements: Class 4
-    private final static int ID_POLYLINE = 1;
-    private final static int ID_DISJOINT_POLYLINE = 2;
-    private final static int ID_POLYMARKER = 3;
-    private final static int ID_TEXT = 4;
-    private final static int ID_RESTRICTED_TEXT = 5;
-    
-    // Graphical Primitive Elements: Class 5
-    private final static int ID_LINE_BUNDLE_INDEX = 1;
-    private final static int ID_LINE_TYPE = 2;
-    private final static int ID_LINE_WIDTH = 3;
-    private final static int ID_LINE_COLOUR = 4;
-    private final static int ID_MARKER_BUNDLE_INDEX = 5;
-    private final static int ID_MARKER_TYPE = 6;
-    private final static int ID_MARKER_SIZE = 7;
-    private final static int ID_MARKER_COLOUR = 8;
-    private final static int ID_TEXT_BUNDLE_INDEX = 9;
-    private final static int ID_TEXT_FONT_INDEX = 10;
-    private final static int ID_TEXT_PRECISION = 11;
-    private final static int ID_CHARACTER_EXPANSION_FACTOR = 12;
-    private final static int ID_CHARACTER_SPACING = 13;
-    private final static int ID_TEXT_COLOUR = 14;
-    private final static int ID_CHARACTER_HEIGHT = 15;
-    private final static int ID_CHARACTER_ORIENTATION = 16;
-    private final static int ID_TEXT_PATH = 17;
-    private final static int ID_TEXT_ALIGNMENT = 18;
+//    private static AbstractElement getElementCode(int elementClass, int elementId) {
+//        CgmClass cgmClass = CgmClass.lookup(elementClass);
+//        return getElementCode(cgmClass, elementId);
+//    }
 
-    private static String getElementName(int elementClass, int elementId) {
-        AbstractElement elementCode = getElementCode(elementClass, elementId);
-        if (elementCode != null) {
-            return elementCode.getName();
-        } else {
-            return String.format("missing element name for %d, %d", elementClass, elementId);
-        }
-    }
-
-    private static AbstractElement getElementCode(int elementClass, int elementId) {
+    private static AbstractElement getElement(CgmIdentifier elementId) {
         for (int i = 0; i < elementCodes.length; ++i) {
-            if (elementCodes[i].matches(elementClass, elementId)) {
+            if (elementCodes[i].matches(elementId)) {
                 return elementCodes[i];
             }
         }
+        System.out.println("Returning null for elementId:" + elementId);
         return null;
     }
 
     private static final AbstractElement [] elementCodes = { 
-        new NoArgumentsElement(CLASS_DELIMITER, ID_NO_OP, "no-op"),
-        new StringFixedArgumentElement(CLASS_DELIMITER, ID_BEGIN_METAFILE, "BEGIN METAFILE"),
-        new NoArgumentsElement(CLASS_DELIMITER, ID_END_METAFILE, "END METAFILE"),
-        new StringFixedArgumentElement(CLASS_DELIMITER, ID_BEGIN_PICTURE, "BEGIN PICTURE"),
-        new NoArgumentsElement(CLASS_DELIMITER, ID_BEGIN_PICTURE_BODY, "BEGIN PICTURE BODY"),
-        new NoArgumentsElement(CLASS_DELIMITER, ID_END_PICTURE, "END PICTURE"),
-        new NoArgumentsElement(CLASS_DELIMITER, ID_BEGIN_SEGMENT, "BEGIN SEGMENT"),
+        new NoArgumentsElement(CgmIdentifier.NO_OP),
+        new BeginMetafileElement(),
+        new NoArgumentsElement(CgmIdentifier.END_METAFILE),
+        new StringFixedArgumentElement(CgmIdentifier.BEGIN_PICTURE),
+        new NoArgumentsElement(CgmIdentifier.BEGIN_PICTURE_BODY),
+        new NoArgumentsElement(CgmIdentifier.END_PICTURE),
+        new NoArgumentsElement(CgmIdentifier.BEGIN_SEGMENT),
         
-        new NoArgumentsElement(CLASS_METAFILE_DESCRIPTOR, ID_METAFILE_VERSION, "METAFILE VERSION"),
-        new StringFixedArgumentElement(CLASS_METAFILE_DESCRIPTOR, ID_METAFILE_DESCRIPTION, "METAFILE DESCRIPTION"),
-        new NoArgumentsElement(CLASS_METAFILE_DESCRIPTOR, ID_METAFILE_ELEMENT_LIST, "METAFILE ELEMENT LIST"),
-        new NoArgumentsElement(CLASS_METAFILE_DESCRIPTOR, ID_FONT_LIST, "FONT LIST"),
+        new IntegerArgumentElement(CgmIdentifier.METAFILE_VERSION),
+        new StringFixedArgumentElement(CgmIdentifier.METAFILE_DESCRIPTION),
+        new NoArgumentsElement(CgmIdentifier.METAFILE_ELEMENT_LIST),
+        new FontListElement(),
         
-        new NoArgumentsElement(CLASS_PICTURE_DESCRIPTOR, ID_SCALING_MODE, "SCALING MODE"),
-        new NoArgumentsElement(CLASS_PICTURE_DESCRIPTOR, ID_COLOUR_SELECTION_MODE, "COLOUR SELECTION MODE"),
-        new LineWidthSpecificationElement(CLASS_PICTURE_DESCRIPTOR, ID_LINE_WIDTH_SPECIFICATION_MODE, "LINE WIDTH SPECIFICATION MODE"),
-        new NoArgumentsElement(CLASS_PICTURE_DESCRIPTOR, ID_MARKER_SIZE_SPECIFICATION_MODE, "MARKER SIZE SPECIFICATION MODE"),
-        new NoArgumentsElement(CLASS_PICTURE_DESCRIPTOR, ID_EDGE_WIDTH_SPECIFICATION_MODE, "EDGE WIDTH SPECIFICATION MODE"),
-        new NoArgumentsElement(CLASS_PICTURE_DESCRIPTOR, ID_VDC_EXTENT, "VDC EXTENT"),
-        new NoArgumentsElement(CLASS_PICTURE_DESCRIPTOR, ID_BACKGROUND_COLOUR, "BACKGROUND COLOUR"),
-        new NoArgumentsElement(CLASS_PICTURE_DESCRIPTOR, ID_DEVICE_VIEWPORT, "DEVICE VIEWPORT"),
+        new NoArgumentsElement(CgmIdentifier.SCALING_MODE),
+        new ColourSelectionModeElement(),
+        new LineWidthSpecificationModeElement(),
+        new MarkerSizeSpecificationModeElement(),
+        new EdgeWidthSpecificationModeElement(),
+        new VdcExtentElement(),
+        new NoArgumentsElement(CgmIdentifier.BACKGROUND_COLOUR),
+        new NoArgumentsElement(CgmIdentifier.DEVICE_VIEWPORT),
         
-        new NoArgumentsElement(CLASS_GRAPHICAL_PRIMITIVE, ID_POLYLINE, "POLYLINE"),
-        new NoArgumentsElement(CLASS_GRAPHICAL_PRIMITIVE, ID_DISJOINT_POLYLINE, "DISJOINT POLYLINE"),
-        new NoArgumentsElement(CLASS_GRAPHICAL_PRIMITIVE, ID_POLYMARKER, "POLYMARKER"),
-        new NoArgumentsElement(CLASS_GRAPHICAL_PRIMITIVE, ID_TEXT, "TEXT"),
-        new NoArgumentsElement(CLASS_GRAPHICAL_PRIMITIVE, ID_RESTRICTED_TEXT, "RESTRICTED TEXT"),
+        new PolylineElement(),
+        new NoArgumentsElement(CgmIdentifier.DISJOINT_POLYLINE),
+        new NoArgumentsElement(CgmIdentifier.POLYMARKER),
+        new NoArgumentsElement(CgmIdentifier.TEXT),
+        new NoArgumentsElement(CgmIdentifier.RESTRICTED_TEXT),
         
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_LINE_BUNDLE_INDEX, "LINE BUNDLE INDEX"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_LINE_TYPE, "LINE TYPE"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_LINE_WIDTH, "LINE WIDTH"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_LINE_COLOUR, "LINE COLOUR"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_MARKER_BUNDLE_INDEX, "MARKER BUNDLE INDEX"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_MARKER_TYPE, "MARKER TYPE"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_MARKER_SIZE, "MARKER SIZE"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_MARKER_COLOUR, "MARKER COLOUR"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_TEXT_BUNDLE_INDEX, "TEXT BUNDLE INDEX"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_TEXT_FONT_INDEX, "TEXT FONT INDEX"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_TEXT_PRECISION, "TEXT PRECISION"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_CHARACTER_EXPANSION_FACTOR, "CHARACTER EXPANSION FACTOR"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_CHARACTER_SPACING, "CHARACTER SPACING"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_TEXT_COLOUR, "TEXT COLOUR"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_CHARACTER_HEIGHT, "CHARACTER HEIGHT"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_CHARACTER_ORIENTATION, "CHARACTER ORIENTATION"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_TEXT_PATH, "TEXT PATH"),
-        new NoArgumentsElement(CLASS_ATTRIBUTE, ID_TEXT_ALIGNMENT, "TEXT ALIGNMENT"),
+        new NoArgumentsElement(CgmIdentifier.LINE_BUNDLE_INDEX),
+        new LineTypeElement(),
+        new LineWidthElement(),
+        new LineColourElement(),
+        new NoArgumentsElement(CgmIdentifier.MARKER_BUNDLE_INDEX),
+        new NoArgumentsElement(CgmIdentifier.MARKER_TYPE),
+        new NoArgumentsElement(CgmIdentifier.MARKER_SIZE),
+        new NoArgumentsElement(CgmIdentifier.MARKER_COLOUR),
+        new NoArgumentsElement(CgmIdentifier.TEXT_BUNDLE_INDEX),
+        new NoArgumentsElement(CgmIdentifier.TEXT_FONT_INDEX),
+        new NoArgumentsElement(CgmIdentifier.TEXT_PRECISION),
+        new NoArgumentsElement(CgmIdentifier.CHARACTER_EXPANSION_FACTOR),
+        new NoArgumentsElement(CgmIdentifier.CHARACTER_SPACING),
+        new TextColourElement(),
+        new NoArgumentsElement(CgmIdentifier.CHARACTER_HEIGHT),
+        new NoArgumentsElement(CgmIdentifier.CHARACTER_ORIENTATION),
+        new NoArgumentsElement(CgmIdentifier.TEXT_PATH),
+        new NoArgumentsElement(CgmIdentifier.TEXT_ALIGNMENT),
     };
 
     CgmParser(NitfGraphicSegment graphicSegment) {
@@ -222,8 +123,6 @@ public class CgmParser {
             elementClass = (commandHeader & 0xF000) >> 12;
             elementId = (commandHeader & 0x0FE0) >> 5;
             int parameterListLength = (commandHeader & 0x001F);
-            System.out.println(String.format("Raw commandHeader: 0x%04x", commandHeader));
-            System.out.println(String.format("\tElement: %s", getElementName(elementClass, elementId)));
             if (parameterListLength == 31) {
                 int longFormWord2 = dataReader.readUnsignedShort();
                 if ((longFormWord2 & 0x8000) == 0x8000) {
@@ -231,7 +130,9 @@ public class CgmParser {
                 }
                 parameterListLength = longFormWord2 & 0x7FFF;
             }
-            AbstractElement elementCode = getElementCode(elementClass, elementId);
+            CgmIdentifier elementIdentifier = CgmIdentifier.findIdentifier(elementClass, elementId);
+            AbstractElement elementCode = getElement(elementIdentifier);
+            System.out.println("Element: " + elementCode.getFriendlyName());
             elementCode.readParameters(dataReader, parameterListLength);
             if (parameterListLength % 2 == 1) {
                 // Skip over the undeclared pad octet

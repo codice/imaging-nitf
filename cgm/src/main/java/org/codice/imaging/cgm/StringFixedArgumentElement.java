@@ -32,8 +32,8 @@ import java.io.IOException;
  */
 class StringFixedArgumentElement extends ElementHelpers implements AbstractElement {
 
-    StringFixedArgumentElement(int elementClass, int elementId, String elementName) {
-        super(elementClass, elementId, elementName);
+    StringFixedArgumentElement(CgmIdentifier cgmIdentifier) {
+        super(cgmIdentifier);
     }
     
     private String text;

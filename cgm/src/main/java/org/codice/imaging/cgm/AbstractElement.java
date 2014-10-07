@@ -25,7 +25,6 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
@@ -34,7 +33,7 @@ import java.io.IOException;
 interface AbstractElement {
     void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException;
     
-    boolean matches(final int elementClass, final int elementId);
-    
-    String getName();
+    boolean matches(final CgmIdentifier cgmIdentifier);
+
+    String getFriendlyName();
 }

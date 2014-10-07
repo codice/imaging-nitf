@@ -25,23 +25,10 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.IOException;
 
-/**
- *
- */
-class NoArgumentsElement extends ElementHelpers implements AbstractElement {
+class BeginMetafileElement extends StringFixedArgumentElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
-        super(cgmIdentifier);
+    public BeginMetafileElement() {
+        super(CgmIdentifier.BEGIN_METAFILE);
     }
-
-    @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
-        if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
-            dataReader.skipBytes(parameterListLength);
-        }
-    }
-
 }

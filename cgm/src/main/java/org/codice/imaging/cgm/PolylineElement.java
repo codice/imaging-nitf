@@ -27,21 +27,17 @@ package org.codice.imaging.cgm;
 
 import java.io.IOException;
 
-/**
- *
- */
-class NoArgumentsElement extends ElementHelpers implements AbstractElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
-        super(cgmIdentifier);
+public class PolylineElement extends ElementHelpers {
+
+    public PolylineElement() {
+        super(CgmIdentifier.POLYLINE);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
-        if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
-            dataReader.skipBytes(parameterListLength);
-        }
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        // TODO: this needs to make a list
+        dataReader.readPoints(parameterListLength);
     }
-
+    
 }
