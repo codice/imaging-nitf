@@ -26,30 +26,15 @@
 package org.codice.imaging.cgm;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 
 public class CgmParser {
 
     private CgmInputReader dataReader = null;
-    
-//    private static String getElementName(int elementClass, int elementId) {
-//        CgmClass cgmClass = CgmClass.lookup(elementClass);
-//        return getElementName(cgmClass, elementId);
-//    }
-//
-//    private static String getElementName(CgmClass cgmClass, int elementId) {
-//        AbstractElement elementCode = getElementCode(cgmClass, elementId);
-//        if (elementCode != null) {
-//            return elementCode.getName();
-//        } else {
-//            return String.format("missing element name for %d, %d", cgmClass.getClassIdentifier(), elementId);
-//        }
-//    }
-
-//    private static AbstractElement getElementCode(int elementClass, int elementId) {
-//        CgmClass cgmClass = CgmClass.lookup(elementClass);
-//        return getElementCode(cgmClass, elementId);
-//    }
+    private List<AbstractElement> commands = new ArrayList<>();
 
     private static AbstractElement getElement(CgmIdentifier elementId) {
         for (int i = 0; i < elementCodes.length; ++i) {
@@ -72,7 +57,7 @@ public class CgmParser {
         
         new IntegerArgumentElement(CgmIdentifier.METAFILE_VERSION),
         new StringFixedArgumentElement(CgmIdentifier.METAFILE_DESCRIPTION),
-        new NoArgumentsElement(CgmIdentifier.METAFILE_ELEMENT_LIST),
+        new MetafileElementsListElement(),
         new FontListElement(),
         
         new NoArgumentsElement(CgmIdentifier.SCALING_MODE),
@@ -87,7 +72,7 @@ public class CgmParser {
         new PolylineElement(),
         new NoArgumentsElement(CgmIdentifier.DISJOINT_POLYLINE),
         new NoArgumentsElement(CgmIdentifier.POLYMARKER),
-        new NoArgumentsElement(CgmIdentifier.TEXT),
+        new TextElement(),
         new NoArgumentsElement(CgmIdentifier.RESTRICTED_TEXT),
         
         new NoArgumentsElement(CgmIdentifier.LINE_BUNDLE_INDEX),
@@ -99,13 +84,13 @@ public class CgmParser {
         new NoArgumentsElement(CgmIdentifier.MARKER_SIZE),
         new NoArgumentsElement(CgmIdentifier.MARKER_COLOUR),
         new NoArgumentsElement(CgmIdentifier.TEXT_BUNDLE_INDEX),
-        new NoArgumentsElement(CgmIdentifier.TEXT_FONT_INDEX),
+        new TextFontIndexElement(),
         new NoArgumentsElement(CgmIdentifier.TEXT_PRECISION),
         new NoArgumentsElement(CgmIdentifier.CHARACTER_EXPANSION_FACTOR),
         new NoArgumentsElement(CgmIdentifier.CHARACTER_SPACING),
         new TextColourElement(),
-        new NoArgumentsElement(CgmIdentifier.CHARACTER_HEIGHT),
-        new NoArgumentsElement(CgmIdentifier.CHARACTER_ORIENTATION),
+        new CharacterHeightElement(),
+        new CharacterOrientationElement(),
         new NoArgumentsElement(CgmIdentifier.TEXT_PATH),
         new NoArgumentsElement(CgmIdentifier.TEXT_ALIGNMENT),
     };
@@ -114,35 +99,56 @@ public class CgmParser {
         dataReader = new CgmInputReader(graphicSegment);
     }
 
-    void dump() throws IOException {
+    void buildCommandList() throws IOException {
         
-        int elementClass;
-        int elementId;
+        AbstractElement element;
         do {
             int commandHeader = dataReader.readUnsignedShort();
-            elementClass = (commandHeader & 0xF000) >> 12;
-            elementId = (commandHeader & 0x0FE0) >> 5;
-            int parameterListLength = (commandHeader & 0x001F);
-            if (parameterListLength == 31) {
-                int longFormWord2 = dataReader.readUnsignedShort();
-                if ((longFormWord2 & 0x8000) == 0x8000) {
-                    System.out.println("Not last partition");
-                }
-                parameterListLength = longFormWord2 & 0x7FFF;
-            }
+            int elementClass = getElementClass(commandHeader);
+            int elementId = getElementId(commandHeader);
+            int parameterListLength = getParameterListLength(commandHeader);
+            
             CgmIdentifier elementIdentifier = CgmIdentifier.findIdentifier(elementClass, elementId);
-            AbstractElement elementCode = getElement(elementIdentifier);
-            System.out.println("Element: " + elementCode.getFriendlyName());
-            elementCode.readParameters(dataReader, parameterListLength);
-            if (parameterListLength % 2 == 1) {
-                // Skip over the undeclared pad octet
-                dataReader.skipBytes(1);
+            element = getElement(elementIdentifier);
+            element.readParameters(dataReader, parameterListLength);
+            commands.add(element);
+            
+            skipOverPadOctetIfNecessary(parameterListLength);
+        } while (!element.matches(CgmIdentifier.END_METAFILE));
+    }
+    
+    void dump() {
+        for (AbstractElement command : commands) {
+            System.out.println("Command: " + command.getFriendlyName());
+            command.dumpParameters();
+        }
+    }
+
+    private void skipOverPadOctetIfNecessary(int parameterListLength) throws IOException {
+        if (parameterListLength % 2 != 0) {
+            // Skip over the undeclared pad octet
+            dataReader.skipBytes(1);
+        }
+    }
+
+    private int getParameterListLength(int commandHeader) throws IOException {
+        int parameterListLength = (commandHeader & 0x001F);
+        if (parameterListLength == 31) {
+            int longFormWord2 = dataReader.readUnsignedShort();
+            if ((longFormWord2 & 0x8000) == 0x8000) {
+                // Don't know how to handle this case yet
+                System.out.println("Not last partition");
             }
-        } while (!isEndMetaFile(elementClass, elementId));
+            parameterListLength = longFormWord2 & 0x7FFF;
+        }
+        return parameterListLength;
     }
 
-    private boolean isEndMetaFile(int elementClass, int elementId) {
-        return ((elementClass == 0) && (elementId == 2));
+    private static int getElementId(int commandHeader) {
+        return (commandHeader & 0x0FE0) >> 5;
     }
 
+    private static int getElementClass(int commandHeader) {
+        return (commandHeader & 0xF000) >> 12;
+    }
 }

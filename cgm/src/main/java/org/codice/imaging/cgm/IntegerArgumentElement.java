@@ -45,7 +45,10 @@ class IntegerArgumentElement extends ElementHelpers {
     @Override
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
         argumentValue = dataReader.readSignedIntegerAtIntegerPrecision();
-        System.out.println("\tRead integer:" + argumentValue);
     }
     
+    @Override
+    public void dumpParameters() {
+        System.out.println("\tRead integer: " + argumentValue);
+    }
 }

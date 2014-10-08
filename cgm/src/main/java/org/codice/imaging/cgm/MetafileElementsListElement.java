@@ -26,16 +26,34 @@
 package org.codice.imaging.cgm;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- *
- */
-interface AbstractElement {
-    void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException;
+
+class MetafileElementsListElement extends ElementHelpers implements AbstractElement {
+
+    List<CgmIdentifier> elementsList = new ArrayList<>();
+
+    public MetafileElementsListElement() {
+        super(CgmIdentifier.METAFILE_ELEMENT_LIST);
+    }
+
+    @Override
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        int numElementsSpecified = dataReader.readSignedIntegerAtIntegerPrecision();
+        for (int i = 0; i < numElementsSpecified; ++i) {
+            int elementClass = dataReader.readSignedIntegerAtIndexPrecision();
+            int elementId = dataReader.readSignedIntegerAtIndexPrecision();
+            CgmIdentifier identifier = CgmIdentifier.findIdentifier(elementClass, elementId);
+            elementsList.add(identifier);
+        }
+    }
+
+    @Override
+    public void dumpParameters() {
+        for(CgmIdentifier identifier : elementsList) {
+            System.out.println("\tElement: " + identifier.getFriendlyName());
+        }
+    }
     
-    boolean matches(final CgmIdentifier cgmIdentifier);
-
-    String getFriendlyName();
-
-    void dumpParameters();
 }

@@ -45,7 +45,10 @@ class VdcExtentElement extends ElementHelpers implements AbstractElement {
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
         point1 = dataReader.readPoint();
         point2 = dataReader.readPoint();
-        System.out.println("\tVDC Extent:" + point1 + "|" + point2);
     }
     
+    @Override
+    public void dumpParameters() {
+        System.out.println("\tVDC Extent: " + point1 + " | " + point2);
+    }
 }

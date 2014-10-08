@@ -31,6 +31,8 @@ import java.awt.Point;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 
@@ -56,7 +58,7 @@ class CgmInputReader {
         }
     }
 
-    int readShort() throws IOException {
+    private int readShort() throws IOException {
         return dataStream.readShort();
     }
 
@@ -105,20 +107,25 @@ class CgmInputReader {
         return dataStream.readShort();
     }
 
-    int getIndexValue() throws IOException {
+    int readSignedIntegerAtIndexPrecision() throws IOException {
         // TODO: this should depend on the mode for indexed values
         // This assumes the default of 16 bits
         return dataStream.readShort();
     }
 
-    void readPoints(int parameterListLength) throws IOException {
+    List<Point> readPoints(int parameterListLength) throws IOException {
         // TODO: size should be per VdcPrecision
-        // TODO: build a list of points.
+        List<Point> points = new ArrayList<>();
         int bytesRead = 0;
         while (bytesRead < parameterListLength) {
             Point point = readPoint();
-            System.out.println("\tPoint: " + point);
+            points.add(point);
             bytesRead += 4;
         }
+        return points;
+    }
+
+    int readEnumValue() throws IOException {
+        return readShort();
     }
 }

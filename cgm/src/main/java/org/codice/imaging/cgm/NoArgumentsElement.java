@@ -44,4 +44,8 @@ class NoArgumentsElement extends ElementHelpers implements AbstractElement {
         }
     }
 
+    @Override
+    public void dumpParameters() {
+        // Nothing to dump
+    }
 }

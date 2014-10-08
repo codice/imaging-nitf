@@ -45,6 +45,10 @@ class StringFixedArgumentElement extends ElementHelpers implements AbstractEleme
     @Override
     public void readParameters(final CgmInputReader dataReader, final int parameterLength) throws IOException {
         text = dataReader.getStringFixed();
+    }
+
+    @Override
+    public void dumpParameters() {
         System.out.println("\tRead text:" + text);
     }
 }

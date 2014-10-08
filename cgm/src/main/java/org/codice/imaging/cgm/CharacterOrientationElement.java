@@ -27,15 +27,30 @@ package org.codice.imaging.cgm;
 
 import java.io.IOException;
 
-/**
- *
- */
-interface AbstractElement {
-    void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException;
+
+class CharacterOrientationElement extends ElementHelpers implements AbstractElement {
+
+    private int xCharacterUpComponent;
+    private int yCharacterUpComponent;
+    private int xCharacterBaseComponent;
+    private int yCharacterBaseComponent;
     
-    boolean matches(final CgmIdentifier cgmIdentifier);
+    public CharacterOrientationElement() {
+        super(CgmIdentifier.CHARACTER_ORIENTATION);
+    }
 
-    String getFriendlyName();
+    @Override
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        xCharacterUpComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
+        yCharacterUpComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
+        xCharacterBaseComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
+        yCharacterBaseComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
+    }
 
-    void dumpParameters();
+    @Override
+    public void dumpParameters() {
+        System.out.println(String.format("\tUp vector: %d, %d", xCharacterUpComponent, yCharacterUpComponent));
+        System.out.println(String.format("\tBaseline vector: %d, %d", xCharacterBaseComponent, yCharacterBaseComponent));
+    }
+    
 }

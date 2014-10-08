@@ -39,7 +39,10 @@ abstract class CommonSizeSpecificationElement extends ElementHelpers {
     @Override
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
         size = dataReader.readSizeSpecification();
-        System.out.println("\tSize:" + size);
     }
     
+    @Override
+    public void dumpParameters() {
+        System.out.println("\tSize:" + size);
+    }
 }

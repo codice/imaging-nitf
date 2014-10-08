@@ -27,15 +27,23 @@ package org.codice.imaging.cgm;
 
 import java.io.IOException;
 
-/**
- *
- */
-interface AbstractElement {
-    void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException;
+
+class CharacterHeightElement extends ElementHelpers implements AbstractElement {
+
+    private int characterHeight;
     
-    boolean matches(final CgmIdentifier cgmIdentifier);
+    public CharacterHeightElement() {
+        super(CgmIdentifier.CHARACTER_HEIGHT);
+    }
 
-    String getFriendlyName();
+    @Override
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        characterHeight = dataReader.readSignedIntegerAtVdcIntegerPrecision();
+    }
 
-    void dumpParameters();
+    @Override
+    public void dumpParameters() {
+        System.out.println("\tCharacter height: " + characterHeight);
+    }
+    
 }

@@ -25,15 +25,21 @@
  */
 package org.codice.imaging.cgm;
 
-import static org.codice.imaging.cgm.CgmClass.UNKNOWN;
-import static org.codice.imaging.cgm.CgmClass.values;
-
 /**
- *
- * @author bradh
  */
 public enum CgmIdentifier {
-    UNKNOWN(CgmClass.UNKNOWN, -1, "UNKNOWN"),
+    UNKNOWN(CgmClass.PSEUDO, -1, "UNKNOWN"),
+    
+    // These can only appear in the METAFILE ELEMENTS LIST
+    DRAWING_SET(CgmClass.PSEUDO, 0, "DRAWING SET"),
+    DRAWING_PLUS_CONTROL_SET(CgmClass.PSEUDO, 1, "DRAWING SET PLUS CONTROL SET"),
+    VERSION_2_SET(CgmClass.PSEUDO, 2, "VERSION 2 SET"),
+    EXTENDED_PRIMITIVES_SET(CgmClass.PSEUDO, 3, "EXTENDED PRIMITIVES SET"),
+    VERSION_2_GKSM_SET(CgmClass.PSEUDO, 4, "VERSION 2 GKSM SET"),
+    VERSION_3_SET(CgmClass.PSEUDO, 5, "VERSION 3 SET"),
+    VERSION_4_SET(CgmClass.PSEUDO, 6, "VERSION 4 SET"),
+
+    // Beginning of real elements
     NO_OP(CgmClass.DELIMITER, 0, "no_op"),
     BEGIN_METAFILE(CgmClass.DELIMITER, 1, "BEGIN METAFILE"),
     END_METAFILE(CgmClass.DELIMITER, 2, "END METAFILE"),

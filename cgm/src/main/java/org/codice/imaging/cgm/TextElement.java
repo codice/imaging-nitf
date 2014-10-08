@@ -25,40 +25,30 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Point;
 import java.io.IOException;
 
-/**
- *
- */
-class ColourSelectionModeElement extends ElementHelpers implements AbstractElement {
-    ColourSelectionModeElement() {
-        super(CgmIdentifier.COLOUR_SELECTION_MODE);
+
+class TextElement extends ElementHelpers implements AbstractElement {
+
+    private Point textPosition;
+    private int isFinal;
+    private String text;
+    
+    public TextElement() {
+        super(CgmIdentifier.TEXT);
     }
 
-    enum Mode {
-        IndexedColourMode,
-        DirectColourMode
-    }
-    Mode mode = Mode.IndexedColourMode;
-    
     @Override
-    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
-        int data = inputReader.readEnumValue();
-        switch (data) {
-            case 0:
-                mode = Mode.IndexedColourMode;
-                break;
-            case 1:
-                mode = Mode.DirectColourMode;
-                break;
-            default:
-                System.out.println("Unknown Colour Selection Mode value: " + data);
-                break;
-        }
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        textPosition = dataReader.readPoint();
+        isFinal = dataReader.readEnumValue();
+        text = dataReader.getStringFixed();
     }
 
     @Override
     public void dumpParameters() {
-        System.out.println("\tColour Selection Mode: " + mode);
+        System.out.println("\tText: " + textPosition + "|" + isFinal + " : " + text);
     }
+    
 }

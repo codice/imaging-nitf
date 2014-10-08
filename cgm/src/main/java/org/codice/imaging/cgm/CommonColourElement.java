@@ -28,7 +28,6 @@ package org.codice.imaging.cgm;
 import java.awt.Color;
 import java.io.IOException;
 
-
 abstract class CommonColourElement extends ElementHelpers implements AbstractElement {
 
     private Color colour;
@@ -40,6 +39,10 @@ abstract class CommonColourElement extends ElementHelpers implements AbstractEle
     @Override
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
         colour = dataReader.readColour(parameterListLength);
+    }
+    
+    @Override
+    public void dumpParameters() {
         System.out.println("\tColour: " + colour);
     }
 }

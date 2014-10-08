@@ -78,6 +78,7 @@ public class CgmParserTest {
                 System.exit(0);
             }
             CgmParser parser = new CgmParser(nitf.getGraphicSegmentZeroBase(0));
+            parser.buildCommandList();
             parser.dump();
         } catch (ParseException e) {
             System.out.println("Failed to load from InputStream " + e.getMessage());

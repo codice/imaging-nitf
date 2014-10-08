@@ -26,12 +26,16 @@
 package org.codice.imaging.cgm;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author bradh
  */
 class FontListElement extends ElementHelpers implements AbstractElement {
+
+    List<String> fonts = new ArrayList<>();
 
     public FontListElement() {
         super(CgmIdentifier.FONT_LIST);
@@ -41,11 +45,17 @@ class FontListElement extends ElementHelpers implements AbstractElement {
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
         int bytesRead = 0;
         while (bytesRead < parameterListLength) {
-            String stringFixed = dataReader.getStringFixed();
-            bytesRead += stringFixed.length();
+            String fontName = dataReader.getStringFixed();
+            fonts.add(fontName);
+            bytesRead += fontName.length();
             bytesRead++;
-            System.out.println("\tFont: " + stringFixed);
         }
     }
-    
+
+    @Override
+    public void dumpParameters() {
+        for (String fontName : fonts) {
+            System.out.println("\tFont: " + fontName);
+        }
+    }
 }

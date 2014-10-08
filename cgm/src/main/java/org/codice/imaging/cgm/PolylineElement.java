@@ -25,11 +25,14 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Point;
 import java.io.IOException;
+import java.util.List;
 
 
-public class PolylineElement extends ElementHelpers {
+class PolylineElement extends ElementHelpers {
 
+    List<Point> points;
     public PolylineElement() {
         super(CgmIdentifier.POLYLINE);
     }
@@ -37,7 +40,13 @@ public class PolylineElement extends ElementHelpers {
     @Override
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
         // TODO: this needs to make a list
-        dataReader.readPoints(parameterListLength);
+        points = dataReader.readPoints(parameterListLength);
     }
     
+    @Override
+    public void dumpParameters() {
+        for (Point point : points) {
+            System.out.println("\tPoint: " + point);
+        }
+    }
 }

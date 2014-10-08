@@ -38,8 +38,12 @@ abstract class CommonIndexedElement extends ElementHelpers implements AbstractEl
 
     @Override
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
-        indexedValue = dataReader.getIndexValue();
-        System.out.println("\tIndexed value:" + indexedValue);
+        indexedValue = dataReader.readSignedIntegerAtIndexPrecision();
     }
     
+    @Override
+    public void dumpParameters() {
+        System.out.println("\tIndexed value: " + indexedValue);
+    }
+            
 }

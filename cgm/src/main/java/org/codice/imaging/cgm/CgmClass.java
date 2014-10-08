@@ -29,7 +29,7 @@ package org.codice.imaging.cgm;
  *
  */
 public enum CgmClass {
-    UNKNOWN(-1),
+    PSEUDO(-1),
     DELIMITER(0),
     METAFILE_DESCRIPTOR(1),
     PICTURE_DESCRIPTOR(2),
@@ -47,7 +47,7 @@ public enum CgmClass {
                 return cgmClass;
             }
         }
-        return UNKNOWN;
+        return PSEUDO;
     }
 
 	private CgmClass(final int classIdentifier) {

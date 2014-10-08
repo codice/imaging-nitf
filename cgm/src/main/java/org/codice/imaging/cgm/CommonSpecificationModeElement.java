@@ -46,7 +46,7 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
     
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
-        int data = inputReader.readShort();
+        int data = inputReader.readEnumValue();
         switch (data) {
             case 0:
                 mode = LineWidthSpecificationModeElement.Mode.Absolute;
@@ -64,6 +64,10 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
                 System.out.println(String.format("Unknown %s value: %d", getFriendlyName(), data));
                 break;
         }
+    }
+    
+    @Override
+    public void dumpParameters() {
         System.out.println("\t" + getFriendlyName() + ": " + mode);
-    }   
+    }
 }

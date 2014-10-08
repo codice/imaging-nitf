@@ -26,7 +26,7 @@
 package org.codice.imaging.cgm;
 
 
-class LineWidthElement extends CommonSizeSpecificationElement {
+class LineWidthElement extends CommonSizeSpecificationElement implements AbstractElement {
 
     public LineWidthElement() {
         super(CgmIdentifier.LINE_WIDTH);

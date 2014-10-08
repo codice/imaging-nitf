@@ -25,40 +25,10 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.IOException;
+class TextFontIndexElement extends CommonIndexedElement implements AbstractElement {
 
-/**
- *
- */
-class ColourSelectionModeElement extends ElementHelpers implements AbstractElement {
-    ColourSelectionModeElement() {
-        super(CgmIdentifier.COLOUR_SELECTION_MODE);
+    public TextFontIndexElement() {
+        super(CgmIdentifier.TEXT_FONT_INDEX);
     }
-
-    enum Mode {
-        IndexedColourMode,
-        DirectColourMode
-    }
-    Mode mode = Mode.IndexedColourMode;
     
-    @Override
-    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
-        int data = inputReader.readEnumValue();
-        switch (data) {
-            case 0:
-                mode = Mode.IndexedColourMode;
-                break;
-            case 1:
-                mode = Mode.DirectColourMode;
-                break;
-            default:
-                System.out.println("Unknown Colour Selection Mode value: " + data);
-                break;
-        }
-    }
-
-    @Override
-    public void dumpParameters() {
-        System.out.println("\tColour Selection Mode: " + mode);
-    }
 }
