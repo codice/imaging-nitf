@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 
 
@@ -50,5 +51,10 @@ class IntegerArgumentElement extends ElementHelpers {
     @Override
     public void dumpParameters() {
         System.out.println("\tRead integer: " + argumentValue);
+    }
+    
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        // Nothing yet
     }
 }

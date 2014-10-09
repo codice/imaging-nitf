@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +40,6 @@ class PolylineElement extends ElementHelpers {
 
     @Override
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
-        // TODO: this needs to make a list
         points = dataReader.readPoints(parameterListLength);
     }
     
@@ -48,5 +48,20 @@ class PolylineElement extends ElementHelpers {
         for (Point point : points) {
             System.out.println("\tPoint: " + point);
         }
+    }
+    
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        g2.setColor(graphicState.lineColour);
+        g2.setStroke(graphicState.stroke);
+        if (points.size() == 2) {
+            g2.drawLine(points.get(0).x, points.get(0).y, points.get(1).x, points.get(1).y);
+        } else {
+            System.out.println("size > 2");
+        };
     }
 }

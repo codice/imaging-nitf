@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 
 /**
@@ -47,5 +48,10 @@ class NoArgumentsElement extends ElementHelpers implements AbstractElement {
     @Override
     public void dumpParameters() {
         // Nothing to dump
+    }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        // Nothing
     }
 }

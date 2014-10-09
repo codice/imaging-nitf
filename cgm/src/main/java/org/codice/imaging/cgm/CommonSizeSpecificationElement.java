@@ -30,7 +30,7 @@ import java.io.IOException;
 
 abstract class CommonSizeSpecificationElement extends ElementHelpers {
 
-    private int size;
+    protected int size;
 
     protected CommonSizeSpecificationElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);

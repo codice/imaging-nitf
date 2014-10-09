@@ -25,10 +25,17 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
+
 class TextFontIndexElement extends CommonIndexedElement implements AbstractElement {
 
     public TextFontIndexElement() {
         super(CgmIdentifier.TEXT_FONT_INDEX);
+    }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        graphicState.setTextFontIndex(indexedValue);
     }
     
 }

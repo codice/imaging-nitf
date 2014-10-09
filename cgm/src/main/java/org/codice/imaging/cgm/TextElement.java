@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.IOException;
 
@@ -51,4 +52,22 @@ class TextElement extends ElementHelpers implements AbstractElement {
         System.out.println("\tText: " + textPosition + "|" + isFinal + " : " + text);
     }
     
+    public String getText() {
+        return text;
+    }
+    
+    public Point getPosition() {
+        return textPosition;
+    }
+    
+        /**
+     *
+     * @param g2
+     * @param graphicState
+     */
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        g2.setColor(graphicState.textColour);
+        g2.drawString(text, textPosition.x, textPosition.y);
+    }
 }

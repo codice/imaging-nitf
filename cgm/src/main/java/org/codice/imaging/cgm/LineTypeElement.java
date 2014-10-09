@@ -25,12 +25,16 @@
  */
 package org.codice.imaging.cgm;
 
-import java.io.IOException;
-
+import java.awt.Graphics2D;
 
 class LineTypeElement extends CommonIndexedElement implements AbstractElement {
 
     public LineTypeElement() {
         super(CgmIdentifier.LINE_TYPE);
+    }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for LineTypeElement");
     }
 }

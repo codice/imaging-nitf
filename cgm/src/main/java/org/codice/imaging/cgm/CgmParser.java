@@ -26,80 +26,112 @@
 package org.codice.imaging.cgm;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 
 public class CgmParser {
 
     private CgmInputReader dataReader = null;
-    private List<AbstractElement> commands = new ArrayList<>();
+    private final List<AbstractElement> commands = new ArrayList<>();
 
-    private static AbstractElement getElement(CgmIdentifier elementId) {
-        for (int i = 0; i < elementCodes.length; ++i) {
-            if (elementCodes[i].matches(elementId)) {
-                return elementCodes[i];
-            }
+    private static AbstractElement getElement(CgmIdentifier elementId){
+        if (elements.containsKey(elementId)) {
+            return instantiateElement(elementId);
         }
         System.out.println("Returning null for elementId:" + elementId);
         return null;
     }
 
-    private static final AbstractElement [] elementCodes = { 
-        new NoArgumentsElement(CgmIdentifier.NO_OP),
-        new BeginMetafileElement(),
-        new NoArgumentsElement(CgmIdentifier.END_METAFILE),
-        new StringFixedArgumentElement(CgmIdentifier.BEGIN_PICTURE),
-        new NoArgumentsElement(CgmIdentifier.BEGIN_PICTURE_BODY),
-        new NoArgumentsElement(CgmIdentifier.END_PICTURE),
-        new NoArgumentsElement(CgmIdentifier.BEGIN_SEGMENT),
+    private static AbstractElement instantiateElement(CgmIdentifier elementId) {
+        Class elementClass = elements.get(elementId);
+        AbstractElement element = instantiateElementWithNoArguments(elementClass);
+        if (element == null) {
+            element = instantiateElementWithElementId(elementClass, elementId);
+        }
+        return element;
+    }
+
+    private static AbstractElement instantiateElementWithNoArguments(Class elementClass){
+        try {
+            Constructor<AbstractElement> defaultConstructor = elementClass.getDeclaredConstructor();
+            return defaultConstructor.newInstance();
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(CgmParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    private static AbstractElement instantiateElementWithElementId(Class elementClass, CgmIdentifier elementId) {
+        try {
+            Constructor<AbstractElement> constructor = elementClass.getDeclaredConstructor(CgmIdentifier.class);
+            return constructor.newInstance(elementId);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(CgmParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    private static final HashMap<CgmIdentifier, Class> elements = new HashMap<>();
+    static {
+        elements.put(CgmIdentifier.NO_OP, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.BEGIN_METAFILE, BeginMetafileElement.class);
+        elements.put(CgmIdentifier.END_METAFILE, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.BEGIN_PICTURE, StringFixedArgumentElement.class);
+        elements.put(CgmIdentifier.BEGIN_PICTURE_BODY, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.END_PICTURE, NoArgumentsElement.class);
         
-        new IntegerArgumentElement(CgmIdentifier.METAFILE_VERSION),
-        new StringFixedArgumentElement(CgmIdentifier.METAFILE_DESCRIPTION),
-        new MetafileElementsListElement(),
-        new FontListElement(),
+        elements.put(CgmIdentifier.METAFILE_VERSION, IntegerArgumentElement.class);
+        elements.put(CgmIdentifier.METAFILE_DESCRIPTION, StringFixedArgumentElement.class);
+        elements.put(CgmIdentifier.METAFILE_ELEMENT_LIST, MetafileElementsListElement.class);
+        elements.put(CgmIdentifier.FONT_LIST, FontListElement.class);
         
-        new NoArgumentsElement(CgmIdentifier.SCALING_MODE),
-        new ColourSelectionModeElement(),
-        new LineWidthSpecificationModeElement(),
-        new MarkerSizeSpecificationModeElement(),
-        new EdgeWidthSpecificationModeElement(),
-        new VdcExtentElement(),
-        new NoArgumentsElement(CgmIdentifier.BACKGROUND_COLOUR),
-        new NoArgumentsElement(CgmIdentifier.DEVICE_VIEWPORT),
+        elements.put(CgmIdentifier.SCALING_MODE, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.COLOUR_SELECTION_MODE, ColourSelectionModeElement.class);
+        elements.put(CgmIdentifier.LINE_WIDTH_SPECIFICATION_MODE, LineWidthSpecificationModeElement.class);
+        elements.put(CgmIdentifier.MARKER_SIZE_SPECIFICATION_MODE, MarkerSizeSpecificationModeElement.class);
+        elements.put(CgmIdentifier.EDGE_WIDTH_SPECIFICATION_MODE, EdgeWidthSpecificationModeElement.class);
+        elements.put(CgmIdentifier.VDC_EXTENT, VdcExtentElement.class);
+        elements.put(CgmIdentifier.BACKGROUND_COLOUR, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.DEVICE_VIEWPORT, NoArgumentsElement.class);
         
-        new PolylineElement(),
-        new NoArgumentsElement(CgmIdentifier.DISJOINT_POLYLINE),
-        new NoArgumentsElement(CgmIdentifier.POLYMARKER),
-        new TextElement(),
-        new NoArgumentsElement(CgmIdentifier.RESTRICTED_TEXT),
+        elements.put(CgmIdentifier.POLYLINE, PolylineElement.class);
+        elements.put(CgmIdentifier.DISJOINT_POLYLINE, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.POLYMARKER, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.TEXT, TextElement.class);
+        elements.put(CgmIdentifier.RESTRICTED_TEXT, NoArgumentsElement.class);
         
-        new NoArgumentsElement(CgmIdentifier.LINE_BUNDLE_INDEX),
-        new LineTypeElement(),
-        new LineWidthElement(),
-        new LineColourElement(),
-        new NoArgumentsElement(CgmIdentifier.MARKER_BUNDLE_INDEX),
-        new NoArgumentsElement(CgmIdentifier.MARKER_TYPE),
-        new NoArgumentsElement(CgmIdentifier.MARKER_SIZE),
-        new NoArgumentsElement(CgmIdentifier.MARKER_COLOUR),
-        new NoArgumentsElement(CgmIdentifier.TEXT_BUNDLE_INDEX),
-        new TextFontIndexElement(),
-        new NoArgumentsElement(CgmIdentifier.TEXT_PRECISION),
-        new NoArgumentsElement(CgmIdentifier.CHARACTER_EXPANSION_FACTOR),
-        new NoArgumentsElement(CgmIdentifier.CHARACTER_SPACING),
-        new TextColourElement(),
-        new CharacterHeightElement(),
-        new CharacterOrientationElement(),
-        new NoArgumentsElement(CgmIdentifier.TEXT_PATH),
-        new NoArgumentsElement(CgmIdentifier.TEXT_ALIGNMENT),
+        elements.put(CgmIdentifier.LINE_BUNDLE_INDEX, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.LINE_TYPE, LineTypeElement.class);
+        elements.put(CgmIdentifier.LINE_WIDTH, LineWidthElement.class);
+        elements.put(CgmIdentifier.LINE_COLOUR, LineColourElement.class);
+        elements.put(CgmIdentifier.MARKER_BUNDLE_INDEX, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.MARKER_TYPE, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.MARKER_SIZE, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.MARKER_COLOUR, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.TEXT_BUNDLE_INDEX, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.TEXT_FONT_INDEX, TextFontIndexElement.class);
+        elements.put(CgmIdentifier.TEXT_PRECISION, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.CHARACTER_EXPANSION_FACTOR, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.CHARACTER_SPACING, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.TEXT_COLOUR, TextColourElement.class);
+        elements.put(CgmIdentifier.CHARACTER_HEIGHT, CharacterHeightElement.class);
+        elements.put(CgmIdentifier.CHARACTER_ORIENTATION, CharacterOrientationElement.class);
+        elements.put(CgmIdentifier.TEXT_PATH, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.TEXT_ALIGNMENT, NoArgumentsElement.class);
     };
 
-    CgmParser(NitfGraphicSegment graphicSegment) {
+    public CgmParser(NitfGraphicSegment graphicSegment) {
         dataReader = new CgmInputReader(graphicSegment);
     }
 
-    void buildCommandList() throws IOException {
+    void buildCommandList() throws IOException, InstantiationException, IllegalAccessException {
         
         AbstractElement element;
         do {
@@ -150,5 +182,9 @@ public class CgmParser {
 
     private static int getElementClass(int commandHeader) {
         return (commandHeader & 0xF000) >> 12;
+    }
+
+    List<AbstractElement> getCommandList() {
+        return commands;
     }
 }

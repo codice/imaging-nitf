@@ -25,30 +25,53 @@
  */
 package org.codice.imaging.cgm;
 
-import java.awt.Graphics2D;
-import java.io.IOException;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ *
+ * @author bradh
+ */
+class CgmGraphicState {
+    // TODO: getters / setters
+    Color lineColour;
+    Color textColour;
+    BasicStroke stroke = new BasicStroke();
+    float lineWidth;
+    int joinStyle = BasicStroke.JOIN_MITER;
+    int capStyle = BasicStroke.CAP_SQUARE;
+    List<String> fontList = new ArrayList<>();
+    private int fontIndex = 0;
+    private int textFontHeight = 12;
 
-class CharacterHeightElement extends ElementHelpers implements AbstractElement {
+    void setLineWidth(float size) {
+        lineWidth = size;
+        updateStroke();
+    }
 
-    private int characterHeight;
+    private void updateStroke() {
+        stroke = new BasicStroke(lineWidth, capStyle, joinStyle);
+    }
+
+    void setLineColour(Color colour) {
+        lineColour = colour;
+    }
     
-    public CharacterHeightElement() {
-        super(CgmIdentifier.CHARACTER_HEIGHT);
+    void setTextColour(Color colour) {
+        textColour = colour;
     }
 
-    @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
-        characterHeight = dataReader.readSignedIntegerAtVdcIntegerPrecision();
+    void setFontList(List<String> fonts) {
+        fontList = fonts;
     }
 
-    @Override
-    public void dumpParameters() {
-        System.out.println("\tCharacter height: " + characterHeight);
+    void setTextFontIndex(int indexedValue) {
+        fontIndex = indexedValue - 1;
     }
 
-    @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        graphicState.setCharacterHeight(characterHeight);
+    void setCharacterHeight(int characterHeight) {
+        textFontHeight = characterHeight;
     }
 }

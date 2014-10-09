@@ -25,10 +25,17 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
+
 
 class LineWidthElement extends CommonSizeSpecificationElement implements AbstractElement {
 
     public LineWidthElement() {
         super(CgmIdentifier.LINE_WIDTH);
+    }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        graphicState.setLineWidth(size);
     }
 }

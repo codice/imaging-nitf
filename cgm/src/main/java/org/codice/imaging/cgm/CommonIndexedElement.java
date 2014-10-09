@@ -30,7 +30,7 @@ import java.io.IOException;
 
 abstract class CommonIndexedElement extends ElementHelpers implements AbstractElement {
 
-    private int indexedValue;
+    public int indexedValue;
     
     protected CommonIndexedElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);

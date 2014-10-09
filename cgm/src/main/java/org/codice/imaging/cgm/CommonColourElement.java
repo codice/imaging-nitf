@@ -30,7 +30,7 @@ import java.io.IOException;
 
 abstract class CommonColourElement extends ElementHelpers implements AbstractElement {
 
-    private Color colour;
+    protected Color colour;
 
     protected CommonColourElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
@@ -44,5 +44,9 @@ abstract class CommonColourElement extends ElementHelpers implements AbstractEle
     @Override
     public void dumpParameters() {
         System.out.println("\tColour: " + colour);
+    }
+    
+    public Color getColour() {
+        return colour;
     }
 }

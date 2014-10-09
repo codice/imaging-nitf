@@ -25,30 +25,27 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.io.IOException;
+import java.awt.Point;
+import java.util.List;
 
-
-class CharacterHeightElement extends ElementHelpers implements AbstractElement {
-
-    private int characterHeight;
+/**
+ *
+ * @author bradh
+ */
+public class CgmRenderer {
+    private Graphics2D g2;
+    private CgmGraphicState graphicState;
     
-    public CharacterHeightElement() {
-        super(CgmIdentifier.CHARACTER_HEIGHT);
+    public void setTargetImageGraphics(Graphics2D graphics) {
+        g2 = graphics;
+        graphicState = new CgmGraphicState();
     }
-
-    @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
-        characterHeight = dataReader.readSignedIntegerAtVdcIntegerPrecision();
-    }
-
-    @Override
-    public void dumpParameters() {
-        System.out.println("\tCharacter height: " + characterHeight);
-    }
-
-    @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        graphicState.setCharacterHeight(characterHeight);
+    
+    public void render(List<AbstractElement> commandList) {
+        for (AbstractElement command : commandList) {
+            command.render(g2, graphicState);
+        }
     }
 }

@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 
 /**
@@ -38,4 +39,6 @@ interface AbstractElement {
     String getFriendlyName();
 
     void dumpParameters();
+
+    public void render(Graphics2D g2, CgmGraphicState graphicState);
 }

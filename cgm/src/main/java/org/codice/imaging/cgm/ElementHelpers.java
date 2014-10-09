@@ -25,6 +25,8 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
+
 /**
  *
  */
@@ -44,4 +46,11 @@ abstract class ElementHelpers implements AbstractElement {
     public String getFriendlyName() {
         return cgmIdent.getFriendlyName();
     }
+    
+    // TODO: remove this temporary hack when we're OK again.
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for " + getFriendlyName());
+    }
+    
 }

@@ -25,11 +25,16 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.EnumSet;
+import javax.imageio.ImageIO;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
+import org.codice.imaging.nitf.core.NitfGraphicSegment;
 import org.codice.imaging.nitf.core.ParseOption;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -63,7 +68,7 @@ public class CgmParserTest {
     }
 
     @Test
-    public void I_3051E() throws IOException {
+    public void I_3051E() throws IOException, InstantiationException, IllegalAccessException {
         String parentDirectory = "JitcNitf21Samples";
         String testfile = "i_3051e.ntf";
         String inputFileName = "/" + parentDirectory + "/" + testfile;
@@ -77,9 +82,20 @@ public class CgmParserTest {
                 System.out.println("Loaded file, but found no graphic segments.");
                 System.exit(0);
             }
-            CgmParser parser = new CgmParser(nitf.getGraphicSegmentZeroBase(0));
+            NitfGraphicSegment segment = nitf.getGraphicSegmentZeroBase(0);
+            CgmParser parser = new CgmParser(segment);
             parser.buildCommandList();
             parser.dump();
+            
+            System.out.println("CCS position:" + segment.getGraphicLocationColumn() + ", " + segment.getGraphicLocationRow());
+            System.out.println("BBox1:" + segment.getBoundingBox1Column() + ", " + segment.getBoundingBox1Row());
+            System.out.println("BBox2:" + segment.getBoundingBox2Column() + ", " + segment.getBoundingBox2Row());
+            BufferedImage targetImage = new BufferedImage(segment.getBoundingBox2Column(), segment.getBoundingBox2Row(), BufferedImage.TYPE_INT_ARGB);
+            CgmRenderer renderer = new CgmRenderer();
+            renderer.setTargetImageGraphics((Graphics2D) targetImage.getGraphics());
+            renderer.render(parser.getCommandList());
+            File targetFile = new File(testfile + "cgm.png");
+            ImageIO.write(targetImage, "png", targetFile);
         } catch (ParseException e) {
             System.out.println("Failed to load from InputStream " + e.getMessage());
             e.printStackTrace();

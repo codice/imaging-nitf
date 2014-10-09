@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 
 /**
@@ -50,5 +51,10 @@ class StringFixedArgumentElement extends ElementHelpers implements AbstractEleme
     @Override
     public void dumpParameters() {
         System.out.println("\tRead text:" + text);
+    }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        // Nothing
     }
 }
