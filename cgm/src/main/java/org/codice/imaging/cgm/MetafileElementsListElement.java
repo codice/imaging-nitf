@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,5 +56,10 @@ class MetafileElementsListElement extends ElementHelpers implements AbstractElem
             System.out.println("\tElement: " + identifier.getFriendlyName());
         }
     }
-    
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        // Nothing
+    }
+
 }

@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 
 /**
@@ -40,7 +41,7 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
         DirectColourMode
     }
     Mode mode = Mode.IndexedColourMode;
-    
+
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
@@ -61,4 +62,10 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
     public void dumpParameters() {
         System.out.println("\tColour Selection Mode: " + mode);
     }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for " + getFriendlyName());
+    }
+
 }

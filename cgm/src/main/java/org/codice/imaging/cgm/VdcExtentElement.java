@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.IOException;
 
@@ -51,4 +52,10 @@ class VdcExtentElement extends ElementHelpers implements AbstractElement {
     public void dumpParameters() {
         System.out.println("\tVDC Extent: " + point1 + " | " + point2);
     }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for " + getFriendlyName());
+    }
+
 }

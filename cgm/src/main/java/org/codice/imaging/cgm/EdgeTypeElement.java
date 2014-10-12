@@ -27,15 +27,14 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 
+class EdgeTypeElement extends CommonIndexedElement implements AbstractElement {
 
-class BeginMetafileElement extends StringFixedArgumentElement {
-
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    public EdgeTypeElement() {
+        super(CgmIdentifier.EDGE_TYPE);
     }
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
+        System.out.println("TODO: render for EdgeTypeElement");
     }
 }

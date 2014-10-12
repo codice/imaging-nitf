@@ -26,16 +26,52 @@
 package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
-class BeginMetafileElement extends StringFixedArgumentElement {
+public class PolygonSetElement extends ElementHelpers {
+    List<Point> points = new ArrayList<>();
+    List<Integer> edgeOutFlags = new ArrayList<>();
+        
+    public PolygonSetElement() {
+        super(CgmIdentifier.POLYGON_SET);
+    }
 
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    @Override
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        int bytesRead = 0;
+        while (bytesRead < parameterListLength) {
+            Point point = dataReader.readPoint();
+            points.add(point);
+            bytesRead += 4;
+            int edgeOutFlag = dataReader.readEnumValue();
+            bytesRead += 2;
+            edgeOutFlags.add(edgeOutFlag);
+        }
+    }
+
+    @Override
+    public void dumpParameters() {
+        for (int pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
+            System.out.println("\tPoint: " + points.get(pointIndex));
+            System.out.println("\tEdge out flag:" + edgeOutFlags.get(pointIndex));
+        }
     }
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
+        System.out.println("figure out how to render edge out flags");
+        applyFilledPrimitiveAttributes(g2, graphicState);
+        Polygon polygon = new Polygon();
+        for (int pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
+            Point point = points.get(pointIndex);
+            polygon.addPoint(point.x, point.y);
+        }
+        g2.draw(polygon);
     }
+    
 }

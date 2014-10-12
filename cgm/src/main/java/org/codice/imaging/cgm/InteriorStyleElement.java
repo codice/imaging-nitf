@@ -26,16 +26,66 @@
 package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
+import java.io.IOException;
 
+/**
+ *
+ */
+class InteriorStyleElement extends ElementHelpers implements AbstractElement {
+    InteriorStyleElement() {
+        super(CgmIdentifier.INTERIOR_STYLE);
+    }
 
-class BeginMetafileElement extends StringFixedArgumentElement {
-
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    enum Mode {
+        Hollow,
+        Solid,
+        Pattern,
+        Hatch,
+        Empty,
+        GeometricPattern,
+        Interpolated
+    }
+    Mode mode = Mode.Hollow;
+    
+    @Override
+    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
+        int data = inputReader.readEnumValue();
+        switch (data) {
+            case 0:
+                mode = Mode.Hollow;
+                break;
+            case 1:
+                mode = Mode.Solid;
+                break;
+            case 2:
+                mode = Mode.Pattern;
+                break;
+            case 3:
+                mode = Mode.Hatch;
+                break;
+            case 4:
+                mode = Mode.Empty;
+                break;
+            case 5:
+                mode = Mode.GeometricPattern;
+                break;
+            case 6:
+                mode = Mode.Interpolated;
+                break;
+            default:
+                System.out.println("Unknown Interior Style value: " + data);
+                break;
+        }
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
+    public void dumpParameters() {
+        System.out.println("\tInterior Style: " + mode);
     }
+    
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for " + getFriendlyName());
+    }
+
 }

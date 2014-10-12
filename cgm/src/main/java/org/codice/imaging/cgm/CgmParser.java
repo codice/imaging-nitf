@@ -43,10 +43,10 @@ public class CgmParser {
 
     private static AbstractElement getElement(CgmIdentifier elementId){
         if (elements.containsKey(elementId)) {
+            System.out.println("About to instantiate:" + elementId.getFriendlyName());
             return instantiateElement(elementId);
         }
-        System.out.println("Returning null for elementId:" + elementId);
-        return null;
+        return new NoArgumentsElement(CgmIdentifier.UNKNOWN);
     }
 
     private static AbstractElement instantiateElement(CgmIdentifier elementId) {
@@ -63,7 +63,7 @@ public class CgmParser {
             Constructor<AbstractElement> defaultConstructor = elementClass.getDeclaredConstructor();
             return defaultConstructor.newInstance();
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(CgmParser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CgmParser.class.getName()).log(Level.SEVERE, elementClass.getSimpleName(), ex);
         }
         return null;
     }
@@ -82,13 +82,13 @@ public class CgmParser {
     static {
         elements.put(CgmIdentifier.NO_OP, NoArgumentsElement.class);
         elements.put(CgmIdentifier.BEGIN_METAFILE, BeginMetafileElement.class);
-        elements.put(CgmIdentifier.END_METAFILE, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.BEGIN_PICTURE, StringFixedArgumentElement.class);
-        elements.put(CgmIdentifier.BEGIN_PICTURE_BODY, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.END_PICTURE, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.END_METAFILE, EndMetafileElement.class);
+        elements.put(CgmIdentifier.BEGIN_PICTURE, BeginPictureElement.class);
+        elements.put(CgmIdentifier.BEGIN_PICTURE_BODY, BeginPictureBodyElement.class);
+        elements.put(CgmIdentifier.END_PICTURE, EndPictureElement.class);
         
-        elements.put(CgmIdentifier.METAFILE_VERSION, IntegerArgumentElement.class);
-        elements.put(CgmIdentifier.METAFILE_DESCRIPTION, StringFixedArgumentElement.class);
+        elements.put(CgmIdentifier.METAFILE_VERSION, MetafileVersionElement.class);
+        elements.put(CgmIdentifier.METAFILE_DESCRIPTION, MetafileDescriptionElement.class);
         elements.put(CgmIdentifier.METAFILE_ELEMENT_LIST, MetafileElementsListElement.class);
         elements.put(CgmIdentifier.FONT_LIST, FontListElement.class);
         
@@ -106,6 +106,8 @@ public class CgmParser {
         elements.put(CgmIdentifier.POLYMARKER, NoArgumentsElement.class);
         elements.put(CgmIdentifier.TEXT, TextElement.class);
         elements.put(CgmIdentifier.RESTRICTED_TEXT, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.POLYGON_SET, PolygonSetElement.class);
+        elements.put(CgmIdentifier.CIRCLE, CircleElement.class);
         
         elements.put(CgmIdentifier.LINE_BUNDLE_INDEX, NoArgumentsElement.class);
         elements.put(CgmIdentifier.LINE_TYPE, LineTypeElement.class);
@@ -125,13 +127,25 @@ public class CgmParser {
         elements.put(CgmIdentifier.CHARACTER_ORIENTATION, CharacterOrientationElement.class);
         elements.put(CgmIdentifier.TEXT_PATH, NoArgumentsElement.class);
         elements.put(CgmIdentifier.TEXT_ALIGNMENT, NoArgumentsElement.class);
+        elements.put(CgmIdentifier.CHARACTER_SET_INDEX, NoArgumentsElement.class);
+        // CgmIdentifier.ALTERNATE_CHARACTER_SET_INDEX
+        // CgmIdentifier.FILL_BUNDLE_INDEX
+        elements.put(CgmIdentifier.INTERIOR_STYLE, InteriorStyleElement.class);
+        elements.put(CgmIdentifier.FILL_COLOUR, FillColourElement.class);
+        elements.put(CgmIdentifier.HATCH_INDEX, HatchIndexElement.class);
+        // CgmIdentifier.PATTERN_INDEX
+        // CgmIdentifier.EDGE_BUNDLE_INDEX == 26
+        elements.put(CgmIdentifier.EDGE_TYPE, EdgeTypeElement.class);
+        elements.put(CgmIdentifier.EDGE_WIDTH, EdgeWidthElement.class);
+        elements.put(CgmIdentifier.EDGE_COLOUR, EdgeColourElement.class);
+        elements.put(CgmIdentifier.EDGE_VISIBILITY, EdgeVisibilityElement.class);
     };
 
     public CgmParser(NitfGraphicSegment graphicSegment) {
         dataReader = new CgmInputReader(graphicSegment);
     }
 
-    void buildCommandList() throws IOException, InstantiationException, IllegalAccessException {
+    void buildCommandList() throws IOException {
         
         AbstractElement element;
         do {

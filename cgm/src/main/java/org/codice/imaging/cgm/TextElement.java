@@ -60,7 +60,7 @@ class TextElement extends ElementHelpers implements AbstractElement {
         return textPosition;
     }
     
-        /**
+    /**
      *
      * @param g2
      * @param graphicState
@@ -68,6 +68,7 @@ class TextElement extends ElementHelpers implements AbstractElement {
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
         g2.setColor(graphicState.textColour);
+        g2.setFont(graphicState.font);
         g2.drawString(text, textPosition.x, textPosition.y);
     }
 }

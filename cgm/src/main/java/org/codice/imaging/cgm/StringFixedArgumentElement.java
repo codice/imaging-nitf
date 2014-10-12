@@ -31,14 +31,14 @@ import java.io.IOException;
 /**
  *
  */
-class StringFixedArgumentElement extends ElementHelpers implements AbstractElement {
+abstract class StringFixedArgumentElement extends ElementHelpers implements AbstractElement {
 
-    StringFixedArgumentElement(CgmIdentifier cgmIdentifier) {
-        super(cgmIdentifier);
-    }
-    
     private String text;
     
+    protected StringFixedArgumentElement(CgmIdentifier cgmIdentifier) {
+        super(cgmIdentifier);
+    }
+
     public String getText() {
         return text;
     }
@@ -51,10 +51,5 @@ class StringFixedArgumentElement extends ElementHelpers implements AbstractEleme
     @Override
     public void dumpParameters() {
         System.out.println("\tRead text:" + text);
-    }
-
-    @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
     }
 }

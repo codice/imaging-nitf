@@ -27,6 +27,8 @@ package org.codice.imaging.cgm;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +39,21 @@ import java.util.List;
 class CgmGraphicState {
     // TODO: getters / setters
     Color lineColour;
-    Color textColour;
-    BasicStroke stroke = new BasicStroke();
     float lineWidth;
-    int joinStyle = BasicStroke.JOIN_MITER;
-    int capStyle = BasicStroke.CAP_SQUARE;
+    int lineJoinStyle = BasicStroke.JOIN_MITER;
+    int lineCapStyle = BasicStroke.CAP_SQUARE;
+    BasicStroke lineStroke = new BasicStroke();
+
+    private Color edgeColour;
+    private float edgeWidth;
+    private int edgeJoinStyle = BasicStroke.JOIN_MITER;
+    private int edgeCapStyle = BasicStroke.CAP_SQUARE;
+    private BasicStroke edgeStroke = new BasicStroke();
+
+    private int hatchIndex = 1;
+
+    Color textColour;
+    Font font = Font.decode("Serif");
     List<String> fontList = new ArrayList<>();
     private int fontIndex = 0;
     private int textFontHeight = 12;
@@ -52,7 +64,7 @@ class CgmGraphicState {
     }
 
     private void updateStroke() {
-        stroke = new BasicStroke(lineWidth, capStyle, joinStyle);
+        lineStroke = new BasicStroke(lineWidth, lineCapStyle, lineJoinStyle);
     }
 
     void setLineColour(Color colour) {
@@ -64,14 +76,50 @@ class CgmGraphicState {
     }
 
     void setFontList(List<String> fonts) {
+        // TODO: the font list needs to be translated to font names we have...
         fontList = fonts;
     }
 
     void setTextFontIndex(int indexedValue) {
         fontIndex = indexedValue - 1;
+        updateFont();
     }
 
     void setCharacterHeight(int characterHeight) {
         textFontHeight = characterHeight;
+        updateFont();
+    }
+
+    private void updateFont() {
+        font = new Font(fontList.get(fontIndex), Font.PLAIN, textFontHeight);
+    }
+
+    void setEdgeColour(Color colour) {
+        edgeColour = colour;
+    }
+
+    Color getEdgeColour() {
+        return edgeColour;
+    }
+
+    void setEdgeWidth(int size) {
+        edgeWidth = size;
+        updateEdgeStroke();
+    }
+
+    Stroke getEdgeStroke() {
+        return edgeStroke;
+    }
+
+    private void updateEdgeStroke() {
+        edgeStroke = new BasicStroke(edgeWidth, edgeCapStyle, edgeJoinStyle);
+    }
+
+    void setHatchIndex(int indexedValue) {
+        hatchIndex = indexedValue;
+    }
+    
+    int getHatchIndex() {
+        return hatchIndex;
     }
 }

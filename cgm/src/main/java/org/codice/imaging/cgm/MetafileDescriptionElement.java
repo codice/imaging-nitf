@@ -28,12 +28,12 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 
 
-class BeginMetafileElement extends StringFixedArgumentElement {
-
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+class MetafileDescriptionElement extends StringFixedArgumentElement implements AbstractElement {
+    
+    public MetafileDescriptionElement() {
+        super(CgmIdentifier.METAFILE_DESCRIPTION);
     }
-
+    
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
         // Nothing

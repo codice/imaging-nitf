@@ -28,14 +28,19 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 
 
-class BeginMetafileElement extends StringFixedArgumentElement {
+class EdgeColourElement extends CommonColourElement {
 
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    public EdgeColourElement() {
+        super(CgmIdentifier.EDGE_COLOUR);
     }
-
+    
+    /**
+     *
+     * @param g2
+     * @param graphicState
+     */
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
+        graphicState.setEdgeColour(colour);
     }
 }

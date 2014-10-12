@@ -25,17 +25,11 @@
  */
 package org.codice.imaging.cgm;
 
-import java.awt.Graphics2D;
 
+class BeginPictureBodyElement extends NoArgumentsElement implements AbstractElement{
 
-class BeginMetafileElement extends StringFixedArgumentElement {
-
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    public BeginPictureBodyElement() {
+        super(CgmIdentifier.BEGIN_PICTURE_BODY);
     }
-
-    @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
-    }
+    
 }

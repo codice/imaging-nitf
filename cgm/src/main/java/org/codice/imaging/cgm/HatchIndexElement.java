@@ -28,14 +28,15 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 
 
-class BeginMetafileElement extends StringFixedArgumentElement {
+public class HatchIndexElement extends CommonIndexedElement {
 
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    public HatchIndexElement() {
+        super(CgmIdentifier.HATCH_INDEX);
     }
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
+        graphicState.setHatchIndex(indexedValue);
     }
+    
 }

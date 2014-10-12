@@ -26,16 +26,45 @@
 package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
+import java.io.IOException;
 
+/**
+ *
+ */
+class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
+    EdgeVisibilityElement() {
+        super(CgmIdentifier.EDGE_VISIBILITY);
+    }
 
-class BeginMetafileElement extends StringFixedArgumentElement {
-
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    enum Mode {
+        Off,
+        On    }
+    Mode mode = Mode.Off;
+    
+    @Override
+    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
+        int data = inputReader.readEnumValue();
+        switch (data) {
+            case 0:
+                mode = Mode.Off;
+                break;
+            case 1:
+                mode = Mode.On;
+                break;
+            default:
+                System.out.println("Unknown Edge Visibility value: " + data);
+                break;
+        }
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
+    public void dumpParameters() {
+        System.out.println("\tEdge visibility: " + mode);
     }
+    
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for " + getFriendlyName());
+    }
+
 }

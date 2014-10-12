@@ -68,9 +68,34 @@ public class CgmParserTest {
     }
 
     @Test
-    public void I_3051E() throws IOException, InstantiationException, IllegalAccessException {
+    public void I_3051E() throws IOException {
         String parentDirectory = "JitcNitf21Samples";
         String testfile = "i_3051e.ntf";
+        testOneImage(parentDirectory, testfile);
+    }
+
+    @Test
+    public void NS3051V() throws IOException {
+        String parentDirectory = "JitcNitf21Samples";
+        String testfile = "ns3051v.nsf";
+        testOneImage(parentDirectory, testfile);
+    }
+
+    @Test
+    public void I_3052A() throws IOException {
+        String parentDirectory = "JitcNitf21Samples";
+        String testfile = "i_3052a.ntf";
+        testOneImage(parentDirectory, testfile);
+    }
+    
+    @Test
+    public void NS3101B() throws IOException {
+        String parentDirectory = "JitcNitf21Samples";
+        String testfile = "ns3101b.nsf";
+        testOneImage(parentDirectory, testfile);
+    }
+    
+    private void testOneImage(String parentDirectory, String testfile) throws IOException {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
         System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
@@ -87,9 +112,9 @@ public class CgmParserTest {
             parser.buildCommandList();
             parser.dump();
             
-            System.out.println("CCS position:" + segment.getGraphicLocationColumn() + ", " + segment.getGraphicLocationRow());
-            System.out.println("BBox1:" + segment.getBoundingBox1Column() + ", " + segment.getBoundingBox1Row());
-            System.out.println("BBox2:" + segment.getBoundingBox2Column() + ", " + segment.getBoundingBox2Row());
+            // System.out.println("CCS position:" + segment.getGraphicLocationColumn() + ", " + segment.getGraphicLocationRow());
+            // System.out.println("BBox1:" + segment.getBoundingBox1Column() + ", " + segment.getBoundingBox1Row());
+            // System.out.println("BBox2:" + segment.getBoundingBox2Column() + ", " + segment.getBoundingBox2Row());
             BufferedImage targetImage = new BufferedImage(segment.getBoundingBox2Column(), segment.getBoundingBox2Row(), BufferedImage.TYPE_INT_ARGB);
             CgmRenderer renderer = new CgmRenderer();
             renderer.setTargetImageGraphics((Graphics2D) targetImage.getGraphics());

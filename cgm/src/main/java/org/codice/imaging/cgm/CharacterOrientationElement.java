@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 
 
@@ -51,6 +52,11 @@ class CharacterOrientationElement extends ElementHelpers implements AbstractElem
     public void dumpParameters() {
         System.out.println(String.format("\tUp vector: %d, %d", xCharacterUpComponent, yCharacterUpComponent));
         System.out.println(String.format("\tBaseline vector: %d, %d", xCharacterBaseComponent, yCharacterBaseComponent));
+    }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for " + getFriendlyName());
     }
     
 }

@@ -25,6 +25,8 @@
  */
 package org.codice.imaging.cgm;
 
+import java.awt.Graphics2D;
+
 /**
  * 
  */
@@ -33,4 +35,10 @@ class LineWidthSpecificationModeElement extends CommonSpecificationModeElement i
     LineWidthSpecificationModeElement() {
         super(CgmIdentifier.LINE_WIDTH_SPECIFICATION_MODE);
     }
+
+    @Override
+    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+        System.out.println("TODO: render for " + getFriendlyName());
+    }
+
 }

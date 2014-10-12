@@ -26,16 +26,37 @@
 package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.Ellipse2D;
+import java.io.IOException;
 
 
-class BeginMetafileElement extends StringFixedArgumentElement {
+class CircleElement extends ElementHelpers implements AbstractElement {
 
-    public BeginMetafileElement() {
-        super(CgmIdentifier.BEGIN_METAFILE);
+    Point centre;
+    int radius;
+    
+    public CircleElement() {
+        super(CgmIdentifier.CIRCLE);
+    }
+
+    @Override
+    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+        centre = dataReader.readPoint();
+        radius = dataReader.readSignedIntegerAtVdcIntegerPrecision();
+    }
+    
+    @Override
+    public void dumpParameters() {
+        System.out.println("\tCentre: " + centre);
+        System.out.println("\tRadius: " + radius);
     }
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Nothing
+        applyFilledPrimitiveAttributes(g2, graphicState);
+        Ellipse2D circle = new Ellipse2D.Float(centre.x - radius, centre.y - radius, radius * 2, radius * 2);
+        g2.draw(circle);
     }
+
 }

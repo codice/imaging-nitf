@@ -27,11 +27,13 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import java.io.IOException;
 import java.util.List;
 
 
-class PolylineElement extends ElementHelpers {
+class PolylineElement extends ElementHelpers implements AbstractElement {
 
     List<Point> points;
     public PolylineElement() {
@@ -57,11 +59,12 @@ class PolylineElement extends ElementHelpers {
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
         g2.setColor(graphicState.lineColour);
-        g2.setStroke(graphicState.stroke);
-        if (points.size() == 2) {
-            g2.drawLine(points.get(0).x, points.get(0).y, points.get(1).x, points.get(1).y);
-        } else {
-            System.out.println("size > 2");
-        };
+        g2.setStroke(graphicState.lineStroke);
+        GeneralPath line = new GeneralPath(Path2D.WIND_EVEN_ODD, points.size());
+        line.moveTo(points.get(0).x, points.get(0).y);
+        for (int i = 1; i < points.size(); ++i) {
+            line.lineTo(points.get(i).x, points.get(i).y);
+        }
+        g2.draw(line);
     }
 }

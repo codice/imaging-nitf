@@ -29,11 +29,11 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 
 
-class IntegerArgumentElement extends ElementHelpers {
+abstract class IntegerArgumentElement extends ElementHelpers implements AbstractElement {
 
-    private int argumentValue;
+    protected int argumentValue;
 
-    public IntegerArgumentElement(CgmIdentifier cgmIdentifier) {
+    protected IntegerArgumentElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
 
