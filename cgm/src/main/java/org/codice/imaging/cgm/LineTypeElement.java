@@ -35,6 +35,6 @@ class LineTypeElement extends CommonIndexedElement implements AbstractElement {
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        System.out.println("TODO: render for LineTypeElement");
+        graphicState.setLineType(indexedValue);
     }
 }

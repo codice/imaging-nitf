@@ -39,19 +39,27 @@ import java.util.List;
 class CgmGraphicState {
     
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+    // Default from ISO/IEC 8632-1:1999(E), and MITRE_LIMIT attribute
+    // element is prohibited in BIIF Profile BPCGM01.10
+    private static final float MITRE_LIMIT = 32767.0f;
+    private static final float DASH[] = {10.0f};
+    private static final float DOT[] = {2.0f};
+    private static final float DASH_DOT[] = {10.0f, 10.0f, 2.0f, 2.0f};
+    private static final float DASH_DOT_DOT[] = {10.0f, 10.0f, 2.0f, 2.0f, 2.0f, 2.0f};
     
     // TODO: getters / setters
     Color lineColour;
     float lineWidth;
-    int lineJoinStyle = BasicStroke.JOIN_MITER;
-    int lineCapStyle = BasicStroke.CAP_SQUARE;
+    private int lineType = 0;
+    private static final int LINE_JOIN_STYLE = BasicStroke.JOIN_BEVEL;
+    private static final int LINE_CAP_STYLE = BasicStroke.CAP_SQUARE;
     BasicStroke lineStroke = new BasicStroke();
 
     private Color edgeColour;
     private float edgeWidth;
-    private int edgeJoinStyle = BasicStroke.JOIN_MITER;
-    private int edgeCapStyle = BasicStroke.CAP_SQUARE;
-    private EdgeVisibilityElement.Mode edgeVisibility = EdgeVisibilityElement.Mode.Off;
+    private static final int EDGE_JOIN_STYLE = BasicStroke.JOIN_BEVEL;
+    private static final int EDGE_CAP_STYLE = BasicStroke.CAP_SQUARE;
+    private EdgeVisibilityElement.Mode edgeVisibility;
     private BasicStroke edgeStroke = new BasicStroke();
 
     private int hatchIndex = 1;
@@ -62,13 +70,42 @@ class CgmGraphicState {
     private int fontIndex = 0;
     private int textFontHeight = 12;
 
-    void setLineWidth(float size) {
-        lineWidth = size;
-        updateStroke();
+    CgmGraphicState() {
+        this.edgeVisibility = EdgeVisibilityElement.Mode.Off;
     }
 
-    private void updateStroke() {
-        lineStroke = new BasicStroke(lineWidth, lineCapStyle, lineJoinStyle);
+    void setLineWidth(float size) {
+        lineWidth = size;
+        updateLineStroke();
+    }
+
+    void setLineType(int indexedValue) {
+        lineType = indexedValue;
+        updateLineStroke();
+    }
+
+    private void updateLineStroke() {
+        switch (lineType) {
+            case 1:
+                lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
+                break;
+            case 2:
+                lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH, 0.0f);
+                break;
+            case 3:
+                lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DOT, 0.0f);
+                break;
+            case 4:
+                lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT, 0.0f);
+                break;
+            case 5:
+                lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT_DOT, 0.0f);
+                break;
+            default:
+                // TODO: log warning.
+                lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
+                break;
+        }
     }
 
     void setLineColour(Color colour) {
@@ -127,7 +164,7 @@ class CgmGraphicState {
     }
 
     private void updateEdgeStroke() {
-        edgeStroke = new BasicStroke(edgeWidth, edgeCapStyle, edgeJoinStyle);
+        edgeStroke = new BasicStroke(edgeWidth, EDGE_CAP_STYLE, EDGE_JOIN_STYLE);
     }
 
     void setHatchIndex(int indexedValue) {
@@ -137,6 +174,8 @@ class CgmGraphicState {
     int getHatchIndex() {
         return hatchIndex;
     }
+
+    
 
     
 }
