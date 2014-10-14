@@ -269,16 +269,16 @@ public class CgmParser {
             int elementClass = getElementClass(commandHeader);
             int elementId = getElementId(commandHeader);
             int parameterListLength = getParameterListLength(commandHeader);
-            
+
             CgmIdentifier elementIdentifier = CgmIdentifier.findIdentifier(elementClass, elementId);
             element = getElement(elementIdentifier);
             element.readParameters(dataReader, parameterListLength);
             commands.add(element);
-            
+
             skipOverPadOctetIfNecessary(parameterListLength);
         } while (!element.matches(CgmIdentifier.END_METAFILE));
     }
-    
+
     void dump() {
         for (AbstractElement command : commands) {
             System.out.println("Command: " + command.getFriendlyName());
@@ -294,7 +294,7 @@ public class CgmParser {
     }
 
     private int getParameterListLength(int commandHeader) throws IOException {
-        int parameterListLength = (commandHeader & 0x001F);
+        int parameterListLength = commandHeader & 0x001F;
         if (parameterListLength == 31) {
             int longFormWord2 = dataReader.readUnsignedShort();
             if ((longFormWord2 & 0x8000) == 0x8000) {

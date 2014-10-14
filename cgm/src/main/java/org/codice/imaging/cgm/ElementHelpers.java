@@ -32,16 +32,16 @@ import java.awt.Graphics2D;
  */
 abstract class ElementHelpers implements AbstractElement {
     CgmIdentifier cgmIdent;
-    
+
     protected ElementHelpers(CgmIdentifier cgmIdentifier) {
         cgmIdent = cgmIdentifier;
     }
 
     @Override
     public boolean matches(final CgmIdentifier cgmIdentifier) {
-        return ((cgmIdentifier.getClassIdentifier() == cgmIdent.getClassIdentifier()) && (cgmIdentifier.getElementIdentifier() == cgmIdent.getElementIdentifier()));
+        return (cgmIdentifier.getClassIdentifier() == cgmIdent.getClassIdentifier()) && (cgmIdentifier.getElementIdentifier() == cgmIdent.getElementIdentifier());
     }
-    
+
     @Override
     public String getFriendlyName() {
         return cgmIdent.getFriendlyName();
@@ -51,5 +51,5 @@ abstract class ElementHelpers implements AbstractElement {
         g2.setColor(graphicState.getEdgeColour());
         g2.setStroke(graphicState.getEdgeStroke());
     }
-    
+
 }

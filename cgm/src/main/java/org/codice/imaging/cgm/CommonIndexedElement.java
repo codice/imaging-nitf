@@ -30,8 +30,8 @@ import java.io.IOException;
 
 abstract class CommonIndexedElement extends ElementHelpers implements AbstractElement {
 
-    public int indexedValue;
-    
+    protected int indexedValue;
+
     protected CommonIndexedElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
@@ -40,10 +40,10 @@ abstract class CommonIndexedElement extends ElementHelpers implements AbstractEl
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
         indexedValue = dataReader.readSignedIntegerAtIndexPrecision();
     }
-    
+
     @Override
     public void dumpParameters() {
         System.out.println("\tIndexed value: " + indexedValue);
     }
-            
+
 }
