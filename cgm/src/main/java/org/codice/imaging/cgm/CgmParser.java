@@ -31,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,7 +79,7 @@ public class CgmParser {
         return null;
     }
 
-    private static final HashMap<CgmIdentifier, Class> elements = new HashMap<>();
+    private static final Map<CgmIdentifier, Class> elements = new HashMap<>();
     static {
         elements.put(CgmIdentifier.NO_OP, NoArgumentsElement.class);
         elements.put(CgmIdentifier.BEGIN_METAFILE, BeginMetafileElement.class);
