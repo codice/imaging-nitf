@@ -50,14 +50,14 @@ public enum CgmClass {
         return PSEUDO;
     }
 
-	private CgmClass(final int classIdentifier) {
-		id = classIdentifier;
-	}
+    private CgmClass(final int classIdentifier) {
+        id = classIdentifier;
+    }
 
-	// Internal state
-	private final int id;
+    // Internal state
+    private final int id;
 
-	public int getClassIdentifier() {
-		return id;
-	}
+    public int getClassIdentifier() {
+        return id;
+    }
 }
