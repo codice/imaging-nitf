@@ -43,7 +43,7 @@ public class CgmParser {
 
     private static AbstractElement getElement(CgmIdentifier elementId){
         if (elements.containsKey(elementId)) {
-            System.out.println("About to instantiate:" + elementId.getFriendlyName());
+            // System.out.println("About to instantiate:" + elementId.getFriendlyName());
             return instantiateElement(elementId);
         }
         return new NoArgumentsElement(CgmIdentifier.UNKNOWN);

@@ -65,7 +65,8 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        System.out.println("TODO: render for " + getFriendlyName());
+        // Colour selection mode always has to be "1" (for direct colour mode) in 
+        // BIIF profile BPCGM01.10, so this has no effect
     }
 
 }

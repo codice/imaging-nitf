@@ -110,7 +110,7 @@ public class CgmParserTest {
             NitfGraphicSegment segment = nitf.getGraphicSegmentZeroBase(0);
             CgmParser parser = new CgmParser(segment);
             parser.buildCommandList();
-            parser.dump();
+            // parser.dump();
             
             // System.out.println("CCS position:" + segment.getGraphicLocationColumn() + ", " + segment.getGraphicLocationRow());
             // System.out.println("BBox1:" + segment.getBoundingBox1Column() + ", " + segment.getBoundingBox1Row());

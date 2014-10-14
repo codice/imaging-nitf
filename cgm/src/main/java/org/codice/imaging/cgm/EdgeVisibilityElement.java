@@ -39,7 +39,7 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
     enum Mode {
         Off,
         On    }
-    Mode mode = Mode.Off;
+    private Mode mode = Mode.Off;
     
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
@@ -64,7 +64,7 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
     
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        System.out.println("TODO: render for " + getFriendlyName());
+        graphicState.setEdgeVisibility(mode);
     }
 
 }

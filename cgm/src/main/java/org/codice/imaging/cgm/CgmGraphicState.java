@@ -37,6 +37,9 @@ import java.util.List;
  * @author bradh
  */
 class CgmGraphicState {
+    
+    private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+    
     // TODO: getters / setters
     Color lineColour;
     float lineWidth;
@@ -48,6 +51,7 @@ class CgmGraphicState {
     private float edgeWidth;
     private int edgeJoinStyle = BasicStroke.JOIN_MITER;
     private int edgeCapStyle = BasicStroke.CAP_SQUARE;
+    private EdgeVisibilityElement.Mode edgeVisibility = EdgeVisibilityElement.Mode.Off;
     private BasicStroke edgeStroke = new BasicStroke();
 
     private int hatchIndex = 1;
@@ -99,6 +103,9 @@ class CgmGraphicState {
     }
 
     Color getEdgeColour() {
+        if (getEdgeVisibility() == EdgeVisibilityElement.Mode.Off) {
+            return TRANSPARENT;
+        }
         return edgeColour;
     }
 
@@ -109,6 +116,14 @@ class CgmGraphicState {
 
     Stroke getEdgeStroke() {
         return edgeStroke;
+    }
+    
+    void setEdgeVisibility(EdgeVisibilityElement.Mode mode) {
+        edgeVisibility = mode;
+    }
+    
+    EdgeVisibilityElement.Mode getEdgeVisibility() {
+        return edgeVisibility;
     }
 
     private void updateEdgeStroke() {
@@ -122,4 +137,6 @@ class CgmGraphicState {
     int getHatchIndex() {
         return hatchIndex;
     }
+
+    
 }

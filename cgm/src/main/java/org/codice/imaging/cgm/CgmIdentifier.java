@@ -183,7 +183,7 @@ public enum CgmIdentifier {
     }
 
     static CgmIdentifier findIdentifier(int elementClass, int elementId) {
-        System.out.println(String.format("Searching for for %d:%d", elementClass, elementId));
+        // System.out.println(String.format("Searching for for %d:%d", elementClass, elementId));
         for (CgmIdentifier cgmIdentifier : values()) {
             if ((cgmIdentifier.classId.getClassIdentifier() == elementClass) && (cgmIdentifier.id == elementId)) {
                 return cgmIdentifier;

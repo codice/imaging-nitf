@@ -39,7 +39,8 @@ class EdgeWidthSpecificationModeElement extends CommonSpecificationModeElement i
     
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        System.out.println("TODO: render for " + getFriendlyName());
+        // Edge width specification mode always has to be "0" (for absolute mode) in 
+        // BIIF profile BPCGM01.10, so this has no effect
     }
 
 }
