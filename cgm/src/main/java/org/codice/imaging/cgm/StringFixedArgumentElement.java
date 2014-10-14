@@ -25,7 +25,6 @@
  */
 package org.codice.imaging.cgm;
 
-import java.awt.Graphics2D;
 import java.io.IOException;
 
 /**
@@ -34,7 +33,7 @@ import java.io.IOException;
 abstract class StringFixedArgumentElement extends ElementHelpers implements AbstractElement {
 
     private String text;
-    
+
     protected StringFixedArgumentElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
