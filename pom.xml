@@ -4,6 +4,13 @@
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf</artifactId>
     <version>0.1-SNAPSHOT</version>
+
+    <properties>
+        <junit.version>4.11</junit.version>
+        <mockito.version>1.10.8</mockito.version>
+        <slf4j.version>1.7.7</slf4j.version>
+    </properties>
+
     <packaging>pom</packaging>
     <name>Codice Imaging: NITF Parent</name>
     <url>http://www.codice.org</url>
@@ -11,5 +18,5 @@
         <module>core</module>
         <module>metadata-comparison</module>
         <module>cgm</module>
-  </modules>
+    </modules>
 </project>

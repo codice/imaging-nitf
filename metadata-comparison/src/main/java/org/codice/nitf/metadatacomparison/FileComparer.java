@@ -786,10 +786,10 @@ public class FileComparer
         List<String> theirs = fileToLines(filename + THEIR_OUTPUT_EXTENSION);
         List<String> ours  = fileToLines(filename + OUR_OUTPUT_EXTENSION);
 
-        Patch patch = DiffUtils.diff(theirs, ours);
+        Patch<String> patch = DiffUtils.diff(theirs, ours);
 
         if (patch.getDeltas().size() > 0) {
-            for (Delta delta: patch.getDeltas()) {
+            for (Delta<String> delta: patch.getDeltas()) {
                     System.out.println(delta);
             }
             System.out.println("  * Done");
