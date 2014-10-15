@@ -42,10 +42,10 @@ class CgmGraphicState {
     // Default from ISO/IEC 8632-1:1999(E), and MITRE_LIMIT attribute
     // element is prohibited in BIIF Profile BPCGM01.10
     private static final float MITRE_LIMIT = 32767.0f;
-    private static final float DASH[] = {10.0f};
-    private static final float DOT[] = {2.0f};
-    private static final float DASH_DOT[] = {10.0f, 10.0f, 2.0f, 2.0f};
-    private static final float DASH_DOT_DOT[] = {10.0f, 10.0f, 2.0f, 2.0f, 2.0f, 2.0f};
+    private static final float[] DASH = {10.0f};
+    private static final float[] DOT = {2.0f};
+    private static final float[] DASH_DOT = {10.0f, 10.0f, 2.0f, 2.0f};
+    private static final float[] DASH_DOT_DOT = {10.0f, 10.0f, 2.0f, 2.0f, 2.0f, 2.0f};
     
     // TODO: getters / setters
     Color lineColour;
