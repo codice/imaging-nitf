@@ -71,7 +71,7 @@ class CgmGraphicState {
     private int textFontHeight = 12;
 
     CgmGraphicState() {
-        this.edgeVisibility = EdgeVisibilityElement.Mode.Off;
+        this.edgeVisibility = EdgeVisibilityElement.Mode.OFF;
     }
 
     void setLineWidth(float size) {
@@ -140,7 +140,7 @@ class CgmGraphicState {
     }
 
     Color getEdgeColour() {
-        if (getEdgeVisibility() == EdgeVisibilityElement.Mode.Off) {
+        if (getEdgeVisibility() == EdgeVisibilityElement.Mode.OFF) {
             return TRANSPARENT;
         }
         return edgeColour;

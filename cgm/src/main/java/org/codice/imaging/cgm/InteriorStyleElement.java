@@ -37,40 +37,40 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
     }
 
     enum Mode {
-        Hollow,
-        Solid,
-        Pattern,
-        Hatch,
-        Empty,
-        GeometricPattern,
-        Interpolated
+        HOLLOW,
+        SOLID,
+        PATTERN,
+        HATCH,
+        EMPTY,
+        GEOMETRIC_PATTERN,
+        INTERPOLATED
     }
-    Mode mode = Mode.Hollow;
+    Mode mode = Mode.HOLLOW;
     
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
         switch (data) {
             case 0:
-                mode = Mode.Hollow;
+                mode = Mode.HOLLOW;
                 break;
             case 1:
-                mode = Mode.Solid;
+                mode = Mode.SOLID;
                 break;
             case 2:
-                mode = Mode.Pattern;
+                mode = Mode.PATTERN;
                 break;
             case 3:
-                mode = Mode.Hatch;
+                mode = Mode.HATCH;
                 break;
             case 4:
-                mode = Mode.Empty;
+                mode = Mode.EMPTY;
                 break;
             case 5:
-                mode = Mode.GeometricPattern;
+                mode = Mode.GEOMETRIC_PATTERN;
                 break;
             case 6:
-                mode = Mode.Interpolated;
+                mode = Mode.INTERPOLATED;
                 break;
             default:
                 System.out.println("Unknown Interior Style value: " + data);

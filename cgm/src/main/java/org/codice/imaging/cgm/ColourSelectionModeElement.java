@@ -37,20 +37,20 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
     }
 
     enum Mode {
-        IndexedColourMode,
-        DirectColourMode
+        INDEXED_COLOUR_MODE,
+        DIRECT_COLOUR_MODE
     }
-    Mode mode = Mode.IndexedColourMode;
+    Mode mode = Mode.INDEXED_COLOUR_MODE;
 
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
         switch (data) {
             case 0:
-                mode = Mode.IndexedColourMode;
+                mode = Mode.INDEXED_COLOUR_MODE;
                 break;
             case 1:
-                mode = Mode.DirectColourMode;
+                mode = Mode.DIRECT_COLOUR_MODE;
                 break;
             default:
                 System.out.println("Unknown Colour Selection Mode value: " + data);

@@ -43,7 +43,7 @@ public class CgmParser {
     private final List<AbstractElement> commands = new ArrayList<>();
 
     private static AbstractElement getElement(CgmIdentifier elementId){
-        if (elements.containsKey(elementId)) {
+        if (ELEMENTS.containsKey(elementId)) {
             // System.out.println("About to instantiate:" + elementId.getFriendlyName());
             return instantiateElement(elementId);
         }
@@ -51,7 +51,7 @@ public class CgmParser {
     }
 
     private static AbstractElement instantiateElement(CgmIdentifier elementId) {
-        Class elementClass = elements.get(elementId);
+        Class elementClass = ELEMENTS.get(elementId);
         AbstractElement element = instantiateElementWithNoArguments(elementClass);
         if (element == null) {
             element = instantiateElementWithElementId(elementClass, elementId);
@@ -79,14 +79,14 @@ public class CgmParser {
         return null;
     }
 
-    private static final Map<CgmIdentifier, Class> elements = new HashMap<>();
+    private static final Map<CgmIdentifier, Class> ELEMENTS = new HashMap<>();
     static {
-        elements.put(CgmIdentifier.NO_OP, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.BEGIN_METAFILE, BeginMetafileElement.class);
-        elements.put(CgmIdentifier.END_METAFILE, EndMetafileElement.class);
-        elements.put(CgmIdentifier.BEGIN_PICTURE, BeginPictureElement.class);
-        elements.put(CgmIdentifier.BEGIN_PICTURE_BODY, BeginPictureBodyElement.class);
-        elements.put(CgmIdentifier.END_PICTURE, EndPictureElement.class);
+        ELEMENTS.put(CgmIdentifier.NO_OP, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.BEGIN_METAFILE, BeginMetafileElement.class);
+        ELEMENTS.put(CgmIdentifier.END_METAFILE, EndMetafileElement.class);
+        ELEMENTS.put(CgmIdentifier.BEGIN_PICTURE, BeginPictureElement.class);
+        ELEMENTS.put(CgmIdentifier.BEGIN_PICTURE_BODY, BeginPictureBodyElement.class);
+        ELEMENTS.put(CgmIdentifier.END_PICTURE, EndPictureElement.class);
         // BEGIN_SEGMENT prohibited in BIIF Profile BPCGM01.00
         // END_SEGMENT prohibited in BIIF Profile BPCGM01.00
         // BEGIN_FIGURE prohibited in BIIF Profile BPCGM01.00
@@ -100,8 +100,8 @@ public class CgmParser {
         // BEGIN_TILE_ARRAY prohibited in BIIF Profile BPCGM01.00
         // END_TILE_ARRAY prohibited in BIIF Profile BPCGM01.00
 
-        elements.put(CgmIdentifier.METAFILE_VERSION, MetafileVersionElement.class);
-        elements.put(CgmIdentifier.METAFILE_DESCRIPTION, MetafileDescriptionElement.class);
+        ELEMENTS.put(CgmIdentifier.METAFILE_VERSION, MetafileVersionElement.class);
+        ELEMENTS.put(CgmIdentifier.METAFILE_DESCRIPTION, MetafileDescriptionElement.class);
         // TODO: VDC TYPE (must be Integer)
         // TODO: Integer precision (must be 16 bits)
         // REAL_PRECISION prohibited in BIIF Profile BPCGM01.00
@@ -110,9 +110,9 @@ public class CgmParser {
         // TODO: Colour index precision (colour selection mode must be 1)
         // MAXIMUM_COLOUR_INDEX prohibited in BIIF Profile BPCGM01.00
         // TODO: Colour value extent (must be 0, 0, 0 through 255, 255, 255)
-        elements.put(CgmIdentifier.METAFILE_ELEMENT_LIST, MetafileElementsListElement.class);
+        ELEMENTS.put(CgmIdentifier.METAFILE_ELEMENT_LIST, MetafileElementsListElement.class);
         // METAFILE_DEFAULTS_REPLACEMENT prohibited in BIIF Profile BPCGM01.00
-        elements.put(CgmIdentifier.FONT_LIST, FontListElement.class);
+        ELEMENTS.put(CgmIdentifier.FONT_LIST, FontListElement.class);
         // TODO: CHARACTER_SET_LIST - must be ISO 10646-1 Character Set Basic Latin
         // CHARACTER_CODING_ANNOUNCER prohibited in BIIF Profile BPCGM01.00
         // TODO: NAME_PRECISION - (Note: must be version 1)
@@ -126,12 +126,12 @@ public class CgmParser {
         // PICTURE_DIRECTORY?
 
         // SCALING_MODE prohibited in BIIF Profile BPCGM01.00
-        elements.put(CgmIdentifier.COLOUR_SELECTION_MODE, ColourSelectionModeElement.class);
-        elements.put(CgmIdentifier.LINE_WIDTH_SPECIFICATION_MODE, LineWidthSpecificationModeElement.class);
-        elements.put(CgmIdentifier.MARKER_SIZE_SPECIFICATION_MODE, MarkerSizeSpecificationModeElement.class);
-        elements.put(CgmIdentifier.EDGE_WIDTH_SPECIFICATION_MODE, EdgeWidthSpecificationModeElement.class);
-        elements.put(CgmIdentifier.VDC_EXTENT, VdcExtentElement.class);
-        elements.put(CgmIdentifier.BACKGROUND_COLOUR, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.COLOUR_SELECTION_MODE, ColourSelectionModeElement.class);
+        ELEMENTS.put(CgmIdentifier.LINE_WIDTH_SPECIFICATION_MODE, LineWidthSpecificationModeElement.class);
+        ELEMENTS.put(CgmIdentifier.MARKER_SIZE_SPECIFICATION_MODE, MarkerSizeSpecificationModeElement.class);
+        ELEMENTS.put(CgmIdentifier.EDGE_WIDTH_SPECIFICATION_MODE, EdgeWidthSpecificationModeElement.class);
+        ELEMENTS.put(CgmIdentifier.VDC_EXTENT, VdcExtentElement.class);
+        ELEMENTS.put(CgmIdentifier.BACKGROUND_COLOUR, NoArgumentsElement.class);
         // DEVICE_VIEWPORT prohibited in BIIF Profile BPCGM01.10
         // DEVICE_VIEWPORT_SPECIFICATION_MODE prohibited in BIIF Profile BPCGM01.10
         // DEVICE_VIEWPORT_MAPPING prohibited in BIIF Profile BPCGM01.10
@@ -162,18 +162,18 @@ public class CgmParser {
         // MITRE_LIMIT prohibited in BIIF Profile BPCGM01.10
         // TRANSPARENT_CELL_COLOUR prohibited in BIIF Profile BPCGM01.10
 
-        elements.put(CgmIdentifier.POLYLINE, PolylineElement.class);
-        elements.put(CgmIdentifier.DISJOINT_POLYLINE, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.POLYMARKER, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.TEXT, TextElement.class);
+        ELEMENTS.put(CgmIdentifier.POLYLINE, PolylineElement.class);
+        ELEMENTS.put(CgmIdentifier.DISJOINT_POLYLINE, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.POLYMARKER, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.TEXT, TextElement.class);
         // RESTRICTED_TEXT prohibited in BIIF Profile BPCGM01.10
         // APPEND_TEXT prohibited in BIIF Profile BPCGM01.10
         // TODO: POLYGON
-        elements.put(CgmIdentifier.POLYGON_SET, PolygonSetElement.class);
+        ELEMENTS.put(CgmIdentifier.POLYGON_SET, PolygonSetElement.class);
         // CELL_ARRAY prohibited in BIIF Profile BPCGM01.10
         // GENERALISED_DRAWING_PRIMITIVE prohibited in BIIF Profile BPCGM01.10
         // TODO: RECTANGLE
-        elements.put(CgmIdentifier.CIRCLE, CircleElement.class);
+        ELEMENTS.put(CgmIdentifier.CIRCLE, CircleElement.class);
         // CIRCULAR_ARC_3_POINT prohibited in BIIF Profile BPCGM01.10
         // CIRCULAR_ARC_3_POINT_CLOSE prohibited in BIIF Profile BPCGM01.10
         // TODO: CIRCUALR_ARC_CENTRE
@@ -193,35 +193,35 @@ public class CgmParser {
         // TILE prohibited in BIIF Profile BPCGM01.10
 
         // LINE_BUNDLE_INDEX prohibited in BIIF Profile BPCGM01.10
-        elements.put(CgmIdentifier.LINE_TYPE, LineTypeElement.class);
-        elements.put(CgmIdentifier.LINE_WIDTH, LineWidthElement.class);
-        elements.put(CgmIdentifier.LINE_COLOUR, LineColourElement.class);
+        ELEMENTS.put(CgmIdentifier.LINE_TYPE, LineTypeElement.class);
+        ELEMENTS.put(CgmIdentifier.LINE_WIDTH, LineWidthElement.class);
+        ELEMENTS.put(CgmIdentifier.LINE_COLOUR, LineColourElement.class);
         // MARKER_BUNDLE_INDEX prohibited in BIIF Profile BPCGM01.10
         // MARKER_TYPE prohibited in BIIF Profile BPCGM01.10
         // MARKER_SIZE prohibited in BIIF Profile BPCGM01.10
         // MARKER_COLOUR prohibited in BIIF Profile BPCGM01.10
         // TEXT_BUNDLE_INDEX prohibited in BIIF Profile BPCGM01.10
-        elements.put(CgmIdentifier.TEXT_FONT_INDEX, TextFontIndexElement.class);
-        elements.put(CgmIdentifier.TEXT_PRECISION, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.CHARACTER_EXPANSION_FACTOR, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.CHARACTER_SPACING, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.TEXT_COLOUR, TextColourElement.class);
-        elements.put(CgmIdentifier.CHARACTER_HEIGHT, CharacterHeightElement.class);
-        elements.put(CgmIdentifier.CHARACTER_ORIENTATION, CharacterOrientationElement.class);
-        elements.put(CgmIdentifier.TEXT_PATH, NoArgumentsElement.class);
-        elements.put(CgmIdentifier.TEXT_ALIGNMENT, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.TEXT_FONT_INDEX, TextFontIndexElement.class);
+        ELEMENTS.put(CgmIdentifier.TEXT_PRECISION, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.CHARACTER_EXPANSION_FACTOR, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.CHARACTER_SPACING, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.TEXT_COLOUR, TextColourElement.class);
+        ELEMENTS.put(CgmIdentifier.CHARACTER_HEIGHT, CharacterHeightElement.class);
+        ELEMENTS.put(CgmIdentifier.CHARACTER_ORIENTATION, CharacterOrientationElement.class);
+        ELEMENTS.put(CgmIdentifier.TEXT_PATH, NoArgumentsElement.class);
+        ELEMENTS.put(CgmIdentifier.TEXT_ALIGNMENT, NoArgumentsElement.class);
         // CHARACTER_SET_INDEX prohibited in BIIF Profile BPCGM01.10
         // ALTERNATE_CHARACTER_SET_INDEX prohibited in BIIF Profile BPCGM01.10
         // FILL_BUNDLE_INDEX prohibited in BIIF Profile BPCGM01.10
-        elements.put(CgmIdentifier.INTERIOR_STYLE, InteriorStyleElement.class);
-        elements.put(CgmIdentifier.FILL_COLOUR, FillColourElement.class);
-        elements.put(CgmIdentifier.HATCH_INDEX, HatchIndexElement.class);
+        ELEMENTS.put(CgmIdentifier.INTERIOR_STYLE, InteriorStyleElement.class);
+        ELEMENTS.put(CgmIdentifier.FILL_COLOUR, FillColourElement.class);
+        ELEMENTS.put(CgmIdentifier.HATCH_INDEX, HatchIndexElement.class);
         // PATTERN_INDEX　prohibited in BIIF Profile BPCGM01.10
         // EDGE_BUNDLE_INDEX prohibited in BIIF Profile BPCGM01.10
-        elements.put(CgmIdentifier.EDGE_TYPE, EdgeTypeElement.class);
-        elements.put(CgmIdentifier.EDGE_WIDTH, EdgeWidthElement.class);
-        elements.put(CgmIdentifier.EDGE_COLOUR, EdgeColourElement.class);
-        elements.put(CgmIdentifier.EDGE_VISIBILITY, EdgeVisibilityElement.class);
+        ELEMENTS.put(CgmIdentifier.EDGE_TYPE, EdgeTypeElement.class);
+        ELEMENTS.put(CgmIdentifier.EDGE_WIDTH, EdgeWidthElement.class);
+        ELEMENTS.put(CgmIdentifier.EDGE_COLOUR, EdgeColourElement.class);
+        ELEMENTS.put(CgmIdentifier.EDGE_VISIBILITY, EdgeVisibilityElement.class);
         // FILL_REFERENCE_POINT prohibited in BIIF Profile BPCGM01.10
         // PATTERN_TABLE prohibited in BIIF Profile BPCGM01.10
         // PATTERN_SIZE prohibited in BIIF Profile BPCGM01.10

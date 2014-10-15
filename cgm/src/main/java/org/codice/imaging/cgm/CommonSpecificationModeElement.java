@@ -33,12 +33,12 @@ import java.io.IOException;
  */
 abstract class CommonSpecificationModeElement extends ElementHelpers implements AbstractElement {
     enum Mode {
-        Absolute,
-        Scaled,
-        Fractional,
-        Millimetres
+        ABSOLUTE,
+        SCALED,
+        FRACTIONAL,
+        MILLIMETRES
     }
-    Mode mode = Mode.Absolute;
+    Mode mode = Mode.ABSOLUTE;
     
     protected CommonSpecificationModeElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
@@ -49,16 +49,16 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
         int data = inputReader.readEnumValue();
         switch (data) {
             case 0:
-                mode = LineWidthSpecificationModeElement.Mode.Absolute;
+                mode = LineWidthSpecificationModeElement.Mode.ABSOLUTE;
                 break;
             case 1:
-                mode = LineWidthSpecificationModeElement.Mode.Scaled;
+                mode = LineWidthSpecificationModeElement.Mode.SCALED;
                 break;
             case 2:
-                mode = LineWidthSpecificationModeElement.Mode.Fractional;
+                mode = LineWidthSpecificationModeElement.Mode.FRACTIONAL;
                 break;
             case 3:
-                mode = LineWidthSpecificationModeElement.Mode.Millimetres;
+                mode = LineWidthSpecificationModeElement.Mode.MILLIMETRES;
                 break;
             default:
                 System.out.println(String.format("Unknown %s value: %d", getFriendlyName(), data));

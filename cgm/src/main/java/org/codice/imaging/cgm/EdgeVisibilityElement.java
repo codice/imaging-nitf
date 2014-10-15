@@ -37,19 +37,19 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
     }
 
     enum Mode {
-        Off,
-        On    }
-    private Mode mode = Mode.Off;
+        OFF,
+        ON    }
+    private Mode mode = Mode.OFF;
     
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
         switch (data) {
             case 0:
-                mode = Mode.Off;
+                mode = Mode.OFF;
                 break;
             case 1:
-                mode = Mode.On;
+                mode = Mode.ON;
                 break;
             default:
                 System.out.println("Unknown Edge Visibility value: " + data);
