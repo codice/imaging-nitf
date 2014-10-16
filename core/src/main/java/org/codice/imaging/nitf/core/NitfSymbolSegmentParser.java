@@ -27,24 +27,6 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
 
-    private static final String SY = "SY";
-    private static final int SID_LENGTH = 10;
-    private static final int SNAME_LENGTH = 20;
-    private static final int STYPE_LENGTH = 1;
-    private static final int NLIPS_LENGTH = 4;
-    private static final int NPIXPL_LENGTH = 4;
-    private static final int NWDTH_LENGTH = 4;
-    private static final int NBPP_LENGTH = 1;
-    private static final int SDLVL_LENGTH = 3;
-    private static final int SALVL_LENGTH = 3;
-    private static final int SLOC_HALF_LENGTH = 5;
-    private static final int SCOLOR_LENGTH = 1;
-    private static final int SNUM_LENGTH = 6;
-    private static final int SROT_LENGTH = 3;
-    private static final int NELUT_LENGTH = 3;
-    private static final int SXSHDL_LENGTH = 5;
-    private static final int SXSOFL_LENGTH = 3;
-
     private boolean shouldParseSymbolData = false;
 
     private NitfSymbolSegment segment = null;
@@ -90,84 +72,84 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSY() throws ParseException {
-        reader.verifyHeaderMagic(SY);
+        reader.verifyHeaderMagic(NitfConstants.SY);
     }
 
     private void readSID() throws ParseException {
-        segment.setIdentifier(reader.readTrimmedBytes(SID_LENGTH));
+        segment.setIdentifier(reader.readTrimmedBytes(NitfConstants.SID_LENGTH));
     }
 
     private void readSNAME() throws ParseException {
-        segment.setSymbolName(reader.readTrimmedBytes(SNAME_LENGTH));
+        segment.setSymbolName(reader.readTrimmedBytes(NitfConstants.SNAME_LENGTH));
     }
 
     private void readSTYPE() throws ParseException {
-        String stype = reader.readTrimmedBytes(STYPE_LENGTH);
+        String stype = reader.readTrimmedBytes(NitfConstants.SYTYPE_LENGTH);
         segment.setSymbolType(SymbolType.getEnumValue(stype));
     }
 
     private void readNLIPS() throws ParseException {
-        segment.setNumberOfLinesPerSymbol(reader.readBytesAsInteger(NLIPS_LENGTH));
+        segment.setNumberOfLinesPerSymbol(reader.readBytesAsInteger(NitfConstants.NLIPS_LENGTH));
     }
 
     private void readNPIXPL() throws ParseException {
-        segment.setNumberOfPixelsPerLine(reader.readBytesAsInteger(NPIXPL_LENGTH));
+        segment.setNumberOfPixelsPerLine(reader.readBytesAsInteger(NitfConstants.NPIXPL_LENGTH));
     }
 
     private void readNWDTH() throws ParseException {
-        segment.setLineWidth(reader.readBytesAsInteger(NWDTH_LENGTH));
+        segment.setLineWidth(reader.readBytesAsInteger(NitfConstants.NWDTH_LENGTH));
     }
 
     private void readNBPP() throws ParseException {
-        segment.setNumberOfBitsPerPixel(reader.readBytesAsInteger(NBPP_LENGTH));
+        segment.setNumberOfBitsPerPixel(reader.readBytesAsInteger(NitfConstants.SYNBPP_LENGTH));
     }
 
     private void readSDLVL() throws ParseException {
-        segment.setSymbolDisplayLevel(reader.readBytesAsInteger(SDLVL_LENGTH));
+        segment.setSymbolDisplayLevel(reader.readBytesAsInteger(NitfConstants.SDLVL_LENGTH));
     }
 
     private void readSALVL() throws ParseException {
-        segment.setAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
+        segment.setAttachmentLevel(reader.readBytesAsInteger(NitfConstants.SALVL_LENGTH));
     }
 
     private void readSLOC() throws ParseException {
-        segment.setSymbolLocationRow(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
-        segment.setSymbolLocationColumn(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
+        segment.setSymbolLocationRow(reader.readBytesAsInteger(NitfConstants.SLOC_HALF_LENGTH));
+        segment.setSymbolLocationColumn(reader.readBytesAsInteger(NitfConstants.SLOC_HALF_LENGTH));
     }
 
     private void readSLOC2() throws ParseException {
-        segment.setSymbolLocation2Row(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
-        segment.setSymbolLocation2Column(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
+        segment.setSymbolLocation2Row(reader.readBytesAsInteger(NitfConstants.SLOC_HALF_LENGTH));
+        segment.setSymbolLocation2Column(reader.readBytesAsInteger(NitfConstants.SLOC_HALF_LENGTH));
     }
 
     private void readSCOLOR() throws ParseException {
-        String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
+        String scolor = reader.readTrimmedBytes(NitfConstants.SCOLOR_LENGTH);
         segment.setSymbolColourFormat(SymbolColour.getEnumValue(scolor));
     }
 
     private void readSNUM() throws ParseException {
-        segment.setSymbolNumber(reader.readBytes(SNUM_LENGTH));
+        segment.setSymbolNumber(reader.readBytes(NitfConstants.SNUM_LENGTH));
     }
 
     private void readSROT() throws ParseException {
-        segment.setSymbolRotation(reader.readBytesAsInteger(SROT_LENGTH));
+        segment.setSymbolRotation(reader.readBytesAsInteger(NitfConstants.SROT_LENGTH));
     }
 
     private void readNELUT() throws ParseException {
-        numberOfEntriesInLUT = reader.readBytesAsInteger(NELUT_LENGTH);
+        numberOfEntriesInLUT = reader.readBytesAsInteger(NitfConstants.SYNELUT_LENGTH);
     }
 
     private void readSXSHDL() throws ParseException {
-        symbolExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
+        symbolExtendedSubheaderLength = reader.readBytesAsInteger(NitfConstants.SXSHDL_LENGTH);
     }
 
     private void readSXSOFL() throws ParseException {
-        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(SXSOFL_LENGTH));
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(NitfConstants.SXSOFL_LENGTH));
     }
 
     private void readSXSHD() throws ParseException {
         TreParser treParser = new TreParser();
-        TreCollection extendedSubheaderTREs = treParser.parse(reader, symbolExtendedSubheaderLength - SXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = treParser.parse(reader, symbolExtendedSubheaderLength - NitfConstants.SXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 
