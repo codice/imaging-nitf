@@ -42,7 +42,7 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
     
     protected CommonSpecificationModeElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
-    };
+    }
     
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {

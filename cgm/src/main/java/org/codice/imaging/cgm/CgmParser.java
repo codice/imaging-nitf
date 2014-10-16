@@ -256,7 +256,7 @@ public class CgmParser {
         // SEGMENT_HIGHLIGHTING prohibited in BIIF Profile BPCGM01.10
         // SEGMENT_DISPLAY_PRIORITY prohibited in BIIF Profile BPCGM01.10
         // SEGMENT_PICK_PRIORITY prohibited in BIIF Profile BPCGM01.10
-    };
+    }
 
     public CgmParser(NitfGraphicSegment graphicSegment) {
         dataReader = new CgmInputReader(graphicSegment);
