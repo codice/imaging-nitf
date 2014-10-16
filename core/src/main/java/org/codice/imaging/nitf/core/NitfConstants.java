@@ -17,13 +17,16 @@ package org.codice.imaging.nitf.core;
  *
  * @author JohnGameComp
  */
-public class NitfConstants {
+public final class NitfConstants {
+
+    private NitfConstants() {
+    }
 
     // Nitf Segment
     protected static final int ENCRYP_LENGTH = 1;
     protected static final int RGB_COLOUR_LENGTH = 3;
 
-    // Date 
+    // Date
     protected static final int STANDARD_DATE_TIME_LENGTH = 14;
     protected static final String NITF21_DATE_FORMAT = "yyyyMMddHHmmss";
 

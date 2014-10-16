@@ -76,11 +76,13 @@ public class ImageCoordinatePair {
         String latDegrees = dms.substring(NitfConstants.LAT_DEGREES_OFFSET, NitfConstants.LAT_DEGREES_LENGTH);
         String latMinutes = dms.substring(NitfConstants.LAT_MINUTES_OFFSET, NitfConstants.LAT_MINUTES_OFFSET + NitfConstants.MINUTES_LENGTH);
         String latSeconds = dms.substring(NitfConstants.LAT_SECONDS_OFFSET, NitfConstants.LAT_SECONDS_OFFSET + NitfConstants.SECONDS_LENGTH);
-        String latNS = dms.substring(NitfConstants.LAT_HEMISPHERE_MARKER_OFFSET, NitfConstants.LAT_HEMISPHERE_MARKER_OFFSET + NitfConstants.HEMISPHERE_MARKER_LENGTH);
+        String latNS = dms.substring(NitfConstants.LAT_HEMISPHERE_MARKER_OFFSET,
+                                     NitfConstants.LAT_HEMISPHERE_MARKER_OFFSET + NitfConstants.HEMISPHERE_MARKER_LENGTH);
         String lonDegrees = dms.substring(NitfConstants.LON_DEGREES_OFFSET, NitfConstants.LON_DEGREES_OFFSET + NitfConstants.LON_DEGREES_LENGTH);
         String lonMinutes = dms.substring(NitfConstants.LON_MINUTES_OFFSET, NitfConstants.LON_MINUTES_OFFSET + NitfConstants.MINUTES_LENGTH);
         String lonSeconds = dms.substring(NitfConstants.LON_SECONDS_OFFSET, NitfConstants.LON_SECONDS_OFFSET + NitfConstants.SECONDS_LENGTH);
-        String lonEW = dms.substring(NitfConstants.LON_HEMISPHERE_MARKER_OFFSET, NitfConstants.LON_HEMISPHERE_MARKER_OFFSET + NitfConstants.HEMISPHERE_MARKER_LENGTH);
+        String lonEW = dms.substring(NitfConstants.LON_HEMISPHERE_MARKER_OFFSET,
+                                     NitfConstants.LON_HEMISPHERE_MARKER_OFFSET + NitfConstants.HEMISPHERE_MARKER_LENGTH);
         checkNSFlagIsValid(latNS, dms);
         checkEWFlagIsValid(lonEW, dms);
         try {

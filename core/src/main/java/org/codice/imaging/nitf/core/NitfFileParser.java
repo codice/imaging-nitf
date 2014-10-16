@@ -214,7 +214,8 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void seekToSfhDelim1(final long sfhDrLength) throws ParseException {
-        reader.seekBackwards(NitfConstants.SFH_L1_LENGTH + NitfConstants.SFH_DELIM1_LENGTH + sfhDrLength + NitfConstants.SFH_DELIM2_LENGTH + NitfConstants.SFH_L2_LENGTH);
+        reader.seekBackwards(NitfConstants.SFH_L1_LENGTH + NitfConstants.SFH_DELIM1_LENGTH
+                + sfhDrLength + NitfConstants.SFH_DELIM2_LENGTH + NitfConstants.SFH_L2_LENGTH);
     }
 
     private void verifySfhDelim1() throws ParseException {
