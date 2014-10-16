@@ -32,11 +32,6 @@ class FileReader extends SharedReader implements NitfReader {
 
     private RandomAccessFile nitfFile = null;
 
-    private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF file: ";
-    private static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File Not Found Exception opening file:";
-    private static final String NOT_FOUND_MESSAGE_JOINER = " not found: ";
-    private static final String READ_MODE = "r";
-
     /**
         Constructor for File.
 
@@ -45,10 +40,10 @@ class FileReader extends SharedReader implements NitfReader {
     */
     public FileReader(final File file) throws ParseException {
         try {
-            nitfFile = makeRandomAccessFile(file, READ_MODE);
+            nitfFile = makeRandomAccessFile(file, NitfConstants.READ_MODE);
         } catch (FileNotFoundException ex) {
-            LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
-            throw new ParseException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            LOG.warn(NitfConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
+            throw new ParseException(file.getPath() + NitfConstants.NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
@@ -60,10 +55,10 @@ class FileReader extends SharedReader implements NitfReader {
     */
     public FileReader(final String filename) throws ParseException {
         try {
-            nitfFile = makeRandomAccessFile(filename, READ_MODE);
+            nitfFile = makeRandomAccessFile(filename, NitfConstants.READ_MODE);
         } catch (FileNotFoundException ex) {
-            LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
-            throw new ParseException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            LOG.warn(NitfConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
+            throw new ParseException(filename + NitfConstants.NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
@@ -122,7 +117,7 @@ class FileReader extends SharedReader implements NitfReader {
             return bytes;
         } catch (IOException ex) {
             LOG.warn("IO Exception reading raw bytes", ex);
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
+            throw new ParseException(NitfConstants.GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
 
@@ -139,7 +134,7 @@ class FileReader extends SharedReader implements NitfReader {
             } while (bytesToRead > 0);
         } catch (IOException ex) {
             LOG.warn("IO Exception skipping bytes", ex);
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
+            throw new ParseException(NitfConstants.GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
 
