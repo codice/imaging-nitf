@@ -23,17 +23,6 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfDataExtension = 0;
     private int userDefinedSubheaderLength = 0;
 
-    private static final String DE = "DE";
-    private static final int DESID_LENGTH = 25;
-    private static final int DESVER_LENGTH = 2;
-    private static final int DESOFLW_LENGTH = 6;
-    private static final int DESITEM_LENGTH = 3;
-    private static final int DESSHL_LENGTH = 4;
-
-    private static final String TRE_OVERFLOW = "TRE_OVERFLOW";
-    private static final String REGISTERED_EXTENSIONS = "Registered Extensions";
-    private static final String CONTROLLED_EXTENSIONS = "Controlled Extensions";
-
     private NitfDataExtensionSegment segment = null;
 
     NitfDataExtensionSegmentParser(final NitfReader nitfReader,
@@ -58,27 +47,27 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readDE() throws ParseException {
-        reader.verifyHeaderMagic(DE);
+        reader.verifyHeaderMagic(NitfConstants.DE);
     }
 
     private void readDESID() throws ParseException {
-        segment.setIdentifier(reader.readBytes(DESID_LENGTH));
+        segment.setIdentifier(reader.readBytes(NitfConstants.DESID_LENGTH));
     }
 
     private void readDESVER() throws ParseException {
-        segment.setDESVersion(reader.readBytesAsInteger(DESVER_LENGTH));
+        segment.setDESVersion(reader.readBytesAsInteger(NitfConstants.DESVER_LENGTH));
     }
 
     private void readDESOFLW() throws ParseException {
-        segment.setOverflowedHeaderType(reader.readTrimmedBytes(DESOFLW_LENGTH));
+        segment.setOverflowedHeaderType(reader.readTrimmedBytes(NitfConstants.DESOFLW_LENGTH));
     }
 
     private void readDESITEM() throws ParseException {
-        segment.setItemOverflowed(reader.readBytesAsInteger(DESITEM_LENGTH));
+        segment.setItemOverflowed(reader.readBytesAsInteger(NitfConstants.DESITEM_LENGTH));
     }
 
     private void readDSSHL() throws ParseException {
-        userDefinedSubheaderLength = reader.readBytesAsInteger(DESSHL_LENGTH);
+        userDefinedSubheaderLength = reader.readBytesAsInteger(NitfConstants.DESSHL_LENGTH);
     }
 
     private void readDSSHF() throws ParseException {
@@ -87,10 +76,10 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
 
     private boolean isTreOverflow() {
         if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
-            return segment.getIdentifier().trim().equals(REGISTERED_EXTENSIONS)
-                || segment.getIdentifier().trim().equals(CONTROLLED_EXTENSIONS);
+            return segment.getIdentifier().trim().equals(NitfConstants.REGISTERED_EXTENSIONS)
+                || segment.getIdentifier().trim().equals(NitfConstants.CONTROLLED_EXTENSIONS);
         } else {
-            return segment.getIdentifier().trim().equals(TRE_OVERFLOW);
+            return segment.getIdentifier().trim().equals(NitfConstants.TRE_OVERFLOW);
         }
     }
 
