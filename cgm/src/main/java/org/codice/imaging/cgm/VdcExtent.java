@@ -25,55 +25,32 @@
  */
 package org.codice.imaging.cgm;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.io.IOException;
 
-
-class TextElement extends ElementHelpers implements AbstractElement {
-
-    private Point textPosition;
-    private int isFinal;
-    private String text;
+/**
+ *
+ * @author bradh
+ */
+class VdcExtent {
+    private final Point point1;
+    private final Point point2;
     
-    public TextElement() {
-        super(CgmIdentifier.TEXT);
+    VdcExtent(Point lowerLeft, Point upperRight) {
+        point1 = lowerLeft;
+        point2 = upperRight;
     }
 
+    boolean isIncreasingLeft() {
+        return point1.x > point2.x;
+    }
+
+    boolean isIncreasingUp() {
+        return point2.y > point1.y;
+    }
+    
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
-        textPosition = dataReader.readPoint();
-        isFinal = dataReader.readEnumValue();
-        text = dataReader.getStringFixed();
-    }
-
-    @Override
-    public void dumpParameters() {
-        System.out.println("\tText: " + textPosition + "|" + isFinal + " : " + text);
-    }
-    
-    public String getText() {
-        return text;
-    }
-    
-    public Point getPosition() {
-        return textPosition;
-    }
-    
-    /**
-     *
-     * @param g2
-     * @param graphicState
-     */
-    @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        Graphics2D localGraphics = (Graphics2D) g2.create();
-        localGraphics.setColor(graphicState.textColour);
-        localGraphics.setFont(graphicState.font);
-        if (graphicState.characterOrientationHasInvertedY()) {
-            localGraphics.translate(0, graphicState.getSizeY());
-            localGraphics.scale(1.0, -1.0);
-        }
-        localGraphics.drawString(text, textPosition.x, textPosition.y);
+    public String toString() {
+        return point1.toString() + " | " + point2.toString();
     }
 }
+

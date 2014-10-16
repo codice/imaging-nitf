@@ -36,9 +36,9 @@ public class CgmRenderer {
     private Graphics2D g2;
     private CgmGraphicState graphicState;
     
-    public void setTargetImageGraphics(Graphics2D graphics) {
+    public void setTargetImageGraphics(Graphics2D graphics, int x, int y) {
         g2 = graphics;
-        graphicState = new CgmGraphicState();
+        graphicState = new CgmGraphicState(x, y);
     }
     
     public void render(List<AbstractElement> commandList) {

@@ -124,7 +124,7 @@ public class CgmParserTest {
             // System.out.println("BBox2:" + segment.getBoundingBox2Column() + ", " + segment.getBoundingBox2Row());
             BufferedImage targetImage = new BufferedImage(segment.getBoundingBox2Column(), segment.getBoundingBox2Row(), BufferedImage.TYPE_INT_ARGB);
             CgmRenderer renderer = new CgmRenderer();
-            renderer.setTargetImageGraphics((Graphics2D) targetImage.getGraphics());
+            renderer.setTargetImageGraphics((Graphics2D) targetImage.getGraphics(), segment.getBoundingBox2Column(), segment.getBoundingBox2Row());
             renderer.render(parser.getCommandList());
             File targetFile = new File(testfile + "cgm.png");
             ImageIO.write(targetImage, "png", targetFile);

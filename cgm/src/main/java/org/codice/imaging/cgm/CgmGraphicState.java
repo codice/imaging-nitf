@@ -38,6 +38,10 @@ import java.util.List;
  */
 class CgmGraphicState {
     
+    private VdcExtent vdcExtent;
+    private final int sizeX;
+    private final int sizeY;
+    
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     // Default from ISO/IEC 8632-1:1999(E), and MITRE_LIMIT attribute
     // element is prohibited in BIIF Profile BPCGM01.10
@@ -69,8 +73,11 @@ class CgmGraphicState {
     List<String> fontList = new ArrayList<>();
     private int fontIndex = 0;
     private int textFontHeight = 12;
+    private boolean characterOrientationIsInvertedY = false;
 
-    CgmGraphicState() {
+    CgmGraphicState(int x, int y) {
+        sizeX = x;
+        sizeY = y;
         this.edgeVisibility = EdgeVisibilityElement.Mode.OFF;
     }
 
@@ -175,7 +182,27 @@ class CgmGraphicState {
         return hatchIndex;
     }
 
-    
+    double getSizeX() {
+        return sizeX;
+    }
 
+    double getSizeY() {
+        return sizeY;
+    }
+
+    void setVdcExtent(VdcExtent extent) {
+        vdcExtent = extent;
+    }
+
+    VdcExtent getVdcExtent() {
+        return vdcExtent;
+    }
+
+    void setCharacterOrientationInvertY(boolean isInverted) {
+        characterOrientationIsInvertedY = isInverted;
+    }
     
+    boolean characterOrientationHasInvertedY() {
+        return characterOrientationIsInvertedY;
+    }
 }

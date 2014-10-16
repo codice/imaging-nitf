@@ -35,8 +35,7 @@ import java.io.IOException;
  */
 class VdcExtentElement extends ElementHelpers implements AbstractElement {
 
-    private Point point1;
-    private Point point2;
+    private VdcExtent vdcExtent;
 
     public VdcExtentElement() {
         super(CgmIdentifier.VDC_EXTENT);
@@ -44,18 +43,38 @@ class VdcExtentElement extends ElementHelpers implements AbstractElement {
 
     @Override
     public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
-        point1 = dataReader.readPoint();
-        point2 = dataReader.readPoint();
+        Point lowerLeft = dataReader.readPoint();
+        Point upperRight = dataReader.readPoint();
+        vdcExtent = new VdcExtent(lowerLeft, upperRight);
     }
     
     @Override
     public void dumpParameters() {
-        System.out.println("\tVDC Extent: " + point1 + " | " + point2);
+        System.out.println("\tVDC Extent: " + vdcExtent.toString());
     }
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        System.out.println("TODO: render for " + getFriendlyName());
+        graphicState.setVdcExtent(vdcExtent);
+        double scaleX = 1.0;
+        double translateX = 0.0;
+        if (vdcExtent.isIncreasingLeft()) {
+            scaleX = -1.0;
+            translateX = graphicState.getSizeX();
+        }
+        double scaleY = 1.0;
+        double translateY = 0.0;
+        if (vdcExtent.isIncreasingUp()) {
+            scaleY = -1.0;
+            translateY = (graphicState.getSizeY());
+        }
+        if (scaleX < 0) {
+            g2.translate(translateX, 0);
+        }
+        if (scaleY < 0) {
+            g2.translate(0, translateY);
+        }
+        g2.scale(scaleX, scaleY);
     }
 
 }

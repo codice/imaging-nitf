@@ -36,5 +36,6 @@ class EdgeTypeElement extends CommonIndexedElement implements AbstractElement {
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
         System.out.println("TODO: render for EdgeTypeElement");
+        dumpParameters();
     }
 }

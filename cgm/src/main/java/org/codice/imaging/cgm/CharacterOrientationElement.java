@@ -56,7 +56,12 @@ class CharacterOrientationElement extends ElementHelpers implements AbstractElem
 
     @Override
     public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        System.out.println("TODO: render for " + getFriendlyName());
+        // This could be smarter when we need to handle anything more complex than BIFF Profile BPCGM01.10
+        if (graphicState.getVdcExtent().isIncreasingUp()) {
+            graphicState.setCharacterOrientationInvertY(true);
+        } else {
+            graphicState.setCharacterOrientationInvertY(false);
+        }
     }
     
 }
