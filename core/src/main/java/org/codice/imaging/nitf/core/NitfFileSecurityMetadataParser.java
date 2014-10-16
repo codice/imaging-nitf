@@ -24,9 +24,6 @@ import java.text.ParseException;
 */
 class NitfFileSecurityMetadataParser extends NitfSecurityMetadataParser {
 
-    private static final int FSCOP_LENGTH = 5;
-    private static final int FSCPYS_LENGTH = 5;
-
     public NitfFileSecurityMetadataParser() {
     }
 
@@ -41,11 +38,11 @@ class NitfFileSecurityMetadataParser extends NitfSecurityMetadataParser {
     }
 
     private void readFSCOP(final NitfFileSecurityMetadata metadata) throws ParseException {
-        metadata.setFileCopyNumber(reader.readTrimmedBytes(FSCOP_LENGTH));
+        metadata.setFileCopyNumber(reader.readTrimmedBytes(NitfConstants.FSCOP_LENGTH));
     }
 
     private void readFSCPYS(final NitfFileSecurityMetadata metadata) throws ParseException {
-        metadata.setFileNumberOfCopies(reader.readTrimmedBytes(FSCPYS_LENGTH));
+        metadata.setFileNumberOfCopies(reader.readTrimmedBytes(NitfConstants.FSCPYS_LENGTH));
     }
 };
 

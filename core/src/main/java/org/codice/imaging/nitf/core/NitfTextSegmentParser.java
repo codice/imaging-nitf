@@ -25,15 +25,6 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     private int lengthOfText = 0;
     private int textExtendedSubheaderLength = 0;
 
-    private static final String TE = "TE";
-    private static final int TEXTID_LENGTH = 7;
-    private static final int TXTALVL_LENGTH = 3;
-    private static final int TEXTID20_LENGTH = 10;
-    private static final int TXTITL_LENGTH = 80;
-    private static final int TXTFMT_LENGTH = 3;
-    private static final int TXSHDL_LENGTH = 5;
-    private static final int TXSOFL_LENGTH = 3;
-
     private boolean shouldParseTextData = false;
 
     private NitfTextSegment segment = null;
@@ -64,17 +55,17 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readTE() throws ParseException {
-       reader.verifyHeaderMagic(TE);
+       reader.verifyHeaderMagic(NitfConstants.TE);
     }
 
     private void readTEXTID() throws ParseException {
         switch (reader.getFileType()) {
             case NITF_TWO_ZERO:
-                segment.setIdentifier(reader.readBytes(TEXTID20_LENGTH));
+                segment.setIdentifier(reader.readBytes(NitfConstants.TEXTID20_LENGTH));
                 break;
             case NITF_TWO_ONE:
             case NSIF_ONE_ZERO:
-                segment.setIdentifier(reader.readBytes(TEXTID_LENGTH));
+                segment.setIdentifier(reader.readBytes(NitfConstants.TEXTID_LENGTH));
                 break;
             case UNKNOWN:
             default:
@@ -84,7 +75,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
 
     private void readTXTALVL() throws ParseException {
         if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
-            segment.setAttachmentLevel(reader.readBytesAsInteger(TXTALVL_LENGTH));
+            segment.setAttachmentLevel(reader.readBytesAsInteger(NitfConstants.TXTALVL_LENGTH));
         }
     }
 
@@ -93,25 +84,25 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readTXTITL() throws ParseException {
-        segment.setTextTitle(reader.readTrimmedBytes(TXTITL_LENGTH));
+        segment.setTextTitle(reader.readTrimmedBytes(NitfConstants.TXTITL_LENGTH));
     }
 
     private void readTXTFMT() throws ParseException {
-        String txtfmt = reader.readTrimmedBytes(TXTFMT_LENGTH);
+        String txtfmt = reader.readTrimmedBytes(NitfConstants.TXTFMT_LENGTH);
         segment.setTextFormat(TextFormat.getEnumValue(txtfmt));
     }
 
     private void readTXSHDL() throws ParseException {
-        textExtendedSubheaderLength = reader.readBytesAsInteger(TXSHDL_LENGTH);
+        textExtendedSubheaderLength = reader.readBytesAsInteger(NitfConstants.TXSHDL_LENGTH);
     }
 
     private void readTXSOFL() throws ParseException {
-        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(TXSOFL_LENGTH));
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(NitfConstants.TXSOFL_LENGTH));
     }
 
     private void readTXSHD() throws ParseException {
         TreParser treParser = new TreParser();
-        TreCollection extendedSubheaderTREs = treParser.parse(reader, textExtendedSubheaderLength - TXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = treParser.parse(reader, textExtendedSubheaderLength - NitfConstants.TXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 

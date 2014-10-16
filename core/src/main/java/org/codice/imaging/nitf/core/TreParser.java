@@ -40,11 +40,6 @@ class TreParser {
 
     private Tres tresStructure = null;
 
-    private static final int TAG_LENGTH = 6;
-    private static final int TAGLEN_LENGTH = 5;
-    private static final String AND_CONDITION = " AND ";
-    private static final String UNSUPPORTED_IFTYPE_FORMAT_MESSAGE = "Unsupported format for iftype:";
-
     private TreCollection treCollection = new TreCollection();
 
     /**
@@ -81,10 +76,10 @@ class TreParser {
     public final TreCollection parse(final NitfReader reader, final int treLength) throws ParseException {
         int bytesRead = 0;
         while (bytesRead < treLength) {
-            String tag = reader.readBytes(TAG_LENGTH);
-            bytesRead += TAG_LENGTH;
-            int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
-            bytesRead += TAGLEN_LENGTH;
+            String tag = reader.readBytes(NitfConstants.TAG_LENGTH);
+            bytesRead += NitfConstants.TAG_LENGTH;
+            int fieldLength = reader.readBytesAsInteger(NitfConstants.TAGLEN_LENGTH);
+            bytesRead += NitfConstants.TAGLEN_LENGTH;
             parseOneTre(reader, tag, fieldLength);
             bytesRead += fieldLength;
         }
@@ -215,7 +210,7 @@ class TreParser {
     }
 
     private boolean evaluateCondition(final String condition, final TreGroup treGroup) throws ParseException {
-        if (condition.contains(AND_CONDITION)) {
+        if (condition.contains(NitfConstants.AND_CONDITION)) {
             return evaluateConditionBooleanAnd(condition, treGroup);
         } else if (condition.endsWith("!=")) {
             return evaluateConditionIsNotEmpty(condition, treGroup);
@@ -224,15 +219,15 @@ class TreParser {
         } else if (condition.contains("=")) {
             return evaluateConditionIsEqual(condition, treGroup);
         } else {
-            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
     }
 
     private boolean evaluateConditionBooleanAnd(final String condition, final TreGroup treGroup) throws ParseException {
-        String[] condParts = condition.split(AND_CONDITION);
+        String[] condParts = condition.split(NitfConstants.AND_CONDITION);
         if (condParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         boolean lhs = evaluateCondition(condParts[0], treGroup);
         boolean rhs = evaluateCondition(condParts[1], treGroup);
@@ -249,7 +244,7 @@ class TreParser {
         String[] conditionParts = condition.split("=");
         if (conditionParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         String actualValue = treGroup.getFieldValue(conditionParts[0]);
         return conditionParts[1].equals(actualValue);
@@ -259,7 +254,7 @@ class TreParser {
         String[] conditionParts = condition.split("!=");
         if (conditionParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         String actualValue = treGroup.getFieldValue(conditionParts[0]);
         return !conditionParts[1].equals(actualValue);

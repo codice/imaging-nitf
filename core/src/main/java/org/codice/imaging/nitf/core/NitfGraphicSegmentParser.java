@@ -26,21 +26,6 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
 
     private int graphicExtendedSubheaderLength = 0;
 
-    private static final String SY = "SY";
-    private static final int SID_LENGTH = 10;
-    private static final int SNAME_LENGTH = 20;
-    private static final String SFMT_CGM = "C";
-    private static final String SSTRUCT = "0000000000000";
-    private static final int SDLVL_LENGTH = 3;
-    private static final int SALVL_LENGTH = 3;
-    private static final int SLOC_HALF_LENGTH = 5;
-    private static final int SBND1_HALF_LENGTH = 5;
-    private static final int SCOLOR_LENGTH = 1;
-    private static final int SBND2_HALF_LENGTH = 5;
-    private static final String SRES = "00";
-    private static final int SXSHDL_LENGTH = 5;
-    private static final int SXSOFL_LENGTH = 3;
-
     private boolean shouldParseGraphicData = false;
 
     private NitfGraphicSegment segment = null;
@@ -79,68 +64,68 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
     }
 
     private void readSY() throws ParseException {
-        reader.verifyHeaderMagic(SY);
+        reader.verifyHeaderMagic(NitfConstants.SY);
     }
 
     private void readSID() throws ParseException {
-        segment.setIdentifier(reader.readTrimmedBytes(SID_LENGTH));
+        segment.setIdentifier(reader.readTrimmedBytes(NitfConstants.SID_LENGTH));
     }
 
     private void readSNAME() throws ParseException {
-        segment.setGraphicName(reader.readTrimmedBytes(SNAME_LENGTH));
+        segment.setGraphicName(reader.readTrimmedBytes(NitfConstants.SNAME_LENGTH));
     }
 
     private void readSFMT() throws ParseException {
-        reader.verifyHeaderMagic(SFMT_CGM);
+        reader.verifyHeaderMagic(NitfConstants.SFMT_CGM);
     }
 
     private void readSSTRUCT() throws ParseException {
-        reader.verifyHeaderMagic(SSTRUCT);
+        reader.verifyHeaderMagic(NitfConstants.SSTRUCT);
     }
 
     private void readSDLVL() throws ParseException {
-        segment.setGraphicDisplayLevel(reader.readBytesAsInteger(SDLVL_LENGTH));
+        segment.setGraphicDisplayLevel(reader.readBytesAsInteger(NitfConstants.SDLVL_LENGTH));
     }
 
     private void readSALVL() throws ParseException {
-        segment.setAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
+        segment.setAttachmentLevel(reader.readBytesAsInteger(NitfConstants.SALVL_LENGTH));
     }
 
     private void readSLOC() throws ParseException {
-        segment.setGraphicLocationRow(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
-        segment.setGraphicLocationColumn(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
+        segment.setGraphicLocationRow(reader.readBytesAsInteger(NitfConstants.SLOC_HALF_LENGTH));
+        segment.setGraphicLocationColumn(reader.readBytesAsInteger(NitfConstants.SLOC_HALF_LENGTH));
     }
 
     private void readSBND1() throws ParseException {
-        segment.setBoundingBox1Row(reader.readBytesAsInteger(SBND1_HALF_LENGTH));
-        segment.setBoundingBox1Column(reader.readBytesAsInteger(SBND1_HALF_LENGTH));
+        segment.setBoundingBox1Row(reader.readBytesAsInteger(NitfConstants.SBND1_HALF_LENGTH));
+        segment.setBoundingBox1Column(reader.readBytesAsInteger(NitfConstants.SBND1_HALF_LENGTH));
     }
 
     private void readSCOLOR() throws ParseException {
-        String scolor = reader.readBytes(SCOLOR_LENGTH);
+        String scolor = reader.readBytes(NitfConstants.SCOLOR_LENGTH);
         segment.setGraphicColour(GraphicColour.getEnumValue(scolor));
     }
 
     private void readSBND2() throws ParseException {
-        segment.setBoundingBox2Row(reader.readBytesAsInteger(SBND2_HALF_LENGTH));
-        segment.setBoundingBox2Column(reader.readBytesAsInteger(SBND2_HALF_LENGTH));
+        segment.setBoundingBox2Row(reader.readBytesAsInteger(NitfConstants.SBND2_HALF_LENGTH));
+        segment.setBoundingBox2Column(reader.readBytesAsInteger(NitfConstants.SBND2_HALF_LENGTH));
     }
 
     private void readSRES() throws ParseException {
-        reader.verifyHeaderMagic(SRES);
+        reader.verifyHeaderMagic(NitfConstants.SRES);
     }
 
     private void readSXSHDL() throws ParseException {
-        graphicExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
+        graphicExtendedSubheaderLength = reader.readBytesAsInteger(NitfConstants.SXSHDL_LENGTH);
     }
 
     private void readSXSOFL() throws ParseException {
-        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(SXSOFL_LENGTH));
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(NitfConstants.SXSOFL_LENGTH));
     }
 
     private void readSXSHD() throws ParseException {
         TreParser treParser = new TreParser();
-        TreCollection extendedSubheaderTREs = treParser.parse(reader, graphicExtendedSubheaderLength - SXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = treParser.parse(reader, graphicExtendedSubheaderLength - NitfConstants.SXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 

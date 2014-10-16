@@ -32,29 +32,22 @@ abstract class AbstractNitfSegmentParser {
 
     protected NitfReader reader = null;
 
-    private static final int ENCRYP_LENGTH = 1;
-    private static final int RGB_COLOUR_LENGTH = 3;
-    private static final int STANDARD_DATE_TIME_LENGTH = 14;
-    private static final String NITF21_DATE_FORMAT = "yyyyMMddHHmmss";
-
-    private static final String NITF20_DATE_FORMAT = "ddHHmmss'Z'MMMyy";
-
     protected final void readENCRYP() throws ParseException {
-        if (!"0".equals(reader.readBytes(ENCRYP_LENGTH))) {
+        if (!"0".equals(reader.readBytes(NitfConstants.ENCRYP_LENGTH))) {
             LOG.warn("Mismatch while reading ENCRYP");
             throw new ParseException("Unexpected ENCRYP value", (int) reader.getCurrentOffset());
         }
     }
 
     protected final RGBColour readRGBColour() throws ParseException {
-        byte[] rgb = reader.readBytesRaw(RGB_COLOUR_LENGTH);
+        byte[] rgb = reader.readBytesRaw(NitfConstants.RGB_COLOUR_LENGTH);
         return new RGBColour(rgb);
     }
 
     protected final NitfDateTime readNitfDateTime() throws ParseException {
         NitfDateTime dateTime = new NitfDateTime();
 
-        String sourceString = reader.readBytes(STANDARD_DATE_TIME_LENGTH);
+        String sourceString = reader.readBytes(NitfConstants.STANDARD_DATE_TIME_LENGTH);
         dateTime.setSourceString(sourceString);
 
         switch (reader.getFileType()) {
@@ -77,8 +70,8 @@ abstract class AbstractNitfSegmentParser {
     private void parseNitf20Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
         String strippedSourceString = sourceString.trim();
         SimpleDateFormat dateFormat = null;
-        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
-            dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
+        if (strippedSourceString.length() == NitfConstants.STANDARD_DATE_TIME_LENGTH) {
+            dateFormat = new SimpleDateFormat(NitfConstants.NITF20_DATE_FORMAT);
         }
         parseDateString(sourceString, dateFormat, dateTime);
     }
@@ -87,10 +80,10 @@ abstract class AbstractNitfSegmentParser {
         String strippedSourceString = removeHyphens(sourceString.trim());
 
         SimpleDateFormat dateFormat = null;
-        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
-            dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT);
-        } else if ((strippedSourceString.length() < STANDARD_DATE_TIME_LENGTH) && (strippedSourceString.length() % 2 == 0)) {
-            dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT.substring(0, strippedSourceString.length()));
+        if (strippedSourceString.length() == NitfConstants.STANDARD_DATE_TIME_LENGTH) {
+            dateFormat = new SimpleDateFormat(NitfConstants.NITF21_DATE_FORMAT);
+        } else if ((strippedSourceString.length() < NitfConstants.STANDARD_DATE_TIME_LENGTH) && (strippedSourceString.length() % 2 == 0)) {
+            dateFormat = new SimpleDateFormat(NitfConstants.NITF21_DATE_FORMAT.substring(0, strippedSourceString.length()));
         }
         parseDateString(sourceString, dateFormat, dateTime);
     }
