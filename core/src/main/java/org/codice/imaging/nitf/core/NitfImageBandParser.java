@@ -25,13 +25,6 @@ class NitfImageBandParser {
     private NitfImageBand imageBand = null;
     private int numLUTs = 0;
 
-    private static final int IREPBAND_LENGTH = 2;
-    private static final int ISUBCAT_LENGTH = 6;
-    private static final int IFC_LENGTH = 1;
-    private static final int IMFLT_LENGTH = 3;
-    private static final int NLUTS_LENGTH = 1;
-    private static final int NELUT_LENGTH = 5;
-
     /**
         Construct from a NitfReader instance.
 
@@ -57,26 +50,26 @@ class NitfImageBandParser {
     }
 
     private void readIREPBAND() throws ParseException {
-        imageBand.setImageRepresentation(reader.readTrimmedBytes(IREPBAND_LENGTH));
+        imageBand.setImageRepresentation(reader.readTrimmedBytes(NitfConstants.IREPBAND_LENGTH));
     }
 
     private void readISUBCAT() throws ParseException {
-        imageBand.setImageSubcategory(reader.readTrimmedBytes(ISUBCAT_LENGTH));
+        imageBand.setImageSubcategory(reader.readTrimmedBytes(NitfConstants.ISUBCAT_LENGTH));
     }
 
     private void readIFC() throws ParseException {
-        reader.skip(IFC_LENGTH);
+        reader.skip(NitfConstants.IFC_LENGTH);
     }
 
     private void readIMFLT() throws ParseException {
-        reader.skip(IMFLT_LENGTH);
+        reader.skip(NitfConstants.IMFLT_LENGTH);
     }
 
     private void readNLUTS() throws ParseException {
-        numLUTs = reader.readBytesAsInteger(NLUTS_LENGTH);
+        numLUTs = reader.readBytesAsInteger(NitfConstants.NLUTS_LENGTH);
     }
 
     private void readNELUT() throws ParseException {
-        imageBand.setNumLUTEntries(reader.readBytesAsInteger(NELUT_LENGTH));
+        imageBand.setNumLUTEntries(reader.readBytesAsInteger(NitfConstants.NELUT_LENGTH));
     }
 }
