@@ -7,34 +7,29 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
+import java.util.Map;
 
 import org.codice.imaging.nitf.core.AbstractNitfSegment;
 import org.codice.imaging.nitf.core.FileType;
-import org.codice.imaging.nitf.core.ImageCompression;
 import org.codice.imaging.nitf.core.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
 import org.codice.imaging.nitf.core.NitfImageSegment;
-import org.codice.imaging.nitf.core.NitfSecurityClassification;
 import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributes;
@@ -165,7 +160,7 @@ public class FileComparer
     }
 
     private void outputBaseMetadata() throws IOException, ParseException {
-        TreeMap <String, String> metadata = new TreeMap<String, String>();
+        Map <String, String> metadata = new TreeMap<String, String>();
 
         addCommonFileLevelMetadata(metadata);
 
@@ -206,7 +201,7 @@ public class FileComparer
         }
     }
 
-    private void addCommonFileLevelMetadata(TreeMap <String, String> metadata) throws IOException {
+    private void addCommonFileLevelMetadata(Map <String, String> metadata) throws IOException {
         metadata.put("NITF_CLEVEL", String.format("%02d", nitf.getComplexityLevel()));
         metadata.put("NITF_ENCRYP", "0");
         metadata.put("NITF_FDT", nitf.getFileDateTime().getSourceString());
@@ -225,14 +220,14 @@ public class FileComparer
         metadata.put("NITF_STYPE", nitf.getStandardType());
     }
 
-    private void addNITF20FileLevelMetadata(TreeMap <String, String> metadata) throws IOException {
+    private void addNITF20FileLevelMetadata(Map <String, String> metadata) throws IOException {
         metadata.put("NITF_FSDWNG", nitf.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
         if (nitf.getFileSecurityMetadata().getDowngradeEvent() != null) {
             metadata.put("NITF_FSDEVT", nitf.getFileSecurityMetadata().getDowngradeEvent());
         }
     }
 
-    private void addNITF21FileLevelMetadata(TreeMap <String, String> metadata) throws IOException {
+    private void addNITF21FileLevelMetadata(Map <String, String> metadata) throws IOException {
         metadata.put("NITF_FBKGC", (String.format("%3d,%3d,%3d",
                     (int)(nitf.getFileBackgroundColour().getRed() & 0xFF),
                     (int)(nitf.getFileBackgroundColour().getGreen() & 0xFF),
@@ -253,7 +248,7 @@ public class FileComparer
         metadata.put("NITF_FSSRDT", nitf.getFileSecurityMetadata().getSecuritySourceDate());
     }
 
-    private void addFirstImageSegmentMetadata(TreeMap <String, String> metadata) throws IOException, ParseException {
+    private void addFirstImageSegmentMetadata(Map <String, String> metadata) throws IOException, ParseException {
 
         addCommonImageSegmentMetadata(metadata);
 
@@ -267,7 +262,7 @@ public class FileComparer
         addOldStyleMetadata(metadata, segment1.getTREsRawStructure());
     }
 
-    private void addNITF20ImageSegmentMetadata(TreeMap <String, String> metadata) throws IOException {
+    private void addNITF20ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
         metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(nitf.getFileType()));
         metadata.put("NITF_ITITLE", segment1.getImageIdentifier2());
         metadata.put("NITF_ISDWNG", segment1.getSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
@@ -276,7 +271,7 @@ public class FileComparer
         }
     }
 
-    private void addNITF21ImageSegmentMetadata(TreeMap <String, String> metadata) throws IOException {
+    private void addNITF21ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
         if (segment1.getImageCoordinatesRepresentation() == ImageCoordinatesRepresentation.NONE) {
             metadata.put("NITF_ICORDS", "");
         } else {
@@ -300,7 +295,7 @@ public class FileComparer
         metadata.put("NITF_ISSRDT", segment1.getSecurityMetadata().getSecuritySourceDate());
     }
 
-    private void addCommonImageSegmentMetadata(TreeMap <String, String> metadata) throws IOException {
+    private void addCommonImageSegmentMetadata(Map <String, String> metadata) throws IOException {
         metadata.put("NITF_ABPP", String.format("%02d", segment1.getActualBitsPerPixelPerBand()));
         metadata.put("NITF_CCS_COLUMN", String.format("%d", segment1.getImageLocationColumn()));
         metadata.put("NITF_CCS_ROW", String.format("%d", segment1.getImageLocationRow()));
@@ -350,7 +345,7 @@ public class FileComparer
         }
     }
 
-    private void addRpfNamesMetadata(TreeMap <String, String> metadata) throws IOException, ParseException {
+    private void addRpfNamesMetadata(Map <String, String> metadata) throws IOException, ParseException {
         if (filename.toLowerCase().endsWith(".ntf")) {
             // GDAL does this off the filename, not off the IID2, so it won't show these for "plain" NITF files
             return;
@@ -552,7 +547,7 @@ public class FileComparer
         return naiveString;
     }
 
-    private void addOldStyleMetadata(TreeMap <String, String> metadata, TreCollection treCollection) {
+    private void addOldStyleMetadata(Map <String, String> metadata, TreCollection treCollection) {
         for (Tre tre : treCollection.getTREs()) {
             if (tre.getPrefix() != null) {
                 // if it has a prefix, its probably an old-style NITF metadata field
@@ -566,7 +561,7 @@ public class FileComparer
         }
     }
 
-    private void outputICHIPmetadata(TreeMap <String, String> metadata, Tre tre) {
+    private void outputICHIPmetadata(Map <String, String> metadata, Tre tre) {
         List<TreEntry> entries = tre.getEntries();
         for (TreEntry entry: entries) {
             if ("XFRM_FLAG".equals(entry.getName())) {
@@ -583,7 +578,7 @@ public class FileComparer
         }
     }
 
-    private void outputRPFDESmetadata(TreeMap <String, String> metadata, Tre tre) {
+    private void outputRPFDESmetadata(Map <String, String> metadata, Tre tre) {
         try {
             byte[] rawRpfDesData = tre.getRawData();
             RasterProductFormatAttributes attributes = new RasterProductFormatAttributeParser().parseRpfDes(rawRpfDesData);
