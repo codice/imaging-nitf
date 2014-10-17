@@ -382,6 +382,33 @@
         <field name="PSO" length="15" type="real"/>
     </tre>
 
+    <tre name="MENSRB" location="image">
+        <field name="ACFT_LOC" length="25" type="string"/>
+        <field name="ACFT_LOC_ACCY" length ="6" type="real"/>
+        <field name="ACFT_ALT" length="6" type="integer"/>
+        <field name="RP_LOC" length="25" type="string"/>
+        <field name="RP_LOC_ACCY" length="6" type="real"/>
+        <field name="RP_ELV" length="6" type="integer" minval="-1000" maxval="30000"/>
+        <field name="OF_PC_R" length="7" type="real"/>
+        <field name="OF_PC_A" length="7" type="real"/>
+        <field name="COSGRZ" length="7" type="real" minval="0.0" maxval="1.0"/>
+        <field name="RGCRP" length="7" type="integer" minval="0" maxval="3000000"/>
+        <field name="RLMAP" length="1" type="string"/>
+        <field name="RP_ROW" length="5" type="integer" minval="1" maxval="99999"/>
+        <field name="RP_COL" length="5" type="integer" minval="1" maxval="99999"/>
+        <field name="C_R_NC" length="10" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_R_EC" length="10" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_R_DC" length="10" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_AZ_NC" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_AZ_EC" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_AZ_DC" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_AL_NC" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_AL_EC" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="C_AL_DC" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="TOTAL_TILES_COLS" length="3" type="integer" minval="1" maxval="999"/>
+        <field name="TOTAL_TILES_ROWS" length="5" type="integer" minval="1" maxval="99999"/>
+    </tre>
+
     <tre name="PIAIMB" md_prefix="NITF_PIAIMB_" length="337" location="image">
         <field name="CLOUDCVR" length="3"/>
         <field name="SRP" length="1"/>
