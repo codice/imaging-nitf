@@ -72,6 +72,8 @@ abstract class AbstractNitfSegmentParser {
         SimpleDateFormat dateFormat = null;
         if (strippedSourceString.length() == NitfConstants.STANDARD_DATE_TIME_LENGTH) {
             dateFormat = new SimpleDateFormat(NitfConstants.NITF20_DATE_FORMAT);
+        } else if (strippedSourceString.length() == 0) {
+            return;
         }
         parseDateString(sourceString, dateFormat, dateTime);
     }
