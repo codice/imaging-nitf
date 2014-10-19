@@ -75,13 +75,13 @@ class CgmInputReader {
     }
     
     int readSignedIntegerAtIntegerPrecision() throws IOException {
-        // TODO: integer precision should be read from some defaults singleton
+        // BIIF profile BPCGM 01.00 doesn't allow changing this from the default.
         // The default is 16 bits
         return dataStream.readShort();
     }
 
     int readSignedIntegerAtVdcIntegerPrecision() throws IOException {
-        // TODO: integer precision should be read from some defaults singleton
+        // BIIF profile BPCGM 01.00 doesn't allow changing this from the default.
         // The default is 16 bits
         return dataStream.readShort();
     }
@@ -93,8 +93,7 @@ class CgmInputReader {
     }
 
     Color readColour(int length) throws IOException {
-        // TODO: this should depend on the default mode for Colour Selection and the default size for direct colour precision
-        // This assumes direct colour
+        // BIIF profile BPCGM 01.00 only allows direct colour
         int red = dataStream.readUnsignedByte();
         int green = dataStream.readUnsignedByte();
         int blue = dataStream.readUnsignedByte();
@@ -102,19 +101,17 @@ class CgmInputReader {
     }
 
     int readSizeSpecification() throws IOException {
-        // TODO: this should depend on the mode for VDC
-        // This assume integer and the default of 16 bits
+        // BIIF profile BPCGM 01.00 only allows integer 16 bit.
         return dataStream.readShort();
     }
 
     int readSignedIntegerAtIndexPrecision() throws IOException {
-        // TODO: this should depend on the mode for indexed values
-        // This assumes the default of 16 bits
+        // BIIF profile BPCGM 01.00 only allows integer 16 bit.
         return dataStream.readShort();
     }
 
     List<Point> readPoints(int parameterListLength) throws IOException {
-        // TODO: size should be per VdcPrecision
+        // BIIF profile BPCGM 01.00 only allows integer 16 bit.
         List<Point> points = new ArrayList<>();
         int bytesRead = 0;
         while (bytesRead < parameterListLength) {
