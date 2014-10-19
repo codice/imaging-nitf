@@ -32,15 +32,17 @@ import java.io.IOException;
  *
  */
 class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
-    EdgeVisibilityElement() {
-        super(CgmIdentifier.EDGE_VISIBILITY);
-    }
+
+    private Mode mode = Mode.OFF;
 
     enum Mode {
         OFF,
         ON    }
-    private Mode mode = Mode.OFF;
-    
+
+    EdgeVisibilityElement() {
+        super(CgmIdentifier.EDGE_VISIBILITY);
+    }
+   
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
