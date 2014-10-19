@@ -27,12 +27,15 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
 
+    private static final Logger LOG = LoggerFactory.getLogger(InteriorStyleElement.class);
     private Mode mode = Mode.OFF;
 
     enum Mode {
@@ -54,7 +57,7 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
                 mode = Mode.ON;
                 break;
             default:
-                System.out.println("Unknown Edge Visibility value: " + data);
+                LOG.info("Unknown Edge Visibility value: " + data);
                 break;
         }
     }

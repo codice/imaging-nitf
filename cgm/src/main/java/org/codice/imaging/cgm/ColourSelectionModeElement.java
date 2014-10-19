@@ -27,11 +27,18 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 class ColourSelectionModeElement extends ElementHelpers implements AbstractElement {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(ColourSelectionModeElement.class);
+    
+    private Mode mode = Mode.INDEXED_COLOUR_MODE;
+    
     ColourSelectionModeElement() {
         super(CgmIdentifier.COLOUR_SELECTION_MODE);
     }
@@ -40,7 +47,6 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
         INDEXED_COLOUR_MODE,
         DIRECT_COLOUR_MODE
     }
-    Mode mode = Mode.INDEXED_COLOUR_MODE;
 
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
@@ -53,7 +59,7 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
                 mode = Mode.DIRECT_COLOUR_MODE;
                 break;
             default:
-                System.out.println("Unknown Colour Selection Mode value: " + data);
+                LOG.info("Unknown Colour Selection Mode value: " + data);
                 break;
         }
     }

@@ -25,9 +25,13 @@
  */
 package org.codice.imaging.cgm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  */
 public enum CgmIdentifier {
+           
     UNKNOWN(CgmClass.PSEUDO, -1, "UNKNOWN"),
     
     // These can only appear in the METAFILE ELEMENTS LIST
@@ -168,6 +172,8 @@ public enum CgmIdentifier {
     SYMBOL_SIZE(CgmClass.ATTRIBUTE, 50, "SYMBOL SIZE"),
     SYMBOL_ORIENTATION(CgmClass.ATTRIBUTE, 51, "SYMBOL ORIENTATION");
 
+    private static final Logger LOG = LoggerFactory.getLogger(CgmIdentifier.class);
+
     private final CgmClass classId;
     private final int id;
     private final String friendlyName;
@@ -189,7 +195,7 @@ public enum CgmIdentifier {
                 return cgmIdentifier;
             }
         }
-        System.out.println(String.format("Could not find identifier for %d:%d", elementClass, elementId));
+        LOG.warn(String.format("Could not find identifier for %d:%d", elementClass, elementId));
         return UNKNOWN;
     }
 

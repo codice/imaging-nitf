@@ -26,20 +26,25 @@
 package org.codice.imaging.cgm;
 
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author bradh
  */
 abstract class CommonSpecificationModeElement extends ElementHelpers implements AbstractElement {
+    private static final Logger LOG = LoggerFactory.getLogger(CommonSpecificationModeElement.class);
+    
+    protected Mode mode = Mode.ABSOLUTE;
+    
     enum Mode {
         ABSOLUTE,
         SCALED,
         FRACTIONAL,
         MILLIMETRES
     }
-    Mode mode = Mode.ABSOLUTE;
-    
+
     protected CommonSpecificationModeElement(CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
@@ -61,7 +66,7 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
                 mode = LineWidthSpecificationModeElement.Mode.MILLIMETRES;
                 break;
             default:
-                System.out.println(String.format("Unknown %s value: %d", getFriendlyName(), data));
+                LOG.info(String.format("Unknown %s value: %d", getFriendlyName(), data));
                 break;
         }
     }

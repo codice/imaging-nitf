@@ -28,10 +28,17 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  */
 class InteriorStyleElement extends ElementHelpers implements AbstractElement {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(InteriorStyleElement.class);
+    private Mode mode = Mode.HOLLOW;
+    
     InteriorStyleElement() {
         super(CgmIdentifier.INTERIOR_STYLE);
     }
@@ -45,8 +52,7 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
         GEOMETRIC_PATTERN,
         INTERPOLATED
     }
-    Mode mode = Mode.HOLLOW;
-    
+
     @Override
     public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
@@ -73,7 +79,7 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
                 mode = Mode.INTERPOLATED;
                 break;
             default:
-                System.out.println("Unknown Interior Style value: " + data);
+                LOG.info("Unknown Interior Style value: " + data);
                 break;
         }
     }
