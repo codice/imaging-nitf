@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="Templates">
+        <folder name="Other">
+            <file name="NitfTemplate.ntf" url="NitfTemplate.ntf">
+                <attr name="displayName" bundlevalue="org.codice.imaging.nitf.nitfnetbeansfiletype.Bundle#Templates/Other/NitfTemplate.ntf"/>
+                <attr name="template" boolvalue="true"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>

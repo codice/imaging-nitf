@@ -18,5 +18,6 @@
         <module>core</module>
         <module>metadata-comparison</module>
         <module>cgm</module>
+        <module>nitfNetbeansFileType</module>
     </modules>
 </project>
