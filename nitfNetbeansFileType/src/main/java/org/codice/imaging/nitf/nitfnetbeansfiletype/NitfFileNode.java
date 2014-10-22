@@ -35,6 +35,31 @@ public class NitfFileNode extends DataNode {
                                     "The complexity level required to interpret fully all components of the file.",
                                     nitf.getComplexityLevel()));
         set.put(new StringProperty("standardType", "Standard Type", "Standard type or capability.", nitf.getStandardType()));
+        set.put(new StringProperty("originatingStationId",
+                                   "Originating Station ID",
+                                   "The identification code or name of the originating organisation, system, station or product.",
+                                   nitf.getOriginatingStationId()));
+        // TODO: file date time
+        set.put(new StringProperty("fileTitle", "File Title", "The title of the file", nitf.getFileTitle()));
+        set.put(new StringProperty("fileSecurityClassification",
+                                   "File Security Classification",
+                                   "The classification level of the entire file.",
+                                   nitf.getFileSecurityMetadata().getSecurityClassification().toString()));
+        // TODO: rest of the file security elements from FSCLSY through to FSPYS
+        if (nitf.getFileBackgroundColour() != null) {
+            set.put(new StringProperty("fileBackgroundColour",
+                                       "File Background Colour",
+                                       "The three colour components of the file background.",
+                                       nitf.getFileBackgroundColour().toString()));
+        }
+        set.put(new StringProperty("originatorsName",
+                                   "Originator's Name",
+                                   "The name of the operator who originated the file.",
+                                   nitf.getOriginatorsName()));
+        set.put(new StringProperty("originatorsPhone",
+                                   "Originator's Phone Number",
+                                   "The phone number of the operator who originated the file.",
+                                   nitf.getOriginatorsPhoneNumber()));
         return sheet;
     }
 }
