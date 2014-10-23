@@ -6,16 +6,18 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.util.List;
+import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 import org.codice.imaging.nitf.core.NitfImageSegment;
 import org.codice.imaging.nitf.core.NitfTextSegment;
+import org.openide.loaders.DataObject;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 
-class NitfChildFactory extends ChildFactory<String> {
+class NitfChildFactory extends ChildFactory<AbstractNitfSubSegment> {
 
     private final Nitf nitf;
 
@@ -27,23 +29,28 @@ class NitfChildFactory extends ChildFactory<String> {
     protected boolean createKeys(List list) {
         for (int imageSegmentCount = 0; imageSegmentCount < nitf.getNumberOfImageSegments(); ++imageSegmentCount) {
             NitfImageSegment imageSegment = nitf.getImageSegmentZeroBase(imageSegmentCount);
-            list.add("Image segment " + imageSegmentCount + ": " + imageSegment.getImageIdentifier2());
+            list.add(imageSegment);
         }
         for (int i = 0; i < nitf.getNumberOfGraphicSegments(); ++i) {
             NitfGraphicSegment graphicSegment = nitf.getGraphicSegmentZeroBase(i);
-            list.add("Graphic segment " + i + ": " + graphicSegment.getGraphicName());
+            list.add(graphicSegment);
         }
         for (int i = 0; i < nitf.getNumberOfTextSegments(); ++i) {
             NitfTextSegment textSegment = nitf.getTextSegmentZeroBase(i);
-            list.add("Text segment " + i + ": " + textSegment.getTextTitle());
+            list.add(textSegment);
         }
         return true;
     }
 
     @Override
-    protected Node createNodeForKey(String key) {
-        Node childNode = new AbstractNode(Children.LEAF);
-        childNode.setDisplayName(key);
-        return childNode;
+    protected Node createNodeForKey(AbstractNitfSubSegment key) {
+        if (key instanceof NitfImageSegment) {
+            NitfImageSegmentNode node = new NitfImageSegmentNode((NitfImageSegment)key);
+            return node;
+        } else {
+            Node childNode = new AbstractNode(Children.LEAF);
+            childNode.setDisplayName(key.getClass().getSimpleName() + " : " + key.getIdentifier());
+            return childNode;
+        }
     }
 }

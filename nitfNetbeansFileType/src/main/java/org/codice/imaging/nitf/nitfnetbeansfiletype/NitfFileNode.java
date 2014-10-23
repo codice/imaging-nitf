@@ -26,7 +26,7 @@ public class NitfFileNode extends DataNode {
 
     @Override
     protected Sheet createSheet() {
-        Sheet sheet = super.createSheet();
+        Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
         set.put(new StringProperty("fileType", "File Type", "The file profile and version.", nitf.getFileType().toString()));
