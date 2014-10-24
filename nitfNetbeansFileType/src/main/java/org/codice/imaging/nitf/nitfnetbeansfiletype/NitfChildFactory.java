@@ -8,10 +8,10 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.util.List;
 import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
 import org.codice.imaging.nitf.core.Nitf;
+import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 import org.codice.imaging.nitf.core.NitfImageSegment;
 import org.codice.imaging.nitf.core.NitfTextSegment;
-import org.openide.loaders.DataObject;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
@@ -39,6 +39,10 @@ class NitfChildFactory extends ChildFactory<AbstractNitfSubSegment> {
             NitfTextSegment textSegment = nitf.getTextSegmentZeroBase(i);
             list.add(textSegment);
         }
+        for (int i = 0; i < nitf.getNumberOfDataExtensionSegments(); ++i) {
+            NitfDataExtensionSegment desSegment = nitf.getDataExtensionSegmentZeroBase(i);
+            list.add(desSegment);
+        }
         return true;
     }
 
@@ -46,6 +50,8 @@ class NitfChildFactory extends ChildFactory<AbstractNitfSubSegment> {
     protected Node createNodeForKey(AbstractNitfSubSegment key) {
         if (key instanceof NitfImageSegment) {
             return new NitfImageSegmentNode((NitfImageSegment)key);
+        } else if (key instanceof NitfGraphicSegment) {
+            return new NitfGraphicSegmentNode((NitfGraphicSegment)key);
         } else if (key instanceof NitfTextSegment) {
             return new NitfTextSegmentNode((NitfTextSegment)key);
         } else {

@@ -67,7 +67,7 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
                                    "Image Coordinate Representation",
                                    "A code indicating the type of coordinate representation used for providing an approximate location of the image.",
                                    segment.getImageCoordinatesRepresentation().toString()));
-                
+        // TODO: from IGEOLO onwards
         return sheet;
     }
 
