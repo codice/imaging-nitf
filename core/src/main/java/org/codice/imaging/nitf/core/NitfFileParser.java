@@ -26,7 +26,6 @@ import java.util.Set;
 final class NitfFileParser extends AbstractNitfSegmentParser {
 
     private long nitfFileLength = -1;
-    private int nitfHeaderLength = -1;
 
     private int numberImageSegments = 0;
     private int numberGraphicSegments = 0;
@@ -286,7 +285,7 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readHL() throws ParseException {
-        nitfHeaderLength = reader.readBytesAsInteger(NitfConstants.HL_LENGTH);
+        reader.skip(NitfConstants.HL_LENGTH);
     }
 
     private void readNUMI() throws ParseException {

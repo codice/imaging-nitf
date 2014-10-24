@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.text.ParseException;
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory;
 class TreParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreParser.class);
+    private static final String TRE_XML_LOAD_ERROR_MESSAGE = "Exception while loading TRE XML";
 
     private Tres tresStructure = null;
 
@@ -50,12 +52,14 @@ class TreParser {
         @throws ParseException if the initialisation fails.
     */
     public TreParser() throws ParseException {
-        InputStream is = getClass().getResourceAsStream("/nitf_spec.xml");
-        try {
+        try (InputStream is = getClass().getResourceAsStream("/nitf_spec.xml")) {
             unmarshal(is);
         } catch (JAXBException ex) {
             LOG.warn("JAXBException parsing TRE XML specification", ex);
-            throw new ParseException("Exception while loading TRE XML" + ex.getMessage(), 0);
+            throw new ParseException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+        } catch (IOException ex) {
+            LOG.warn("IOException parsing TRE XML specification", ex);
+            throw new ParseException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
         }
     }
 

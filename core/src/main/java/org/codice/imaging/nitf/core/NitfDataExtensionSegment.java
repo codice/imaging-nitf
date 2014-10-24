@@ -204,4 +204,15 @@ public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
     public final void setData(final byte[] data) {
         desData = data;
     }
+
+    /**
+        Return the DES data.
+        <p>
+        This is the contents of the data segment.
+
+        @return the DES data
+    */
+    public final byte[] setData() {
+        return desData;
+    }
 }

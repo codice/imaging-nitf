@@ -449,42 +449,42 @@ public final class NitfConstants {
      * <p>
      * See MIL-STD-2500C Table A-8(B)
      */
-    protected static final int SFH_L1_LENGTH = 7;
+    static final int SFH_L1_LENGTH = 7;
 
     /**
      * The length of the "SFH Delimiter 1" field.
      * <p>
      * See MIL-STD-2500C Table A-8(B)
      */
-    protected static final int SFH_DELIM1_LENGTH = 4;
+    static final int SFH_DELIM1_LENGTH = 4;
 
     /**
      * The expected content of the "SFH Delimiter 1" field.
      * <p>
      * See MIL-STD-2500C Table A-8(B).
      */
-    protected static final byte[] SFH_DELIM1 = new byte[]{0x0a, (byte) 0x6e, 0x1d, (byte) 0x97};
+    static final byte[] SFH_DELIM1 = new byte[]{0x0a, (byte) 0x6e, 0x1d, (byte) 0x97};
 
     /**
      * The length of the "SFH Delimiter 2" field.
      * <p>
      * See MIL-STD-2500C Table A-8(B)
      */
-    protected static final int SFH_DELIM2_LENGTH = 4;
+    static final int SFH_DELIM2_LENGTH = 4;
 
     /**
      * The expected content of the "SFH Delimiter 2" field.
      * <p>
      * See MIL-STD-2500C Table A-8(B).
      */
-    protected static final byte[] SFH_DELIM2 = new byte[]{0x0e, (byte) 0xca, 0x14, (byte) 0xbf};
+    static final byte[] SFH_DELIM2 = new byte[]{0x0e, (byte) 0xca, 0x14, (byte) 0xbf};
 
     /**
      * Length of the "SFH Length 2" field.
      * <p>
      * See MIL-STD-2500C Table A-8 (B).
      */
-    protected static final int SFH_L2_LENGTH = 7;
+    static final int SFH_L2_LENGTH = 7;
 
     /**
      * The "magic flag" value used in length fields to indicate streaming mode.

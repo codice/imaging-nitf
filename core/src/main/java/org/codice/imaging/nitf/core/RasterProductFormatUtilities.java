@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import javax.xml.bind.JAXBContext;
@@ -31,6 +32,7 @@ import org.codice.imaging.nitf.core.schema.Rpfs;
 public class RasterProductFormatUtilities {
 
     private static final Logger LOG = LoggerFactory.getLogger(RasterProductFormatUtilities.class);
+    private static final String RPF_LOAD_ERROR_MESSAGE = "Exception while loading RPF codes XML";
 
     private Rpfs rpfs = null;
 
@@ -45,12 +47,14 @@ public class RasterProductFormatUtilities {
         @throws ParseException if the internal initialisation fails.
     */
     public RasterProductFormatUtilities() throws ParseException {
-        InputStream is = getClass().getResourceAsStream("/rpf_codes.xml");
-        try {
+        try (InputStream is = getClass().getResourceAsStream("/rpf_codes.xml")) {
             unmarshal(is);
         } catch (JAXBException ex) {
             LOG.warn("JAXBException parsing RPF codes", ex);
-            throw new ParseException("Exception while loading RPF codes XML" + ex.getMessage(), 0);
+            throw new ParseException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+        } catch (IOException ex) {
+            LOG.warn("IOException parsing RPF codes", ex);
+            throw new ParseException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
         }
     }
 

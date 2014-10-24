@@ -63,7 +63,7 @@ public class RasterProductFormatAttributeParser {
     /**
     Raster Product Format (RPF) offset record.
     */
-    private class OffsetRecord {
+    private static class OffsetRecord {
         private int attributeId = 0;
         private int parameterId = 0;
         private int arealCoverageSequenceNumber = 0;
@@ -83,9 +83,9 @@ public class RasterProductFormatAttributeParser {
         ByteBuffer bytes = ByteBuffer.wrap(desData);
 
         int numberOfAttributeOffsetRecords = bytes.getShort();
-        int numberOfExplicitArealCoverageRecords = bytes.getShort();
-        int attributeOffsetTableOffset = bytes.getInt();
-        int attributeOffsetRecordLength = bytes.getShort();
+//        int numberOfExplicitArealCoverageRecords = bytes.getShort();
+//        int attributeOffsetTableOffset = bytes.getInt();
+//        int attributeOffsetRecordLength = bytes.getShort();
 //         System.out.println("RPFDES: numberOfAttributeOffsetRecords:" + numberOfAttributeOffsetRecords);
 //         System.out.println("RPFDES: numberOfExplicitArealCoverageRecords:" + numberOfExplicitArealCoverageRecords);
 //         System.out.println("RPFDES: attributeOffsetTableOffset:" + attributeOffsetTableOffset);
@@ -203,6 +203,6 @@ public class RasterProductFormatAttributeParser {
         } catch (UnsupportedEncodingException ex) {
             LOG.warn("UnsupportedEncodingException while trying to convert to ASCII:", ex);
         }
-        return new String();
+        return "";
     }
 }
