@@ -45,8 +45,9 @@ class NitfChildFactory extends ChildFactory<AbstractNitfSubSegment> {
     @Override
     protected Node createNodeForKey(AbstractNitfSubSegment key) {
         if (key instanceof NitfImageSegment) {
-            NitfImageSegmentNode node = new NitfImageSegmentNode((NitfImageSegment)key);
-            return node;
+            return new NitfImageSegmentNode((NitfImageSegment)key);
+        } else if (key instanceof NitfTextSegment) {
+            return new NitfTextSegmentNode((NitfTextSegment)key);
         } else {
             Node childNode = new AbstractNode(Children.LEAF);
             childNode.setDisplayName(key.getClass().getSimpleName() + " : " + key.getIdentifier());

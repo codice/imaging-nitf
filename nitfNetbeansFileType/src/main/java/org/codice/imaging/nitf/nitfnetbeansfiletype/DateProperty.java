@@ -6,18 +6,19 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import org.openide.nodes.PropertySupport;
 
-class StringProperty extends PropertySupport.ReadOnly<String> {
-    private final String value;
+class DateProperty extends PropertySupport.ReadOnly<Date> {
+    private final Date value;
 
-    public StringProperty(String name, String displayName, String shortDescription, String result) {
-        super(name, String.class, displayName, shortDescription);
+    public DateProperty(String name, String displayName, String shortDescription, Date result) {
+        super(name, Date.class, displayName, shortDescription);
         value = result;
     }
 
     @Override
-    public String getValue() throws IllegalAccessException, InvocationTargetException {
+    public Date getValue() throws IllegalAccessException, InvocationTargetException {
         return value;
     }
 }

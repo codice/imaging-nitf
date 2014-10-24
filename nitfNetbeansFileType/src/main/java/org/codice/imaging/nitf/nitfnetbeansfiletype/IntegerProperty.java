@@ -8,11 +8,7 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.lang.reflect.InvocationTargetException;
 import org.openide.nodes.PropertySupport;
 
-/**
- *
- * @author bradh
- */
-public class IntegerProperty extends PropertySupport.ReadOnly<Integer> {
+class IntegerProperty extends PropertySupport.ReadOnly<Integer> {
     private final Integer value;
 
     public IntegerProperty(String name, String displayName, String shortDescription, int result) {

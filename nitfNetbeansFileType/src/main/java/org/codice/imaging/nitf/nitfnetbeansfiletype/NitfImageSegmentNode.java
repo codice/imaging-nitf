@@ -6,17 +6,10 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import org.codice.imaging.nitf.core.NitfImageSegment;
-import org.openide.loaders.DataObject;
-import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
-import org.openide.util.Lookup;
 
-/**
- *
- * @author bradh
- */
-class NitfImageSegmentNode extends AbstractNode {
+class NitfImageSegmentNode extends AbstractSegmentNode {
 
     private NitfImageSegment segment;
 
@@ -31,8 +24,8 @@ class NitfImageSegmentNode extends AbstractNode {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
-        set.put(new StringProperty("identifier", "Segment Identifier", "Identifier for the segment.", segment.getIdentifier()));
-        // TODO: IDATIM
+        addSubSegmentProperties(set, segment);
+        set.put(new DateProperty("imageDateTime", "Image Date and Time", "Date and time of this image's acquisition.", segment.getImageDateTime().toDate()));
         set.put(new StringProperty("targetIdentifier",
                                    "Target Identifier",
                                    "Primary target identifier (BE number and O-suffix, followed by country code",
@@ -41,11 +34,6 @@ class NitfImageSegmentNode extends AbstractNode {
                                    "Image Identifier",
                                    "Can contain the identification of additional information about the image",
                                    segment.getImageIdentifier2()));
-        set.put(new StringProperty("imageSecurityClassification",
-                                   "Image Security Classification",
-                                   "The classification level of the image.",
-                                   segment.getSecurityMetadata().getSecurityClassification().toString()));
-        // TODO: rest of the file security elements from ISCLSY through to ISCTLN
         set.put(new StringProperty("imageSource", "Image Source", "Description of the source of the image.", segment.getImageSource()));
         set.put(new LongProperty("numRows",
                                  "Number of Significant Rows",
@@ -82,4 +70,5 @@ class NitfImageSegmentNode extends AbstractNode {
                 
         return sheet;
     }
+
 }
