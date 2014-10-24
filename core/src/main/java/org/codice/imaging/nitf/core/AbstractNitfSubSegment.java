@@ -19,7 +19,7 @@ package org.codice.imaging.nitf.core;
     <p>
     This excludes the Data Extension Segment subheader.
 */
-abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment {
+public abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment {
 
     private int extendedHeaderDataOverflow = 0;
     private int segmentAttachmentLevel = 0;
