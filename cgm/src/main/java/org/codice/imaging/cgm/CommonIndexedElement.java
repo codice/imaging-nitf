@@ -32,12 +32,12 @@ abstract class CommonIndexedElement extends ElementHelpers implements AbstractEl
 
     protected int indexedValue;
 
-    protected CommonIndexedElement(CgmIdentifier cgmIdentifier) {
+    protected CommonIndexedElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         indexedValue = dataReader.readSignedIntegerAtIndexPrecision();
     }
 

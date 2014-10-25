@@ -35,13 +35,13 @@ class TextElement extends ElementHelpers implements AbstractElement {
     private Point textPosition;
     private int isFinal;
     private String text;
-    
+
     public TextElement() {
         super(CgmIdentifier.TEXT);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         textPosition = dataReader.readPoint();
         isFinal = dataReader.readEnumValue();
         text = dataReader.getStringFixed();
@@ -51,25 +51,20 @@ class TextElement extends ElementHelpers implements AbstractElement {
     public void dumpParameters() {
         System.out.println("\tText: " + textPosition + "|" + isFinal + " : " + text);
     }
-    
+
     public String getText() {
         return text;
     }
-    
+
     public Point getPosition() {
         return textPosition;
     }
-    
-    /**
-     *
-     * @param g2
-     * @param graphicState
-     */
+
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         Graphics2D localGraphics = (Graphics2D) g2.create();
-        localGraphics.setColor(graphicState.textColour);
-        localGraphics.setFont(graphicState.font);
+        localGraphics.setColor(graphicState.getTextColour());
+        localGraphics.setFont(graphicState.getFont());
         if (graphicState.characterOrientationHasInvertedY()) {
             localGraphics.translate(0, graphicState.getSizeY());
             localGraphics.scale(1.0, -1.0);

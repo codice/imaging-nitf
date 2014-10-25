@@ -37,21 +37,26 @@ import java.util.List;
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 
 /**
- * Wrapper for CGM input data
+ * Wrapper for CGM input data.
  */
 class CgmInputReader {
+
+    private static final int LONG_COUNT_FLAG_VALUE = 254;
+    private static final int NUM_BYTES_IN_SIGNED_VDC_INTEGER = 2;
+    private static final int NUM_BYTES_IN_ENUM_VALUE = 2;
+
     private final DataInputStream dataStream;
 
-    CgmInputReader(NitfGraphicSegment graphicSegment) {
+    CgmInputReader(final NitfGraphicSegment graphicSegment) {
         byte[] data = graphicSegment.getGraphicData();
-        dataStream = new DataInputStream(new ByteArrayInputStream(data));    
+        dataStream = new DataInputStream(new ByteArrayInputStream(data));
     }
 
     int readUnsignedShort() throws IOException {
         return dataStream.readUnsignedShort();
     }
 
-    void skipBytes(int i) throws IOException {
+    void skipBytes(final int i) throws IOException {
         int numBytesStillToSkip = i;
         while (numBytesStillToSkip > 0) {
             numBytesStillToSkip -= dataStream.skipBytes(numBytesStillToSkip);
@@ -64,16 +69,16 @@ class CgmInputReader {
 
     String getStringFixed() throws IOException {
         int count = dataStream.readUnsignedByte();
-        if (count > 254) {
+        if (count > LONG_COUNT_FLAG_VALUE) {
             System.out.println("Need to handle long count");
         }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < count; ++i) {
-            builder.append((char)dataStream.readByte());
+            builder.append((char) dataStream.readByte());
         }
         return builder.toString();
     }
-    
+
     int readSignedIntegerAtIntegerPrecision() throws IOException {
         // BIIF profile BPCGM 01.00 doesn't allow changing this from the default.
         // The default is 16 bits
@@ -92,7 +97,11 @@ class CgmInputReader {
         return new Point(x, y);
     }
 
-    Color readColour(int length) throws IOException {
+    int getNumberOfBytesInPoint() {
+        return 2 * NUM_BYTES_IN_SIGNED_VDC_INTEGER;
+    }
+
+    Color readColour(final int length) throws IOException {
         // BIIF profile BPCGM 01.00 only allows direct colour
         int red = dataStream.readUnsignedByte();
         int green = dataStream.readUnsignedByte();
@@ -110,19 +119,23 @@ class CgmInputReader {
         return dataStream.readShort();
     }
 
-    List<Point> readPoints(int parameterListLength) throws IOException {
+    List<Point> readPoints(final int parameterListLength) throws IOException {
         // BIIF profile BPCGM 01.00 only allows integer 16 bit.
         List<Point> points = new ArrayList<>();
         int bytesRead = 0;
         while (bytesRead < parameterListLength) {
             Point point = readPoint();
             points.add(point);
-            bytesRead += 4;
+            bytesRead += getNumberOfBytesInPoint();
         }
         return points;
     }
 
     int readEnumValue() throws IOException {
         return readShort();
+    }
+
+    int getNumberOfBytesInEnumValue() {
+        return NUM_BYTES_IN_ENUM_VALUE;
     }
 }

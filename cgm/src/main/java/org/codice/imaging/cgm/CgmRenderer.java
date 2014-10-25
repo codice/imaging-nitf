@@ -29,19 +29,30 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 /**
- *
- * @author bradh
+ * CGM Renderer.
  */
 public class CgmRenderer {
     private Graphics2D g2;
     private CgmGraphicState graphicState;
-    
-    public void setTargetImageGraphics(Graphics2D graphics, int x, int y) {
+
+    /**
+     * Set the graphics to render to.
+     *
+     * @param graphics the graphics target
+     * @param x the column size of the graphics target
+     * @param y the row size of the graphics target
+     */
+    public final void setTargetImageGraphics(final Graphics2D graphics, final int x, final int y) {
         g2 = graphics;
         graphicState = new CgmGraphicState(x, y);
     }
-    
-    public void render(List<AbstractElement> commandList) {
+
+    /**
+     * Perform rendering.
+     *
+     * @param commandList the list of CGM commands to render
+     */
+    public final void render(final List<AbstractElement> commandList) {
         for (AbstractElement command : commandList) {
             command.render(g2, graphicState);
         }

@@ -37,11 +37,17 @@ import java.util.List;
  * @author bradh
  */
 class CgmGraphicState {
-    
+
     private VdcExtent vdcExtent;
     private final int sizeX;
     private final int sizeY;
-    
+
+    private static final int LINE_TYPE_SOLID = 1;
+    private static final int LINE_TYPE_DASH = 2;
+    private static final int LINE_TYPE_DOT = 3;
+    private static final int LINE_TYPE_DASH_DOT = 4;
+    private static final int LINE_TYPE_DASH_DOT_DOT = 5;
+
     private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     // Default from ISO/IEC 8632-1:1999(E), and MITRE_LIMIT attribute
     // element is prohibited in BIIF Profile BPCGM01.10
@@ -50,14 +56,15 @@ class CgmGraphicState {
     private static final float[] DOT = {2.0f};
     private static final float[] DASH_DOT = {10.0f, 10.0f, 2.0f, 2.0f};
     private static final float[] DASH_DOT_DOT = {10.0f, 10.0f, 2.0f, 2.0f, 2.0f, 2.0f};
-    
+    private static final int DEFAULT_TEXT_FONT_HEIGHT = 12;
+
     // TODO: getters / setters
-    Color lineColour;
-    float lineWidth;
+    private Color lineColour;
+    private float lineWidth;
     private int lineType = 0;
     private static final int LINE_JOIN_STYLE = BasicStroke.JOIN_BEVEL;
     private static final int LINE_CAP_STYLE = BasicStroke.CAP_SQUARE;
-    BasicStroke lineStroke = new BasicStroke();
+    private BasicStroke lineStroke = new BasicStroke();
 
     private Color edgeColour;
     private float edgeWidth;
@@ -68,44 +75,45 @@ class CgmGraphicState {
 
     private int hatchIndex = 1;
 
-    Color textColour;
-    Font font = Font.decode("Serif");
-    List<String> fontList = new ArrayList<>();
+    private Color textColour;
+    private Font font = Font.decode("Serif");
+    private List<String> fontList = new ArrayList<>();
     private int fontIndex = 0;
-    private int textFontHeight = 12;
+    private int textFontHeight = DEFAULT_TEXT_FONT_HEIGHT;
+
     private boolean characterOrientationIsInvertedY = false;
 
-    CgmGraphicState(int x, int y) {
+    CgmGraphicState(final int x, final int y) {
         sizeX = x;
         sizeY = y;
         this.edgeVisibility = EdgeVisibilityElement.Mode.OFF;
     }
 
-    void setLineWidth(float size) {
+    void setLineWidth(final float size) {
         lineWidth = size;
         updateLineStroke();
     }
 
-    void setLineType(int indexedValue) {
+    void setLineType(final int indexedValue) {
         lineType = indexedValue;
         updateLineStroke();
     }
 
     private void updateLineStroke() {
         switch (lineType) {
-            case 1:
+            case LINE_TYPE_SOLID:
                 lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
                 break;
-            case 2:
+            case LINE_TYPE_DASH:
                 lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH, 0.0f);
                 break;
-            case 3:
+            case LINE_TYPE_DOT:
                 lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DOT, 0.0f);
                 break;
-            case 4:
+            case LINE_TYPE_DASH_DOT:
                 lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT, 0.0f);
                 break;
-            case 5:
+            case LINE_TYPE_DASH_DOT_DOT:
                 lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT_DOT, 0.0f);
                 break;
             default:
@@ -115,25 +123,37 @@ class CgmGraphicState {
         }
     }
 
-    void setLineColour(Color colour) {
+    Stroke getLineStroke() {
+        return lineStroke;
+    }
+
+    void setLineColour(final Color colour) {
         lineColour = colour;
     }
-    
-    void setTextColour(Color colour) {
+
+    Color getLineColour() {
+        return lineColour;
+    }
+
+    void setTextColour(final Color colour) {
         textColour = colour;
     }
 
-    void setFontList(List<String> fonts) {
+    Color getTextColour() {
+        return textColour;
+    }
+
+    void setFontList(final List<String> fonts) {
         // TODO: the font list needs to be translated to font names we have...
         fontList = fonts;
     }
 
-    void setTextFontIndex(int indexedValue) {
+    void setTextFontIndex(final int indexedValue) {
         fontIndex = indexedValue - 1;
         updateFont();
     }
 
-    void setCharacterHeight(int characterHeight) {
+    void setCharacterHeight(final int characterHeight) {
         textFontHeight = characterHeight;
         updateFont();
     }
@@ -142,7 +162,10 @@ class CgmGraphicState {
         font = new Font(fontList.get(fontIndex), Font.PLAIN, textFontHeight);
     }
 
-    void setEdgeColour(Color colour) {
+    Font getFont() {
+        return font;
+    }
+    void setEdgeColour(final Color colour) {
         edgeColour = colour;
     }
 
@@ -153,7 +176,7 @@ class CgmGraphicState {
         return edgeColour;
     }
 
-    void setEdgeWidth(int size) {
+    void setEdgeWidth(final int size) {
         edgeWidth = size;
         updateEdgeStroke();
     }
@@ -161,11 +184,11 @@ class CgmGraphicState {
     Stroke getEdgeStroke() {
         return edgeStroke;
     }
-    
-    void setEdgeVisibility(EdgeVisibilityElement.Mode mode) {
+
+    void setEdgeVisibility(final EdgeVisibilityElement.Mode mode) {
         edgeVisibility = mode;
     }
-    
+
     EdgeVisibilityElement.Mode getEdgeVisibility() {
         return edgeVisibility;
     }
@@ -174,10 +197,10 @@ class CgmGraphicState {
         edgeStroke = new BasicStroke(edgeWidth, EDGE_CAP_STYLE, EDGE_JOIN_STYLE);
     }
 
-    void setHatchIndex(int indexedValue) {
+    void setHatchIndex(final int indexedValue) {
         hatchIndex = indexedValue;
     }
-    
+
     int getHatchIndex() {
         return hatchIndex;
     }
@@ -190,7 +213,7 @@ class CgmGraphicState {
         return sizeY;
     }
 
-    void setVdcExtent(VdcExtent extent) {
+    void setVdcExtent(final VdcExtent extent) {
         vdcExtent = extent;
     }
 
@@ -198,11 +221,12 @@ class CgmGraphicState {
         return vdcExtent;
     }
 
-    void setCharacterOrientationInvertY(boolean isInverted) {
+    void setCharacterOrientationInvertY(final boolean isInverted) {
         characterOrientationIsInvertedY = isInverted;
     }
-    
+
     boolean characterOrientationHasInvertedY() {
         return characterOrientationIsInvertedY;
     }
+
 }

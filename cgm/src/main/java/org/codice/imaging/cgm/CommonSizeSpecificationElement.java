@@ -32,15 +32,15 @@ abstract class CommonSizeSpecificationElement extends ElementHelpers {
 
     protected int size;
 
-    protected CommonSizeSpecificationElement(CgmIdentifier cgmIdentifier) {
+    protected CommonSizeSpecificationElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         size = dataReader.readSizeSpecification();
     }
-    
+
     @Override
     public void dumpParameters() {
         System.out.println("\tSize:" + size);

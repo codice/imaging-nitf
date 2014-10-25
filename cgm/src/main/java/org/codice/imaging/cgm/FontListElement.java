@@ -30,20 +30,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author bradh
- */
 class FontListElement extends ElementHelpers implements AbstractElement {
 
-    List<String> fonts = new ArrayList<>();
+    private final List<String> fonts = new ArrayList<>();
 
     public FontListElement() {
         super(CgmIdentifier.FONT_LIST);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         int bytesRead = 0;
         while (bytesRead < parameterListLength) {
             String fontName = dataReader.getStringFixed();
@@ -59,9 +55,9 @@ class FontListElement extends ElementHelpers implements AbstractElement {
             System.out.println("\tFont: " + fontName);
         }
     }
-    
+
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         graphicState.setFontList(fonts);
     }
 }

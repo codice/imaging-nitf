@@ -27,17 +27,13 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 
-/**
- *
- * @author bradh
- */
 class FillColourElement extends CommonColourElement implements AbstractElement {
     FillColourElement() {
         super(CgmIdentifier.FILL_COLOUR);
     }
-    
+
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         System.out.println("TODO: render for " + getFriendlyName());
         dumpParameters();
     }

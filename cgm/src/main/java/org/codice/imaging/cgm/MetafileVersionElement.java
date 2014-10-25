@@ -25,11 +25,10 @@
  */
 package org.codice.imaging.cgm;
 
-
-public class MetafileVersionElement extends IntegerArgumentElement {
+class MetafileVersionElement extends IntegerArgumentElement {
 
     public MetafileVersionElement() {
         super(CgmIdentifier.METAFILE_VERSION);
     }
-    
+
 }

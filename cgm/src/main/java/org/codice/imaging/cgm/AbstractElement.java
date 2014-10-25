@@ -28,17 +28,14 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
-/**
- *
- */
 interface AbstractElement {
     void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException;
-    
+
     boolean matches(final CgmIdentifier cgmIdentifier);
 
     String getFriendlyName();
 
     void dumpParameters();
 
-    public void render(Graphics2D g2, CgmGraphicState graphicState);
+    void render(Graphics2D g2, CgmGraphicState graphicState);
 }

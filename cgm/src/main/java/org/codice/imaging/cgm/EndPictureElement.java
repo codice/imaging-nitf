@@ -25,11 +25,10 @@
  */
 package org.codice.imaging.cgm;
 
-
-public class EndPictureElement extends NoArgumentsElement implements AbstractElement {
+class EndPictureElement extends NoArgumentsElement implements AbstractElement {
 
     public EndPictureElement() {
         super(CgmIdentifier.END_PICTURE);
     }
-    
+
 }

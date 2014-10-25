@@ -42,19 +42,19 @@ class VdcExtentElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         Point lowerLeft = dataReader.readPoint();
         Point upperRight = dataReader.readPoint();
         vdcExtent = new VdcExtent(lowerLeft, upperRight);
     }
-    
+
     @Override
     public void dumpParameters() {
         System.out.println("\tVDC Extent: " + vdcExtent.toString());
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         graphicState.setVdcExtent(vdcExtent);
         double scaleX = 1.0;
         double translateX = 0.0;

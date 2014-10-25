@@ -27,15 +27,11 @@ package org.codice.imaging.cgm;
 
 import java.awt.Point;
 
-/**
- *
- * @author bradh
- */
 class VdcExtent {
     private final Point point1;
     private final Point point2;
-    
-    VdcExtent(Point lowerLeft, Point upperRight) {
+
+    VdcExtent(final Point lowerLeft, final Point upperRight) {
         point1 = lowerLeft;
         point2 = upperRight;
     }
@@ -47,7 +43,7 @@ class VdcExtent {
     boolean isIncreasingUp() {
         return point2.y > point1.y;
     }
-    
+
     @Override
     public String toString() {
         return point1.toString() + " | " + point2.toString();

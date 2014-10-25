@@ -33,19 +33,19 @@ import java.io.IOException;
 
 class CircleElement extends ElementHelpers implements AbstractElement {
 
-    Point centre;
-    int radius;
-    
+    private Point centre;
+    private int radius;
+
     public CircleElement() {
         super(CgmIdentifier.CIRCLE);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         centre = dataReader.readPoint();
         radius = dataReader.readSignedIntegerAtVdcIntegerPrecision();
     }
-    
+
     @Override
     public void dumpParameters() {
         System.out.println("\tCentre: " + centre);
@@ -53,7 +53,7 @@ class CircleElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         applyFilledPrimitiveAttributes(g2, graphicState);
         Ellipse2D circle = new Ellipse2D.Float(centre.x - radius, centre.y - radius, radius * 2, radius * 2);
         g2.draw(circle);

@@ -37,12 +37,24 @@ import java.util.logging.Logger;
 
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 
+/**
+ * CGM Parser.
+ */
 public class CgmParser {
+
+    private static final int LONG_FORM_LENGTH_INDICATOR = 31;
+    private static final int NOT_LAST_PARTITION_FLAG_BIT = 0x8000;
+    private static final int LONG_FORM_WORD_LENGTH_BITMASK = 0x7FFF;
+    private static final int PARAMETER_LIST_LENGTH_BITMASK = 0x001F;
+    private static final int ELEMENT_ID_BITMASK = 0x0FE0;
+    private static final int ELEMENT_ID_BIT_SHIFT = 5;
+    private static final int ELEMENT_CLASS_BIT_MASK = 0xF000;
+    private static final int ELEMENT_CLASS_BIT_SHIFT = 12;
 
     private CgmInputReader dataReader = null;
     private final List<AbstractElement> commands = new ArrayList<>();
 
-    private static AbstractElement getElement(CgmIdentifier elementId){
+    private static AbstractElement getElement(final CgmIdentifier elementId) {
         if (ELEMENTS.containsKey(elementId)) {
             // System.out.println("About to instantiate:" + elementId.getFriendlyName());
             return instantiateElement(elementId);
@@ -50,7 +62,7 @@ public class CgmParser {
         return new NoArgumentsElement(CgmIdentifier.UNKNOWN);
     }
 
-    private static AbstractElement instantiateElement(CgmIdentifier elementId) {
+    private static AbstractElement instantiateElement(final CgmIdentifier elementId) {
         Class elementClass = ELEMENTS.get(elementId);
         AbstractElement element = instantiateElementWithNoArguments(elementClass);
         if (element == null) {
@@ -59,17 +71,22 @@ public class CgmParser {
         return element;
     }
 
-    private static AbstractElement instantiateElementWithNoArguments(Class elementClass){
+    private static AbstractElement instantiateElementWithNoArguments(final Class elementClass) {
         try {
             Constructor<AbstractElement> defaultConstructor = elementClass.getDeclaredConstructor();
             return defaultConstructor.newInstance();
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException |
+                 SecurityException |
+                 InstantiationException |
+                 IllegalAccessException |
+                 IllegalArgumentException |
+                 InvocationTargetException ex) {
             Logger.getLogger(CgmParser.class.getName()).log(Level.SEVERE, elementClass.getSimpleName(), ex);
         }
         return null;
     }
 
-    private static AbstractElement instantiateElementWithElementId(Class elementClass, CgmIdentifier elementId) {
+    private static AbstractElement instantiateElementWithElementId(final Class elementClass, final CgmIdentifier elementId) {
         try {
             Constructor<AbstractElement> constructor = elementClass.getDeclaredConstructor(CgmIdentifier.class);
             return constructor.newInstance(elementId);
@@ -258,12 +275,17 @@ public class CgmParser {
         // SEGMENT_PICK_PRIORITY prohibited in BIIF Profile BPCGM01.10
     }
 
-    public CgmParser(NitfGraphicSegment graphicSegment) {
+    /**
+     * Constructor.
+     *
+     * @param graphicSegment the segment to parse
+     */
+    public CgmParser(final NitfGraphicSegment graphicSegment) {
         dataReader = new CgmInputReader(graphicSegment);
     }
 
-    void buildCommandList() throws IOException {
-        
+    final void buildCommandList() throws IOException {
+
         AbstractElement element;
         do {
             int commandHeader = dataReader.readUnsignedShort();
@@ -280,42 +302,42 @@ public class CgmParser {
         } while (!element.matches(CgmIdentifier.END_METAFILE));
     }
 
-    void dump() {
+    final void dump() {
         for (AbstractElement command : commands) {
             System.out.println("Command: " + command.getFriendlyName());
             command.dumpParameters();
         }
     }
 
-    private void skipOverPadOctetIfNecessary(int parameterListLength) throws IOException {
+    private void skipOverPadOctetIfNecessary(final int parameterListLength) throws IOException {
         if (parameterListLength % 2 != 0) {
             // Skip over the undeclared pad octet
             dataReader.skipBytes(1);
         }
     }
 
-    private int getParameterListLength(int commandHeader) throws IOException {
-        int parameterListLength = commandHeader & 0x001F;
-        if (parameterListLength == 31) {
+    private int getParameterListLength(final int commandHeader) throws IOException {
+        int parameterListLength = commandHeader & PARAMETER_LIST_LENGTH_BITMASK;
+        if (parameterListLength == LONG_FORM_LENGTH_INDICATOR) {
             int longFormWord2 = dataReader.readUnsignedShort();
-            if ((longFormWord2 & 0x8000) == 0x8000) {
+            if ((longFormWord2 & NOT_LAST_PARTITION_FLAG_BIT) == NOT_LAST_PARTITION_FLAG_BIT) {
                 // Don't know how to handle this case yet
                 System.out.println("Not last partition");
             }
-            parameterListLength = longFormWord2 & 0x7FFF;
+            parameterListLength = longFormWord2 & LONG_FORM_WORD_LENGTH_BITMASK;
         }
         return parameterListLength;
     }
 
-    private static int getElementId(int commandHeader) {
-        return (commandHeader & 0x0FE0) >> 5;
+    private static int getElementId(final int commandHeader) {
+        return (commandHeader & ELEMENT_ID_BITMASK) >> ELEMENT_ID_BIT_SHIFT;
     }
 
-    private static int getElementClass(int commandHeader) {
-        return (commandHeader & 0xF000) >> 12;
+    private static int getElementClass(final int commandHeader) {
+        return (commandHeader & ELEMENT_CLASS_BIT_MASK) >> ELEMENT_CLASS_BIT_SHIFT;
     }
 
-    List<AbstractElement> getCommandList() {
+    final List<AbstractElement> getCommandList() {
         return commands;
     }
 }

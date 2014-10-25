@@ -34,7 +34,7 @@ abstract class StringFixedArgumentElement extends ElementHelpers implements Abst
 
     private String text;
 
-    protected StringFixedArgumentElement(CgmIdentifier cgmIdentifier) {
+    protected StringFixedArgumentElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
 

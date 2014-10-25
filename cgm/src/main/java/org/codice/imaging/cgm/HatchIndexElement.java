@@ -27,16 +27,15 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 
-
-public class HatchIndexElement extends CommonIndexedElement {
+class HatchIndexElement extends CommonIndexedElement {
 
     public HatchIndexElement() {
         super(CgmIdentifier.HATCH_INDEX);
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         graphicState.setHatchIndex(indexedValue);
     }
-    
+
 }

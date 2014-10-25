@@ -27,20 +27,14 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 
-
 class EdgeColourElement extends CommonColourElement {
 
     public EdgeColourElement() {
         super(CgmIdentifier.EDGE_COLOUR);
     }
-    
-    /**
-     *
-     * @param g2
-     * @param graphicState
-     */
+
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         graphicState.setEdgeColour(colour);
     }
 }

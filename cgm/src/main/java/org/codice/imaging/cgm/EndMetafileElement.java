@@ -26,10 +26,10 @@
 package org.codice.imaging.cgm;
 
 
-public class EndMetafileElement extends NoArgumentsElement implements AbstractElement {
+class EndMetafileElement extends NoArgumentsElement implements AbstractElement {
 
     public EndMetafileElement() {
         super(CgmIdentifier.END_METAFILE);
     }
-    
+
 }

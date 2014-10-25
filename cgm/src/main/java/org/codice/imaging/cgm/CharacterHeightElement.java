@@ -32,13 +32,13 @@ import java.io.IOException;
 class CharacterHeightElement extends ElementHelpers implements AbstractElement {
 
     private int characterHeight;
-    
+
     public CharacterHeightElement() {
         super(CgmIdentifier.CHARACTER_HEIGHT);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         characterHeight = dataReader.readSignedIntegerAtVdcIntegerPrecision();
     }
 
@@ -48,7 +48,7 @@ class CharacterHeightElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         graphicState.setCharacterHeight(characterHeight);
     }
 }

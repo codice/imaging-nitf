@@ -28,12 +28,10 @@ package org.codice.imaging.cgm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- */
-public enum CgmIdentifier {
-           
+enum CgmIdentifier {
+
     UNKNOWN(CgmClass.PSEUDO, -1, "UNKNOWN"),
-    
+
     // These can only appear in the METAFILE ELEMENTS LIST
     DRAWING_SET(CgmClass.PSEUDO, 0, "DRAWING SET"),
     DRAWING_PLUS_CONTROL_SET(CgmClass.PSEUDO, 1, "DRAWING SET PLUS CONTROL SET"),
@@ -68,7 +66,7 @@ public enum CgmIdentifier {
     METAFILE_ELEMENT_LIST(CgmClass.METAFILE_DESCRIPTOR, 11, "METAFILE ELEMENT LIST"),
     METAFILE_DEFAULTS_REPLACEMENT(CgmClass.METAFILE_DESCRIPTOR, 12, "METAFILE DEFAULTS REPLACEMENT"),
     FONT_LIST(CgmClass.METAFILE_DESCRIPTOR, 13, "FONT LIST"),
-    
+
     SCALING_MODE(CgmClass.PICTURE_DESCRIPTOR, 1, "SCALING MODE"),
     COLOUR_SELECTION_MODE(CgmClass.PICTURE_DESCRIPTOR, 2, "COLOUR SELECTION MODE"),
     LINE_WIDTH_SPECIFICATION_MODE(CgmClass.PICTURE_DESCRIPTOR, 3, "LINE WIDTH SPECIFICATION MODE"),
@@ -89,7 +87,7 @@ public enum CgmIdentifier {
     HATCH_STYLE_DEFINITION(CgmClass.PICTURE_DESCRIPTOR, 18, "HATCH STYLE DEFINITION"),
     GEOMETRIC_PATTERN_DEFINITION(CgmClass.PICTURE_DESCRIPTOR, 19, "GEOMETRIC PATTERN DEFINITION"),
     APPLICATION_STRUCTURE_DIRECTORY(CgmClass.PICTURE_DESCRIPTOR, 20, "APPLICATION STRUCTURE DIRECTORY"),
-    
+
     POLYLINE(CgmClass.GRAPHICAL_PRIMITIVE, 1, "POLYLINE"),
     DISJOINT_POLYLINE(CgmClass.GRAPHICAL_PRIMITIVE, 2, "DISJOINT POLYLINE"),
     POLYMARKER(CgmClass.GRAPHICAL_PRIMITIVE, 3, "POLYMARKER"),
@@ -180,7 +178,7 @@ public enum CgmIdentifier {
     // clear text encoding?
 
     /**
-     * Constructor
+     * Constructor.
      */
      CgmIdentifier(final CgmClass classIdentifier, final int identifier, final String label) {
         classId = classIdentifier;
@@ -188,7 +186,7 @@ public enum CgmIdentifier {
         friendlyName = label;
     }
 
-    static CgmIdentifier findIdentifier(int elementClass, int elementId) {
+    static CgmIdentifier findIdentifier(final int elementClass, final int elementId) {
         // System.out.println(String.format("Searching for for %d:%d", elementClass, elementId));
         for (CgmIdentifier cgmIdentifier : values()) {
             if ((cgmIdentifier.classId.getClassIdentifier() == elementClass) && (cgmIdentifier.id == elementId)) {

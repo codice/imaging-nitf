@@ -33,14 +33,14 @@ import java.util.List;
 
 class MetafileElementsListElement extends ElementHelpers implements AbstractElement {
 
-    List<CgmIdentifier> elementsList = new ArrayList<>();
+    private final List<CgmIdentifier> elementsList = new ArrayList<>();
 
     public MetafileElementsListElement() {
         super(CgmIdentifier.METAFILE_ELEMENT_LIST);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         int numElementsSpecified = dataReader.readSignedIntegerAtIntegerPrecision();
         for (int i = 0; i < numElementsSpecified; ++i) {
             int elementClass = dataReader.readSignedIntegerAtIndexPrecision();
@@ -52,13 +52,13 @@ class MetafileElementsListElement extends ElementHelpers implements AbstractElem
 
     @Override
     public void dumpParameters() {
-        for(CgmIdentifier identifier : elementsList) {
+        for (CgmIdentifier identifier : elementsList) {
             System.out.println("\tElement: " + identifier.getFriendlyName());
         }
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         // Nothing
     }
 

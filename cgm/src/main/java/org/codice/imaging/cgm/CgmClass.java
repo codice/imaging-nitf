@@ -25,10 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
-/**
- *
- */
-public enum CgmClass {
+enum CgmClass {
     PSEUDO(-1),
     DELIMITER(0),
     METAFILE_DESCRIPTOR(1),
@@ -41,7 +38,7 @@ public enum CgmClass {
     SEGMENT(8),
     APPLICATION_STRUCTURE_DESCRIPTOR(9);
 
-    static CgmClass lookup(int elementClass) {
+    static CgmClass lookup(final int elementClass) {
         for (CgmClass cgmClass : values()) {
             if (cgmClass.getClassIdentifier() == elementClass) {
                 return cgmClass;

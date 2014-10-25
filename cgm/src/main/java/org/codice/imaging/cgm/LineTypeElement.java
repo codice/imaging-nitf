@@ -34,7 +34,7 @@ class LineTypeElement extends CommonIndexedElement implements AbstractElement {
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         graphicState.setLineType(indexedValue);
     }
 }

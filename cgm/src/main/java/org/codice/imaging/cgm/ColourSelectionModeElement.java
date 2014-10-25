@@ -34,11 +34,11 @@ import org.slf4j.LoggerFactory;
  *
  */
 class ColourSelectionModeElement extends ElementHelpers implements AbstractElement {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ColourSelectionModeElement.class);
-    
+
     private Mode mode = Mode.INDEXED_COLOUR_MODE;
-    
+
     ColourSelectionModeElement() {
         super(CgmIdentifier.COLOUR_SELECTION_MODE);
     }
@@ -49,7 +49,7 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
     }
 
     @Override
-    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader inputReader, final int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
         switch (data) {
             case 0:
@@ -70,8 +70,8 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Colour selection mode always has to be "1" (for direct colour mode) in 
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
+        // Colour selection mode always has to be "1" (for direct colour mode) in
         // BIIF profile BPCGM01.10, so this has no effect
     }
 

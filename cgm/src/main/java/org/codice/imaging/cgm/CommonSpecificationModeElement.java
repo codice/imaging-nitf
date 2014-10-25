@@ -29,15 +29,16 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author bradh
- */
 abstract class CommonSpecificationModeElement extends ElementHelpers implements AbstractElement {
     private static final Logger LOG = LoggerFactory.getLogger(CommonSpecificationModeElement.class);
-    
+
+    private static final int LINE_WIDTH_MODE_ABSOLUTE = 0;
+    private static final int LINE_WIDTH_MODE_SCALED = 1;
+    private static final int LINE_WIDTH_MODE_FRACTIONAL = 2;
+    private static final int LINE_WIDTH_MODE_MM = 3;
+
     protected Mode mode = Mode.ABSOLUTE;
-    
+
     enum Mode {
         ABSOLUTE,
         SCALED,
@@ -45,24 +46,24 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
         MILLIMETRES
     }
 
-    protected CommonSpecificationModeElement(CgmIdentifier cgmIdentifier) {
+    protected CommonSpecificationModeElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
-    
+
     @Override
-    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader inputReader, final int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
         switch (data) {
-            case 0:
+            case LINE_WIDTH_MODE_ABSOLUTE:
                 mode = LineWidthSpecificationModeElement.Mode.ABSOLUTE;
                 break;
-            case 1:
+            case LINE_WIDTH_MODE_SCALED:
                 mode = LineWidthSpecificationModeElement.Mode.SCALED;
                 break;
-            case 2:
+            case LINE_WIDTH_MODE_FRACTIONAL:
                 mode = LineWidthSpecificationModeElement.Mode.FRACTIONAL;
                 break;
-            case 3:
+            case LINE_WIDTH_MODE_MM:
                 mode = LineWidthSpecificationModeElement.Mode.MILLIMETRES;
                 break;
             default:
@@ -70,7 +71,8 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
                 break;
         }
     }
-    
+
+
     @Override
     public void dumpParameters() {
         System.out.println("\t" + getFriendlyName() + ": " + mode);

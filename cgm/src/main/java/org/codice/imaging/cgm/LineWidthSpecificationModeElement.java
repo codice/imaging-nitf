@@ -27,9 +27,6 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 
-/**
- * 
- */
 class LineWidthSpecificationModeElement extends CommonSpecificationModeElement implements AbstractElement {
 
     LineWidthSpecificationModeElement() {
@@ -37,8 +34,8 @@ class LineWidthSpecificationModeElement extends CommonSpecificationModeElement i
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
-        // Line width specification mode always has to be "0" (for absolute mode) in 
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
+        // Line width specification mode always has to be "0" (for absolute mode) in
         // BIIF profile BPCGM01.10, so this has no effect
     }
 

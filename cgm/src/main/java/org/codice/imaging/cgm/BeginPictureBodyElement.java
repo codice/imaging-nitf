@@ -26,10 +26,10 @@
 package org.codice.imaging.cgm;
 
 
-class BeginPictureBodyElement extends NoArgumentsElement implements AbstractElement{
+class BeginPictureBodyElement extends NoArgumentsElement implements AbstractElement {
 
     public BeginPictureBodyElement() {
         super(CgmIdentifier.BEGIN_PICTURE_BODY);
     }
-    
+
 }

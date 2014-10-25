@@ -8,6 +8,10 @@
     </parent>
     <artifactId>nitfNetbeansFileType</artifactId>
     <packaging>nbm</packaging>
+
+    <name>Codice Imaging: NITF NetBeans File Type Plugin</name>
+    <url>http://www.codice.org</url>
+
     <build>
         <plugins>
             <plugin>

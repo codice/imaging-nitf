@@ -33,23 +33,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PolygonSetElement extends ElementHelpers {
-    List<Point> points = new ArrayList<>();
-    List<Integer> edgeOutFlags = new ArrayList<>();
-        
+class PolygonSetElement extends ElementHelpers {
+    private final List<Point> points = new ArrayList<>();
+    private final List<Integer> edgeOutFlags = new ArrayList<>();
+
     public PolygonSetElement() {
         super(CgmIdentifier.POLYGON_SET);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         int bytesRead = 0;
         while (bytesRead < parameterListLength) {
             Point point = dataReader.readPoint();
             points.add(point);
-            bytesRead += 4;
+            bytesRead += dataReader.getNumberOfBytesInPoint();
             int edgeOutFlag = dataReader.readEnumValue();
-            bytesRead += 2;
+            bytesRead += dataReader.getNumberOfBytesInEnumValue();
             edgeOutFlags.add(edgeOutFlag);
         }
     }
@@ -63,7 +63,7 @@ public class PolygonSetElement extends ElementHelpers {
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         System.out.println("figure out how to render edge out flags");
         applyFilledPrimitiveAttributes(g2, graphicState);
         Polygon polygon = new Polygon();
@@ -73,5 +73,5 @@ public class PolygonSetElement extends ElementHelpers {
         }
         g2.draw(polygon);
     }
-    
+
 }

@@ -35,10 +35,18 @@ import org.slf4j.LoggerFactory;
  *
  */
 class InteriorStyleElement extends ElementHelpers implements AbstractElement {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(InteriorStyleElement.class);
     private Mode mode = Mode.HOLLOW;
-    
+
+    private static final int STYLE_HOLLOW = 0;
+    private static final int STYLE_SOLID = 1;
+    private static final int STYLE_PATTERN = 2;
+    private static final int STYLE_HATCH = 3;
+    private static final int STYLE_EMPTY = 4;
+    private static final int STYLE_GEOMETRIC_PATTERN = 5;
+    private static final int STYLE_INTERPOLATED = 6;
+
     InteriorStyleElement() {
         super(CgmIdentifier.INTERIOR_STYLE);
     }
@@ -54,28 +62,28 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader inputReader, final int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
         switch (data) {
-            case 0:
+            case STYLE_HOLLOW:
                 mode = Mode.HOLLOW;
                 break;
-            case 1:
+            case STYLE_SOLID:
                 mode = Mode.SOLID;
                 break;
-            case 2:
+            case STYLE_PATTERN:
                 mode = Mode.PATTERN;
                 break;
-            case 3:
+            case STYLE_HATCH:
                 mode = Mode.HATCH;
                 break;
-            case 4:
+            case STYLE_EMPTY:
                 mode = Mode.EMPTY;
                 break;
-            case 5:
+            case STYLE_GEOMETRIC_PATTERN:
                 mode = Mode.GEOMETRIC_PATTERN;
                 break;
-            case 6:
+            case STYLE_INTERPOLATED:
                 mode = Mode.INTERPOLATED;
                 break;
             default:
@@ -88,9 +96,9 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
     public void dumpParameters() {
         System.out.println("\tInterior Style: " + mode);
     }
-    
+
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         System.out.println("TODO: render for " + getFriendlyName());
         dumpParameters();
     }

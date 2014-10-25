@@ -35,13 +35,13 @@ class CharacterOrientationElement extends ElementHelpers implements AbstractElem
     private int yCharacterUpComponent;
     private int xCharacterBaseComponent;
     private int yCharacterBaseComponent;
-    
+
     public CharacterOrientationElement() {
         super(CgmIdentifier.CHARACTER_ORIENTATION);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         xCharacterUpComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
         yCharacterUpComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
         xCharacterBaseComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
@@ -55,7 +55,7 @@ class CharacterOrientationElement extends ElementHelpers implements AbstractElem
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         // This could be smarter when we need to handle anything more complex than BIFF Profile BPCGM01.10
         if (graphicState.getVdcExtent().isIncreasingUp()) {
             graphicState.setCharacterOrientationInvertY(true);
@@ -63,5 +63,5 @@ class CharacterOrientationElement extends ElementHelpers implements AbstractElem
             graphicState.setCharacterOrientationInvertY(false);
         }
     }
-    
+
 }

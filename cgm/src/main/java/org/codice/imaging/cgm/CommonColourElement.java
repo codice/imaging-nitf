@@ -32,20 +32,20 @@ abstract class CommonColourElement extends ElementHelpers implements AbstractEle
 
     protected Color colour;
 
-    protected CommonColourElement(CgmIdentifier cgmIdentifier) {
+    protected CommonColourElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
-    
+
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         colour = dataReader.readColour(parameterListLength);
     }
-    
+
     @Override
     public void dumpParameters() {
         System.out.println("\tColour: " + colour);
     }
-    
+
     public Color getColour() {
         return colour;
     }

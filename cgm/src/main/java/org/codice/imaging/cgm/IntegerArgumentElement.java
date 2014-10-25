@@ -28,33 +28,26 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
-
 abstract class IntegerArgumentElement extends ElementHelpers implements AbstractElement {
 
     protected int argumentValue;
 
-    protected IntegerArgumentElement(CgmIdentifier cgmIdentifier) {
+    protected IntegerArgumentElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
 
-    /**
-     *
-     * @param dataReader
-     * @param parameterListLength
-     * @throws IOException
-     */
     @Override
-    public void readParameters(CgmInputReader dataReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         argumentValue = dataReader.readSignedIntegerAtIntegerPrecision();
     }
-    
+
     @Override
     public void dumpParameters() {
         System.out.println("\tRead integer: " + argumentValue);
     }
-    
+
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         // Nothing yet
     }
 }

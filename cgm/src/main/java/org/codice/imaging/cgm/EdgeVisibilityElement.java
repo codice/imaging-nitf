@@ -45,9 +45,9 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
     EdgeVisibilityElement() {
         super(CgmIdentifier.EDGE_VISIBILITY);
     }
-   
+
     @Override
-    public void readParameters(CgmInputReader inputReader, int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader inputReader, final int parameterListLength) throws IOException {
         int data = inputReader.readEnumValue();
         switch (data) {
             case 0:
@@ -66,9 +66,9 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
     public void dumpParameters() {
         System.out.println("\tEdge visibility: " + mode);
     }
-    
+
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         graphicState.setEdgeVisibility(mode);
     }
 

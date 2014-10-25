@@ -28,17 +28,14 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
-/**
- *
- */
 class NoArgumentsElement extends ElementHelpers implements AbstractElement {
 
-    NoArgumentsElement(CgmIdentifier cgmIdentifier) {
+    NoArgumentsElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
     }
 
     @Override
-    public void readParameters(CgmInputReader dataReader, final int parameterListLength) throws IOException {
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         if (parameterListLength != 0) {
             System.out.println("****Need to convert");
             dataReader.skipBytes(parameterListLength);
@@ -51,7 +48,7 @@ class NoArgumentsElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void render(Graphics2D g2, CgmGraphicState graphicState) {
+    public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         // Nothing
     }
 }

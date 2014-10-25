@@ -31,15 +31,16 @@ import java.awt.Graphics2D;
  *
  */
 abstract class ElementHelpers implements AbstractElement {
-    CgmIdentifier cgmIdent;
+    private final CgmIdentifier cgmIdent;
 
-    protected ElementHelpers(CgmIdentifier cgmIdentifier) {
+    protected ElementHelpers(final CgmIdentifier cgmIdentifier) {
         cgmIdent = cgmIdentifier;
     }
 
     @Override
     public boolean matches(final CgmIdentifier cgmIdentifier) {
-        return (cgmIdentifier.getClassIdentifier() == cgmIdent.getClassIdentifier()) && (cgmIdentifier.getElementIdentifier() == cgmIdent.getElementIdentifier());
+        return (cgmIdentifier.getClassIdentifier() == cgmIdent.getClassIdentifier())
+               && (cgmIdentifier.getElementIdentifier() == cgmIdent.getElementIdentifier());
     }
 
     @Override
@@ -47,7 +48,7 @@ abstract class ElementHelpers implements AbstractElement {
         return cgmIdent.getFriendlyName();
     }
 
-    protected void applyFilledPrimitiveAttributes(Graphics2D g2, CgmGraphicState graphicState) {
+    protected void applyFilledPrimitiveAttributes(final Graphics2D g2, final CgmGraphicState graphicState) {
         g2.setColor(graphicState.getEdgeColour());
         g2.setStroke(graphicState.getEdgeStroke());
     }
