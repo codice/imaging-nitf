@@ -12,6 +12,8 @@ import org.openide.nodes.Sheet;
 
 class NitfGraphicSegmentNode extends AbstractSegmentNode {
 
+    private static final String POINT_FORMATTER = "[%d, %d]";
+
     private final NitfGraphicSegment segment;
 
     public NitfGraphicSegmentNode(final NitfGraphicSegment nitfGraphicSegment) {
@@ -34,15 +36,15 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
         set.put(new StringProperty("graphicLocation",
                                    "Graphic Location",
                                    "The location of the graphic's origin point relative to the CCS, image or graphic to which it is attached.",
-                                   String.format("[%d, %d]", segment.getGraphicLocationColumn(), segment.getGraphicLocationRow())));
+                                   String.format(POINT_FORMATTER, segment.getGraphicLocationColumn(), segment.getGraphicLocationRow())));
         set.put(new StringProperty("firstGraphicBoundLocation",
                                    "First Graphic Bound Location",
                                    "The upper left corner of the bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.",
-                                   String.format("[%d, %d]", segment.getBoundingBox1Column(), segment.getBoundingBox1Row())));
+                                   String.format(POINT_FORMATTER, segment.getBoundingBox1Column(), segment.getBoundingBox1Row())));
         set.put(new StringProperty("secondGraphicBoundLocation",
                                    "Second Graphic Bound Location",
                                    "The lower right corner of the bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.",
-                                   String.format("[%d, %d]", segment.getBoundingBox2Column(), segment.getBoundingBox2Row())));
+                                   String.format(POINT_FORMATTER, segment.getBoundingBox2Column(), segment.getBoundingBox2Row())));
         set.put(new StringProperty("graphicColour",
                                    "Graphic Colour",
                                    "Flag for whether the CGM graphic has any colour ('C') or is monochrome ('M').",
