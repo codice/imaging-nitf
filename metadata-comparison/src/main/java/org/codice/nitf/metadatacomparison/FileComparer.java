@@ -489,7 +489,7 @@ public class FileComparer
                                 Integer rpcValue = Integer.parseInt(entry.getFieldValue());
                                 rpc.put(entry.getName(), rpcValue.toString());
                             }
-                        } else if ((entry.getGroups() != null) && (entry.getGroups().size() > 0)) {
+                        } else if ((entry.getGroups() != null) && (!entry.getGroups().isEmpty())) {
                             StringBuilder builder = new StringBuilder();
                             for (TreGroup group : entry.getGroups()) {
                                 for (TreEntry groupEntry : group.getEntries()) {
@@ -526,7 +526,7 @@ public class FileComparer
                 }
             }
         }
-        if (rpc.keySet().size() > 0) {
+        if (!rpc.keySet().isEmpty()) {
             out.write("RPC Metadata:\n");
             for (String tagname : rpc.keySet()) {
                 out.write(String.format("  %s=%s\n", tagname, rpc.get(tagname)));
@@ -626,7 +626,7 @@ public class FileComparer
             doIndent(out, indentLevel);
             out.write("<field name=\"" + entry.getName() + "\" value=\"" + rightTrim(entry.getFieldValue()) + "\" />\n");
         }
-        if ((entry.getGroups() != null) && (entry.getGroups().size() > 0)) {
+        if ((entry.getGroups() != null) && (!entry.getGroups().isEmpty())) {
             doIndent(out, indentLevel);
             out.write("<repeated name=\"" + entry.getName() + "\" number=\"" + entry.getGroups().size() + "\">\n");
             int i = 0;
@@ -760,7 +760,9 @@ public class FileComparer
                             done = true;
                             break;
                         }
-                        out.write(line + "\n");
+                        if (out != null) {
+                            out.write(line + "\n");
+                        }
                     } while (infoOutputReader.ready() && (!done));
                     Thread.sleep(100);
                 } while (!done);
@@ -769,7 +771,9 @@ public class FileComparer
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            out.close();
+            if (out != null) {
+                out.close();
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -783,7 +787,7 @@ public class FileComparer
 
         Patch<String> patch = DiffUtils.diff(theirs, ours);
 
-        if (patch.getDeltas().size() > 0) {
+        if (!patch.getDeltas().isEmpty()) {
             for (Delta<String> delta: patch.getDeltas()) {
                     System.out.println(delta);
             }
