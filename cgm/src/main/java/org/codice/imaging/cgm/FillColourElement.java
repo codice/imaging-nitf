@@ -35,7 +35,9 @@ class FillColourElement extends CommonColourElement implements AbstractElement {
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         System.out.println("TODO: render for " + getFriendlyName());
-        dumpParameters();
+        StringBuilder builder = new StringBuilder();
+        addStringDescription(builder);
+        System.out.print(builder.toString());
     }
 
 }

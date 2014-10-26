@@ -29,9 +29,13 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 class CircleElement extends ElementHelpers implements AbstractElement {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CircleElement.class);
 
     private Point centre;
     private int radius;
@@ -47,9 +51,13 @@ class CircleElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tCentre: " + centre);
-        System.out.println("\tRadius: " + radius);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tCentre: ");
+        builder.append(centre);
+        builder.append(System.lineSeparator());
+        builder.append("\tRadius: ");
+        builder.append(radius);
+        builder.append(System.lineSeparator());
     }
 
     @Override

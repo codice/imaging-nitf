@@ -43,8 +43,9 @@ class NoArgumentsElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
-        // Nothing to dump
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append(getFriendlyName());
+        builder.append(System.lineSeparator());
     }
 
     @Override

@@ -50,9 +50,11 @@ class FontListElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
+    public void addStringDescription(final StringBuilder builder) {
         for (String fontName : fonts) {
-            System.out.println("\tFont: " + fontName);
+            builder.append("\tFont: ");
+            builder.append(fontName);
+            builder.append(System.lineSeparator());
         }
     }
 

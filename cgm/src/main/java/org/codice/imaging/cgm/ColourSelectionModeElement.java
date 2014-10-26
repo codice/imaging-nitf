@@ -65,8 +65,10 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tColour Selection Mode: " + mode);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tColour Selection Mode: ");
+        builder.append(mode);
+        builder.append(System.lineSeparator());
     }
 
     @Override

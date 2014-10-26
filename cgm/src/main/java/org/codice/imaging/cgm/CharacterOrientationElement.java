@@ -27,9 +27,12 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 class CharacterOrientationElement extends ElementHelpers implements AbstractElement {
+    private static final Logger LOG = LoggerFactory.getLogger(CharacterOrientationElement.class);
 
     private int xCharacterUpComponent;
     private int yCharacterUpComponent;
@@ -48,10 +51,10 @@ class CharacterOrientationElement extends ElementHelpers implements AbstractElem
         yCharacterBaseComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
     }
 
-    @Override
-    public void dumpParameters() {
-        System.out.println(String.format("\tUp vector: %d, %d", xCharacterUpComponent, yCharacterUpComponent));
-        System.out.println(String.format("\tBaseline vector: %d, %d", xCharacterBaseComponent, yCharacterBaseComponent));
+@Override
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append(String.format("\tUp vector: %d, %d", xCharacterUpComponent, yCharacterUpComponent));
+        builder.append(String.format("\tBaseline vector: %d, %d", xCharacterBaseComponent, yCharacterBaseComponent));
     }
 
     @Override

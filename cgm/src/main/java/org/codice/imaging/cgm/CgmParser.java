@@ -304,10 +304,16 @@ public class CgmParser {
     }
 
     final void dump() {
+        StringBuilder builder = new StringBuilder();
+
         for (AbstractElement command : commands) {
-            System.out.println("Command: " + command.getFriendlyName());
-            command.dumpParameters();
+            builder.append("Command: ");
+            builder.append(command.getFriendlyName());
+            builder.append(System.lineSeparator());
+            command.addStringDescription(builder);
         }
+
+        System.out.print(builder.toString());
     }
 
     private void skipOverPadOctetIfNecessary(final int parameterListLength) throws IOException {

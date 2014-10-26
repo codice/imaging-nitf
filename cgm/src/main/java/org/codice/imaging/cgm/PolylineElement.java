@@ -46,9 +46,11 @@ class PolylineElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
+    public void addStringDescription(final StringBuilder builder) {
         for (Point point : points) {
-            System.out.println("\tPoint: " + point);
+            builder.append("\tPoint: ");
+            builder.append(point);
+            builder.append(System.lineSeparator());
         }
     }
 

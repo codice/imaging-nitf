@@ -42,8 +42,10 @@ abstract class CommonIndexedElement extends ElementHelpers implements AbstractEl
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tIndexed value: " + indexedValue);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tIndexed value: ");
+        builder.append(indexedValue);
+        builder.append(System.lineSeparator());
     }
 
 }

@@ -27,9 +27,12 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 class CharacterHeightElement extends ElementHelpers implements AbstractElement {
+    private static final Logger LOG = LoggerFactory.getLogger(CharacterHeightElement.class);
 
     private int characterHeight;
 
@@ -43,8 +46,10 @@ class CharacterHeightElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tCharacter height: " + characterHeight);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tCharacter height: ");
+        builder.append(characterHeight);
+        builder.append(System.lineSeparator());
     }
 
     @Override

@@ -48,7 +48,9 @@ abstract class StringFixedArgumentElement extends ElementHelpers implements Abst
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tRead text:" + text);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tText: ");
+        builder.append(text);
+        builder.append(System.lineSeparator());
     }
 }

@@ -55,10 +55,14 @@ class PolygonSetElement extends ElementHelpers {
     }
 
     @Override
-    public void dumpParameters() {
+    public void addStringDescription(final StringBuilder builder) {
         for (int pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
-            System.out.println("\tPoint: " + points.get(pointIndex));
-            System.out.println("\tEdge out flag:" + edgeOutFlags.get(pointIndex));
+            builder.append("\tPoint: ");
+            builder.append(points.get(pointIndex));
+            builder.append(System.lineSeparator());
+            builder.append("\tEdge out flag: ");
+            builder.append(edgeOutFlags.get(pointIndex));
+            builder.append(System.lineSeparator());
         }
     }
 

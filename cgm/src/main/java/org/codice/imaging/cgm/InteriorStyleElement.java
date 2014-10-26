@@ -93,14 +93,18 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tInterior Style: " + mode);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tInterior Style: ");
+        builder.append(mode);
+        builder.append(System.lineSeparator());
     }
 
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
         System.out.println("TODO: render for " + getFriendlyName());
-        dumpParameters();
+        StringBuilder builder = new StringBuilder();
+        addStringDescription(builder);
+        System.out.print(builder.toString());
     }
 
 }

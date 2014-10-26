@@ -42,7 +42,9 @@ abstract class CommonSizeSpecificationElement extends ElementHelpers {
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tSize:" + size);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tSize: ");
+        builder.append(size);
+        builder.append(System.lineSeparator());
     }
 }

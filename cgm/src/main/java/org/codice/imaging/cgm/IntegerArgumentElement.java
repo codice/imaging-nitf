@@ -42,8 +42,10 @@ abstract class IntegerArgumentElement extends ElementHelpers implements Abstract
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tRead integer: " + argumentValue);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tRead integer: ");
+        builder.append(argumentValue);
+        builder.append(System.lineSeparator());
     }
 
     @Override

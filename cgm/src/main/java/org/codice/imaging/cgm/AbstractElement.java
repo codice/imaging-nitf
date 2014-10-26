@@ -35,7 +35,7 @@ interface AbstractElement {
 
     String getFriendlyName();
 
-    void dumpParameters();
+    void addStringDescription(final StringBuilder builder);
 
-    void render(Graphics2D g2, CgmGraphicState graphicState);
+    void render(final Graphics2D g2, final CgmGraphicState graphicState);
 }

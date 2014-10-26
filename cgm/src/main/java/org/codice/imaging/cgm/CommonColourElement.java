@@ -42,8 +42,10 @@ abstract class CommonColourElement extends ElementHelpers implements AbstractEle
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tColour: " + colour);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tColour: ");
+        builder.append(colour);
+        builder.append(System.lineSeparator());
     }
 
     public Color getColour() {

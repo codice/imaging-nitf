@@ -48,8 +48,14 @@ class TextElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tText: " + textPosition + "|" + isFinal + " : " + text);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tText: ");
+        builder.append(textPosition);
+        builder.append("|");
+        builder.append(isFinal);
+        builder.append(" : ");
+        builder.append(text);
+        builder.append(System.lineSeparator());
     }
 
     public String getText() {

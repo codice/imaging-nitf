@@ -49,8 +49,10 @@ class VdcExtentElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tVDC Extent: " + vdcExtent.toString());
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tVDC Extent: ");
+        builder.append(vdcExtent.toString());
+        builder.append(System.lineSeparator());
     }
 
     @Override

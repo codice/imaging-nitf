@@ -63,8 +63,10 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
     }
 
     @Override
-    public void dumpParameters() {
-        System.out.println("\tEdge visibility: " + mode);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\tEdge visibility: ");
+        builder.append(mode);
+        builder.append(System.lineSeparator());
     }
 
     @Override

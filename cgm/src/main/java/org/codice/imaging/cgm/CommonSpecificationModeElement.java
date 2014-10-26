@@ -72,9 +72,12 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
         }
     }
 
-
     @Override
-    public void dumpParameters() {
-        System.out.println("\t" + getFriendlyName() + ": " + mode);
+    public void addStringDescription(final StringBuilder builder) {
+        builder.append("\t");
+        builder.append(getFriendlyName());
+        builder.append(": ");
+        builder.append(mode);
+        builder.append(System.lineSeparator());
     }
 }

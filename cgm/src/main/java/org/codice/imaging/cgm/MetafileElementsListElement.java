@@ -51,9 +51,11 @@ class MetafileElementsListElement extends ElementHelpers implements AbstractElem
     }
 
     @Override
-    public void dumpParameters() {
+    public void addStringDescription(final StringBuilder builder) {
         for (CgmIdentifier identifier : elementsList) {
-            System.out.println("\tElement: " + identifier.getFriendlyName());
+            builder.append("\tElement: ");
+            builder.append(identifier.getFriendlyName());
+            builder.append(System.lineSeparator());
         }
     }
 
