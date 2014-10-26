@@ -12,7 +12,7 @@ import org.openide.nodes.PropertySupport;
 class DateProperty extends PropertySupport.ReadOnly<Date> {
     private final Date value;
 
-    public DateProperty(String name, String displayName, String shortDescription, Date result) {
+    public DateProperty(final String name, final String displayName, final String shortDescription, final Date result) {
         super(name, Date.class, displayName, shortDescription);
         value = result;
     }

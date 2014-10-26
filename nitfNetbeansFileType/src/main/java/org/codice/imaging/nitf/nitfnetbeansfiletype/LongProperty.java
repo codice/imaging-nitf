@@ -11,7 +11,7 @@ import org.openide.nodes.PropertySupport;
 class LongProperty extends PropertySupport.ReadOnly<Long> {
     private final Long value;
 
-    public LongProperty(String name, String displayName, String shortDescription, long result) {
+    public LongProperty(final String name, final String displayName, final String shortDescription, final long result) {
         super(name, Long.class, displayName, shortDescription);
         value = result;
     }

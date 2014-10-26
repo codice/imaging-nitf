@@ -17,7 +17,6 @@ import org.openide.awt.ActionReferences;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.MIMEResolver;
 import org.openide.loaders.DataObject;
-import org.openide.loaders.DataObjectExistsException;
 import org.openide.loaders.MultiDataObject;
 import org.openide.loaders.MultiFileLoader;
 import org.openide.nodes.Children;
@@ -30,8 +29,9 @@ import org.openide.util.NbBundle.Messages;
 @MIMEResolver.ExtensionRegistration(
         displayName = "#LBL_Nitf_LOADER",
         mimeType = "image/nitf",
-        extension = {"ntf", "NTF", "nsf", "NSF"}
+        extension = {"ntf", "NTF", "nsf", "NSF" }
 )
+// CSOFF: MagicNumber
 @DataObject.Registration(
         mimeType = "image/nitf",
         iconBase = "org/codice/imaging/nitf/nitfnetbeansfiletype/world-16.png",
@@ -90,16 +90,17 @@ import org.openide.util.NbBundle.Messages;
             position = 1400
     )
 })
+// CSON: MagicNumber
 class NitfDataObject extends MultiDataObject {
 
     private Nitf nitf;
 
-    public NitfDataObject(FileObject pf, MultiFileLoader loader) throws IOException {
+    public NitfDataObject(final FileObject pf, final MultiFileLoader loader) throws IOException {
         super(pf, loader);
         registerEditor("image/nitf", false);
         FileObject fObj = getPrimaryFile();
         try {
-            nitf = NitfFileFactory.parseHeadersOnly(new FileInputStream(fObj.getPath()));                
+            nitf = NitfFileFactory.parseHeadersOnly(new FileInputStream(fObj.getPath()));
         } catch (ParseException | FileNotFoundException e) {
             throw new IOException(e);
         }
@@ -109,7 +110,7 @@ class NitfDataObject extends MultiDataObject {
     protected int associateLookup() {
         return 1;
     }
- 
+
     @Override
     protected Node createNodeDelegate() {
         return new NitfFileNode(this, Children.create(new NitfChildFactory(nitf), true), getLookup());

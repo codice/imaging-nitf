@@ -8,7 +8,6 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.util.List;
 import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
 import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 import org.codice.imaging.nitf.core.NitfImageSegment;
 import org.codice.imaging.nitf.core.NitfTextSegment;
@@ -21,12 +20,12 @@ class NitfChildFactory extends ChildFactory<AbstractNitfSubSegment> {
 
     private final Nitf nitf;
 
-    public NitfChildFactory(Nitf nitfData) {
+    public NitfChildFactory(final Nitf nitfData) {
         nitf = nitfData;
     }
 
     @Override
-    protected boolean createKeys(List list) {
+    protected boolean createKeys(final List list) {
         list.addAll(nitf.getImageSegments());
         list.addAll(nitf.getGraphicSegments());
         list.addAll(nitf.getTextSegments());
@@ -35,13 +34,13 @@ class NitfChildFactory extends ChildFactory<AbstractNitfSubSegment> {
     }
 
     @Override
-    protected Node createNodeForKey(AbstractNitfSubSegment key) {
+    protected Node createNodeForKey(final AbstractNitfSubSegment key) {
         if (key instanceof NitfImageSegment) {
-            return new NitfImageSegmentNode((NitfImageSegment)key);
+            return new NitfImageSegmentNode((NitfImageSegment) key);
         } else if (key instanceof NitfGraphicSegment) {
-            return new NitfGraphicSegmentNode((NitfGraphicSegment)key);
+            return new NitfGraphicSegmentNode((NitfGraphicSegment) key);
         } else if (key instanceof NitfTextSegment) {
-            return new NitfTextSegmentNode((NitfTextSegment)key);
+            return new NitfTextSegmentNode((NitfTextSegment) key);
         } else {
             Node childNode = new AbstractNode(Children.LEAF);
             childNode.setDisplayName(key.getClass().getSimpleName() + " : " + key.getIdentifier());

@@ -11,7 +11,7 @@ import org.openide.nodes.PropertySupport;
 class StringProperty extends PropertySupport.ReadOnly<String> {
     private final String value;
 
-    public StringProperty(String name, String displayName, String shortDescription, String result) {
+    public StringProperty(final String name, final String displayName, final String shortDescription, final String result) {
         super(name, String.class, displayName, shortDescription);
         value = result;
     }

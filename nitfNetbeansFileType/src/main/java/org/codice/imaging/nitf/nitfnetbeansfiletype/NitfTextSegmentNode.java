@@ -9,8 +9,8 @@ import org.codice.imaging.nitf.core.NitfTextSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 
-public class NitfTextSegmentNode extends AbstractSegmentNode {
-    
+class NitfTextSegmentNode extends AbstractSegmentNode {
+
     private final NitfTextSegment segment;
 
     public NitfTextSegmentNode(final NitfTextSegment nitfTextSegment) {
@@ -18,16 +18,25 @@ public class NitfTextSegmentNode extends AbstractSegmentNode {
         segment = nitfTextSegment;
         setDisplayName("Text Segment: " + segment.getIdentifier());
     }
-    
+
    @Override
     protected Sheet createSheet() {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
         addSubSegmentProperties(set, segment);
-        set.put(new DateProperty("textDateTime", "Text Date and Time", "Date and time of this origination of the text.", segment.getTextDateTime().toDate()));
-        set.put(new StringProperty("textTitle", "Text Title", "The title of the text item", segment.getTextTitle()));
-        set.put(new StringProperty("textFormat", "Text Format", "Three-character code indicating the format of type of text data.", segment.getTextFormat().toString()));
+        set.put(new DateProperty("textDateTime",
+                "Text Date and Time",
+                "Date and time of this origination of the text.",
+                segment.getTextDateTime().toDate()));
+        set.put(new StringProperty("textTitle",
+                "Text Title",
+                "The title of the text item",
+                segment.getTextTitle()));
+        set.put(new StringProperty("textFormat",
+                "Text Format",
+                "Three-character code indicating the format of type of text data.",
+                segment.getTextFormat().toString()));
         return sheet;
     }
 }

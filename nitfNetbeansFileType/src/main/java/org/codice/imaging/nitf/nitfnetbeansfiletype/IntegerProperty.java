@@ -11,7 +11,7 @@ import org.openide.nodes.PropertySupport;
 class IntegerProperty extends PropertySupport.ReadOnly<Integer> {
     private final Integer value;
 
-    public IntegerProperty(String name, String displayName, String shortDescription, int result) {
+    public IntegerProperty(final String name, final String displayName, final String shortDescription, final int result) {
         super(name, Integer.class, displayName, shortDescription);
         value = result;
     }
