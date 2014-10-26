@@ -111,6 +111,7 @@ class NitfDataObject extends MultiDataObject {
         try {
             nitf = NitfFileFactory.parseHeadersOnly(new FileInputStream(fObj.getPath()));
         } catch (ParseException | FileNotFoundException e) {
+            System.out.println("NitfDataObject Exception:" + e);
             throw new IOException(e);
         }
     }

@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 /**
     Common data elements for NITF segment subheaders.
 */
-abstract class AbstractCommonNitfSegment extends AbstractNitfSegment {
+public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment {
 
     private String segmentIdentifier = null;
     private NitfSecurityMetadata securityMetadata = null;
