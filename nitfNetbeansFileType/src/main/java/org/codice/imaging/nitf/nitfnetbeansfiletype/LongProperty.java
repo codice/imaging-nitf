@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import java.lang.reflect.InvocationTargetException;
 import org.openide.nodes.PropertySupport;
 
 class LongProperty extends PropertySupport.ReadOnly<Long> {
@@ -26,7 +25,7 @@ class LongProperty extends PropertySupport.ReadOnly<Long> {
     }
 
     @Override
-    public Long getValue() throws IllegalAccessException, InvocationTargetException {
+    public Long getValue() {
         return value;
     }
 }

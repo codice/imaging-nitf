@@ -22,6 +22,8 @@ import org.openide.nodes.Sheet;
 class NitfGraphicSegmentNode extends AbstractSegmentNode {
 
     private static final String POINT_FORMATTER = "[%d, %d]";
+    private static final String BOUNDING_BOX_POSITION_DESCRIPTION =
+                    "bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.";
 
     private final NitfGraphicSegment segment;
 
@@ -51,13 +53,11 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
                 String.format(POINT_FORMATTER, segment.getGraphicLocationColumn(), segment.getGraphicLocationRow())));
         set.put(new StringProperty("firstGraphicBoundLocation",
                 "First Graphic Bound Location",
-                "The upper left corner of the bounding box for the CGM graphic, "
-                + "relative to the CCS, image or graphic to which the graphic is attached.",
+                "The upper left corner of the " + BOUNDING_BOX_POSITION_DESCRIPTION,
                 String.format(POINT_FORMATTER, segment.getBoundingBox1Column(), segment.getBoundingBox1Row())));
         set.put(new StringProperty("secondGraphicBoundLocation",
                 "Second Graphic Bound Location",
-                "The lower right corner of the bounding box for the CGM graphic, "
-                + "relative to the CCS, image or graphic to which the graphic is attached.",
+                "The lower right corner of the " + BOUNDING_BOX_POSITION_DESCRIPTION,
                 String.format(POINT_FORMATTER, segment.getBoundingBox2Column(), segment.getBoundingBox2Row())));
         set.put(new StringProperty("graphicColour",
                 "Graphic Colour",
@@ -65,4 +65,5 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
                 segment.getGraphicColour().toString()));
         return sheet;
     }
+
 }

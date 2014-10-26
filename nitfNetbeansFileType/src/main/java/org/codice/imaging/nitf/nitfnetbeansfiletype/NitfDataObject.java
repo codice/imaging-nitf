@@ -14,8 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.Nitf;
@@ -109,8 +108,8 @@ class NitfDataObject extends MultiDataObject {
         registerEditor("image/nitf", false);
         FileObject fObj = getPrimaryFile();
         try {
-            nitf = NitfFileFactory.parseHeadersOnly(new FileInputStream(fObj.getPath()));
-        } catch (ParseException | FileNotFoundException e) {
+            nitf = NitfFileFactory.parseHeadersOnly(new File(fObj.getPath()));
+        } catch (ParseException e) {
             System.out.println("NitfDataObject Exception:" + e);
             throw new IOException(e);
         }

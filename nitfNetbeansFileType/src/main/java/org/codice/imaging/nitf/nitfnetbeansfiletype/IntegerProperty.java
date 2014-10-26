@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import java.lang.reflect.InvocationTargetException;
 import org.openide.nodes.PropertySupport;
 
 class IntegerProperty extends PropertySupport.ReadOnly<Integer> {
@@ -26,7 +25,7 @@ class IntegerProperty extends PropertySupport.ReadOnly<Integer> {
     }
 
     @Override
-    public Integer getValue() throws IllegalAccessException, InvocationTargetException {
+    public Integer getValue() {
         return value;
     }
 }

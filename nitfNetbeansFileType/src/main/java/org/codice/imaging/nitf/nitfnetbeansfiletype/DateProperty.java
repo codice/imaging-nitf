@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import org.openide.nodes.PropertySupport;
 
@@ -27,7 +26,7 @@ class DateProperty extends PropertySupport.ReadOnly<Date> {
     }
 
     @Override
-    public Date getValue() throws IllegalAccessException, InvocationTargetException {
+    public Date getValue() {
         return value;
     }
 }
