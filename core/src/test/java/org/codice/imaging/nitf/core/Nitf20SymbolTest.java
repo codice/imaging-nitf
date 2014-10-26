@@ -47,7 +47,7 @@ public class Nitf20SymbolTest {
         Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
         assertFileSegmentDataIsAsExpected(file);
 
-        NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
+        NitfSymbolSegment symbolSegment1 = file.getSymbolSegments().get(0);
         assertSymbolSegmentDataIsAsExpected(symbolSegment1);
         assertEquals(930, symbolSegment1.getSymbolData().length);
 
@@ -60,7 +60,7 @@ public class Nitf20SymbolTest {
         Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.noneOf(ParseOption.class));
         assertFileSegmentDataIsAsExpected(file);
 
-        NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
+        NitfSymbolSegment symbolSegment1 = file.getSymbolSegments().get(0);
         assertSymbolSegmentDataIsAsExpected(symbolSegment1);
         assertNull(symbolSegment1.getSymbolData());
 
@@ -92,12 +92,12 @@ public class Nitf20SymbolTest {
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC Fort Huachuca, AZ", file.getOriginatorsName());
         assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(0, file.getNumberOfImageSegments());
-        assertEquals(0, file.getNumberOfGraphicSegments());
-        assertEquals(1, file.getNumberOfSymbolSegments());
-        assertEquals(0, file.getNumberOfLabelSegments());
-        assertEquals(0, file.getNumberOfTextSegments());
-        assertEquals(0, file.getNumberOfDataExtensionSegments());
+        assertEquals(0, file.getImageSegments().size());
+        assertEquals(0, file.getGraphicSegments().size());
+        assertEquals(1, file.getSymbolSegments().size());
+        assertEquals(0, file.getLabelSegments().size());
+        assertEquals(0, file.getTextSegments().size());
+        assertEquals(0, file.getDataExtensionSegments().size());
     }
 
     private void assertSymbolSegmentDataIsAsExpected(NitfSymbolSegment symbolSegment1) {

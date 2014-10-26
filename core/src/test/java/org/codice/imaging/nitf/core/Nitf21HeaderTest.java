@@ -91,13 +91,13 @@ public class Nitf21HeaderTest {
         assertEquals(0x20, file.getFileBackgroundColour().getBlue());
         assertEquals("JITC", file.getOriginatorsName());
         assertEquals("(520) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(1, file.getNumberOfImageSegments());
-        assertEquals(0, file.getNumberOfGraphicSegments());
-        assertEquals(0, file.getNumberOfTextSegments());
-        assertEquals(0, file.getNumberOfDataExtensionSegments());
+        assertEquals(1, file.getImageSegments().size());
+        assertEquals(0, file.getGraphicSegments().size());
+        assertEquals(0, file.getTextSegments().size());
+        assertEquals(0, file.getDataExtensionSegments().size());
 
         // Checks for ImageSegment.
-        NitfImageSegment segment1 = file.getImageSegment(1);
+        NitfImageSegment segment1 = file.getImageSegments().get(0);
         assertNotNull(segment1);
         assertEquals("Missing ID", segment1.getIdentifier());
         assertEquals("1996-12-18 12:15:39", formatter.format(segment1.getImageDateTime().toDate()));
@@ -178,13 +178,13 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0xFF, reader.getFileBackgroundColour().getBlue());
         assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(1, reader.getImageSegments().size());
+        assertEquals(0, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
 
         // Checks for ImageSegment.
-        NitfImageSegment segment1 = reader.getImageSegment(1);
+        NitfImageSegment segment1 = reader.getImageSegments().get(0);
         assertNotNull(segment1);
         assertEquals("Missing ID", segment1.getIdentifier());
         assertEquals("1996-12-17 10:26:30", formatter.format(segment1.getImageDateTime().toDate()));
@@ -247,13 +247,13 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0xFF, reader.getFileBackgroundColour().getBlue());
         assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(1, reader.getImageSegments().size());
+        assertEquals(0, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
 
         // Checks for ImageSegment.
-        NitfImageSegment segment1 = reader.getImageSegment(1);
+        NitfImageSegment segment1 = reader.getImageSegments().get(0);
         assertNotNull(segment1);
         assertEquals("0000000001", segment1.getIdentifier());
         assertEquals("1996-12-17 16:00:28", formatter.format(segment1.getImageDateTime().toDate()));
@@ -314,13 +314,13 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0x00, reader.getFileBackgroundColour().getBlue());
         assertEquals("JITC NITF LAB", reader.getOriginatorsName());
         assertEquals("(520) 538-4858", reader.getOriginatorsPhoneNumber());
-        assertEquals(4, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(4, reader.getImageSegments().size());
+        assertEquals(0, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
 
         // Checks for ImageSegment.
-        NitfImageSegment segment1 = reader.getImageSegment(1);
+        NitfImageSegment segment1 = reader.getImageSegments().get(0);
         assertNotNull(segment1);
         assertEquals("GRT BOSTON", segment1.getIdentifier());
         assertEquals("2000-12-12 12:12:11", formatter.format(segment1.getImageDateTime().toDate()));
@@ -353,7 +353,7 @@ public class Nitf21HeaderTest {
         assertEquals(1, segment1.getNumBands());
         assertEquals("1.0 ", segment1.getImageMagnification());
 
-        NitfImageSegment segment2 = reader.getImageSegment(2);
+        NitfImageSegment segment2 = reader.getImageSegments().get(1);
         assertNotNull(segment2);
         assertEquals("GRT BOSTON", segment2.getIdentifier());
         assertEquals("2000-12-12 12:12:11", formatter.format(segment2.getImageDateTime().toDate()));
@@ -391,7 +391,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, band1.getNumLUTs());
         assertEquals("1.0 ", segment2.getImageMagnification());
 
-        NitfImageSegment segment3 = reader.getImageSegment(3);
+        NitfImageSegment segment3 = reader.getImageSegments().get(2);
         assertNotNull(segment3);
         assertEquals("GRT BOSTON", segment3.getIdentifier());
         assertEquals("2000-12-12 12:12:11", formatter.format(segment3.getImageDateTime().toDate()));
@@ -424,7 +424,7 @@ public class Nitf21HeaderTest {
         assertEquals(1, segment3.getNumBands());
         assertEquals("1.0 ", segment3.getImageMagnification());
 
-        NitfImageSegment segment4 = reader.getImageSegment(4);
+        NitfImageSegment segment4 = reader.getImageSegments().get(3);
         assertNotNull(segment4);
         assertEquals("GRT BOSTON", segment4.getIdentifier());
         assertEquals("2000-12-12 12:12:11", formatter.format(segment4.getImageDateTime().toDate()));
@@ -469,12 +469,12 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("NS3201a", reader.getOriginatingStationId());
-        assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(1, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(1, reader.getImageSegments().size());
+        assertEquals(0, reader.getGraphicSegments().size());
+        assertEquals(1, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
 
-        NitfTextSegment textSegment = reader.getTextSegment(1);
+        NitfTextSegment textSegment = reader.getTextSegments().get(0);
         assertNotNull(textSegment);
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());
@@ -495,10 +495,10 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("NS3228D", reader.getOriginatingStationId());
-        assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(1, reader.getImageSegments().size());
+        assertEquals(0, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
         TreCollection fileTres = reader.getTREsRawStructure();
         assertNotNull(fileTres);
         assertTrue(fileTres.hasTREs());
@@ -518,10 +518,10 @@ public class Nitf21HeaderTest {
 
         File resourceFile = new File(getClass().getResource(testfile).getFile());
         Nitf file = NitfFileFactory.parseHeadersOnly(resourceFile);
-        assertEquals(1, file.getNumberOfImageSegments());
-        assertEquals(0, file.getNumberOfGraphicSegments());
-        assertEquals(0, file.getNumberOfTextSegments());
-        assertEquals(1, file.getNumberOfDataExtensionSegments());
+        assertEquals(1, file.getImageSegments().size());
+        assertEquals(0, file.getGraphicSegments().size());
+        assertEquals(0, file.getTextSegments().size());
+        assertEquals(1, file.getDataExtensionSegments().size());
     }
 
     @Rule
@@ -560,12 +560,12 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getFileBackgroundColour().getBlue());
         assertEquals("JITC Fort Huachuca, AZ", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(0, reader.getNumberOfImageSegments());
-        assertEquals(1, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(0, reader.getImageSegments().size());
+        assertEquals(1, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
 
-        NitfGraphicSegment segment = reader.getGraphicSegment(1);
+        NitfGraphicSegment segment = reader.getGraphicSegments().get(0);
         assertNotNull(segment);
         assertEquals("POLYGONSET", segment.getIdentifier());
         assertEquals("POLYGON_SET", segment.getGraphicName());
@@ -603,10 +603,10 @@ public class Nitf21HeaderTest {
         assertEquals(0, reader.getFileBackgroundColour().getBlue());
         assertEquals("JITC FT HUACHUCA", reader.getOriginatorsName());
         assertEquals("(520) 538-5458", reader.getOriginatorsPhoneNumber());
-        assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(1, reader.getImageSegments().size());
+        assertEquals(0, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
         Map<String, String> fileTresFlat = reader.getTREsFlat();
         Map<String, String> expectedFileTresFlat = new HashMap<String, String>() {
             {
@@ -646,7 +646,7 @@ public class Nitf21HeaderTest {
             assertEquals(expectedFileTresFlat.get(fieldName), fileTresFlat.get(fieldName));
         }
 
-        NitfImageSegment image = reader.getImageSegmentZeroBase(0);
+        NitfImageSegment image = reader.getImageSegments().get(0);
         assertNotNull(image);
         assertEquals("Missing ID", image.getIdentifier());
         assertEquals("1998-02-10 14:01:44", formatter.format(image.getImageDateTime().toDate()));
@@ -734,12 +734,12 @@ public class Nitf21HeaderTest {
         assertEquals(3, reader.getComplexityLevel());
         assertEquals("BF01", reader.getStandardType());
         assertEquals("ENVI", reader.getOriginatingStationId());
-        assertEquals(1, reader.getNumberOfImageSegments());
-        assertEquals(0, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(1, reader.getNumberOfDataExtensionSegments());
+        assertEquals(1, reader.getImageSegments().size());
+        assertEquals(0, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(1, reader.getDataExtensionSegments().size());
 
-        NitfDataExtensionSegment des = reader.getDataExtensionSegment(1);
+        NitfDataExtensionSegment des = reader.getDataExtensionSegments().get(0);
         assertNotNull(des);
         assertEquals("LIDARA DES", des.getIdentifier().trim());
         assertEquals(1, des.getDESVersion());
@@ -784,10 +784,10 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0xFF, reader.getFileBackgroundColour().getBlue());
         assertEquals("", reader.getOriginatorsName());
         assertEquals("", reader.getOriginatorsPhoneNumber());
-        assertEquals(1, reader.getNumberOfImageSegments());
+        assertEquals(1, reader.getImageSegments().size());
 
         // Checks for ImageSegment.
-        NitfImageSegment imageSegment = reader.getImageSegment(1);
+        NitfImageSegment imageSegment = reader.getImageSegments().get(0);
         assertNotNull(imageSegment);
         assertEquals("Mosaic", imageSegment.getIdentifier());
         assertEquals("2009-10-16 05:20:40", formatter.format(imageSegment.getImageDateTime().toDate()));
@@ -843,11 +843,11 @@ public class Nitf21HeaderTest {
         assertEquals("", band1.getSubCategory());
         assertEquals(0, band1.getNumLUTs());
 
-        assertEquals(8, reader.getNumberOfGraphicSegments());
-        assertEquals(0, reader.getNumberOfTextSegments());
-        assertEquals(0, reader.getNumberOfDataExtensionSegments());
+        assertEquals(8, reader.getGraphicSegments().size());
+        assertEquals(0, reader.getTextSegments().size());
+        assertEquals(0, reader.getDataExtensionSegments().size());
 
-        NitfGraphicSegment segment1 = reader.getGraphicSegment(1);
+        NitfGraphicSegment segment1 = reader.getGraphicSegments().get(0);
         assertNotNull(segment1);
         assertEquals("30", segment1.getIdentifier());
         assertEquals("", segment1.getGraphicName());
@@ -861,7 +861,7 @@ public class Nitf21HeaderTest {
         assertEquals(GraphicColour.COLOUR, segment1.getGraphicColour());
         assertEquals(411, segment1.getBoundingBox2Row());
         assertEquals(788, segment1.getBoundingBox2Column());
-        NitfGraphicSegment segment2 = reader.getGraphicSegment(2);
+        NitfGraphicSegment segment2 = reader.getGraphicSegments().get(1);
         assertNotNull(segment2);
         assertEquals("35", segment2.getIdentifier());
         assertEquals("", segment2.getGraphicName());

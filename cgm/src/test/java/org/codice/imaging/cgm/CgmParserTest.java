@@ -110,11 +110,11 @@ public class CgmParserTest {
             System.out.println("loading from InputStream");
             Nitf nitf = NitfFileFactory.parseSelectedDataSegments(getClass().getResourceAsStream(inputFileName), EnumSet.allOf(ParseOption.class));
 
-            if (nitf.getNumberOfGraphicSegments() == 0) {
+            if (nitf.getGraphicSegments().isEmpty()) {
                 System.out.println("Loaded file, but found no graphic segments.");
                 System.exit(0);
             }
-            NitfGraphicSegment segment = nitf.getGraphicSegmentZeroBase(0);
+            NitfGraphicSegment segment = nitf.getGraphicSegments().get(0);
             CgmParser parser = new CgmParser(segment);
             parser.buildCommandList();
             // parser.dump();

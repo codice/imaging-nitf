@@ -66,12 +66,12 @@ public class FileComparer
             e.printStackTrace();
         }
 
-        if (nitf.getNumberOfImageSegments() >= 1) {
-            segment1 = nitf.getImageSegment(1);
+        if (!nitf.getImageSegments().isEmpty()) {
+            segment1 = nitf.getImageSegments().get(0);
         }
 
-        if (nitf.getNumberOfDataExtensionSegments() >= 1) {
-            des1 = nitf.getDataExtensionSegment(1);
+        if (!nitf.getDataExtensionSegments().isEmpty()) {
+            des1 = nitf.getDataExtensionSegments().get(0);
         }
         outputData();
     }
@@ -399,9 +399,9 @@ public class FileComparer
     }
 
     private void outputSubdatasets() throws IOException {
-        if (nitf.getNumberOfImageSegments() > 1) {
+        if (!nitf.getImageSegments().isEmpty()) {
             out.write("Subdatasets:\n");
-            for (int i = 0; i < nitf.getNumberOfImageSegments(); ++i) {
+            for (int i = 0; i < nitf.getImageSegments().size(); ++i) {
                 out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
                 out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s\n", i+1, i+1, filename));
             }

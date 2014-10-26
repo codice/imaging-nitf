@@ -41,9 +41,9 @@ public class Nitf21ImageParsingTest {
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
         Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_IMAGE_SEGMENT_DATA));
-        assertEquals(1, file.getNumberOfImageSegments());
+        assertEquals(1, file.getImageSegments().size());
 
-        NitfImageSegment imageSegment = file.getImageSegment(1);
+        NitfImageSegment imageSegment = file.getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
         assertEquals(1048576, imageSegment.getImageData().length);
     }
@@ -51,9 +51,9 @@ public class Nitf21ImageParsingTest {
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
         Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.noneOf(ParseOption.class));
-        assertEquals(1, file.getNumberOfImageSegments());
+        assertEquals(1, file.getImageSegments().size());
 
-        NitfImageSegment imageSegment = file.getImageSegment(1);
+        NitfImageSegment imageSegment = file.getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
         assertNull(imageSegment.getImageData());
     }

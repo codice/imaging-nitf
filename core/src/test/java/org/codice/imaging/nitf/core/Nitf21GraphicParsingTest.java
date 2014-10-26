@@ -31,9 +31,9 @@ public class Nitf21GraphicParsingTest {
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
         Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_GRAPHIC_SEGMENT_DATA));
-        assertEquals(1, file.getNumberOfGraphicSegments());
+        assertEquals(1, file.getGraphicSegments().size());
 
-        NitfGraphicSegment graphicSegment = file.getGraphicSegment(1);
+        NitfGraphicSegment graphicSegment = file.getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         assertEquals(780, graphicSegment.getGraphicData().length);
     }
@@ -41,9 +41,9 @@ public class Nitf21GraphicParsingTest {
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
         Nitf file = NitfFileFactory.parseHeadersOnly(getInputStream());
-        assertEquals(1, file.getNumberOfGraphicSegments());
+        assertEquals(1, file.getGraphicSegments().size());
 
-        NitfGraphicSegment graphicSegment = file.getGraphicSegment(1);
+        NitfGraphicSegment graphicSegment = file.getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         assertNull(graphicSegment.getGraphicData());
     }

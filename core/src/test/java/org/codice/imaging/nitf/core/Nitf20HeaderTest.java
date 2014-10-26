@@ -81,12 +81,12 @@ public class Nitf20HeaderTest {
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC Fort Huachuca, AZ", file.getOriginatorsName());
         assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(0, file.getNumberOfImageSegments());
-        assertEquals(0, file.getNumberOfGraphicSegments());
-        assertEquals(1, file.getNumberOfTextSegments());
-        assertEquals(0, file.getNumberOfDataExtensionSegments());
+        assertEquals(0, file.getImageSegments().size());
+        assertEquals(0, file.getGraphicSegments().size());
+        assertEquals(1, file.getTextSegments().size());
+        assertEquals(0, file.getDataExtensionSegments().size());
 
-        NitfTextSegment textSegment = file.getTextSegment(1);
+        NitfTextSegment textSegment = file.getTextSegments().get(0);
         assertNotNull(textSegment);
         assertEquals("0000000001", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
@@ -124,14 +124,14 @@ public class Nitf20HeaderTest {
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC", file.getOriginatorsName());
         assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(5, file.getNumberOfImageSegments());
-        assertEquals(0, file.getNumberOfGraphicSegments());
-        assertEquals(4, file.getNumberOfSymbolSegments());
-        assertEquals(4, file.getNumberOfLabelSegments());
-        assertEquals(1, file.getNumberOfTextSegments());
-        assertEquals(0, file.getNumberOfDataExtensionSegments());
+        assertEquals(5, file.getImageSegments().size());
+        assertEquals(0, file.getGraphicSegments().size());
+        assertEquals(4, file.getSymbolSegments().size());
+        assertEquals(4, file.getLabelSegments().size());
+        assertEquals(1, file.getTextSegments().size());
+        assertEquals(0, file.getDataExtensionSegments().size());
 
-        NitfImageSegment imageSegment1 = file.getImageSegment(1);
+        NitfImageSegment imageSegment1 = file.getImageSegments().get(0);
         assertNotNull(imageSegment1);
         assertEquals("Missing ID", imageSegment1.getIdentifier());
         assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime().toDate()));
@@ -171,7 +171,7 @@ public class Nitf20HeaderTest {
         assertEquals("1.0 ", imageSegment1.getImageMagnification());
         assertEquals(1.0, imageSegment1.getImageMagnificationAsDouble(), 0.00000001);
 
-        NitfImageSegment imageSegment2 = file.getImageSegment(2);
+        NitfImageSegment imageSegment2 = file.getImageSegments().get(1);
         assertNotNull(imageSegment2);
         assertEquals("Missing ID", imageSegment2.getIdentifier());
         assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment2.getImageDateTime().toDate()));
@@ -210,7 +210,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, imageSegment2.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment2.getImageMagnification());
 
-        NitfImageSegment imageSegment3 = file.getImageSegment(3);
+        NitfImageSegment imageSegment3 = file.getImageSegments().get(2);
         assertNotNull(imageSegment3);
         assertEquals("0000000003", imageSegment3.getIdentifier());
         assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment3.getImageDateTime().toDate()));
@@ -258,7 +258,7 @@ public class Nitf20HeaderTest {
         assertEquals(10, imageSegment3.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment3.getImageMagnification());
 
-        NitfImageSegment imageSegment4 = file.getImageSegment(4);
+        NitfImageSegment imageSegment4 = file.getImageSegments().get(3);
         assertNotNull(imageSegment4);
         assertEquals("0000000001", imageSegment4.getIdentifier());
         assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment4.getImageDateTime().toDate()));
@@ -297,7 +297,7 @@ public class Nitf20HeaderTest {
         assertEquals(220, imageSegment4.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment4.getImageMagnification());
 
-        NitfImageSegment imageSegment5 = file.getImageSegment(5);
+        NitfImageSegment imageSegment5 = file.getImageSegments().get(4);
         assertNotNull(imageSegment5);
         assertEquals("0000000001", imageSegment5.getIdentifier());
         assertEquals("1989-01-01 12:00:00",  formatter.format(imageSegment5.getImageDateTime().toDate()));
@@ -338,7 +338,7 @@ public class Nitf20HeaderTest {
         assertEquals(30, imageSegment5.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment5.getImageMagnification());
 
-        NitfSymbolSegment symbolSegment1 = file.getSymbolSegment(1);
+        NitfSymbolSegment symbolSegment1 = file.getSymbolSegments().get(0);
         assertNotNull(symbolSegment1);
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("Unclassified Symbol.", symbolSegment1.getSymbolName());
@@ -361,7 +361,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment1.getSymbolRotation());
         assertEquals(7, symbolSegment1.getSymbolData().length);
 
-        NitfSymbolSegment symbolSegment2 = file.getSymbolSegment(2);
+        NitfSymbolSegment symbolSegment2 = file.getSymbolSegments().get(1);
         assertNotNull(symbolSegment2);
         assertEquals("0000000002", symbolSegment2.getIdentifier());
         assertEquals("Unclassified Symbol.", symbolSegment2.getSymbolName());
@@ -384,7 +384,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment2.getSymbolRotation());
         assertEquals(79, symbolSegment2.getSymbolData().length);
 
-        NitfSymbolSegment symbolSegment3 = file.getSymbolSegment(3);
+        NitfSymbolSegment symbolSegment3 = file.getSymbolSegments().get(2);
         assertNotNull(symbolSegment3);
         assertEquals("0000000003", symbolSegment3.getIdentifier());
         assertEquals("Unclassified Symbol.", symbolSegment3.getSymbolName());
@@ -407,7 +407,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment3.getSymbolRotation());
         assertEquals(79, symbolSegment3.getSymbolData().length);
 
-        NitfSymbolSegment symbolSegment4 = file.getSymbolSegment(4);
+        NitfSymbolSegment symbolSegment4 = file.getSymbolSegments().get(3);
         assertNotNull(symbolSegment4);
         assertEquals("0000000004", symbolSegment4.getIdentifier());
         assertEquals("Unclassified Symbol.", symbolSegment4.getSymbolName());
@@ -430,7 +430,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment4.getSymbolRotation());
         assertEquals(75, symbolSegment4.getSymbolData().length);
 
-        NitfLabelSegment labelSegment1 = file.getLabelSegment(1);
+        NitfLabelSegment labelSegment1 = file.getLabelSegments().get(0);
         assertNotNull(labelSegment1);
         assertEquals("0000000001", labelSegment1.getIdentifier());
         assertUnclasAndEmpty(labelSegment1.getSecurityMetadata());
@@ -451,7 +451,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment1.getLabelBackgroundColour().getBlue());
         assertEquals("Label 3", labelSegment1.getLabelData());
 
-        NitfLabelSegment labelSegment2 = file.getLabelSegment(2);
+        NitfLabelSegment labelSegment2 = file.getLabelSegments().get(1);
         assertNotNull(labelSegment2);
         assertEquals("0000000002", labelSegment2.getIdentifier());
         assertUnclasAndEmpty(labelSegment2.getSecurityMetadata());
@@ -472,7 +472,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment2.getLabelBackgroundColour().getBlue());
         assertEquals("Label 2", labelSegment2.getLabelData());
 
-        NitfLabelSegment labelSegment3 = file.getLabelSegment(3);
+        NitfLabelSegment labelSegment3 = file.getLabelSegments().get(2);
         assertNotNull(labelSegment3);
         assertEquals("0000000003", labelSegment3.getIdentifier());
         assertUnclasAndEmpty(labelSegment3.getSecurityMetadata());
@@ -493,7 +493,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment3.getLabelBackgroundColour().getBlue());
         assertEquals("Label 4", labelSegment3.getLabelData());
 
-        NitfLabelSegment labelSegment4 = file.getLabelSegment(4);
+        NitfLabelSegment labelSegment4 = file.getLabelSegments().get(3);
         assertNotNull(labelSegment4);
         assertEquals("0000000004", labelSegment4.getIdentifier());
         assertUnclasAndEmpty(labelSegment4.getSecurityMetadata());
@@ -514,7 +514,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment4.getLabelBackgroundColour().getBlue());
         assertEquals("Label 1", labelSegment4.getLabelData());
 
-        NitfTextSegment textSegment = file.getTextSegment(1);
+        NitfTextSegment textSegment = file.getTextSegments().get(0);
         assertNotNull(textSegment);
         assertEquals("0000000001", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());

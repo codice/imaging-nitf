@@ -27,22 +27,10 @@ class NitfChildFactory extends ChildFactory<AbstractNitfSubSegment> {
 
     @Override
     protected boolean createKeys(List list) {
-        for (int imageSegmentCount = 0; imageSegmentCount < nitf.getNumberOfImageSegments(); ++imageSegmentCount) {
-            NitfImageSegment imageSegment = nitf.getImageSegmentZeroBase(imageSegmentCount);
-            list.add(imageSegment);
-        }
-        for (int i = 0; i < nitf.getNumberOfGraphicSegments(); ++i) {
-            NitfGraphicSegment graphicSegment = nitf.getGraphicSegmentZeroBase(i);
-            list.add(graphicSegment);
-        }
-        for (int i = 0; i < nitf.getNumberOfTextSegments(); ++i) {
-            NitfTextSegment textSegment = nitf.getTextSegmentZeroBase(i);
-            list.add(textSegment);
-        }
-        for (int i = 0; i < nitf.getNumberOfDataExtensionSegments(); ++i) {
-            NitfDataExtensionSegment desSegment = nitf.getDataExtensionSegmentZeroBase(i);
-            list.add(desSegment);
-        }
+        list.addAll(nitf.getImageSegments());
+        list.addAll(nitf.getGraphicSegments());
+        list.addAll(nitf.getTextSegments());
+        list.addAll(nitf.getDataExtensionSegments());
         return true;
     }
 

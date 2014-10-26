@@ -41,15 +41,15 @@ public class Nitf21SorcerTest {
     @Test
     public void testSorcerParse() throws IOException, ParseException {
         Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.allOf(ParseOption.class));
-        assertEquals(1, file.getNumberOfImageSegments());
-        assertEquals(1, file.getNumberOfGraphicSegments());
-        assertEquals(0, file.getNumberOfSymbolSegments());
-        assertEquals(0, file.getNumberOfLabelSegments());
-        assertEquals(1, file.getNumberOfTextSegments());
-        assertEquals(0, file.getNumberOfDataExtensionSegments());
+        assertEquals(1, file.getImageSegments().size());
+        assertEquals(1, file.getGraphicSegments().size());
+        assertEquals(0, file.getSymbolSegments().size());
+        assertEquals(0, file.getLabelSegments().size());
+        assertEquals(1, file.getTextSegments().size());
+        assertEquals(0, file.getDataExtensionSegments().size());
 
         // Checks for ImageSegment.
-        NitfImageSegment imageSegment = file.getImageSegment(1);
+        NitfImageSegment imageSegment = file.getImageSegments().get(0);
         assertNotNull(imageSegment);
         assertEquals("Image Id1", imageSegment.getIdentifier());
         assertEquals("2002-10-06 22:03:20", formatter.format(imageSegment.getImageDateTime().toDate()));
@@ -103,7 +103,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, imageSegment.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment.getImageMagnification());
 
-        NitfGraphicSegment graphicSegment = file.getGraphicSegment(1);
+        NitfGraphicSegment graphicSegment = file.getGraphicSegments().get(0);
         assertNotNull(graphicSegment);
         assertEquals("", graphicSegment.getIdentifier());
         assertEquals("", graphicSegment.getGraphicName());
@@ -118,7 +118,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, graphicSegment.getBoundingBox2Row());
         assertEquals(0, graphicSegment.getBoundingBox2Column());
 
-        NitfTextSegment textSegment = file.getTextSegment(1);
+        NitfTextSegment textSegment = file.getTextSegments().get(0);
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertNotNull(textSegment);
         assertEquals("       ", textSegment.getIdentifier());
