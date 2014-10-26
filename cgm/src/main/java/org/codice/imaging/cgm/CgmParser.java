@@ -51,6 +51,8 @@ public class CgmParser {
     private static final int ELEMENT_CLASS_BIT_MASK = 0xF000;
     private static final int ELEMENT_CLASS_BIT_SHIFT = 12;
 
+    private static final Map<CgmIdentifier, Class> ELEMENTS = new HashMap<>();
+
     private CgmInputReader dataReader = null;
     private final List<AbstractElement> commands = new ArrayList<>();
 
@@ -96,7 +98,6 @@ public class CgmParser {
         return null;
     }
 
-    private static final Map<CgmIdentifier, Class> ELEMENTS = new HashMap<>();
     static {
         ELEMENTS.put(CgmIdentifier.NO_OP, NoArgumentsElement.class);
         ELEMENTS.put(CgmIdentifier.BEGIN_METAFILE, BeginMetafileElement.class);
