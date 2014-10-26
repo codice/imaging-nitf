@@ -94,7 +94,7 @@ class NitfDataObject extends MultiDataObject {
 
     private Nitf nitf;
 
-    public NitfDataObject(FileObject pf, MultiFileLoader loader) throws DataObjectExistsException, IOException {
+    public NitfDataObject(FileObject pf, MultiFileLoader loader) throws IOException {
         super(pf, loader);
         registerEditor("image/nitf", false);
         FileObject fObj = getPrimaryFile();
