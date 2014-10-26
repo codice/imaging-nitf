@@ -33,6 +33,23 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
         addCommonSegmentProperties(set, segment);
+        set.put(new IntegerProperty("desVersion",
+                "DES Version",
+                "Version number of the Data Extension Segment type.",
+                segment.getDESVersion()));
+        String desIdentifier = segment.getIdentifier().trim();
+        if (("TRE_OVERFLOW".equals(desIdentifier))
+            || ("Registered Extensions".equals(desIdentifier))
+            || ("Controlled Extensions".equals(desIdentifier))) {
+            set.put(new StringProperty("headerTypeOverflowed",
+                    "Overflowed Header Type",
+                    "Indicator for the type of item that overflowed (e.g. file header, or the segment type).",
+                    segment.getOverflowedHeaderType()));
+            set.put(new IntegerProperty("desItemOverflowed",
+                    "Data Item Overflowed",
+                    "The number of the data item that overflowed (000 for UDHD or XHD types).",
+                    segment.getItemOverflowed()));
+        }
         sheet.put(set);
         return sheet;
     }
