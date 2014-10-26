@@ -12,7 +12,7 @@ import org.openide.nodes.Sheet;
 
 class NitfGraphicSegmentNode extends AbstractSegmentNode {
 
-    private NitfGraphicSegment segment;
+    private final NitfGraphicSegment segment;
 
     public NitfGraphicSegmentNode(final NitfGraphicSegment nitfGraphicSegment) {
         super(Children.LEAF);

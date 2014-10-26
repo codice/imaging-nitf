@@ -11,7 +11,7 @@ import org.openide.nodes.Sheet;
 
 public class NitfTextSegmentNode extends AbstractSegmentNode {
     
-    private NitfTextSegment segment;
+    private final NitfTextSegment segment;
 
     public NitfTextSegmentNode(final NitfTextSegment nitfTextSegment) {
         super(Children.LEAF);

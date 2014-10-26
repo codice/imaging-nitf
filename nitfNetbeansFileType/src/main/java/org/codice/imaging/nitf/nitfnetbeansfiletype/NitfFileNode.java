@@ -17,7 +17,7 @@ import org.openide.util.Lookup;
  */
 public class NitfFileNode extends DataNode {
 
-    private Nitf nitf;
+    private final Nitf nitf;
 
     public NitfFileNode(NitfDataObject nitfDataObj, Children kids, Lookup lookup) {
         super(nitfDataObj, kids, lookup);

@@ -11,7 +11,7 @@ import org.openide.nodes.Sheet;
 
 class NitfImageSegmentNode extends AbstractSegmentNode {
 
-    private NitfImageSegment segment;
+    private final NitfImageSegment segment;
 
     public NitfImageSegmentNode(final NitfImageSegment nitfImageSegment) {
         super(Children.LEAF);

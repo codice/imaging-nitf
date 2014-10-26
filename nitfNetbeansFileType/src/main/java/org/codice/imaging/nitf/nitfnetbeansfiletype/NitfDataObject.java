@@ -8,31 +8,20 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-import java.util.List;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
-import org.codice.imaging.nitf.core.NitfGraphicSegment;
-import org.codice.imaging.nitf.core.NitfImageSegment;
-import org.codice.imaging.nitf.core.NitfTextSegment;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.MIMEResolver;
-import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectExistsException;
 import org.openide.loaders.MultiDataObject;
 import org.openide.loaders.MultiFileLoader;
-import org.openide.nodes.AbstractNode;
-import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
-import org.openide.nodes.PropertySupport;
-import org.openide.nodes.Sheet;
-import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 
 @Messages({
@@ -111,9 +100,7 @@ class NitfDataObject extends MultiDataObject {
         FileObject fObj = getPrimaryFile();
         try {
             nitf = NitfFileFactory.parseHeadersOnly(new FileInputStream(fObj.getPath()));                
-        } catch (ParseException e) {
-            throw new IOException(e);
-        } catch (FileNotFoundException e) {
+        } catch (ParseException | FileNotFoundException e) {
             throw new IOException(e);
         }
     }
