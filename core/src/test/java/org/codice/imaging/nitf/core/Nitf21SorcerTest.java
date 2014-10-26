@@ -67,7 +67,7 @@ public class Nitf21SorcerTest {
         assertEquals(8, imageSegment.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, imageSegment.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.NONE, imageSegment.getImageCoordinatesRepresentation());
-        assertEquals(0, imageSegment.getNumberOfImageComments());
+        assertEquals(0, imageSegment.getImageComments().size());
         assertEquals(ImageCompression.JPEG, imageSegment.getImageCompression());
         assertEquals(3, imageSegment.getNumBands());
 

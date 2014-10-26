@@ -465,45 +465,12 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     }
 
     /**
-        Return the number of image comments attached to this image.
+        Return the image comments attached to this image.
 
-        @return the number of image comments
+        @return the image comments
     */
-    public final int getNumberOfImageComments() {
-        return imageComments.size();
-    }
-
-    /**
-        Return a selected image comment.
-        <p>
-        The NITF convention is that image comments are numbered from 1 to N, where
-        N is the number of image comments (which you can get from getNumberOfImageComments()).
-        If you'd prefer to work with a zero base (i.e. images are numbered from 0 to N-1),
-        getImageCommentZeroBase() is likely to be more useful.
-
-        @param commentNumber the comment number, starting from 1.
-        @return image comment corresponding to commentNumber index.
-    */
-    public final String getImageComment(final int commentNumber) {
-        return getImageCommentZeroBase(commentNumber - 1);
-    }
-
-    /**
-        Return a selected image comment.
-        <p>
-        This method selects image comments numbering from a zero base (i.e. if there
-        are N image comments, the valid range is 0 through to N-1).
-        <p>
-        The NITF convention is that image comments are numbered from 1 to N, where
-        N is the number of image comments (which you can get from getNumberOfImageComments()).
-        If you'd prefer to work with that convention, getImageComment() is likely to be more
-        useful.
-
-        @param commentNumberZeroBase the comment number, starting from 0.
-        @return image comment corresponding to commentNumberZeroBase index.
-    */
-    public final String getImageCommentZeroBase(final int commentNumberZeroBase) {
-        return imageComments.get(commentNumberZeroBase);
+    public final List<String> getImageComments() {
+        return imageComments;
     }
 
     /**

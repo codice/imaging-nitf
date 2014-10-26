@@ -85,7 +85,7 @@ public class Nitf21ImageParsingTest {
         assertEquals(85.00027777777, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
         assertEquals(32.98305555555, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(85.00000000000, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
-        assertEquals(0, imageSegment.getNumberOfImageComments());
+        assertEquals(0, imageSegment.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment.getImageCompression());
         assertEquals(1, imageSegment.getNumBands());
         NitfImageBand band1 = imageSegment.getImageBand(1);

@@ -91,7 +91,7 @@ public class Nitf20OverflowTest {
         assertEquals(8, imageSegment1.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, imageSegment1.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.NONE, imageSegment1.getImageCoordinatesRepresentation());
-        assertEquals(0, imageSegment1.getNumberOfImageComments());
+        assertEquals(0, imageSegment1.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment1.getImageCompression());
         assertEquals(1, imageSegment1.getNumBands());
         NitfImageBand band1 = imageSegment1.getImageBand(1);

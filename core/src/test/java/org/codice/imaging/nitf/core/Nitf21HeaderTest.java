@@ -115,7 +115,7 @@ public class Nitf21HeaderTest {
         assertEquals(1, segment1.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
-        assertEquals(0, segment1.getNumberOfImageComments());
+        assertEquals(0, segment1.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
 
@@ -212,7 +212,7 @@ public class Nitf21HeaderTest {
         assertEquals(85.00027777777, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
         assertEquals(32.98305555555, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(85.00000000000, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
-        assertEquals(0, segment1.getNumberOfImageComments());
+        assertEquals(0, segment1.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
         // Checks for ImageBand
@@ -271,16 +271,16 @@ public class Nitf21HeaderTest {
         assertEquals(8, segment1.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
-        assertEquals(9, segment1.getNumberOfImageComments());
-        assertEquals("This is image comment #1 for the unclassified image #1 from test message Q3.", segment1.getImageComment(1));
-        assertEquals("This is image comment #2 for the unclassified image #1 from test message Q3.", segment1.getImageComment(2));
-        assertEquals("This is image comment #3 for the unclassified image #1 from test message Q3.", segment1.getImageComment(3));
-        assertEquals("This is image comment #4 for the unclassified image #1 from test message Q3.", segment1.getImageComment(4));
-        assertEquals("This is image comment #5 for the unclassified image #1 from test message Q3.", segment1.getImageComment(5));
-        assertEquals("This is image comment #6 for the unclassified image #1 from test message Q3.", segment1.getImageComment(6));
-        assertEquals("This is image comment #7 for the unclassified image #1 from test message Q3.", segment1.getImageComment(7));
-        assertEquals("This is image comment #8 for the unclassified image #1 from test message Q3.", segment1.getImageComment(8));
-        assertEquals("This is image comment #9 for the unclassified image #1 from test message Q3.", segment1.getImageComment(9));
+        assertEquals(9, segment1.getImageComments().size());
+        assertEquals("This is image comment #1 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(0));
+        assertEquals("This is image comment #2 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(1));
+        assertEquals("This is image comment #3 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(2));
+        assertEquals("This is image comment #4 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(3));
+        assertEquals("This is image comment #5 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(4));
+        assertEquals("This is image comment #6 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(5));
+        assertEquals("This is image comment #7 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(6));
+        assertEquals("This is image comment #8 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(7));
+        assertEquals("This is image comment #9 for the unclassified image #1 from test message Q3.", segment1.getImageComments().get(8));
         assertEquals(ImageCompression.JPEG, segment1.getImageCompression());
         assertEquals("00.0", segment1.getCompressionRate());
         assertEquals(1, segment1.getNumBands());
@@ -348,7 +348,7 @@ public class Nitf21HeaderTest {
         assertEquals(-70.933, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
         assertEquals(41.950, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(-71.0500, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
-        assertEquals(0, segment1.getNumberOfImageComments());
+        assertEquals(0, segment1.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
         assertEquals("1.0 ", segment1.getImageMagnification());
@@ -381,7 +381,7 @@ public class Nitf21HeaderTest {
         assertEquals(-70.933, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
         assertEquals(42.201, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(-71.050, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
-        assertEquals(0, segment2.getNumberOfImageComments());
+        assertEquals(0, segment2.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment2.getImageCompression());
         assertEquals(1, segment2.getNumBands());
         NitfImageBand band1 = segment1.getImageBand(1);
@@ -419,7 +419,7 @@ public class Nitf21HeaderTest {
         assertEquals(-71.050, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
         assertEquals(41.950, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(-71.167, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
-        assertEquals(0, segment3.getNumberOfImageComments());
+        assertEquals(0, segment3.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment3.getImageCompression());
         assertEquals(1, segment3.getNumBands());
         assertEquals("1.0 ", segment3.getImageMagnification());
@@ -452,7 +452,7 @@ public class Nitf21HeaderTest {
         assertEquals(-71.050, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
         assertEquals(42.201, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(-71.167, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
-        assertEquals(0, segment4.getNumberOfImageComments());
+        assertEquals(0, segment4.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment4.getImageCompression());
         assertEquals(1, segment4.getNumBands());
         assertEquals("1.0 ", segment4.getImageMagnification());
@@ -664,7 +664,7 @@ public class Nitf21HeaderTest {
         assertEquals(8, image.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, image.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.NONE, image.getImageCoordinatesRepresentation());
-        assertEquals(0, image.getNumberOfImageComments());
+        assertEquals(0, image.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, image.getImageCompression());
         assertEquals(1, image.getNumBands());
         Map<String, String> tresImageFlat = image.getTREsFlat();
@@ -831,10 +831,10 @@ public class Nitf21HeaderTest {
         assertEquals(67.118, imageCoords.getCoordinateMaxRowMaxCol().getLongitude(), 0.000001);
         assertEquals(36.704, imageCoords.getCoordinateMaxRow0().getLatitude(), 0.000001);
         assertEquals(67.109, imageCoords.getCoordinateMaxRow0().getLongitude(), 0.000001);
-        assertEquals(3, imageSegment.getNumberOfImageComments());
-        assertEquals("", imageSegment.getImageComment(1));
-        assertEquals("", imageSegment.getImageComment(2));
-        assertEquals("", imageSegment.getImageComment(3));
+        assertEquals(3, imageSegment.getImageComments().size());
+        assertEquals("", imageSegment.getImageComments().get(0));
+        assertEquals("", imageSegment.getImageComments().get(1));
+        assertEquals("", imageSegment.getImageComments().get(2));
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment.getImageCompression());
         assertEquals(1, imageSegment.getNumBands());
         NitfImageBand band1 = imageSegment.getImageBand(1);
