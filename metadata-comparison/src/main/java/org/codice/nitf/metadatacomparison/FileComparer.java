@@ -327,10 +327,10 @@ public class FileComparer
         metadata.put("NITF_ISCODE", segment1.getSecurityMetadata().getCodewords());
         metadata.put("NITF_ISCTLH", segment1.getSecurityMetadata().getControlAndHandling());
         metadata.put("NITF_ISCTLN", segment1.getSecurityMetadata().getSecurityControlNumber());
-        if (segment1.getNumberOfImageComments() > 0) {
+        if (!segment1.getImageComments().isEmpty()) {
             StringBuilder commentBuilder = new StringBuilder();
-            for (int i = 0; i < segment1.getNumberOfImageComments(); ++i) {
-                commentBuilder.append(String.format("%-80s", segment1.getImageCommentZeroBase(i)));
+            for (String imageComment : segment1.getImageComments()) {
+                commentBuilder.append(String.format("%-80s", imageComment));
             }
             metadata.put("NITF_IMAGE_COMMENTS", commentBuilder.toString());
         }
