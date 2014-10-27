@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import org.codice.imaging.nitf.core.NitfImageBand;
 import org.codice.imaging.nitf.core.NitfImageSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -82,8 +83,94 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
                 "Image Coordinate Representation",
                 "A code indicating the type of coordinate representation used for providing an approximate location of the image.",
                 segment.getImageCoordinatesRepresentation().toString()));
-        // TODO: from IGEOLO onwards
+        if (segment.getImageCoordinates() != null) {
+            set.put(new StringProperty("igeolo",
+                    "Image Geographic Location",
+                    "The approximate geographic location for the image. It is not intended for analytical purposes.",
+                    String.format("[%s], [%s], [%s], [%s]",
+                            segment.getImageCoordinates().getCoordinate00().getSourceFormat(),
+                            segment.getImageCoordinates().getCoordinate0MaxCol().getSourceFormat(),
+                            segment.getImageCoordinates().getCoordinateMaxRowMaxCol().getSourceFormat(),
+                            segment.getImageCoordinates().getCoordinateMaxRow0().getSourceFormat())));
+        }
+        for (int i = 1; i <= segment.getImageComments().size(); ++i) {
+            set.put(new StringProperty("icom" + i,
+                    "Image Comment " + i,
+                    "nth Single comment block.",
+                    segment.getImageComments().get(i - 1)));
+        }
+        set.put(new StringProperty("imageCompression",
+                "Image Compression",
+                "The form of compression used in representing the image data.",
+                segment.getImageCompression().toString()));
+        set.put(new StringProperty("compressionRate",
+                "Compression Rate",
+                "The compression rate for the image.",
+                segment.getCompressionRate()));
+        for (int i = 0; i < segment.getNumBands(); ++i) {
+            addImageBandSetToSheet(i, sheet);
+        }
+        set.put(new StringProperty("imageMode",
+                "Image Mode",
+                "Indicator for how pixels are stored in the image.",
+                segment.getImageMode().toString()));
+        set.put(new IntegerProperty("nbpr",
+                "Number of Blocks Per Row",
+                "The number of image blocks in a row of blocks in the horizontal direction.",
+                segment.getNumberOfBlocksPerRow()));
+        set.put(new IntegerProperty("nbpc",
+                "Number of Blocks Per Column",
+                "The number of image blocks in a column of blocks in the vertical direction.",
+                segment.getNumberOfBlocksPerColumn()));
+        set.put(new IntegerProperty("nppbh",
+                "Number of Pixels Per Block Horizontal",
+                "The number of pixels horizontally in each block of the image.",
+                segment.getNumberOfPixelsPerBlockHorizontal()));
+        set.put(new IntegerProperty("nppbv",
+                "Number of Pixels Per Block Vertical",
+                "The number of pixels vertically in each block of the image.",
+                segment.getNumberOfPixelsPerBlockVertical()));
+        set.put(new IntegerProperty("nbpp",
+                "Number of Bits Per Pixel Per Band",
+                "The number of storage bits used for the value from each component of a pixel vector.",
+                segment.getNumberOfBitsPerPixelPerBand()));
+        set.put(new IntegerProperty("imageDisplayLevel",
+                "Image Display Level",
+                "The display level of the image relative to other displayed file components in a composite display.",
+                segment.getImageDisplayLevel()));
+        set.put(new StringProperty("imageLocation",
+                "Image Location",
+                "The location of the first pixel in the first line in the image, relative to the segment the image is attached to.",
+                String.format("[%d, %d]", segment.getImageLocationColumn(), segment.getImageLocationRow())));
+        set.put(new StringProperty("imageMagnification",
+                "Image Magnification",
+                "The magnification or reduction factor of the image relative to the original source image.",
+                segment.getImageMagnification()));
         return sheet;
+    }
+
+    private void addImageBandSetToSheet(final int bandNumber, final Sheet sheet) {
+        NitfImageBand band = segment.getImageBandZeroBase(bandNumber);
+        Sheet.Set bandProperties = Sheet.createPropertiesSet();
+        bandProperties.setName("imageBand" + bandNumber);
+        bandProperties.setDisplayName(String.format("Image Band %d", bandNumber));
+        bandProperties.put(new StringProperty("irepband",
+                "Image Band Representation",
+                "Indicator of the processing required to display this image band.",
+                band.getImageRepresentation()));
+        bandProperties.put(new StringProperty("isubcat",
+                "Image Band Subcategory",
+                "The significance of the band with regard to the specific category of the image.",
+                band.getSubCategory()));
+        bandProperties.put(new IntegerProperty("numluts",
+                "Number of Lookup Tables for Image Band",
+                "The number of Lookup Tables (LUTs) for this band of the image. LUTs are only alloowed if pixel value type is INT or B.",
+                band.getNumLUTs()));
+        bandProperties.put(new IntegerProperty("numeluts",
+                "Number of Entries in Lookup Tables",
+                "The number of entries in Lookup Tables (LUTs) for this band of the image.",
+                band.getNumLUTEntries()));
+        sheet.put(bandProperties);
     }
 
 }
