@@ -14,13 +14,9 @@
 package org.codice.imaging.nitf.core;
 
 /**
- *
- * @author JohnGameComp
+ * Utility collection of shared constants.
  */
 public final class NitfConstants {
-
-    private NitfConstants() {
-    }
 
     // Nitf Segment
     /**
@@ -1350,4 +1346,6 @@ public final class NitfConstants {
     static final String AND_CONDITION = " AND ";
     static final String UNSUPPORTED_IFTYPE_FORMAT_MESSAGE = "Unsupported format for iftype:";
 
+    private NitfConstants() {
+    }
 }

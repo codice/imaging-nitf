@@ -7,14 +7,29 @@
         <artifactId>codice-imaging-nitf</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
+    <name>Codice Imaging: NITF Core</name>
+
+    <url>https://www.codice.org</url>
+
+    <organization>
+        <name>Codice</name>
+        <url>http://www.codice.org/</url>
+    </organization>
+    <developers>
+        <developer>
+            <name>Brad Hards</name>
+            <email>bradh@frogmouth.net</email>
+        </developer>
+        <developer>
+            <name>John Main</name>
+            <email>jmmain69@gmail.com</email>
+        </developer>
+    </developers>
 
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf-core</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <name>Codice Imaging: NITF Core</name>
-    <url>http://www.codice.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
