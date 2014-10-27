@@ -96,6 +96,13 @@ public class CgmParserTest {
     }
 
     @Test
+    public void I_3068A() throws IOException {
+        String parentDirectory = "JitcNitf21Samples";
+        String testfile = "i_3068a.ntf";
+        testOneImage(parentDirectory, testfile);
+    }
+
+    @Test
     public void NS3101B() throws IOException {
         String parentDirectory = "JitcNitf21Samples";
         String testfile = "ns3101b.nsf";

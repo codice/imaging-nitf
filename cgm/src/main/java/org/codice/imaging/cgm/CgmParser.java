@@ -190,7 +190,7 @@ public class CgmParser {
         ELEMENTS.put(CgmIdentifier.POLYGON_SET, PolygonSetElement.class);
         // CELL_ARRAY prohibited in BIIF Profile BPCGM01.10
         // GENERALISED_DRAWING_PRIMITIVE prohibited in BIIF Profile BPCGM01.10
-        // TODO: RECTANGLE
+        ELEMENTS.put(CgmIdentifier.RECTANGLE, RectangleElement.class);
         ELEMENTS.put(CgmIdentifier.CIRCLE, CircleElement.class);
         // CIRCULAR_ARC_3_POINT prohibited in BIIF Profile BPCGM01.10
         // CIRCULAR_ARC_3_POINT_CLOSE prohibited in BIIF Profile BPCGM01.10
