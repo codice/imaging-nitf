@@ -27,12 +27,8 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 class CharacterOrientationElement extends ElementHelpers implements AbstractElement {
-    private static final Logger LOG = LoggerFactory.getLogger(CharacterOrientationElement.class);
 
     private int xCharacterUpComponent;
     private int yCharacterUpComponent;
