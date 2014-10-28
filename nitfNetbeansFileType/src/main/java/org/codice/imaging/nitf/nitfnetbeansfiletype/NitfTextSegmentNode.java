@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import javax.swing.Action;
 import org.codice.imaging.nitf.core.NitfTextSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -25,10 +26,24 @@ class NitfTextSegmentNode extends AbstractSegmentNode {
     public NitfTextSegmentNode(final NitfTextSegment nitfTextSegment) {
         super(Children.LEAF);
         segment = nitfTextSegment;
-        setDisplayName("Text Segment: " + segment.getIdentifier());
+        setDisplayName("Text Segment: " + getFriendlyName());
     }
 
-   @Override
+    final String getFriendlyName() {
+        if (!segment.getTextTitle().trim().isEmpty()) {
+            return segment.getTextTitle().trim();
+        }
+        if (!segment.getIdentifier().trim().isEmpty()) {
+            return segment.getIdentifier().trim();
+        }
+        return "(no name)";
+    }
+
+    String getText() {
+        return segment.getTextData();
+    }
+
+    @Override
     protected Sheet createSheet() {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
@@ -47,5 +62,26 @@ class NitfTextSegmentNode extends AbstractSegmentNode {
                 "Three-character code indicating the format of type of text data.",
                 segment.getTextFormat().toString()));
         return sheet;
+    }
+
+    @Override
+    public Action[] getActions(final boolean popup) {
+        return combineActions(new TextSegmentOpenAction(this), super.getActions(popup));
+    }
+
+    /**
+     * Prepend an action to an existing array of actions.
+     *
+     * @param action the action to prepend
+     * @param actions the existing actions
+     * @return combined array of actions
+     */
+    protected Action[] combineActions(final Action action, final Action[] actions) {
+        Action[] combinedActions = new Action[actions.length + 1];
+        combinedActions[0] = action;
+        for (int i = 1; i < combinedActions.length; ++i) {
+            combinedActions[i] = actions[i - 1];
+        }
+        return combinedActions;
     }
 }

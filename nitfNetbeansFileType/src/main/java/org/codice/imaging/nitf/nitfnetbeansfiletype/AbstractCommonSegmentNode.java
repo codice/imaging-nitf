@@ -93,4 +93,5 @@ abstract class AbstractCommonSegmentNode extends AbstractNode {
                 "The security control number associated with the segment.",
                 segment.getSecurityMetadata().getSecurityControlNumber()));
     }
+
 }

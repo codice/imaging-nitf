@@ -17,8 +17,10 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.EnumSet;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
+import org.codice.imaging.nitf.core.ParseOption;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -108,7 +110,7 @@ class NitfDataObject extends MultiDataObject {
         registerEditor("image/nitf", false);
         FileObject fObj = getPrimaryFile();
         try {
-            nitf = NitfFileFactory.parseHeadersOnly(new File(fObj.getPath()));
+            nitf = NitfFileFactory.parseSelectedDataSegments(new File(fObj.getPath()), EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
         } catch (ParseException e) {
             System.out.println("NitfDataObject Exception:" + e);
             throw new IOException(e);
