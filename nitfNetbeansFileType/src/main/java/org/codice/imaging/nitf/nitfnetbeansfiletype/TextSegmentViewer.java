@@ -28,13 +28,6 @@ import org.openide.windows.TopComponent;
 })
 public class TextSegmentViewer extends TopComponent {
 
-    /**
-     * Creates new form TextSegmentViewer.
-     */
-    public TextSegmentViewer() {
-        initComponents();
-    }
-
     // CSOFF: MagicNumber
     // CSOFF: WhitespaceAround
     /**
@@ -71,6 +64,13 @@ public class TextSegmentViewer extends TopComponent {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Creates new form TextSegmentViewer.
+     */
+    public TextSegmentViewer() {
+        initComponents();
+    }
 
     final void setText(final String text) {
         textArea.setText(text);

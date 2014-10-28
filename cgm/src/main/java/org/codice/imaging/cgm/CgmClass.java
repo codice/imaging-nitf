@@ -38,6 +38,13 @@ enum CgmClass {
     SEGMENT(8),
     APPLICATION_STRUCTURE_DESCRIPTOR(9);
 
+    // Internal state
+    private final int id;
+
+    CgmClass(final int classIdentifier) {
+        id = classIdentifier;
+    }
+
     static CgmClass lookup(final int elementClass) {
         for (CgmClass cgmClass : values()) {
             if (cgmClass.getClassIdentifier() == elementClass) {
@@ -45,13 +52,6 @@ enum CgmClass {
             }
         }
         return PSEUDO;
-    }
-
-    // Internal state
-    private final int id;
-
-    CgmClass(final int classIdentifier) {
-        id = classIdentifier;
     }
 
     public int getClassIdentifier() {
