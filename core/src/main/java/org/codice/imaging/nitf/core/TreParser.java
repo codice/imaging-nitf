@@ -22,10 +22,10 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
 import org.codice.imaging.nitf.core.schema.FieldType;
 import org.codice.imaging.nitf.core.schema.IfType;
 import org.codice.imaging.nitf.core.schema.LoopType;
+
 import org.codice.imaging.nitf.core.schema.Tres;
 import org.codice.imaging.nitf.core.schema.TreType;
 
@@ -40,9 +40,7 @@ class TreParser {
     private static final Logger LOG = LoggerFactory.getLogger(TreParser.class);
     private static final String TRE_XML_LOAD_ERROR_MESSAGE = "Exception while loading TRE XML";
 
-    private Tres tresStructure = null;
-
-    private TreCollection treCollection = new TreCollection();
+    private static Tres tresStructure = null;
 
     /**
         Constructor for TRE parser.
@@ -69,205 +67,38 @@ class TreParser {
         tresStructure = (Tres) u.unmarshal(inputStream);
     }
 
-    /**
-        Parse the TRE from the current reader.
-
-        @param reader the reader to use.
-        @param treLength the length of the TRE.
-        @return TRE collection.
-        @throws ParseException if the TRE parsing fails (e.g. end of file or TRE that is clearly incorrect.
-    */
-    public final TreCollection parse(final NitfReader reader, final int treLength) throws ParseException {
-        int bytesRead = 0;
-        while (bytesRead < treLength) {
-            String tag = reader.readBytes(NitfConstants.TAG_LENGTH);
-            bytesRead += NitfConstants.TAG_LENGTH;
-            int fieldLength = reader.readBytesAsInteger(NitfConstants.TAGLEN_LENGTH);
-            bytesRead += NitfConstants.TAGLEN_LENGTH;
-            parseOneTre(reader, tag, fieldLength);
-            bytesRead += fieldLength;
-        }
-        return treCollection;
-    }
-
-    private void parseOneTre(final NitfReader reader, final String tag, final int fieldLength) throws ParseException {
+    Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength) throws ParseException {
         Tre tre = new Tre(tag);
-
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
             tre.setRawData(reader.readBytesRaw(fieldLength));
         } else {
+            TreParams parameters = new TreParams();
             tre.setPrefix(treType.getMdPrefix());
-            TreGroup group = parseTreComponents(treType.getFieldOrLoopOrIf(), reader, tre);
+            TreGroup group = parseTreComponents(treType.getFieldOrLoopOrIf(), reader, parameters);
             tre.setEntries(group.getEntries());
         }
-
-        treCollection.add(tre);
+        return tre;
     }
 
-    private TreGroup parseTreComponents(final List<Object> components, final NitfReader reader, final TreEntryList parent) throws ParseException {
-        TreGroup treGroup = new TreGroup();
-        for (Object fieldLoopIf: components) {
-            if (fieldLoopIf instanceof  IfType) {
-                IfType ifType = (IfType) fieldLoopIf;
-                evaluateIfType(ifType, treGroup, reader, parent);
+    private TreGroup parseTreComponents(final List<Object> fieldOrLoopOrIf, final NitfReader reader, final TreParams params) throws ParseException {
+        TreGroup group = new TreGroup();
+        for (Object fieldLoopIf : fieldOrLoopOrIf) {
+            if (fieldLoopIf instanceof FieldType) {
+                group.add(parseField((FieldType) fieldLoopIf, reader, params));
             } else if (fieldLoopIf instanceof LoopType) {
-                LoopType loopType = (LoopType) fieldLoopIf;
-                evaluateLoopType(loopType, treGroup, parent, reader);
-            } else if (fieldLoopIf instanceof FieldType) {
-                FieldType field = (FieldType) fieldLoopIf;
-                evaluateFieldType(reader, field, parent, treGroup);
+                group.add(parseLoop((LoopType) fieldLoopIf, reader, params));
+            } else if (fieldLoopIf instanceof IfType) {
+                TreGroup ifGroup = parseIf((IfType) fieldLoopIf, reader, params);
+                group.addAll(ifGroup);
+            } else {
+                throw new ParseException("Unhandled fieldLoopIf type parsing problem", 0);
             }
         }
-        return treGroup;
+        return group;
     }
 
-    private void evaluateFieldType(final NitfReader reader, final FieldType field, final TreEntryList parent, final TreGroup treGroup)
-            throws ParseException {
-        TreEntry treEntry = parseOneField(reader, field, parent, treGroup);
-        if (treEntry != null) {
-            treGroup.add(treEntry);
-        }
-    }
-
-    private void evaluateLoopType(final LoopType loopType, final TreGroup treGroup, final TreEntryList parent, final NitfReader reader)
-            throws ParseException {
-        int numRepetitions = 0;
-        if (loopType.getIterations() != null) {
-            numRepetitions = loopType.getIterations().intValue();
-        } else if (loopType.getCounter() != null) {
-            String repetitionCounter = loopType.getCounter();
-            numRepetitions = treGroup.getIntValue(repetitionCounter);
-        } else if (loopType.getFormula() != null) {
-            numRepetitions = computeFormula(loopType.getFormula(), treGroup);
-        } else {
-            throw new UnsupportedOperationException("Need to implement other loop type");
-        }
-        TreEntry treEntry = new TreEntry(loopType.getName(), parent);
-        for (int i = 0; i < numRepetitions; ++i) {
-            TreGroup subGroup = parseTreComponents(loopType.getFieldOrLoopOrIf(), reader, parent);
-            treEntry.addGroup(subGroup);
-        }
-        treGroup.add(treEntry);
-    }
-
-    private void evaluateIfType(final IfType ifType,
-                                final TreGroup treGroup,
-                                final NitfReader reader,
-                                final TreEntryList parent) throws ParseException {
-        String condition = ifType.getCond();
-        if (evaluateCondition(condition, treGroup)) {
-            TreGroup ifGroup = parseTreComponents(ifType.getFieldOrLoopOrIf(), reader, parent);
-            treGroup.addAll(ifGroup.getEntries());
-        }
-    }
-
-    private int computeFormula(final String formula, final TreGroup treGroup) throws ParseException {
-        int result = 0;
-        switch (formula) {
-            case "(NPART+1)*(NPART)/2":
-                result = computeAverageNPart(treGroup);
-                break;
-            case "(NUMOPG+1)*(NUMOPG)/2":
-                result = computeAverageNumOrg(treGroup);
-                break;
-            case "NPAR*NPARO":
-                result = computeProductNParNParo(treGroup);
-                break;
-            case "NPLN-1":
-                result = computeNplnMinus(treGroup);
-                break;
-            case "NXPTS*NYPTS":
-                result = computeProductNxptsNypts(treGroup);
-                break;
-            default:
-                // There shouldn't be any others, so hitting this probably indicates a parse error
-                throw new UnsupportedOperationException("Implement missing formula:" + formula);
-        }
-        return result;
-    }
-
-    private int computeAverageNPart(final TreGroup treGroup) throws ParseException {
-        int npart = treGroup.getIntValue("NPART");
-        return (npart + 1) * (npart) / 2;
-    }
-
-    private int computeAverageNumOrg(final TreGroup treGroup) throws ParseException {
-        int numopg = treGroup.getIntValue("NUMOPG");
-        return (numopg + 1) * (numopg) / 2;
-    }
-    private int computeProductNParNParo(final TreGroup treGroup) throws ParseException {
-        int npar = treGroup.getIntValue("NPAR");
-        int nparo = treGroup.getIntValue("NPARO");
-        return npar * nparo;
-    }
-
-    private int computeNplnMinus(final TreGroup treGroup) throws ParseException {
-        int npln = treGroup.getIntValue("NPLN");
-        return npln - 1;
-    }
-
-    private int computeProductNxptsNypts(final TreGroup treGroup) throws ParseException {
-        int nxpts = treGroup.getIntValue("NXPTS");
-        int nypts = treGroup.getIntValue("NYPTS");
-        return nxpts * nypts;
-    }
-
-    private boolean evaluateCondition(final String condition, final TreGroup treGroup) throws ParseException {
-        if (condition.contains(NitfConstants.AND_CONDITION)) {
-            return evaluateConditionBooleanAnd(condition, treGroup);
-        } else if (condition.endsWith("!=")) {
-            return evaluateConditionIsNotEmpty(condition, treGroup);
-        } else if (condition.contains("!=")) {
-            return evaluateConditionIsNotEqual(condition, treGroup);
-        } else if (condition.contains("=")) {
-            return evaluateConditionIsEqual(condition, treGroup);
-        } else {
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
-        }
-    }
-
-    private boolean evaluateConditionBooleanAnd(final String condition, final TreGroup treGroup) throws ParseException {
-        String[] condParts = condition.split(NitfConstants.AND_CONDITION);
-        if (condParts.length != 2) {
-            // This is an error
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
-        }
-        boolean lhs = evaluateCondition(condParts[0], treGroup);
-        boolean rhs = evaluateCondition(condParts[1], treGroup);
-        return lhs && rhs;
-    }
-
-    private boolean evaluateConditionIsNotEmpty(final String condition, final TreGroup treGroup) throws ParseException {
-        String conditionPart = condition.substring(0, condition.length() - "!=".length());
-        String actualValue = treGroup.getFieldValue(conditionPart);
-        return !actualValue.trim().isEmpty();
-    }
-
-    private boolean evaluateConditionIsEqual(final String condition, final TreGroup treGroup) throws ParseException {
-        String[] conditionParts = condition.split("=");
-        if (conditionParts.length != 2) {
-            // This is an error
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
-        }
-        String actualValue = treGroup.getFieldValue(conditionParts[0]);
-        return conditionParts[1].equals(actualValue);
-    }
-
-    private boolean evaluateConditionIsNotEqual(final String condition, final TreGroup treGroup) throws ParseException {
-        String[] conditionParts = condition.split("!=");
-        if (conditionParts.length != 2) {
-            // This is an error
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
-        }
-        String actualValue = treGroup.getFieldValue(conditionParts[0]);
-        return !conditionParts[1].equals(actualValue);
-    }
-
-    private TreEntry parseOneField(final NitfReader reader,
-                                   final FieldType field,
-                                   final TreEntryList parent,
-                                   final TreGroup treGroup) throws ParseException {
+    private TreEntry parseField(final FieldType field, final NitfReader reader, final TreParams parameters) throws ParseException {
         String fieldKey = field.getName();
         if (fieldKey == null) {
             reader.skip(field.getLength().intValue());
@@ -281,17 +112,69 @@ class TreParser {
             if (fieldLengthBigInt != null) {
                 fieldLength = fieldLengthBigInt.intValue();
             } else if (field.getLengthVar() != null) {
-                fieldLength = Integer.parseInt(treGroup.getFieldValue(field.getLengthVar()));
+                fieldLength = Integer.parseInt(parameters.getFieldValue(field.getLengthVar()));
             } else {
                 throw new ParseException("Unhandled field type parsing issue", 0);
             }
             String fieldValue = reader.readBytes(fieldLength);
             if (fieldKey.isEmpty()) {
-                return new TreEntry(parent.getName(), fieldValue, parent);
+                return new TreEntry("no name", fieldValue);
             } else {
-                return new TreEntry(fieldKey, fieldValue, parent);
+                parameters.addParameter(fieldKey, fieldValue);
+                return new TreEntry(fieldKey, fieldValue);
             }
         }
+    }
+
+    private int computeFormula(final String formula, final TreParams treParas) throws ParseException {
+        int result = 0;
+        switch (formula) {
+            case "(NPART+1)*(NPART)/2":
+                result = computeAverageNPart(treParas);
+                break;
+            case "(NUMOPG+1)*(NUMOPG)/2":
+                result = computeAverageNumOrg(treParas);
+                break;
+            case "NPAR*NPARO":
+                result = computeProductNParNParo(treParas);
+                break;
+            case "NPLN-1":
+                result = computeNplnMinus(treParas);
+                break;
+            case "NXPTS*NYPTS":
+                result = computeProductNxptsNypts(treParas);
+                break;
+            default:
+                // There shouldn't be any others, so hitting this probably indicates a parse error
+                throw new UnsupportedOperationException("Implement missing formula:" + formula);
+        }
+        return result;
+    }
+
+    private int computeAverageNPart(final TreParams parameters) throws ParseException {
+        int npart = parameters.getIntValue("NPART");
+        return (npart + 1) * (npart) / 2;
+    }
+
+    private int computeAverageNumOrg(final TreParams parameters) throws ParseException {
+        int numopg = parameters.getIntValue("NUMOPG");
+        return (numopg + 1) * (numopg) / 2;
+    }
+    private int computeProductNParNParo(final TreParams parameters) throws ParseException {
+        int npar = parameters.getIntValue("NPAR");
+        int nparo = parameters.getIntValue("NPARO");
+        return npar * nparo;
+    }
+
+    private int computeNplnMinus(final TreParams parameters) throws ParseException {
+        int npln = parameters.getIntValue("NPLN");
+        return npln - 1;
+    }
+
+    private int computeProductNxptsNypts(final TreParams parameters) throws ParseException {
+        int nxpts = parameters.getIntValue("NXPTS");
+        int nypts = parameters.getIntValue("NYPTS");
+        return nxpts * nypts;
     }
 
     private TreType getTreTypeForTag(final String tag) {
@@ -302,4 +185,84 @@ class TreParser {
         }
         return null;
     }
+
+    private TreEntry parseLoop(final LoopType loopType, final NitfReader reader, final TreParams params) throws ParseException {
+        int numRepetitions = 0;
+        if (loopType.getIterations() != null) {
+            numRepetitions = loopType.getIterations().intValue();
+        } else if (loopType.getCounter() != null) {
+            String repetitionCounter = loopType.getCounter();
+            numRepetitions = params.getIntValue(repetitionCounter);
+        } else if (loopType.getFormula() != null) {
+            numRepetitions = computeFormula(loopType.getFormula(), params);
+        } else {
+            throw new UnsupportedOperationException("Need to implement other loop type");
+        }
+        TreEntry treEntry = new TreEntry(loopType.getName());
+        for (int i = 0; i < numRepetitions; ++i) {
+            TreGroup subGroup = parseTreComponents(loopType.getFieldOrLoopOrIf(), reader, params);
+            treEntry.addGroup(subGroup);
+        }
+        return treEntry;
+    }
+
+    private TreGroup parseIf(final IfType ifType, final NitfReader reader, final TreParams params) throws ParseException {
+        String condition = ifType.getCond();
+        if (evaluateCondition(condition, params)) {
+            return parseTreComponents(ifType.getFieldOrLoopOrIf(), reader, params);
+        }
+        return null;
+    }
+
+    private boolean evaluateCondition(final String condition, final TreParams params) {
+        if (condition.contains(NitfConstants.AND_CONDITION)) {
+            return evaluateConditionBooleanAnd(condition, params);
+        } else if (condition.endsWith("!=")) {
+            return evaluateConditionIsNotEmpty(condition, params);
+        } else if (condition.contains("!=")) {
+            return evaluateConditionIsNotEqual(condition, params);
+        } else if (condition.contains("=")) {
+            return evaluateConditionIsEqual(condition, params);
+        } else {
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+        }
+    }
+
+    private boolean evaluateConditionBooleanAnd(final String condition, final TreParams parameters) {
+        String[] condParts = condition.split(NitfConstants.AND_CONDITION);
+        if (condParts.length != 2) {
+            // This is an error
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+        }
+        boolean lhs = evaluateCondition(condParts[0], parameters);
+        boolean rhs = evaluateCondition(condParts[1], parameters);
+        return lhs && rhs;
+    }
+
+    private boolean evaluateConditionIsNotEmpty(final String condition, final TreParams parameters) {
+        String conditionPart = condition.substring(0, condition.length() - "!=".length());
+        String actualValue = parameters.getFieldValue(conditionPart);
+        return !actualValue.trim().isEmpty();
+    }
+
+    private boolean evaluateConditionIsNotEqual(final String condition, final TreParams parameters) {
+        String[] conditionParts = condition.split("!=");
+        if (conditionParts.length != 2) {
+            // This is an error
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+        }
+        String actualValue = parameters.getFieldValue(conditionParts[0]);
+        return !conditionParts[1].equals(actualValue);
+    }
+
+    private boolean evaluateConditionIsEqual(final String condition, final TreParams params) {
+        String[] conditionParts = condition.split("=");
+        if (conditionParts.length != 2) {
+            // This is an error
+            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+        }
+        String actualValue = params.getFieldValue(conditionParts[0]);
+        return conditionParts[1].equals(actualValue);
+    }
+
 }

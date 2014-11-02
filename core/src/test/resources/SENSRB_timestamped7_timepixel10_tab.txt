@@ -1,0 +1,150 @@
+1.01	General Data	Y
+1.01a	Sensor	SYERS2A                  
+1.01b	Sensor URI	                                
+1.01c	Platform	U-2                      
+1.01d	Platform URI	                                
+1.01e	Operational Domain	Airborne  
+1.01f	Content Level	4
+1.01g	Geodetic System	WGS84
+1.01h	Geodetic Type	G
+1.01i	Elevation Datum	HAE
+1.01j	Length Unit	SI
+1.01k	Angular Unit	DEG
+1.01l	Start Date	20141012
+1.01m	Start Time	00000000000300
+1.01n	End Date	20141013
+1.01o	End Time	00000000000120
+1.01p	Generation Count	00
+1.01q	Generation Date	--------
+1.01r	Generation Time	----------
+1.02	Sensor Array Data	Y
+1.02a	Detection	PAN                 
+1.02b	Row Detectors	00001024
+1.02c	Column Detectors	00000256
+1.02d	Row Metric	000000.3
+1.02e	Column Metric	000000.1
+1.02f	Focal Length	00000876
+1.02g	Row FOV	--------
+1.02h	Column FOV	--------
+1.02i	Calibrated	N
+1.03	Sensor Calibration Data	N
+1.04	Image Formation Data	Y
+1.04a	Method	Single Frame   
+1.04b	Mode	015
+1.04c	Row Count	00002048
+1.04d	Column Count	00000256
+1.04e	Row Set	00002048
+1.04f	Column Set	00000256
+1.04g	Row Rate	000000.002
+1.04h	Column Rate	0000000.04
+1.04i	First Pixel Row	00000000
+1.04j	First Pixel Column	00000000
+1.04k	Transform Params	6
+1.04l	Transform Param 1	0000000002.4
+1.04m	Transform Param 2	0000000000.3
+1.04n	Transform Param 3	000000000002
+1.04o	Transform Param 4	-000004.3e-2
+1.04p	Transform Param 5	0000000000.4
+1.04q	Transform Param 6	000000000001
+1.05a	Reference Time	000000000000
+1.05b	Reference Row	00000001
+1.05c	Reference Column	00000002
+1.06a	Latitude	-00000034.3
+1.06b	Longitude	0000000140.2
+1.06c	Altitude	00000020000
+1.06d	Sensor X Offset	000003.2
+1.06e	Sensor Y Offset	-0000001
+1.06f	Sensor Z Offset	00000002
+1.07	Attitude Euler Angles	Y
+1.07a	Sensor Angle Model	2
+1.07b	Sensor Angle 1	0000000004
+1.07c	Sensor Angle 2	000000005
+1.07d	Sensor Angle 3	-000000012
+1.07e	Platform Relative	N
+1.07f	Platform Heading	---------
+1.07g	Platform Pitch	---------
+1.07h	Platform Roll	----------
+1.08	Attitude Unit Vectors	N
+1.09	Attitude Quaternions	N
+1.10	Sensor Velocity	Y
+1.10a	Velocity North	000000304
+1.10b	Velocity East	000000040
+1.10c	Velocity Down	0000003.8
+1.11	Point Sets	00
+1.12	Time Stamps Sets	09
+1.12a.1	Time Stamp Type	07b
+1.12b.1	Time Stamp Count	0002
+1.12c.1.1	Time Stamp Time	000000000200
+1.12d.1.1	Sensor Angle 1	-0000001.3
+1.12c.1.2	Time Stamp Time	000000000400
+1.12d.1.2	Sensor Angle 1	00000002.5
+1.12a.2	Time Stamp Type	07c
+1.12b.2	Time Stamp Count	0001
+1.12c.2.1	Time Stamp Time	000000000399
+1.12d.2.1	Sensor Angle 2	000000078
+1.12a.3	Time Stamp Type	07d
+1.12b.3	Time Stamp Count	0001
+1.12c.3.1	Time Stamp Time	000000000401
+1.12d.3.1	Sensor Angle 3	-0000003.6
+1.12a.4	Time Stamp Type	07f
+1.12b.4	Time Stamp Count	0001
+1.12c.4.1	Time Stamp Time	000000000503
+1.12d.4.1	Platform Heading	0000083.2
+1.12a.5	Time Stamp Type	07g
+1.12b.5	Time Stamp Count	0001
+1.12c.5.1	Time Stamp Time	000000000402
+1.12d.5.1	Platform Pitch	0000005.6
+1.12a.6	Time Stamp Type	07h
+1.12b.6	Time Stamp Count	0001
+1.12c.6.1	Time Stamp Time	000000000504
+1.12d.6.1	Platform Roll	-0000001.6
+1.12a.7	Time Stamp Type	10a
+1.12b.7	Time Stamp Count	0001
+1.12c.7.1	Time Stamp Time	000000000700
+1.12d.7.1	Velocity North	000000354
+1.12a.8	Time Stamp Type	10b
+1.12b.8	Time Stamp Count	0002
+1.12c.8.1	Time Stamp Time	000000000023
+1.12d.8.1	Velocity East	000000401
+1.12c.8.2	Time Stamp Time	000000000200
+1.12d.8.2	Velocity East	000000405
+1.12a.9	Time Stamp Type	10c
+1.12b.9	Time Stamp Count	0001
+1.12c.9.1	Time Stamp Time	000000000508
+1.12d.9.1	Velocity Down	-000003.2
+1.13	Pixel Reference Sets	03
+1.13a.1	Pixel Reference Type	10a
+1.13b.1	Pixel Reference Count	0003
+1.13c.1.1	Pixel Reference Row	00000055
+1.13d.1.1	Pixel Reference Column	00000078
+1.13e.1.1	Velocity North	-00000408
+1.13c.1.2	Pixel Reference Row	00000087
+1.13d.1.2	Pixel Reference Column	00003945
+1.13e.1.2	Velocity North	-00000407
+1.13c.1.3	Pixel Reference Row	00005734
+1.13d.1.3	Pixel Reference Column	00003430
+1.13e.1.3	Velocity North	-00000409
+1.13a.2	Pixel Reference Type	10b
+1.13b.2	Pixel Reference Count	0001
+1.13c.2.1	Pixel Reference Row	00000046
+1.13d.2.1	Pixel Reference Column	00000079
+1.13e.2.1	Velocity East	-00000034
+1.13a.3	Pixel Reference Type	10c
+1.13b.3	Pixel Reference Count	0001
+1.13c.3.1	Pixel Reference Row	00004223
+1.13d.3.1	Pixel Reference Column	00004222
+1.13e.3.1	Velocity Down	0000455.4
+1.14	Uncertainties	000
+1.15	Additional Parameters	002
+1.15a.1	Parameter Name	LUNAR_AZIMUTH            
+1.15b.1	Parameter Size	002
+1.15c.1	Parameter Count	0003
+1.15d.1.1	LUNAR_AZIMUTH Value	43
+1.15d.1.2	LUNAR_AZIMUTH Value	01
+1.15d.1.3	LUNAR_AZIMUTH Value	AB
+1.15a.2	Parameter Name	MI_LDS_VERSION           
+1.15b.2	Parameter Size	014
+1.15c.2	Parameter Count	0001
+1.15d.2.1	MI_LDS_VERSION Value	4434343FG     
+
+

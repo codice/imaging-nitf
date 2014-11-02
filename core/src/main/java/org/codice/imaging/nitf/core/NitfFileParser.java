@@ -374,8 +374,8 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDHD() throws ParseException {
-        TreParser treParser = new TreParser();
-        TreCollection userDefinedHeaderTREs = treParser.parse(reader, userDefinedHeaderDataLength - NitfConstants.UDHOFL_LENGTH);
+        TreCollectionParser treCollectionParser = new TreCollectionParser();
+        TreCollection userDefinedHeaderTREs = treCollectionParser.parse(reader, userDefinedHeaderDataLength - NitfConstants.UDHOFL_LENGTH);
         nitf.mergeTREs(userDefinedHeaderTREs);
     }
 
@@ -388,8 +388,8 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readXHD() throws ParseException {
-        TreParser treParser = new TreParser();
-        TreCollection extendedHeaderTres = treParser.parse(reader, extendedHeaderDataLength - NitfConstants.XHDLOFL_LENGTH);
+        TreCollectionParser treCollectionParser = new TreCollectionParser();
+        TreCollection extendedHeaderTres = treCollectionParser.parse(reader, extendedHeaderDataLength - NitfConstants.XHDLOFL_LENGTH);
         nitf.mergeTREs(extendedHeaderTres);
     }
 

@@ -49,7 +49,7 @@ public class TreTest {
 
     @Test
     public void testTreEntry() {
-        TreEntry entry = new TreEntry("ANAME", null);
+        TreEntry entry = new TreEntry("ANAME");
         assertNotNull(entry);
 
         entry.initGroups();
@@ -58,7 +58,7 @@ public class TreTest {
         entry.addGroup(group1);
         TreGroup group2 = new TreGroup();
         entry.addGroup(group2);
-        TreEntry subEntry = new TreEntry("SubEntry", group2);
+        TreEntry subEntry = new TreEntry("SubEntry");
         group2.add(subEntry);
         subEntry.addGroup(new TreGroup());
         entry.dump();

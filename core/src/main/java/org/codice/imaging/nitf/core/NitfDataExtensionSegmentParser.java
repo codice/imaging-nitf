@@ -85,8 +85,8 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
 
     private void readDESDATA() throws ParseException {
         if (isTreOverflow()) {
-            TreParser treParser = new TreParser();
-            TreCollection overflowTres = treParser.parse(reader, lengthOfDataExtension);
+            TreCollectionParser treCollectionParser = new TreCollectionParser();
+            TreCollection overflowTres = treCollectionParser.parse(reader, lengthOfDataExtension);
             segment.mergeTREs(overflowTres);
         } else {
             segment.setData(reader.readBytesRaw(lengthOfDataExtension));

@@ -27,8 +27,9 @@ import org.slf4j.LoggerFactory;
 public class TreGroup {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreGroup.class);
+    private static final int DECIMAL_BASE = 10;
 
-    private List<TreEntry> entries = new ArrayList<TreEntry>();
+    private List<TreEntry> entries = new ArrayList<>();
 
     /**
         The entries in the TRE entry group.
@@ -45,16 +46,20 @@ public class TreGroup {
         @param entry the entry to add
     */
     public final void add(final TreEntry entry) {
-        entries.add(entry);
+        if (entry != null) {
+            entries.add(entry);
+        }
     }
 
     /**
         Add multiple entries to the group.
 
-        @param oneOrMoreEntries the entry or entries to add
+        @param group the group containing the entry or entries to add
     */
-    public final void addAll(final List<TreEntry> oneOrMoreEntries) {
-        entries.addAll(oneOrMoreEntries);
+    public final void addAll(final TreGroup group) {
+        if (group != null) {
+            entries.addAll(group.getEntries());
+        }
     }
 
     /**
@@ -63,8 +68,24 @@ public class TreGroup {
         @param treEntries the new list of entries.
     */
     public final void setEntries(final List<TreEntry> treEntries) {
-        entries = new ArrayList<TreEntry>();
+        entries = new ArrayList<>();
         entries.addAll(treEntries);
+    }
+
+    /**
+        Get the entry for a specific tag.
+
+        @param tagName the name (tag) of the field to look up.
+        @return the entry corresponding to the tag name.
+        @throws ParseException when the tag is not found
+    */
+    public final TreEntry getEntry(final String tagName) throws ParseException {
+        for (TreEntry entry : entries) {
+            if (entry.getName().equals(tagName)) {
+                return entry;
+            }
+        }
+        throw new ParseException(String.format("Failed to look up %s", tagName), 0);
     }
 
     /**
@@ -75,12 +96,8 @@ public class TreGroup {
         @throws ParseException when the tag is not found
     */
     public final String getFieldValue(final String tagName) throws ParseException {
-        for (TreEntry entry : entries) {
-            if (entry.getName().equals(tagName)) {
-                return entry.getFieldValue();
-            }
-        }
-        throw new ParseException(String.format("Failed to look up %s", tagName), 0);
+        TreEntry entry = getEntry(tagName);
+        return entry.getFieldValue();
     }
 
     /**
@@ -92,7 +109,8 @@ public class TreGroup {
     */
     public final int getIntValue(final String tagName) throws ParseException {
         try {
-            return Integer.parseInt(getFieldValue(tagName));
+            String fv = getFieldValue(tagName);
+            return Integer.parseInt(fv, DECIMAL_BASE);
         } catch (ParseException ex) {
             throw new ParseException(String.format("Failed to look up %s as integer value", tagName), 0);
         }
@@ -108,4 +126,5 @@ public class TreGroup {
             LOG.debug("\t----End Entry---");
         }
     }
+
 }

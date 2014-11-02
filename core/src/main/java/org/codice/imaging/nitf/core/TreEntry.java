@@ -32,7 +32,6 @@ public class TreEntry {
     private String name = null;
     private String value = null;
     private List<TreGroup> groups = null;
-    private TreGroup entryParent = null;
 
     /**
         Construct a TRE entry with a specific field name, field value and parent.
@@ -41,12 +40,10 @@ public class TreEntry {
 
         @param fieldName the field name of the new TRE entry.
         @param fieldValue the field value for the new TRE entry.
-        @param parent the parent of the TRE entry (e.g. a TRE, or a group of values somewhere within a TRE)
     */
-    public TreEntry(final String fieldName, final String fieldValue, final TreGroup parent) {
+    public TreEntry(final String fieldName, final String fieldValue) {
         name = fieldName;
         value = fieldValue;
-        entryParent = parent;
     }
 
     /**
@@ -55,11 +52,9 @@ public class TreEntry {
         This is the repeating TRE entry form of an entry, initialised with an empty group list.
 
         @param fieldName the field name of the new TRE entry.
-        @param parent the parent of the TRE entry (e.g. a TRE, or a group of values somewhere within a TRE)
     */
-    public TreEntry(final String fieldName, final TreGroup parent) {
+    public TreEntry(final String fieldName) {
         name = fieldName;
-        entryParent = parent;
         initGroups();
     }
 

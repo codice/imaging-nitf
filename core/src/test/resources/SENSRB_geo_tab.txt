@@ -1,0 +1,76 @@
+1.01	General Data	Y
+1.01a	Sensor	SYERS2A                  
+1.01b	Sensor URI	                                
+1.01c	Platform	U-2                      
+1.01d	Platform URI	                                
+1.01e	Operational Domain	Airborne  
+1.01f	Content Level	4
+1.01g	Geodetic System	WGS84
+1.01h	Geodetic Type	G
+1.01i	Elevation Datum	HAE
+1.01j	Length Unit	SI
+1.01k	Angular Unit	DEG
+1.01l	Start Date	20141012
+1.01m	Start Time	00000000000300
+1.01n	End Date	20141013
+1.01o	End Time	00000000000120
+1.01p	Generation Count	00
+1.01q	Generation Date	--------
+1.01r	Generation Time	----------
+1.02	Sensor Array Data	Y
+1.02a	Detection	PAN                 
+1.02b	Row Detectors	00001024
+1.02c	Column Detectors	00000256
+1.02d	Row Metric	000000.3
+1.02e	Column Metric	000000.1
+1.02f	Focal Length	00000876
+1.02g	Row FOV	--------
+1.02h	Column FOV	--------
+1.02i	Calibrated	N
+1.03	Sensor Calibration Data	N
+1.04	Image Formation Data	Y
+1.04a	Method	Single Frame   
+1.04b	Mode	015
+1.04c	Row Count	00002048
+1.04d	Column Count	00000256
+1.04e	Row Set	00002048
+1.04f	Column Set	00000256
+1.04g	Row Rate	000000.002
+1.04h	Column Rate	0000000.04
+1.04i	First Pixel Row	00000000
+1.04j	First Pixel Column	00000000
+1.04k	Transform Params	6
+1.04l	Transform Param 1	0000000002.4
+1.04m	Transform Param 2	0000000000.3
+1.04n	Transform Param 3	000000000002
+1.04o	Transform Param 4	-000004.3e-2
+1.04p	Transform Param 5	0000000000.4
+1.04q	Transform Param 6	000000000001
+1.05a	Reference Time	000000000000
+1.05b	Reference Row	00000001
+1.05c	Reference Column	00000002
+1.06a	Latitude	-00000034.3
+1.06b	Longitude	0000000140.2
+1.06c	Altitude	00000020000
+1.06d	Sensor X Offset	000003.2
+1.06e	Sensor Y Offset	-0000001
+1.06f	Sensor Z Offset	00000002
+1.07	Attitude Euler Angles	Y
+1.07a	Sensor Angle Model	2
+1.07b	Sensor Angle 1	0000000004
+1.07c	Sensor Angle 2	000000005
+1.07d	Sensor Angle 3	-000000012
+1.07e	Platform Relative	N
+1.07f	Platform Heading	---------
+1.07g	Platform Pitch	---------
+1.07h	Platform Roll	----------
+1.08	Attitude Unit Vectors	N
+1.09	Attitude Quaternions	N
+1.10	Sensor Velocity	N
+1.11	Point Sets	00
+1.12	Time Stamps Sets	00
+1.13	Pixel Reference Sets	00
+1.14	Uncertainties	000
+1.15	Additional Parameters	000
+
+
