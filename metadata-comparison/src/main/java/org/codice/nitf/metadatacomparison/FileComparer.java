@@ -399,7 +399,7 @@ public class FileComparer
     }
 
     private void outputSubdatasets() throws IOException {
-        if (!nitf.getImageSegments().isEmpty()) {
+        if (nitf.getImageSegments().size() > 1) {
             out.write("Subdatasets:\n");
             for (int i = 0; i < nitf.getImageSegments().size(); ++i) {
                 out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
