@@ -2,8 +2,10 @@ package org.codice.nitf.metadatacomparison;
 
 import java.io.File;
 
-public class FileComparison
-{
+public class FileComparison {
+
+    private FileComparison() {
+    }
 
     public static void main( String[] args ) {
         if (args.length == 0) {

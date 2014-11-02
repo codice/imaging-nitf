@@ -38,8 +38,7 @@ import org.codice.imaging.nitf.core.TreCollection;
 import org.codice.imaging.nitf.core.TreEntry;
 import org.codice.imaging.nitf.core.TreGroup;
 
-public class FileComparer
-{
+public class FileComparer {
     static final String OUR_OUTPUT_EXTENSION = ".OURS.txt";
     static final String THEIR_OUTPUT_EXTENSION = ".THEIRS.txt";
 
@@ -100,11 +99,9 @@ public class FileComparer
             outputRPCs();
 
             out.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
@@ -424,11 +421,7 @@ public class FileComparer
     }
 
     private boolean shouldOutputTREs() {
-        if (shouldOutputFileTREs() || shouldOutputImageTREs() || shouldOutputDESTREs()) {
-            return true;
-        } else {
-            return false;
-        }
+        return shouldOutputFileTREs() || shouldOutputImageTREs() || shouldOutputDESTREs();
     }
 
     private boolean shouldOutputFileTREs() {
@@ -469,7 +462,7 @@ public class FileComparer
     }
 
     private void outputRPCs() throws IOException {
-        TreeMap <String, String> rpc = new TreeMap<String, String>();
+        Map <String, String> rpc = new TreeMap<String, String>();
         if (segment1 != null) {
             // Walk the segment1 TRE collection and add RPC entries here
             TreCollection treCollection = segment1.getTREsRawStructure();
@@ -534,7 +527,7 @@ public class FileComparer
         }
     }
 
-    static private String cleanupNumberString(double fieldVal) {
+    private static String cleanupNumberString(double fieldVal) {
         if (fieldVal == (int)fieldVal) {
             return String.format("%d", (int)fieldVal);
         }
