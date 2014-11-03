@@ -44,10 +44,11 @@ public class Nitf20SymbolTest {
     @Test
     public void testU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.allOf(ParseOption.class));
-        assertFileSegmentDataIsAsExpected(file);
+        NitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        NitfFileFactory.parse(is, parseStrategy);
+        assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        NitfSymbolSegment symbolSegment1 = file.getSymbolSegments().get(0);
+        NitfSymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
         assertSymbolSegmentDataIsAsExpected(symbolSegment1);
         assertEquals(930, symbolSegment1.getSymbolData().length);
 
@@ -57,11 +58,13 @@ public class Nitf20SymbolTest {
     @Test
     public void testNoSegmentDataU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(is, EnumSet.noneOf(ParseOption.class));
-        assertFileSegmentDataIsAsExpected(file);
+        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        NitfFileFactory.parse(is, parseStrategy);
+        assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        NitfSymbolSegment symbolSegment1 = file.getSymbolSegments().get(0);
+        NitfSymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
         assertSymbolSegmentDataIsAsExpected(symbolSegment1);
+        assertEquals(1, parseStrategy.getSymbolSegments().size());
         assertNull(symbolSegment1.getSymbolData());
 
         is.close();
@@ -75,7 +78,8 @@ public class Nitf20SymbolTest {
         return getClass().getResourceAsStream(nitf20File);
     }
 
-    private void assertFileSegmentDataIsAsExpected(Nitf file) {
+    private void assertFileSegmentDataIsAsExpected(NitfParseStrategy parseStrategy) {
+        Nitf file = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
@@ -92,12 +96,11 @@ public class Nitf20SymbolTest {
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC Fort Huachuca, AZ", file.getOriginatorsName());
         assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(0, file.getImageSegments().size());
-        assertEquals(0, file.getGraphicSegments().size());
-        assertEquals(1, file.getSymbolSegments().size());
-        assertEquals(0, file.getLabelSegments().size());
-        assertEquals(0, file.getTextSegments().size());
-        assertEquals(0, file.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getImageSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegments().size());
+        assertEquals(0, parseStrategy.getLabelSegments().size());
+        assertEquals(0, parseStrategy.getTextSegments().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
     }
 
     private void assertSymbolSegmentDataIsAsExpected(NitfSymbolSegment symbolSegment1) {

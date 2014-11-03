@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNull;
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.EnumSet;
 
 import org.junit.Test;
@@ -30,20 +29,22 @@ public class Nitf21GraphicParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_GRAPHIC_SEGMENT_DATA));
-        assertEquals(1, file.getGraphicSegments().size());
+        NitfParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
+        NitfFileFactory.parse(getInputStream(), parseStrategy);
+        assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        NitfGraphicSegment graphicSegment = file.getGraphicSegments().get(0);
+        NitfGraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         assertEquals(780, graphicSegment.getGraphicData().length);
     }
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseHeadersOnly(getInputStream());
-        assertEquals(1, file.getGraphicSegments().size());
+        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        NitfFileFactory.parse(getInputStream(), parseStrategy);
+        assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        NitfGraphicSegment graphicSegment = file.getGraphicSegments().get(0);
+        NitfGraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         assertNull(graphicSegment.getGraphicData());
     }

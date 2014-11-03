@@ -29,6 +29,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfTextSegment segment = null;
 
+    // TODO: remove this
     NitfTextSegmentParser(final NitfReader nitfReader,
                                  final int textLength,
                                  final Set<ParseOption> parseOptions,
@@ -52,6 +53,27 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
             readTXSHD();
         }
         readTextData();
+    }
+
+    // TODO: make this a method
+    NitfTextSegmentParser(final NitfReader nitfReader,
+            final NitfTextSegment textSegment) throws ParseException {
+        reader = nitfReader;
+        segment = textSegment;
+
+        readTE();
+        readTEXTID();
+        readTXTALVL();
+        readTEXTDT();
+        readTXTITL();
+        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+        readENCRYP();
+        readTXTFMT();
+        readTXSHDL();
+        if (textExtendedSubheaderLength > 0) {
+            readTXSOFL();
+            readTXSHD();
+        }
     }
 
     private void readTE() throws ParseException {

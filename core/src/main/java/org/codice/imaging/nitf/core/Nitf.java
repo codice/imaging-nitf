@@ -34,12 +34,24 @@ public class Nitf extends AbstractNitfSegment {
     private int nitfUserDefinedHeaderOverflow = 0;
     private int nitfExtendedHeaderDataOverflow = 0;
 
-    private final List<NitfImageSegment> imageSegments = new ArrayList<>();
-    private final List<NitfGraphicSegment> graphicSegments = new ArrayList<>();
-    private final List<NitfSymbolSegment> symbolSegments = new ArrayList<>();
-    private final List<NitfLabelSegment> labelSegments = new ArrayList<>();
-    private final List<NitfTextSegment> textSegments = new ArrayList<>();
-    private final List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<>();
+    private final List<Integer> lish = new ArrayList<>();
+    private final List<Long> li = new ArrayList<>();
+    private final List<Integer> lssh = new ArrayList<>();
+    private final List<Integer> ls = new ArrayList<>();
+    private final List<Integer> llsh = new ArrayList<>();
+    private final List<Integer> ll = new ArrayList<>();
+    private final List<Integer> ltsh = new ArrayList<>();
+    private final List<Integer> lt = new ArrayList<>();
+    private final List<Integer> ldsh = new ArrayList<>();
+    private final List<Integer> ld = new ArrayList<>();
+
+//    // TODO: remove this
+//    private final List<NitfImageSegment> imageSegments = new ArrayList<>();
+//    private final List<NitfGraphicSegment> graphicSegments = new ArrayList<>();
+//    private final List<NitfSymbolSegment> symbolSegments = new ArrayList<>();
+//    private final List<NitfLabelSegment> labelSegments = new ArrayList<>();
+//    private final List<NitfTextSegment> textSegments = new ArrayList<>();
+//    private final List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<>();
 
     /**
         Default constructor.
@@ -303,6 +315,55 @@ public class Nitf extends AbstractNitfSegment {
         return nitfUserDefinedHeaderOverflow;
     }
 
+    // TODO: should be public
+    final int getNumberOfImageSegmentSubHeaders() {
+        return lish.size();
+    }
+
+    final int getNumberOfImageSegments() {
+        return li.size();
+    }
+
+    final long getLengthOfImageSegment(final int i) {
+        return li.get(i);
+    }
+
+    // TODO: should be public
+    final int getNumberOfGraphicSegments() {
+        return lssh.size();
+    }
+
+    final int getLengthOfGraphicSegment(final int i) {
+        return ls.get(i);
+    }
+
+    // TODO: should be public
+    final int getNumberOfLabelSegments() {
+        return llsh.size();
+    }
+
+    final int getLengthOfLabelSegment(final int i) {
+        return ll.get(i);
+    }
+
+    // TODO: should be public
+    final int getNumberOfTextSegments() {
+        return ltsh.size();
+    }
+
+    final int getLengthOfTextSegment(final int i) {
+        return lt.get(i);
+    }
+
+    // TODO: should be public
+    final int getNumberOfDataExtensionSegments() {
+        return ldsh.size();
+    }
+
+    final int getLengthOfDataExtensionSegment(final int i) {
+        return ld.get(i);
+    }
+
     /**
         Set the extended header data overflow (XHDOFL) for the file.
         <p>
@@ -327,131 +388,187 @@ public class Nitf extends AbstractNitfSegment {
         return nitfExtendedHeaderDataOverflow;
     }
 
-    /**
-        Return the image segments attached to this file.
+//    /**
+//        Return the image segments attached to this file.
+//
+//        @return the image segments
+//    */
+//    public final List<NitfImageSegment> getImageSegments() {
+//        return imageSegments;
+//    }
+//
+//    /**
+//        Return the graphic segments attached to this file.
+//
+//        This will only be non-empty for NITF 2.1 / NSIF 1.0 files. The
+//        equivalent for NITF 2.0 files is getSymbolSegments().
+//
+//        @return the graphic segments
+//    */
+//
+//    public final List<NitfGraphicSegment> getGraphicSegments() {
+//        return graphicSegments;
+//    }
+//
+//    /**
+//        Return the symbol segments attached to this file.
+//
+//        This will only be non-empty for NITF 2.0 files. The equivalent
+//        for NITF 2.1 / NSIF 1.0 files is getGraphicSegments().
+//
+//        @return the symbol segments
+//    */
+//    public final List<NitfSymbolSegment> getSymbolSegments() {
+//        return symbolSegments;
+//    }
+//
+//    /**
+//        Return the label segments attached to this file.
+//
+//        This will only be non-empty for NITF 2.0 files. There is no
+//        equivalent for NITF 2.1 / NSIF 1.0 files.
+//
+//        @return the label segments
+//    */
+//    public final List<NitfLabelSegment> getLabelSegments() {
+//        return labelSegments;
+//    }
+//
+//    /**
+//        Return the text segments attached to this file.
+//
+//        @return the number of text segments
+//    */
+//    public final List<NitfTextSegment> getTextSegments() {
+//        return textSegments;
+//    }
+//
+//    /**
+//        Return the data extension segments (DES) attached to this file.
+//
+//        Note that DES can also be attached to image, graphic, symbol, label and
+//        text segments. This method only returns those attached at the file level.
+//
+//        @return the data extension segments
+//    */
+//    public final List<NitfDataExtensionSegment> getDataExtensionSegments() {
+//        return dataExtensionSegments;
+//    }
+//
+//    /**
+//        Add an image segment to the file.
+//
+//        @param imageSegment the image segment to add
+//    */
+//    public final void addImageSegment(final NitfImageSegment imageSegment) {
+//        imageSegments.add(imageSegment);
+//    }
+//
+//    /**
+//        Add a graphic segment to the file.
+//
+//        This is only supported for NITF 2.1 / NSIF 1.0 files.
+//
+//        @param graphicSegment the graphic segment to add
+//    */
+//    public final void addGraphicSegment(final NitfGraphicSegment graphicSegment) {
+//        graphicSegments.add(graphicSegment);
+//    }
+//
+//    /**
+//        Add a symbol segment to the file.
+//
+//        This is only supported for NITF 2.0 files.
+//
+//        @param symbolSegment the symbol segment to add
+//    */
+//    public final void addSymbolSegment(final NitfSymbolSegment symbolSegment) {
+//        symbolSegments.add(symbolSegment);
+//    }
+//
+//    /**
+//        Add a label segment to the file.
+//
+//        This is only supported for NITF 2.0 files.
+//
+//        @param labelSegment the label segment to add
+//    */
+//    public final void addLabelSegment(final NitfLabelSegment labelSegment) {
+//        labelSegments.add(labelSegment);
+//    }
+//
+//    /**
+//        Add a text segment to the file.
+//
+//        @param textSegment the text segment to add
+//    */
+//    public final void addTextSegment(final NitfTextSegment textSegment) {
+//        textSegments.add(textSegment);
+//    }
+//
+//    /**
+//        Add a data extension segment (DES) to the file.
+//
+//        @param dataExtensionSegment the data extension segment to add
+//    */
+//    public final void addDataExtensionSegment(final NitfDataExtensionSegment dataExtensionSegment) {
+//        dataExtensionSegments.add(dataExtensionSegment);
+//    }
 
-        @return the image segments
-    */
-    public final List<NitfImageSegment> getImageSegments() {
-        return imageSegments;
+    final void setImageSegmentSubHeaderLength(final int subheaderIndex, final Integer length) {
+        lish.set(subheaderIndex, length);
     }
 
-    /**
-        Return the graphic segments attached to this file.
-
-        This will only be non-empty for NITF 2.1 / NSIF 1.0 files. The
-        equivalent for NITF 2.0 files is getSymbolSegments().
-
-        @return the graphic segments
-    */
-
-    public final List<NitfGraphicSegment> getGraphicSegments() {
-        return graphicSegments;
+    final void addImageSegmentSubHeaderLength(final Integer length) {
+        lish.add(length);
     }
 
-    /**
-        Return the symbol segments attached to this file.
-
-        This will only be non-empty for NITF 2.0 files. The equivalent
-        for NITF 2.1 / NSIF 1.0 files is getGraphicSegments().
-
-        @return the symbol segments
-    */
-    public final List<NitfSymbolSegment> getSymbolSegments() {
-        return symbolSegments;
+    final void setImageSegmentLength(final int subheaderIndex, final Long length) {
+        li.set(subheaderIndex, length);
     }
 
-    /**
-        Return the label segments attached to this file.
-
-        This will only be non-empty for NITF 2.0 files. There is no
-        equivalent for NITF 2.1 / NSIF 1.0 files.
-
-        @return the label segments
-    */
-    public final List<NitfLabelSegment> getLabelSegments() {
-        return labelSegments;
+    final void addImageSegmentLength(final Long length) {
+        li.add(length);
     }
 
-    /**
-        Return the text segments attached to this file.
-
-        @return the number of text segments
-    */
-    public final List<NitfTextSegment> getTextSegments() {
-        return textSegments;
+    final int getNumberOfGraphicSegmentSubHeaders() {
+        return lssh.size();
     }
 
-    /**
-        Return the data extension segments (DES) attached to this file.
-
-        Note that DES can also be attached to image, graphic, symbol, label and
-        text segments. This method only returns those attached at the file level.
-
-        @return the data extension segments
-    */
-    public final List<NitfDataExtensionSegment> getDataExtensionSegments() {
-        return dataExtensionSegments;
+    final void addGraphicSegmentSubHeaderLength(final Integer length) {
+        lssh.add(length);
     }
 
-    /**
-        Add an image segment to the file.
-
-        @param imageSegment the image segment to add
-    */
-    public final void addImageSegment(final NitfImageSegment imageSegment) {
-        imageSegments.add(imageSegment);
+    final void addGraphicSegmentLength(final Integer length) {
+        ls.add(length);
     }
 
-    /**
-        Add a graphic segment to the file.
-
-        This is only supported for NITF 2.1 / NSIF 1.0 files.
-
-        @param graphicSegment the graphic segment to add
-    */
-    public final void addGraphicSegment(final NitfGraphicSegment graphicSegment) {
-        graphicSegments.add(graphicSegment);
+    final int getNumberOfLabelSegmentSubHeaders() {
+        return llsh.size();
     }
 
-    /**
-        Add a symbol segment to the file.
-
-        This is only supported for NITF 2.0 files.
-
-        @param symbolSegment the symbol segment to add
-    */
-    public final void addSymbolSegment(final NitfSymbolSegment symbolSegment) {
-        symbolSegments.add(symbolSegment);
+    final void addLabelSegmentSubHeaderLength(final Integer length) {
+        llsh.add(length);
     }
 
-    /**
-        Add a label segment to the file.
-
-        This is only supported for NITF 2.0 files.
-
-        @param labelSegment the label segment to add
-    */
-    public final void addLabelSegment(final NitfLabelSegment labelSegment) {
-        labelSegments.add(labelSegment);
+    final void addLabelSegmentLength(final Integer length) {
+        ll.add(length);
     }
 
-    /**
-        Add a text segment to the file.
-
-        @param textSegment the text segment to add
-    */
-    public final void addTextSegment(final NitfTextSegment textSegment) {
-        textSegments.add(textSegment);
+    final void addTextSegmentSubHeaderLength(final Integer length) {
+        ltsh.add(length);
     }
 
-    /**
-        Add a data extension segment (DES) to the file.
+    final void addTextSegmentLength(final Integer length) {
+        lt.add(length);
+    }
 
-        @param dataExtensionSegment the data extension segment to add
-    */
-    public final void addDataExtensionSegment(final NitfDataExtensionSegment dataExtensionSegment) {
-        dataExtensionSegments.add(dataExtensionSegment);
+    final void addDataExtensionSegmentSubHeaderLength(final Integer length) {
+        ldsh.add(length);
+    }
+
+    final void addDataExtensionSegmentLength(final Integer length) {
+        ld.add(length);
     }
 
 }

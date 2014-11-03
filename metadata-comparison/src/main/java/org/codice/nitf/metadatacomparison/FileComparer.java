@@ -24,12 +24,14 @@ import java.util.Map;
 
 import org.codice.imaging.nitf.core.AbstractNitfSegment;
 import org.codice.imaging.nitf.core.FileType;
+import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
 import org.codice.imaging.nitf.core.NitfImageSegment;
+import org.codice.imaging.nitf.core.NitfParseStrategy;
 import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributes;
@@ -43,7 +45,7 @@ public class FileComparer {
     static final String THEIR_OUTPUT_EXTENSION = ".THEIRS.txt";
 
     private String filename = null;
-    private Nitf nitf = null;
+    private NitfParseStrategy parseStrategy  = null;
     private NitfImageSegment segment1 = null;
     private NitfDataExtensionSegment des1 = null;
     private BufferedWriter out = null;
@@ -57,20 +59,19 @@ public class FileComparer {
 
 
     private void generateOurMetadata() {
+        parseStrategy = new HeaderOnlyNitfParseStrategy();
         try {
-            nitf = NitfFileFactory.parseHeadersOnly(new FileInputStream(filename));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+            NitfFileFactory.parse(new FileInputStream(filename), parseStrategy);
+        } catch (ParseException | FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        if (!nitf.getImageSegments().isEmpty()) {
-            segment1 = nitf.getImageSegments().get(0);
+        if (!parseStrategy.getImageSegments().isEmpty()) {
+            segment1 = parseStrategy.getImageSegments().get(0);
         }
 
-        if (!nitf.getDataExtensionSegments().isEmpty()) {
-            des1 = nitf.getDataExtensionSegments().get(0);
+        if (!parseStrategy.getDataExtensionSegments().isEmpty()) {
+            des1 = parseStrategy.getDataExtensionSegments().get(0);
         }
         outputData();
     }
@@ -160,7 +161,7 @@ public class FileComparer {
         Map <String, String> metadata = new TreeMap<String, String>();
 
         addCommonFileLevelMetadata(metadata);
-
+        Nitf nitf = parseStrategy.getNitfHeader();
         switch (nitf.getFileType()) {
             case NSIF_ONE_ZERO:
                 metadata.put("NITF_FHDR", "NSIF01.00");
@@ -199,6 +200,7 @@ public class FileComparer {
     }
 
     private void addCommonFileLevelMetadata(Map <String, String> metadata) throws IOException {
+        Nitf nitf = parseStrategy.getNitfHeader();
         metadata.put("NITF_CLEVEL", String.format("%02d", nitf.getComplexityLevel()));
         metadata.put("NITF_ENCRYP", "0");
         metadata.put("NITF_FDT", nitf.getFileDateTime().getSourceString());
@@ -218,6 +220,7 @@ public class FileComparer {
     }
 
     private void addNITF20FileLevelMetadata(Map <String, String> metadata) throws IOException {
+        Nitf nitf = parseStrategy.getNitfHeader();
         metadata.put("NITF_FSDWNG", nitf.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
         if (nitf.getFileSecurityMetadata().getDowngradeEvent() != null) {
             metadata.put("NITF_FSDEVT", nitf.getFileSecurityMetadata().getDowngradeEvent());
@@ -225,6 +228,7 @@ public class FileComparer {
     }
 
     private void addNITF21FileLevelMetadata(Map <String, String> metadata) throws IOException {
+        Nitf nitf = parseStrategy.getNitfHeader();
         metadata.put("NITF_FBKGC", (String.format("%3d,%3d,%3d",
                     (int)(nitf.getFileBackgroundColour().getRed() & 0xFF),
                     (int)(nitf.getFileBackgroundColour().getGreen() & 0xFF),
@@ -248,6 +252,7 @@ public class FileComparer {
     private void addFirstImageSegmentMetadata(Map <String, String> metadata) throws IOException, ParseException {
 
         addCommonImageSegmentMetadata(metadata);
+        Nitf nitf = parseStrategy.getNitfHeader();
 
         if (nitf.getFileType() == FileType.NITF_TWO_ZERO) {
             addNITF20ImageSegmentMetadata(metadata);
@@ -260,6 +265,7 @@ public class FileComparer {
     }
 
     private void addNITF20ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
+        Nitf nitf = parseStrategy.getNitfHeader();
         metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(nitf.getFileType()));
         metadata.put("NITF_ITITLE", segment1.getImageIdentifier2());
         metadata.put("NITF_ISDWNG", segment1.getSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
@@ -269,6 +275,7 @@ public class FileComparer {
     }
 
     private void addNITF21ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
+        Nitf nitf = parseStrategy.getNitfHeader();
         if (segment1.getImageCoordinatesRepresentation() == ImageCoordinatesRepresentation.NONE) {
             metadata.put("NITF_ICORDS", "");
         } else {
@@ -396,9 +403,9 @@ public class FileComparer {
     }
 
     private void outputSubdatasets() throws IOException {
-        if (nitf.getImageSegments().size() > 1) {
+        if (parseStrategy.getImageSegments().size() > 1) {
             out.write("Subdatasets:\n");
-            for (int i = 0; i < nitf.getImageSegments().size(); ++i) {
+            for (int i = 0; i < parseStrategy.getImageSegments().size(); ++i) {
                 out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
                 out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s\n", i+1, i+1, filename));
             }
@@ -409,7 +416,7 @@ public class FileComparer {
         if (shouldOutputTREs()) {
             out.write("Metadata (xml:TRE):\n");
             out.write("<tres>\n");
-            outputTresForSegment(nitf, "file");
+            outputTresForSegment(parseStrategy.getNitfHeader(), "file");
             if (segment1 != null) {
                 outputTresForSegment(segment1, "image");
             }
@@ -425,7 +432,7 @@ public class FileComparer {
     }
 
     private boolean shouldOutputFileTREs() {
-        return hasTREsOtherThanRPF(nitf.getTREsRawStructure());
+        return hasTREsOtherThanRPF(parseStrategy.getNitfHeader().getTREsRawStructure());
     }
 
     private boolean shouldOutputImageTREs() {

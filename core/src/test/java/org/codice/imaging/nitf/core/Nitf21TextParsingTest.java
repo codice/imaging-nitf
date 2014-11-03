@@ -40,30 +40,22 @@ public class Nitf21TextParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
-        assertEquals(1, file.getTextSegments().size());
+        NitfParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
+        NitfFileFactory.parse(getInputStream(), parseStrategy);
+        assertEquals(1, parseStrategy.getTextSegments().size());
 
-        NitfTextSegment textSegment = file.getTextSegments().get(0);
+        NitfTextSegment textSegment = parseStrategy.getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
         assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", textSegment.getTextData());
     }
 
     @Test
-    public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.noneOf(ParseOption.class));
-        assertEquals(1, file.getTextSegments().size());
-
-        NitfTextSegment textSegment = file.getTextSegments().get(0);
-        assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertNull(textSegment.getTextData());
-    }
-
-    @Test
     public void testExtractionWithDefault() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseHeadersOnly(getInputStream());
-        assertEquals(1, file.getTextSegments().size());
+        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        NitfFileFactory.parse(getInputStream(), parseStrategy);
+        assertEquals(1, parseStrategy.getTextSegments().size());
 
-        NitfTextSegment textSegment = file.getTextSegments().get(0);
+        NitfTextSegment textSegment = parseStrategy.getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
         assertNull(textSegment.getTextData());
     }

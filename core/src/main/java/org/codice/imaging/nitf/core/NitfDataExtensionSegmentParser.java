@@ -25,6 +25,7 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfDataExtensionSegment segment = null;
 
+    // TODO: remove this
     NitfDataExtensionSegmentParser(final NitfReader nitfReader,
                                           final int desLength,
                                           final NitfDataExtensionSegment desSegment) throws ParseException {
@@ -43,6 +44,27 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
         }
         readDSSHL();
         readDSSHF();
+        readDESDATA();
+    }
+
+    // TODO: make a method
+    NitfDataExtensionSegmentParser(final NitfReader nitfReader,
+                                          final NitfDataExtensionSegment desSegment) throws ParseException {
+        reader = nitfReader;
+        segment = desSegment;
+
+        readDE();
+        readDESID();
+        readDESVER();
+        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+
+        if (isTreOverflow()) {
+            readDESOFLW();
+            readDESITEM();
+        }
+        readDSSHL();
+        readDSSHF();
+        // TODO: decouple data reading from segment header
         readDESDATA();
     }
 

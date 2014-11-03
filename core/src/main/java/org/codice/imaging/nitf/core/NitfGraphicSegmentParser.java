@@ -30,6 +30,35 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfGraphicSegment segment = null;
 
+    // TODO: make a method
+    NitfGraphicSegmentParser(final NitfReader nitfReader,
+            final NitfGraphicSegment graphicSegment) throws ParseException {
+
+        reader = nitfReader;
+        segment = graphicSegment;
+
+        readSY();
+        readSID();
+        readSNAME();
+        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+        readENCRYP();
+        readSFMT();
+        readSSTRUCT();
+        readSDLVL();
+        readSALVL();
+        readSLOC();
+        readSBND1();
+        readSCOLOR();
+        readSBND2();
+        readSRES();
+        readSXSHDL();
+        if (graphicExtendedSubheaderLength > 0) {
+            readSXSOFL();
+            readSXSHD();
+        }
+    }
+
+    // TODO: remove this
     NitfGraphicSegmentParser(final NitfReader nitfReader,
                                     final int graphicLength,
                                     final Set<ParseOption> parseOptions,

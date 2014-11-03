@@ -31,6 +31,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfSymbolSegment segment = null;
 
+    // TODO: remove this
     NitfSymbolSegmentParser(final NitfReader nitfReader,
                                     final int symbolLength,
                                     final Set<ParseOption> parseOptions,
@@ -69,6 +70,40 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
             readSXSHD();
         }
         readSymbolData();
+    }
+
+        NitfSymbolSegmentParser(final NitfReader nitfReader,
+                final NitfSymbolSegment symbolSegment) throws ParseException {
+
+        reader = nitfReader;
+        segment = symbolSegment;
+
+        readSY();
+        readSID();
+        readSNAME();
+        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+        readENCRYP();
+        readSTYPE();
+        readNLIPS();
+        readNPIXPL();
+        readNWDTH();
+        readNBPP();
+        readSDLVL();
+        readSALVL();
+        readSLOC();
+        readSLOC2();
+        readSCOLOR();
+        readSNUM();
+        readSROT();
+        readNELUT();
+        for (int i = 0; i < numberOfEntriesInLUT; ++i) {
+            throw new UnsupportedOperationException("TODO: Implement LUT parsing when we have an example");
+        }
+        readSXSHDL();
+        if (symbolExtendedSubheaderLength > 0) {
+            readSXSOFL();
+            readSXSHD();
+        }
     }
 
     private void readSY() throws ParseException {

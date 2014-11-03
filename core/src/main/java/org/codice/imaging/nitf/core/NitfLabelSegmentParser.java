@@ -30,6 +30,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
 
     private NitfLabelSegment segment = null;
 
+    // TODO: remove
     NitfLabelSegmentParser(final NitfReader nitfReader,
                                     final int labelLength,
                                     final Set<ParseOption> parseOptions,
@@ -40,6 +41,33 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
         segment = labelSegment;
 
         shouldParseLabelData = parseOptions.contains(ParseOption.EXTRACT_LABEL_SEGMENT_DATA);
+
+        readLA();
+        readLID();
+        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+        readENCRYP();
+        readLFS();
+        readLCW();
+        readLCH();
+        readLDLVL();
+        readLALVL();
+        readLLOC();
+        readLTC();
+        readLBC();
+        readLXSHDL();
+        if (labelExtendedSubheaderLength > 0) {
+            readLXSOFL();
+            readLXSHD();
+        }
+        readLabelData();
+    }
+
+    // TODO: make it a method
+    NitfLabelSegmentParser(final NitfReader nitfReader,
+            final NitfLabelSegment labelSegment) throws ParseException {
+
+        reader = nitfReader;
+        segment = labelSegment;
 
         readLA();
         readLID();

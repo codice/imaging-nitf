@@ -16,10 +16,10 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.util.List;
 import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
-import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
 import org.codice.imaging.nitf.core.NitfGraphicSegment;
 import org.codice.imaging.nitf.core.NitfImageSegment;
+import org.codice.imaging.nitf.core.NitfParseStrategy;
 import org.codice.imaging.nitf.core.NitfTextSegment;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.ChildFactory;
@@ -28,9 +28,9 @@ import org.openide.nodes.Node;
 
 class NitfChildFactory extends ChildFactory<AbstractCommonNitfSegment> {
 
-    private final Nitf nitf;
+    private final NitfParseStrategy nitf;
 
-    public NitfChildFactory(final Nitf nitfData) {
+    public NitfChildFactory(final NitfParseStrategy nitfData) {
         nitf = nitfData;
     }
 
