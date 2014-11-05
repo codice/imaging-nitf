@@ -48,7 +48,7 @@ public class Nitf20SymbolTest {
         NitfFileFactory.parse(is, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        NitfSymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
+        NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
         assertSymbolSegmentDataIsAsExpected(symbolSegment1);
         assertEquals(930, symbolSegment1.getSymbolData().length);
 
@@ -62,7 +62,7 @@ public class Nitf20SymbolTest {
         NitfFileFactory.parse(is, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        NitfSymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
+        NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
         assertSymbolSegmentDataIsAsExpected(symbolSegment1);
         assertEquals(1, parseStrategy.getSymbolSegments().size());
         assertNull(symbolSegment1.getSymbolData());
@@ -96,14 +96,14 @@ public class Nitf20SymbolTest {
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC Fort Huachuca, AZ", file.getOriginatorsName());
         assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(0, parseStrategy.getImageSegments().size());
+        assertEquals(0, parseStrategy.getImageSegmentHeaders().size());
         assertEquals(0, parseStrategy.getGraphicSegments().size());
         assertEquals(0, parseStrategy.getLabelSegments().size());
         assertEquals(0, parseStrategy.getTextSegments().size());
         assertEquals(0, parseStrategy.getDataExtensionSegments().size());
     }
 
-    private void assertSymbolSegmentDataIsAsExpected(NitfSymbolSegment symbolSegment1) {
+    private void assertSymbolSegmentDataIsAsExpected(NitfSymbolSegmentHeader symbolSegment1) {
         assertNotNull(symbolSegment1);
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());

@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import org.codice.imaging.nitf.core.NitfGraphicSegment;
+import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 
@@ -25,9 +25,9 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
     private static final String BOUNDING_BOX_POSITION_DESCRIPTION =
                     "bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.";
 
-    private final NitfGraphicSegment segment;
+    private final NitfGraphicSegmentHeader segment;
 
-    public NitfGraphicSegmentNode(final NitfGraphicSegment nitfGraphicSegment) {
+    public NitfGraphicSegmentNode(final NitfGraphicSegmentHeader nitfGraphicSegment) {
         super(Children.LEAF);
         segment = nitfGraphicSegment;
         setDisplayName("Graphic Segment: " + segment.getIdentifier());

@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 /**
     Label segment subheader information (NITF 2.0 only).
 */
-public class NitfLabelSegment extends AbstractNitfSubSegment {
+public class NitfLabelSegmentHeader extends AbstractNitfSubSegment {
 
     private int labelLocationRow = 0;
     private int labelLocationColumn = 0;
@@ -32,7 +32,7 @@ public class NitfLabelSegment extends AbstractNitfSubSegment {
     /**
         Default constructor.
     */
-    public NitfLabelSegment() {
+    public NitfLabelSegmentHeader() {
     }
 
     /**

@@ -23,7 +23,9 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
     @Override
     public final void baseHeadersRead(final NitfReader reader) {
         try {
-            readImageSegmentHeadersOnly(reader);
+            for (int i = 0; i < nitfFileLevelHeader.getNumberOfImageSegmentLengths(); ++i) {
+                parseImageSegmentHeaderButSkipData(reader, i);
+            }
             if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
                 readSymbolSegmentHeadersOnly(reader);
                 readLabelSegmentHeadersOnly(reader);

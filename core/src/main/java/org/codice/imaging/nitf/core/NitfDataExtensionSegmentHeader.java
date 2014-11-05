@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 /**
     Data Extension Segment (DES) subheader and associated data.
 */
-public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
+public class NitfDataExtensionSegmentHeader extends AbstractCommonNitfSegment {
 
     private int desVersion = -1;
     private String overflowedHeaderType = null;
@@ -28,7 +28,7 @@ public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
     /**
         Default constructor.
     */
-    public NitfDataExtensionSegment() {
+    public NitfDataExtensionSegmentHeader() {
     }
 
     /**
@@ -214,5 +214,40 @@ public class NitfDataExtensionSegment extends AbstractCommonNitfSegment {
     */
     public final byte[] setData() {
         return desData;
+    }
+
+    /**
+     * Check if this DES is a NITF 2.1 TRE overflow DES.
+     *
+     * @return true for NITF 2.1 TRE overflow, otherwise false
+     */
+    public final boolean isTreOverflowNitf21() {
+        return getIdentifier().trim().equals(NitfConstants.TRE_OVERFLOW);
+    }
+
+    /**
+     * Check if this DES is a NITF 2.0 TRE overflow DES.
+     *
+     * @return true for NITF 2.0 TRE overflow, otherwise false
+     */
+    public final boolean isTreOverflowNitf20() {
+        return getIdentifier().trim().equals(NitfConstants.REGISTERED_EXTENSIONS)
+                || getIdentifier().trim().equals(NitfConstants.CONTROLLED_EXTENSIONS);
+    }
+
+    /**
+     * Check if this DES is a TRE overflow DES.
+     * <p>
+     * This handles both NITF 2.0 and NITF 2.1 / NSIF 1.0 files, but you need to specify which file type.
+     *
+     * @param fileType the file type (NITF version)
+     * @return true for TRE overflow, otherwise false
+     */
+    public final boolean isTreOverflow(final FileType fileType) {
+        if (fileType == FileType.NITF_TWO_ZERO) {
+            return isTreOverflowNitf20();
+        } else {
+            return isTreOverflowNitf21();
+        }
     }
 }

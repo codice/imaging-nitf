@@ -20,7 +20,7 @@ import java.util.List;
 /**
     Image segment subheader information.
 */
-public class NitfImageSegment extends AbstractNitfSubSegment {
+public class NitfImageSegmentHeader extends AbstractNitfSubSegment {
 
     private NitfDateTime imageDateTime = null;
     private TargetId imageTargetId = null;
@@ -35,10 +35,10 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     private PixelJustification pixelJustification = PixelJustification.UNKNOWN;
     private ImageCoordinatesRepresentation imageCoordinatesRepresentation = ImageCoordinatesRepresentation.UNKNOWN;
     private ImageCoordinates imageCoordinates = null;
-    private List<String> imageComments = new ArrayList<String>();
+    private final List<String> imageComments = new ArrayList<>();
     private ImageCompression imageCompression = ImageCompression.UNKNOWN;
     private String compressionRate = null;
-    private List<NitfImageBand> imageBands = new ArrayList<NitfImageBand>();
+    private final List<NitfImageBand> imageBands = new ArrayList<>();
     private ImageMode imageMode = ImageMode.UNKNOWN;
     private int numBlocksPerRow = 0;
     private int numBlocksPerColumn = 0;
@@ -50,12 +50,12 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     private int imageLocationColumn = 0;
     private int imageUserDefinedHeaderOverflow = 0;
     private String imageMagnification = null;
-    private byte[] data = null;
+    private long imageSegmentDataLength = 0;
 
     /**
         Default constructor.
     */
-    public NitfImageSegment() {
+    public NitfImageSegmentHeader() {
     }
 
     /**
@@ -1318,25 +1318,22 @@ public class NitfImageSegment extends AbstractNitfSubSegment {
     }
 
     /**
-        Set the image data.
+        Set the image data length.
         <p>
-        This is the contents of the data segment.
+        This is the length of the contents of the associated data segment.
 
-        @param imageData the image data
+        @param length the image data segment length, in bytes
     */
-    public final void setImageData(final byte[] imageData) {
-        data = imageData;
+    public final void setImageSegmentDataLength(final long length) {
+        imageSegmentDataLength = length;
     }
 
     /**
-        Return the image data.
-        <p>
-        This is the contents of the data segment. Depending on how the
-        parsing was configured, this can be null.
+        Return the image data length.
 
-        @return the image data
+        @return the image data segment length, in bytes
     */
-    public final byte[] getImageData() {
-        return data;
+    public final long getImageDataLength() {
+        return imageSegmentDataLength;
     }
 }

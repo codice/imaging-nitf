@@ -15,51 +15,22 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
-import java.util.Set;
 
 /**
     Parser for a text segment subheader in a NITF file.
 */
-class NitfTextSegmentParser extends AbstractNitfSegmentParser {
+class NitfTextSegmentHeaderParser extends AbstractNitfSegmentParser {
 
-    private int lengthOfText = 0;
     private int textExtendedSubheaderLength = 0;
 
-    private boolean shouldParseTextData = false;
+    private NitfTextSegmentHeader segment = null;
 
-    private NitfTextSegment segment = null;
-
-    // TODO: remove this
-    NitfTextSegmentParser(final NitfReader nitfReader,
-                                 final int textLength,
-                                 final Set<ParseOption> parseOptions,
-                                 final NitfTextSegment textSegment) throws ParseException {
-        reader = nitfReader;
-        lengthOfText = textLength;
-        segment = textSegment;
-        shouldParseTextData = parseOptions.contains(ParseOption.EXTRACT_TEXT_SEGMENT_DATA);
-
-        readTE();
-        readTEXTID();
-        readTXTALVL();
-        readTEXTDT();
-        readTXTITL();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        readENCRYP();
-        readTXTFMT();
-        readTXSHDL();
-        if (textExtendedSubheaderLength > 0) {
-            readTXSOFL();
-            readTXSHD();
-        }
-        readTextData();
+    NitfTextSegmentHeaderParser() {
     }
 
-    // TODO: make this a method
-    NitfTextSegmentParser(final NitfReader nitfReader,
-            final NitfTextSegment textSegment) throws ParseException {
+    final NitfTextSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
-        segment = textSegment;
+        segment = new NitfTextSegmentHeader();
 
         readTE();
         readTEXTID();
@@ -74,6 +45,7 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
             readTXSOFL();
             readTXSHD();
         }
+        return segment;
     }
 
     private void readTE() throws ParseException {
@@ -126,16 +98,5 @@ class NitfTextSegmentParser extends AbstractNitfSegmentParser {
         TreCollectionParser treCollectionParser = new TreCollectionParser();
         TreCollection extendedSubheaderTREs = treCollectionParser.parse(reader, textExtendedSubheaderLength - NitfConstants.TXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
-    }
-
-    private void readTextData() throws ParseException {
-        if (lengthOfText == 0) {
-            return;
-        }
-        if (shouldParseTextData) {
-            segment.setTextData(reader.readBytes(lengthOfText));
-        } else {
-            reader.skip(lengthOfText);
-        }
     }
 }

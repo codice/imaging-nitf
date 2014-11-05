@@ -15,59 +15,23 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
-import java.util.Set;
 
 /**
     Parser for a label segment subheader in a NITF 2.0 file.
 */
-class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
-
-    private int lengthOfLabel = 0;
+class NitfLabelSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int labelExtendedSubheaderLength = 0;
 
-    private boolean shouldParseLabelData = false;
+    private NitfLabelSegmentHeader segment = null;
 
-    private NitfLabelSegment segment = null;
-
-    // TODO: remove
-    NitfLabelSegmentParser(final NitfReader nitfReader,
-                                    final int labelLength,
-                                    final Set<ParseOption> parseOptions,
-                                    final NitfLabelSegment labelSegment) throws ParseException {
-
-        reader = nitfReader;
-        lengthOfLabel = labelLength;
-        segment = labelSegment;
-
-        shouldParseLabelData = parseOptions.contains(ParseOption.EXTRACT_LABEL_SEGMENT_DATA);
-
-        readLA();
-        readLID();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        readENCRYP();
-        readLFS();
-        readLCW();
-        readLCH();
-        readLDLVL();
-        readLALVL();
-        readLLOC();
-        readLTC();
-        readLBC();
-        readLXSHDL();
-        if (labelExtendedSubheaderLength > 0) {
-            readLXSOFL();
-            readLXSHD();
-        }
-        readLabelData();
+    NitfLabelSegmentHeaderParser() {
     }
 
-    // TODO: make it a method
-    NitfLabelSegmentParser(final NitfReader nitfReader,
-            final NitfLabelSegment labelSegment) throws ParseException {
+    final NitfLabelSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
 
         reader = nitfReader;
-        segment = labelSegment;
+        segment = new NitfLabelSegmentHeader();
 
         readLA();
         readLID();
@@ -86,7 +50,7 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
             readLXSOFL();
             readLXSHD();
         }
-        readLabelData();
+        return segment;
     }
 
     private void readLA() throws ParseException {
@@ -142,16 +106,5 @@ class NitfLabelSegmentParser extends AbstractNitfSegmentParser {
         TreCollectionParser treCollectionParser = new TreCollectionParser();
         TreCollection extendedSubheaderTREs = treCollectionParser.parse(reader, labelExtendedSubheaderLength - NitfConstants.LXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
-    }
-
-    private void readLabelData() throws ParseException {
-        if (lengthOfLabel == 0) {
-            return;
-        }
-        if (shouldParseLabelData) {
-            segment.setLabelData(reader.readBytes(lengthOfLabel));
-        } else {
-            reader.skip(lengthOfLabel);
-        }
     }
 }

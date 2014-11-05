@@ -15,60 +15,23 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
-import java.util.Set;
 
 /**
     Parser for a graphic segment subheader in a NITF 2.1 / NSIF 1.0 file.
 */
-class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
-
-    private int lengthOfGraphic = 0;
+class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int graphicExtendedSubheaderLength = 0;
 
-    private boolean shouldParseGraphicData = false;
+    private NitfGraphicSegmentHeader segment = null;
 
-    private NitfGraphicSegment segment = null;
-
-    // TODO: make a method
-    NitfGraphicSegmentParser(final NitfReader nitfReader,
-            final NitfGraphicSegment graphicSegment) throws ParseException {
-
-        reader = nitfReader;
-        segment = graphicSegment;
-
-        readSY();
-        readSID();
-        readSNAME();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        readENCRYP();
-        readSFMT();
-        readSSTRUCT();
-        readSDLVL();
-        readSALVL();
-        readSLOC();
-        readSBND1();
-        readSCOLOR();
-        readSBND2();
-        readSRES();
-        readSXSHDL();
-        if (graphicExtendedSubheaderLength > 0) {
-            readSXSOFL();
-            readSXSHD();
-        }
+    NitfGraphicSegmentHeaderParser() {
     }
 
-    // TODO: remove this
-    NitfGraphicSegmentParser(final NitfReader nitfReader,
-                                    final int graphicLength,
-                                    final Set<ParseOption> parseOptions,
-                                    final NitfGraphicSegment graphicSegment) throws ParseException {
+    final NitfGraphicSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
 
         reader = nitfReader;
-        lengthOfGraphic = graphicLength;
-        segment = graphicSegment;
-
-        shouldParseGraphicData = parseOptions.contains(ParseOption.EXTRACT_GRAPHIC_SEGMENT_DATA);
+        segment = new NitfGraphicSegmentHeader();
 
         readSY();
         readSID();
@@ -89,7 +52,7 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
             readSXSOFL();
             readSXSHD();
         }
-        readGraphicData();
+        return segment;
     }
 
     private void readSY() throws ParseException {
@@ -156,16 +119,5 @@ class NitfGraphicSegmentParser extends AbstractNitfSegmentParser {
         TreCollectionParser treCollectionParser = new TreCollectionParser();
         TreCollection extendedSubheaderTREs = treCollectionParser.parse(reader, graphicExtendedSubheaderLength - NitfConstants.SXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
-    }
-
-    private void readGraphicData() throws ParseException {
-        if (lengthOfGraphic == 0) {
-            return;
-        }
-        if (shouldParseGraphicData) {
-            segment.setGraphicData(reader.readBytesRaw(lengthOfGraphic));
-        } else {
-            reader.skip(lengthOfGraphic);
-        }
     }
 }

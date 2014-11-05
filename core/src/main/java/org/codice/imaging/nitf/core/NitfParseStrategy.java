@@ -40,42 +40,42 @@ public interface NitfParseStrategy {
      *
      * @return image segments
      */
-    List<NitfImageSegment> getImageSegments();
+    List<NitfImageSegmentHeader> getImageSegmentHeaders();
 
     /**
      * Return the graphic segments associated with this file.
      *
      * @return graphic segments
      */
-    List<NitfGraphicSegment> getGraphicSegments();
+    List<NitfGraphicSegmentHeader> getGraphicSegments();
 
     /**
      * Return the symbol segments associated with this file.
      *
      * @return symbol segments
      */
-    List<NitfSymbolSegment> getSymbolSegments();
+    List<NitfSymbolSegmentHeader> getSymbolSegments();
 
     /**
      * Return the label segments associated with this file.
      *
      * @return label segments
      */
-    List<NitfLabelSegment> getLabelSegments();
+    List<NitfLabelSegmentHeader> getLabelSegments();
 
     /**
      * Return the text segments associated with this file.
      *
      * @return text segments
      */
-    List<NitfTextSegment> getTextSegments();
+    List<NitfTextSegmentHeader> getTextSegments();
 
     /**
      * Return the data extension segments associated with this file.
      *
      * @return data extension segments
      */
-    List<NitfDataExtensionSegment> getDataExtensionSegments();
+    List<NitfDataExtensionSegmentHeader> getDataExtensionSegments();
 
     /**
      * Indication that the "base" file-level headers have been read.
@@ -83,4 +83,5 @@ public interface NitfParseStrategy {
      * @param reader the reader, positioned for reading of the segments
      */
     void baseHeadersRead(NitfReader reader);
+
 }

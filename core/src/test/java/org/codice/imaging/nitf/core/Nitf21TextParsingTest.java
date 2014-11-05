@@ -44,7 +44,7 @@ public class Nitf21TextParsingTest {
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getTextSegments().size());
 
-        NitfTextSegment textSegment = parseStrategy.getTextSegments().get(0);
+        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
         assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", textSegment.getTextData());
     }
@@ -55,12 +55,12 @@ public class Nitf21TextParsingTest {
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getTextSegments().size());
 
-        NitfTextSegment textSegment = parseStrategy.getTextSegments().get(0);
+        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
         assertNull(textSegment.getTextData());
     }
 
-    private void assertTextSegmentMetadataIsAsExpected(NitfTextSegment textSegment) {
+    private void assertTextSegmentMetadataIsAsExpected(NitfTextSegmentHeader textSegment) {
         assertNotNull(textSegment);
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());

@@ -15,15 +15,15 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.NitfTextSegment;
+import org.codice.imaging.nitf.core.NitfTextSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 
 class NitfTextSegmentNode extends AbstractSegmentNode {
 
-    private final NitfTextSegment segment;
+    private final NitfTextSegmentHeader segment;
 
-    public NitfTextSegmentNode(final NitfTextSegment nitfTextSegment) {
+    public NitfTextSegmentNode(final NitfTextSegmentHeader nitfTextSegment) {
         super(Children.LEAF);
         segment = nitfTextSegment;
         setDisplayName("Text Segment: " + getFriendlyName());

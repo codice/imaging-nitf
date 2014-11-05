@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 /**
     Symbol segment subheader information (NITF 2.0 only).
 */
-public class NitfSymbolSegment extends AbstractNitfSubSegment {
+public class NitfSymbolSegmentHeader extends AbstractNitfSubSegment {
 
     private String symbolName = null;
     private SymbolType symbolType = null;
@@ -39,7 +39,7 @@ public class NitfSymbolSegment extends AbstractNitfSubSegment {
     /**
         Default constructor.
     */
-    public NitfSymbolSegment() {
+    public NitfSymbolSegmentHeader() {
     }
 
     /**

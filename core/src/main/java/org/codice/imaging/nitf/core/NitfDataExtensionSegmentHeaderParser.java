@@ -19,53 +19,31 @@ import java.text.ParseException;
 /**
     Parser for a data extension segment (DES) subheader in a NITF file.
 */
-class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
-    private int lengthOfDataExtension = 0;
+class NitfDataExtensionSegmentHeaderParser extends AbstractNitfSegmentParser {
     private int userDefinedSubheaderLength = 0;
 
-    private NitfDataExtensionSegment segment = null;
+    private NitfDataExtensionSegmentHeader segment = null;
 
-    // TODO: remove this
-    NitfDataExtensionSegmentParser(final NitfReader nitfReader,
-                                          final int desLength,
-                                          final NitfDataExtensionSegment desSegment) throws ParseException {
-        reader = nitfReader;
-        lengthOfDataExtension = desLength;
-        segment = desSegment;
 
-        readDE();
-        readDESID();
-        readDESVER();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-
-        if (isTreOverflow()) {
-            readDESOFLW();
-            readDESITEM();
-        }
-        readDSSHL();
-        readDSSHF();
-        readDESDATA();
+    NitfDataExtensionSegmentHeaderParser() {
     }
 
-    // TODO: make a method
-    NitfDataExtensionSegmentParser(final NitfReader nitfReader,
-                                          final NitfDataExtensionSegment desSegment) throws ParseException {
+    final NitfDataExtensionSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
-        segment = desSegment;
+        segment = new NitfDataExtensionSegmentHeader();
 
         readDE();
         readDESID();
         readDESVER();
         segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
 
-        if (isTreOverflow()) {
+        if (segment.isTreOverflow(reader.getFileType())) {
             readDESOFLW();
             readDESITEM();
         }
         readDSSHL();
         readDSSHF();
-        // TODO: decouple data reading from segment header
-        readDESDATA();
+        return segment;
     }
 
     private void readDE() throws ParseException {
@@ -94,24 +72,5 @@ class NitfDataExtensionSegmentParser extends AbstractNitfSegmentParser {
 
     private void readDSSHF() throws ParseException {
         segment.setUserDefinedSubheaderField(reader.readBytes(userDefinedSubheaderLength));
-    }
-
-    private boolean isTreOverflow() {
-        if (reader.getFileType() == FileType.NITF_TWO_ZERO) {
-            return segment.getIdentifier().trim().equals(NitfConstants.REGISTERED_EXTENSIONS)
-                || segment.getIdentifier().trim().equals(NitfConstants.CONTROLLED_EXTENSIONS);
-        } else {
-            return segment.getIdentifier().trim().equals(NitfConstants.TRE_OVERFLOW);
-        }
-    }
-
-    private void readDESDATA() throws ParseException {
-        if (isTreOverflow()) {
-            TreCollectionParser treCollectionParser = new TreCollectionParser();
-            TreCollection overflowTres = treCollectionParser.parse(reader, lengthOfDataExtension);
-            segment.mergeTREs(overflowTres);
-        } else {
-            segment.setData(reader.readBytesRaw(lengthOfDataExtension));
-        }
     }
 }

@@ -21,13 +21,12 @@ import java.util.Set;
 /**
     Parser for an image segment subheader in a NITF file.
 */
-class NitfImageSegmentParser extends AbstractNitfSegmentParser {
+class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int numImageComments = 0;
     private int numBands = 0;
     private int userDefinedImageDataLength = 0;
     private int imageExtendedSubheaderDataLength = 0;
-    private long lengthOfImage = 0L;
 
     private static final Set<ImageCompression> HAS_COMRAT = EnumSet.of(ImageCompression.BILEVEL, ImageCompression.JPEG,
         ImageCompression.VECTORQUANTIZATION, ImageCompression.LOSSLESSJPEG, ImageCompression.JPEG2000, ImageCompression.DOWNSAMPLEDJPEG,
@@ -35,87 +34,23 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
         ImageCompression.LOSSLESSJPEGMASK, ImageCompression.JPEG2000MASK, ImageCompression.USERDEFINED, ImageCompression.USERDEFINEDMASK,
         ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
 
-    private NitfImageSegment segment = null;
+    private NitfImageSegmentHeader segment = null;
 
-    private boolean shouldParseImageData = false;
-
-    // TODO: Remove this
-    NitfImageSegmentParser(final NitfReader nitfReader,
-                                  final long imageLength,
-                                  final Set<ParseOption> parseOptions,
-                                  final NitfImageSegment imageSegment) throws ParseException {
-        reader = nitfReader;
-        lengthOfImage = imageLength;
-        segment = imageSegment;
-
-        shouldParseImageData = parseOptions.contains(ParseOption.EXTRACT_IMAGE_SEGMENT_DATA);
-
-        readIM();
-        readIID1();
-        readIDATIM();
-        readTGTID();
-        readIID2();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        readENCRYP();
-        readISORCE();
-        readNROWS();
-        readNCOLS();
-        readPVTYPE();
-        readIREP();
-        readICAT();
-        readABPP();
-        readPJUST();
-        readICORDS();
-        if ((segment.getImageCoordinatesRepresentation() != ImageCoordinatesRepresentation.UNKNOWN)
-            && (segment.getImageCoordinatesRepresentation() != ImageCoordinatesRepresentation.NONE)) {
-            readIGEOLO();
-        }
-        readNICOM();
-        for (int i = 0; i < numImageComments; ++i) {
-            segment.addImageComment(reader.readTrimmedBytes(NitfConstants.ICOM_LENGTH));
-        }
-        readIC();
-        if (hasCOMRAT()) {
-            readCOMRAT();
-        }
-        readNBANDS();
-        if ((reader.getFileType() != FileType.NITF_TWO_ZERO) && (numBands == 0)) {
-            readXBANDS();
-        }
-        for (int i = 0; i < numBands; ++i) {
-            NitfImageBand imageBand = new NitfImageBand();
-            new NitfImageBandParser(reader, imageBand);
-            segment.addImageBand(imageBand);
-        }
-        readISYNC();
-        readIMODE();
-        readNBPR();
-        readNBPC();
-        readNPPBH();
-        readNPPBV();
-        readNBPP();
-        readIDLVL();
-        readIALVL();
-        readILOC();
-        readIMAG();
-        readUDIDL();
-        if (userDefinedImageDataLength > 0) {
-            readUDOFL();
-            readUDID();
-        }
-        readIXSHDL();
-        if (imageExtendedSubheaderDataLength > 0) {
-            readIXSOFL();
-            readIXSHD();
-        }
-        readImageData();
+    NitfImageSegmentHeaderParser() {
     }
 
-    // TODO: this should probably be a method not the constructor
-    NitfImageSegmentParser(final NitfReader nitfReader,
-            final NitfImageSegment imageSegment) throws ParseException {
+    /**
+     * Parse the image segment header
+     * <p>
+     * This will return the image segment header, but it is not threadsafe. Please create a new parser for each header, or protect against
+     * parallel runs.
+     * @param nitfReader the reader to use to get the data
+     * @return the parsed header
+     * @throws ParseException on parse failure
+     */
+    final NitfImageSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
-        segment = imageSegment;
+        segment = new NitfImageSegmentHeader();
 
         readIM();
         readIID1();
@@ -175,6 +110,7 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
             readIXSOFL();
             readIXSHD();
         }
+        return segment;
     }
 
     private Boolean hasCOMRAT() {
@@ -365,17 +301,5 @@ class NitfImageSegmentParser extends AbstractNitfSegmentParser {
 
     private void readCOMRAT() throws ParseException {
         segment.setCompressionRate(reader.readTrimmedBytes(NitfConstants.COMRAT_LENGTH));
-    }
-
-    // TODO: remove this
-    private void readImageData() throws ParseException {
-        if (lengthOfImage == 0) {
-            return;
-        }
-        if (shouldParseImageData) {
-            segment.setImageData(reader.readBytesRaw((int) lengthOfImage));
-        } else {
-            reader.skip(lengthOfImage);
-        }
     }
 }

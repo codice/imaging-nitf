@@ -15,68 +15,24 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
-import java.util.Set;
 
 /**
     Parser for a symbol segment subheader in a NITF 2.0 file.
 */
-class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
-
-    private int lengthOfSymbol = 0;
+class NitfSymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
 
-    private boolean shouldParseSymbolData = false;
+    private NitfSymbolSegmentHeader segment = null;
 
-    private NitfSymbolSegment segment = null;
-
-    // TODO: remove this
-    NitfSymbolSegmentParser(final NitfReader nitfReader,
-                                    final int symbolLength,
-                                    final Set<ParseOption> parseOptions,
-                                    final NitfSymbolSegment symbolSegment) throws ParseException {
-
-        reader = nitfReader;
-        lengthOfSymbol = symbolLength;
-        segment = symbolSegment;
-
-        shouldParseSymbolData = parseOptions.contains(ParseOption.EXTRACT_SYMBOL_SEGMENT_DATA);
-
-        readSY();
-        readSID();
-        readSNAME();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
-        readENCRYP();
-        readSTYPE();
-        readNLIPS();
-        readNPIXPL();
-        readNWDTH();
-        readNBPP();
-        readSDLVL();
-        readSALVL();
-        readSLOC();
-        readSLOC2();
-        readSCOLOR();
-        readSNUM();
-        readSROT();
-        readNELUT();
-        for (int i = 0; i < numberOfEntriesInLUT; ++i) {
-            throw new UnsupportedOperationException("TODO: Implement LUT parsing when we have an example");
-        }
-        readSXSHDL();
-        if (symbolExtendedSubheaderLength > 0) {
-            readSXSOFL();
-            readSXSHD();
-        }
-        readSymbolData();
+    NitfSymbolSegmentHeaderParser() {
     }
 
-        NitfSymbolSegmentParser(final NitfReader nitfReader,
-                final NitfSymbolSegment symbolSegment) throws ParseException {
+    final NitfSymbolSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
 
         reader = nitfReader;
-        segment = symbolSegment;
+        segment = new NitfSymbolSegmentHeader();
 
         readSY();
         readSID();
@@ -104,6 +60,7 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
             readSXSOFL();
             readSXSHD();
         }
+        return segment;
     }
 
     private void readSY() throws ParseException {
@@ -186,16 +143,5 @@ class NitfSymbolSegmentParser extends AbstractNitfSegmentParser {
         TreCollectionParser treCollectionParser = new TreCollectionParser();
         TreCollection extendedSubheaderTREs = treCollectionParser.parse(reader, symbolExtendedSubheaderLength - NitfConstants.SXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
-    }
-
-    private void readSymbolData() throws ParseException {
-        if (lengthOfSymbol == 0) {
-            return;
-        }
-        if (shouldParseSymbolData) {
-            segment.setSymbolData(reader.readBytesRaw(lengthOfSymbol));
-        } else {
-            reader.skip(lengthOfSymbol);
-        }
     }
 }

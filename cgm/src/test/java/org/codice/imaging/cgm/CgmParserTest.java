@@ -33,7 +33,7 @@ import java.text.ParseException;
 import javax.imageio.ImageIO;
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileFactory;
-import org.codice.imaging.nitf.core.NitfGraphicSegment;
+import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.NitfParseStrategy;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -121,7 +121,7 @@ public class CgmParserTest {
                 System.out.println("Loaded file, but found no graphic segments.");
                 System.exit(0);
             }
-            NitfGraphicSegment segment = parseStrategy.getGraphicSegments().get(0);
+            NitfGraphicSegmentHeader segment = parseStrategy.getGraphicSegments().get(0);
             CgmParser parser = new CgmParser(segment);
             parser.buildCommandList();
             // parser.dump();

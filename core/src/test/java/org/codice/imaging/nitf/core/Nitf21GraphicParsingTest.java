@@ -33,7 +33,7 @@ public class Nitf21GraphicParsingTest {
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        NitfGraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
+        NitfGraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         assertEquals(780, graphicSegment.getGraphicData().length);
     }
@@ -44,12 +44,12 @@ public class Nitf21GraphicParsingTest {
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        NitfGraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
+        NitfGraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         assertNull(graphicSegment.getGraphicData());
     }
 
-    private void assertGraphicSegmentMetadataIsAsExpected(NitfGraphicSegment graphicSegment) {
+    private void assertGraphicSegmentMetadataIsAsExpected(NitfGraphicSegmentHeader graphicSegment) {
         assertNotNull(graphicSegment);
         assertEquals("0000000001", graphicSegment.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", graphicSegment.getGraphicName());

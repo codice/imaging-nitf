@@ -27,10 +27,10 @@ import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
-import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
+import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
-import org.codice.imaging.nitf.core.NitfImageSegment;
+import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.NitfParseStrategy;
 import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributeParser;
@@ -46,8 +46,8 @@ public class FileComparer {
 
     private String filename = null;
     private NitfParseStrategy parseStrategy  = null;
-    private NitfImageSegment segment1 = null;
-    private NitfDataExtensionSegment des1 = null;
+    private NitfImageSegmentHeader segment1 = null;
+    private NitfDataExtensionSegmentHeader des1 = null;
     private BufferedWriter out = null;
 
     FileComparer(String fileName) {
@@ -66,8 +66,8 @@ public class FileComparer {
             e.printStackTrace();
         }
 
-        if (!parseStrategy.getImageSegments().isEmpty()) {
-            segment1 = parseStrategy.getImageSegments().get(0);
+        if (!parseStrategy.getImageSegmentHeaders().isEmpty()) {
+            segment1 = parseStrategy.getImageSegmentHeaders().get(0);
         }
 
         if (!parseStrategy.getDataExtensionSegments().isEmpty()) {
@@ -403,9 +403,9 @@ public class FileComparer {
     }
 
     private void outputSubdatasets() throws IOException {
-        if (parseStrategy.getImageSegments().size() > 1) {
+        if (parseStrategy.getImageSegmentHeaders().size() > 1) {
             out.write("Subdatasets:\n");
-            for (int i = 0; i < parseStrategy.getImageSegments().size(); ++i) {
+            for (int i = 0; i < parseStrategy.getImageSegmentHeaders().size(); ++i) {
                 out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
                 out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s\n", i+1, i+1, filename));
             }

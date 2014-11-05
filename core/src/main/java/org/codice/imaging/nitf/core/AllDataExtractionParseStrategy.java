@@ -24,7 +24,9 @@ public class AllDataExtractionParseStrategy extends SlottedNitfParseStrategy {
     @Override
     public final void baseHeadersRead(final NitfReader reader) {
         try {
-            readImageSegmentHeadersAndData(reader);
+            for (int i = 0; i < nitfFileLevelHeader.getNumberOfImageSegmentLengths(); ++i) {
+                parseImageSegmentHeaderAndData(reader, i);
+            }
             if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
                 readSymbolSegmentHeadersAndData(reader);
                 readLabelSegmentHeadersAndData(reader);

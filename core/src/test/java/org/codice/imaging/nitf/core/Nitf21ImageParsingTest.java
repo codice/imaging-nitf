@@ -40,27 +40,26 @@ public class Nitf21ImageParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        NitfParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
+        ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
-        assertEquals(1, parseStrategy.getImageSegments().size());
+        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
 
-        NitfImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
+        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
-        assertEquals(1048576, imageSegment.getImageData().length);
+        assertEquals(1048576, parseStrategy.getImageSegmentData().get(0).length);
     }
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
         NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
-        assertEquals(1, parseStrategy.getImageSegments().size());
+        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
 
-        NitfImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
+        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
-        assertNull(imageSegment.getImageData());
     }
 
-    private void assertImageSegmentMetadataIsAsExpected(NitfImageSegment imageSegment) {
+    private void assertImageSegmentMetadataIsAsExpected(NitfImageSegmentHeader imageSegment) {
         assertNotNull(imageSegment);
         assertEquals("Missing ID", imageSegment.getIdentifier());
         assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime().toDate()));

@@ -15,15 +15,15 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import org.codice.imaging.nitf.core.NitfImageBand;
-import org.codice.imaging.nitf.core.NitfImageSegment;
+import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 
 class NitfImageSegmentNode extends AbstractSegmentNode {
 
-    private final NitfImageSegment segment;
+    private final NitfImageSegmentHeader segment;
 
-    public NitfImageSegmentNode(final NitfImageSegment nitfImageSegment) {
+    public NitfImageSegmentNode(final NitfImageSegmentHeader nitfImageSegment) {
         super(Children.LEAF);
         segment = nitfImageSegment;
         setDisplayName("Image Segment: " + segment.getIdentifier());

@@ -14,15 +14,15 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
+import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 
 class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
 
-    private final NitfDataExtensionSegment segment;
+    private final NitfDataExtensionSegmentHeader segment;
 
-    public NitfDataExtensionSegmentNode(final NitfDataExtensionSegment nitfDataExtensionSegment) {
+    public NitfDataExtensionSegmentNode(final NitfDataExtensionSegmentHeader nitfDataExtensionSegment) {
         super(Children.LEAF);
         segment = nitfDataExtensionSegment;
         setDisplayName("DES: " + segment.getIdentifier());

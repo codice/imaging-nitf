@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 /**
     Graphic segment subheader information (NITF 2.1 / NSIF 1.0 only).
 */
-public class NitfGraphicSegment extends AbstractNitfSubSegment {
+public class NitfGraphicSegmentHeader extends AbstractNitfSubSegment {
 
     private String graphicName = null;
     private int graphicDisplayLevel = 0;
@@ -33,7 +33,7 @@ public class NitfGraphicSegment extends AbstractNitfSubSegment {
     /**
         Default constructor.
     */
-    public NitfGraphicSegment() {
+    public NitfGraphicSegmentHeader() {
     }
 
     /**

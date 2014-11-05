@@ -20,17 +20,20 @@ import java.util.List;
 
 /**
  * TODO: make public.
- *
- * @author bradh
+ * This could probably be split into
+ * an abstract parent called SlottedNitfParseStrategy
+ * and
+ * the abstract subclass with the data storage (SlottedStorageNitfParseStrategy)
  */
 abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected Nitf nitfFileLevelHeader;
-    protected final List<NitfImageSegment> imageSegments = new ArrayList<>();
-    protected final List<NitfGraphicSegment> graphicSegments = new ArrayList<>();
-    protected final List<NitfSymbolSegment> symbolSegments = new ArrayList<>();
-    protected final List<NitfLabelSegment> labelSegments = new ArrayList<>();
-    protected final List<NitfTextSegment> textSegments = new ArrayList<>();
-    protected final List<NitfDataExtensionSegment> dataExtensionSegments = new ArrayList<>();
+    protected final List<NitfImageSegmentHeader> imageSegmentHeaders = new ArrayList<>();
+    protected final List<byte[]> imageSegmentData = new ArrayList<>();
+    protected final List<NitfGraphicSegmentHeader> graphicSegments = new ArrayList<>();
+    protected final List<NitfSymbolSegmentHeader> symbolSegments = new ArrayList<>();
+    protected final List<NitfLabelSegmentHeader> labelSegments = new ArrayList<>();
+    protected final List<NitfTextSegmentHeader> textSegments = new ArrayList<>();
+    protected final List<NitfDataExtensionSegmentHeader> dataExtensionSegments = new ArrayList<>();
 
     public SlottedNitfParseStrategy() {
     }
@@ -46,74 +49,87 @@ abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     }
 
     @Override
-    public final List<NitfImageSegment> getImageSegments() {
-        return imageSegments;
+    public final List<NitfImageSegmentHeader> getImageSegmentHeaders() {
+        return imageSegmentHeaders;
+    }
+
+    public final List<byte[]> getImageSegmentData() {
+        return imageSegmentData;
     }
 
     @Override
-    public final List<NitfSymbolSegment> getSymbolSegments() {
+    public final List<NitfSymbolSegmentHeader> getSymbolSegments() {
         return symbolSegments;
     }
 
     @Override
-    public final List<NitfLabelSegment> getLabelSegments() {
+    public final List<NitfLabelSegmentHeader> getLabelSegments() {
         return labelSegments;
     }
 
     @Override
-    public final List<NitfGraphicSegment> getGraphicSegments() {
+    public final List<NitfGraphicSegmentHeader> getGraphicSegments() {
         return graphicSegments;
     }
 
     @Override
-    public final List<NitfTextSegment> getTextSegments() {
+    public final List<NitfTextSegmentHeader> getTextSegments() {
         return textSegments;
     }
 
     @Override
-    public final List<NitfDataExtensionSegment> getDataExtensionSegments() {
+    public final List<NitfDataExtensionSegmentHeader> getDataExtensionSegments() {
         return dataExtensionSegments;
     }
 
     @Override
     public abstract void baseHeadersRead(final NitfReader reader);
 
-    protected void readImageSegmentHeadersOnly(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfImageSegments(); ++i) {
-            NitfImageSegment imageSegment = new NitfImageSegment();
-            new NitfImageSegmentParser(reader, imageSegment);
-            reader.skip(nitfFileLevelHeader.getLengthOfImageSegment(i));
-            imageSegments.add(imageSegment);
+    protected void parseImageSegmentHeaderAndData(final NitfReader reader, final int i) throws ParseException {
+        NitfImageSegmentHeader imageSegmentHeader = readImageSegmentHeader(reader, i);
+        readImageSegmentData(imageSegmentHeader, reader);
+        imageSegmentHeaders.add(imageSegmentHeader);
+    }
+
+    protected void parseImageSegmentHeaderButSkipData(final NitfReader reader, final int i) throws ParseException {
+        NitfImageSegmentHeader imageSegmentHeader = readImageSegmentHeader(reader, i);
+        skipImageSegmentData(imageSegmentHeader, reader);
+        imageSegmentHeaders.add(imageSegmentHeader);
+    }
+
+    protected NitfImageSegmentHeader readImageSegmentHeader(final NitfReader reader, final int i) throws ParseException {
+        NitfImageSegmentHeaderParser imageSegmentHeaderParser = new NitfImageSegmentHeaderParser();
+        NitfImageSegmentHeader imageSegmentHeader = imageSegmentHeaderParser.parse(reader);
+        imageSegmentHeader.setImageSegmentDataLength(nitfFileLevelHeader.getLengthOfImageSegment(i));
+        return imageSegmentHeader;
+    }
+
+    protected void readImageSegmentData(final NitfImageSegmentHeader imageSegment, final NitfReader reader) throws ParseException {
+        if (imageSegment.getImageDataLength() > 0) {
+            imageSegmentData.add(reader.readBytesRaw((int) imageSegment.getImageDataLength()));
         }
     }
 
-    protected void readImageSegmentHeadersAndData(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfImageSegments(); ++i) {
-            NitfImageSegment imageSegment = new NitfImageSegment();
-            new NitfImageSegmentParser(reader, imageSegment);
-            // TODO: partition properly
-            long lengthOfImageSegmentData = nitfFileLevelHeader.getLengthOfImageSegment(i);
-            if (lengthOfImageSegmentData > 0) {
-                imageSegment.setImageData(reader.readBytesRaw((int) lengthOfImageSegmentData));
-            }
-            imageSegments.add(imageSegment);
+    protected void skipImageSegmentData(final NitfImageSegmentHeader imageSegment, final NitfReader reader) throws ParseException {
+        if (imageSegment.getImageDataLength() > 0) {
+            reader.skip(imageSegment.getImageDataLength());
         }
     }
 
     protected void readGraphicSegmentHeadersOnly(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegments(); ++i) {
-            NitfGraphicSegment graphicSegment = new NitfGraphicSegment();
-            new NitfGraphicSegmentParser(reader, graphicSegment);
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegmentsLengths(); ++i) {
+            NitfGraphicSegmentHeaderParser parser = new NitfGraphicSegmentHeaderParser();
+            NitfGraphicSegmentHeader graphicSegment = parser.parse(reader);
             reader.skip(nitfFileLevelHeader.getLengthOfGraphicSegment(i));
             graphicSegments.add(graphicSegment);
         }
     }
 
     protected void readGraphicSegmentHeadersAndData(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegments(); ++i) {
-            NitfGraphicSegment graphicSegment = new NitfGraphicSegment();
-            new NitfGraphicSegmentParser(reader, graphicSegment);
-            // TODO: partion this better
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegmentsLengths(); ++i) {
+            NitfGraphicSegmentHeaderParser parser = new NitfGraphicSegmentHeaderParser();
+            NitfGraphicSegmentHeader graphicSegment = parser.parse(reader);
+            // TODO: partition this better
             int lengthOfGraphicSegmentData = nitfFileLevelHeader.getLengthOfGraphicSegment(i);
             if (lengthOfGraphicSegmentData > 0) {
                 graphicSegment.setGraphicData(reader.readBytesRaw(lengthOfGraphicSegmentData));
@@ -124,9 +140,9 @@ abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
 
     // We reuse the Graphic Segment length values here, but generate different type
     protected void readSymbolSegmentHeadersOnly(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegments(); ++i) {
-            NitfSymbolSegment symbolSegment = new NitfSymbolSegment();
-            new NitfSymbolSegmentParser(reader, symbolSegment);
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegmentsLengths(); ++i) {
+            NitfSymbolSegmentHeaderParser parser = new NitfSymbolSegmentHeaderParser();
+            NitfSymbolSegmentHeader symbolSegment = parser.parse(reader);
             reader.skip(nitfFileLevelHeader.getLengthOfGraphicSegment(i));
             symbolSegments.add(symbolSegment);
         }
@@ -134,10 +150,10 @@ abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
 
     // We reuse the Graphic Segment length values here, but generate different type
     protected void readSymbolSegmentHeadersAndData(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegments(); ++i) {
-            NitfSymbolSegment symbolSegment = new NitfSymbolSegment();
-            new NitfSymbolSegmentParser(reader, symbolSegment);
-            // TODO: partion this better
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegmentsLengths(); ++i) {
+            NitfSymbolSegmentHeaderParser parser = new NitfSymbolSegmentHeaderParser();
+            NitfSymbolSegmentHeader symbolSegment = parser.parse(reader);
+            // TODO: partition this better
             int lengthOfSymbolSegmentData = nitfFileLevelHeader.getLengthOfGraphicSegment(i);
             if (lengthOfSymbolSegmentData > 0) {
                 symbolSegment.setSymbolData(reader.readBytesRaw(lengthOfSymbolSegmentData));
@@ -147,18 +163,19 @@ abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     }
 
     protected void readLabelSegmentHeadersOnly(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfLabelSegments(); ++i) {
-            NitfLabelSegment labelSegment = new NitfLabelSegment();
-            new NitfLabelSegmentParser(reader, labelSegment);
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfLabelSegmentSubHeaderLengths(); ++i) {
+            NitfLabelSegmentHeaderParser parser = new NitfLabelSegmentHeaderParser();
+            NitfLabelSegmentHeader labelSegment = parser.parse(reader);
+            reader.skip(nitfFileLevelHeader.getLengthOfLabelSegment(i));
             labelSegments.add(labelSegment);
         }
     }
 
     protected void readLabelSegmentHeadersAndData(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfLabelSegments(); ++i) {
-            NitfLabelSegment labelSegment = new NitfLabelSegment();
-            new NitfLabelSegmentParser(reader, labelSegment);
-            // TODO: partion this better
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfLabelSegmentSubHeaderLengths(); ++i) {
+            NitfLabelSegmentHeaderParser parser = new NitfLabelSegmentHeaderParser();
+            NitfLabelSegmentHeader labelSegment = parser.parse(reader);
+            // TODO: partition this better
             int lengthOfLabelSegmentData = nitfFileLevelHeader.getLengthOfLabelSegment(i);
             if (lengthOfLabelSegmentData > 0) {
                 labelSegment.setLabelData(reader.readBytes(lengthOfLabelSegmentData));
@@ -168,19 +185,19 @@ abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     }
 
     protected void readTextSegmentHeadersOnly(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfTextSegments(); ++i) {
-            NitfTextSegment textSegment = new NitfTextSegment();
-            new NitfTextSegmentParser(reader, textSegment);
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfTextSegmentSubHeaderLengths(); ++i) {
+            NitfTextSegmentHeaderParser parser = new NitfTextSegmentHeaderParser();
+            NitfTextSegmentHeader textSegment = parser.parse(reader);
             textSegments.add(textSegment);
             reader.skip(nitfFileLevelHeader.getLengthOfTextSegment(i));
         }
     }
 
     protected void readTextSegmentHeadersAndData(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfTextSegments(); ++i) {
-            NitfTextSegment textSegment = new NitfTextSegment();
-            new NitfTextSegmentParser(reader, textSegment);
-            // TODO: partion this better
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfTextSegmentSubHeaderLengths(); ++i) {
+            NitfTextSegmentHeaderParser parser = new NitfTextSegmentHeaderParser();
+            NitfTextSegmentHeader textSegment = parser.parse(reader);
+            // TODO: partition this better
             int lengthOfTextSegmentData = nitfFileLevelHeader.getLengthOfTextSegment(i);
             if (lengthOfTextSegmentData > 0) {
                 textSegment.setTextData(reader.readBytes(lengthOfTextSegmentData));
@@ -190,11 +207,19 @@ abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     }
 
     protected void readDataExtensionSegments(final NitfReader reader) throws ParseException {
-        for (int i = 0; i < nitfFileLevelHeader.getNumberOfDataExtensionSegments(); ++i) {
-            NitfDataExtensionSegment segment = new NitfDataExtensionSegment();
-            new NitfDataExtensionSegmentParser(reader, nitfFileLevelHeader.getLengthOfDataExtensionSegment(i), segment);
+        for (int i = 0; i < nitfFileLevelHeader.getNumberOfDataExtensionSegmentSubHeaderLengths(); ++i) {
+            NitfDataExtensionSegmentHeaderParser parser = new NitfDataExtensionSegmentHeaderParser();
+            NitfDataExtensionSegmentHeader segment = parser.parse(reader);
+            // TODO: partition properly
+            int lengthOfDataExtensionSegmentData = nitfFileLevelHeader.getLengthOfDataExtensionSegment(i);
+            if (segment.isTreOverflow(reader.getFileType())) {
+                TreCollectionParser treCollectionParser = new TreCollectionParser();
+                TreCollection overflowTres = treCollectionParser.parse(reader, lengthOfDataExtensionSegmentData);
+                segment.mergeTREs(overflowTres);
+            } else {
+                segment.setData(reader.readBytesRaw(lengthOfDataExtensionSegmentData));
+            }
             dataExtensionSegments.add(segment);
         }
     }
-
 }
