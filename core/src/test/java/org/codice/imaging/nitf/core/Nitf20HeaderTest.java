@@ -17,19 +17,15 @@ package org.codice.imaging.nitf.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 import java.util.TimeZone;
 
-import org.junit.rules.ExpectedException;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf20HeaderTest {
@@ -62,9 +58,10 @@ public class Nitf20HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
 
         File resourceFile = new File(getClass().getResource(simpleNitf20File).getFile());
-        NitfParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
+        TextDataExtractionParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
         NitfFileFactory.parse(resourceFile, parseStrategy);
         checkCompliantReadResults(parseStrategy);
+        assertEquals("A", parseStrategy.getTextSegmentData().get(0));
     }
 
     private void checkCompliantReadResults(NitfParseStrategy parseStrategy) throws ParseException {
@@ -101,7 +98,6 @@ public class Nitf20HeaderTest {
         assertEquals("999998", textSecurityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This text will never need downgrading.", textSecurityMetadata.getDowngradeEvent());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
-        assertEquals("A", textSegment.getTextData());
     }
 
     @Test
@@ -111,7 +107,7 @@ public class Nitf20HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 
         InputStream is = getClass().getResourceAsStream(nitf20File);
-        NitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, nitf.getFileType());
@@ -364,7 +360,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment1.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment1.getSymbolNumber());
         assertEquals(0, symbolSegment1.getSymbolRotation());
-        assertEquals(7, symbolSegment1.getSymbolData().length);
+        assertEquals(7, parseStrategy.getSymbolSegmentData().get(0).length);
 
         NitfSymbolSegmentHeader symbolSegment2 = parseStrategy.getSymbolSegments().get(1);
         assertNotNull(symbolSegment2);
@@ -387,7 +383,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment2.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment2.getSymbolNumber());
         assertEquals(0, symbolSegment2.getSymbolRotation());
-        assertEquals(79, symbolSegment2.getSymbolData().length);
+        assertEquals(79, parseStrategy.getSymbolSegmentData().get(1).length);
 
         NitfSymbolSegmentHeader symbolSegment3 = parseStrategy.getSymbolSegments().get(2);
         assertNotNull(symbolSegment3);
@@ -410,7 +406,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment3.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment3.getSymbolNumber());
         assertEquals(0, symbolSegment3.getSymbolRotation());
-        assertEquals(79, symbolSegment3.getSymbolData().length);
+        assertEquals(79, parseStrategy.getSymbolSegmentData().get(2).length);
 
         NitfSymbolSegmentHeader symbolSegment4 = parseStrategy.getSymbolSegments().get(3);
         assertNotNull(symbolSegment4);
@@ -433,7 +429,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment4.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment4.getSymbolNumber());
         assertEquals(0, symbolSegment4.getSymbolRotation());
-        assertEquals(75, symbolSegment4.getSymbolData().length);
+        assertEquals(75, parseStrategy.getSymbolSegmentData().get(3).length);
 
         NitfLabelSegmentHeader labelSegment1 = parseStrategy.getLabelSegments().get(0);
         assertNotNull(labelSegment1);
@@ -454,7 +450,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment1.getLabelBackgroundColour().getRed());
         assertEquals(0, labelSegment1.getLabelBackgroundColour().getGreen());
         assertEquals(0, labelSegment1.getLabelBackgroundColour().getBlue());
-        assertEquals("Label 3", labelSegment1.getLabelData());
+        assertEquals("Label 3", parseStrategy.getLabelSegmentData().get(0));
 
         NitfLabelSegmentHeader labelSegment2 = parseStrategy.getLabelSegments().get(1);
         assertNotNull(labelSegment2);
@@ -475,7 +471,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment2.getLabelBackgroundColour().getRed());
         assertEquals(0, labelSegment2.getLabelBackgroundColour().getGreen());
         assertEquals(0, labelSegment2.getLabelBackgroundColour().getBlue());
-        assertEquals("Label 2", labelSegment2.getLabelData());
+        assertEquals("Label 2", parseStrategy.getLabelSegmentData().get(1));
 
         NitfLabelSegmentHeader labelSegment3 = parseStrategy.getLabelSegments().get(2);
         assertNotNull(labelSegment3);
@@ -496,7 +492,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment3.getLabelBackgroundColour().getRed());
         assertEquals(0, labelSegment3.getLabelBackgroundColour().getGreen());
         assertEquals(0, labelSegment3.getLabelBackgroundColour().getBlue());
-        assertEquals("Label 4", labelSegment3.getLabelData());
+        assertEquals("Label 4", parseStrategy.getLabelSegmentData().get(2));
 
         NitfLabelSegmentHeader labelSegment4 = parseStrategy.getLabelSegments().get(3);
         assertNotNull(labelSegment4);
@@ -517,7 +513,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, labelSegment4.getLabelBackgroundColour().getRed());
         assertEquals(0, labelSegment4.getLabelBackgroundColour().getGreen());
         assertEquals(0, labelSegment4.getLabelBackgroundColour().getBlue());
-        assertEquals("Label 1", labelSegment4.getLabelData());
+        assertEquals("Label 1", parseStrategy.getLabelSegmentData().get(3));
 
         NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
         assertNotNull(textSegment);
@@ -530,7 +526,7 @@ public class Nitf20HeaderTest {
         assertEquals("999998", textSecurityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This text will never need downgrading.", textSecurityMetadata.getDowngradeEvent());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
-        assertEquals("123456\r\n", textSegment.getTextData());
+        assertEquals("123456\r\n", parseStrategy.getTextSegmentData().get(0));
 
         is.close();
     }

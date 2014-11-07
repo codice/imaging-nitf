@@ -33,8 +33,7 @@ public class NitfSymbolSegmentHeader extends AbstractNitfSubSegment {
     private String symbolNumber = "000000";
     private int symbolRotation = 0;
     private SymbolColour symbolColourFormat = SymbolColour.UNKNOWN;
-
-    private byte[] data = null;
+    private int symbolSegmentDataLength = 0;
 
     /**
         Default constructor.
@@ -499,25 +498,22 @@ public class NitfSymbolSegmentHeader extends AbstractNitfSubSegment {
     }
 
     /**
-        Set the symbol data.
+        Set the symbol segment data length.
         <p>
-        This is the contents of the data segment.
+        This is the length of the contents of the associated data segment.
 
-        @param symbolData the symbol data
+        @param length the symbol data segment length, in bytes
     */
-    public final void setSymbolData(final byte[] symbolData) {
-        data = symbolData;
+    public final void setSymbolSegmentDataLength(final int length) {
+        symbolSegmentDataLength = length;
     }
 
     /**
-        Return the symbol data.
-        <p>
-        This is the contents of the data segment. Depending on how the
-        parsing was configured, this can be null.
+        Return the symbol data length.
 
-        @return the symbol data
+        @return the symbol data segment length, in bytes
     */
-    public final byte[] getSymbolData() {
-        return data;
+    public final int getSymbolDataLength() {
+        return symbolSegmentDataLength;
     }
 }

@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 
 /**
  * Wrapper for CGM input data.
@@ -47,9 +46,8 @@ class CgmInputReader {
 
     private final DataInputStream dataStream;
 
-    CgmInputReader(final NitfGraphicSegmentHeader graphicSegment) {
-        byte[] data = graphicSegment.getGraphicData();
-        dataStream = new DataInputStream(new ByteArrayInputStream(data));
+    CgmInputReader(final byte[] cgmData) {
+        dataStream = new DataInputStream(new ByteArrayInputStream(cgmData));
     }
 
     int readUnsignedShort() throws IOException {

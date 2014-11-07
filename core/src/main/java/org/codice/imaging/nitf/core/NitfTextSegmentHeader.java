@@ -22,8 +22,7 @@ public class NitfTextSegmentHeader extends AbstractNitfSubSegment {
     private NitfDateTime textDateTime = null;
     private String textTitle = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
-
-    private String data = null;
+    private int textSegmentDataLength = 0;
 
     /**
         Default constructor.
@@ -98,25 +97,22 @@ public class NitfTextSegmentHeader extends AbstractNitfSubSegment {
     }
 
     /**
-        Set the text data.
+        Set the text segment data length.
         <p>
-        This is the data in the text data segment.
+        This is the length of the contents of the associated data segment.
 
-        @param textData the text data segment content
+        @param length the text data segment length, in bytes
     */
-    public final void setTextData(final String textData) {
-        data = textData;
+    public final void setTextSegmentDataLength(final int length) {
+        textSegmentDataLength = length;
     }
 
     /**
-        Return the text data.
-        <p>
-        This is the contents of the data segment. Depending on how the
-        parsing was configured, this can be null.
+        Return the text data length.
 
-        @return the text data
+        @return the text data segment length, in bytes
     */
-    public final String getTextData() {
-        return data;
+    public final int getTextDataLength() {
+        return textSegmentDataLength;
     }
 }

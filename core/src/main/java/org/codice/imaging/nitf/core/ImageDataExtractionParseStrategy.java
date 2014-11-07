@@ -26,12 +26,20 @@ class ImageDataExtractionParseStrategy extends SlottedNitfParseStrategy {
                 parseImageSegmentHeaderAndData(reader, i);
             }
             if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-                readSymbolSegmentHeadersOnly(reader);
-                readLabelSegmentHeadersOnly(reader);
+                for (int i = 0; i < nitfFileLevelHeader.getNumberOfSymbolSegmentLengths(); ++i) {
+                    parseSymbolSegmentHeaderButSkipData(reader, i);
+                }
+                for (int i = 0; i < nitfFileLevelHeader.getNumberOfLabelSegmentLengths(); ++i) {
+                   parseLabelSegmentHeaderButSkipData(reader, i);
+                }
             } else {
-                readGraphicSegmentHeadersOnly(reader);
+                for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegmentLengths(); ++i) {
+                   parseGraphicSegmentHeaderButSkipData(reader, i);
+                }
             }
-            readTextSegmentHeadersOnly(reader);
+            for (int i = 0; i < nitfFileLevelHeader.getNumberOfTextSegmentLengths(); ++i) {
+                parseTextSegmentHeaderButSkipData(reader, i);
+            }
             readDataExtensionSegments(reader);
         } catch (ParseException ex) {
             System.out.println("Exception should be logged: " + ex);

@@ -114,7 +114,7 @@ public class CgmParserTest {
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         try {
             System.out.println("loading from InputStream");
-            NitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+            AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
             NitfFileFactory.parse(getClass().getResourceAsStream(inputFileName), parseStrategy);
 
             if (parseStrategy.getGraphicSegments().isEmpty()) {
@@ -122,7 +122,7 @@ public class CgmParserTest {
                 System.exit(0);
             }
             NitfGraphicSegmentHeader segment = parseStrategy.getGraphicSegments().get(0);
-            CgmParser parser = new CgmParser(segment);
+            CgmParser parser = new CgmParser(parseStrategy.getGraphicSegmentData().get(0));
             parser.buildCommandList();
             // parser.dump();
             

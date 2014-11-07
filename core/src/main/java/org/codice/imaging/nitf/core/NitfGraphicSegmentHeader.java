@@ -28,7 +28,7 @@ public class NitfGraphicSegmentHeader extends AbstractNitfSubSegment {
     private GraphicColour graphicColour = GraphicColour.UNKNOWN;
     private int boundingBox2Row = 0;
     private int boundingBox2Column = 0;
-    private byte[] data = null;
+    private int graphicSegmentDataLength = 0;
 
     /**
         Default constructor.
@@ -401,25 +401,22 @@ public class NitfGraphicSegmentHeader extends AbstractNitfSubSegment {
     }
 
     /**
-        Set the graphic data.
+        Set the graphic segment data length.
         <p>
-        This is the contents of the data segment.
+        This is the length of the contents of the associated data segment.
 
-        @param graphicData the graphic data
+        @param length the graphic data segment length, in bytes
     */
-    public final void setGraphicData(final byte[] graphicData) {
-        data = graphicData;
+    public final void setGraphicSegmentDataLength(final int length) {
+        graphicSegmentDataLength = length;
     }
 
     /**
-        Return the graphic data.
-        <p>
-        This is the contents of the data segment. Depending on how the
-        parsing was configured, this can be null.
+        Return the graphic data length.
 
-        @return the graphic data
+        @return the graphic data segment length, in bytes
     */
-    public final byte[] getGraphicData() {
-        return data;
+    public final int getGraphicDataLength() {
+        return graphicSegmentDataLength;
     }
 }

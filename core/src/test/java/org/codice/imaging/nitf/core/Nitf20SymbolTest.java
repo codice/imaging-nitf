@@ -17,18 +17,14 @@ package org.codice.imaging.nitf.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 import java.util.TimeZone;
 
-import org.junit.rules.ExpectedException;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf20SymbolTest {
@@ -44,13 +40,13 @@ public class Nitf20SymbolTest {
     @Test
     public void testU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
-        NitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
         NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
-        assertSymbolSegmentDataIsAsExpected(symbolSegment1);
-        assertEquals(930, symbolSegment1.getSymbolData().length);
+        assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
+        assertEquals(930, parseStrategy.getSymbolSegmentData().get(0).length);
 
         is.close();
     }
@@ -58,14 +54,14 @@ public class Nitf20SymbolTest {
     @Test
     public void testNoSegmentDataU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
         NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
-        assertSymbolSegmentDataIsAsExpected(symbolSegment1);
+        assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
         assertEquals(1, parseStrategy.getSymbolSegments().size());
-        assertNull(symbolSegment1.getSymbolData());
+        assertEquals(0, parseStrategy.getSymbolSegmentData().size());
 
         is.close();
     }
@@ -103,7 +99,7 @@ public class Nitf20SymbolTest {
         assertEquals(0, parseStrategy.getDataExtensionSegments().size());
     }
 
-    private void assertSymbolSegmentDataIsAsExpected(NitfSymbolSegmentHeader symbolSegment1) {
+    private void assertSymbolSegmentHeaderDataIsAsExpected(NitfSymbolSegmentHeader symbolSegment1) {
         assertNotNull(symbolSegment1);
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());

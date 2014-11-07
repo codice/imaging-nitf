@@ -40,24 +40,24 @@ public class Nitf21TextParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        NitfParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
+        TextDataExtractionParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getTextSegments().size());
 
         NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", textSegment.getTextData());
+        assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", parseStrategy.getTextSegmentData().get(0));
     }
 
     @Test
     public void testExtractionWithDefault() throws IOException, ParseException {
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getTextSegments().size());
 
         NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertNull(textSegment.getTextData());
+        assertEquals(0, parseStrategy.getTextSegmentData().size());
     }
 
     private void assertTextSegmentMetadataIsAsExpected(NitfTextSegmentHeader textSegment) {

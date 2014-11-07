@@ -16,13 +16,11 @@ package org.codice.imaging.nitf.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 import java.util.TimeZone;
 
 import org.junit.Before;

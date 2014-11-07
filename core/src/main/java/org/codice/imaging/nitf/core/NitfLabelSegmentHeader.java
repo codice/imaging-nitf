@@ -26,8 +26,7 @@ public class NitfLabelSegmentHeader extends AbstractNitfSubSegment {
     private int labelDisplayLevel = 0;
     private RGBColour labelTextColour = null;
     private RGBColour labelBackgroundColour = null;
-
-    private String data = null;
+    private int labelSegmentDataLength = 0;
 
     /**
         Default constructor.
@@ -248,25 +247,23 @@ public class NitfLabelSegmentHeader extends AbstractNitfSubSegment {
     }
 
     /**
-        Set the label data.
+        Set the label segment data length.
         <p>
-        This is the data in the label data segment.
+        This is the length of the contents of the associated data segment.
 
-        @param labelData the label data segment content
+        @param length the label data segment length, in bytes
     */
-    public final void setLabelData(final String labelData) {
-        data = labelData;
+    public final void setLabelSegmentDataLength(final int length) {
+        labelSegmentDataLength = length;
     }
 
     /**
-        Return the label data.
-        <p>
-        This is the contents of the data segment. Depending on how the
-        parsing was configured, this can be null.
+        Return the label data length.
 
-        @return the label data
+        @return the label data segment length, in bytes
     */
-    public final String getLabelData() {
-        return data;
+    public final int getLabelDataLength() {
+        return labelSegmentDataLength;
     }
+
 }

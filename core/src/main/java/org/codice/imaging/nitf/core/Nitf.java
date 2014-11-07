@@ -336,7 +336,7 @@ public class Nitf extends AbstractNitfSegment {
     /**
      * Return the length of the data in an image segment.
      * <p>
-     * This does not include the size of the header, it is the size of the "Date Field" that follows the header.
+     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
      *
      * @param i the index of the image segment, zero base
      * @return the length of the data for the image segment (bytes)
@@ -354,25 +354,47 @@ public class Nitf extends AbstractNitfSegment {
     }
 
     /**
-     * Return the number of graphic or symbol segment data lengths.
+     * Return the number of graphic (or symbol) segment data lengths.
      *
-     * @return the number of graphic / symbol segment data lengths
+     * @return the number of graphic segment data lengths
      */
-    public final int getNumberOfGraphicSegmentsLengths() {
+    public final int getNumberOfGraphicSegmentLengths() {
         return ls.size();
     }
 
     /**
-     * Return the length of the data in a graphic or symbol segment.
+     * Return the number of symbol (or graphic) segment data lengths.
+     *
+     * @return the number of symbol segment data lengths
+     */
+    public final int getNumberOfSymbolSegmentLengths() {
+        return getNumberOfGraphicSegmentLengths();
+    }
+
+    /**
+     * Return the length of the data in a graphic (or symbol) segment.
      * <p>
-     * This does not include the size of the header, it is the size of the "Date Field" that follows the header.
+     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
      * This is the size of the graphic segment data in NITF 2.1 (or NSIF 1.0), or the size of the symbol segment in NITF 2.0.
      *
-     * @param i the index of the graphic or symbol segment, zero base
-     * @return the length of the data for the graphic / symbol segment (bytes)
+     * @param i the index of the graphic segment, zero base
+     * @return the length of the data for the graphic segment (bytes)
      */
     public final int getLengthOfGraphicSegment(final int i) {
         return ls.get(i);
+    }
+
+    /**
+     * Return the length of the data in a symbol (or graphic) segment.
+     * <p>
+     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
+     * This is the size of the graphic segment data in NITF 2.1 (or NSIF 1.0), or the size of the symbol segment in NITF 2.0.
+     *
+     * @param i the index of the symbol segment, zero base
+     * @return the length of the data for the symbol segment (bytes)
+     */
+    public final int getLengthOfSymbolSegment(final int i) {
+        return getLengthOfGraphicSegment(i);
     }
 
     final void addGraphicSegmentSubHeaderLength(final Integer length) {
@@ -408,7 +430,7 @@ public class Nitf extends AbstractNitfSegment {
     /**
      * Return the length of the data in a label segment.
      * <p>
-     * This does not include the size of the header, it is the size of the "Date Field" that follows the header.
+     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
      * This is only valid for NITF 2.0 files.
      *
      * @param i the index of the image segment, zero base
@@ -447,7 +469,7 @@ public class Nitf extends AbstractNitfSegment {
     /**
      * Return the length of the data in a text segment.
      * <p>
-     * This does not include the size of the header, it is the size of the "Date Field" that follows the header.
+     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
      *
      * @param i the index of the text segment, zero base
      * @return the length of the data for the text segment (bytes)

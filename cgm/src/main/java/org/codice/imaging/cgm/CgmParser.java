@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 
 /**
  * CGM Parser.
@@ -279,10 +278,10 @@ public class CgmParser {
     /**
      * Constructor.
      *
-     * @param graphicSegment the segment to parse
+     * @param graphicSegmentData the CGM data to parse
      */
-    public CgmParser(final NitfGraphicSegmentHeader graphicSegment) {
-        dataReader = new CgmInputReader(graphicSegment);
+    public CgmParser(final byte[] graphicSegmentData) {
+        dataReader = new CgmInputReader(graphicSegmentData);
     }
 
     final void buildCommandList() throws IOException {

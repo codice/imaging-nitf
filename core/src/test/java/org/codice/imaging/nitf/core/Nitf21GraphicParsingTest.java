@@ -16,12 +16,10 @@ package org.codice.imaging.nitf.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.EnumSet;
 
 import org.junit.Test;
 
@@ -29,24 +27,24 @@ public class Nitf21GraphicParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        NitfParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
+        GraphicDataExtractionParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        NitfGraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegments().get(0);
-        assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
-        assertEquals(780, graphicSegment.getGraphicData().length);
+        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegments().get(0);
+        assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
+        assertEquals(780, parseStrategy.getGraphicSegmentData().get(0).length);
     }
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        NitfGraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegments().get(0);
-        assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
-        assertNull(graphicSegment.getGraphicData());
+        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegments().get(0);
+        assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
+        assertEquals(0, parseStrategy.getGraphicSegmentData().size());
     }
 
     private void assertGraphicSegmentMetadataIsAsExpected(NitfGraphicSegmentHeader graphicSegment) {

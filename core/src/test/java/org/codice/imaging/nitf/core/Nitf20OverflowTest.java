@@ -17,18 +17,14 @@ package org.codice.imaging.nitf.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 import java.util.TimeZone;
 
-import org.junit.rules.ExpectedException;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 public class Nitf20OverflowTest {
@@ -48,7 +44,7 @@ public class Nitf20OverflowTest {
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 
         InputStream is = getClass().getResourceAsStream(nitf20File);
-        NitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, nitf.getFileType());
@@ -137,7 +133,7 @@ public class Nitf20OverflowTest {
         assertEquals(0, symbolSegment1.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment1.getSymbolNumber());
         assertEquals(0, symbolSegment1.getSymbolRotation());
-        assertEquals(210, symbolSegment1.getSymbolData().length);
+        assertEquals(210, parseStrategy.getSymbolSegmentData().get(0).length);
         assertEquals(5, symbolSegment1.getExtendedHeaderDataOverflow());
 
         NitfLabelSegmentHeader labelSegment1 = parseStrategy.getLabelSegments().get(0);
@@ -166,7 +162,7 @@ public class Nitf20OverflowTest {
         assertEquals(25, labelSegment1.getLabelCellHeight());
         assertEquals(8, labelSegment1.getLabelDisplayLevel());
         assertEquals(0, labelSegment1.getAttachmentLevel());
-        assertEquals("This is a label on Lenna in an \"OverflowTestFile\"!", labelSegment1.getLabelData());
+        assertEquals("This is a label on Lenna in an \"OverflowTestFile\"!", parseStrategy.getLabelSegmentData().get(0));
         assertEquals(6, labelSegment1.getExtendedHeaderDataOverflow());
 
         NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
@@ -175,7 +171,7 @@ public class Nitf20OverflowTest {
         assertEquals(0, textSegment.getAttachmentLevel());
         assertEquals("Text Title", textSegment.getTextTitle());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
-        assertEquals("Example of a SideArm text file.  Marc Smelser\r\nCreated this NITFText file 07/07/95", textSegment.getTextData());
+        assertEquals("Example of a SideArm text file.  Marc Smelser\r\nCreated this NITFText file 07/07/95", parseStrategy.getTextSegmentData().get(0));
         assertEquals(7, textSegment.getExtendedHeaderDataOverflow());
 
         NitfDataExtensionSegmentHeader des1 = parseStrategy.getDataExtensionSegments().get(0);
