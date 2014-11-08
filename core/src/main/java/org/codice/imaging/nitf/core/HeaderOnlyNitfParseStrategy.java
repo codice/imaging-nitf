@@ -23,25 +23,27 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
     @Override
     public final void baseHeadersRead(final NitfReader reader) {
         try {
-            for (int i = 0; i < nitfFileLevelHeader.getNumberOfImageSegmentLengths(); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
                 parseImageSegmentHeaderButSkipData(reader, i);
             }
             if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-                for (int i = 0; i < nitfFileLevelHeader.getNumberOfSymbolSegmentLengths(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
                    parseSymbolSegmentHeaderButSkipData(reader, i);
                 }
-                for (int i = 0; i < nitfFileLevelHeader.getNumberOfLabelSegmentLengths(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
                    parseLabelSegmentHeaderButSkipData(reader, i);
                 }
             } else {
-                for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegmentLengths(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
                    parseGraphicSegmentHeaderButSkipData(reader, i);
                 }
             }
-            for (int i = 0; i < nitfFileLevelHeader.getNumberOfTextSegmentLengths(); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
                 parseTextSegmentHeaderButSkipData(reader, i);
             }
-            readDataExtensionSegments(reader);
+            for (int i = 0; i < nitfFileLevelHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
+                parseDataExtensionSegmentHeaderButSkipData(reader, i);
+            }
         } catch (ParseException ex) {
             System.out.println("Exception should be logged: " + ex);
         }

@@ -23,7 +23,7 @@ public class NitfDataExtensionSegmentHeader extends AbstractCommonNitfSegment {
     private String overflowedHeaderType = null;
     private int desItemOverflowed = 0;
     private String userDefinedSubheaderField = null;
-    private byte[] desData = null;
+    private int dataExtensionSegmentDataLength = 0;
 
     /**
         Default constructor.
@@ -195,25 +195,23 @@ public class NitfDataExtensionSegmentHeader extends AbstractCommonNitfSegment {
     }
 
     /**
-        Set the DES data.
+        Set the data extension segment data length.
         <p>
-        This is the contents of the data segment.
+        This is the length of the contents of the associated data segment.
 
-        @param data the DES data
+        @param length the data extension segment data segment length, in bytes
     */
-    public final void setData(final byte[] data) {
-        desData = data;
+    public final void setDataExtensionSegmentDataLength(final int length) {
+        dataExtensionSegmentDataLength = length;
     }
 
     /**
-        Return the DES data.
-        <p>
-        This is the contents of the data segment.
+        Return the data extension segment data length.
 
-        @return the DES data
+        @return the data extension segment length, in bytes
     */
-    public final byte[] setData() {
-        return desData;
+    public final int getDataExtensionSegmentDataLength() {
+        return dataExtensionSegmentDataLength;
     }
 
     /**

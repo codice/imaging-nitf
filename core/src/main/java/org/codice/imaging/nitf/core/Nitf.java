@@ -308,211 +308,115 @@ public class Nitf extends AbstractNitfSegment {
     }
 
     /**
-     * Return the number of image segment subheader lengths.
+     * Return the image segment subheader lengths.
      *
-     * @return the number of image segment subheader lengths
+     * @return the list of image segment subheader lengths
      */
-    public final int getNumberOfImageSegmentSubHeaderLengths() {
-        return lish.size();
-    }
-
-    final void setImageSegmentSubHeaderLength(final int subheaderIndex, final Integer length) {
-        lish.set(subheaderIndex, length);
-    }
-
-    final void addImageSegmentSubHeaderLength(final Integer length) {
-        lish.add(length);
+    public final List<Integer> getImageSegmentSubHeaderLengths() {
+        return lish;
     }
 
     /**
-     * Return the number of image segment data lengths.
+     * Return the image segment data lengths.
      *
-     * @return the number of image segment data lengths
+     * @return the list of image segment data lengths
      */
-    public final int getNumberOfImageSegmentLengths() {
-        return li.size();
+    public final List<Long> getImageSegmentDataLengths() {
+        return li;
     }
 
     /**
-     * Return the length of the data in an image segment.
-     * <p>
-     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
+     * Return the graphic (or symbol) segment subheader lengths.
      *
-     * @param i the index of the image segment, zero base
-     * @return the length of the data for the image segment (bytes)
+     * @return the list of graphic segment subheader lengths
      */
-    public final long getLengthOfImageSegment(final int i) {
-        return li.get(i);
-    }
-
-    final void setImageSegmentLength(final int subheaderIndex, final Long length) {
-        li.set(subheaderIndex, length);
-    }
-
-    final void addImageSegmentLength(final Long length) {
-        li.add(length);
+    public final List<Integer> getGraphicSegmentSubHeaderLengths() {
+        return lssh;
     }
 
     /**
-     * Return the number of graphic (or symbol) segment data lengths.
+     * Return the graphic (or symbol) segment data lengths.
      *
-     * @return the number of graphic segment data lengths
+     * @return the list of graphic segment data lengths
      */
-    public final int getNumberOfGraphicSegmentLengths() {
-        return ls.size();
+    public final List<Integer> getGraphicSegmentDataLengths() {
+        return ls;
     }
 
     /**
-     * Return the number of symbol (or graphic) segment data lengths.
+     * Return the symbol (or graphic) segment subheader lengths.
      *
-     * @return the number of symbol segment data lengths
+     * @return the list of symbol segment subheader lengths
      */
-    public final int getNumberOfSymbolSegmentLengths() {
-        return getNumberOfGraphicSegmentLengths();
+    public final List<Integer> getSymbolSegmentSubHeaderLengths() {
+        return getGraphicSegmentSubHeaderLengths();
     }
 
     /**
-     * Return the length of the data in a graphic (or symbol) segment.
-     * <p>
-     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
-     * This is the size of the graphic segment data in NITF 2.1 (or NSIF 1.0), or the size of the symbol segment in NITF 2.0.
+     * Return the symbol (or graphic) segment data lengths.
      *
-     * @param i the index of the graphic segment, zero base
-     * @return the length of the data for the graphic segment (bytes)
+     * @return the list of symbol segment data lengths
      */
-    public final int getLengthOfGraphicSegment(final int i) {
-        return ls.get(i);
+    public final List<Integer> getSymbolSegmentDataLengths() {
+        return getGraphicSegmentDataLengths();
     }
 
     /**
-     * Return the length of the data in a symbol (or graphic) segment.
-     * <p>
-     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
-     * This is the size of the graphic segment data in NITF 2.1 (or NSIF 1.0), or the size of the symbol segment in NITF 2.0.
+     * Return the label segment subheader lengths.
      *
-     * @param i the index of the symbol segment, zero base
-     * @return the length of the data for the symbol segment (bytes)
+     * This will always be an empty list for NITF 2.1 / NSIF 1.0 file, which do not have label segments.
+     *
+     * @return the list of label segment subheader lengths
      */
-    public final int getLengthOfSymbolSegment(final int i) {
-        return getLengthOfGraphicSegment(i);
-    }
-
-    final void addGraphicSegmentSubHeaderLength(final Integer length) {
-        lssh.add(length);
-    }
-
-    final void addGraphicSegmentLength(final Integer length) {
-        ls.add(length);
+    public final List<Integer> getLabelSegmentSubHeaderLengths() {
+        return llsh;
     }
 
     /**
-     * Return the number of label segment subheader lengths.
+     * Return the label segment data lengths.
      *
-     * This will always be zero for a NITF 2.1 / NSIF 1.0 file, which do not have label segments.
+     * This will always be an empty list for NITF 2.1 / NSIF 1.0 file, which do not have label segments.
      *
-     * @return the number of label segment subheader lengths
+     * @return the list of label segment data lengths
      */
-    public final int getNumberOfLabelSegmentSubHeaderLengths() {
-        return llsh.size();
+    public final List<Integer> getLabelSegmentDataLengths() {
+        return ll;
     }
 
     /**
-     * Return the number of label segment data lengths.
+     * Return the text segment subheader lengths.
      *
-     * This will always be zero for a NITF 2.1 / NSIF 1.0 file, which do not have label segments.
-     *
-     * @return the number of label segment data lengths
+     * @return the list of text segment subheader lengths
      */
-    public final int getNumberOfLabelSegmentLengths() {
-        return ll.size();
+    public final List<Integer> getTextSegmentSubHeaderLengths() {
+        return ltsh;
     }
 
     /**
-     * Return the length of the data in a label segment.
-     * <p>
-     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
-     * This is only valid for NITF 2.0 files.
+     * Return the text segment data lengths.
      *
-     * @param i the index of the image segment, zero base
-     * @return the length of the data for the image segment (bytes)
+     * @return the list of text segment data lengths
      */
-    public final int getLengthOfLabelSegment(final int i) {
-        return ll.get(i);
-    }
-
-    final void addLabelSegmentSubHeaderLength(final Integer length) {
-        llsh.add(length);
-    }
-
-    final void addLabelSegmentLength(final Integer length) {
-        ll.add(length);
+    public final List<Integer> getTextSegmentDataLengths() {
+        return lt;
     }
 
     /**
-     * Return the number of text segment subheader lengths.
+     * Return the DES subheader lengths.
      *
-     * @return the number of text segment subheader lengths
+     * @return the list of data extension segment subheader lengths
      */
-    public final int getNumberOfTextSegmentSubHeaderLengths() {
-        return ltsh.size();
+    public final List<Integer> getDataExtensionSegmentSubHeaderLengths() {
+        return ldsh;
     }
 
     /**
-     * Return the number of text segment lengths.
+     * Return the DES data lengths.
      *
-     * @return the number of text segment lengths
+     * @return the list of data extension segment data lengths
      */
-    public final int getNumberOfTextSegmentLengths() {
-        return lt.size();
-    }
-
-    /**
-     * Return the length of the data in a text segment.
-     * <p>
-     * This does not include the size of the header, it is the size of the "Data Field" that follows the header.
-     *
-     * @param i the index of the text segment, zero base
-     * @return the length of the data for the text segment (bytes)
-     */
-    public final int getLengthOfTextSegment(final int i) {
-        return lt.get(i);
-    }
-
-    final void addTextSegmentSubHeaderLength(final Integer length) {
-        ltsh.add(length);
-    }
-
-    final void addTextSegmentLength(final Integer length) {
-        lt.add(length);
-    }
-
-    /**
-     * Return the number of data extension segment subheader lengths.
-     *
-     * @return the number of data extension segment subheader lengths
-     */
-    public final int getNumberOfDataExtensionSegmentSubHeaderLengths() {
-        return ldsh.size();
-    }
-
-    /**
-     * Return the length of the data in a date extension segment.
-     * <p>
-     * This does not include the size of the header, it is the size of the "Date Field" that follows the header.
-     *
-     * @param i the index of the data extension segment, zero base
-     * @return the length of the data for the data extension segment (bytes)
-     */
-    public final int getLengthOfDataExtensionSegment(final int i) {
-        return ld.get(i);
-    }
-
-    final void addDataExtensionSegmentSubHeaderLength(final Integer length) {
-        ldsh.add(length);
-    }
-
-    final void addDataExtensionSegmentLength(final Integer length) {
-        ld.add(length);
+    public final List<Integer> getDataExtensionSegmentDataLengths() {
+        return ld;
     }
 
     /**

@@ -25,6 +25,7 @@ abstract class AbstractCommonSegmentNode extends AbstractNode {
         super(children);
     }
 
+
     protected void addCommonSegmentProperties(final Sheet.Set set, final AbstractCommonNitfSegment segment) {
         set.put(new StringProperty("identifier", "Segment Identifier", "Identifier for the segment.", segment.getIdentifier()));
         set.put(new StringProperty("securityClassification",

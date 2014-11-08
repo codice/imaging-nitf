@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 /**
     NitfReader implementation using a (random access) File.
 */
-class FileReader extends SharedReader implements NitfReader {
+public class FileReader extends SharedReader implements NitfReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileReader.class);
 

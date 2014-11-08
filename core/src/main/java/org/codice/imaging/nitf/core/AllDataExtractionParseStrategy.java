@@ -24,25 +24,27 @@ public class AllDataExtractionParseStrategy extends SlottedNitfParseStrategy {
     @Override
     public final void baseHeadersRead(final NitfReader reader) {
         try {
-            for (int i = 0; i < nitfFileLevelHeader.getNumberOfImageSegmentLengths(); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
                 parseImageSegmentHeaderAndData(reader, i);
             }
             if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-                for (int i = 0; i < nitfFileLevelHeader.getNumberOfSymbolSegmentLengths(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
                     parseSymbolSegmentHeaderAndData(reader, i);
                 }
-                for (int i = 0; i < nitfFileLevelHeader.getNumberOfLabelSegmentLengths(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
                    parseLabelSegmentHeaderAndData(reader, i);
                 }
             } else {
-                for (int i = 0; i < nitfFileLevelHeader.getNumberOfGraphicSegmentLengths(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
                    parseGraphicSegmentHeaderAndData(reader, i);
                 }
             }
-            for (int i = 0; i < nitfFileLevelHeader.getNumberOfTextSegmentLengths(); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
                 parseTextSegmentHeaderAndData(reader, i);
             }
-            readDataExtensionSegments(reader);
+            for (int i = 0; i < nitfFileLevelHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
+                parseDataExtensionSegmentHeaderAndData(reader, i);
+            }
         } catch (ParseException ex) {
             System.out.println("Exception should be logged: " + ex);
         }

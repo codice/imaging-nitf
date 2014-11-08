@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
-import org.codice.imaging.nitf.core.NitfParseStrategy;
-import org.codice.imaging.nitf.core.TextDataExtractionParseStrategy;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -103,13 +101,13 @@ import org.openide.util.NbBundle.Messages;
 // CSON: MagicNumber
 class NitfDataObject extends MultiDataObject {
 
-    private NitfParseStrategy parseStrategy;
+    private DeferredSegmentParseStrategy parseStrategy;
 
     public NitfDataObject(final FileObject pf, final MultiFileLoader loader) throws IOException {
         super(pf, loader);
         registerEditor("image/nitf", false);
         FileObject fObj = getPrimaryFile();
-        parseStrategy = new TextDataExtractionParseStrategy();
+        parseStrategy = new DeferredSegmentParseStrategy();
         try {
             NitfFileFactory.parse(new File(fObj.getPath()), parseStrategy);
         } catch (ParseException e) {
