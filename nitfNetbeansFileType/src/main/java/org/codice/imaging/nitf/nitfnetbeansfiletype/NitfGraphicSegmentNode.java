@@ -22,7 +22,6 @@ import org.openide.nodes.Sheet;
 
 class NitfGraphicSegmentNode extends AbstractSegmentNode {
 
-    private static final String POINT_FORMATTER = "[%d, %d]";
     private static final String BOUNDING_BOX_POSITION_DESCRIPTION =
                     "bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.";
 

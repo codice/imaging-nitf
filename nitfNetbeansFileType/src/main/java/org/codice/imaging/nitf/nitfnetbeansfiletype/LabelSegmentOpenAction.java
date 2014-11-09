@@ -9,11 +9,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 
-class TextSegmentOpenAction extends AbstractAction {
+class LabelSegmentOpenAction extends AbstractAction {
 
-    private final NitfTextSegmentNode associatedNode;
+    private final NitfLabelSegmentNode associatedNode;
 
-    public TextSegmentOpenAction(final NitfTextSegmentNode node) {
+    public LabelSegmentOpenAction(final NitfLabelSegmentNode node) {
         putValue(NAME, "Open");
         associatedNode = node;
     }

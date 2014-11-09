@@ -26,7 +26,7 @@ import org.openide.windows.TopComponent;
 @NbBundle.Messages({
     "CTL_TextSegmentViewer=Text Segment Viewer"
 })
-public class TextSegmentViewer extends TopComponent {
+public class TextViewerPane extends TopComponent {
 
     // CSOFF: MagicNumber
     // CSOFF: WhitespaceAround
@@ -43,7 +43,7 @@ public class TextSegmentViewer extends TopComponent {
 
         textArea.setColumns(20);
         textArea.setRows(5);
-        textArea.setText(org.openide.util.NbBundle.getMessage(TextSegmentViewer.class, "TextSegmentViewer.textArea.text")); // NOI18N
+        textArea.setText(org.openide.util.NbBundle.getMessage(TextViewerPane.class, "TextViewerPane.textArea.text")); // NOI18N
         jScrollPane1.setViewportView(textArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -68,7 +68,7 @@ public class TextSegmentViewer extends TopComponent {
     /**
      * Creates new form TextSegmentViewer.
      */
-    public TextSegmentViewer() {
+    public TextViewerPane() {
         initComponents();
     }
 

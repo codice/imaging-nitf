@@ -20,7 +20,7 @@ class DataExtensionSegmentOpenAction extends AbstractAction {
 
     @Override
     public void actionPerformed(final ActionEvent event) {
-        TextSegmentViewer viewer = new TextSegmentViewer();
+        TextViewerPane viewer = new TextViewerPane();
         viewer.setDisplayName(associatedNode.getFriendlyName());
         viewer.setText(associatedNode.getText());
         viewer.open();

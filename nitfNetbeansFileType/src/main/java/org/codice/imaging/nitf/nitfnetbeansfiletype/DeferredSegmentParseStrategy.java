@@ -282,7 +282,7 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
     }
 
     String getLabelSegmentData(final NitfLabelSegmentHeader header, final int index) throws ParseException {
-        long segmentDataOffset = textSegmentDataOffsets.get(index);
+        long segmentDataOffset = labelSegmentDataOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentDataOffset);
         return fileReader.readBytes(header.getLabelDataLength());
     }
