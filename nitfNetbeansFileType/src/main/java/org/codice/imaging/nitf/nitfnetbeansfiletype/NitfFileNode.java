@@ -16,6 +16,7 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.Nitf;
+import org.codice.imaging.nitf.core.NitfConstants;
 import org.openide.loaders.DataNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -53,7 +54,46 @@ class NitfFileNode extends DataNode {
                 "File Title",
                 "The title of the file",
                 nitf.getFileTitle()));
-        if (nitf.getFileType() != FileType.NITF_TWO_ZERO) {
+        set.put(new StringProperty("fileSecurityClassification",
+                "File Security Classification",
+                "The classification level of the entire file.",
+                nitf.getFileSecurityMetadata().getSecurityClassification().toString()));
+        set.put(new StringProperty("codewords",
+                "File Security Codewords",
+                "Indicator of the security compartments associated with the file.",
+                nitf.getFileSecurityMetadata().getCodewords()));
+        set.put(new StringProperty("controlAndHandling",
+                "File Control and Handling",
+                "Additional security control and handling instructions (caveats) associated with the file.",
+                nitf.getFileSecurityMetadata().getControlAndHandling()));
+        set.put(new StringProperty("releaseInstructions",
+                "File Releasing Instructions",
+                "List of country and/or multilateral entity codes to which the file content is authorised for release.",
+                nitf.getFileSecurityMetadata().getReleaseInstructions()));
+        set.put(new StringProperty("classificationAuthority",
+                    "File Classification Authority",
+                    "The classification authority for the file.",
+                    nitf.getFileSecurityMetadata().getClassificationAuthority()));
+        set.put(new StringProperty("securityControlNumber",
+                    "File Security Control Number",
+                    "The security control number associated with the file.",
+                    nitf.getFileSecurityMetadata().getSecurityControlNumber()));
+        if (nitf.getFileType() == FileType.NITF_TWO_ZERO) {
+            set.put(new StringProperty("fileDowngradeDateOrSpecialCase",
+                    "File Downgrade Date or Special Case",
+                    "The downgrade date or special case for the entire file. The valid values are:\n"
+                        + " (1) the calendar date in the format YYMMDD\n"
+                        + " (2) the code \"999999\" when the originating agency's determination is required (OADR)\n"
+                        + " (3) the code \"999998\" when a specific event determines at what point declassification "
+                        + "or downgrading is to take place.",
+                    nitf.getFileSecurityMetadata().getDowngradeDateOrSpecialCase()));
+            if (NitfConstants.DOWNGRADE_EVENT_MAGIC.equals(nitf.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim())) {
+                set.put(new StringProperty("fileDowngradeEvent",
+                        "File Downgrade Event",
+                        "The event for downgrade. Only present if the File Downgrade Date or Special Case is 999998",
+                        nitf.getFileSecurityMetadata().getDowngradeEvent()));
+            }
+        } else {
             set.put(new StringProperty("fileSecurityClassification",
                     "File Security Classification",
                     "The classification level of the entire file.",
@@ -63,18 +103,6 @@ class NitfFileNode extends DataNode {
                     "The national or multinational security system used to classify the file content. "
                     + "'XN' indicates NATO security system marking guidance.",
                     nitf.getFileSecurityMetadata().getSecurityClassificationSystem()));
-            set.put(new StringProperty("codewords",
-                    "File Security Codewords",
-                    "Indicator of the security compartments associated with the file.",
-                    nitf.getFileSecurityMetadata().getCodewords()));
-            set.put(new StringProperty("controlAndHandling",
-                    "File Control and Handling",
-                    "Additional security control and handling instructions (caveats) associated with the file.",
-                    nitf.getFileSecurityMetadata().getControlAndHandling()));
-            set.put(new StringProperty("releaseInstructions",
-                    "File Releasing Instructions",
-                    "List of country and/or multilateral entity codes to which the file content is authorised for release.",
-                    nitf.getFileSecurityMetadata().getReleaseInstructions()));
             set.put(new StringProperty("declassificationType",
                     "File Declassification Type",
                     "Type of security declassification or downgrading instructions which apply to the file.",
@@ -103,10 +131,6 @@ class NitfFileNode extends DataNode {
                     "File Classification Authority Type",
                     "The type of authority used to classify the file.",
                     nitf.getFileSecurityMetadata().getClassificationAuthorityType()));
-            set.put(new StringProperty("classificationAuthority",
-                    "File Classification Authority",
-                    "The classification authority for the file.",
-                    nitf.getFileSecurityMetadata().getClassificationAuthority()));
             set.put(new StringProperty("classificationReason",
                     "File Classification Reason",
                     "The reason for classifying the file.",
@@ -115,19 +139,15 @@ class NitfFileNode extends DataNode {
                     "File Security Source Date",
                     "The date of the source used to derive classification of the file.",
                     nitf.getFileSecurityMetadata().getSecuritySourceDate()));
-            set.put(new StringProperty("securityControlNumber",
-                    "File Security Control Number",
-                    "The security control number associated with the file.",
-                    nitf.getFileSecurityMetadata().getSecurityControlNumber()));
-            set.put(new StringProperty("fileCopyNumber",
-                    "File Copy Number",
-                    "The copy number of the file. If this is all zeros, there is no tracking of numbered file copies.",
-                    nitf.getFileSecurityMetadata().getFileCopyNumber()));
-            set.put(new StringProperty("fileNumberOfCopies",
-                    "File Number of Copies",
-                    "The total number of copies of the file. If this is all zeros, there is no tracking of numbered file copies.",
-                    nitf.getFileSecurityMetadata().getFileNumberOfCopies()));
         }
+        set.put(new StringProperty("fileCopyNumber",
+                "File Copy Number",
+                "The copy number of the file. If this is all zeros, there is no tracking of numbered file copies.",
+                nitf.getFileSecurityMetadata().getFileCopyNumber()));
+        set.put(new StringProperty("fileNumberOfCopies",
+                "File Number of Copies",
+                "The total number of copies of the file. If this is all zeros, there is no tracking of numbered file copies.",
+                nitf.getFileSecurityMetadata().getFileNumberOfCopies()));
         if (nitf.getFileBackgroundColour() != null) {
             set.put(new StringProperty("fileBackgroundColour",
                     "File Background Colour",
