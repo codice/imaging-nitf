@@ -85,6 +85,10 @@ class NitfChildFactory extends ChildFactory<ChildSegmentKey> {
                     return new NitfImageSegmentNode(key);
                 case "Graphic":
                     return new NitfGraphicSegmentNode(key);
+                case "Symbol":
+                    return new NitfSymbolSegmentNode(key);
+                case "Label":
+                    return new NitfLabelSegmentNode(key);
                 case "Text":
                     return new NitfTextSegmentNode(key);
                 case "DES":

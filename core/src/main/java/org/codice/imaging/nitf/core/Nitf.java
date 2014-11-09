@@ -349,7 +349,7 @@ public class Nitf extends AbstractNitfSegment {
      * @return the list of symbol segment subheader lengths
      */
     public final List<Integer> getSymbolSegmentSubHeaderLengths() {
-        return getGraphicSegmentSubHeaderLengths();
+        return lssh;
     }
 
     /**
@@ -358,7 +358,7 @@ public class Nitf extends AbstractNitfSegment {
      * @return the list of symbol segment data lengths
      */
     public final List<Integer> getSymbolSegmentDataLengths() {
-        return getGraphicSegmentDataLengths();
+        return ls;
     }
 
     /**

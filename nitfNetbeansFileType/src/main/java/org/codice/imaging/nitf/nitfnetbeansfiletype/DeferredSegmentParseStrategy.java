@@ -13,7 +13,9 @@ import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.NitfLabelSegmentHeader;
 import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.NitfSymbolSegmentHeader;
 import org.codice.imaging.nitf.core.NitfTextSegmentHeader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 
@@ -23,9 +25,9 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
     private List<Long> imageSegmentDataOffsets = new ArrayList<>();
     private List<Long> graphicSegmentHeaderOffsets = new ArrayList<>();
     private List<Long> graphicSegmentDataOffsets = new ArrayList<>();
-    private List<Long> symbolSegmentHeadersOffsets = new ArrayList<>();
+    private List<Long> symbolSegmentHeaderOffsets = new ArrayList<>();
     private List<Long> symbolSegmentDataOffsets = new ArrayList<>();
-    private List<Long> labelSegmentHeadersOffsets = new ArrayList<>();
+    private List<Long> labelSegmentHeaderOffsets = new ArrayList<>();
     private List<Long> labelSegmentDataOffsets = new ArrayList<>();
     private List<Long> textSegmentHeaderOffsets = new ArrayList<>();
     private List<Long> textSegmentDataOffsets = new ArrayList<>();
@@ -48,7 +50,7 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
             offset = dataOffset + nitfFileLevelHeader.getImageSegmentDataLengths().get(i);
         }
         if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-            for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().get(i); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
                 long headerOffset = offset;
                 getSymbolSegmentHeaderOffsets().add(headerOffset);
                 long dataOffset = headerOffset + nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().get(i);
@@ -147,14 +149,14 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
      * @return the symbolSegmentHeadersOffsets
      */
     public List<Long> getSymbolSegmentHeaderOffsets() {
-        return symbolSegmentHeadersOffsets;
+        return symbolSegmentHeaderOffsets;
     }
 
     /**
      * @param offsets the symbolSegmentHeadersOffsets to set
      */
     public void setSymbolSegmentHeaderOffsets(final List<Long> offsets) {
-        symbolSegmentHeadersOffsets = offsets;
+        symbolSegmentHeaderOffsets = offsets;
     }
 
     /**
@@ -175,14 +177,14 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
      * @return the labelSegmentHeadersOffsets
      */
     public List<Long> getLabelSegmentHeaderOffsets() {
-        return labelSegmentHeadersOffsets;
+        return labelSegmentHeaderOffsets;
     }
 
     /**
      * @param offsets the labelSegmentHeadersOffsets to set
      */
     public void setLabelSegmentHeaderOffsets(final List<Long> offsets) {
-        labelSegmentHeadersOffsets = offsets;
+        labelSegmentHeaderOffsets = offsets;
     }
 
     /**
@@ -265,6 +267,24 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
         long segmentHeaderOffset = graphicSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
         return readGraphicSegmentHeader(fileReader, index);
+    }
+
+    NitfSymbolSegmentHeader getSymbolSegmentHeader(final int index) throws ParseException {
+        long segmentHeaderOffset = symbolSegmentHeaderOffsets.get(index);
+        fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
+        return readSymbolSegmentHeader(fileReader, index);
+    }
+
+    NitfLabelSegmentHeader getLabelSegmentHeader(final int index) throws ParseException {
+        long segmentHeaderOffset = labelSegmentHeaderOffsets.get(index);
+        fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
+        return readLabelSegmentHeader(fileReader, index);
+    }
+
+    String getLabelSegmentData(final NitfLabelSegmentHeader header, final int index) throws ParseException {
+        long segmentDataOffset = textSegmentDataOffsets.get(index);
+        fileReader.seekToAbsoluteOffset(segmentDataOffset);
+        return fileReader.readBytes(header.getLabelDataLength());
     }
 
     NitfTextSegmentHeader getTextSegmentHeader(final int index) throws ParseException {
