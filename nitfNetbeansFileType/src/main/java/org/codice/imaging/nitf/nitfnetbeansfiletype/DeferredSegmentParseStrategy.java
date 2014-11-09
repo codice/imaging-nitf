@@ -50,14 +50,14 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
         if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
             for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().get(i); ++i) {
                 long headerOffset = offset;
-                getSymbolSegmentHeadersOffsets().add(headerOffset);
+                getSymbolSegmentHeaderOffsets().add(headerOffset);
                 long dataOffset = headerOffset + nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().get(i);
                 getSymbolSegmentDataOffsets().add(dataOffset);
                 offset = dataOffset + nitfFileLevelHeader.getSymbolSegmentDataLengths().get(i);
             }
             for (int i = 0; i < nitfFileLevelHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
                 long headerOffset = offset;
-                getLabelSegmentHeadersOffsets().add(headerOffset);
+                getLabelSegmentHeaderOffsets().add(headerOffset);
                 long dataOffset = headerOffset + nitfFileLevelHeader.getLabelSegmentSubHeaderLengths().get(i);
                 getLabelSegmentDataOffsets().add(dataOffset);
                 offset = dataOffset + nitfFileLevelHeader.getLabelSegmentDataLengths().get(i);
@@ -146,14 +146,14 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
     /**
      * @return the symbolSegmentHeadersOffsets
      */
-    public List<Long> getSymbolSegmentHeadersOffsets() {
+    public List<Long> getSymbolSegmentHeaderOffsets() {
         return symbolSegmentHeadersOffsets;
     }
 
     /**
      * @param offsets the symbolSegmentHeadersOffsets to set
      */
-    public void setSymbolSegmentHeadersOffsets(final List<Long> offsets) {
+    public void setSymbolSegmentHeaderOffsets(final List<Long> offsets) {
         symbolSegmentHeadersOffsets = offsets;
     }
 
@@ -174,14 +174,14 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
     /**
      * @return the labelSegmentHeadersOffsets
      */
-    public List<Long> getLabelSegmentHeadersOffsets() {
+    public List<Long> getLabelSegmentHeaderOffsets() {
         return labelSegmentHeadersOffsets;
     }
 
     /**
      * @param offsets the labelSegmentHeadersOffsets to set
      */
-    public void setLabelSegmentHeadersOffsets(final List<Long> offsets) {
+    public void setLabelSegmentHeaderOffsets(final List<Long> offsets) {
         labelSegmentHeadersOffsets = offsets;
     }
 
@@ -283,5 +283,15 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
         long segmentHeaderOffset = dataExtensionSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
         return readDataExtensionSegmentHeader(fileReader, index);
+    }
+
+    void parseDataExtensionSegmentData(final NitfDataExtensionSegmentHeader header, final int index) throws ParseException {
+        long segmentDataOffset = dataExtensionSegmentDataOffsets.get(index);
+        fileReader.seekToAbsoluteOffset(segmentDataOffset);
+        readDataExtensionSegmentData(header, fileReader);
+    }
+
+    byte[] getDataExtensionSegmentData(final int index) {
+        return this.dataExtensionSegmentData.get(index);
     }
 }

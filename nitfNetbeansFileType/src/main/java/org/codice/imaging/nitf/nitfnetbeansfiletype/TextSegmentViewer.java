@@ -74,5 +74,6 @@ public class TextSegmentViewer extends TopComponent {
 
     final void setText(final String text) {
         textArea.setText(text);
+        textArea.setCaretPosition(0);
     }
 }

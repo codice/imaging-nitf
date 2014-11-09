@@ -19,6 +19,7 @@ import javax.swing.Action;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
 
 class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
 
@@ -67,19 +68,28 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
     }
 
     String getText() {
-        if (header.isTreOverflowNitf21() || header.isTreOverflowNitf20()) {
-            // TODO: convert to the raw / heirachical repr.
-            StringBuilder sb = new StringBuilder();
-            for (String key : header.getTREsFlat().keySet()) {
-                sb.append(key);
-                sb.append(" : ");
-                sb.append(header.getTREsFlat().get(key));
-                sb.append(System.lineSeparator());
+        try {
+            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
+            parseStrategy.parseDataExtensionSegmentData(header, childKey.getIndex());
+            if (header.isTreOverflowNitf21() || header.isTreOverflowNitf20()) {
+                // TODO: convert to the raw / heirachical repr.
+                StringBuilder sb = new StringBuilder();
+                for (String key : header.getTREsFlat().keySet()) {
+                    sb.append(key);
+                    sb.append(" : ");
+                    sb.append(header.getTREsFlat().get(key));
+                    sb.append(System.lineSeparator());
+                }
+                return sb.toString();
+            } else if ("XML_DATA_CONTENT".equals(header.getIdentifier().trim())) {
+                return new String(parseStrategy.getDataExtensionSegmentData(childKey.getIndex()));
+            } else {
+                return "TODO";
             }
-            return sb.toString();
-        } else {
-            return "TODO";
+        } catch (ParseException ex) {
+            Exceptions.printStackTrace(ex);
         }
+        return "[Unable to get DES content]";
     }
 
     @Override

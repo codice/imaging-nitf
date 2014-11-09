@@ -46,6 +46,20 @@ class NitfChildFactory extends ChildFactory<ChildSegmentKey> {
             key.setIndex(i);
             list.add(key);
         }
+        for (int i = 0; i < parseStrategy.getSymbolSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("Symbol");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
+        for (int i = 0; i < parseStrategy.getLabelSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("Label");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
         for (int i = 0; i < parseStrategy.getTextSegmentHeaderOffsets().size(); ++i) {
             ChildSegmentKey key = new ChildSegmentKey();
             key.setSegmentType("Text");
@@ -83,7 +97,7 @@ class NitfChildFactory extends ChildFactory<ChildSegmentKey> {
         }
 
         Node childNode = new AbstractNode(Children.LEAF);
-        childNode.setDisplayName(key.getClass().getSimpleName() + " : FIXME");
+        childNode.setDisplayName(key.getClass().getSimpleName() + " TODO : " + key.getSegmentType());
         return childNode;
     }
 }

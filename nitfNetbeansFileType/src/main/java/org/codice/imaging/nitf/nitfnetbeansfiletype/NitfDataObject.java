@@ -37,7 +37,7 @@ import org.openide.util.NbBundle.Messages;
 @MIMEResolver.ExtensionRegistration(
         displayName = "#LBL_Nitf_LOADER",
         mimeType = "image/nitf",
-        extension = {"ntf", "NTF", "nsf", "NSF" }
+        extension = {"ntf", "NTF", "nsf", "NSF", "hr1", "hr2", "hr3", "hr4", "hr5", "hr6", "hr7", "hr8" }
 )
 // CSOFF: MagicNumber
 @DataObject.Registration(
