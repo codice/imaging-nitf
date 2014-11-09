@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
+import javax.swing.Action;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -29,7 +30,7 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
         childKey = key;
         DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
         header = parseStrategy.getDataExtensionSegmentHeader(childKey.getIndex());
-        setDisplayName("DES: " + header.getIdentifier());
+        setDisplayName("DES: " + getFriendlyName());
     }
 
    @Override
@@ -56,5 +57,33 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
         }
         sheet.put(set);
         return sheet;
+    }
+
+    String getFriendlyName() {
+        if (!header.getIdentifier().trim().isEmpty()) {
+            return header.getIdentifier().trim();
+        }
+        return "(no name)";
+    }
+
+    String getText() {
+        if (header.isTreOverflowNitf21() || header.isTreOverflowNitf20()) {
+            // TODO: convert to the raw / heirachical repr.
+            StringBuilder sb = new StringBuilder();
+            for (String key : header.getTREsFlat().keySet()) {
+                sb.append(key);
+                sb.append(" : ");
+                sb.append(header.getTREsFlat().get(key));
+                sb.append(System.lineSeparator());
+            }
+            return sb.toString();
+        } else {
+            return "TODO";
+        }
+    }
+
+    @Override
+    public Action[] getActions(final boolean popup) {
+        return combineActions(new DataExtensionSegmentOpenAction(this), super.getActions(popup));
     }
 }

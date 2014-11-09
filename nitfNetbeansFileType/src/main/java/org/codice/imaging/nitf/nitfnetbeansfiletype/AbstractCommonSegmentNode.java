@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import javax.swing.Action;
 import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
@@ -93,6 +94,22 @@ abstract class AbstractCommonSegmentNode extends AbstractNode {
                 "Security Control Number",
                 "The security control number associated with the segment.",
                 segment.getSecurityMetadata().getSecurityControlNumber()));
+    }
+
+    /**
+     * Prepend an action to an existing array of actions.
+     *
+     * @param action the action to prepend
+     * @param actions the existing actions
+     * @return combined array of actions
+     */
+    protected Action[] combineActions(final Action action, final Action[] actions) {
+        Action[] combinedActions = new Action[actions.length + 1];
+        combinedActions[0] = action;
+        for (int i = 1; i < combinedActions.length; ++i) {
+            combinedActions[i] = actions[i - 1];
+        }
+        return combinedActions;
     }
 
 }

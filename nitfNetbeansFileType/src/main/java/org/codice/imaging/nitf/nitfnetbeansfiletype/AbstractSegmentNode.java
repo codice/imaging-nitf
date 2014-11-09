@@ -32,5 +32,4 @@ abstract class AbstractSegmentNode extends AbstractCommonSegmentNode {
                 segment.getAttachmentLevel()));
     }
 
-
 }

@@ -80,19 +80,4 @@ class NitfTextSegmentNode extends AbstractSegmentNode {
         return combineActions(new TextSegmentOpenAction(this), super.getActions(popup));
     }
 
-    /**
-     * Prepend an action to an existing array of actions.
-     *
-     * @param action the action to prepend
-     * @param actions the existing actions
-     * @return combined array of actions
-     */
-    protected Action[] combineActions(final Action action, final Action[] actions) {
-        Action[] combinedActions = new Action[actions.length + 1];
-        combinedActions[0] = action;
-        for (int i = 1; i < combinedActions.length; ++i) {
-            combinedActions[i] = actions[i - 1];
-        }
-        return combinedActions;
-    }
 }

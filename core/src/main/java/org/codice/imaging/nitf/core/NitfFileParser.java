@@ -115,8 +115,8 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     private void readBaseHeaderDataExtensionSegmentParts() throws ParseException {
         readNUMDES();
         for (int i = 0; i < numberDataExtensionSegments; ++i) {
-            readLDSH();
-            readLD();
+            readLDSH(i);
+            readLD(i);
         }
     }
 
@@ -327,12 +327,20 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
         numberDataExtensionSegments = reader.readBytesAsInteger(NitfConstants.NUMDES_LENGTH);
     }
 
-    private void readLDSH() throws ParseException {
-        nitf.getDataExtensionSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LDSH_LENGTH));
+    private void readLDSH(final int i) throws ParseException {
+        if (i < nitf.getDataExtensionSegmentDataLengths().size()) {
+            nitf.getDataExtensionSegmentSubHeaderLengths().set(i, reader.readBytesAsInteger(NitfConstants.LDSH_LENGTH));
+        } else {
+            nitf.getDataExtensionSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LDSH_LENGTH));
+        }
     }
 
-    private void readLD() throws ParseException {
-        nitf.getDataExtensionSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LD_LENGTH));
+    private void readLD(final int i) throws ParseException {
+        if (i < nitf.getDataExtensionSegmentDataLengths().size()) {
+            nitf.getDataExtensionSegmentDataLengths().set(i, reader.readBytesAsInteger(NitfConstants.LD_LENGTH));
+        } else {
+            nitf.getDataExtensionSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LD_LENGTH));
+        }
     }
 
     private void readNUMRES() throws ParseException {
