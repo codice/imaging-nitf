@@ -59,18 +59,54 @@ class NitfSymbolSegmentNode extends AbstractSegmentNode {
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
         addSubSegmentProperties(set, header);
-//        set.put(new DateProperty("textDateTime",
-//                "Text Date and Time",
-//                "Date and time of this origination of the text.",
-//                header.getTextDateTime().toDate()));
-//        set.put(new StringProperty("textTitle",
-//                "Text Title",
-//                "The title of the text item",
-//                header.getTextTitle()));
-//        set.put(new StringProperty("textFormat",
-//                "Text Format",
-//                "Three-character code indicating the format of type of text data.",
-//                header.getTextFormat().toString()));
+        set.put(new StringProperty("symbolName",
+                "Symbol Name",
+                "The name of the symbol.",
+                header.getSymbolName()));
+        set.put(new StringProperty("symbolType",
+                "Symbol Type",
+                "The type of symbol.",
+                header.getSymbolType().toString()));
+        set.put(new StringProperty("symbolColour",
+                "Symbol Colour",
+                "The symbol colour.",
+                header.getSymbolColour().toString()));
+        set.put(new IntegerProperty("numberOfLinesPerSymbol",
+                "Number of lines per symbol",
+                "The number of lines (rows) per symbol. Always 0 for CGM.",
+                header.getNumberOfLinesPerSymbol()));
+        set.put(new IntegerProperty("numberOfPixelsPerLine",
+                "Number of pixels per line",
+                "The number of pixels per line. Always 0 for CGM.",
+                header.getNumberOfPixelsPerLine()));
+        set.put(new IntegerProperty("lineWidth",
+                "Line width",
+                "The line width. Always 0 for CGM and bitmapped symbols.",
+                header.getLineWidth()));
+        set.put(new IntegerProperty("bitsPerPixel",
+                "Bits per pixel",
+                "The number of bits per pixel. Always 0 for CGM. Always 1 for object symbols",
+                header.getNumberOfBitsPerPixel()));
+        set.put(new IntegerProperty("symbolDisplayLevel",
+                "Symbol Display Level",
+                "The display level of the symbol relative to other displayed file components.",
+                header.getSymbolDisplayLevel()));
+        set.put(new StringProperty("symbolLocation",
+                "Symbol Location",
+                "The location of the symbol's origin point relative to the CCS, image or graphic to which it is attached.",
+                String.format(POINT_FORMATTER, header.getSymbolLocationColumn(), header.getSymbolLocationRow())));
+        set.put(new StringProperty("symbolLocation2",
+                "Second Symbol Location",
+                "The second location for the symbol relative to the CCS, image or graphic to which it is attached.",
+                String.format(POINT_FORMATTER, header.getSymbolLocation2Column(), header.getSymbolLocation2Row())));
+        set.put(new StringProperty("symbolNumber",
+                "Symbol Number",
+                "The symbol number. Only non-zero for object symbols",
+                header.getSymbolNumber()));
+        set.put(new IntegerProperty("symbolRotation",
+                "Symbol Rotation",
+                "The symbol rotation angle, in counterclockwise direction. Only non-zero for object symbols.",
+                header.getSymbolRotation()));
         return sheet;
     }
 
