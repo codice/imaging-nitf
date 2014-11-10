@@ -31,10 +31,10 @@ import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileFactory;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.NitfParseStrategy;
 import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributes;
+import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.Tre;
 import org.codice.imaging.nitf.core.TreCollection;
 import org.codice.imaging.nitf.core.TreEntry;
@@ -45,7 +45,7 @@ public class FileComparer {
     static final String THEIR_OUTPUT_EXTENSION = ".THEIRS.txt";
 
     private String filename = null;
-    private NitfParseStrategy parseStrategy  = null;
+    private SlottedNitfParseStrategy parseStrategy  = null;
     private NitfImageSegmentHeader segment1 = null;
     private NitfDataExtensionSegmentHeader des1 = null;
     private BufferedWriter out = null;
@@ -70,8 +70,8 @@ public class FileComparer {
             segment1 = parseStrategy.getImageSegmentHeaders().get(0);
         }
 
-        if (!parseStrategy.getDataExtensionSegments().isEmpty()) {
-            des1 = parseStrategy.getDataExtensionSegments().get(0);
+        if (!parseStrategy.getDataExtensionSegmentHeaders().isEmpty()) {
+            des1 = parseStrategy.getDataExtensionSegmentHeaders().get(0);
         }
         outputData();
     }

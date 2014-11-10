@@ -1,16 +1,16 @@
 /**
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  **/
 package org.codice.imaging.nitf.core;
 
@@ -61,7 +61,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         InputStream is = getClass().getResourceAsStream(simpleNitf21File);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         checkCompliantHeaderResults(parseStrategy);
         is.close();
@@ -73,12 +73,12 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         File resourceFile = new File(getClass().getResource(simpleNitf21File).getFile());
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(resourceFile, parseStrategy);
         checkCompliantHeaderResults(parseStrategy);
     }
 
-    private void checkCompliantHeaderResults(NitfParseStrategy parseStrategy) {
+    private void checkCompliantHeaderResults(SlottedNitfParseStrategy parseStrategy) {
         Nitf header = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, header.getFileType());
         assertEquals(3, header.getComplexityLevel());
@@ -95,9 +95,9 @@ public class Nitf21HeaderTest {
         assertEquals("JITC", header.getOriginatorsName());
         assertEquals("(520) 538-5458", header.getOriginatorsPhoneNumber());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
         // Checks for ImageSegment.
         NitfImageSegmentHeader segment1 = parseStrategy.getImageSegmentHeaders().get(0);
@@ -166,7 +166,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(geoAirfieldNitf21File));
 
         InputStream is = getClass().getResourceAsStream(geoAirfieldNitf21File);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
@@ -184,9 +184,9 @@ public class Nitf21HeaderTest {
         assertEquals("JITC Fort Huachuca, AZ", nitf.getOriginatorsName());
         assertEquals("(520) 538-5458", nitf.getOriginatorsPhoneNumber());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
         // Checks for ImageSegment.
         NitfImageSegmentHeader segment1 = parseStrategy.getImageSegmentHeaders().get(0);
@@ -237,7 +237,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
@@ -255,9 +255,9 @@ public class Nitf21HeaderTest {
         assertEquals("JITC Fort Huachuca, AZ", nitf.getOriginatorsName());
         assertEquals("(520) 538-5458", nitf.getOriginatorsPhoneNumber());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
         // Checks for ImageSegment.
         NitfImageSegmentHeader segment1 = parseStrategy.getImageSegmentHeaders().get(0);
@@ -306,7 +306,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
@@ -324,9 +324,9 @@ public class Nitf21HeaderTest {
         assertEquals("JITC NITF LAB", nitf.getOriginatorsName());
         assertEquals("(520) 538-4858", nitf.getOriginatorsPhoneNumber());
         assertEquals(4, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
         // Checks for ImageSegment.
         NitfImageSegmentHeader segment1 = parseStrategy.getImageSegmentHeaders().get(0);
@@ -473,7 +473,7 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
@@ -481,11 +481,11 @@ public class Nitf21HeaderTest {
         assertEquals("BF01", nitf.getStandardType());
         assertEquals("NS3201a", nitf.getOriginatingStationId());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(1, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
-        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
+        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertNotNull(textSegment);
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());
@@ -501,7 +501,7 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
@@ -509,9 +509,9 @@ public class Nitf21HeaderTest {
         assertEquals("BF01", nitf.getStandardType());
         assertEquals("NS3228D", nitf.getOriginatingStationId());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
         TreCollection fileTres = nitf.getTREsRawStructure();
         assertNotNull(fileTres);
         assertTrue(fileTres.hasTREs());
@@ -530,12 +530,12 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         File resourceFile = new File(getClass().getResource(testfile).getFile());
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(resourceFile, parseStrategy);
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(1, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getDataExtensionSegmentHeaders().size());
     }
 
     @Rule
@@ -560,7 +560,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
@@ -578,11 +578,11 @@ public class Nitf21HeaderTest {
         assertEquals("JITC Fort Huachuca, AZ", nitf.getOriginatorsName());
         assertEquals("(520) 538-5458", nitf.getOriginatorsPhoneNumber());
         assertEquals(0, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(1, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
-        NitfGraphicSegmentHeader segment = parseStrategy.getGraphicSegments().get(0);
+        NitfGraphicSegmentHeader segment = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertNotNull(segment);
         assertEquals("POLYGONSET", segment.getIdentifier());
         assertEquals("POLYGON_SET", segment.getGraphicName());
@@ -605,7 +605,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
@@ -623,9 +623,9 @@ public class Nitf21HeaderTest {
         assertEquals("JITC FT HUACHUCA", nitf.getOriginatorsName());
         assertEquals("(520) 538-5458", nitf.getOriginatorsPhoneNumber());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
         Map<String, String> fileTresFlat = nitf.getTREsFlat();
         Map<String, String> expectedFileTresFlat = new HashMap<String, String>() {
             {
@@ -748,7 +748,7 @@ public class Nitf21HeaderTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
@@ -756,11 +756,11 @@ public class Nitf21HeaderTest {
         assertEquals("BF01", nitf.getStandardType());
         assertEquals("ENVI", nitf.getOriginatingStationId());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(1, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getDataExtensionSegmentHeaders().size());
 
-        NitfDataExtensionSegmentHeader des = parseStrategy.getDataExtensionSegments().get(0);
+        NitfDataExtensionSegmentHeader des = parseStrategy.getDataExtensionSegmentHeaders().get(0);
         assertNotNull(des);
         assertEquals("LIDARA DES", des.getIdentifier().trim());
         assertEquals(1, des.getDESVersion());
@@ -774,7 +774,7 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         InputStream is = getClass().getResourceAsStream(testfile);
-        NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(is, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
@@ -866,11 +866,11 @@ public class Nitf21HeaderTest {
         assertEquals("", band1.getSubCategory());
         assertEquals(0, band1.getNumLUTs());
 
-        assertEquals(8, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(8, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
-        NitfGraphicSegmentHeader segment1 = parseStrategy.getGraphicSegments().get(0);
+        NitfGraphicSegmentHeader segment1 = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertNotNull(segment1);
         assertEquals("30", segment1.getIdentifier());
         assertEquals("", segment1.getGraphicName());
@@ -884,7 +884,7 @@ public class Nitf21HeaderTest {
         assertEquals(GraphicColour.COLOUR, segment1.getGraphicColour());
         assertEquals(411, segment1.getBoundingBox2Row());
         assertEquals(788, segment1.getBoundingBox2Column());
-        NitfGraphicSegmentHeader segment2 = parseStrategy.getGraphicSegments().get(1);
+        NitfGraphicSegmentHeader segment2 = parseStrategy.getGraphicSegmentHeaders().get(1);
         assertNotNull(segment2);
         assertEquals("35", segment2.getIdentifier());
         assertEquals("", segment2.getGraphicName());

@@ -55,6 +55,16 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
                     "Data Item Overflowed",
                     "The number of the data item that overflowed (000 for UDHD or XHD types).",
                     header.getItemOverflowed()));
+        } else if ("CSATTA DES".equals(desIdentifier)) {
+            set.put(new StringProperty("userDefinedSubHeaderFields",
+                    "User Defined Subheader Fields",
+                    "The user defined subheader fields.",
+                    header.getUserDefinedSubheaderField()));
+        } else if (header.getUserDefinedSubheaderField() != null) {
+            set.put(new StringProperty("userDefinedSubHeaderFields",
+                    "User Defined Subheader Fields",
+                    "The user defined subheader fields.",
+                    header.getUserDefinedSubheaderField()));
         }
         sheet.put(set);
         return sheet;

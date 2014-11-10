@@ -29,9 +29,9 @@ public class Nitf21GraphicParsingTest {
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
         GraphicDataExtractionParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
-        assertEquals(1, parseStrategy.getGraphicSegments().size());
+        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
 
-        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegments().get(0);
+        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
         assertEquals(780, parseStrategy.getGraphicSegmentData().get(0).length);
     }
@@ -40,9 +40,9 @@ public class Nitf21GraphicParsingTest {
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfFileFactory.parse(getInputStream(), parseStrategy);
-        assertEquals(1, parseStrategy.getGraphicSegments().size());
+        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
 
-        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegments().get(0);
+        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
         assertEquals(0, parseStrategy.getGraphicSegmentData().size());
     }

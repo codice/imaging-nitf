@@ -22,32 +22,33 @@ import java.text.ParseException;
 public class AllDataExtractionParseStrategy extends SlottedNitfParseStrategy {
 
     @Override
-    public final void baseHeadersRead(final NitfReader reader) {
-        try {
-            for (int i = 0; i < nitfFileLevelHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
-                parseImageSegmentHeaderAndData(reader, i);
-            }
-            if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-                for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
-                    parseSymbolSegmentHeaderAndData(reader, i);
-                }
-                for (int i = 0; i < nitfFileLevelHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
-                   parseLabelSegmentHeaderAndData(reader, i);
-                }
-            } else {
-                for (int i = 0; i < nitfFileLevelHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
-                   parseGraphicSegmentHeaderAndData(reader, i);
-                }
-            }
-            for (int i = 0; i < nitfFileLevelHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
-                parseTextSegmentHeaderAndData(reader, i);
-            }
-            for (int i = 0; i < nitfFileLevelHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
-                parseDataExtensionSegmentHeaderAndData(reader, i);
-            }
-        } catch (ParseException ex) {
-            System.out.println("Exception should be logged: " + ex);
-        }
+    protected final void handleImageSegment(final NitfReader reader, final int i) throws ParseException {
+        parseImageSegmentHeaderAndData(reader, i);
+    }
+
+    @Override
+    protected final void handleSymbolSegment(final NitfReader reader, final int i) throws ParseException {
+        parseSymbolSegmentHeaderAndData(reader, i);
+    }
+
+    @Override
+    protected final void handleLabelSegment(final NitfReader reader, final int i) throws ParseException {
+        parseLabelSegmentHeaderAndData(reader, i);
+    }
+
+    @Override
+    protected final void handleGraphicSegment(final NitfReader reader, final int i) throws ParseException {
+        parseGraphicSegmentHeaderAndData(reader, i);
+    }
+
+    @Override
+    protected final void handleTextSegment(final NitfReader reader, final int i) throws ParseException {
+        parseTextSegmentHeaderAndData(reader, i);
+    }
+
+    @Override
+    protected final void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException {
+        parseDataExtensionSegmentHeaderAndData(reader, i);
     }
 
 }

@@ -44,11 +44,11 @@ public class Nitf21SorcerTest {
         NitfFileFactory.parse(getInputStream(), parseStrategy);
         Nitf file = parseStrategy.getNitfHeader();
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(1, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getSymbolSegments().size());
-        assertEquals(0, parseStrategy.getLabelSegments().size());
-        assertEquals(1, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getSymbolSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getLabelSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
         // Checks for ImageSegment.
         NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
@@ -105,7 +105,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, imageSegment.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment.getImageMagnification());
 
-        NitfGraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegments().get(0);
+        NitfGraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertNotNull(graphicSegment);
         assertEquals("", graphicSegment.getIdentifier());
         assertEquals("", graphicSegment.getGraphicName());
@@ -120,7 +120,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, graphicSegment.getBoundingBox2Row());
         assertEquals(0, graphicSegment.getBoundingBox2Column());
 
-        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegments().get(0);
+        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertNotNull(textSegment);
         assertEquals("       ", textSegment.getIdentifier());

@@ -14,8 +14,6 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.util.List;
-
 /**
  * Strategy for parsing NITF file components.
  */
@@ -34,48 +32,6 @@ public interface NitfParseStrategy {
      * @return the file-level header
      */
     Nitf getNitfHeader();
-
-    /**
-     * Return the image segments associated with this file.
-     *
-     * @return image segments
-     */
-    List<NitfImageSegmentHeader> getImageSegmentHeaders();
-
-    /**
-     * Return the graphic segments associated with this file.
-     *
-     * @return graphic segments
-     */
-    List<NitfGraphicSegmentHeader> getGraphicSegments();
-
-    /**
-     * Return the symbol segments associated with this file.
-     *
-     * @return symbol segments
-     */
-    List<NitfSymbolSegmentHeader> getSymbolSegments();
-
-    /**
-     * Return the label segments associated with this file.
-     *
-     * @return label segments
-     */
-    List<NitfLabelSegmentHeader> getLabelSegments();
-
-    /**
-     * Return the text segments associated with this file.
-     *
-     * @return text segments
-     */
-    List<NitfTextSegmentHeader> getTextSegments();
-
-    /**
-     * Return the data extension segments associated with this file.
-     *
-     * @return data extension segments
-     */
-    List<NitfDataExtensionSegmentHeader> getDataExtensionSegments();
 
     /**
      * Indication that the "base" file-level headers have been read.
