@@ -5,6 +5,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +21,18 @@ import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 
 class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
 
-    private List<Long> imageSegmentHeaderOffsets = new ArrayList<>();
-    private List<Long> imageSegmentDataOffsets = new ArrayList<>();
-    private List<Long> graphicSegmentHeaderOffsets = new ArrayList<>();
-    private List<Long> graphicSegmentDataOffsets = new ArrayList<>();
-    private List<Long> symbolSegmentHeaderOffsets = new ArrayList<>();
-    private List<Long> symbolSegmentDataOffsets = new ArrayList<>();
-    private List<Long> labelSegmentHeaderOffsets = new ArrayList<>();
-    private List<Long> labelSegmentDataOffsets = new ArrayList<>();
-    private List<Long> textSegmentHeaderOffsets = new ArrayList<>();
-    private List<Long> textSegmentDataOffsets = new ArrayList<>();
-    private List<Long> dataExtensionSegmentHeaderOffsets = new ArrayList<>();
-    private List<Long> dataExtensionSegmentDataOffsets = new ArrayList<>();
+    private final List<Long> imageSegmentHeaderOffsets = new ArrayList<>();
+    private final List<Long> imageSegmentDataOffsets = new ArrayList<>();
+    private final List<Long> graphicSegmentHeaderOffsets = new ArrayList<>();
+    private final List<Long> graphicSegmentDataOffsets = new ArrayList<>();
+    private final List<Long> symbolSegmentHeaderOffsets = new ArrayList<>();
+    private final List<Long> symbolSegmentDataOffsets = new ArrayList<>();
+    private final List<Long> labelSegmentHeaderOffsets = new ArrayList<>();
+    private final List<Long> labelSegmentDataOffsets = new ArrayList<>();
+    private final List<Long> textSegmentHeaderOffsets = new ArrayList<>();
+    private final List<Long> textSegmentDataOffsets = new ArrayList<>();
+    private final List<Long> dataExtensionSegmentHeaderOffsets = new ArrayList<>();
+    private final List<Long> dataExtensionSegmentDataOffsets = new ArrayList<>();
     private FileReader fileReader;
 
     public DeferredSegmentParseStrategy() {
@@ -236,5 +237,10 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
 
     byte[] getDataExtensionSegmentData(final int index) {
         return this.dataExtensionSegmentData.get(index);
+    }
+
+    final InputStream getGraphicSegmentDataReader(final int index) throws ParseException {
+        long segmentDataOffset = graphicSegmentDataOffsets.get(index);
+        return fileReader.getInputStreamAt(segmentDataOffset);
     }
 }

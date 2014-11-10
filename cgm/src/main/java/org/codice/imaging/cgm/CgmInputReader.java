@@ -31,6 +31,7 @@ import java.awt.Point;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,10 @@ class CgmInputReader {
 
     CgmInputReader(final byte[] cgmData) {
         dataStream = new DataInputStream(new ByteArrayInputStream(cgmData));
+    }
+
+    CgmInputReader(final InputStream stream) {
+        dataStream = new DataInputStream(stream);
     }
 
     int readUnsignedShort() throws IOException {

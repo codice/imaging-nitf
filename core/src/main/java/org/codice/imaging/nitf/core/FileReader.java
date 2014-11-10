@@ -17,7 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.nio.channels.Channels;
 import java.text.ParseException;
 
 import org.slf4j.Logger;
@@ -145,4 +147,20 @@ public class FileReader extends SharedReader implements NitfReader {
     private RandomAccessFile makeRandomAccessFile(final String filename, final String mode) throws FileNotFoundException {
         return new RandomAccessFile(filename, mode);
     }
+
+    /**
+     * Get an input stream at a specified point in the file.
+     *
+     * @param offset the point in the file the input stream should read from
+     * @return input stream for the specified content
+     * @throws ParseException if creating the input stream fails.
+     */
+    public final InputStream getInputStreamAt(final long offset) throws ParseException {
+        try {
+            return Channels.newInputStream(nitfFile.getChannel().position(offset));
+        } catch (IOException ex) {
+            throw new ParseException("IOException while getting input stream: " + ex, (int) offset);
+        }
+    }
+
 }

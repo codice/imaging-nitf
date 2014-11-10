@@ -26,6 +26,7 @@
 package org.codice.imaging.cgm;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -284,7 +285,21 @@ public class CgmParser {
         dataReader = new CgmInputReader(graphicSegmentData);
     }
 
-    final void buildCommandList() throws IOException {
+    /**
+     * Constructor.
+     *
+     * @param stream stream containing the CGM data to parse
+     */
+    public CgmParser(final InputStream stream) {
+        dataReader = new CgmInputReader(stream);
+    }
+
+    /**
+     * Build the command list for the file.
+     *
+     * @throws IOException on parse failure
+     */
+    public final void buildCommandList() throws IOException {
 
         AbstractElement element;
         do {
@@ -303,16 +318,23 @@ public class CgmParser {
     }
 
     final void dump() {
-        StringBuilder builder = new StringBuilder();
+        System.out.print(getCommandListAsString());
+    }
 
+    /**
+     * Return the command list as lines of text.
+     *
+     * @return the command list in string form
+     */
+    public final String getCommandListAsString() {
+        StringBuilder builder = new StringBuilder();
         for (AbstractElement command : commands) {
             builder.append("Command: ");
             builder.append(command.getFriendlyName());
             builder.append(System.lineSeparator());
             command.addStringDescription(builder);
         }
-
-        System.out.print(builder.toString());
+        return builder.toString();
     }
 
     private void skipOverPadOctetIfNecessary(final int parameterListLength) throws IOException {

@@ -14,10 +14,15 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
+import javax.swing.Action;
+import org.codice.imaging.cgm.CgmParser;
 import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
 
 
 class NitfGraphicSegmentNode extends AbstractSegmentNode {
@@ -33,10 +38,34 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
         childKey = key;
         DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
         header = parseStrategy.getGraphicSegmentHeader(childKey.getIndex());
-        setDisplayName("Graphic Segment: " + header.getIdentifier());
+        setDisplayName("Graphic Segment: " + getFriendlyName());
     }
 
-   @Override
+    final String getFriendlyName() {
+        if (!header.getGraphicName().trim().isEmpty()) {
+            return header.getGraphicName().trim();
+        }
+        if (!header.getIdentifier().trim().isEmpty()) {
+            return header.getIdentifier().trim();
+        }
+        return "(no name)";
+    }
+
+    // TODO: temporary approach
+    String getText() {
+        try {
+            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
+            InputStream stream = parseStrategy.getGraphicSegmentDataReader(childKey.getIndex());
+            CgmParser graphicParser = new CgmParser(stream);
+            graphicParser.buildCommandList();
+            return graphicParser.getCommandListAsString();
+        } catch (ParseException | IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return "";
+    }
+
+    @Override
     protected Sheet createSheet() {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
@@ -69,4 +98,8 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
         return sheet;
     }
 
+    @Override
+    public Action[] getActions(final boolean popup) {
+        return combineActions(new GraphicSegmentOpenAction(this), super.getActions(popup));
+    }
 }

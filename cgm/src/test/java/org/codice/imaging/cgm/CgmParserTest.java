@@ -34,7 +34,6 @@ import javax.imageio.ImageIO;
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileFactory;
 import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
-import org.codice.imaging.nitf.core.NitfParseStrategy;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,22 +45,22 @@ import static org.junit.Assert.*;
  *
  */
 public class CgmParserTest {
-    
+
     public CgmParserTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -107,7 +106,7 @@ public class CgmParserTest {
         String testfile = "ns3101b.nsf";
         testOneImage(parentDirectory, testfile);
     }
-    
+
     private void testOneImage(String parentDirectory, String testfile) throws IOException {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
         System.out.println("================================== Testing :" + inputFileName);
@@ -125,7 +124,7 @@ public class CgmParserTest {
             CgmParser parser = new CgmParser(parseStrategy.getGraphicSegmentData().get(0));
             parser.buildCommandList();
             // parser.dump();
-            
+
             // System.out.println("CCS position:" + segment.getGraphicLocationColumn() + ", " + segment.getGraphicLocationRow());
             // System.out.println("BBox1:" + segment.getBoundingBox1Column() + ", " + segment.getBoundingBox1Row());
             // System.out.println("BBox2:" + segment.getBoundingBox2Column() + ", " + segment.getBoundingBox2Row());
