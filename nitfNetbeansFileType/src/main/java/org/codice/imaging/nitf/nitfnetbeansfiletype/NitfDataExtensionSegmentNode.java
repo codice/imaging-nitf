@@ -34,7 +34,7 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
         setDisplayName("DES: " + getFriendlyName());
     }
 
-   @Override
+    @Override
     protected Sheet createSheet() {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
@@ -70,14 +70,14 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
         return sheet;
     }
 
-    String getFriendlyName() {
+    final String getFriendlyName() {
         if (!header.getIdentifier().trim().isEmpty()) {
             return header.getIdentifier().trim();
         }
         return "(no name)";
     }
 
-    String getText() {
+    final String getText() {
         try {
             DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
             parseStrategy.parseDataExtensionSegmentData(header, childKey.getIndex());
@@ -103,7 +103,7 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
     }
 
     @Override
-    public Action[] getActions(final boolean popup) {
+    public final Action[] getActions(final boolean popup) {
         return combineActions(new DataExtensionSegmentOpenAction(this), super.getActions(popup));
     }
 }

@@ -18,7 +18,7 @@ import org.openide.windows.TopComponent;
  * Graphic Segment (CGM) View for the editor compartment.
  */
 @TopComponent.Description(
-        preferredID = "GraphicSegmentView",
+        preferredID = "GraphicViewPane",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 @TopComponent.Registration(
         mode = "editor",

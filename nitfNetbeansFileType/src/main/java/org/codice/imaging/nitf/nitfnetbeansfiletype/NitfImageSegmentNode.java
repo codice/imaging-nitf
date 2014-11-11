@@ -30,7 +30,17 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
         childKey = key;
         DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
         header = parseStrategy.getImageSegmentHeader(childKey.getIndex());
-        setDisplayName("Image Segment: " + header.getIdentifier());
+        setDisplayName("Image Segment: " + getFriendlyName());
+    }
+
+    final String getFriendlyName() {
+        if (!header.getImageIdentifier2().trim().isEmpty()) {
+            return header.getImageIdentifier2().trim();
+        }
+        if (!header.getIdentifier().trim().isEmpty()) {
+            return header.getIdentifier().trim();
+        }
+        return "(no name)";
     }
 
     @Override

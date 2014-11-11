@@ -29,8 +29,6 @@ class GraphicSegmentOpenAction extends AbstractAction {
 
     @Override
     public void actionPerformed(final ActionEvent event) {
-        // TODO: this is a temporary approach - should render to a graphic pane
-//        TextViewerPane viewer = new TextViewerPane();
         GraphicViewPane viewer = new GraphicViewPane();
         viewer.setDisplayName(associatedNode.getFriendlyName());
         viewer.setCommands(associatedNode.getCGMCommands());
