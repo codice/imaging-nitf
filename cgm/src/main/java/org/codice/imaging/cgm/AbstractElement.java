@@ -28,14 +28,50 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
-interface AbstractElement {
+/**
+ * Representation of a CGM element.
+ *
+ * This could be a graphical primitive (e.g. circle, line) or some attribute (colour, line thickness). It can also be a state or marker element,
+ * such as "begin the file".
+ */
+public interface AbstractElement {
+    /**
+     * Read the parameters for this element.
+     *
+     * @param dataReader source of the parameter information
+     * @param parameterListLength the length of the parameter data (bytes)
+     * @throws IOException on parsing / reading error
+     */
     void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException;
 
+    /**
+     * Check if this element matches the specified identifier.
+     *
+     * @param cgmIdentifier the identifier to check
+     *
+     * @return true if the class and ident matches, otherwise false
+     */
     boolean matches(final CgmIdentifier cgmIdentifier);
 
+    /**
+     * Return a user-displayable name for this element.
+     *
+     * @return a user-displayable name
+     */
     String getFriendlyName();
 
+    /**
+     * Append a text description of this element and its parameters to the specified builder.
+     *
+     * @param builder the builder to append to.
+     */
     void addStringDescription(final StringBuilder builder);
 
+    /**
+     * Render this element to the specified AWT graphics.
+     *
+     * @param g2 the graphics to render to
+     * @param graphicState the current state / context of the renderer
+     */
     void render(final Graphics2D g2, final CgmGraphicState graphicState);
 }

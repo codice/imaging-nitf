@@ -17,7 +17,10 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Action;
+import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmParser;
 import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.openide.nodes.Children;
@@ -52,17 +55,17 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
     }
 
     // TODO: temporary approach
-    String getText() {
+    List<AbstractElement> getCGMCommands() {
         try {
             DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
             InputStream stream = parseStrategy.getGraphicSegmentDataReader(childKey.getIndex());
             CgmParser graphicParser = new CgmParser(stream);
             graphicParser.buildCommandList();
-            return graphicParser.getCommandListAsString();
+            return graphicParser.getCommandList();
         } catch (ParseException | IOException ex) {
             Exceptions.printStackTrace(ex);
         }
-        return "";
+        return new ArrayList<>();
     }
 
     @Override

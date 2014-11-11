@@ -365,7 +365,13 @@ public class CgmParser {
         return (commandHeader & ELEMENT_CLASS_BIT_MASK) >> ELEMENT_CLASS_BIT_SHIFT;
     }
 
-    final List<AbstractElement> getCommandList() {
+    /**
+     * Return the commands that have been parsed from the file.
+     *
+     * This won't make much sense unless the file has been parsed, using buildCommandList().
+     * @return the commands
+     */
+    public final List<AbstractElement> getCommandList() {
         return commands;
     }
 }

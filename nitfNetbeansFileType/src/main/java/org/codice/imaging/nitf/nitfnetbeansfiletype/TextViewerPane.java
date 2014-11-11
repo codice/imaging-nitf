@@ -29,11 +29,11 @@ import org.openide.windows.TopComponent;
         openAtStartup = false)
 @ActionID(
         category = "Window",
-        id = "org.codice.imaging.nitf.nitfnetbeansfiletype.TextSegmentViewer")
+        id = "org.codice.imaging.nitf.nitfnetbeansfiletype.TextViewerPane")
 @TopComponent.OpenActionRegistration(
-        displayName = "CTL_TextSegmentViewer")
+        displayName = "CTL_TextViewerPane")
 @NbBundle.Messages({
-    "CTL_TextSegmentViewer=Text Segment Viewer"
+    "CTL_TextViewerPane=Text Viewer"
 })
 public class TextViewerPane extends TopComponent {
 
