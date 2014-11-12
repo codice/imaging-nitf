@@ -15,10 +15,13 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
+import javax.imageio.stream.ImageInputStream;
+import javax.swing.Action;
 import org.codice.imaging.nitf.core.NitfImageBand;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
 
 class NitfImageSegmentNode extends AbstractSegmentNode {
 
@@ -117,10 +120,12 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
                 "Image Compression",
                 "The form of compression used in representing the image data.",
                 header.getImageCompression().toString()));
-        set.put(new StringProperty("compressionRate",
-                "Compression Rate",
-                "The compression rate for the image.",
-                header.getCompressionRate()));
+        if (header.getCompressionRate() != null) {
+            set.put(new StringProperty("compressionRate",
+                    "Compression Rate",
+                    "The compression rate for the image.",
+                    header.getCompressionRate()));
+        }
         for (int i = 0; i < header.getNumBands(); ++i) {
             addImageBandSetToSheet(i, sheet);
         }
@@ -187,4 +192,23 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
         sheet.put(bandProperties);
     }
 
+    @Override
+    public Action[] getActions(final boolean popup) {
+        return combineActions(new ImageSegmentOpenAction(this), super.getActions(popup));
+    }
+
+    final NitfImageSegmentHeader getImageSegmentHeader() {
+        return header;
+    }
+
+    // TODO: temporary approach
+    ImageInputStream getImageDataReader() {
+        try {
+            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
+            return parseStrategy.getImageSegmentDataReader(childKey.getIndex());
+        } catch (ParseException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return null;
+    }
 }

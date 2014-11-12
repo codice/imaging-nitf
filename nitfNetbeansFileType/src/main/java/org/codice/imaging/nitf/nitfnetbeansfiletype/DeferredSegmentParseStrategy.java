@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.FileReader;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
@@ -251,5 +252,10 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
     final InputStream getGraphicSegmentDataReader(final int index) throws ParseException {
         long segmentDataOffset = graphicSegmentDataOffsets.get(index);
         return fileReader.getInputStreamAt(segmentDataOffset);
+    }
+
+    final ImageInputStream getImageSegmentDataReader(final int index) throws ParseException {
+        long segmentDataOffset = imageSegmentDataOffsets.get(index);
+        return fileReader.getImageInputStreamAt(segmentDataOffset);
     }
 }

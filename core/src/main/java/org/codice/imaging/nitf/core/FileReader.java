@@ -21,6 +21,9 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
 import java.text.ParseException;
+import java.util.logging.Level;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,6 +163,24 @@ public class FileReader extends SharedReader implements NitfReader {
             return Channels.newInputStream(nitfFile.getChannel().position(offset));
         } catch (IOException ex) {
             throw new ParseException("IOException while getting input stream: " + ex, (int) offset);
+        }
+    }
+
+    /**
+     * Get an image input stream at a specified point in the file.
+     *
+     * @param offset the point in the file the image input stream should read from
+     * @return image input stream for the specified content
+     * @throws ParseException if creating the image input stream fails.
+     */
+    public final ImageInputStream getImageInputStreamAt(final long offset) throws ParseException {
+        try {
+            ImageInputStream iis = new FileImageInputStream(nitfFile);
+            iis.seek(offset);
+            return iis;
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(FileReader.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ParseException("Error seeking while creating image input stream: " + ex, (int) offset);
         }
     }
 

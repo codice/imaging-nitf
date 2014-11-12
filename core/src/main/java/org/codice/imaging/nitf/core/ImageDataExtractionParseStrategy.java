@@ -16,8 +16,10 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 
-// TODO: make public if we keep this
-class ImageDataExtractionParseStrategy extends SlottedNitfParseStrategy {
+/**
+ * Parse strategy that extracts all headers, plus the image segment data.
+ */
+public class ImageDataExtractionParseStrategy extends SlottedNitfParseStrategy {
 
 
     @Override

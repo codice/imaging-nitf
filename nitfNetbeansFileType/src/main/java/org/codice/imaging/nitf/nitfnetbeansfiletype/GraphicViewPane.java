@@ -7,10 +7,15 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.IOException;
 import java.util.List;
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmRenderer;
+import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.render.NitfRender;
 import org.openide.awt.ActionID;
+import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 
@@ -34,6 +39,9 @@ import org.openide.windows.TopComponent;
 public class GraphicViewPane extends TopComponent {
 
     private List<AbstractElement> commands;
+    private NitfImageSegmentHeader imageSegment;
+    private ImageInputStream imageData;
+    private long initialImageStreamOffset;
 
     /**
      * Creates new form GraphicViewPane.
@@ -73,12 +81,29 @@ public class GraphicViewPane extends TopComponent {
     @Override
     public final void paint(final Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
-        CgmRenderer renderer = new CgmRenderer();
-        renderer.setTargetImageGraphics((Graphics2D) g, getX(), getY());
-        renderer.render(commands);
+        if (commands != null) {
+            CgmRenderer renderer = new CgmRenderer();
+            renderer.setTargetImageGraphics((Graphics2D) g, getX(), getY());
+            renderer.render(commands);
+        }
+        if (imageSegment != null) {
+            NitfRender render = new NitfRender();
+            try {
+                imageData.seek(initialImageStreamOffset);
+                render.render(imageSegment, imageData, (Graphics2D) g);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
     }
 
     final void setCommands(final List<AbstractElement> cgmCommands) {
         commands = cgmCommands;
+    }
+
+    final void setImage(final NitfImageSegmentHeader imageSegmentHeader, final ImageInputStream imageDataReader) throws IOException {
+        imageSegment = imageSegmentHeader;
+        imageData = imageDataReader;
+        initialImageStreamOffset = imageData.getStreamPosition();
     }
 }

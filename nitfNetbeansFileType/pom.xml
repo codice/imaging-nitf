@@ -132,6 +132,7 @@
             <artifactId>codice-imaging-nitf-core</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>codice-imaging-cgm</artifactId>
@@ -141,6 +142,11 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-core-multiview</artifactId>
             <version>RELEASE80</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>codice-nitf-imaging-render</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>
