@@ -58,202 +58,202 @@ public class RenderJitcTest extends TestCase {
 
     @Test
     public void testNS3038A() throws IOException, ParseException  {
-        testOneFile("ns3038a.nsf", "bilevel");
+        testOneFile("ns3038a.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3041A() throws IOException, ParseException  {
-        testOneFile("i_3041a.ntf", "bilevel");
+        testOneFile("i_3041a.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3050A() throws IOException, ParseException  {
-        testOneFile("ns3050a.nsf", "bilevel");
+        testOneFile("ns3050a.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testU_1036A() throws IOException, ParseException  {
-        testOneFile("U_1036A.NTF", "bilevel");
+        testOneFile("U_1036A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_1050A() throws IOException, ParseException  {
-        testOneFile("U_1050A.NTF", "bilevel");
+        testOneFile("U_1050A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_4003B() throws IOException, ParseException  {
-        testOneFile("U_4003B.NTF", "bilevel");
+        testOneFile("U_4003B.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_4004B() throws IOException, ParseException  {
-        testOneFile("U_4004B.NTF", "bilevel");
+        testOneFile("U_4004B.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_1001A() throws IOException, ParseException  {
-        testOneFile("U_1001A.NTF", "uncompressed");
+        testOneFile("U_1001A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_1034A() throws IOException, ParseException  {
-        testOneFile("U_1034A.NTF", "uncompressed");
+        testOneFile("U_1034A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_1101A() throws IOException, ParseException  {
-        testOneFile("U_1101A.NTF", "uncompressed");
+        testOneFile("U_1101A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_1122A() throws IOException, ParseException  {
-        testOneFile("U_1122A.NTF", "uncompressed");
+        testOneFile("U_1122A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_2001A() throws IOException, ParseException  {
-        testOneFile("U_2001A.NTF", "uncompressed");
+        testOneFile("U_2001A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_3002A() throws IOException, ParseException  {
-        testOneFile("U_3002A.NTF", "uncompressed");
+        testOneFile("U_3002A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_3010A() throws IOException, ParseException  {
-        testOneFile("U_3010A.NTF", "uncompressed");
+        testOneFile("U_3010A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_3050B() throws IOException, ParseException  {
-        testOneFile("U_3050B.NTF", "uncompressed");
+        testOneFile("U_3050B.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_4002A() throws IOException, ParseException  {
-        testOneFile("U_4002A.NTF", "uncompressed");
+        testOneFile("U_4002A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_4005A() throws IOException, ParseException  {
-        testOneFile("U_4005A.NTF", "uncompressed");
+        testOneFile("U_4005A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testU_4007A() throws IOException, ParseException  {
-        testOneFile("U_4007A.NTF", "uncompressed");
+        testOneFile("U_4007A.NTF", "JitcNitf20Samples");
     }
 
     @Test
     public void testI_3001A() throws IOException, ParseException  {
-        testOneFile("i_3001a.ntf", "uncompressed");
+        testOneFile("i_3001a.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3004G() throws IOException, ParseException  {
-        testOneFile("i_3004g.ntf", "uncompressed");
+        testOneFile("i_3004g.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3201C() throws IOException, ParseException  {
-        testOneFile("i_3201c.ntf", "uncompressed");
+        testOneFile("i_3201c.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3034C() throws IOException, ParseException  {
-        testOneFile("i_3034c.ntf", "uncompressed");
+        testOneFile("i_3034c.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3034F() throws IOException, ParseException  {
-        testOneFile("i_3034f.ntf", "uncompressed");
+        testOneFile("i_3034f.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3228C() throws IOException, ParseException  {
-        testOneFile("i_3228c.ntf", "uncompressed");
+        testOneFile("i_3228c.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3228D() throws IOException, ParseException  {
-        testOneFile("ns3228d.nsf", "uncompressed");
+        testOneFile("ns3228d.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3228E() throws IOException, ParseException  {
-        testOneFile("i_3228e.ntf", "uncompressed");
+        testOneFile("i_3228e.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3301B() throws IOException, ParseException  {
-        testOneFile("ns3301b.nsf", "uncompressed");
+        testOneFile("ns3301b.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3301E() throws IOException, ParseException  {
-        testOneFile("ns3301e.nsf", "uncompressed");
+        testOneFile("ns3301e.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3301H() throws IOException, ParseException  {
-        testOneFile("i_3301h.ntf", "uncompressed");
+        testOneFile("i_3301h.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3301K() throws IOException, ParseException  {
-        testOneFile("i_3301k.ntf", "uncompressed");
+        testOneFile("i_3301k.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3302A() throws IOException, ParseException  {
-        testOneFile("ns3302a.nsf", "uncompressed");
+        testOneFile("ns3302a.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3303A() throws IOException, ParseException  {
-        testOneFile("i_3303a.ntf", "uncompressed");
+        testOneFile("i_3303a.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3310A() throws IOException, ParseException  {
-        testOneFile("ns3310a.nsf", "uncompressed");
+        testOneFile("ns3310a.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3405A() throws IOException, ParseException  {
-        testOneFile("i_3405a.ntf", "uncompressed");
+        testOneFile("i_3405a.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testI_3430A() throws IOException, ParseException  {
-        testOneFile("i_3430a.ntf", "uncompressed");
+        testOneFile("i_3430a.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3004F() throws IOException, ParseException  {
-        testOneFile("ns3004f.nsf", "uncompressed");
+        testOneFile("ns3004f.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3034D() throws IOException, ParseException  {
-        testOneFile("ns3034d.nsf", "uncompressed");
+        testOneFile("ns3034d.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testNS3201A() throws IOException, ParseException  {
-        testOneFile("ns3201a.nsf", "uncompressed");
+        testOneFile("ns3201a.nsf", "JitcNitf21Samples");
     }
 
     @Test
     public void testV_3301F() throws IOException, ParseException  {
-        testOneFile("v_3301f.ntf", "uncompressed");
+        testOneFile("v_3301f.ntf", "JitcNitf21Samples");
     }
 
     @Test
     public void testU_3058B() throws IOException, ParseException {
-        testOneFile("U_3058B.NTF", "vq");
+        testOneFile("U_3058B.NTF", "JitcNitf20Samples");
     }
 
     private void testOneFile(final String testfile, final String parentDirectory) throws IOException, ParseException {

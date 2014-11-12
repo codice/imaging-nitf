@@ -39,7 +39,7 @@ public class Nitf20OverflowTest {
 
     @Test
     public void testU1130F() throws IOException, ParseException {
-        final String nitf20File = "/U_1130F.NTF";
+        final String nitf20File = "/JitcNitf20Samples/U_1130F.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 

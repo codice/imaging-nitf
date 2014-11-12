@@ -70,7 +70,7 @@ public class Nitf21TextParsingTest {
     }
 
     private InputStream getInputStream() {
-        final String testfile = "/ns3201a.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3201a.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         return getClass().getResourceAsStream(testfile);

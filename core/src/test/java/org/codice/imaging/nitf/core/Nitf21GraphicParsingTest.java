@@ -64,7 +64,7 @@ public class Nitf21GraphicParsingTest {
     }
 
     private InputStream getInputStream() {
-        final String testfile = "/i_3051e.ntf";
+        final String testfile = "/JitcNitf21Samples/i_3051e.ntf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         return getClass().getResourceAsStream(testfile);

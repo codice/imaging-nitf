@@ -67,7 +67,7 @@ public class Nitf20SymbolTest {
     }
 
     private InputStream getInputStream() {
-        final String nitf20File = "/U_1060A.NTF";
+        final String nitf20File = "/JitcNitf20Samples/U_1060A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 

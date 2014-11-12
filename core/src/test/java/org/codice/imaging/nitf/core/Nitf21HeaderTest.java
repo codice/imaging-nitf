@@ -57,7 +57,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testCompliantHeaderReadInputStream() throws IOException, ParseException {
-        final String simpleNitf21File = "/i_3034c.ntf";
+        final String simpleNitf21File = "/JitcNitf21Samples/i_3034c.ntf";
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         InputStream is = getClass().getResourceAsStream(simpleNitf21File);
@@ -69,7 +69,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testCompliantHeaderReadFile() throws IOException, ParseException {
-        final String simpleNitf21File = "/i_3034c.ntf";
+        final String simpleNitf21File = "/JitcNitf21Samples/i_3034c.ntf";
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
         File resourceFile = new File(getClass().getResource(simpleNitf21File).getFile());
@@ -161,7 +161,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testGeoAirfieldHeaderReader() throws IOException, ParseException {
-        final String geoAirfieldNitf21File = "/i_3001a.ntf";
+        final String geoAirfieldNitf21File = "/JitcNitf21Samples/i_3001a.ntf";
 
         assertNotNull("Test file missing", getClass().getResource(geoAirfieldNitf21File));
 
@@ -232,7 +232,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testImageTextComment() throws IOException, ParseException {
-        final String testfile = "/ns3010a.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3010a.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
@@ -301,7 +301,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testMultiImage() throws IOException, ParseException {
-        final String testfile = "/ns3361c.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3361c.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
@@ -469,7 +469,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testTextSegmentParsingComment() throws IOException, ParseException {
-        final String testfile = "/ns3201a.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3201a.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
@@ -497,7 +497,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testExtendedHeaderSegmentParsing() throws IOException, ParseException {
-        final String testfile = "/ns3228d.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3228d.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
@@ -526,7 +526,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testStreamingModeParsingFromFile() throws IOException, ParseException {
-        final String testfile = "/ns3321a.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3321a.nsf";
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         File resourceFile = new File(getClass().getResource(testfile).getFile());
@@ -543,7 +543,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testStreamingModeParsingFromStream() throws IOException, ParseException {
-        final String testfile = "/ns3321a.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3321a.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
@@ -555,7 +555,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testGraphicsSegmentParsing() throws IOException, ParseException {
-        final String testfile = "/ns3051v.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3051v.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
@@ -600,7 +600,7 @@ public class Nitf21HeaderTest {
 
     @Test
     public void testTreParsing() throws IOException, ParseException {
-        final String testfile = "/i_3128b.ntf";
+        final String testfile = "/JitcNitf21Samples/i_3128b.ntf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
 

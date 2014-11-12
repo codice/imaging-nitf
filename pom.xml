@@ -15,6 +15,7 @@
     <name>Codice Imaging: NITF Parent</name>
     <url>http://www.codice.org</url>
     <modules>
+        <module>shared-test-resources</module>
         <module>core</module>
         <module>metadata-comparison</module>
         <module>cgm</module>

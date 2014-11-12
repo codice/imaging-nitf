@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.codice.imaging.nitf</groupId>
+        <artifactId>codice-imaging-nitf</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <name>Codice Imaging: NITF Shared Test Resources</name>
+
+    <url>https://www.codice.org</url>
+
+    <organization>
+        <name>Codice</name>
+        <url>http://www.codice.org/</url>
+    </organization>
+    <developers>
+        <developer>
+            <name>Brad Hards</name>
+            <email>bradh@frogmouth.net</email>
+        </developer>
+    </developers>
+
+    <groupId>org.codice.imaging.nitf</groupId>
+    <artifactId>codice-imaging-nitf-shared-test-resources</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+        <plugin>
+            <artifactId>maven-remote-resources-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>bundle</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <includes>
+                    <include>**/*.ntf</include>
+                    <include>**/*.NTF</include>
+                    <include>**/*.nsf</include>
+                    <include>SENSRB/*.txt</include>
+                </includes>
+            </configuration>
+        </plugin>
+        </plugins>
+    </build>
+
+</project>

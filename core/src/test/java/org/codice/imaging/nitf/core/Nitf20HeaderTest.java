@@ -40,7 +40,7 @@ public class Nitf20HeaderTest {
 
     @Test
     public void testCompliantHeaderReadInputStream() throws IOException, ParseException {
-        final String simpleNitf20File = "/U_1114A.NTF";
+        final String simpleNitf20File = "/JitcNitf20Samples/U_1114A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
 
@@ -53,7 +53,7 @@ public class Nitf20HeaderTest {
 
     @Test
     public void testCompliantHeaderReadFile() throws IOException, ParseException {
-        final String simpleNitf20File = "/U_1114A.NTF";
+        final String simpleNitf20File = "/JitcNitf20Samples/U_1114A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
 
@@ -102,7 +102,7 @@ public class Nitf20HeaderTest {
 
     @Test
     public void testU1123() throws IOException, ParseException {
-        final String nitf20File = "/U_1123A.NTF";
+        final String nitf20File = "/JitcNitf20Samples/U_1123A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 
