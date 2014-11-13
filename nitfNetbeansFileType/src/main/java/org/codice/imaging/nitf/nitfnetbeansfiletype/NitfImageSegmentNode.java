@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.text.ParseException;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.Action;
+import javax.swing.tree.TreeModel;
 import org.codice.imaging.nitf.core.NitfImageBand;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.openide.nodes.Children;
@@ -194,7 +195,8 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
 
     @Override
     public Action[] getActions(final boolean popup) {
-        return combineActions(new ImageSegmentOpenAction(this), super.getActions(popup));
+        Action[] actions = combineActions(new ImageSegmentShowTreAction(this), super.getActions(popup));
+        return combineActions(new ImageSegmentOpenAction(this), actions);
     }
 
     final NitfImageSegmentHeader getImageSegmentHeader() {
@@ -210,5 +212,9 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
             Exceptions.printStackTrace(ex);
         }
         return null;
+    }
+
+    TreeModel getTreTreeModel() {
+        return new TreTreeModel(header.getTREsRawStructure());
     }
 }

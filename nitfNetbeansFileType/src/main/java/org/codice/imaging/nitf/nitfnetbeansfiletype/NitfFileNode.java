@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import javax.swing.Action;
+import javax.swing.tree.TreeModel;
 import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfConstants;
@@ -164,4 +166,30 @@ class NitfFileNode extends DataNode {
                 nitf.getOriginatorsPhoneNumber()));
         return sheet;
     }
+
+    @Override
+    public Action[] getActions(final boolean popup) {
+        return combineActions(new HeaderShowTreAction(this), super.getActions(popup));
+    }
+
+    /**
+     * Prepend an action to an existing array of actions.
+     *
+     * @param action the action to prepend
+     * @param actions the existing actions
+     * @return combined array of actions
+     */
+    protected Action[] combineActions(final Action action, final Action[] actions) {
+        Action[] combinedActions = new Action[actions.length + 1];
+        combinedActions[0] = action;
+        for (int i = 1; i < combinedActions.length; ++i) {
+            combinedActions[i] = actions[i - 1];
+        }
+        return combinedActions;
+    }
+
+    TreeModel getTreTreeModel() {
+        return new TreTreeModel(nitf.getTREsRawStructure());
+    }
+
 }

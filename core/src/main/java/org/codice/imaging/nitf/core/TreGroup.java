@@ -127,4 +127,10 @@ public class TreGroup {
         }
     }
 
+    // CSOFF: DesignForExtension
+    @Override
+    public String toString() {
+        return "(Group)";
+    }
+    // CSON: DesignForExtension
 }

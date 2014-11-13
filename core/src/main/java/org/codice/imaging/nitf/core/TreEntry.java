@@ -136,4 +136,13 @@ public class TreEntry {
             }
         }
     }
+
+    @Override
+    public final String toString() {
+        if (value != null) {
+            return name + ": " + value;
+        } else {
+            return name;
+        }
+    }
 }

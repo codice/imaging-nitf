@@ -39,4 +39,8 @@ public class TreEntryList extends TreGroup {
         return name;
     }
 
+    @Override
+    public final String toString() {
+        return getName();
+    }
 }

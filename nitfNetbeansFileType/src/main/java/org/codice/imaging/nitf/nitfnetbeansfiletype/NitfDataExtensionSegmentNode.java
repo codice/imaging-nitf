@@ -16,6 +16,7 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
 import javax.swing.Action;
+import javax.swing.tree.TreeModel;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -105,5 +106,20 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
     @Override
     public final Action[] getActions(final boolean popup) {
         return combineActions(new DataExtensionSegmentOpenAction(this), super.getActions(popup));
+    }
+
+    boolean isTreOverflow() {
+        return header.isTreOverflowNitf21() || header.isTreOverflowNitf20();
+    }
+
+    TreeModel getTreTreeModel() {
+        try {
+            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
+            parseStrategy.parseDataExtensionSegmentData(header, childKey.getIndex());
+            return new TreTreeModel(header.getTREsRawStructure());
+        } catch (ParseException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return null;
     }
 }
