@@ -17,9 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 
 /**
- * Parse strategy that only extracts headers.
+ * Parse strategy that only extracts headers and the DES.
  */
-public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
+public class DataExtensionSegmentNitfParseStrategy extends SlottedNitfParseStrategy {
 
     @Override
     protected final void handleImageSegment(final NitfReader reader, final int i) throws ParseException {
@@ -48,7 +48,7 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
 
     @Override
     protected final void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException {
-        parseDataExtensionSegmentHeaderButSkipData(reader, i);
+        parseDataExtensionSegmentHeaderAndData(reader, i);
     }
 
 

@@ -23,8 +23,8 @@ import difflib.Patch;
 import java.util.Map;
 
 import org.codice.imaging.nitf.core.AbstractNitfSegment;
+import org.codice.imaging.nitf.core.DataExtensionSegmentNitfParseStrategy;
 import org.codice.imaging.nitf.core.FileType;
-import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
@@ -59,7 +59,7 @@ public class FileComparer {
 
 
     private void generateOurMetadata() {
-        parseStrategy = new HeaderOnlyNitfParseStrategy();
+        parseStrategy = new DataExtensionSegmentNitfParseStrategy();
         try {
             NitfFileFactory.parse(new FileInputStream(filename), parseStrategy);
         } catch (ParseException | FileNotFoundException e) {

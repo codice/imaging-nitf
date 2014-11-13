@@ -200,6 +200,9 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
                 case GEOCENTRIC:
                     coords[i].setFromDMS(coordStr);
                     break;
+                case MGRS:
+                    coords[i].setFromMGRS(coordStr);
+                    break;
                 default:
                     throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS: "
                                                             + segment.getImageCoordinatesRepresentation());
