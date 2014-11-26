@@ -1,13 +1,9 @@
 language: java
-before_install:
-	sudo pip install codecov
-install:
-	mvn install --quiet -DskipTests=true -B
-script:
-	mvn test --quiet -B
+before_install: sudo pip install codecov
+install: mvn install --quiet -DskipTests=true -B
+script: mvn test --quiet -B
 jdk:
   - openjdk7
   - oraclejdk7
   - oraclejdk8
-after_success:
-	codecov
+after_success: codecov
