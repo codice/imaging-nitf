@@ -34,5 +34,6 @@ class HeaderShowTreAction extends AbstractAction {
         viewer.setTreeModel(associatedNode.getTreTreeModel());
         viewer.open();
         viewer.toFront();
+        viewer.requestActive();
     }
 }

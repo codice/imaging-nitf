@@ -34,5 +34,6 @@ class GraphicSegmentOpenAction extends AbstractAction {
         viewer.setCommands(associatedNode.getCGMCommands());
         viewer.open();
         viewer.toFront();
+        viewer.requestActive();
     }
 }

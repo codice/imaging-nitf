@@ -23,7 +23,7 @@ import org.openide.windows.TopComponent;
  */
 @TopComponent.Description(
         preferredID = "TextSegmentView",
-        persistenceType = TopComponent.PERSISTENCE_ALWAYS)
+        persistenceType = TopComponent.PERSISTENCE_NEVER)
 @TopComponent.Registration(
         mode = "editor",
         openAtStartup = false)

@@ -34,5 +34,6 @@ class LabelSegmentOpenAction extends AbstractAction {
         viewer.setText(associatedNode.getText());
         viewer.open();
         viewer.toFront();
+        viewer.requestActive();
     }
 }

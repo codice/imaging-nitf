@@ -40,5 +40,6 @@ class ImageSegmentOpenAction extends AbstractAction {
         }
         viewer.open();
         viewer.toFront();
+        viewer.requestActive();
     }
 }
