@@ -182,7 +182,6 @@ public class Uncompressed implements BlockRenderer {
         BufferedImage img = new BufferedImage(mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(),
                                               mImageSegmentHeader.getNumberOfPixelsPerBlockVertical(),
                                               BufferedImage.TYPE_INT_ARGB);
-        System.out.println("Get pixel size:" + mImageSegmentHeader.getActualBitsPerPixelPerBand() + "|" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
         int[] data = new int[mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal() * mImageSegmentHeader.getNumberOfPixelsPerBlockVertical()];
         if (mImageSegmentHeader.getImageMode() == ImageMode.PIXELINTERLEVE) {
             for (int i = 0; i < data.length; ++i) {

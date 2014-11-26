@@ -82,7 +82,6 @@ public final class ImageMask {
                 }
             }
         }
-        System.out.println(String.format("Offset at the end of the header: 0x%08x", mImageInputStream.getStreamPosition()));
     }
 
     public boolean isMaskedBlock(int blockNumber, int bandNumber) {
