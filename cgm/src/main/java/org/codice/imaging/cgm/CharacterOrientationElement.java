@@ -47,7 +47,7 @@ class CharacterOrientationElement extends ElementHelpers implements AbstractElem
         yCharacterBaseComponent = dataReader.readSignedIntegerAtVdcIntegerPrecision();
     }
 
-@Override
+    @Override
     public void addStringDescription(final StringBuilder builder) {
         builder.append(String.format("\tUp vector: %d, %d", xCharacterUpComponent, yCharacterUpComponent));
         builder.append(String.format("\tBaseline vector: %d, %d", xCharacterBaseComponent, yCharacterBaseComponent));

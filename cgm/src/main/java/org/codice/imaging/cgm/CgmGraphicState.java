@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author bradh
+ * Context / state for drawing.
  */
 class CgmGraphicState {
 
@@ -42,6 +41,7 @@ class CgmGraphicState {
     private final int sizeX;
     private final int sizeY;
 
+    // Also applicable to EDGE types.
     private static final int LINE_TYPE_SOLID = 1;
     private static final int LINE_TYPE_DASH = 2;
     private static final int LINE_TYPE_DOT = 3;
@@ -58,7 +58,6 @@ class CgmGraphicState {
     private static final float[] DASH_DOT_DOT = {10.0f, 10.0f, 2.0f, 2.0f, 2.0f, 2.0f};
     private static final int DEFAULT_TEXT_FONT_HEIGHT = 12;
 
-    // TODO: getters / setters
     private Color lineColour;
     private float lineWidth;
     private int lineType = 0;
@@ -68,10 +67,13 @@ class CgmGraphicState {
 
     private Color edgeColour;
     private float edgeWidth;
+    private int edgeType = 0;
     private static final int EDGE_JOIN_STYLE = BasicStroke.JOIN_BEVEL;
     private static final int EDGE_CAP_STYLE = BasicStroke.CAP_SQUARE;
     private EdgeVisibilityElement.Mode edgeVisibility;
     private BasicStroke edgeStroke = new BasicStroke();
+
+    private Color fillColour;
 
     private int hatchIndex = 1;
 
@@ -194,7 +196,28 @@ class CgmGraphicState {
     }
 
     private void updateEdgeStroke() {
-        edgeStroke = new BasicStroke(edgeWidth, EDGE_CAP_STYLE, EDGE_JOIN_STYLE);
+            switch (edgeType) {
+            case LINE_TYPE_SOLID:
+                edgeStroke = new BasicStroke(edgeWidth, EDGE_CAP_STYLE, EDGE_JOIN_STYLE);
+                break;
+            case LINE_TYPE_DASH:
+                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH, 0.0f);
+                break;
+            case LINE_TYPE_DOT:
+                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DOT, 0.0f);
+                break;
+            case LINE_TYPE_DASH_DOT:
+                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT, 0.0f);
+                break;
+            case LINE_TYPE_DASH_DOT_DOT:
+                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT_DOT, 0.0f);
+                break;
+            default:
+                // TODO: log warning.
+                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
+                break;
+        }
+
     }
 
     void setHatchIndex(final int indexedValue) {
@@ -229,4 +252,16 @@ class CgmGraphicState {
         return characterOrientationIsInvertedY;
     }
 
+    void setFillColour(final Color colour) {
+        fillColour = colour;
+    }
+
+    Color getFillColour() {
+        return fillColour;
+    }
+
+    void setEdgeType(final int indexedValue) {
+        edgeType = indexedValue;
+        updateEdgeStroke();
+    }
 }

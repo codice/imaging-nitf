@@ -26,15 +26,47 @@
 package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
+import java.io.IOException;
+import java.util.List;
 
-class FillColourElement extends CommonColourElement implements AbstractElement {
-    FillColourElement() {
-        super(CgmIdentifier.FILL_COLOUR);
+
+class PolygonElement extends ElementHelpers implements AbstractElement {
+
+    private List<Point> points;
+    public PolygonElement() {
+        super(CgmIdentifier.POLYGON);
+    }
+
+    @Override
+    public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
+        points = dataReader.readPoints(parameterListLength);
+    }
+
+    @Override
+    public void addStringDescription(final StringBuilder builder) {
+        for (Point point : points) {
+            builder.append("\tPoint: ");
+            builder.append(point);
+            builder.append(System.lineSeparator());
+        }
+    }
+
+    public List<Point> getPoints() {
+        return points;
     }
 
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
-        graphicState.setFillColour(getColour());
+        g2.setColor(graphicState.getEdgeColour());
+        g2.setStroke(graphicState.getEdgeStroke());
+        GeneralPath line = new GeneralPath(Path2D.WIND_EVEN_ODD, points.size());
+        line.moveTo(points.get(0).x, points.get(0).y);
+        for (int i = 1; i < points.size(); ++i) {
+            line.lineTo(points.get(i).x, points.get(i).y);
+        }
+        g2.draw(line);
     }
-
 }

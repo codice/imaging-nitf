@@ -31,7 +31,7 @@ import java.awt.Graphics2D;
  *
  */
 abstract class ElementHelpers implements AbstractElement {
-    private final CgmIdentifier cgmIdent;
+    protected final CgmIdentifier cgmIdent;
 
     protected ElementHelpers(final CgmIdentifier cgmIdentifier) {
         cgmIdent = cgmIdentifier;

@@ -186,7 +186,7 @@ public class CgmParser {
         ELEMENTS.put(CgmIdentifier.TEXT, TextElement.class);
         // RESTRICTED_TEXT prohibited in BIIF Profile BPCGM01.10
         // APPEND_TEXT prohibited in BIIF Profile BPCGM01.10
-        // TODO: POLYGON
+        ELEMENTS.put(CgmIdentifier.POLYGON, PolygonElement.class);
         ELEMENTS.put(CgmIdentifier.POLYGON_SET, PolygonSetElement.class);
         // CELL_ARRAY prohibited in BIIF Profile BPCGM01.10
         // GENERALISED_DRAWING_PRIMITIVE prohibited in BIIF Profile BPCGM01.10
@@ -194,8 +194,8 @@ public class CgmParser {
         ELEMENTS.put(CgmIdentifier.CIRCLE, CircleElement.class);
         // CIRCULAR_ARC_3_POINT prohibited in BIIF Profile BPCGM01.10
         // CIRCULAR_ARC_3_POINT_CLOSE prohibited in BIIF Profile BPCGM01.10
-        // TODO: CIRCUALR_ARC_CENTRE
-        // TODO: CIRCUALR_ARC_CENTRE
+        // TODO: CIRCULAR_ARC_CENTRE
+        // TODO: CIRCULAR_ARC_CENTRE
         // TODO: ELLIPSE
         // TODO: ELLIPTICAL_ARC
         // TODO: ELLIPICAL_ARC_CLOSE
