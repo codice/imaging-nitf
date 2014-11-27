@@ -196,7 +196,7 @@ public class CgmParser {
         // CIRCULAR_ARC_3_POINT_CLOSE prohibited in BIIF Profile BPCGM01.10
         // TODO: CIRCULAR_ARC_CENTRE
         // TODO: CIRCULAR_ARC_CENTRE
-        // TODO: ELLIPSE
+        ELEMENTS.put(CgmIdentifier.ELLIPSE, EllipseElement.class);
         // TODO: ELLIPTICAL_ARC
         // TODO: ELLIPICAL_ARC_CLOSE
         // CIRCULAR_ARC_CENTRE_REVERSED prohibited in BIIF Profile BPCGM01.10
