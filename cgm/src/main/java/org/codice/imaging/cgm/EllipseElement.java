@@ -65,7 +65,6 @@ class EllipseElement extends ElementHelpers implements AbstractElement {
         applyFilledPrimitiveAttributes(g2, graphicState);
         float xOffset = Math.max(Math.abs(centre.x - endpointOfFirstConjugateDiameter.x), Math.abs(centre.x - endpointOfSecondConjugateDiameter.x));
         float yOffset = Math.max(Math.abs(centre.y - endpointOfFirstConjugateDiameter.y), Math.abs(centre.y - endpointOfSecondConjugateDiameter.y));
-        System.out.println(String.format("Offsets: %f, %f", xOffset, yOffset));
         Ellipse2D ellipse = new Ellipse2D.Float(centre.x - xOffset, centre.y - yOffset, xOffset * 2, yOffset * 2);
         g2.draw(ellipse);
     }
