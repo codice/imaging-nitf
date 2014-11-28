@@ -194,8 +194,8 @@ public class CgmParser {
         ELEMENTS.put(CgmIdentifier.CIRCLE, CircleElement.class);
         // CIRCULAR_ARC_3_POINT prohibited in BIIF Profile BPCGM01.10
         // CIRCULAR_ARC_3_POINT_CLOSE prohibited in BIIF Profile BPCGM01.10
-        // TODO: CIRCULAR_ARC_CENTRE
-        // TODO: CIRCULAR_ARC_CENTRE
+        ELEMENTS.put(CgmIdentifier.CIRCULAR_ARC_CENTRE, CircularArcCentreElement.class);
+        // TODO: CIRCULAR_ARC_CENTRE_CLOSE
         ELEMENTS.put(CgmIdentifier.ELLIPSE, EllipseElement.class);
         // TODO: ELLIPTICAL_ARC
         // TODO: ELLIPICAL_ARC_CLOSE
