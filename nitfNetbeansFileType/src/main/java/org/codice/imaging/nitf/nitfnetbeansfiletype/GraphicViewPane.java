@@ -83,7 +83,7 @@ public class GraphicViewPane extends TopComponent {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
         if (commands != null) {
             CgmRenderer renderer = new CgmRenderer();
-            renderer.setTargetImageGraphics((Graphics2D) g, getX(), getY());
+            renderer.setTargetImageGraphics((Graphics2D) g, getWidth(), getHeight());
             renderer.render(commands);
         }
         if (imageSegment != null) {
