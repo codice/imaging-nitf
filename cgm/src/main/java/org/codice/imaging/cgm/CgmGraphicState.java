@@ -201,20 +201,20 @@ class CgmGraphicState {
                 edgeStroke = new BasicStroke(edgeWidth, EDGE_CAP_STYLE, EDGE_JOIN_STYLE);
                 break;
             case LINE_TYPE_DASH:
-                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH, 0.0f);
+                edgeStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH, 0.0f);
                 break;
             case LINE_TYPE_DOT:
-                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DOT, 0.0f);
+                edgeStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DOT, 0.0f);
                 break;
             case LINE_TYPE_DASH_DOT:
-                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT, 0.0f);
+                edgeStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT, 0.0f);
                 break;
             case LINE_TYPE_DASH_DOT_DOT:
-                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT_DOT, 0.0f);
+                edgeStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT_DOT, 0.0f);
                 break;
             default:
                 // TODO: log warning.
-                lineStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
+                edgeStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
                 break;
         }
 
