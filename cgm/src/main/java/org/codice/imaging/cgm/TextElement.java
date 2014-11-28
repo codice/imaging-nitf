@@ -71,10 +71,11 @@ class TextElement extends ElementHelpers implements AbstractElement {
         Graphics2D localGraphics = (Graphics2D) g2.create();
         localGraphics.setColor(graphicState.getTextColour());
         localGraphics.setFont(graphicState.getFont());
-        if (graphicState.characterOrientationHasInvertedY()) {
-            localGraphics.translate(0, graphicState.getSizeY());
+        if (!graphicState.characterOrientationHasInvertedY()) {
+            localGraphics.drawString(text, textPosition.x, (int) graphicState.getSizeY() - textPosition.y);
+        } else {
             localGraphics.scale(1.0, -1.0);
+            localGraphics.drawString(text, textPosition.x, -1 * textPosition.y);
         }
-        localGraphics.drawString(text, textPosition.x, textPosition.y);
     }
 }

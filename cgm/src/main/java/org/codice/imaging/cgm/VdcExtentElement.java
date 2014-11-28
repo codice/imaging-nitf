@@ -66,7 +66,7 @@ class VdcExtentElement extends ElementHelpers implements AbstractElement {
         }
         double scaleY = 1.0;
         double translateY = 0.0;
-        if (vdcExtent.isIncreasingUp()) {
+        if (!vdcExtent.isIncreasingUp()) {
             scaleY = -1.0;
             translateY = (graphicState.getSizeY());
         }
