@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.core;
 
+import java.awt.Color;
 import java.text.ParseException;
 
 /**
@@ -65,7 +66,7 @@ public class RGBColour {
         Return the blue component of the colour.
 
         @return blue component of the colour
-*/
+    */
     public final byte getBlue() {
         return blue;
     }
@@ -76,5 +77,16 @@ public class RGBColour {
                             (int) (red & UNSIGNED_BYTE_MASK),
                             (int) (green & UNSIGNED_BYTE_MASK),
                             (int) (blue & UNSIGNED_BYTE_MASK));
+    }
+
+    /**
+     * Return the RGBColour as an AWT Color.
+     *
+     * @return the colour as a Color.
+     */
+    public final Color toColour() {
+        return new Color((int) (red & UNSIGNED_BYTE_MASK),
+                         (int) (green & UNSIGNED_BYTE_MASK),
+                         (int) (blue & UNSIGNED_BYTE_MASK));
     }
 }

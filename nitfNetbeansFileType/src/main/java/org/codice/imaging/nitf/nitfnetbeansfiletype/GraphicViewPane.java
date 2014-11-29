@@ -81,16 +81,19 @@ public class GraphicViewPane extends TopComponent {
     @Override
     public final void paint(final Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setBackground(getBackground());
+        g2.clearRect(g2.getClipBounds().x, g2.getClipBounds().y, g2.getClipBounds().width, g2.getClipBounds().height);
         if (commands != null) {
             CgmRenderer renderer = new CgmRenderer();
-            renderer.setTargetImageGraphics((Graphics2D) g, getWidth(), getHeight());
+            renderer.setTargetImageGraphics(g2, getWidth(), getHeight());
             renderer.render(commands);
         }
         if (imageSegment != null) {
             NitfRender render = new NitfRender();
             try {
                 imageData.seek(initialImageStreamOffset);
-                render.render(imageSegment, imageData, (Graphics2D) g);
+                render.render(imageSegment, imageData, g2);
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
             }

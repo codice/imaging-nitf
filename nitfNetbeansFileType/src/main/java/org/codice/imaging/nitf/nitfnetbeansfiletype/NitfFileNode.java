@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.awt.Color;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
 import org.codice.imaging.nitf.core.FileType;
@@ -190,6 +191,10 @@ class NitfFileNode extends DataNode {
 
     TreeModel getTreTreeModel() {
         return new TreTreeModel(nitf.getTREsRawStructure());
+    }
+
+    Color getBackgroundColour() {
+        return nitf.getFileBackgroundColour().toColour();
     }
 
 }

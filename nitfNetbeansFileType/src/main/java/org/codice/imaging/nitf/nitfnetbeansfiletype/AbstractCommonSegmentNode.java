@@ -14,11 +14,13 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.awt.Color;
 import javax.swing.Action;
 import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
 import org.codice.imaging.nitf.core.NitfConstants;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.nodes.Node;
 import org.openide.nodes.Sheet;
 
 abstract class AbstractCommonSegmentNode extends AbstractNode {
@@ -159,6 +161,19 @@ abstract class AbstractCommonSegmentNode extends AbstractNode {
             combinedActions[i] = actions[i - 1];
         }
         return combinedActions;
+    }
+
+    Color getBackgroundColour() {
+        NitfFileNode fileNode = getFileNode();
+        return fileNode.getBackgroundColour();
+    }
+
+    protected NitfFileNode getFileNode() {
+        Node node = getParentNode();
+        while (!(node instanceof NitfFileNode)) {
+            node = node.getParentNode();
+        }
+        return (NitfFileNode) node;
     }
 
 }

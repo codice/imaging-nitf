@@ -32,6 +32,7 @@ class ImageSegmentOpenAction extends AbstractAction {
     @Override
     public void actionPerformed(final ActionEvent event) {
         GraphicViewPane viewer = new GraphicViewPane();
+        viewer.setBackground(associatedNode.getBackgroundColour());
         viewer.setDisplayName(associatedNode.getFriendlyName());
         try {
             viewer.setImage(associatedNode.getImageSegmentHeader(), associatedNode.getImageDataReader());

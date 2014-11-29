@@ -105,4 +105,5 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
     public Action[] getActions(final boolean popup) {
         return combineActions(new GraphicSegmentOpenAction(this), super.getActions(popup));
     }
+
 }
