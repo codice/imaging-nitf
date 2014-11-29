@@ -34,8 +34,6 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     private int userDefinedHeaderDataLength = 0;
     private int extendedHeaderDataLength = 0;
 
-    private final NitfParseStrategy parsingStrategy;
-
     private Nitf nitf = null;
 
     private NitfFileParser(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {

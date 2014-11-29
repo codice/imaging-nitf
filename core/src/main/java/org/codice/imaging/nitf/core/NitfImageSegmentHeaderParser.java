@@ -35,14 +35,8 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
         ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
 
     private NitfImageSegmentHeader segment = null;
-    private final TreCollectionParser treCollectionParser;
 
     NitfImageSegmentHeaderParser() throws ParseException {
-        treCollectionParser = new TreCollectionParser();
-    }
-
-    NitfImageSegmentHeaderParser(final TreCollectionParser treParser) {
-        treCollectionParser = treParser;
     }
 
     /**
@@ -51,12 +45,14 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
      * This will return the image segment header, but it is not threadsafe. Please create a new parser for each header, or protect against
      * parallel runs.
      * @param nitfReader the reader to use to get the data
+     * @param parseStrategy the parsing strategy to use to process the data
      * @return the parsed header
      * @throws ParseException on parse failure
      */
-    final NitfImageSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
+    final NitfImageSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
         reader = nitfReader;
         segment = new NitfImageSegmentHeader();
+        parsingStrategy = parseStrategy;
 
         readIM();
         readIID1();
@@ -289,7 +285,7 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDID() throws ParseException {
-        TreCollection userDefinedSubheaderTres = treCollectionParser.parse(reader, userDefinedImageDataLength - NitfConstants.UDOFL_LENGTH);
+        TreCollection userDefinedSubheaderTres = parsingStrategy.parseTREs(reader, userDefinedImageDataLength - NitfConstants.UDOFL_LENGTH);
         segment.mergeTREs(userDefinedSubheaderTres);
     }
 
@@ -302,7 +298,7 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readIXSHD() throws ParseException {
-        TreCollection extendedSubheaderTres = treCollectionParser.parse(reader, imageExtendedSubheaderDataLength - NitfConstants.IXSOFL_LENGTH);
+        TreCollection extendedSubheaderTres = parsingStrategy.parseTREs(reader, imageExtendedSubheaderDataLength - NitfConstants.IXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTres);
     }
 

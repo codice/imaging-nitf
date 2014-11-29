@@ -28,10 +28,11 @@ class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
     NitfGraphicSegmentHeaderParser() {
     }
 
-    final NitfGraphicSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
+    final NitfGraphicSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
         segment = new NitfGraphicSegmentHeader();
+        parsingStrategy = parseStrategy;
 
         readSY();
         readSID();
@@ -116,8 +117,7 @@ class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readSXSHD() throws ParseException {
-        TreCollectionParser treCollectionParser = new TreCollectionParser();
-        TreCollection extendedSubheaderTREs = treCollectionParser.parse(reader, graphicExtendedSubheaderLength - NitfConstants.SXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader, graphicExtendedSubheaderLength - NitfConstants.SXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 }
