@@ -15,30 +15,23 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
-import org.openide.util.Exceptions;
 
-class ImageSegmentOpenAction extends AbstractAction {
+class LabelSegmentViewAction extends AbstractAction {
 
-    private final NitfImageSegmentNode associatedNode;
+    private final NitfLabelSegmentNode associatedNode;
 
-    public ImageSegmentOpenAction(final NitfImageSegmentNode node) {
-        putValue(NAME, "Open");
+    public LabelSegmentViewAction(final NitfLabelSegmentNode node) {
+        putValue(NAME, "View");
         associatedNode = node;
     }
 
     @Override
     public void actionPerformed(final ActionEvent event) {
-        GraphicViewPane viewer = new GraphicViewPane();
-        viewer.setBackground(associatedNode.getBackgroundColour());
+        TextViewerPane viewer = new TextViewerPane();
         viewer.setDisplayName(associatedNode.getFriendlyName());
-        try {
-            viewer.setImage(associatedNode.getImageSegmentHeader(), associatedNode.getImageDataReader());
-        } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
-        }
+        viewer.setText(associatedNode.getText());
         viewer.open();
         viewer.toFront();
         viewer.requestActive();

@@ -105,7 +105,7 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
 
     @Override
     public final Action[] getActions(final boolean popup) {
-        return combineActions(new DataExtensionSegmentOpenAction(this), super.getActions(popup));
+        return combineActions(new DataExtensionSegmentViewAction(this), super.getActions(popup));
     }
 
     boolean isTreOverflow() {

@@ -196,7 +196,7 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
     @Override
     public Action[] getActions(final boolean popup) {
         Action[] actions = combineActions(new ImageSegmentShowTreAction(this), super.getActions(popup));
-        return combineActions(new ImageSegmentOpenAction(this), actions);
+        return combineActions(new ImageSegmentViewAction(this), actions);
     }
 
     final NitfImageSegmentHeader getImageSegmentHeader() {

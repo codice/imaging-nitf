@@ -17,32 +17,23 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
-import org.openide.windows.TopComponent;
 
-class DataExtensionSegmentOpenAction extends AbstractAction {
+class TextSegmentViewAction extends AbstractAction {
 
-    private final NitfDataExtensionSegmentNode associatedNode;
+    private final NitfTextSegmentNode associatedNode;
 
-    public DataExtensionSegmentOpenAction(final NitfDataExtensionSegmentNode node) {
-        putValue(NAME, "Open");
+    public TextSegmentViewAction(final NitfTextSegmentNode node) {
+        putValue(NAME, "View");
         associatedNode = node;
     }
 
     @Override
     public void actionPerformed(final ActionEvent event) {
-        TopComponent tc;
-        if (associatedNode.isTreOverflow()) {
-            TreTreeViewerPane viewer = new TreTreeViewerPane();
-            viewer.setTreeModel(associatedNode.getTreTreeModel());
-            tc = viewer;
-        } else {
-            TextViewerPane viewer = new TextViewerPane();
-            viewer.setText(associatedNode.getText());
-            tc = viewer;
-        }
-        tc.setDisplayName(associatedNode.getFriendlyName());
-        tc.open();
-        tc.toFront();
-        tc.requestActive();
+        TextViewerPane viewer = new TextViewerPane();
+        viewer.setDisplayName(associatedNode.getFriendlyName());
+        viewer.setText(associatedNode.getText());
+        viewer.open();
+        viewer.toFront();
+        viewer.requestActive();
     }
 }

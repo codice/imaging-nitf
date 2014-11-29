@@ -77,7 +77,7 @@ class NitfTextSegmentNode extends AbstractSegmentNode {
 
     @Override
     public Action[] getActions(final boolean popup) {
-        return combineActions(new TextSegmentOpenAction(this), super.getActions(popup));
+        return combineActions(new TextSegmentViewAction(this), super.getActions(popup));
     }
 
 }

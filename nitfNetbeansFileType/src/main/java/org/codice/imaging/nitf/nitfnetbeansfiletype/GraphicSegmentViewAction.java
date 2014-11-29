@@ -18,20 +18,21 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 
-class TextSegmentOpenAction extends AbstractAction {
+class GraphicSegmentViewAction extends AbstractAction {
 
-    private final NitfTextSegmentNode associatedNode;
+    private final NitfGraphicSegmentNode associatedNode;
 
-    public TextSegmentOpenAction(final NitfTextSegmentNode node) {
-        putValue(NAME, "Open");
+    public GraphicSegmentViewAction(final NitfGraphicSegmentNode node) {
+        putValue(NAME, "View");
         associatedNode = node;
     }
 
     @Override
     public void actionPerformed(final ActionEvent event) {
-        TextViewerPane viewer = new TextViewerPane();
+        GraphicViewPane viewer = new GraphicViewPane();
+        viewer.setBackground(associatedNode.getBackgroundColour());
         viewer.setDisplayName(associatedNode.getFriendlyName());
-        viewer.setText(associatedNode.getText());
+        viewer.setCommands(associatedNode.getCGMCommands());
         viewer.open();
         viewer.toFront();
         viewer.requestActive();

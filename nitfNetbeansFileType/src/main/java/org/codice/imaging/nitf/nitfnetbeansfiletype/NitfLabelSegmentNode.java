@@ -86,7 +86,7 @@ class NitfLabelSegmentNode extends AbstractSegmentNode {
 
     @Override
     public Action[] getActions(final boolean popup) {
-        return combineActions(new LabelSegmentOpenAction(this), super.getActions(popup));
+        return combineActions(new LabelSegmentViewAction(this), super.getActions(popup));
     }
 
 }
