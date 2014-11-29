@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -28,7 +29,8 @@ public class Nitf21GraphicParsingTest {
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
         GraphicDataExtractionParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
-        NitfFileFactory.parse(getInputStream(), parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
         assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
 
         NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);
@@ -39,7 +41,8 @@ public class Nitf21GraphicParsingTest {
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(getInputStream(), parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
         assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
 
         NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);

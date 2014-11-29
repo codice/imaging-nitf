@@ -31,7 +31,7 @@ public class SensrbTest {
     public void testSensrbMinimal() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_minimal.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 320);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -89,7 +89,7 @@ public class SensrbTest {
     public void testSensrbSinglePointSet() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_single_point_set.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 399);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -165,7 +165,7 @@ public class SensrbTest {
     public void testSensrbSituationalAwareness() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_situational_awareness.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 508);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -246,7 +246,7 @@ public class SensrbTest {
     public void testSensrbGeo() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_geo.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 615);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -339,7 +339,7 @@ public class SensrbTest {
     public void testSensrbGeoPlus() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_geo_plus.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 808);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -456,7 +456,7 @@ public class SensrbTest {
     public void testSensrbAccurate() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_accurate.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 937);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -581,7 +581,7 @@ public class SensrbTest {
     public void testSensrbTimeStamped6() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped6.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 1152);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -746,7 +746,7 @@ public class SensrbTest {
     public void testSensrbTimeStamped9() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped9.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 808);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -891,7 +891,7 @@ public class SensrbTest {
     public void testSensrbPixel9() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_pixel9.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 808);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1040,7 +1040,7 @@ public class SensrbTest {
     public void testSensrbTimePixel8Pixel6() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timepixel8_pixel6.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 937);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1346,7 +1346,7 @@ public class SensrbTest {
     public void testSensrbTime7TimePixel10() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped7_timepixel10.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 615);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1545,7 +1545,7 @@ public class SensrbTest {
     public void testSensrbPixel7TimePixel5() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timepixel5_pixel7.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 615);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1720,7 +1720,7 @@ public class SensrbTest {
     public void testSensrbSample() throws ParseException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SB_Seattle_WithUncertainties.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 1815);
     }

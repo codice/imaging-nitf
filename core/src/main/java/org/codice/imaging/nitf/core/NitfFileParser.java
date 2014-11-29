@@ -20,7 +20,7 @@ import java.util.Arrays;
 /**
     Parser for a NITF file.
 */
-final class NitfFileParser extends AbstractNitfSegmentParser {
+public final class NitfFileParser extends AbstractNitfSegmentParser {
 
     private long nitfFileLength = -1;
 
@@ -34,15 +34,27 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     private int userDefinedHeaderDataLength = 0;
     private int extendedHeaderDataLength = 0;
 
+    private final NitfParseStrategy parsingStrategy;
+
     private Nitf nitf = null;
 
-    private NitfFileParser(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) {
+    private NitfFileParser(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
         nitf = new Nitf();
         reader = nitfReader;
         parseStrategy.setFileHeader(nitf);
+        parsingStrategy = parseStrategy;
     };
 
-    static void parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    /**
+     * Parse a NITF file from a specific reader and parsing strategy.
+     *
+     * The concept is that the parsing strategy will store the parse results.
+     *
+     * @param nitfReader the reader to use
+     * @param parseStrategy the parsing strategy
+     * @throws ParseException if an error occurs during parsing
+     */
+    public static void parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
         NitfFileParser parser = new NitfFileParser(nitfReader, parseStrategy);
 
         parser.readBaseHeaders();
@@ -356,8 +368,7 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDHD() throws ParseException {
-        TreCollectionParser treCollectionParser = new TreCollectionParser();
-        TreCollection userDefinedHeaderTREs = treCollectionParser.parse(reader, userDefinedHeaderDataLength - NitfConstants.UDHOFL_LENGTH);
+        TreCollection userDefinedHeaderTREs = parsingStrategy.parseTREs(reader, userDefinedHeaderDataLength - NitfConstants.UDHOFL_LENGTH);
         nitf.mergeTREs(userDefinedHeaderTREs);
     }
 
@@ -370,8 +381,7 @@ final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readXHD() throws ParseException {
-        TreCollectionParser treCollectionParser = new TreCollectionParser();
-        TreCollection extendedHeaderTres = treCollectionParser.parse(reader, extendedHeaderDataLength - NitfConstants.XHDLOFL_LENGTH);
+        TreCollection extendedHeaderTres = parsingStrategy.parseTREs(reader, extendedHeaderDataLength - NitfConstants.XHDLOFL_LENGTH);
         nitf.mergeTREs(extendedHeaderTres);
     }
 }

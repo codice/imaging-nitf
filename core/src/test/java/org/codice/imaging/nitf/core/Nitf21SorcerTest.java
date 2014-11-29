@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -41,7 +42,8 @@ public class Nitf21SorcerTest {
     @Test
     public void testSorcerParse() throws IOException, ParseException {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
-        NitfFileFactory.parse(getInputStream(), parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf file = parseStrategy.getNitfHeader();
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
         assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());

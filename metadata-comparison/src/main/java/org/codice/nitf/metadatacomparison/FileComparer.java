@@ -3,9 +3,6 @@ package org.codice.nitf.metadatacomparison;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -24,13 +21,15 @@ import java.util.Map;
 
 import org.codice.imaging.nitf.core.AbstractNitfSegment;
 import org.codice.imaging.nitf.core.DataExtensionSegmentNitfParseStrategy;
+import org.codice.imaging.nitf.core.FileReader;
 import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfFileFactory;
+import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.NitfReader;
 import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributes;
@@ -59,10 +58,11 @@ public class FileComparer {
 
 
     private void generateOurMetadata() {
-        parseStrategy = new DataExtensionSegmentNitfParseStrategy();
         try {
-            NitfFileFactory.parse(new FileInputStream(filename), parseStrategy);
-        } catch (ParseException | FileNotFoundException e) {
+            NitfReader reader = new FileReader(new File(filename));
+            parseStrategy = new DataExtensionSegmentNitfParseStrategy();
+            NitfFileParser.parse(reader, parseStrategy);
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -799,10 +799,10 @@ public class FileComparer {
     }
 
     private static List<String> fileToLines(String filename) {
-        List<String> lines = new LinkedList<String>();
-        String line = "";
+        List<String> lines = new LinkedList<>();
+        String line;
         try {
-                BufferedReader in = new BufferedReader(new FileReader(filename));
+                BufferedReader in = new BufferedReader(new java.io.FileReader(filename));
                 while ((line = in.readLine()) != null) {
                         lines.add(line);
                 }

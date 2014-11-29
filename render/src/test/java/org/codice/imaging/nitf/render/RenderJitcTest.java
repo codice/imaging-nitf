@@ -30,8 +30,10 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
 
 import junit.framework.TestCase;
 import org.codice.imaging.nitf.core.ImageDataExtractionParseStrategy;
-import org.codice.imaging.nitf.core.NitfFileFactory;
+import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.NitfReader;
 import org.junit.Test;
 
 /**
@@ -260,8 +262,9 @@ public class RenderJitcTest extends TestCase {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
         System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
+        NitfReader reader = new NitfInputStreamReader(getClass().getResourceAsStream(inputFileName));
         ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
-        NitfFileFactory.parse(getClass().getResourceAsStream(inputFileName), parseStrategy);
+        NitfFileParser.parse(reader, parseStrategy);
         NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
         NitfRender renderer = new NitfRender();
         BufferedImage img = new BufferedImage(imageSegment.getImageLocationColumn() + (int)imageSegment.getNumberOfColumns(),

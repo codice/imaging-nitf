@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
 import org.codice.imaging.nitf.core.schema.FieldType;
 import org.codice.imaging.nitf.core.schema.IfType;
 import org.codice.imaging.nitf.core.schema.LoopType;
@@ -62,9 +63,22 @@ class TreParser {
     }
 
     private void unmarshal(final InputStream inputStream) throws JAXBException {
+        tresStructure = (Tres) getUnmarshaller().unmarshal(inputStream);
+    }
+
+    private Unmarshaller getUnmarshaller() throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Tres.class);
-        Unmarshaller u = jc.createUnmarshaller();
-        tresStructure = (Tres) u.unmarshal(inputStream);
+        return jc.createUnmarshaller();
+    }
+
+    void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+        try {
+            Tres extraTres = (Tres) getUnmarshaller().unmarshal(source);
+            tresStructure.getTre().addAll(extraTres.getTre());
+        } catch (JAXBException ex) {
+            LOG.warn("JAXBException parsing additional TRE XML specification", ex);
+            throw new ParseException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+        }
     }
 
     Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength) throws ParseException {

@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.transform.Source;
 
 /**
  * "Slotted" parse strategy.
@@ -80,9 +81,15 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final List<byte[]> dataExtensionSegmentData = new ArrayList<>();
 
     /**
+     * The TRE parser to use. Must be initialised before use, see initialiseTreCollectionParserIfRequired()
+     */
+    protected TreCollectionParser treCollectionParser;
+
+    /**
      * Constructor.
      */
     public SlottedNitfParseStrategy() {
+        treCollectionParser = null;
     }
 
     @Override
@@ -209,10 +216,17 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @throws ParseException on parse error
      */
     protected final NitfImageSegmentHeader readImageSegmentHeader(final NitfReader reader, final int i) throws ParseException {
-        NitfImageSegmentHeaderParser imageSegmentHeaderParser = new NitfImageSegmentHeaderParser();
+        initialiseTreCollectionParserIfRequired();
+        NitfImageSegmentHeaderParser imageSegmentHeaderParser = new NitfImageSegmentHeaderParser(treCollectionParser);
         NitfImageSegmentHeader imageSegmentHeader = imageSegmentHeaderParser.parse(reader);
         imageSegmentHeader.setImageSegmentDataLength(nitfFileLevelHeader.getImageSegmentDataLengths().get(i));
         return imageSegmentHeader;
+    }
+
+    private void initialiseTreCollectionParserIfRequired() throws ParseException {
+        if (treCollectionParser == null) {
+            treCollectionParser = new TreCollectionParser();
+        }
     }
 
     /**
@@ -629,7 +643,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
             final NitfReader reader) throws ParseException {
         if (dataExtensionSegmentHeader.getDataExtensionSegmentDataLength() > 0) {
             if (dataExtensionSegmentHeader.isTreOverflow(reader.getFileType())) {
-                TreCollectionParser treCollectionParser = new TreCollectionParser();
+                initialiseTreCollectionParserIfRequired();
                 TreCollection overflowTres = treCollectionParser.parse(reader, dataExtensionSegmentHeader.getDataExtensionSegmentDataLength());
                 dataExtensionSegmentHeader.mergeTREs(overflowTres);
             } else if (!"STREAMING_FILE_HEADER".equals(dataExtensionSegmentHeader.getIdentifier().trim())) {
@@ -763,4 +777,15 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @throws ParseException if there is a problem handling the segment
      */
     protected abstract void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException;
+
+    final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+        initialiseTreCollectionParserIfRequired();
+        treCollectionParser.registerAdditionalTREdescriptor(source);
+    }
+
+    @Override
+    public final TreCollection parseTREs(final NitfReader reader, final int length) throws ParseException {
+        initialiseTreCollectionParserIfRequired();
+        return treCollectionParser.parse(reader, length);
+    }
 }

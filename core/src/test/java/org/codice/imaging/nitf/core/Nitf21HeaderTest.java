@@ -14,8 +14,8 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.is;
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import javax.xml.transform.stream.StreamSource;
 
 import org.junit.rules.ExpectedException;
 import org.junit.After;
@@ -62,7 +64,8 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(simpleNitf21File);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         checkCompliantHeaderResults(parseStrategy);
         is.close();
     }
@@ -74,7 +77,8 @@ public class Nitf21HeaderTest {
 
         File resourceFile = new File(getClass().getResource(simpleNitf21File).getFile());
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(resourceFile, parseStrategy);
+        NitfReader reader = new FileReader(resourceFile);
+        NitfFileParser.parse(reader, parseStrategy);
         checkCompliantHeaderResults(parseStrategy);
     }
 
@@ -167,7 +171,8 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(geoAirfieldNitf21File);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -238,7 +243,8 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -307,7 +313,8 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -474,7 +481,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -502,7 +510,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -525,13 +534,37 @@ public class Nitf21HeaderTest {
     }
 
     @Test
+    public void testExtendedHeaderSegmentParsingWithAdditionalTreDescriptor() throws IOException, ParseException {
+        final String testfile = "/JitcNitf21Samples/ns3228d.nsf";
+
+        assertNotNull("Test file missing", getClass().getResource(testfile));
+        InputStream is = getClass().getResourceAsStream(testfile);
+        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        parseStrategy.registerAdditionalTREdescriptor(new StreamSource(new StringReader("<?xml version=\"1.0\"?><tres><tre name=\"JITCID\" location=\"image\"><field name=\"Info\" length=\"200\"/></tre></tres>")));
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
+        Nitf nitf = parseStrategy.getNitfHeader();
+        TreCollection fileTres = nitf.getTREsRawStructure();
+        assertNotNull(fileTres);
+        assertTrue(fileTres.hasTREs());
+        List<Tre> treList = fileTres.getTREs();
+        assertEquals(1, treList.size());
+        Tre tre = treList.get(0);
+        assertNotNull(tre);
+        assertEquals("JITCID", tre.getName());
+        assertEquals("I_3228D, Checks multi spectral image of 6 bands, the image subheader tells the receiving system to display band 2 as red, band 4 as green, and band 6 as blue.                                          ", tre.getFieldValue("Info"));
+        assertEquals(1, tre.getEntries().size());
+    }
+
+    @Test
     public void testStreamingModeParsingFromFile() throws IOException, ParseException {
         final String testfile = "/JitcNitf21Samples/ns3321a.nsf";
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         File resourceFile = new File(getClass().getResource(testfile).getFile());
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(resourceFile, parseStrategy);
+        NitfReader reader = new FileReader(resourceFile);
+        NitfFileParser.parse(reader, parseStrategy);
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
         assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
         assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
@@ -550,7 +583,8 @@ public class Nitf21HeaderTest {
         exception.expect(ParseException.class);
         exception.expectMessage("No support for streaming mode unless input is seekable");
         NitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
     }
 
     @Test
@@ -561,7 +595,8 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -606,7 +641,8 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -749,7 +785,8 @@ public class Nitf21HeaderTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());
@@ -775,7 +812,8 @@ public class Nitf21HeaderTest {
 
         InputStream is = getClass().getResourceAsStream(testfile);
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
         assertEquals(3, nitf.getComplexityLevel());

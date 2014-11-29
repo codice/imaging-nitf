@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.core;
 
+import java.text.ParseException;
+
 /**
  * Strategy for parsing NITF file components.
  */
@@ -39,5 +41,15 @@ public interface NitfParseStrategy {
      * @param reader the reader, positioned for reading of the segments
      */
     void baseHeadersRead(NitfReader reader);
+
+    /**
+     * Parse and return the TREs.
+     *
+     * @param reader the reader to read the TRE data from
+     * @param length the length of the TRE data (for all TREs)
+     * @return TRE collection for this header part
+     * @throws java.text.ParseException if there is a problem loading the TRE descriptions, or in parsing TREs.
+     */
+    TreCollection parseTREs(NitfReader reader, int length) throws ParseException;
 
 }

@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -45,7 +46,8 @@ public class Nitf20OverflowTest {
 
         InputStream is = getClass().getResourceAsStream(nitf20File);
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         Nitf nitf = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, nitf.getFileType());
         assertEquals(1, nitf.getComplexityLevel());

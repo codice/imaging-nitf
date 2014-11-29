@@ -27,13 +27,16 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import javax.imageio.ImageIO;
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
-import org.codice.imaging.nitf.core.NitfFileFactory;
+import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.core.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.NitfReader;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -134,8 +137,9 @@ public class CgmParserTest {
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         try {
             System.out.println("loading from InputStream");
+            NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getClass().getResourceAsStream(inputFileName)));
             AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
-            NitfFileFactory.parse(getClass().getResourceAsStream(inputFileName), parseStrategy);
+            NitfFileParser.parse(reader, parseStrategy);
 
             if (parseStrategy.getGraphicSegmentHeaders().isEmpty()) {
                 System.out.println("Loaded file, but found no graphic segments.");

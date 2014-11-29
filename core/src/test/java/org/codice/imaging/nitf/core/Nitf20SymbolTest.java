@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -41,7 +42,8 @@ public class Nitf20SymbolTest {
     public void testU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
         NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
@@ -55,7 +57,8 @@ public class Nitf20SymbolTest {
     public void testNoSegmentDataU1060A() throws IOException, ParseException {
         InputStream is = getInputStream();
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileFactory.parse(is, parseStrategy);
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
+        NitfFileParser.parse(reader, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
         NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);

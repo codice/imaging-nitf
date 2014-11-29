@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -24,11 +24,11 @@ import org.slf4j.LoggerFactory;
 /**
     NitfReader implementation using an InputStream.
 */
-class InputStreamReader extends SharedReader implements NitfReader {
+public class NitfInputStreamReader extends SharedReader implements NitfReader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InputStreamReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NitfInputStreamReader.class);
 
-    private BufferedInputStream input = null;
+    private InputStream input = null;
     private long numBytesRead = 0;
 
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
@@ -38,7 +38,7 @@ class InputStreamReader extends SharedReader implements NitfReader {
 
         @param nitfInputStream the input stream to read the NITF file contents from.
     */
-    public InputStreamReader(final BufferedInputStream nitfInputStream) {
+    public NitfInputStreamReader(final InputStream nitfInputStream) {
         input = nitfInputStream;
     }
 

@@ -194,7 +194,11 @@ class NitfFileNode extends DataNode {
     }
 
     Color getBackgroundColour() {
-        return nitf.getFileBackgroundColour().toColour();
+        if (nitf.getFileBackgroundColour() != null) {
+            return nitf.getFileBackgroundColour().toColour();
+        } else {
+            return Color.LIGHT_GRAY;
+        }
     }
 
 }
