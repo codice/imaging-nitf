@@ -216,7 +216,6 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @throws ParseException on parse error
      */
     protected final NitfImageSegmentHeader readImageSegmentHeader(final NitfReader reader, final int i) throws ParseException {
-        initialiseTreCollectionParserIfRequired();
         NitfImageSegmentHeaderParser imageSegmentHeaderParser = new NitfImageSegmentHeaderParser();
         NitfImageSegmentHeader imageSegmentHeader = imageSegmentHeaderParser.parse(reader, this);
         imageSegmentHeader.setImageSegmentDataLength(nitfFileLevelHeader.getImageSegmentDataLengths().get(i));
