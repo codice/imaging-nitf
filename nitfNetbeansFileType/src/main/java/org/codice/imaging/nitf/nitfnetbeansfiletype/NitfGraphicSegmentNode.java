@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +32,15 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
     private static final String BOUNDING_BOX_POSITION_DESCRIPTION =
                     "bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.";
 
-    private final ChildSegmentKey childKey;
     private final NitfGraphicSegmentHeader header;
+    private final int graphicSegmentIndex;
+    private final DeferredSegmentParseStrategy parseStrategy;
 
-    public NitfGraphicSegmentNode(final ChildSegmentKey key) throws ParseException {
+    public NitfGraphicSegmentNode(final ChildSegmentKey childKey) throws ParseException {
         super(Children.LEAF);
-        childKey = key;
-        DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-        header = parseStrategy.getGraphicSegmentHeader(childKey.getIndex());
+        graphicSegmentIndex = childKey.getIndex();
+        parseStrategy = childKey.getParseStrategy();
+        header = parseStrategy.getGraphicSegmentHeader(graphicSegmentIndex);
         setDisplayName("Graphic Segment: " + getFriendlyName());
     }
 
@@ -54,12 +54,9 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
         return "(no name)";
     }
 
-    // TODO: temporary approach
     List<AbstractElement> getCGMCommands() {
         try {
-            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-            InputStream stream = parseStrategy.getGraphicSegmentDataReader(childKey.getIndex());
-            CgmParser graphicParser = new CgmParser(stream);
+            CgmParser graphicParser = new CgmParser(parseStrategy.getGraphicSegmentDataReader(graphicSegmentIndex));
             graphicParser.buildCommandList();
             return graphicParser.getCommandList();
         } catch (ParseException | IOException ex) {

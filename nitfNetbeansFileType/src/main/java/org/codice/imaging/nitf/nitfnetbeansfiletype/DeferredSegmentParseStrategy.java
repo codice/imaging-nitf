@@ -258,4 +258,9 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
         long segmentDataOffset = imageSegmentDataOffsets.get(index);
         return fileReader.getImageInputStreamAt(segmentDataOffset);
     }
+
+    final InputStream getSymbolSegmentDataReader(final int index) throws ParseException {
+        long segmentDataOffset = symbolSegmentDataOffsets.get(index);
+        return fileReader.getInputStreamAt(segmentDataOffset);
+    }
 }

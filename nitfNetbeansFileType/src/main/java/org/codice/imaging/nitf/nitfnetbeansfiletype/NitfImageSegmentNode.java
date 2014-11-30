@@ -26,14 +26,15 @@ import org.openide.util.Exceptions;
 
 class NitfImageSegmentNode extends AbstractSegmentNode {
 
-    private final ChildSegmentKey childKey;
+    private final int imageSegmentIndex;
     private final NitfImageSegmentHeader header;
+    private final DeferredSegmentParseStrategy parseStrategy;
 
     public NitfImageSegmentNode(final ChildSegmentKey key) throws ParseException {
         super(Children.LEAF);
-        childKey = key;
-        DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-        header = parseStrategy.getImageSegmentHeader(childKey.getIndex());
+        imageSegmentIndex = key.getIndex();
+        parseStrategy = key.getParseStrategy();
+        header = parseStrategy.getImageSegmentHeader(imageSegmentIndex);
         setDisplayName("Image Segment: " + getFriendlyName());
     }
 
@@ -203,11 +204,9 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
         return header;
     }
 
-    // TODO: temporary approach
     ImageInputStream getImageDataReader() {
         try {
-            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-            return parseStrategy.getImageSegmentDataReader(childKey.getIndex());
+            return parseStrategy.getImageSegmentDataReader(imageSegmentIndex);
         } catch (ParseException ex) {
             Exceptions.printStackTrace(ex);
         }

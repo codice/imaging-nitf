@@ -14,21 +14,30 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.Action;
+import org.codice.imaging.cgm.AbstractElement;
+import org.codice.imaging.cgm.CgmParser;
 import org.codice.imaging.nitf.core.NitfSymbolSegmentHeader;
+import org.codice.imaging.nitf.core.SymbolType;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
 
 class NitfSymbolSegmentNode extends AbstractSegmentNode {
 
-    private final ChildSegmentKey childKey;
+    private final int symbolSegmentIndex;
+    private final DeferredSegmentParseStrategy parseStrategy;
     private final NitfSymbolSegmentHeader header;
 
-    public NitfSymbolSegmentNode(final ChildSegmentKey key) throws ParseException {
+    public NitfSymbolSegmentNode(final ChildSegmentKey childKey) throws ParseException {
         super(Children.LEAF);
-        childKey = key;
-        DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-        header = parseStrategy.getSymbolSegmentHeader(childKey.getIndex());
+        symbolSegmentIndex = childKey.getIndex();
+        parseStrategy = childKey.getParseStrategy();
+        header = parseStrategy.getSymbolSegmentHeader(symbolSegmentIndex);
         setDisplayName("Symbol Segment: " + getFriendlyName());
     }
 
@@ -42,16 +51,16 @@ class NitfSymbolSegmentNode extends AbstractSegmentNode {
         return "(no name)";
     }
 
-    // TODO: this really isn't the right interface.
-//    byte[] getData() {
-//        try {
-//            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-//            return parseStrategy.getSymbolSegmentData(header, childKey.getIndex());
-//        } catch (ParseException ex) {
-//            Exceptions.printStackTrace(ex);
-//        }
-//        return "";
-//    }
+    List<AbstractElement> getCGMCommands() {
+        try {
+            CgmParser cgmParser = new CgmParser(parseStrategy.getSymbolSegmentDataReader(symbolSegmentIndex));
+            cgmParser.buildCommandList();
+            return cgmParser.getCommandList();
+        } catch (ParseException | IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return new ArrayList<>();
+    }
 
     @Override
     protected Sheet createSheet() {
@@ -110,9 +119,13 @@ class NitfSymbolSegmentNode extends AbstractSegmentNode {
         return sheet;
     }
 
-//    @Override
-//    public Action[] getActions(final boolean popup) {
-//        return combineActions(new LabelSegmentOpenAction(this), super.getActions(popup));
-//    }
-
+    @Override
+    public Action[] getActions(final boolean popup) {
+        Action[] actions = super.getActions(popup);
+        if (header.getSymbolType() == SymbolType.CGM) {
+            return combineActions(new SymbolSegmentViewAction(this), actions);
+        } else {
+            return actions;
+        }
+    }
 }
