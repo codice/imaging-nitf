@@ -119,7 +119,7 @@ class CgmGraphicState {
                 lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT_DOT, 0.0f);
                 break;
             default:
-                // TODO: log warning.
+                // TODO: [CGM-47]  log warning.
                 lineStroke = new BasicStroke(lineWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
                 break;
         }
@@ -146,7 +146,7 @@ class CgmGraphicState {
     }
 
     void setFontList(final List<String> fonts) {
-        // TODO: the font list needs to be translated to font names we have...
+        // TODO: [IMG-29] the font list needs to be translated to font names we have...
         fontList = fonts;
     }
 
@@ -213,7 +213,7 @@ class CgmGraphicState {
                 edgeStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT, DASH_DOT_DOT, 0.0f);
                 break;
             default:
-                // TODO: log warning.
+                // TODO: [CGM-47]  log warning.
                 edgeStroke = new BasicStroke(edgeWidth, LINE_CAP_STYLE, LINE_JOIN_STYLE, MITRE_LIMIT);
                 break;
         }

@@ -101,7 +101,7 @@ class NitfChildFactory extends ChildFactory<ChildSegmentKey> {
         }
 
         Node childNode = new AbstractNode(Children.LEAF);
-        childNode.setDisplayName(key.getClass().getSimpleName() + " TODO : " + key.getSegmentType());
+        childNode.setDisplayName(key.getClass().getSimpleName() + " Not implemented : " + key.getSegmentType());
         return childNode;
     }
 }

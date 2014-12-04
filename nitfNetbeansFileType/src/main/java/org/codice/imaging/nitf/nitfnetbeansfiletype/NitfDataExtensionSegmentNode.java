@@ -95,7 +95,7 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
             } else if ("XML_DATA_CONTENT".equals(header.getIdentifier().trim())) {
                 return new String(parseStrategy.getDataExtensionSegmentData(childKey.getIndex()));
             } else {
-                return "TODO";
+                return "[IMG-48] TODO";
             }
         } catch (ParseException ex) {
             Exceptions.printStackTrace(ex);

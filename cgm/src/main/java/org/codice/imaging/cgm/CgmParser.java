@@ -120,20 +120,20 @@ public class CgmParser {
 
         ELEMENTS.put(CgmIdentifier.METAFILE_VERSION, MetafileVersionElement.class);
         ELEMENTS.put(CgmIdentifier.METAFILE_DESCRIPTION, MetafileDescriptionElement.class);
-        // TODO: VDC TYPE (must be Integer)
-        // TODO: Integer precision (must be 16 bits)
+        // TODO: [IMG-30]  VDC TYPE (must be Integer)
+        // TODO: [IMG-31]  Integer precision (must be 16 bits)
         // REAL_PRECISION prohibited in BIIF Profile BPCGM01.00
-        // TODO: Index precision (must be 16 bits)
-        // TODO: Colour precision (must be 8 bits)
-        // TODO: Colour index precision (colour selection mode must be 1)
+        // TODO: [IMG-32]  Index precision (must be 16 bits)
+        // TODO: [IMG-33]  Colour precision (must be 8 bits)
+        // TODO: [IMG-34]  Colour index precision (colour selection mode must be 1)
         // MAXIMUM_COLOUR_INDEX prohibited in BIIF Profile BPCGM01.00
-        // TODO: Colour value extent (must be 0, 0, 0 through 255, 255, 255)
+        // TODO: [IMG-35]  Colour value extent (must be 0, 0, 0 through 255, 255, 255)
         ELEMENTS.put(CgmIdentifier.METAFILE_ELEMENT_LIST, MetafileElementsListElement.class);
         // METAFILE_DEFAULTS_REPLACEMENT prohibited in BIIF Profile BPCGM01.00
         ELEMENTS.put(CgmIdentifier.FONT_LIST, FontListElement.class);
-        // TODO: CHARACTER_SET_LIST - must be ISO 10646-1 Character Set Basic Latin
+        // TODO: [IMG-36]  CHARACTER_SET_LIST - must be ISO 10646-1 Character Set Basic Latin
         // CHARACTER_CODING_ANNOUNCER prohibited in BIIF Profile BPCGM01.00
-        // TODO: NAME_PRECISION - (Note: must be version 1)
+        // TODO: [IMG-37]  NAME_PRECISION - (Note: must be version 1)
         // MAXIMUM_VDC_EXTENT prohibited in BIIF Profile BPCGM01.00
         // SEGMENT_PRIORITY_EXTENT prohibited in BIIF Profile BPCGM01.00
         // COLOUR_MODEL prohibited in BIIF Profile BPCGM01.00
@@ -159,14 +159,14 @@ public class CgmParser {
         // FILL_REPRESENTATION prohibited in BIIF Profile BPCGM01.10
         // EDGE_REPRESENTATION prohibited in BIIF Profile BPCGM01.10
         // INTERIOR_STYLE_REPRESENTATION prohibited in BIIF Profile BPCGM01.10
-        // TODO: LINE_AND_EDGE_TYPE_DEFINITION
-        // TODO: HATCH_STYLE_DEFINITION
+        // TODO: [IMG-38]  LINE_AND_EDGE_TYPE_DEFINITION
+        // TODO: [IMG-39]  HATCH_STYLE_DEFINITION
         // GEOMETRIC_PATTERN_DEFINITION prohibited in BIIF Profile BPCGM01.10
 
-        // TODO: VDC_INTEGER_PRECISION - must be 16 bits
+        // TODO: [IMG-40]  VDC_INTEGER_PRECISION - must be 16 bits
         // VDC_REAL_PRECISION prohibited in BIIF Profile BPCGM01.10
-        // TODO: AUXILLARY_COLOUR
-        // TODO: TRANSPARENCY
+        // TODO: [IMG-41]  AUXILLARY_COLOUR
+        // TODO: [IMG-42]  TRANSPARENCY
         // CLIP_RECTANGLE prohibited in BIIF Profile BPCGM01.10
         // CLIP_INDICATOR prohibited in BIIF Profile BPCGM01.10
         // LINE_CLIPPING_MODE prohibited in BIIF Profile BPCGM01.10
@@ -195,10 +195,10 @@ public class CgmParser {
         // CIRCULAR_ARC_3_POINT prohibited in BIIF Profile BPCGM01.10
         // CIRCULAR_ARC_3_POINT_CLOSE prohibited in BIIF Profile BPCGM01.10
         ELEMENTS.put(CgmIdentifier.CIRCULAR_ARC_CENTRE, CircularArcCentreElement.class);
-        // TODO: CIRCULAR_ARC_CENTRE_CLOSE
+        // TODO: [IMG-43]  CIRCULAR_ARC_CENTRE_CLOSE
         ELEMENTS.put(CgmIdentifier.ELLIPSE, EllipseElement.class);
-        // TODO: ELLIPTICAL_ARC
-        // TODO: ELLIPICAL_ARC_CLOSE
+        // TODO: [IMG-44]  ELLIPTICAL_ARC
+        // TODO: [IMG-45]  ELLIPICAL_ARC_CLOSE
         // CIRCULAR_ARC_CENTRE_REVERSED prohibited in BIIF Profile BPCGM01.10
         // CONNECTING_EDGE prohibited in BIIF Profile BPCGM01.10
         // HYPERBOLIC_ARC prohibited in BIIF Profile BPCGM01.10
