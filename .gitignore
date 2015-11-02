@@ -1,16 +1,16 @@
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-/target/
-/metadata-comparison/target/
-/core/target/
-/nitfNetbeansFileType/target/
+*.project
+*.settings
+*.classpath
+*.metadata
+*.iml
+*.idea
+*.checkstyle
+*.DS_Store
+node_modules/
+node/
+target/
+bin/
+atlassian-ide-plugin.xml
+*.sonar-ide.properties
+**/webapp/css/styles.css
+platform/solr/**/overlays
