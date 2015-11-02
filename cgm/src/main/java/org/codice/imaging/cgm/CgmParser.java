@@ -285,7 +285,12 @@ public class CgmParser {
         dataReader = new CgmInputReader(graphicSegment);
     }
 
-    final void buildCommandList() throws IOException {
+    /**
+     * Description.
+     *
+     * @throws IOException if fails.
+     */
+    public final void buildCommandList() throws IOException {
 
         AbstractElement element;
         do {
@@ -344,7 +349,12 @@ public class CgmParser {
         return (commandHeader & ELEMENT_CLASS_BIT_MASK) >> ELEMENT_CLASS_BIT_SHIFT;
     }
 
-    final List<AbstractElement> getCommandList() {
+    /**
+     * Description.
+     *
+     * @return list.
+     */
+    public final List<AbstractElement> getCommandList() {
         return commands;
     }
 }
