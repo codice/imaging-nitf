@@ -258,6 +258,11 @@ public class RenderJitcTest extends TestCase {
         testOneFile("U_3058B.NTF", "JitcNitf20Samples");
     }
 
+    @Test
+    public void testNS3361C() throws IOException, ParseException {
+        testOneFile("ns3361c.nsf", "JitcNitf21Samples");
+    }
+
     private void testOneFile(final String testfile, final String parentDirectory) throws IOException, ParseException {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
         System.out.println("================================== Testing :" + inputFileName);
@@ -265,15 +270,17 @@ public class RenderJitcTest extends TestCase {
         NitfReader reader = new NitfInputStreamReader(getClass().getResourceAsStream(inputFileName));
         ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
         NitfFileParser.parse(reader, parseStrategy);
-        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
-        NitfRender renderer = new NitfRender();
-        BufferedImage img = new BufferedImage(imageSegment.getImageLocationColumn() + (int)imageSegment.getNumberOfColumns(),
-                                    imageSegment.getImageLocationRow() + (int)imageSegment.getNumberOfRows(),
-                                    BufferedImage.TYPE_INT_ARGB);
-        ByteArrayInputStream nitfImageDataStream = new ByteArrayInputStream(parseStrategy.getImageSegmentData().get(0));
-        ImageInputStream imageInputStream = new MemoryCacheImageInputStream(nitfImageDataStream);
-        renderer.render(imageSegment, imageInputStream, img.createGraphics());
-        // TODO: move to automated (perceptual?) comparison
-        ImageIO.write(img, "png", new File(testfile + ".png"));
+        for (int i = 0; i < parseStrategy.getImageSegmentHeaders().size(); ++i) {
+            NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(i);
+            NitfRender renderer = new NitfRender();
+            BufferedImage img = new BufferedImage(imageSegment.getImageLocationColumn() + (int)imageSegment.getNumberOfColumns(),
+                                        imageSegment.getImageLocationRow() + (int)imageSegment.getNumberOfRows(),
+                                        BufferedImage.TYPE_INT_ARGB);
+            ByteArrayInputStream nitfImageDataStream = new ByteArrayInputStream(parseStrategy.getImageSegmentData().get(i));
+            ImageInputStream imageInputStream = new MemoryCacheImageInputStream(nitfImageDataStream);
+            renderer.render(imageSegment, imageInputStream, img.createGraphics());
+            // TODO: move to automated (perceptual?) comparison
+            ImageIO.write(img, "png", new File(testfile + "_" + i + ".png"));
+        }
     }
 }
