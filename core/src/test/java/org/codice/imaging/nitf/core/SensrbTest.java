@@ -29,9 +29,9 @@ public class SensrbTest {
     // Has 1, 5, 6
     @Test
     public void testSensrbMinimal() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_minimal.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_minimal.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 320);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -87,9 +87,9 @@ public class SensrbTest {
     // Has 1, 5, 6, 11
     @Test
     public void testSensrbSinglePointSet() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_single_point_set.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_single_point_set.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 399);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -163,9 +163,9 @@ public class SensrbTest {
     // Has 1, 2, 4, 5, 6
     @Test
     public void testSensrbSituationalAwareness() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_situational_awareness.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_situational_awareness.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 508);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -244,9 +244,9 @@ public class SensrbTest {
     // Has 1, 2, 4, 5, 6, 7
     @Test
     public void testSensrbGeo() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_geo.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_geo.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 615);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -337,9 +337,9 @@ public class SensrbTest {
     // Has 1, 2, 4, 5, 6, 9, 11
     @Test
     public void testSensrbGeoPlus() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_geo_plus.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_geo_plus.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 808);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -454,9 +454,9 @@ public class SensrbTest {
     // Has 1, 2, 3, 4, 5, 6, 8, 10, 11, 14
     @Test
     public void testSensrbAccurate() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_accurate.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_accurate.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 937);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -579,9 +579,9 @@ public class SensrbTest {
     // Has 1, 2, 3, 4, 5, 6, 8, 10, 11, 12 (for 6), 14
     @Test
     public void testSensrbTimeStamped6() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_timestamped6.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped6.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 1152);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -744,9 +744,9 @@ public class SensrbTest {
     // Has 1, 2, 4, 5, 6, 9, 11, 12 (for 9), 15
     @Test
     public void testSensrbTimeStamped9() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_timestamped9.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped9.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 808);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -889,9 +889,9 @@ public class SensrbTest {
     // Has 1, 2, 4, 5, 6, 9, 11, 13 (for 9), 15
     @Test
     public void testSensrbPixel9() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_pixel9.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_pixel9.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 808);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1038,9 +1038,9 @@ public class SensrbTest {
     // Has 1, 2, 3, 4, 5, 6, 8, 10, 11, 12 (for 8), 13 (for 6 and 8) 14
     @Test
     public void testSensrbTimePixel8Pixel6() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_timepixel8_pixel6.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timepixel8_pixel6.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 937);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1344,9 +1344,9 @@ public class SensrbTest {
     // Has 1, 2, 4, 5, 6, 7, 10, 12 (for 7 and 10), 13 (for 10) and 15
     @Test
     public void testSensrbTime7TimePixel10() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_timestamped7_timepixel10.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped7_timepixel10.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 615);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1543,9 +1543,9 @@ public class SensrbTest {
     // Has 1, 2, 4, 5, 6, 7, 10, 12 (for 5), 13 (for 5 and 7) and 15
     @Test
     public void testSensrbPixel7TimePixel5() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB_timepixel5_pixel7.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timepixel5_pixel7.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 615);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
@@ -1718,9 +1718,9 @@ public class SensrbTest {
 
     @Test
     public void testSensrbSample() throws ParseException {
-        InputStream testDataStream = getClass().getResourceAsStream("/SB_Seattle_WithUncertainties.txt");
+        InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SB_Seattle_WithUncertainties.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
-        NitfReader nitfReader = new InputStreamReader(bufferedStream);
+        NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         TreCollection parseResult = parser.parse(nitfReader, 1815);
     }

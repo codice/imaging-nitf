@@ -14,15 +14,13 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 
 import org.junit.Test;
 
@@ -30,25 +28,29 @@ public class Nitf21GraphicParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_GRAPHIC_SEGMENT_DATA));
-        assertEquals(1, file.getGraphicSegments().size());
+        GraphicDataExtractionParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
 
-        NitfGraphicSegment graphicSegment = file.getGraphicSegments().get(0);
-        assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
-        assertEquals(780, graphicSegment.getGraphicData().length);
+        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);
+        assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
+        assertEquals(780, parseStrategy.getGraphicSegmentData().get(0).length);
     }
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseHeadersOnly(getInputStream());
-        assertEquals(1, file.getGraphicSegments().size());
+        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
 
-        NitfGraphicSegment graphicSegment = file.getGraphicSegments().get(0);
-        assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
-        assertNull(graphicSegment.getGraphicData());
+        NitfGraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);
+        assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
+        assertEquals(0, parseStrategy.getGraphicSegmentData().size());
     }
 
-    private void assertGraphicSegmentMetadataIsAsExpected(NitfGraphicSegment graphicSegment) {
+    private void assertGraphicSegmentMetadataIsAsExpected(NitfGraphicSegmentHeader graphicSegment) {
         assertNotNull(graphicSegment);
         assertEquals("0000000001", graphicSegment.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", graphicSegment.getGraphicName());
@@ -65,7 +67,7 @@ public class Nitf21GraphicParsingTest {
     }
 
     private InputStream getInputStream() {
-        final String testfile = "/i_3051e.ntf";
+        final String testfile = "/JitcNitf21Samples/i_3051e.ntf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         return getClass().getResourceAsStream(testfile);

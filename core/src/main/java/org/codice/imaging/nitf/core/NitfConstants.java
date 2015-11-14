@@ -1269,7 +1269,7 @@ public final class NitfConstants {
      * <p>
      * NITF 2.0 only. See MIL-STD-2500A Tables for usage.
      */
-    protected static final String DOWNGRADE_EVENT_MAGIC = "999998";
+    public static final String DOWNGRADE_EVENT_MAGIC = "999998";
 
     // text segment
     /**

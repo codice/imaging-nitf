@@ -14,33 +14,44 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.text.ParseException;
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.NitfTextSegment;
+import org.codice.imaging.nitf.core.NitfTextSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
 
 class NitfTextSegmentNode extends AbstractSegmentNode {
 
-    private final NitfTextSegment segment;
+    private final ChildSegmentKey childKey;
+    private final NitfTextSegmentHeader header;
 
-    public NitfTextSegmentNode(final NitfTextSegment nitfTextSegment) {
+    public NitfTextSegmentNode(final ChildSegmentKey key) throws ParseException {
         super(Children.LEAF);
-        segment = nitfTextSegment;
+        childKey = key;
+        DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
+        header = parseStrategy.getTextSegmentHeader(childKey.getIndex());
         setDisplayName("Text Segment: " + getFriendlyName());
     }
 
     final String getFriendlyName() {
-        if (!segment.getTextTitle().trim().isEmpty()) {
-            return segment.getTextTitle().trim();
+        if (!header.getTextTitle().trim().isEmpty()) {
+            return header.getTextTitle().trim();
         }
-        if (!segment.getIdentifier().trim().isEmpty()) {
-            return segment.getIdentifier().trim();
+        if (!header.getIdentifier().trim().isEmpty()) {
+            return header.getIdentifier().trim();
         }
         return "(no name)";
     }
 
     String getText() {
-        return segment.getTextData();
+        try {
+            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
+            return parseStrategy.getTextSegmentData(header, childKey.getIndex());
+        } catch (ParseException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return "";
     }
 
     @Override
@@ -48,40 +59,25 @@ class NitfTextSegmentNode extends AbstractSegmentNode {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
-        addSubSegmentProperties(set, segment);
+        addSubSegmentProperties(set, header);
         set.put(new DateProperty("textDateTime",
                 "Text Date and Time",
                 "Date and time of this origination of the text.",
-                segment.getTextDateTime().toDate()));
+                header.getTextDateTime().toDate()));
         set.put(new StringProperty("textTitle",
                 "Text Title",
                 "The title of the text item",
-                segment.getTextTitle()));
+                header.getTextTitle()));
         set.put(new StringProperty("textFormat",
                 "Text Format",
                 "Three-character code indicating the format of type of text data.",
-                segment.getTextFormat().toString()));
+                header.getTextFormat().toString()));
         return sheet;
     }
 
     @Override
     public Action[] getActions(final boolean popup) {
-        return combineActions(new TextSegmentOpenAction(this), super.getActions(popup));
+        return combineActions(new TextSegmentViewAction(this), super.getActions(popup));
     }
 
-    /**
-     * Prepend an action to an existing array of actions.
-     *
-     * @param action the action to prepend
-     * @param actions the existing actions
-     * @return combined array of actions
-     */
-    protected Action[] combineActions(final Action action, final Action[] actions) {
-        Action[] combinedActions = new Action[actions.length + 1];
-        combinedActions[0] = action;
-        for (int i = 1; i < combinedActions.length; ++i) {
-            combinedActions[i] = actions[i - 1];
-        }
-        return combinedActions;
-    }
 }

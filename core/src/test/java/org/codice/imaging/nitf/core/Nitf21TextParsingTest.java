@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -40,35 +41,29 @@ public class Nitf21TextParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
-        assertEquals(1, file.getTextSegments().size());
+        TextDataExtractionParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
 
-        NitfTextSegment textSegment = file.getTextSegments().get(0);
+        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", textSegment.getTextData());
-    }
-
-    @Test
-    public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.noneOf(ParseOption.class));
-        assertEquals(1, file.getTextSegments().size());
-
-        NitfTextSegment textSegment = file.getTextSegments().get(0);
-        assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertNull(textSegment.getTextData());
+        assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", parseStrategy.getTextSegmentData().get(0));
     }
 
     @Test
     public void testExtractionWithDefault() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseHeadersOnly(getInputStream());
-        assertEquals(1, file.getTextSegments().size());
+        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
 
-        NitfTextSegment textSegment = file.getTextSegments().get(0);
+        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertNull(textSegment.getTextData());
+        assertEquals(0, parseStrategy.getTextSegmentData().size());
     }
 
-    private void assertTextSegmentMetadataIsAsExpected(NitfTextSegment textSegment) {
+    private void assertTextSegmentMetadataIsAsExpected(NitfTextSegmentHeader textSegment) {
         assertNotNull(textSegment);
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());
@@ -78,7 +73,7 @@ public class Nitf21TextParsingTest {
     }
 
     private InputStream getInputStream() {
-        final String testfile = "/ns3201a.nsf";
+        final String testfile = "/JitcNitf21Samples/ns3201a.nsf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         return getClass().getResourceAsStream(testfile);

@@ -1,28 +1,27 @@
 /**
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  **/
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 import java.util.TimeZone;
 
 import org.junit.Before;
@@ -40,25 +39,28 @@ public class Nitf21ImageParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.of(ParseOption.EXTRACT_IMAGE_SEGMENT_DATA));
-        assertEquals(1, file.getImageSegments().size());
+        ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
 
-        NitfImageSegment imageSegment = file.getImageSegments().get(0);
+        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
-        assertEquals(1048576, imageSegment.getImageData().length);
+        assertEquals(1048576, parseStrategy.getImageSegmentData().get(0).length);
     }
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, ParseException {
-        Nitf file = NitfFileFactory.parseSelectedDataSegments(getInputStream(), EnumSet.noneOf(ParseOption.class));
-        assertEquals(1, file.getImageSegments().size());
+        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
+        NitfFileParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
 
-        NitfImageSegment imageSegment = file.getImageSegments().get(0);
+        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
-        assertNull(imageSegment.getImageData());
     }
 
-    private void assertImageSegmentMetadataIsAsExpected(NitfImageSegment imageSegment) {
+    private void assertImageSegmentMetadataIsAsExpected(NitfImageSegmentHeader imageSegment) {
         assertNotNull(imageSegment);
         assertEquals("Missing ID", imageSegment.getIdentifier());
         assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime().toDate()));
@@ -96,7 +98,7 @@ public class Nitf21ImageParsingTest {
     }
 
     private InputStream getInputStream() {
-        final String testfile = "/i_3001a.ntf";
+        final String testfile = "/JitcNitf21Samples/i_3001a.ntf";
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         return getClass().getResourceAsStream(testfile);

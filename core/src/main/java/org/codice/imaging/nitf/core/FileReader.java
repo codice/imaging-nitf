@@ -17,8 +17,13 @@ package org.codice.imaging.nitf.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.nio.channels.Channels;
 import java.text.ParseException;
+import java.util.logging.Level;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +31,7 @@ import org.slf4j.LoggerFactory;
 /**
     NitfReader implementation using a (random access) File.
 */
-class FileReader extends SharedReader implements NitfReader {
+public class FileReader extends SharedReader implements NitfReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileReader.class);
 
@@ -145,4 +150,38 @@ class FileReader extends SharedReader implements NitfReader {
     private RandomAccessFile makeRandomAccessFile(final String filename, final String mode) throws FileNotFoundException {
         return new RandomAccessFile(filename, mode);
     }
+
+    /**
+     * Get an input stream at a specified point in the file.
+     *
+     * @param offset the point in the file the input stream should read from
+     * @return input stream for the specified content
+     * @throws ParseException if creating the input stream fails.
+     */
+    public final InputStream getInputStreamAt(final long offset) throws ParseException {
+        try {
+            return Channels.newInputStream(nitfFile.getChannel().position(offset));
+        } catch (IOException ex) {
+            throw new ParseException("IOException while getting input stream: " + ex, (int) offset);
+        }
+    }
+
+    /**
+     * Get an image input stream at a specified point in the file.
+     *
+     * @param offset the point in the file the image input stream should read from
+     * @return image input stream for the specified content
+     * @throws ParseException if creating the image input stream fails.
+     */
+    public final ImageInputStream getImageInputStreamAt(final long offset) throws ParseException {
+        try {
+            ImageInputStream iis = new FileImageInputStream(nitfFile);
+            iis.seek(offset);
+            return iis;
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(FileReader.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ParseException("Error seeking while creating image input stream: " + ex, (int) offset);
+        }
+    }
+
 }

@@ -27,15 +27,16 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.EnumSet;
 import javax.imageio.ImageIO;
-import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfFileFactory;
-import org.codice.imaging.nitf.core.NitfGraphicSegment;
-import org.codice.imaging.nitf.core.ParseOption;
+import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
+import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.core.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.NitfReader;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,22 +48,22 @@ import static org.junit.Assert.*;
  *
  */
 public class CgmParserTest {
-    
+
     public CgmParserTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -96,9 +97,30 @@ public class CgmParserTest {
     }
 
     @Test
+    public void I_3063F() throws IOException {
+        String parentDirectory = "JitcNitf21Samples";
+        String testfile = "i_3063f.ntf";
+        testOneImage(parentDirectory, testfile);
+    }
+
+    @Test
     public void I_3068A() throws IOException {
         String parentDirectory = "JitcNitf21Samples";
         String testfile = "i_3068a.ntf";
+        testOneImage(parentDirectory, testfile);
+    }
+
+    @Test
+    public void NS3059A() throws IOException {
+        String parentDirectory = "JitcNitf21Samples";
+        String testfile = "ns3059a.nsf";
+        testOneImage(parentDirectory, testfile);
+    }
+
+    @Test
+    public void NS3073A() throws IOException {
+        String parentDirectory = "JitcNitf21Samples";
+        String testfile = "ns3073a.nsf";
         testOneImage(parentDirectory, testfile);
     }
 
@@ -108,24 +130,26 @@ public class CgmParserTest {
         String testfile = "ns3101b.nsf";
         testOneImage(parentDirectory, testfile);
     }
-    
+
     private void testOneImage(String parentDirectory, String testfile) throws IOException {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
         System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         try {
             System.out.println("loading from InputStream");
-            Nitf nitf = NitfFileFactory.parseSelectedDataSegments(getClass().getResourceAsStream(inputFileName), EnumSet.allOf(ParseOption.class));
+            NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getClass().getResourceAsStream(inputFileName)));
+            AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+            NitfFileParser.parse(reader, parseStrategy);
 
-            if (nitf.getGraphicSegments().isEmpty()) {
+            if (parseStrategy.getGraphicSegmentHeaders().isEmpty()) {
                 System.out.println("Loaded file, but found no graphic segments.");
                 System.exit(0);
             }
-            NitfGraphicSegment segment = nitf.getGraphicSegments().get(0);
-            CgmParser parser = new CgmParser(segment);
+            NitfGraphicSegmentHeader segment = parseStrategy.getGraphicSegmentHeaders().get(0);
+            CgmParser parser = new CgmParser(parseStrategy.getGraphicSegmentData().get(0));
             parser.buildCommandList();
             // parser.dump();
-            
+
             // System.out.println("CCS position:" + segment.getGraphicLocationColumn() + ", " + segment.getGraphicLocationRow());
             // System.out.println("BBox1:" + segment.getBoundingBox1Column() + ", " + segment.getBoundingBox1Row());
             // System.out.println("BBox2:" + segment.getBoundingBox2Column() + ", " + segment.getBoundingBox2Row());

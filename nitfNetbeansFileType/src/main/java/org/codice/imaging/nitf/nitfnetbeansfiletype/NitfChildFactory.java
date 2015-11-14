@@ -14,49 +14,94 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.text.ParseException;
 import java.util.List;
-import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
-import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfDataExtensionSegment;
-import org.codice.imaging.nitf.core.NitfGraphicSegment;
-import org.codice.imaging.nitf.core.NitfImageSegment;
-import org.codice.imaging.nitf.core.NitfTextSegment;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
+import org.openide.util.Exceptions;
 
-class NitfChildFactory extends ChildFactory<AbstractCommonNitfSegment> {
+class NitfChildFactory extends ChildFactory<ChildSegmentKey> {
 
-    private final Nitf nitf;
+    private final DeferredSegmentParseStrategy parseStrategy;
 
-    public NitfChildFactory(final Nitf nitfData) {
-        nitf = nitfData;
+    public NitfChildFactory(final DeferredSegmentParseStrategy nitfData) {
+        parseStrategy = nitfData;
     }
 
     @Override
     protected boolean createKeys(final List list) {
-        list.addAll(nitf.getImageSegments());
-        list.addAll(nitf.getGraphicSegments());
-        list.addAll(nitf.getTextSegments());
-        list.addAll(nitf.getDataExtensionSegments());
+        for (int i = 0; i < parseStrategy.getImageSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("Image");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
+        for (int i = 0; i < parseStrategy.getGraphicSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("Graphic");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
+        for (int i = 0; i < parseStrategy.getSymbolSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("Symbol");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
+        for (int i = 0; i < parseStrategy.getLabelSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("Label");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
+        for (int i = 0; i < parseStrategy.getTextSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("Text");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
+        for (int i = 0; i < parseStrategy.getDataExtensionSegmentHeaderOffsets().size(); ++i) {
+            ChildSegmentKey key = new ChildSegmentKey();
+            key.setSegmentType("DES");
+            key.setParseStrategy(parseStrategy);
+            key.setIndex(i);
+            list.add(key);
+        }
         return true;
     }
 
     @Override
-    protected Node createNodeForKey(final AbstractCommonNitfSegment key) {
-        if (key instanceof NitfImageSegment) {
-            return new NitfImageSegmentNode((NitfImageSegment) key);
-        } else if (key instanceof NitfGraphicSegment) {
-            return new NitfGraphicSegmentNode((NitfGraphicSegment) key);
-        } else if (key instanceof NitfTextSegment) {
-            return new NitfTextSegmentNode((NitfTextSegment) key);
-        } else if (key instanceof NitfDataExtensionSegment) {
-            return new NitfDataExtensionSegmentNode((NitfDataExtensionSegment) key);
-        } else {
-            Node childNode = new AbstractNode(Children.LEAF);
-            childNode.setDisplayName(key.getClass().getSimpleName() + " : " + key.getIdentifier());
-            return childNode;
+    protected Node createNodeForKey(final ChildSegmentKey key) {
+        try {
+            switch(key.getSegmentType()) {
+                case "Image":
+                    return new NitfImageSegmentNode(key);
+                case "Graphic":
+                    return new NitfGraphicSegmentNode(key);
+                case "Symbol":
+                    return new NitfSymbolSegmentNode(key);
+                case "Label":
+                    return new NitfLabelSegmentNode(key);
+                case "Text":
+                    return new NitfTextSegmentNode(key);
+                case "DES":
+                    return new NitfDataExtensionSegmentNode(key);
+                default:
+                    break;
+            }
+        } catch (ParseException ex) {
+            Exceptions.printStackTrace(ex);
         }
+
+        Node childNode = new AbstractNode(Children.LEAF);
+        childNode.setDisplayName(key.getClass().getSimpleName() + " Not implemented : " + key.getSegmentType());
+        return childNode;
     }
 }

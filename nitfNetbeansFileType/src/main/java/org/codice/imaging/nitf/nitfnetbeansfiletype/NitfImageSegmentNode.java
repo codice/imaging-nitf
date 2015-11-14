@@ -14,19 +14,38 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.text.ParseException;
+import javax.imageio.stream.ImageInputStream;
+import javax.swing.Action;
+import javax.swing.tree.TreeModel;
 import org.codice.imaging.nitf.core.NitfImageBand;
-import org.codice.imaging.nitf.core.NitfImageSegment;
+import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
 
 class NitfImageSegmentNode extends AbstractSegmentNode {
 
-    private final NitfImageSegment segment;
+    private final int imageSegmentIndex;
+    private final NitfImageSegmentHeader header;
+    private final DeferredSegmentParseStrategy parseStrategy;
 
-    public NitfImageSegmentNode(final NitfImageSegment nitfImageSegment) {
+    public NitfImageSegmentNode(final ChildSegmentKey key) throws ParseException {
         super(Children.LEAF);
-        segment = nitfImageSegment;
-        setDisplayName("Image Segment: " + segment.getIdentifier());
+        imageSegmentIndex = key.getIndex();
+        parseStrategy = key.getParseStrategy();
+        header = parseStrategy.getImageSegmentHeader(imageSegmentIndex);
+        setDisplayName("Image Segment: " + getFriendlyName());
+    }
+
+    final String getFriendlyName() {
+        if (!header.getImageIdentifier2().trim().isEmpty()) {
+            return header.getImageIdentifier2().trim();
+        }
+        if (!header.getIdentifier().trim().isEmpty()) {
+            return header.getIdentifier().trim();
+        }
+        return "(no name)";
     }
 
     @Override
@@ -34,123 +53,125 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
         Sheet sheet = Sheet.createDefault();
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
-        addSubSegmentProperties(set, segment);
+        addSubSegmentProperties(set, header);
         set.put(new DateProperty("imageDateTime",
                 "Image Date and Time",
                 "Date and time of this image's acquisition.",
-                segment.getImageDateTime().toDate()));
+                header.getImageDateTime().toDate()));
         set.put(new StringProperty("targetIdentifier",
                 "Target Identifier",
                 "Primary target identifier (BE number and O-suffix, followed by country code",
-                segment.getImageTargetId().toString()));
+                header.getImageTargetId().toString()));
         set.put(new StringProperty("imageIdentifier2",
                 "Image Identifier",
                 "Can contain the identification of additional information about the image",
-                segment.getImageIdentifier2()));
+                header.getImageIdentifier2()));
         set.put(new StringProperty("imageSource",
                 "Image Source",
                 "Description of the source of the image.",
-                segment.getImageSource()));
+                header.getImageSource()));
         set.put(new LongProperty("numRows",
                 "Number of Significant Rows",
                 "The total number of significant rows in the image.",
-                segment.getNumberOfRows()));
+                header.getNumberOfRows()));
         set.put(new LongProperty("numColumns",
                 "Number of Significant Columns",
                 "The total number of significant columns in the image.",
-                segment.getNumberOfColumns()));
+                header.getNumberOfColumns()));
         set.put(new StringProperty("pixelValueType",
                 "Pixel Value Type",
                 "Computer representation used for the value of each pixel in each band in the image",
-                segment.getPixelValueType().toString()));
+                header.getPixelValueType().toString()));
         set.put(new StringProperty("imageRepresentation",
                 "Image Representation",
                 "Indicator of the processing required in order to display an image",
-                 segment.getImageRepresentation().toString()));
+                 header.getImageRepresentation().toString()));
         set.put(new StringProperty("imageCategory",
                 "Image Category",
                 "Indicator of the specific category of image, raster or grid data.",
-                segment.getImageCategory().toString()));
+                header.getImageCategory().toString()));
         set.put(new IntegerProperty("actualBitsPerPixelPerBand",
                 "Actual Bits-Per-Pixel Per Band",
                 "The number of 'significant bits' for the value in each band of each pixel without compression",
-                segment.getActualBitsPerPixelPerBand()));
+                header.getActualBitsPerPixelPerBand()));
         set.put(new StringProperty("pixelJustification",
                 "Pixel Justification",
                 "When ABPP is not equal to NBPP, this field indicates whether the significant bits are left justified (L) or right justified(R)",
-                segment.getPixelJustification().toString()));
+                header.getPixelJustification().toString()));
         set.put(new StringProperty("icords",
                 "Image Coordinate Representation",
                 "A code indicating the type of coordinate representation used for providing an approximate location of the image.",
-                segment.getImageCoordinatesRepresentation().toString()));
-        if (segment.getImageCoordinates() != null) {
+                header.getImageCoordinatesRepresentation().toString()));
+        if (header.getImageCoordinates() != null) {
             set.put(new StringProperty("igeolo",
                     "Image Geographic Location",
                     "The approximate geographic location for the image. It is not intended for analytical purposes.",
                     String.format("[%s], [%s], [%s], [%s]",
-                            segment.getImageCoordinates().getCoordinate00().getSourceFormat(),
-                            segment.getImageCoordinates().getCoordinate0MaxCol().getSourceFormat(),
-                            segment.getImageCoordinates().getCoordinateMaxRowMaxCol().getSourceFormat(),
-                            segment.getImageCoordinates().getCoordinateMaxRow0().getSourceFormat())));
+                            header.getImageCoordinates().getCoordinate00().getSourceFormat(),
+                            header.getImageCoordinates().getCoordinate0MaxCol().getSourceFormat(),
+                            header.getImageCoordinates().getCoordinateMaxRowMaxCol().getSourceFormat(),
+                            header.getImageCoordinates().getCoordinateMaxRow0().getSourceFormat())));
         }
-        for (int i = 1; i <= segment.getImageComments().size(); ++i) {
+        for (int i = 1; i <= header.getImageComments().size(); ++i) {
             set.put(new StringProperty("icom" + i,
                     "Image Comment " + i,
                     "nth Single comment block.",
-                    segment.getImageComments().get(i - 1)));
+                    header.getImageComments().get(i - 1)));
         }
         set.put(new StringProperty("imageCompression",
                 "Image Compression",
                 "The form of compression used in representing the image data.",
-                segment.getImageCompression().toString()));
-        set.put(new StringProperty("compressionRate",
-                "Compression Rate",
-                "The compression rate for the image.",
-                segment.getCompressionRate()));
-        for (int i = 0; i < segment.getNumBands(); ++i) {
+                header.getImageCompression().toString()));
+        if (header.getCompressionRate() != null) {
+            set.put(new StringProperty("compressionRate",
+                    "Compression Rate",
+                    "The compression rate for the image.",
+                    header.getCompressionRate()));
+        }
+        for (int i = 0; i < header.getNumBands(); ++i) {
             addImageBandSetToSheet(i, sheet);
         }
         set.put(new StringProperty("imageMode",
                 "Image Mode",
                 "Indicator for how pixels are stored in the image.",
-                segment.getImageMode().toString()));
+                header.getImageMode().toString()));
         set.put(new IntegerProperty("nbpr",
                 "Number of Blocks Per Row",
                 "The number of image blocks in a row of blocks in the horizontal direction.",
-                segment.getNumberOfBlocksPerRow()));
+                header.getNumberOfBlocksPerRow()));
         set.put(new IntegerProperty("nbpc",
                 "Number of Blocks Per Column",
                 "The number of image blocks in a column of blocks in the vertical direction.",
-                segment.getNumberOfBlocksPerColumn()));
+                header.getNumberOfBlocksPerColumn()));
         set.put(new IntegerProperty("nppbh",
                 "Number of Pixels Per Block Horizontal",
                 "The number of pixels horizontally in each block of the image.",
-                segment.getNumberOfPixelsPerBlockHorizontal()));
+                header.getNumberOfPixelsPerBlockHorizontal()));
         set.put(new IntegerProperty("nppbv",
                 "Number of Pixels Per Block Vertical",
                 "The number of pixels vertically in each block of the image.",
-                segment.getNumberOfPixelsPerBlockVertical()));
+                header.getNumberOfPixelsPerBlockVertical()));
         set.put(new IntegerProperty("nbpp",
                 "Number of Bits Per Pixel Per Band",
                 "The number of storage bits used for the value from each component of a pixel vector.",
-                segment.getNumberOfBitsPerPixelPerBand()));
+                header.getNumberOfBitsPerPixelPerBand()));
         set.put(new IntegerProperty("imageDisplayLevel",
                 "Image Display Level",
                 "The display level of the image relative to other displayed file components in a composite display.",
-                segment.getImageDisplayLevel()));
+                header.getImageDisplayLevel()));
         set.put(new StringProperty("imageLocation",
                 "Image Location",
                 "The location of the first pixel in the first line in the image, relative to the segment the image is attached to.",
-                String.format("[%d, %d]", segment.getImageLocationColumn(), segment.getImageLocationRow())));
+                String.format("[%d, %d]", header.getImageLocationColumn(), header.getImageLocationRow())));
         set.put(new StringProperty("imageMagnification",
                 "Image Magnification",
                 "The magnification or reduction factor of the image relative to the original source image.",
-                segment.getImageMagnification()));
+                header.getImageMagnification()));
         return sheet;
     }
 
     private void addImageBandSetToSheet(final int bandNumber, final Sheet sheet) {
-        NitfImageBand band = segment.getImageBandZeroBase(bandNumber);
+        NitfImageBand band = header.getImageBandZeroBase(bandNumber);
         Sheet.Set bandProperties = Sheet.createPropertiesSet();
         bandProperties.setName("imageBand" + bandNumber);
         bandProperties.setDisplayName(String.format("Image Band %d", bandNumber));
@@ -173,4 +194,26 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
         sheet.put(bandProperties);
     }
 
+    @Override
+    public Action[] getActions(final boolean popup) {
+        Action[] actions = combineActions(new ImageSegmentShowTreAction(this), super.getActions(popup));
+        return combineActions(new ImageSegmentViewAction(this), actions);
+    }
+
+    final NitfImageSegmentHeader getImageSegmentHeader() {
+        return header;
+    }
+
+    ImageInputStream getImageDataReader() {
+        try {
+            return parseStrategy.getImageSegmentDataReader(imageSegmentIndex);
+        } catch (ParseException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return null;
+    }
+
+    TreeModel getTreTreeModel() {
+        return new TreTreeModel(header.getTREsRawStructure());
+    }
 }

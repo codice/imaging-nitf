@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.codice.imaging.nitf</groupId>
         <artifactId>codice-imaging-nitf</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.codice.nitf</groupId>
-    <artifactId>nitf-metadata-comparison</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>org.codice.imaging.nitf</groupId>
+    <artifactId>codice-imaging-nitf-metadata-comparison</artifactId>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Codice Imaging: NITF Metadata Comparison (Engineering Tool)</name>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.codice.imaging.nitf</groupId>
             <artifactId>codice-imaging-nitf-core</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>

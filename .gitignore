@@ -14,3 +14,5 @@ hs_err_pid*
 /metadata-comparison/target/
 /core/target/
 /nitfNetbeansFileType/target/
+/render/target/
+/shared-test-resources/target/

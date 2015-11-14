@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
 
     <properties>
         <junit.version>4.11</junit.version>
@@ -15,9 +15,11 @@
     <name>Codice Imaging: NITF Parent</name>
     <url>http://www.codice.org</url>
     <modules>
+        <module>shared-test-resources</module>
         <module>core</module>
         <module>metadata-comparison</module>
         <module>cgm</module>
+        <module>render</module>
         <module>nitfNetbeansFileType</module>
     </modules>
 </project>

@@ -181,4 +181,16 @@ public class ImageCoordinatePair {
     public final String getSourceFormat() {
         return sourceString;
     }
+
+    /**
+        Set the value from MGRS.
+        <p>
+        This format will not be converted to degrees, so getLatitude and getLongitude() will return
+        default (0) values.
+
+        @param mgrs the string representation of the coordinates.
+    */
+    final void setFromMGRS(final String mgrs) {
+        sourceString = mgrs;
+    }
 }

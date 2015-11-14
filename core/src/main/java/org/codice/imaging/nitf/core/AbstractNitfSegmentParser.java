@@ -31,6 +31,7 @@ abstract class AbstractNitfSegmentParser {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractNitfSegmentParser.class);
 
     protected NitfReader reader = null;
+    protected NitfParseStrategy parsingStrategy;
 
     protected final void readENCRYP() throws ParseException {
         if (!"0".equals(reader.readBytes(NitfConstants.ENCRYP_LENGTH))) {

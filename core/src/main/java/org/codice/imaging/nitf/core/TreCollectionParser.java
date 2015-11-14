@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
+import javax.xml.transform.Source;
 
 class TreCollectionParser {
 
@@ -44,5 +45,9 @@ class TreCollectionParser {
             bytesRead += fieldLength;
         }
         return treCollection;
+    }
+
+    void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+        treParser.registerAdditionalTREdescriptor(source);
     }
 }

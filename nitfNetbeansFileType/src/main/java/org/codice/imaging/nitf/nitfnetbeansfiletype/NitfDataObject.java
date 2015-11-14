@@ -17,10 +17,10 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.EnumSet;
+import org.codice.imaging.nitf.core.FileReader;
 import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfFileFactory;
-import org.codice.imaging.nitf.core.ParseOption;
+import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.NitfReader;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -39,7 +39,7 @@ import org.openide.util.NbBundle.Messages;
 @MIMEResolver.ExtensionRegistration(
         displayName = "#LBL_Nitf_LOADER",
         mimeType = "image/nitf",
-        extension = {"ntf", "NTF", "nsf", "NSF" }
+        extension = {"ntf", "NTF", "nsf", "NSF", "hr1", "hr2", "hr3", "hr4", "hr5", "hr6", "hr7", "hr8" }
 )
 // CSOFF: MagicNumber
 @DataObject.Registration(
@@ -103,14 +103,17 @@ import org.openide.util.NbBundle.Messages;
 // CSON: MagicNumber
 class NitfDataObject extends MultiDataObject {
 
-    private Nitf nitf;
+    private DeferredSegmentParseStrategy parseStrategy;
 
     public NitfDataObject(final FileObject pf, final MultiFileLoader loader) throws IOException {
         super(pf, loader);
         registerEditor("image/nitf", false);
         FileObject fObj = getPrimaryFile();
+
         try {
-            nitf = NitfFileFactory.parseSelectedDataSegments(new File(fObj.getPath()), EnumSet.of(ParseOption.EXTRACT_TEXT_SEGMENT_DATA));
+            NitfReader reader = new FileReader(new File(fObj.getPath()));
+            parseStrategy = new DeferredSegmentParseStrategy();
+            NitfFileParser.parse(reader, parseStrategy);
         } catch (ParseException e) {
             System.out.println("NitfDataObject Exception:" + e);
             throw new IOException(e);
@@ -124,11 +127,11 @@ class NitfDataObject extends MultiDataObject {
 
     @Override
     protected Node createNodeDelegate() {
-        return new NitfFileNode(this, Children.create(new NitfChildFactory(nitf), true), getLookup());
+        return new NitfFileNode(this, Children.create(new NitfChildFactory(parseStrategy), true), getLookup());
     }
 
     Nitf getNitf() {
-        return nitf;
+        return parseStrategy.getNitfHeader();
     }
 
 }

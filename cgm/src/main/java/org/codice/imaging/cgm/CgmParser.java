@@ -26,6 +26,7 @@
 package org.codice.imaging.cgm;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -35,7 +36,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.codice.imaging.nitf.core.NitfGraphicSegment;
 
 /**
  * CGM Parser.
@@ -120,20 +120,20 @@ public class CgmParser {
 
         ELEMENTS.put(CgmIdentifier.METAFILE_VERSION, MetafileVersionElement.class);
         ELEMENTS.put(CgmIdentifier.METAFILE_DESCRIPTION, MetafileDescriptionElement.class);
-        // TODO: VDC TYPE (must be Integer)
-        // TODO: Integer precision (must be 16 bits)
+        // TODO: [IMG-30]  VDC TYPE (must be Integer)
+        // TODO: [IMG-31]  Integer precision (must be 16 bits)
         // REAL_PRECISION prohibited in BIIF Profile BPCGM01.00
-        // TODO: Index precision (must be 16 bits)
-        // TODO: Colour precision (must be 8 bits)
-        // TODO: Colour index precision (colour selection mode must be 1)
+        // TODO: [IMG-32]  Index precision (must be 16 bits)
+        // TODO: [IMG-33]  Colour precision (must be 8 bits)
+        // TODO: [IMG-34]  Colour index precision (colour selection mode must be 1)
         // MAXIMUM_COLOUR_INDEX prohibited in BIIF Profile BPCGM01.00
-        // TODO: Colour value extent (must be 0, 0, 0 through 255, 255, 255)
+        // TODO: [IMG-35]  Colour value extent (must be 0, 0, 0 through 255, 255, 255)
         ELEMENTS.put(CgmIdentifier.METAFILE_ELEMENT_LIST, MetafileElementsListElement.class);
         // METAFILE_DEFAULTS_REPLACEMENT prohibited in BIIF Profile BPCGM01.00
         ELEMENTS.put(CgmIdentifier.FONT_LIST, FontListElement.class);
-        // TODO: CHARACTER_SET_LIST - must be ISO 10646-1 Character Set Basic Latin
+        // TODO: [IMG-36]  CHARACTER_SET_LIST - must be ISO 10646-1 Character Set Basic Latin
         // CHARACTER_CODING_ANNOUNCER prohibited in BIIF Profile BPCGM01.00
-        // TODO: NAME_PRECISION - (Note: must be version 1)
+        // TODO: [IMG-37]  NAME_PRECISION - (Note: must be version 1)
         // MAXIMUM_VDC_EXTENT prohibited in BIIF Profile BPCGM01.00
         // SEGMENT_PRIORITY_EXTENT prohibited in BIIF Profile BPCGM01.00
         // COLOUR_MODEL prohibited in BIIF Profile BPCGM01.00
@@ -159,14 +159,14 @@ public class CgmParser {
         // FILL_REPRESENTATION prohibited in BIIF Profile BPCGM01.10
         // EDGE_REPRESENTATION prohibited in BIIF Profile BPCGM01.10
         // INTERIOR_STYLE_REPRESENTATION prohibited in BIIF Profile BPCGM01.10
-        // TODO: LINE_AND_EDGE_TYPE_DEFINITION
-        // TODO: HATCH_STYLE_DEFINITION
+        // TODO: [IMG-38]  LINE_AND_EDGE_TYPE_DEFINITION
+        // TODO: [IMG-39]  HATCH_STYLE_DEFINITION
         // GEOMETRIC_PATTERN_DEFINITION prohibited in BIIF Profile BPCGM01.10
 
-        // TODO: VDC_INTEGER_PRECISION - must be 16 bits
+        // TODO: [IMG-40]  VDC_INTEGER_PRECISION - must be 16 bits
         // VDC_REAL_PRECISION prohibited in BIIF Profile BPCGM01.10
-        // TODO: AUXILLARY_COLOUR
-        // TODO: TRANSPARENCY
+        // TODO: [IMG-41]  AUXILLARY_COLOUR
+        // TODO: [IMG-42]  TRANSPARENCY
         // CLIP_RECTANGLE prohibited in BIIF Profile BPCGM01.10
         // CLIP_INDICATOR prohibited in BIIF Profile BPCGM01.10
         // LINE_CLIPPING_MODE prohibited in BIIF Profile BPCGM01.10
@@ -186,7 +186,7 @@ public class CgmParser {
         ELEMENTS.put(CgmIdentifier.TEXT, TextElement.class);
         // RESTRICTED_TEXT prohibited in BIIF Profile BPCGM01.10
         // APPEND_TEXT prohibited in BIIF Profile BPCGM01.10
-        // TODO: POLYGON
+        ELEMENTS.put(CgmIdentifier.POLYGON, PolygonElement.class);
         ELEMENTS.put(CgmIdentifier.POLYGON_SET, PolygonSetElement.class);
         // CELL_ARRAY prohibited in BIIF Profile BPCGM01.10
         // GENERALISED_DRAWING_PRIMITIVE prohibited in BIIF Profile BPCGM01.10
@@ -194,11 +194,11 @@ public class CgmParser {
         ELEMENTS.put(CgmIdentifier.CIRCLE, CircleElement.class);
         // CIRCULAR_ARC_3_POINT prohibited in BIIF Profile BPCGM01.10
         // CIRCULAR_ARC_3_POINT_CLOSE prohibited in BIIF Profile BPCGM01.10
-        // TODO: CIRCUALR_ARC_CENTRE
-        // TODO: CIRCUALR_ARC_CENTRE
-        // TODO: ELLIPSE
-        // TODO: ELLIPTICAL_ARC
-        // TODO: ELLIPICAL_ARC_CLOSE
+        ELEMENTS.put(CgmIdentifier.CIRCULAR_ARC_CENTRE, CircularArcCentreElement.class);
+        // TODO: [IMG-43]  CIRCULAR_ARC_CENTRE_CLOSE
+        ELEMENTS.put(CgmIdentifier.ELLIPSE, EllipseElement.class);
+        // TODO: [IMG-44]  ELLIPTICAL_ARC
+        // TODO: [IMG-45]  ELLIPICAL_ARC_CLOSE
         // CIRCULAR_ARC_CENTRE_REVERSED prohibited in BIIF Profile BPCGM01.10
         // CONNECTING_EDGE prohibited in BIIF Profile BPCGM01.10
         // HYPERBOLIC_ARC prohibited in BIIF Profile BPCGM01.10
@@ -279,13 +279,27 @@ public class CgmParser {
     /**
      * Constructor.
      *
-     * @param graphicSegment the segment to parse
+     * @param graphicSegmentData the CGM data to parse
      */
-    public CgmParser(final NitfGraphicSegment graphicSegment) {
-        dataReader = new CgmInputReader(graphicSegment);
+    public CgmParser(final byte[] graphicSegmentData) {
+        dataReader = new CgmInputReader(graphicSegmentData);
     }
 
-    final void buildCommandList() throws IOException {
+    /**
+     * Constructor.
+     *
+     * @param stream stream containing the CGM data to parse
+     */
+    public CgmParser(final InputStream stream) {
+        dataReader = new CgmInputReader(stream);
+    }
+
+    /**
+     * Build the command list for the file.
+     *
+     * @throws IOException on parse failure
+     */
+    public final void buildCommandList() throws IOException {
 
         AbstractElement element;
         do {
@@ -304,16 +318,23 @@ public class CgmParser {
     }
 
     final void dump() {
-        StringBuilder builder = new StringBuilder();
+        System.out.print(getCommandListAsString());
+    }
 
+    /**
+     * Return the command list as lines of text.
+     *
+     * @return the command list in string form
+     */
+    public final String getCommandListAsString() {
+        StringBuilder builder = new StringBuilder();
         for (AbstractElement command : commands) {
             builder.append("Command: ");
             builder.append(command.getFriendlyName());
             builder.append(System.lineSeparator());
             command.addStringDescription(builder);
         }
-
-        System.out.print(builder.toString());
+        return builder.toString();
     }
 
     private void skipOverPadOctetIfNecessary(final int parameterListLength) throws IOException {
@@ -344,7 +365,13 @@ public class CgmParser {
         return (commandHeader & ELEMENT_CLASS_BIT_MASK) >> ELEMENT_CLASS_BIT_SHIFT;
     }
 
-    final List<AbstractElement> getCommandList() {
+    /**
+     * Return the commands that have been parsed from the file.
+     *
+     * This won't make much sense unless the file has been parsed, using buildCommandList().
+     * @return the commands
+     */
+    public final List<AbstractElement> getCommandList() {
         return commands;
     }
 }

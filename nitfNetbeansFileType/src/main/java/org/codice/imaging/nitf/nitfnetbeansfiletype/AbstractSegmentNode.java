@@ -19,6 +19,7 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 
 abstract class AbstractSegmentNode extends AbstractCommonSegmentNode {
+    protected static final String POINT_FORMATTER = "[%d, %d]";
 
     public AbstractSegmentNode(final Children children) {
         super(children);
@@ -31,6 +32,5 @@ abstract class AbstractSegmentNode extends AbstractCommonSegmentNode {
                 "The attachment level for this segment.",
                 segment.getAttachmentLevel()));
     }
-
 
 }

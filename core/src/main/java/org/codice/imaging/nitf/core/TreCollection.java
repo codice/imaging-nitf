@@ -94,4 +94,9 @@ public class TreCollection {
     public final boolean hasTREs() {
         return !treCollectionEntries.isEmpty();
     }
+
+    @Override
+    public final String toString() {
+        return "TRE Collection";
+    }
 }

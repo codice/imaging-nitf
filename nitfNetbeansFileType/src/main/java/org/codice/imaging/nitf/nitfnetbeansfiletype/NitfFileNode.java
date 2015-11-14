@@ -14,7 +14,12 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.awt.Color;
+import javax.swing.Action;
+import javax.swing.tree.TreeModel;
+import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.Nitf;
+import org.codice.imaging.nitf.core.NitfConstants;
 import org.openide.loaders.DataNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -56,11 +61,6 @@ class NitfFileNode extends DataNode {
                 "File Security Classification",
                 "The classification level of the entire file.",
                 nitf.getFileSecurityMetadata().getSecurityClassification().toString()));
-        set.put(new StringProperty("securityClassificationSystem",
-                "File Security Classification System",
-                "The national or multinational security system used to classify the file content. "
-                + "'XN' indicates NATO security system marking guidance.",
-                nitf.getFileSecurityMetadata().getSecurityClassificationSystem()));
         set.put(new StringProperty("codewords",
                 "File Security Codewords",
                 "Indicator of the security compartments associated with the file.",
@@ -73,50 +73,76 @@ class NitfFileNode extends DataNode {
                 "File Releasing Instructions",
                 "List of country and/or multilateral entity codes to which the file content is authorised for release.",
                 nitf.getFileSecurityMetadata().getReleaseInstructions()));
-        set.put(new StringProperty("declassificationType",
-                "File Declassification Type",
-                "Type of security declassification or downgrading instructions which apply to the file.",
-                nitf.getFileSecurityMetadata().getDeclassificationType()));
-        set.put(new StringProperty("declassificationDate",
-                "File Declassification Date",
-                "Date on which the file is to be declassified (if any).",
-                nitf.getFileSecurityMetadata().getDeclassificationDate()));
-        set.put(new StringProperty("declassificationExemption",
-                "File Declassification Exemption",
-                "The reason why the file is exempt from automatic declassification.",
-                nitf.getFileSecurityMetadata().getDeclassificationExemption()));
-        set.put(new StringProperty("downgrade",
-                "File Downgrade",
-                "Classification level to which the file is to be downgraded.",
-                nitf.getFileSecurityMetadata().getDowngrade()));
-        set.put(new StringProperty("downgradeDate",
-                "File Downgrade Date",
-                "Date on which the file is to be downgraded.",
-                nitf.getFileSecurityMetadata().getDowngradeDate()));
-        set.put(new StringProperty("classificationText",
-                "File Classification Text",
-                "Additional information about the file classification to include identification of a declassification or downgrade event.",
-                nitf.getFileSecurityMetadata().getClassificationText()));
-        set.put(new StringProperty("classificationAuthorityType",
-                "File Classification Authority Type",
-                "The type of authority used to classify the file.",
-                nitf.getFileSecurityMetadata().getClassificationAuthorityType()));
         set.put(new StringProperty("classificationAuthority",
-                "File Classification Authority",
-                "The classification authority for the file.",
-                nitf.getFileSecurityMetadata().getClassificationAuthority()));
-        set.put(new StringProperty("classificationReason",
-                "File Classification Reason",
-                "The reason for classifying the file.",
-                nitf.getFileSecurityMetadata().getClassificationReason()));
-        set.put(new StringProperty("securitySourceDate",
-                "File Security Source Date",
-                "The date of the source used to derive classification of the file.",
-                nitf.getFileSecurityMetadata().getSecuritySourceDate()));
+                    "File Classification Authority",
+                    "The classification authority for the file.",
+                    nitf.getFileSecurityMetadata().getClassificationAuthority()));
         set.put(new StringProperty("securityControlNumber",
-                "File Security Control Number",
-                "The security control number associated with the file.",
-                nitf.getFileSecurityMetadata().getSecurityControlNumber()));
+                    "File Security Control Number",
+                    "The security control number associated with the file.",
+                    nitf.getFileSecurityMetadata().getSecurityControlNumber()));
+        if (nitf.getFileType() == FileType.NITF_TWO_ZERO) {
+            set.put(new StringProperty("fileDowngradeDateOrSpecialCase",
+                    "File Downgrade Date or Special Case",
+                    "The downgrade date or special case for the entire file. The valid values are:\n"
+                        + " (1) the calendar date in the format YYMMDD\n"
+                        + " (2) the code \"999999\" when the originating agency's determination is required (OADR)\n"
+                        + " (3) the code \"999998\" when a specific event determines at what point declassification "
+                        + "or downgrading is to take place.",
+                    nitf.getFileSecurityMetadata().getDowngradeDateOrSpecialCase()));
+            if (NitfConstants.DOWNGRADE_EVENT_MAGIC.equals(nitf.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim())) {
+                set.put(new StringProperty("fileDowngradeEvent",
+                        "File Downgrade Event",
+                        "The event for downgrade. Only present if the File Downgrade Date or Special Case is 999998",
+                        nitf.getFileSecurityMetadata().getDowngradeEvent()));
+            }
+        } else {
+            set.put(new StringProperty("fileSecurityClassification",
+                    "File Security Classification",
+                    "The classification level of the entire file.",
+                    nitf.getFileSecurityMetadata().getSecurityClassification().toString()));
+            set.put(new StringProperty("securityClassificationSystem",
+                    "File Security Classification System",
+                    "The national or multinational security system used to classify the file content. "
+                    + "'XN' indicates NATO security system marking guidance.",
+                    nitf.getFileSecurityMetadata().getSecurityClassificationSystem()));
+            set.put(new StringProperty("declassificationType",
+                    "File Declassification Type",
+                    "Type of security declassification or downgrading instructions which apply to the file.",
+                    nitf.getFileSecurityMetadata().getDeclassificationType()));
+            set.put(new StringProperty("declassificationDate",
+                    "File Declassification Date",
+                    "Date on which the file is to be declassified (if any).",
+                    nitf.getFileSecurityMetadata().getDeclassificationDate()));
+            set.put(new StringProperty("declassificationExemption",
+                    "File Declassification Exemption",
+                    "The reason why the file is exempt from automatic declassification.",
+                    nitf.getFileSecurityMetadata().getDeclassificationExemption()));
+            set.put(new StringProperty("downgrade",
+                    "File Downgrade",
+                    "Classification level to which the file is to be downgraded.",
+                    nitf.getFileSecurityMetadata().getDowngrade()));
+            set.put(new StringProperty("downgradeDate",
+                    "File Downgrade Date",
+                    "Date on which the file is to be downgraded.",
+                    nitf.getFileSecurityMetadata().getDowngradeDate()));
+            set.put(new StringProperty("classificationText",
+                    "File Classification Text",
+                    "Additional information about the file classification to include identification of a declassification or downgrade event.",
+                    nitf.getFileSecurityMetadata().getClassificationText()));
+            set.put(new StringProperty("classificationAuthorityType",
+                    "File Classification Authority Type",
+                    "The type of authority used to classify the file.",
+                    nitf.getFileSecurityMetadata().getClassificationAuthorityType()));
+            set.put(new StringProperty("classificationReason",
+                    "File Classification Reason",
+                    "The reason for classifying the file.",
+                    nitf.getFileSecurityMetadata().getClassificationReason()));
+            set.put(new StringProperty("securitySourceDate",
+                    "File Security Source Date",
+                    "The date of the source used to derive classification of the file.",
+                    nitf.getFileSecurityMetadata().getSecuritySourceDate()));
+        }
         set.put(new StringProperty("fileCopyNumber",
                 "File Copy Number",
                 "The copy number of the file. If this is all zeros, there is no tracking of numbered file copies.",
@@ -141,4 +167,38 @@ class NitfFileNode extends DataNode {
                 nitf.getOriginatorsPhoneNumber()));
         return sheet;
     }
+
+    @Override
+    public Action[] getActions(final boolean popup) {
+        return combineActions(new HeaderShowTreAction(this), super.getActions(popup));
+    }
+
+    /**
+     * Prepend an action to an existing array of actions.
+     *
+     * @param action the action to prepend
+     * @param actions the existing actions
+     * @return combined array of actions
+     */
+    protected Action[] combineActions(final Action action, final Action[] actions) {
+        Action[] combinedActions = new Action[actions.length + 1];
+        combinedActions[0] = action;
+        for (int i = 1; i < combinedActions.length; ++i) {
+            combinedActions[i] = actions[i - 1];
+        }
+        return combinedActions;
+    }
+
+    TreeModel getTreTreeModel() {
+        return new TreTreeModel(nitf.getTREsRawStructure());
+    }
+
+    Color getBackgroundColour() {
+        if (nitf.getFileBackgroundColour() != null) {
+            return nitf.getFileBackgroundColour().toColour();
+        } else {
+            return Color.LIGHT_GRAY;
+        }
+    }
+
 }
