@@ -303,6 +303,12 @@ class Bilevel implements BlockRenderer {
         return img;
     }
 
+    @Override
+    public final BufferedImage getImageBlock(final int rowIndex, final int columnIndex) throws IOException {
+        // TODO: seek to image block location
+        return getNextImageBlock();
+    }
+
     private void readScanline(int blockRow) throws IOException {
         readEOL();
         if (lineMode2D) {

@@ -52,6 +52,8 @@ public class NitfImageSegmentHeader extends AbstractNitfSubSegment {
     private String imageMagnification = null;
     private long imageSegmentDataLength = 0;
 
+    private static final int BITS_PER_BYTE = 8;
+
     /**
         Default constructor.
     */
@@ -1335,5 +1337,19 @@ public class NitfImageSegmentHeader extends AbstractNitfSubSegment {
     */
     public final long getImageDataLength() {
         return imageSegmentDataLength;
+    }
+
+    /**
+     * Calculate the number of bytes per block, assuming uncompressed data.
+     *
+     * Use of this method on compressed images is probably a bad idea.
+     *
+     * @return number of bytes for image data in one block
+     */
+    public final long getNumberOfBytesPerBlock() {
+        long numberOfPixelsPerBlockPerBand = getNumberOfPixelsPerBlockHorizontal() * getNumberOfPixelsPerBlockVertical();
+        long numberOfPixelsPerBlock = numberOfPixelsPerBlockPerBand * getNumBands();
+        long numberOfBytesPerBlock = numberOfPixelsPerBlock * getNumberOfBitsPerPixelPerBand() / BITS_PER_BYTE;
+        return numberOfBytesPerBlock;
     }
 }

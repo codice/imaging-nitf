@@ -37,12 +37,14 @@ public class Uncompressed implements BlockRenderer {
     private NitfImageSegmentHeader mImageSegmentHeader = null;
     private ImageInputStream mImageData = null;
     private ImageMask mMask = null;
-    private int nextImageBlockToRead = 0;
+    private long mMaskOffset = 0;
+
 
     /**
      * Set the image segment to read from
      * 
      * @param imageSegmentHeader the image segment
+     * @param imageInputStream the source to read the segment image data from
      * @throws IOException if the read fails
      */
     @Override
@@ -51,13 +53,15 @@ public class Uncompressed implements BlockRenderer {
         mImageData = imageInputStream;
         if (mImageSegmentHeader.getImageCompression() == ImageCompression.NOTCOMPRESSEDMASK) {
             mMask = new ImageMask(mImageSegmentHeader, mImageData);
+            mMaskOffset = mImageData.getStreamPosition();
+        } else {
+            // We don't have a real mask, but we can create our own for an uncompressed image
+            mMask = buildUncompressedImageMask();
         }
-        nextImageBlockToRead = 0;
     }
 
     @Override
     public final BufferedImage getNextImageBlock() throws IOException {
-//         System.out.println("Next Image block to read:" + nextImageBlockToRead);
         switch (mImageSegmentHeader.getImageRepresentation()) {
             case MONOCHROME:
                 return getNextImageBlockMono();
@@ -71,6 +75,12 @@ public class Uncompressed implements BlockRenderer {
                 System.out.println("Unhandled image representation:" + mImageSegmentHeader.getImageRepresentation());
                 return null;
         }
+    }
+
+    @Override
+    public final BufferedImage getImageBlock(final int rowIndex, final int columnIndex) throws IOException {
+        mImageData.seek(getOffsetForBlock(rowIndex, columnIndex) + mMaskOffset);
+        return getNextImageBlock();
     }
 
     private BufferedImage getNextImageBlockMono() throws IOException {
@@ -175,10 +185,6 @@ public class Uncompressed implements BlockRenderer {
     }
 
     private BufferedImage getNextImageBlockRGB24() throws IOException {
-        if ((mMask != null) && (mMask.isMaskedBlock(nextImageBlockToRead, 0))) {
-            nextImageBlockToRead++;
-            return null;
-        }
         BufferedImage img = new BufferedImage(mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(),
                                               mImageSegmentHeader.getNumberOfPixelsPerBlockVertical(),
                                               BufferedImage.TYPE_INT_ARGB);
@@ -220,7 +226,7 @@ public class Uncompressed implements BlockRenderer {
                 for (int pixel = 0; pixel < data.length; ++pixel) {
                     data[pixel] = data[pixel] | 0xFF000000;
                     if (mMask.isPadPixel(data[pixel])) {
-                        data[pixel] = data[pixel] & 0x00000000;
+                        data[pixel] = 0x00000000;
                     }
                 }
             } else {
@@ -234,7 +240,6 @@ public class Uncompressed implements BlockRenderer {
 
         int[] imgData = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
         System.arraycopy(data, 0, imgData, 0, data.length);
-        nextImageBlockToRead++;
         return img;
     }
 
@@ -406,5 +411,18 @@ public class Uncompressed implements BlockRenderer {
         int[] imgData = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
         System.arraycopy(data, 0, imgData, 0, data.length);
         return img;
+    }
+
+    private long getOffsetForBlock(int rowIndex, int columnIndex) {
+        // TODO: this should handle mask blocks.
+        int numberOfBlocks = rowIndex * mImageSegmentHeader.getNumberOfBlocksPerRow() + columnIndex;
+        if (mMask.isMaskedBlock(numberOfBlocks, 0)) {
+            System.out.println("Some masked block");
+        }
+        return numberOfBlocks * mImageSegmentHeader.getNumberOfBytesPerBlock();
+    }
+
+    private ImageMask buildUncompressedImageMask() {
+        return new ImageMask(mImageSegmentHeader);
     }
 }

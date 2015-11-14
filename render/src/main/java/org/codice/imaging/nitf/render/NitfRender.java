@@ -78,7 +78,7 @@ public class NitfRender {
         renderer.setImageSegment(imageSegmentHeader, imageInputStream);
         for (int rowIndex = 0; rowIndex < imageSegmentHeader.getNumberOfBlocksPerColumn(); ++rowIndex) {
             for (int columnIndex = 0; columnIndex < imageSegmentHeader.getNumberOfBlocksPerRow(); ++columnIndex) {
-                BufferedImage img = renderer.getNextImageBlock();
+                BufferedImage img = renderer.getImageBlock(rowIndex, columnIndex);
                 target.drawImage(img,
                         imageSegmentHeader.getImageLocationColumn() + columnIndex * imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(),
                         imageSegmentHeader.getImageLocationRow() + rowIndex * imageSegmentHeader.getNumberOfPixelsPerBlockVertical(), null);

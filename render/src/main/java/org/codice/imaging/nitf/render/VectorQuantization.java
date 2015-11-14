@@ -91,6 +91,12 @@ class VectorQuantization implements BlockRenderer {
         return null;
     }
 
+    @Override
+    public final BufferedImage getImageBlock(final int rowIndex, final int columnIndex) throws IOException {
+        // TODO: seek to image block location
+        return getNextImageBlock();
+    }
+
     private BufferedImage getNextImageBlockMono8() throws IOException {
         BufferedImage img = new BufferedImage((int) mImageSegment.getNumberOfPixelsPerBlockHorizontal(), (int) mImageSegment.getNumberOfPixelsPerBlockVertical(), BufferedImage.TYPE_BYTE_GRAY);
         renderToImage(img);

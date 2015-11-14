@@ -27,4 +27,15 @@ public interface BlockRenderer {
     public void setImageSegment(NitfImageSegmentHeader imageSegmentHeader, ImageInputStream imageInputStream) throws IOException;
 
     public BufferedImage getNextImageBlock() throws IOException;
+
+    /**
+     * Render a specific image block.
+     *
+     * If the source data (imageInputStream) is not seekable, this may require blocks to be read in row-major, column-minor order.
+     *
+     * @param rowIndex the row of the image block to be read
+     * @param columnIndex the column of the image block to be read
+     * @return image for the specified block
+     */
+    public BufferedImage getImageBlock(int rowIndex, int columnIndex) throws IOException;
 }
