@@ -4,9 +4,9 @@
     <parent>
         <groupId>org.codice.imaging.nitf</groupId>
         <artifactId>codice-imaging-nitf</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
-    <artifactId>nitfNetbeansFileType</artifactId>
+    <artifactId>codice-imaging-nitf-netbeansFileType</artifactId>
     <packaging>nbm</packaging>
 
     <name>Codice Imaging: NITF NetBeans File Type Plugin</name>
@@ -130,7 +130,7 @@
         <dependency>
             <groupId>org.codice.imaging.nitf</groupId>
             <artifactId>codice-imaging-nitf-core</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
