@@ -18,16 +18,18 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.FileReader;
-import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
-import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.NitfLabelSegmentHeader;
-import org.codice.imaging.nitf.core.NitfReader;
-import org.codice.imaging.nitf.core.NitfSymbolSegmentHeader;
-import org.codice.imaging.nitf.core.NitfTextSegmentHeader;
-import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
+
+import org.codice.imaging.nitf.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.common.reader.FileReader;
+import org.codice.imaging.nitf.common.reader.NitfReader;
+import org.codice.imaging.nitf.graphic.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.label.NitfLabelSegmentHeader;
+import org.codice.imaging.nitf.parser.strategy.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.symbol.NitfSymbolSegmentHeader;
+import org.codice.imaging.nitf.text.NitfTextSegmentHeader;
 
 class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
 

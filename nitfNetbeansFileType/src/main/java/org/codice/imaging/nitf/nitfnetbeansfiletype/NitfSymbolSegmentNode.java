@@ -21,8 +21,8 @@ import java.util.List;
 import javax.swing.Action;
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmParser;
-import org.codice.imaging.nitf.core.NitfSymbolSegmentHeader;
-import org.codice.imaging.nitf.core.SymbolType;
+import org.codice.imaging.nitf.symbol.NitfSymbolSegmentHeader;
+import org.codice.imaging.nitf.symbol.SymbolType;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
@@ -102,11 +102,11 @@ class NitfSymbolSegmentNode extends AbstractSegmentNode {
                 header.getSymbolDisplayLevel()));
         set.put(new StringProperty("symbolLocation",
                 "Symbol Location",
-                "The location of the symbol's origin point relative to the CCS, image or graphic to which it is attached.",
+                "The location of the symbol's origin point relative to the CCS, image or image to which it is attached.",
                 String.format(POINT_FORMATTER, header.getSymbolLocationColumn(), header.getSymbolLocationRow())));
         set.put(new StringProperty("symbolLocation2",
                 "Second Symbol Location",
-                "The second location for the symbol relative to the CCS, image or graphic to which it is attached.",
+                "The second location for the symbol relative to the CCS, image or image to which it is attached.",
                 String.format(POINT_FORMATTER, header.getSymbolLocation2Column(), header.getSymbolLocation2Row())));
         set.put(new StringProperty("symbolNumber",
                 "Symbol Number",

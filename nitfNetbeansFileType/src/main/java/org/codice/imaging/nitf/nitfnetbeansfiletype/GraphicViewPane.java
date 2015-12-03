@@ -12,7 +12,7 @@ import java.util.List;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmRenderer;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.render.NitfRender;
 import org.openide.awt.ActionID;
 import org.openide.util.Exceptions;

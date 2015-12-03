@@ -21,7 +21,7 @@ import java.util.List;
 import javax.swing.Action;
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmParser;
-import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.graphic.NitfGraphicSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
@@ -30,7 +30,7 @@ import org.openide.util.Exceptions;
 class NitfGraphicSegmentNode extends AbstractSegmentNode {
 
     private static final String BOUNDING_BOX_POSITION_DESCRIPTION =
-                    "bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.";
+                    "bounding box for the CGM image, relative to the CCS, image or image to which the image is attached.";
 
     private final NitfGraphicSegmentHeader header;
     private final int graphicSegmentIndex;
@@ -73,15 +73,15 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
         addSubSegmentProperties(set, header);
         set.put(new StringProperty("graphicName",
                 "Graphic Name",
-                "The alphanumeric name for the graphic",
+                "The alphanumeric name for the image",
                 header.getGraphicName()));
         set.put(new IntegerProperty("graphicDisplayLevel",
                 "Graphic Display Level",
-                "The display level of the graphic relative to other displayed file components.",
+                "The display level of the image relative to other displayed file components.",
                 header.getGraphicDisplayLevel()));
         set.put(new StringProperty("graphicLocation",
                 "Graphic Location",
-                "The location of the graphic's origin point relative to the CCS, image or graphic to which it is attached.",
+                "The location of the image's origin point relative to the CCS, image or image to which it is attached.",
                 String.format(POINT_FORMATTER, header.getGraphicLocationColumn(), header.getGraphicLocationRow())));
         set.put(new StringProperty("firstGraphicBoundLocation",
                 "First Graphic Bound Location",
@@ -93,7 +93,7 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
                 String.format(POINT_FORMATTER, header.getBoundingBox2Column(), header.getBoundingBox2Row())));
         set.put(new StringProperty("graphicColour",
                 "Graphic Colour",
-                "Flag for whether the CGM graphic has any colour ('C') or is monochrome ('M').",
+                "Flag for whether the CGM image has any colour ('C') or is monochrome ('M').",
                 header.getGraphicColour().toString()));
         return sheet;
     }

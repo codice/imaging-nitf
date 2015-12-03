@@ -4,40 +4,40 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import org.codice.imaging.nitf.common.FileType;
+import org.codice.imaging.nitf.common.Nitf;
+import org.codice.imaging.nitf.common.TreCollection;
+import org.codice.imaging.nitf.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.common.reader.FileReader;
+import org.codice.imaging.nitf.common.reader.NitfReader;
+import org.codice.imaging.nitf.common.segment.NitfSegment;
+import org.codice.imaging.nitf.parser.strategy.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.common.tre.Tre;
+import org.codice.imaging.nitf.common.tre.TreEntry;
+import org.codice.imaging.nitf.common.tre.TreGroup;
+import org.codice.imaging.nitf.dataextension.DataExtensionSegmentNitfParseStrategy;
+import org.codice.imaging.nitf.graphic.RasterProductFormatAttributeParser;
+import org.codice.imaging.nitf.graphic.RasterProductFormatAttributes;
+import org.codice.imaging.nitf.graphic.RasterProductFormatUtilities;
+import org.codice.imaging.nitf.image.ImageCoordinatePair;
+import org.codice.imaging.nitf.image.ImageCoordinatesRepresentation;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.parser.NitfFileParser;
 
 import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
-import java.util.Map;
-
-import org.codice.imaging.nitf.core.AbstractNitfSegment;
-import org.codice.imaging.nitf.core.DataExtensionSegmentNitfParseStrategy;
-import org.codice.imaging.nitf.core.FileReader;
-import org.codice.imaging.nitf.core.FileType;
-import org.codice.imaging.nitf.core.ImageCoordinatePair;
-import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
-import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
-import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.NitfReader;
-import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
-import org.codice.imaging.nitf.core.RasterProductFormatAttributeParser;
-import org.codice.imaging.nitf.core.RasterProductFormatAttributes;
-import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
-import org.codice.imaging.nitf.core.Tre;
-import org.codice.imaging.nitf.core.TreCollection;
-import org.codice.imaging.nitf.core.TreEntry;
-import org.codice.imaging.nitf.core.TreGroup;
 
 public class FileComparer {
     static final String OUR_OUTPUT_EXTENSION = ".OURS.txt";
@@ -443,7 +443,7 @@ public class FileComparer {
         return (des1 != null) && (hasTREsOtherThanRPF(des1.getTREsRawStructure()));
     }
 
-    private void outputTresForSegment(AbstractNitfSegment segment, String label) throws IOException {
+    private void outputTresForSegment(NitfSegment segment, String label) throws IOException {
         TreCollection treCollection = segment.getTREsRawStructure();
         for (Tre tre : treCollection.getTREs()) {
             if (tre.getRawData() == null) {
@@ -578,9 +578,9 @@ public class FileComparer {
         }
     }
 
-    private void outputRPFDESmetadata(Map <String, String> metadata, Tre tre) {
+    private void outputRPFDESmetadata(Map <String, String> metadata, Tre Tre) {
         try {
-            byte[] rawRpfDesData = tre.getRawData();
+            byte[] rawRpfDesData = Tre.getRawData();
             RasterProductFormatAttributes attributes = new RasterProductFormatAttributeParser().parseRpfDes(rawRpfDesData);
             if (attributes.getCurrencyDate() != null) {
                 metadata.put("NITF_RPF_CurrencyDate", attributes.getCurrencyDate());

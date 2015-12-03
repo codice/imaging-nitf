@@ -6,15 +6,20 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.util.ArrayList;
+
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import org.codice.imaging.nitf.core.Tre;
-import org.codice.imaging.nitf.core.TreCollection;
-import org.codice.imaging.nitf.core.TreEntry;
-import org.codice.imaging.nitf.core.TreEntryList;
-import org.codice.imaging.nitf.core.TreGroup;
+
+import org.codice.imaging.nitf.common.TreCollection;
+import org.codice.imaging.nitf.common.tre.Tre;
+import org.codice.imaging.nitf.common.tre.TreEntry;
+import org.codice.imaging.nitf.common.tre.TreGroup;
+import org.codice.imaging.nitf.tre.TreCollectionImpl;
+import org.codice.imaging.nitf.tre.TreEntryList;
+import org.codice.imaging.nitf.tre.TreGroupImpl;
+import org.codice.imaging.nitf.tre.TreImpl;
 
 /**
  * TreeModel implementation for the Tagged Registered Extensions.
@@ -35,12 +40,12 @@ class TreTreeModel implements TreeModel {
 
     @Override
     public Object getChild(final Object o, final int i) {
-        if (o instanceof TreCollection) {
-            TreCollection tc = (TreCollection) o;
+        if (o instanceof TreCollectionImpl) {
+            TreCollectionImpl tc = (TreCollectionImpl) o;
             return tc.getTREs().get(i);
         }
         if (o instanceof Tre) {
-            Tre tre = (Tre) o;
+            TreImpl tre = (TreImpl) o;
             return tre.getEntries().get(i);
         }
         if (o instanceof TreEntryList) {
@@ -48,7 +53,7 @@ class TreTreeModel implements TreeModel {
             return tel.getEntries().get(i);
         }
         if (o instanceof TreGroup) {
-            TreGroup tg = (TreGroup) o;
+            TreGroupImpl tg = (TreGroupImpl) o;
             return tg.getEntries().get(i);
         }
         if (o instanceof TreEntry) {
@@ -62,12 +67,12 @@ class TreTreeModel implements TreeModel {
 
     @Override
     public int getChildCount(final Object o) {
-        if (o instanceof TreCollection) {
-            TreCollection tc = (TreCollection) o;
+        if (o instanceof TreCollectionImpl) {
+            TreCollectionImpl tc = (TreCollectionImpl) o;
             return tc.getTREs().size();
         }
         if (o instanceof Tre) {
-            Tre tre = (Tre) o;
+            TreImpl tre = (TreImpl) o;
             return tre.getEntries().size();
         }
         if (o instanceof TreEntryList) {
@@ -75,7 +80,7 @@ class TreTreeModel implements TreeModel {
             return tel.getEntries().size();
         }
         if (o instanceof TreGroup) {
-            TreGroup tg = (TreGroup) o;
+            TreGroupImpl tg = (TreGroupImpl) o;
             return tg.getEntries().size();
         }
         if (o instanceof TreEntry) {
@@ -112,7 +117,7 @@ class TreTreeModel implements TreeModel {
         treeModelListeners.remove(tl);
     }
 
-    protected void fireTreeStructureChanged(final TreCollection oldRoot) {
+    protected void fireTreeStructureChanged(final TreCollectionImpl oldRoot) {
         TreeModelEvent e = new TreeModelEvent(this, new Object[] {oldRoot});
         for (TreeModelListener tml : treeModelListeners) {
             tml.treeStructureChanged(e);

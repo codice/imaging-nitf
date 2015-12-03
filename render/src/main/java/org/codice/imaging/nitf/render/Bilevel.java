@@ -14,14 +14,13 @@
  */
 package org.codice.imaging.nitf.render;
 
-import java.io.IOException;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
 
 import javax.imageio.stream.ImageInputStream;
 
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
 
 class Bilevel implements BlockRenderer {
 

@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.ImageMode;
 
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.image.ImageMode;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
 
 public final class ImageMask {
 

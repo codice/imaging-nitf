@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
+import org.codice.imaging.nitf.common.segment.AbstractNitfSubSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 

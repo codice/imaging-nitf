@@ -15,19 +15,18 @@
 
 package org.codice.imaging.nitf.render;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
+import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
-import java.awt.image.WritableRaster;
-
 import javax.imageio.stream.ImageInputStream;
 
-import org.codice.imaging.nitf.core.ImageCompression;
-import org.codice.imaging.nitf.core.ImageRepresentation;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.image.ImageCompression;
+import org.codice.imaging.nitf.image.ImageRepresentation;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
 
 class VectorQuantization implements BlockRenderer {
 
