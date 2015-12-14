@@ -24,17 +24,19 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 
-import junit.framework.TestCase;
-import org.codice.imaging.nitf.core.ImageDataExtractionParseStrategy;
-import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.NitfInputStreamReader;
-import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.common.reader.NitfReader;
+import org.codice.imaging.nitf.image.ImageDataExtractionParseStrategy;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.parser.NitfFileParser;
+import org.codice.imaging.nitf.parser.NitfInputStreamReader;
 import org.junit.Test;
+
+import junit.framework.TestCase;
 
 /**
  * Tests for JITC NITF 2.0 and NITF 2.1 test cases.

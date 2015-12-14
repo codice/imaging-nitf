@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.NitfTextSegmentHeader;
+import org.codice.imaging.nitf.text.NitfTextSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;

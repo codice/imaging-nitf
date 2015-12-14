@@ -15,22 +15,29 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.awt.Color;
+
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
-import org.codice.imaging.nitf.core.NitfConstants;
+
+import org.codice.imaging.nitf.common.segment.CommonNitfSegment;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.nodes.Sheet;
 
 abstract class AbstractCommonSegmentNode extends AbstractNode {
+    /**
+     * Marker field used in the "Security Downgrade" field to indicate that the "Downgrade Event" field is present.
+     * <p>
+     * NITF 2.0 only. See MIL-STD-2500A Tables for usage.
+     */
+    private static final String DOWNGRADE_EVENT_MAGIC = "999998";
 
     public AbstractCommonSegmentNode(final Children children) {
         super(children);
     }
 
 
-    protected void addCommonSegmentProperties(final Sheet.Set set, final AbstractCommonNitfSegment segment) {
+    protected void addCommonSegmentProperties(final Sheet.Set set, final CommonNitfSegment segment) {
         set.put(new StringProperty("identifier", "Segment Identifier", "Identifier for the segment.", segment.getIdentifier()));
         if (segment.getSecurityMetadata().getSecurityClassification() != null) {
             set.put(new StringProperty("securityClassification",
@@ -138,7 +145,7 @@ abstract class AbstractCommonSegmentNode extends AbstractNode {
                         + " (3) the code \"999998\" when a specific event determines at what point declassification "
                         + "or downgrading is to take place.",
                     segment.getSecurityMetadata().getDowngradeDateOrSpecialCase()));
-            if (NitfConstants.DOWNGRADE_EVENT_MAGIC.equals(segment.getSecurityMetadata().getDowngradeDateOrSpecialCase().trim())) {
+            if (DOWNGRADE_EVENT_MAGIC.equals(segment.getSecurityMetadata().getDowngradeDateOrSpecialCase().trim())) {
                 set.put(new StringProperty("fileDowngradeEvent",
                         "File Downgrade Event",
                         "The event for downgrade. Only present if the File Downgrade Date or Special Case is 999998",

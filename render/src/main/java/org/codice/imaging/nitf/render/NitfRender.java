@@ -15,17 +15,17 @@
 
 package org.codice.imaging.nitf.render;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import java.io.IOException;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+
+import org.codice.imaging.nitf.common.Nitf;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
 
 public class NitfRender {
 

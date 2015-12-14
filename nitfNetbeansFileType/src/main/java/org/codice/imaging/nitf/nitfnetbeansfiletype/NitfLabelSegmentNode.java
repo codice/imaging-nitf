@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.NitfLabelSegmentHeader;
+import org.codice.imaging.nitf.label.NitfLabelSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
@@ -59,7 +59,7 @@ class NitfLabelSegmentNode extends AbstractSegmentNode {
         addSubSegmentProperties(set, header);
         set.put(new StringProperty("labelLocation",
                 "Label Location",
-                "The location of the label's origin point relative to the CCS, image or graphic to which it is attached.",
+                "The location of the label's origin point relative to the CCS, image or image to which it is attached.",
                 String.format(POINT_FORMATTER, header.getLabelLocationColumn(), header.getLabelLocationRow())));
         set.put(new IntegerProperty("labelCellWidth",
                 "Label Cell Width",

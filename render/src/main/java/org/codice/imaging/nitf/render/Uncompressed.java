@@ -15,22 +15,21 @@
 
 package org.codice.imaging.nitf.render;
 
-import java.io.IOException;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferUShort;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
 
 import javax.imageio.stream.ImageInputStream;
 
-import org.codice.imaging.nitf.core.ImageCompression;
-import org.codice.imaging.nitf.core.ImageMode;
-import org.codice.imaging.nitf.core.NitfImageBand;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.PixelJustification;
+import org.codice.imaging.nitf.graphic.PixelJustification;
+import org.codice.imaging.nitf.image.ImageCompression;
+import org.codice.imaging.nitf.image.ImageMode;
+import org.codice.imaging.nitf.image.NitfImageBand;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
 
 public class Uncompressed implements BlockRenderer {
 

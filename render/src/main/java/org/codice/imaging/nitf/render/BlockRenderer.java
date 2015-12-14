@@ -15,12 +15,12 @@
 
 package org.codice.imaging.nitf.render;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import java.awt.image.BufferedImage;
 import javax.imageio.stream.ImageInputStream;
 
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.image.NitfImageSegmentHeader;
 
 public interface BlockRenderer {
 
