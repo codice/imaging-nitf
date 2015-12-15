@@ -14,12 +14,12 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.InputStream;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -77,7 +77,7 @@ public class Nitf21ImageParsingTest {
         assertEquals(8, imageSegment.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, imageSegment.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.GEOGRAPHIC, imageSegment.getImageCoordinatesRepresentation());
-        ImageCoordinates imageCoords = imageSegment.getImageCoordinates();
+        ImageCoordinates<ImageGeographicCoordinatePair> imageCoords = imageSegment.getImageCoordinates();
         assertNotNull(imageCoords);
         assertEquals(32.98333333333, imageCoords.getCoordinate00().getLatitude(), 0.000001);
         assertEquals(85.00000000000, imageCoords.getCoordinate00().getLongitude(), 0.000001);

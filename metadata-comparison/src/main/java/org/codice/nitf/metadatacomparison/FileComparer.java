@@ -17,7 +17,7 @@ import java.util.TreeMap;
 
 import org.codice.imaging.nitf.core.FileReader;
 import org.codice.imaging.nitf.core.FileType;
-import org.codice.imaging.nitf.core.ImageCoordinatePair;
+import org.codice.imaging.nitf.core.ImageDecimalDegreesCoordinatePair;
 import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileParser;
@@ -668,7 +668,7 @@ public class FileComparer {
     }
 
     // This is ugly - feel free to fix it any time.
-    private static String makeGeoString(ImageCoordinatePair coords) {
+    private static String makeGeoString(ImageDecimalDegreesCoordinatePair coords) {
         double latitude = coords.getLatitude();
         double longitude = coords.getLongitude();
 

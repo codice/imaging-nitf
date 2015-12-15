@@ -37,7 +37,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -86,7 +85,7 @@ public class Nitf21HeaderTest {
 
     private void checkCompliantHeaderResults(SlottedNitfParseStrategy parseStrategy) {
         Nitf header = parseStrategy.getNitfHeader();
-        Assert.assertEquals(FileType.NITF_TWO_ONE, header.getFileType());
+        assertEquals(FileType.NITF_TWO_ONE, header.getFileType());
         assertEquals(3, header.getComplexityLevel());
         assertEquals("BF01", header.getStandardType());
         assertEquals("I_3034C", header.getOriginatingStationId());
@@ -118,14 +117,14 @@ public class Nitf21HeaderTest {
         assertEquals("Unknown", segment1.getImageSource());
         assertEquals(18L, segment1.getNumberOfRows());
         assertEquals(35L, segment1.getNumberOfColumns());
-        Assert.assertEquals(PixelValueType.BILEVEL, segment1.getPixelValueType());
-        Assert.assertEquals(ImageRepresentation.RGBLUT, segment1.getImageRepresentation());
-        Assert.assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
+        assertEquals(PixelValueType.BILEVEL, segment1.getPixelValueType());
+        assertEquals(ImageRepresentation.RGBLUT, segment1.getImageRepresentation());
+        assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
         assertEquals(1, segment1.getActualBitsPerPixelPerBand());
-        Assert.assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
-        Assert.assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
+        assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
+        assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
         assertEquals(0, segment1.getImageComments().size());
-        Assert.assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
+        assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
 
         // Checks for ImageBand
@@ -152,7 +151,7 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0x00, lut3.getEntry(0));
         assertEquals((byte)0x00, lut3.getEntry(1));
 
-        Assert.assertEquals(ImageMode.BLOCKINTERLEVE, segment1.getImageMode());
+        assertEquals(ImageMode.BLOCKINTERLEVE, segment1.getImageMode());
         assertEquals(1, segment1.getNumberOfBlocksPerRow());
         assertEquals(1, segment1.getNumberOfBlocksPerColumn());
         assertEquals(35, segment1.getNumberOfPixelsPerBlockHorizontal());
@@ -214,7 +213,7 @@ public class Nitf21HeaderTest {
         assertEquals(8, segment1.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.GEOGRAPHIC, segment1.getImageCoordinatesRepresentation());
-        ImageCoordinates imageCoords = segment1.getImageCoordinates();
+        ImageCoordinates<ImageGeographicCoordinatePair> imageCoords = segment1.getImageCoordinates();
         assertNotNull(imageCoords);
         assertEquals(32.98333333333, imageCoords.getCoordinate00().getLatitude(), 0.000001);
         assertEquals(85.00000000000, imageCoords.getCoordinate00().getLongitude(), 0.000001);
@@ -356,7 +355,7 @@ public class Nitf21HeaderTest {
         assertEquals(8, segment1.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.DECIMALDEGREES, segment1.getImageCoordinatesRepresentation());
-        ImageCoordinates imageCoords = segment1.getImageCoordinates();
+        ImageCoordinates<ImageDecimalDegreesCoordinatePair> imageCoords = segment1.getImageCoordinates();
         assertNotNull(imageCoords);
         assertEquals(42.201, imageCoords.getCoordinate00().getLatitude(), 0.000001);
         assertEquals(-71.050, imageCoords.getCoordinate00().getLongitude(), 0.000001);
@@ -502,7 +501,7 @@ public class Nitf21HeaderTest {
         assertEquals("1998-02-17 10:19:39", formatter.format(textSegment.getTextDateTime().toDate()));
         assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
-        Assert.assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
+        assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
     }
 
     @Test
@@ -630,7 +629,7 @@ public class Nitf21HeaderTest {
         assertEquals(100, segment.getGraphicLocationColumn());
         assertEquals(175, segment.getBoundingBox1Row());
         assertEquals(125, segment.getBoundingBox1Column());
-        Assert.assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
+        assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
         assertEquals(1075, segment.getBoundingBox2Row());
         assertEquals(825, segment.getBoundingBox2Column());
     }
@@ -884,7 +883,7 @@ public class Nitf21HeaderTest {
         assertEquals(1, imageSegment.getActualBitsPerPixelPerBand());
         assertEquals(PixelJustification.RIGHT, imageSegment.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.DECIMALDEGREES, imageSegment.getImageCoordinatesRepresentation());
-        ImageCoordinates imageCoords = imageSegment.getImageCoordinates();
+        ImageCoordinates<ImageDecimalDegreesCoordinatePair> imageCoords = imageSegment.getImageCoordinates();
         assertNotNull(imageCoords);
         assertEquals(36.709, imageCoords.getCoordinate00().getLatitude(), 0.000001);
         assertEquals(67.105, imageCoords.getCoordinate00().getLongitude(), 0.000001);
@@ -941,7 +940,7 @@ public class Nitf21HeaderTest {
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
-        Assert.assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());
         assertEquals("", securityMetadata.getCodewords());
         assertEquals("", securityMetadata.getControlAndHandling());

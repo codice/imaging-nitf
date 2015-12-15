@@ -109,7 +109,7 @@ public class RasterProductFormatAttributeParser {
 //             System.out.println("\tAreal coverage sequence number:" + offsetRecord.arealCoverageSequenceNumber);
 //             System.out.println("\tattribute record offset:" + offsetRecord.attributeRecordOffset);
             bytes.position(ATTRIBUTE_SECTION_SUBHEADER_LENGTH + offsetRecord.attributeRecordOffset);
-            switch(offsetRecord.attributeId) {
+            switch (offsetRecord.attributeId) {
                 case CURRENCY_DATE_ATTR_ID:
                     attributes.addCurrencyDate(offsetRecord.arealCoverageSequenceNumber, parseRpfCurrencyDate(bytes, offsetRecord));
                     break;
