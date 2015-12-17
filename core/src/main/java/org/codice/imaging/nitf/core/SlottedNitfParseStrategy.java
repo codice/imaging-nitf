@@ -17,7 +17,11 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.transform.Source;
+
+import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeaderParser;
 
 /**
  * "Slotted" parse strategy.
@@ -777,7 +781,12 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      */
     protected abstract void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException;
 
-    final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+    /**
+     *
+     * @param source the source of the additional Tre descriptor.
+     * @throws ParseException - when the Tres in the source aren't in the expected format.
+     */
+    public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
         initialiseTreCollectionParserIfRequired();
         treCollectionParser.registerAdditionalTREdescriptor(source);
     }

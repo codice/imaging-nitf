@@ -18,18 +18,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.codice.imaging.nitf.core.common.CommonNitfSegment;
+
 /**
     Common data elements for NITF segment subheaders and file header.
 */
-public abstract class AbstractNitfSegment {
+public abstract class AbstractNitfSegment implements CommonNitfSegment {
 
     private final TreCollection treCollection = new TreCollection();
 
     /**
-        Return the TREs for this segment, in raw form.
-
-        @return TRE collection
-    */
+     * {@inheritDoc}
+     */
     public final TreCollection getTREsRawStructure() {
         return treCollection;
     }
@@ -113,7 +113,7 @@ public abstract class AbstractNitfSegment {
 
         @param tresToAdd the TRE collection to add.
     */
-    protected final void mergeTREs(final TreCollection tresToAdd) {
+    public final void mergeTREs(final TreCollection tresToAdd) {
         treCollection.add(tresToAdd);
     }
 }

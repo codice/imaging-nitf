@@ -14,17 +14,16 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import java.io.BufferedInputStream;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import static org.hamcrest.Matchers.is;
-
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,13 +32,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
 import javax.xml.transform.stream.StreamSource;
 
-import org.junit.rules.ExpectedException;
+import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import uk.org.lidalia.slf4jtest.LoggingEvent;
 import uk.org.lidalia.slf4jtest.TestLogger;
@@ -84,7 +86,7 @@ public class Nitf21HeaderTest {
 
     private void checkCompliantHeaderResults(SlottedNitfParseStrategy parseStrategy) {
         Nitf header = parseStrategy.getNitfHeader();
-        assertEquals(FileType.NITF_TWO_ONE, header.getFileType());
+        Assert.assertEquals(FileType.NITF_TWO_ONE, header.getFileType());
         assertEquals(3, header.getComplexityLevel());
         assertEquals("BF01", header.getStandardType());
         assertEquals("I_3034C", header.getOriginatingStationId());
@@ -116,14 +118,14 @@ public class Nitf21HeaderTest {
         assertEquals("Unknown", segment1.getImageSource());
         assertEquals(18L, segment1.getNumberOfRows());
         assertEquals(35L, segment1.getNumberOfColumns());
-        assertEquals(PixelValueType.BILEVEL, segment1.getPixelValueType());
-        assertEquals(ImageRepresentation.RGBLUT, segment1.getImageRepresentation());
-        assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
+        Assert.assertEquals(PixelValueType.BILEVEL, segment1.getPixelValueType());
+        Assert.assertEquals(ImageRepresentation.RGBLUT, segment1.getImageRepresentation());
+        Assert.assertEquals(ImageCategory.VISUAL, segment1.getImageCategory());
         assertEquals(1, segment1.getActualBitsPerPixelPerBand());
-        assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
-        assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
+        Assert.assertEquals(PixelJustification.RIGHT, segment1.getPixelJustification());
+        Assert.assertEquals(ImageCoordinatesRepresentation.NONE, segment1.getImageCoordinatesRepresentation());
         assertEquals(0, segment1.getImageComments().size());
-        assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
+        Assert.assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
 
         // Checks for ImageBand
@@ -150,7 +152,7 @@ public class Nitf21HeaderTest {
         assertEquals((byte)0x00, lut3.getEntry(0));
         assertEquals((byte)0x00, lut3.getEntry(1));
 
-        assertEquals(ImageMode.BLOCKINTERLEVE, segment1.getImageMode());
+        Assert.assertEquals(ImageMode.BLOCKINTERLEVE, segment1.getImageMode());
         assertEquals(1, segment1.getNumberOfBlocksPerRow());
         assertEquals(1, segment1.getNumberOfBlocksPerColumn());
         assertEquals(35, segment1.getNumberOfPixelsPerBlockHorizontal());
@@ -500,7 +502,7 @@ public class Nitf21HeaderTest {
         assertEquals("1998-02-17 10:19:39", formatter.format(textSegment.getTextDateTime().toDate()));
         assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
-        assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
+        Assert.assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
     }
 
     @Test
@@ -628,7 +630,7 @@ public class Nitf21HeaderTest {
         assertEquals(100, segment.getGraphicLocationColumn());
         assertEquals(175, segment.getBoundingBox1Row());
         assertEquals(125, segment.getBoundingBox1Column());
-        assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
+        Assert.assertEquals(GraphicColour.COLOUR, segment.getGraphicColour());
         assertEquals(1075, segment.getBoundingBox2Row());
         assertEquals(825, segment.getBoundingBox2Column());
     }
@@ -939,7 +941,7 @@ public class Nitf21HeaderTest {
     }
 
     void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+        Assert.assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());
         assertEquals("", securityMetadata.getCodewords());
         assertEquals("", securityMetadata.getControlAndHandling());

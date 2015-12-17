@@ -4,40 +4,40 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import difflib.Delta;
-import difflib.DiffUtils;
-import difflib.Patch;
-import java.util.Map;
-
-import org.codice.imaging.nitf.core.AbstractNitfSegment;
-import org.codice.imaging.nitf.core.DataExtensionSegmentNitfParseStrategy;
 import org.codice.imaging.nitf.core.FileReader;
 import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.ImageCoordinatesRepresentation;
-import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.NitfReader;
-import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.RasterProductFormatAttributes;
+import org.codice.imaging.nitf.core.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.Tre;
 import org.codice.imaging.nitf.core.TreCollection;
 import org.codice.imaging.nitf.core.TreEntry;
 import org.codice.imaging.nitf.core.TreGroup;
+import org.codice.imaging.nitf.core.common.CommonNitfSegment;
+import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
+
+import difflib.Delta;
+import difflib.DiffUtils;
+import difflib.Patch;
 
 public class FileComparer {
     static final String OUR_OUTPUT_EXTENSION = ".OURS.txt";
@@ -443,7 +443,7 @@ public class FileComparer {
         return (des1 != null) && (hasTREsOtherThanRPF(des1.getTREsRawStructure()));
     }
 
-    private void outputTresForSegment(AbstractNitfSegment segment, String label) throws IOException {
+    private void outputTresForSegment(CommonNitfSegment segment, String label) throws IOException {
         TreCollection treCollection = segment.getTREsRawStructure();
         for (Tre tre : treCollection.getTREs()) {
             if (tre.getRawData() == null) {

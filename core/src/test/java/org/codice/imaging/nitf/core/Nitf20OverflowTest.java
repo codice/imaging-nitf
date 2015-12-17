@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
 import org.junit.Before;
 import org.junit.Test;
 

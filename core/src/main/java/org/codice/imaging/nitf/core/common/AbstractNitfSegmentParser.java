@@ -12,7 +12,13 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.common;
+
+import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
+import static org.codice.imaging.nitf.core.common.CommonConstants.NITF20_DATE_FORMAT;
+import static org.codice.imaging.nitf.core.common.CommonConstants.NITF21_DATE_FORMAT;
+import static org.codice.imaging.nitf.core.common.CommonConstants.RGB_COLOUR_LENGTH;
+import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,35 +26,62 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.codice.imaging.nitf.core.NitfDateTime;
+import org.codice.imaging.nitf.core.NitfParseStrategy;
+import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.RGBColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
     Common segment parsing functionality.
 */
-abstract class AbstractNitfSegmentParser {
+public abstract class AbstractNitfSegmentParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractNitfSegmentParser.class);
 
+    /**
+     *
+     * the NitfReader which streams the input.
+     */
     protected NitfReader reader = null;
+
+    /**
+     *
+     * the NitfParsingStrategy.
+     */
     protected NitfParseStrategy parsingStrategy;
 
+    /**
+     *
+     * @throws ParseException when the input doesn't match the expected format for ENCRYP.
+     */
     protected final void readENCRYP() throws ParseException {
-        if (!"0".equals(reader.readBytes(NitfConstants.ENCRYP_LENGTH))) {
+        if (!"0".equals(reader.readBytes(ENCRYP_LENGTH))) {
             LOG.warn("Mismatch while reading ENCRYP");
             throw new ParseException("Unexpected ENCRYP value", (int) reader.getCurrentOffset());
         }
     }
 
+    /**
+     *
+     * @return the next RGBColour from the head of the reader stream.
+     * @throws ParseException when the next token is not the expected format for an RGBColour.
+     */
     protected final RGBColour readRGBColour() throws ParseException {
-        byte[] rgb = reader.readBytesRaw(NitfConstants.RGB_COLOUR_LENGTH);
+        byte[] rgb = reader.readBytesRaw(RGB_COLOUR_LENGTH);
         return new RGBColour(rgb);
     }
 
+    /**
+     *
+     * @return a NitfDateTime from head of the reader stream.
+     * @throws ParseException when the next token is not the expected format for a NitfDateTime.
+     */
     protected final NitfDateTime readNitfDateTime() throws ParseException {
         NitfDateTime dateTime = new NitfDateTime();
 
-        String sourceString = reader.readBytes(NitfConstants.STANDARD_DATE_TIME_LENGTH);
+        String sourceString = reader.readBytes(STANDARD_DATE_TIME_LENGTH);
         dateTime.setSourceString(sourceString);
 
         switch (reader.getFileType()) {
@@ -71,8 +104,8 @@ abstract class AbstractNitfSegmentParser {
     private void parseNitf20Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
         String strippedSourceString = sourceString.trim();
         SimpleDateFormat dateFormat = null;
-        if (strippedSourceString.length() == NitfConstants.STANDARD_DATE_TIME_LENGTH) {
-            dateFormat = new SimpleDateFormat(NitfConstants.NITF20_DATE_FORMAT);
+        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
+            dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
         } else if (strippedSourceString.length() == 0) {
             return;
         }
@@ -83,15 +116,15 @@ abstract class AbstractNitfSegmentParser {
         String strippedSourceString = removeHyphens(sourceString.trim());
 
         SimpleDateFormat dateFormat = null;
-        if (strippedSourceString.length() == NitfConstants.STANDARD_DATE_TIME_LENGTH) {
-            dateFormat = new SimpleDateFormat(NitfConstants.NITF21_DATE_FORMAT);
-        } else if ((strippedSourceString.length() < NitfConstants.STANDARD_DATE_TIME_LENGTH) && (strippedSourceString.length() % 2 == 0)) {
-            dateFormat = new SimpleDateFormat(NitfConstants.NITF21_DATE_FORMAT.substring(0, strippedSourceString.length()));
+        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
+            dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT);
+        } else if ((strippedSourceString.length() < STANDARD_DATE_TIME_LENGTH) && (strippedSourceString.length() % 2 == 0)) {
+            dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT.substring(0, strippedSourceString.length()));
         }
         parseDateString(sourceString, dateFormat, dateTime);
     }
 
-    public static String removeHyphens(final String s) {
+    private static String removeHyphens(final String s) {
         int i = s.length() - 1;
         while ((i >= 0) && (s.charAt(i) == '-')) {
             i--;

@@ -16,6 +16,8 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+
 /**
     Parser for a label segment subheader in a NITF 2.0 file.
 */

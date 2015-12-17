@@ -18,9 +18,10 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.imageio.stream.ImageInputStream;
+
 import org.codice.imaging.nitf.core.FileReader;
-import org.codice.imaging.nitf.core.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.NitfLabelSegmentHeader;
@@ -28,6 +29,7 @@ import org.codice.imaging.nitf.core.NitfReader;
 import org.codice.imaging.nitf.core.NitfSymbolSegmentHeader;
 import org.codice.imaging.nitf.core.NitfTextSegmentHeader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
 
 class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
 

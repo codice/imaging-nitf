@@ -443,4 +443,19 @@ public class Nitf extends AbstractNitfSegment {
         return nitfExtendedHeaderDataOverflow;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getIdentifier() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final NitfSecurityMetadata getSecurityMetadata() {
+        return this.fileSecurityMetadata;
+    }
 }
