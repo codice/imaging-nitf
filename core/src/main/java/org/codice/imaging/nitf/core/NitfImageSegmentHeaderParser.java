@@ -18,6 +18,8 @@ import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
 
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+
 /**
     Parser for an image segment subheader in a NITF file.
 */

@@ -12,9 +12,12 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.dataextension;
 
 import java.text.ParseException;
+
+import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 
 /**
  * Parse strategy that only extracts headers and the DES.

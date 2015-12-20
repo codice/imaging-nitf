@@ -1,5 +1,4 @@
 *.class
-*.iml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -17,4 +16,8 @@ hs_err_pid*
 /nitfNetbeansFileType/target/
 /render/target/
 /shared-test-resources/target/
+
+# ignore intellij files
+*.iml
+
 .idea/

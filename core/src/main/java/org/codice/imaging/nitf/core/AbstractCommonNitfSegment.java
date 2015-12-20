@@ -17,31 +17,28 @@ package org.codice.imaging.nitf.core;
 /**
     Common data elements for NITF segment subheaders.
 */
-public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment {
+public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment
+        implements org.codice.imaging.nitf.core.common.CommonNitfSegment {
 
     private String segmentIdentifier = null;
     private NitfSecurityMetadata securityMetadata = null;
 
     /**
-        Set the identifier (IID1/SID/LID/TEXTID) for the segment.
-        <p>
-        This field shall contain a valid alphanumeric identification code associated with the
-        segment. The valid codes are determined by the application.
+     Set the identifier (IID1/SID/LID/TEXTID) for the segment.
+     <p>
+     This field shall contain a valid alphanumeric identification code associated with the
+     segment. The valid codes are determined by the application.
 
-         @param identifier the identifier for the segment
-    */
+     @param identifier the identifier for the segment
+     */
     public final void setIdentifier(final String identifier) {
         segmentIdentifier = identifier;
     }
 
     /**
-        Return the identifier (IID1/SID/LID/TEXTID) for the segment.
-        <p>
-        This field shall contain a valid alphanumeric identification code associated with the
-        segment. The valid codes are determined by the application.
-
-        @return the identifier
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final String getIdentifier() {
         return segmentIdentifier;
     }
@@ -58,10 +55,9 @@ public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment {
     }
 
     /**
-        Return the security metadata for the segment.
-
-        @return security metadata
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final NitfSecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }

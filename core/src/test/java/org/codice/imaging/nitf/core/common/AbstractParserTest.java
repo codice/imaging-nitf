@@ -12,13 +12,11 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.common;
 
-import static org.junit.Assert.assertNotNull;
+    import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-
-import static org.hamcrest.Matchers.is;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -27,11 +25,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.junit.rules.ExpectedException;
+import org.codice.imaging.nitf.core.FileType;
+import org.codice.imaging.nitf.core.NitfDateTime;
+import org.codice.imaging.nitf.core.NitfReader;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
-
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import uk.org.lidalia.slf4jtest.LoggingEvent;

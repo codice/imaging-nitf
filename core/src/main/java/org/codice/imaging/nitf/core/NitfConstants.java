@@ -17,38 +17,6 @@ package org.codice.imaging.nitf.core;
  * Utility collection of shared constants.
  */
 public final class NitfConstants {
-
-    // Nitf Segment
-    /**
-     * Length of the "ENCRYP" field used in multiple headers.
-     * <p>
-     * See, for example, MIL-STD-2500C Table A-1.
-     */
-    protected static final int ENCRYP_LENGTH = 1;
-
-    /**
-     * Length of an RGB colour field.
-     * <p>
-     * See, for example, FBKGC in MIL-STD-2500C Table A-1.
-     */
-    protected static final int RGB_COLOUR_LENGTH = 3;
-
-    // Dates
-    /**
-     * The length of a "proper" formatted date.
-     */
-    protected static final int STANDARD_DATE_TIME_LENGTH = 14;
-
-    /**
-     * The date format used by NITF 2.1.
-     */
-    protected static final String NITF21_DATE_FORMAT = "yyyyMMddHHmmss";
-
-    /**
-     * The date format used by NITF 2.0.
-     */
-    protected static final String NITF20_DATE_FORMAT = "ddHHmmss'Z'MMMyy";
-
     // Error Messages
     static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF file: ";
     static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File Not Found Exception opening file:";
@@ -140,68 +108,6 @@ public final class NitfConstants {
      * The length of the latitude decimal degrees format.
      */
     protected static final int LAT_DECIMAL_DEGREES_FORMAT_LENGTH = LAT_DECIMAL_DEGREES_FORMAT.length();
-
-    // Data Extenstion Segment (DES)
-    /**
-     * Marker string for Data Extension Segment (DES) segment header.
-     */
-    protected static final String DE = "DE";
-
-    /**
-     * Length of unique DES Type Identifier.
-     * <p>
-     * MIL-STD-2500C Table A-8(A) / Table A-8(B)
-     */
-    protected static final int DESID_LENGTH = 25;
-
-    /**
-     * Length of DES Data Definition version.
-     * <p>
-     * MIL-STD-2500C Table A-8(A) / Table A-8(B)
-     */
-    protected static final int DESVER_LENGTH = 2;
-
-    /**
-     * Length of DES overflowed header type.
-     * <p>
-     * MIL-STD-2500C Table A-8(A)
-     */
-    protected static final int DESOFLW_LENGTH = 6;
-
-    /**
-     * Length of DES Data Overflowed Item field.
-     * <p>
-     * MIL-STD-2500C Table A-8(A)
-     */
-    protected static final int DESITEM_LENGTH = 3;
-
-    /**
-     * Length of the "length of DES-Defined subheader fields" field.
-     * <p>
-     * MIL-STD-2500C Table A-8(A)
-     */
-    protected static final int DESSHL_LENGTH = 4;
-
-    /**
-     * Marker string for Tagged Record Overflow DES in NITF 2.1
-     * <p>
-     * See DESID in MIL-STD-2500C Table A-8(A).
-     */
-    protected static final String TRE_OVERFLOW = "TRE_OVERFLOW";
-
-    /**
-     * Marker string for Tagged Record Overflow DES in NITF 2.0
-     * <p>
-     * See MIL-STD-2500A.
-     */
-    protected static final String REGISTERED_EXTENSIONS = "Registered Extensions";
-
-    /**
-     * Marker string for Tagged Record Overflow DES in NITF 2.0
-     * <p>
-     * See MIL-STD-2500A.
-     */
-    protected static final String CONTROLLED_EXTENSIONS = "Controlled Extensions";
 
     // NITF file lengths
     // file header

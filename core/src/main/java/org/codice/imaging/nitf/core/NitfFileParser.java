@@ -17,6 +17,8 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.Arrays;
 
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+
 /**
     Parser for a NITF file.
 */
