@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
@@ -24,7 +25,8 @@ import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
     Parser for an image segment subheader in a NITF file.
 */
 class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
-
+    private static final int NUM_IMAGE_COORDINATES = 4;
+    private static final int COORDINATE_PAIR_LENGTH = NitfConstants.IGEOLO_LENGTH / NUM_IMAGE_COORDINATES;
     private int numImageComments = 0;
     private int numBands = 0;
     private int userDefinedImageDataLength = 0;
@@ -183,36 +185,67 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readIGEOLO() throws ParseException {
-        // TODO: this really only handle the GEO and D cases, not the UTM / UPS representations.
-        final int numCoordinates = 4;
-        final int coordinatePairLength = NitfConstants.IGEOLO_LENGTH / numCoordinates;
-        String igeolo = reader.readBytes(NitfConstants.IGEOLO_LENGTH);
-        ImageCoordinatePair[] coords = new ImageCoordinatePair[numCoordinates];
-        for (int i = 0; i < numCoordinates; ++i) {
-            coords[i] = new ImageCoordinatePair();
-            String coordStr = igeolo.substring(i * coordinatePairLength, (i + 1) * coordinatePairLength);
-            switch (segment.getImageCoordinatesRepresentation()) {
-                case GEOGRAPHIC:
-                    coords[i].setFromDMS(coordStr);
-                    break;
-                case DECIMALDEGREES:
-                    coords[i].setFromDecimalDegrees(coordStr);
-                    break;
-                case UTMUPSNORTH:
-                    coords[i].setFromUTMUPSNorth(coordStr);
-                    break;
-                case GEOCENTRIC:
-                    coords[i].setFromDMS(coordStr);
-                    break;
-                case MGRS:
-                    coords[i].setFromMGRS(coordStr);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS: "
-                                                            + segment.getImageCoordinatesRepresentation());
-            }
+        ParserFunction<ImageCoordinatePoint> function = null;
+        Class clazz = null;
+
+        switch (segment.getImageCoordinatesRepresentation()) {
+            case GEOGRAPHIC:
+                clazz = ImageGeographicCoordinatePair.class;
+                function = ((s -> { ImageGeographicCoordinatePair coords = new ImageGeographicCoordinatePair();
+                                    coords.setFromGeographicCoordinates(s);
+                                    return coords; }));
+                break;
+            case GEOCENTRIC:
+                clazz = ImageGeographicCoordinatePair.class;
+                function = ((s -> { ImageGeographicCoordinatePair coords = new ImageGeographicCoordinatePair();
+                                    coords.setFromGeographicCoordinates(s);
+                                    return coords; }));
+                break;
+            case DECIMALDEGREES:
+                clazz = ImageDecimalDegreesCoordinatePair.class;
+                function = ((s -> { ImageDecimalDegreesCoordinatePair coords = new ImageDecimalDegreesCoordinatePair();
+                                    coords.setFromDecimalDegrees(s);
+                                    return coords; }));
+                break;
+            case UTMUPSNORTH:
+                clazz = ImageUtmCoordinate.class;
+                function = ((s -> { ImageUtmCoordinate coords = new ImageUtmCoordinate(ImageCoordinatesRepresentation.UTMUPSNORTH);
+                                    coords.setFromUtmUps(s);
+                                    return coords; }));
+                break;
+            case UTMUPSSOUTH:
+                clazz = ImageUtmCoordinate.class;
+                function = ((s -> { ImageUtmCoordinate coords = new ImageUtmCoordinate(ImageCoordinatesRepresentation.UTMUPSSOUTH);
+                    coords.setFromUtmUps(s);
+                    return coords; }));
+                break;
+            case MGRS:
+                clazz = ImageMgrsCoordinate.class;
+                function = ((s -> { ImageMgrsCoordinate coords = new ImageMgrsCoordinate();
+                                    coords.setFromMgrs(s);
+                                    return coords; }));
+                break;
+            default:
+                throw new UnsupportedOperationException("NEED TO IMPLEMENT OTHER COORDINATE REPRESENTATIONS: "
+                                                        + segment.getImageCoordinatesRepresentation());
         }
-        segment.setImageCoordinates(new ImageCoordinates(coords));
+
+        final String igeolo = reader.readBytes(NitfConstants.IGEOLO_LENGTH);
+        ImageCoordinates<?> imageCoordinates = handleImageCoordinates(clazz, function, igeolo);
+        segment.setImageCoordinates(imageCoordinates);
+    }
+
+    private <T extends ImageCoordinatePoint> ImageCoordinates<T> handleImageCoordinates(final Class<T> clazz,
+            final ParserFunction<T> func, final String igeolo)
+            throws ParseException {
+        T[] coords = (T[]) Array.newInstance(clazz, NUM_IMAGE_COORDINATES);
+
+        for (int i = 0; i < NUM_IMAGE_COORDINATES; ++i) {
+            String coordStr = igeolo.substring(i * COORDINATE_PAIR_LENGTH, (i + 1) * COORDINATE_PAIR_LENGTH);
+            coords[i] = func.apply(coordStr);
+        }
+
+        return new ImageCoordinates<T>(coords);
     }
 
     private void readNICOM() throws ParseException {

@@ -16,13 +16,14 @@ package org.codice.imaging.nitf.core;
 
 /**
     Coordinates of an image.
+    @param <T> - the type of coordinate representation contained in this ImageCoordinates
 */
-public class ImageCoordinates {
+public class ImageCoordinates<T extends ImageCoordinatePoint> {
 
-    private ImageCoordinatePair coordinate00;
-    private ImageCoordinatePair coordinate0MaxCol;
-    private ImageCoordinatePair coordinateMaxRowMaxCol;
-    private ImageCoordinatePair coordinateMaxRow0;
+    private T coordinate00;
+    private T coordinate0MaxCol;
+    private T coordinateMaxRowMaxCol;
+    private T coordinateMaxRow0;
 
     private static final int COORDINATE00_INDEX = 0;
     private static final int COORDINATE0MAXCOL_INDEX = 1;
@@ -32,9 +33,9 @@ public class ImageCoordinates {
     /**
         Constructor.
 
-        @param coord array of four coordinate pairs, in the order [0,0], [0, MaxCol], [MaxRow, MaxCol], [MaxRow, 0].
+        @param coord array of four coordinates of type &lt;T&gt;, in the order [0,0], [0, MaxCol], [MaxRow, MaxCol], [MaxRow, 0].
     */
-    public ImageCoordinates(final ImageCoordinatePair[] coord) {
+    public ImageCoordinates(final T[] coord) {
         coordinate00 = coord[COORDINATE00_INDEX];
         coordinate0MaxCol = coord[COORDINATE0MAXCOL_INDEX];
         coordinateMaxRowMaxCol = coord[COORDINATEMAXROWMAXCOL_INDEX];
@@ -42,38 +43,38 @@ public class ImageCoordinates {
     }
 
     /**
-        Get the coordinate pair for [0,0].
+        Get the coordinate of type &lt;T&gt; for [0,0].
 
-        @return corresponding coordinate pair.
+        @return corresponding coordinate.
     */
-    public final ImageCoordinatePair getCoordinate00() {
+    public final T getCoordinate00() {
         return coordinate00;
     }
 
     /**
-        Get the coordinate pair for [0,MaxCol].
+        Get the coordinate of type &lt;T&gt; for [0,MaxCol].
 
-        @return corresponding coordinate pair.
+        @return corresponding coordinate.
     */
-    public final ImageCoordinatePair getCoordinate0MaxCol() {
+    public final T getCoordinate0MaxCol() {
         return coordinate0MaxCol;
     }
 
     /**
-        Get the coordinate pair for [MaxRow,MaxCol].
+        Get the coordinate of type &lt;T&gt; for [MaxRow,MaxCol].
 
-        @return corresponding coordinate pair.
+        @return corresponding coordinate.
     */
-    public final ImageCoordinatePair getCoordinateMaxRowMaxCol() {
+    public final T getCoordinateMaxRowMaxCol() {
         return coordinateMaxRowMaxCol;
     }
 
     /**
-        Get the coordinate pair for [MaxRow,0].
+        Get the coordinate of type &lt;T&gt; for [MaxRow,0].
 
-        @return corresponding coordinate pair.
+        @return corresponding coordinate.
     */
-    public final ImageCoordinatePair getCoordinateMaxRow0() {
+    public final T getCoordinateMaxRow0() {
         return coordinateMaxRow0;
     }
 }

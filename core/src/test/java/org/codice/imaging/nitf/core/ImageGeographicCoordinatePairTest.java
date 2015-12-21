@@ -23,19 +23,19 @@ import org.junit.rules.ExpectedException;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class ImageCoordinatePairTest {
+public class ImageGeographicCoordinatePairTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testImageCoordinatePairDefaultConstructor() {
-        ImageCoordinatePair coord = new ImageCoordinatePair();
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair();
         assertNotNull(coord);
     }
 
     @Test
     public void testImageCoordinatePairAccessors() {
-        ImageCoordinatePair coord = new ImageCoordinatePair(-35.3761, 149.1018);
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair(-35.3761, 149.1018);
         assertNotNull(coord);
         assertEquals(-35.3761, coord.getLatitude(), 0.00001);
         assertEquals(149.1018, coord.getLongitude(), 0.00001);
@@ -43,16 +43,16 @@ public class ImageCoordinatePairTest {
 
     @Test
     public void testNullArgumentDMS() throws ParseException {
-        ImageCoordinatePair coord = new ImageCoordinatePair();
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair();
         exception.expect(ParseException.class);
         exception.expectMessage("Null argument for DMS parsing");
-        coord.setFromDMS(null);
+        coord.setFromGeographicCoordinates(null);
     }
 
     @Test
     public void testValidArgumentDMS() throws ParseException {
-        ImageCoordinatePair coord = new ImageCoordinatePair();
-        coord.setFromDMS("333019S1502203E");
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair();
+        coord.setFromGeographicCoordinates("333019S1502203E");
         assertNotNull(coord);
         assertEquals(-33.5052, coord.getLatitude(), 0.0001);
         assertEquals(150.3675, coord.getLongitude(), 0.0001);
@@ -61,33 +61,33 @@ public class ImageCoordinatePairTest {
 
     @Test
     public void testBadArgumentLengthDMS() throws ParseException {
-        ImageCoordinatePair coord = new ImageCoordinatePair();
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair();
         exception.expect(ParseException.class);
         exception.expectMessage("Incorrect length for DMS parsing:14");
-        coord.setFromDMS("333019S1502203");
+        coord.setFromGeographicCoordinates("333019S1502203");
     }
 
     @Test
     public void testBadFirstHemisphereArgumentDMS() throws ParseException {
-        ImageCoordinatePair coord = new ImageCoordinatePair();
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair();
         exception.expect(ParseException.class);
         exception.expectMessage("Incorrect format for N/S flag while DMS parsing: X(333019X1502203E)");
-        coord.setFromDMS("333019X1502203E");
+        coord.setFromGeographicCoordinates("333019X1502203E");
     }
 
     @Test
     public void testBadSecondHemisphereArgumentDMS() throws ParseException {
-        ImageCoordinatePair coord = new ImageCoordinatePair();
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair();
         exception.expect(ParseException.class);
         exception.expectMessage("Incorrect format for E/W flag while DMS parsing: Y(333019S1502203Y)");
-        coord.setFromDMS("333019S1502203Y");
+        coord.setFromGeographicCoordinates("333019S1502203Y");
     }
 
     @Test
     public void testNumberFormatArgumentDMS() throws ParseException {
-        ImageCoordinatePair coord = new ImageCoordinatePair();
+        ImageGeographicCoordinatePair coord = new ImageGeographicCoordinatePair();
         exception.expect(ParseException.class);
         exception.expectMessage("Incorrect DMS format: 333019S1502x03E");
-        coord.setFromDMS("333019S1502x03E");
+        coord.setFromGeographicCoordinates("333019S1502x03E");
     }
 }
