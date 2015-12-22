@@ -18,10 +18,12 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.Action;
+
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmParser;
-import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;

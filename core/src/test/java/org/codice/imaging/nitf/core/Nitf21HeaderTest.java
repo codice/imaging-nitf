@@ -35,7 +35,9 @@ import java.util.TimeZone;
 
 import javax.xml.transform.stream.StreamSource;
 
-import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicColour;
+import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

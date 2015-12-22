@@ -12,16 +12,22 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  * 
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.graphic;
 
-import java.io.BufferedInputStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.InputStream;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 
+import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
+import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.NitfSecurityClassification;
+import org.codice.imaging.nitf.core.NitfSecurityMetadata;
 import org.junit.Test;
 
 public class Nitf21GraphicParsingTest {

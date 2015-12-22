@@ -22,14 +22,14 @@ import java.util.List;
 import javax.imageio.stream.ImageInputStream;
 
 import org.codice.imaging.nitf.core.FileReader;
-import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.NitfLabelSegmentHeader;
 import org.codice.imaging.nitf.core.NitfReader;
 import org.codice.imaging.nitf.core.NitfSymbolSegmentHeader;
 import org.codice.imaging.nitf.core.NitfTextSegmentHeader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
-import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 
 class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
 

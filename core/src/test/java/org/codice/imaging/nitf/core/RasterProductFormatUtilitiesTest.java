@@ -19,14 +19,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 
-import org.junit.rules.ExpectedException;
-import org.junit.Rule;
 import org.junit.Test;
 
 public class RasterProductFormatUtilitiesTest {

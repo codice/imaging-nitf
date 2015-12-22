@@ -19,7 +19,7 @@ import java.text.ParseException;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
 
-import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;

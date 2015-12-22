@@ -14,12 +14,15 @@
  */
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+
 /**
     Common data elements for NITF data segment subheaders.
     <p>
     This excludes the Data Extension Segment subheader.
 */
-public abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment {
+public abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment
+        implements CommonNitfSubSegment {
 
     private int extendedHeaderDataOverflow = 0;
     private int segmentAttachmentLevel = 0;
@@ -37,13 +40,9 @@ public abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment {
     }
 
     /**
-        Return the extended subheader overflow index (IXSOFL/SXSOFL/LXSOFL/TXSOFL).
-        <p>
-        This is the (1-base) index of the TRE into which extended header data
-        overflows.
-
-        @return the extended header data overflow index
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final int getExtendedHeaderDataOverflow() {
         return extendedHeaderDataOverflow;
     }
@@ -62,14 +61,9 @@ public abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment {
     }
 
     /**
-        Return the attachment level for the segment.
-        <p>
-        The valid values for this are zero (not attached) or the display level
-        for an image, graphic, symbol or label (as appropriate to the NITF file type)
-        in the file.
-
-        @return the attachment level
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final int getAttachmentLevel() {
         return segmentAttachmentLevel;
     }

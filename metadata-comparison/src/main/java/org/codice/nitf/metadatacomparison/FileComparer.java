@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
 import org.codice.imaging.nitf.core.FileReader;
 import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.ImageCoordinatePair;
@@ -32,9 +32,8 @@ import org.codice.imaging.nitf.core.TreCollection;
 import org.codice.imaging.nitf.core.TreEntry;
 import org.codice.imaging.nitf.core.TreGroup;
 import org.codice.imaging.nitf.core.common.CommonNitfSegment;
-import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
-
+import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
@@ -581,7 +580,8 @@ public class FileComparer {
     private void outputRPFDESmetadata(Map <String, String> metadata, Tre tre) {
         try {
             byte[] rawRpfDesData = tre.getRawData();
-            RasterProductFormatAttributes attributes = new RasterProductFormatAttributeParser().parseRpfDes(rawRpfDesData);
+            ByteBuffer bytes = ByteBuffer.wrap(rawRpfDesData);
+            RasterProductFormatAttributes attributes = new RasterProductFormatAttributeParser().parseRpfDes(bytes);
             if (attributes.getCurrencyDate() != null) {
                 metadata.put("NITF_RPF_CurrencyDate", attributes.getCurrencyDate());
             } else {
