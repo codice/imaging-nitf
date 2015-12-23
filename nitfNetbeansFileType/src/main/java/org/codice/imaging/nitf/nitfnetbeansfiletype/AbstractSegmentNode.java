@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
-import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
+import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 
@@ -25,7 +25,7 @@ abstract class AbstractSegmentNode extends AbstractCommonSegmentNode {
         super(children);
     }
 
-    protected void addSubSegmentProperties(final Sheet.Set set, final AbstractNitfSubSegment segment) {
+    protected void addSubSegmentProperties(final Sheet.Set set, final CommonNitfSubSegment segment) {
         addCommonSegmentProperties(set, segment);
         set.put(new IntegerProperty("attachmentLevel",
                 "Attachment Level",

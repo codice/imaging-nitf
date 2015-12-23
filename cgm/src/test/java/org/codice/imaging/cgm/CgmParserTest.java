@@ -25,24 +25,27 @@
  */
 package org.codice.imaging.cgm;
 
-import java.awt.Graphics2D;
+import static org.junit.Assert.assertNotNull;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+
 import javax.imageio.ImageIO;
+
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

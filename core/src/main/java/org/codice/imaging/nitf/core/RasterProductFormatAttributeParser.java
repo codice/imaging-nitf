@@ -73,25 +73,15 @@ public class RasterProductFormatAttributeParser {
     /**
         Parse the content out of RPF DES.
 
-        @param desData byte array of DES data.
+        @param bytes ByteBuffer of DES data.
         @return attributes for the RPF DES.
         @throws ParseException if the data format is not as expected.
     */
-    public final RasterProductFormatAttributes parseRpfDes(final byte[] desData) throws ParseException {
-        RasterProductFormatAttributes attributes = new RasterProductFormatAttributes();
-
-        ByteBuffer bytes = ByteBuffer.wrap(desData);
+    public final RasterProductFormatAttributes parseRpfDes(final ByteBuffer bytes) throws ParseException {
+        RasterProductFormatAttributesImpl attributes = new RasterProductFormatAttributesImpl();
 
         int numberOfAttributeOffsetRecords = bytes.getShort();
-//        int numberOfExplicitArealCoverageRecords = bytes.getShort();
-//        int attributeOffsetTableOffset = bytes.getInt();
-//        int attributeOffsetRecordLength = bytes.getShort();
-//         System.out.println("RPFDES: numberOfAttributeOffsetRecords:" + numberOfAttributeOffsetRecords);
-//         System.out.println("RPFDES: numberOfExplicitArealCoverageRecords:" + numberOfExplicitArealCoverageRecords);
-//         System.out.println("RPFDES: attributeOffsetTableOffset:" + attributeOffsetTableOffset);
-//         System.out.println("RPFDES: attributeOffsetRecordLength:" + attributeOffsetRecordLength);
 
-        // System.out.println("Attribute offset table");
         List<OffsetRecord> offsetRecords = new ArrayList<OffsetRecord>();
         for (int i = 0; i < numberOfAttributeOffsetRecords; ++i) {
             OffsetRecord offsetRecord = new OffsetRecord();
@@ -104,11 +94,8 @@ public class RasterProductFormatAttributeParser {
 
         for (int i = 0; i < offsetRecords.size(); ++i) {
             OffsetRecord offsetRecord = offsetRecords.get(i);
-//             System.out.println("\tAttributeId:" + offsetRecord.attributeId);
-//             System.out.println("\tParameterId:" + offsetRecord.parameterId);
-//             System.out.println("\tAreal coverage sequence number:" + offsetRecord.arealCoverageSequenceNumber);
-//             System.out.println("\tattribute record offset:" + offsetRecord.attributeRecordOffset);
             bytes.position(ATTRIBUTE_SECTION_SUBHEADER_LENGTH + offsetRecord.attributeRecordOffset);
+
             switch(offsetRecord.attributeId) {
                 case CURRENCY_DATE_ATTR_ID:
                     attributes.addCurrencyDate(offsetRecord.arealCoverageSequenceNumber, parseRpfCurrencyDate(bytes, offsetRecord));

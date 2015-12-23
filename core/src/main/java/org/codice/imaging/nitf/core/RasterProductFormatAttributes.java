@@ -14,154 +14,89 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
-   Raster Product Format (RPF) attributes.
-*/
-public class RasterProductFormatAttributes {
+ Raster Product Format (RPF) attributes.
+ */
+public interface RasterProductFormatAttributes {
+    /**
+     Return the currency date for the overall RPF product.
+     <p>
+     This is the date of the most recent revision to the RPF product, in the form YYYYMMDD.
 
-    private static final int GLOBAL_AREAL_INDEX = 0;
-
-    private Map<Integer, String> currencyDates = new HashMap<Integer, String>();
-    private Map<Integer, String> productionDates = new HashMap<Integer, String>();
-    private Map<Integer, String> significantDates = new HashMap<Integer, String>();
+     @return the currency date, or null if there is no global currency date.
+     */
+    String getCurrencyDate();
 
     /**
-        Add a currency date.
-        <p>
-        This is the date of the most recent revision to the RPF product, in the form YYYYMMDD.
+     Return the available areal references for currency date.
+     <p>
+     This may include 0, which is the (implicit) global areal reference.
 
-        @param arealIndex the areal index for the currency date (0 for whole file)
-        @param date the currency date.
-    */
-    public final void addCurrencyDate(final int arealIndex, final String date) {
-        currencyDates.put(arealIndex, date);
-    }
+     @return the areal references.
+     */
+    Set<Integer> getCurrencyDateArealReferences();
 
     /**
-        Return the currency date for the overall RPF product.
-        <p>
-        This is the date of the most recent revision to the RPF product, in the form YYYYMMDD.
+     Return the currency date for a given areal reference.
 
-        @return the currency date, or null if there is no global currency date.
-    */
-    public final String getCurrencyDate() {
-        return currencyDates.get(GLOBAL_AREAL_INDEX);
-    }
+     @param arealReference the areal reference for the part of the image.
+     @return the currency date for the part of the image, or null if there is no corresponding date
+     */
+    String getCurrencyDate(int arealReference);
 
     /**
-        Return the available areal references for currency date.
-        <p>
-        This may include 0, which is the (implicit) global areal reference.
+     Return the production date for the overall RPF product.
+     <p>
+     This is the date that the source product was transformed into RPF, in the form YYYYMMDD.
 
-        @return the areal references.
-    */
-    public final Set<Integer> getCurrencyDateArealReferences() {
-        return currencyDates.keySet();
-    }
+     @return the production date, or null if there is no global production date.
+     */
+    String getProductionDate();
 
     /**
-       Return the currency date for a given areal reference.
+     Return the available areal references for production date.
+     <p>
+     This will usually only be 0, which is the (implicit) global areal reference.
 
-       @param arealReference the areal reference for the part of the image.
-       @return the currency date for the part of the image, or null if there is no corresponding date
-    */
-    public final String getCurrencyDate(final int arealReference) {
-        return currencyDates.get(arealReference);
-    }
-
-    /**
-        Add a production date.
-        <p>
-        This is the date that the source product was transformed into RPF, in the form YYYYMMDD.
-
-        @param arealIndex the areal index for the production date (0 for whole file)
-        @param date the production date.
-    */
-    public final void addProductionDate(final int arealIndex, final String date) {
-        productionDates.put(arealIndex, date);
-    }
+     @return the areal references.
+     */
+    Set<Integer> getProductionDateArealReferences();
 
     /**
-        Return the production date for the overall RPF product.
-        <p>
-        This is the date that the source product was transformed into RPF, in the form YYYYMMDD.
+     Return the production date for a given areal reference.
 
-        @return the production date, or null if there is no global production date.
-    */
-    public final String getProductionDate() {
-        return productionDates.get(GLOBAL_AREAL_INDEX);
-    }
+     @param arealReference the areal reference for the part of the image.
+     @return the production date for the part of the image, or null if there is no corresponding date
+     */
+    String getProductionDate(int arealReference);
 
     /**
-        Return the available areal references for production date.
-        <p>
-        This will usually only be 0, which is the (implicit) global areal reference.
+     Return the significant date for the overall RPF product.
+     <p>
+     This is the "date that most accurately describes the basic date of the source product, in the form
+     YYYYMMDD. It can be the completion date, compilation date, collection date, revision date, or
+     other date depending on the product and circumstances."
 
-        @return the areal references.
-    */
-    public final Set<Integer> getProductionDateArealReferences() {
-        return productionDates.keySet();
-    }
-
-    /**
-       Return the production date for a given areal reference.
-
-       @param arealReference the areal reference for the part of the image.
-       @return the production date for the part of the image, or null if there is no corresponding date
-    */
-    public final String getProductionDate(final int arealReference) {
-        return productionDates.get(arealReference);
-    }
+     @return the significant date, or null if there is no global significant date.
+     */
+    String getSignificantDate();
 
     /**
-        Add a significant date.
-        <p>
-        This is the "date that most accurately describes the basic date of the source product, in the form
-        YYYYMMDD. It can be the completion date, compilation date, collection date, revision date, or
-        other date depending on the product and circumstances."
+     Return the available areal references for significant date.
+     <p>
+     This may include 0, which is the (implicit) global areal reference.
 
-        @param arealIndex the areal index for the significant date (0 for whole file)
-        @param date the significant date.
-    */
-    public final void addSignificantDate(final int arealIndex, final String date) {
-        significantDates.put(arealIndex, date);
-    }
+     @return the areal references.
+     */
+    Set<Integer> getSignificantDateArealReferences();
 
     /**
-        Return the significant date for the overall RPF product.
-        <p>
-        This is the "date that most accurately describes the basic date of the source product, in the form
-        YYYYMMDD. It can be the completion date, compilation date, collection date, revision date, or
-        other date depending on the product and circumstances."
+     Return the significant date for a given areal reference.
 
-        @return the significant date, or null if there is no global significant date.
-    */
-    public final String getSignificantDate() {
-        return significantDates.get(GLOBAL_AREAL_INDEX);
-    }
-
-    /**
-        Return the available areal references for significant date.
-        <p>
-        This may include 0, which is the (implicit) global areal reference.
-
-        @return the areal references.
-    */
-    public final Set<Integer> getSignificantDateArealReferences() {
-        return significantDates.keySet();
-    }
-
-    /**
-       Return the significant date for a given areal reference.
-
-       @param arealReference the areal reference for the part of the image.
-       @return the significant date for the part of the image, or null if there is no corresponding date
-    */
-    public final String getSignificantDate(final int arealReference) {
-        return significantDates.get(arealReference);
-    }
+     @param arealReference the areal reference for the part of the image.
+     @return the significant date for the part of the image, or null if there is no corresponding date
+     */
+    String getSignificantDate(int arealReference);
 }

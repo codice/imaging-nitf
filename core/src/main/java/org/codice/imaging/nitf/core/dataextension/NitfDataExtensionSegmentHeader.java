@@ -12,14 +12,14 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core.common.dataextension;
+package org.codice.imaging.nitf.core.dataextension;
 
 import org.codice.imaging.nitf.core.FileType;
 import org.codice.imaging.nitf.core.TreCollection;
 import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 
 /**
- Common segment parsing functionality.
+ Common data extension segment parsing functionality.
  */
 public interface NitfDataExtensionSegmentHeader extends CommonNitfSegment {
 

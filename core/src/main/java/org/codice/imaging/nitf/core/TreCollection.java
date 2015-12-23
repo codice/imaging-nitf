@@ -47,7 +47,9 @@ public class TreCollection {
         @param collectionToAdd the TREs to add.
     */
     public final void add(final TreCollection collectionToAdd) {
-        treCollectionEntries.addAll(collectionToAdd.getTREs());
+        if (collectionToAdd != null) {
+            treCollectionEntries.addAll(collectionToAdd.getTREs());
+        }
     }
 
     /**

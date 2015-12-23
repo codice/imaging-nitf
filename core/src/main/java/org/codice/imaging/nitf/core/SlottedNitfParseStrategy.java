@@ -20,8 +20,10 @@ import java.util.List;
 
 import javax.xml.transform.Source;
 
-import org.codice.imaging.nitf.core.common.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeaderParser;
+import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeaderParser;
 
 /**
  * "Slotted" parse strategy.
