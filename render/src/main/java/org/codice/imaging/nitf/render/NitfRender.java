@@ -25,7 +25,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.Nitf;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
 public class NitfRender {
 

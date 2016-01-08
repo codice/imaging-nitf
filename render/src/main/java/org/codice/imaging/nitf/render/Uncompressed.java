@@ -23,10 +23,10 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.ImageCompression;
-import org.codice.imaging.nitf.core.ImageMode;
-import org.codice.imaging.nitf.core.NitfImageBand;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageCompression;
+import org.codice.imaging.nitf.core.image.ImageMode;
+import org.codice.imaging.nitf.core.image.NitfImageBand;
+import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.PixelJustification;
 
 public class Uncompressed implements BlockRenderer {

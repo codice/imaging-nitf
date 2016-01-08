@@ -12,9 +12,16 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.image;
 
+import static org.codice.imaging.nitf.core.image.ImageConstants.IFC_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IMFLT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IREPBAND_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ISUBCAT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NELUT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NLUTS_LENGTH;
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.NitfReader;
 
 /**
     Image Band and Image Band LUT parser.
@@ -50,26 +57,26 @@ class NitfImageBandParser {
     }
 
     private void readIREPBAND() throws ParseException {
-        imageBand.setImageRepresentation(reader.readTrimmedBytes(NitfConstants.IREPBAND_LENGTH));
+        imageBand.setImageRepresentation(reader.readTrimmedBytes(IREPBAND_LENGTH));
     }
 
     private void readISUBCAT() throws ParseException {
-        imageBand.setImageSubcategory(reader.readTrimmedBytes(NitfConstants.ISUBCAT_LENGTH));
+        imageBand.setImageSubcategory(reader.readTrimmedBytes(ISUBCAT_LENGTH));
     }
 
     private void readIFC() throws ParseException {
-        reader.skip(NitfConstants.IFC_LENGTH);
+        reader.skip(IFC_LENGTH);
     }
 
     private void readIMFLT() throws ParseException {
-        reader.skip(NitfConstants.IMFLT_LENGTH);
+        reader.skip(IMFLT_LENGTH);
     }
 
     private void readNLUTS() throws ParseException {
-        numLUTs = reader.readBytesAsInteger(NitfConstants.NLUTS_LENGTH);
+        numLUTs = reader.readBytesAsInteger(NLUTS_LENGTH);
     }
 
     private void readNELUT() throws ParseException {
-        imageBand.setNumLUTEntries(reader.readBytesAsInteger(NitfConstants.NELUT_LENGTH));
+        imageBand.setNumLUTEntries(reader.readBytesAsInteger(NELUT_LENGTH));
     }
 }

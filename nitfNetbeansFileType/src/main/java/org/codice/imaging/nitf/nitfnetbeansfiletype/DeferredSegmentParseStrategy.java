@@ -22,7 +22,7 @@ import java.util.List;
 import javax.imageio.stream.ImageInputStream;
 
 import org.codice.imaging.nitf.core.FileReader;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.NitfLabelSegmentHeader;
 import org.codice.imaging.nitf.core.NitfReader;
 import org.codice.imaging.nitf.core.NitfSymbolSegmentHeader;

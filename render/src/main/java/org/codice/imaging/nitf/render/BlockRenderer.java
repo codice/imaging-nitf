@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.imageio.stream.ImageInputStream;
 
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
 public interface BlockRenderer {
 

@@ -12,16 +12,14 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.image;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertNotNull;
 import java.text.ParseException;
-
-import org.junit.rules.ExpectedException;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class ImageCoordinatePairTest {
     @Rule

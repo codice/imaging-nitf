@@ -12,18 +12,23 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.image;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-
+import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
+import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.PixelJustification;
+import org.codice.imaging.nitf.core.PixelValueType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,11 +76,11 @@ public class Nitf21ImageParsingTest {
         assertEquals("Unknown", imageSegment.getImageSource());
         assertEquals(1024L, imageSegment.getNumberOfRows());
         assertEquals(1024L, imageSegment.getNumberOfColumns());
-        assertEquals(PixelValueType.INTEGER, imageSegment.getPixelValueType());
+        Assert.assertEquals(PixelValueType.INTEGER, imageSegment.getPixelValueType());
         assertEquals(ImageRepresentation.MONOCHROME, imageSegment.getImageRepresentation());
         assertEquals(ImageCategory.VISUAL, imageSegment.getImageCategory());
         assertEquals(8, imageSegment.getActualBitsPerPixelPerBand());
-        assertEquals(PixelJustification.RIGHT, imageSegment.getPixelJustification());
+        Assert.assertEquals(PixelJustification.RIGHT, imageSegment.getPixelJustification());
         assertEquals(ImageCoordinatesRepresentation.GEOGRAPHIC, imageSegment.getImageCoordinatesRepresentation());
         ImageCoordinates imageCoords = imageSegment.getImageCoordinates();
         assertNotNull(imageCoords);

@@ -12,18 +12,59 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.image;
 
+import static org.codice.imaging.nitf.core.image.ImageConstants.ABPP_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.COMRAT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IALVL_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ICAT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ICOM_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ICORDS_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IC_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IDLVL_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IGEOLO_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IID1_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IID2_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ILOC_HALF_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IM;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IMAG_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IMODE_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IREP_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ISORCE_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ISYNC_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IXSHDL_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IXSOFL_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NBANDS_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NBPC_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NBPP_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NBPR_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NCOLS_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NICOM_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NPPBH_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NPPBV_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NROWS_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.PJUST_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.PVTYPE_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.TGTID_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.UDIDL_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.UDOFL_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.XBANDS_LENGTH;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
-
+import org.codice.imaging.nitf.core.FileType;
+import org.codice.imaging.nitf.core.NitfParseStrategy;
+import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.NitfSecurityMetadata;
+import org.codice.imaging.nitf.core.PixelJustification;
+import org.codice.imaging.nitf.core.PixelValueType;
+import org.codice.imaging.nitf.core.TreCollection;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 
 /**
     Parser for an image segment subheader in a NITF file.
 */
-class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int numImageComments = 0;
     private int numBands = 0;
@@ -36,9 +77,12 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
         ImageCompression.LOSSLESSJPEGMASK, ImageCompression.JPEG2000MASK, ImageCompression.USERDEFINED, ImageCompression.USERDEFINEDMASK,
         ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
 
-    private NitfImageSegmentHeader segment = null;
+    private NitfImageSegmentHeaderImpl segment = null;
 
-    NitfImageSegmentHeaderParser() throws ParseException {
+    /**
+     * Default constructor.
+     */
+    public NitfImageSegmentHeaderParser() {
     }
 
     /**
@@ -51,9 +95,9 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
      * @return the parsed header
      * @throws ParseException on parse failure
      */
-    final NitfImageSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final NitfImageSegmentHeaderImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
         reader = nitfReader;
-        segment = new NitfImageSegmentHeader();
+        segment = new NitfImageSegmentHeaderImpl();
         parsingStrategy = parseStrategy;
 
         readIM();
@@ -78,7 +122,7 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
         }
         readNICOM();
         for (int i = 0; i < numImageComments; ++i) {
-            segment.addImageComment(reader.readTrimmedBytes(NitfConstants.ICOM_LENGTH));
+            segment.addImageComment(reader.readTrimmedBytes(ICOM_LENGTH));
         }
         readIC();
         if (hasCOMRAT()) {
@@ -122,11 +166,11 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readIM() throws ParseException {
-       reader.verifyHeaderMagic(NitfConstants.IM);
+       reader.verifyHeaderMagic(IM);
     }
 
     private void readIID1() throws ParseException {
-        segment.setIdentifier(reader.readTrimmedBytes(NitfConstants.IID1_LENGTH));
+        segment.setIdentifier(reader.readTrimmedBytes(IID1_LENGTH));
     }
 
     private void readIDATIM() throws ParseException {
@@ -134,59 +178,59 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readTGTID() throws ParseException {
-        segment.setImageTargetId(new TargetId(reader.readBytes(NitfConstants.TGTID_LENGTH)));
+        segment.setImageTargetId(new TargetId(reader.readBytes(TGTID_LENGTH)));
     }
 
     private void readIID2() throws ParseException {
-        segment.setImageIdentifier2(reader.readTrimmedBytes(NitfConstants.IID2_LENGTH));
+        segment.setImageIdentifier2(reader.readTrimmedBytes(IID2_LENGTH));
     }
 
     private void readISORCE() throws ParseException {
-        segment.setImageSource(reader.readTrimmedBytes(NitfConstants.ISORCE_LENGTH));
+        segment.setImageSource(reader.readTrimmedBytes(ISORCE_LENGTH));
     }
 
     private void readNROWS() throws ParseException {
-        segment.setNumberOfRows(reader.readBytesAsLong(NitfConstants.NROWS_LENGTH));
+        segment.setNumberOfRows(reader.readBytesAsLong(NROWS_LENGTH));
     }
 
     private void readNCOLS() throws ParseException {
-        segment.setNumberOfColumns(reader.readBytesAsLong(NitfConstants.NCOLS_LENGTH));
+        segment.setNumberOfColumns(reader.readBytesAsLong(NCOLS_LENGTH));
     }
 
     private void readPVTYPE() throws ParseException {
-        String pvtype = reader.readTrimmedBytes(NitfConstants.PVTYPE_LENGTH);
+        String pvtype = reader.readTrimmedBytes(PVTYPE_LENGTH);
         segment.setPixelValueType(PixelValueType.getEnumValue(pvtype));
     }
 
     private void readIREP() throws ParseException {
-        String irep = reader.readTrimmedBytes(NitfConstants.IREP_LENGTH);
+        String irep = reader.readTrimmedBytes(IREP_LENGTH);
         segment.setImageRepresentation(ImageRepresentation.getEnumValue(irep));
     }
 
     private void readICAT() throws ParseException {
-        String icat = reader.readTrimmedBytes(NitfConstants.ICAT_LENGTH);
+        String icat = reader.readTrimmedBytes(ICAT_LENGTH);
         segment.setImageCategory(ImageCategory.getEnumValue(icat));
     }
 
     private void readABPP() throws ParseException {
-        segment.setActualBitsPerPixelPerBand(reader.readBytesAsInteger(NitfConstants.ABPP_LENGTH));
+        segment.setActualBitsPerPixelPerBand(reader.readBytesAsInteger(ABPP_LENGTH));
     }
 
     private void readPJUST() throws ParseException {
-        String pjust = reader.readTrimmedBytes(NitfConstants.PJUST_LENGTH);
+        String pjust = reader.readTrimmedBytes(PJUST_LENGTH);
         segment.setPixelJustification(PixelJustification.getEnumValue(pjust));
     }
 
     private void readICORDS() throws ParseException {
-        String icords = reader.readBytes(NitfConstants.ICORDS_LENGTH);
+        String icords = reader.readBytes(ICORDS_LENGTH);
         segment.setImageCoordinatesRepresentation(ImageCoordinatesRepresentation.getEnumValue(icords, reader.getFileType()));
     }
 
     private void readIGEOLO() throws ParseException {
         // TODO: this really only handle the GEO and D cases, not the UTM / UPS representations.
         final int numCoordinates = 4;
-        final int coordinatePairLength = NitfConstants.IGEOLO_LENGTH / numCoordinates;
-        String igeolo = reader.readBytes(NitfConstants.IGEOLO_LENGTH);
+        final int coordinatePairLength = IGEOLO_LENGTH / numCoordinates;
+        String igeolo = reader.readBytes(IGEOLO_LENGTH);
         ImageCoordinatePair[] coords = new ImageCoordinatePair[numCoordinates];
         for (int i = 0; i < numCoordinates; ++i) {
             coords[i] = new ImageCoordinatePair();
@@ -216,95 +260,95 @@ class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readNICOM() throws ParseException {
-        numImageComments = reader.readBytesAsInteger(NitfConstants.NICOM_LENGTH);
+        numImageComments = reader.readBytesAsInteger(NICOM_LENGTH);
     }
 
     private void readIC() throws ParseException {
-        String ic = reader.readBytes(NitfConstants.IC_LENGTH);
+        String ic = reader.readBytes(IC_LENGTH);
         segment.setImageCompression(ImageCompression.getEnumValue(ic));
     }
 
     private void readNBANDS() throws ParseException {
-        numBands = reader.readBytesAsInteger(NitfConstants.NBANDS_LENGTH);
+        numBands = reader.readBytesAsInteger(NBANDS_LENGTH);
     }
 
     private void readXBANDS() throws ParseException {
-        numBands = reader.readBytesAsInteger(NitfConstants.XBANDS_LENGTH);
+        numBands = reader.readBytesAsInteger(XBANDS_LENGTH);
     }
 
     private void readISYNC() throws ParseException {
-        reader.readBytes(NitfConstants.ISYNC_LENGTH);
+        reader.readBytes(ISYNC_LENGTH);
     }
 
     private void readIMODE() throws ParseException {
-        String imode = reader.readBytes(NitfConstants.IMODE_LENGTH);
+        String imode = reader.readBytes(IMODE_LENGTH);
         segment.setImageMode(ImageMode.getEnumValue(imode));
     }
 
     private void readNBPR() throws ParseException {
-        segment.setNumberOfBlocksPerRow(reader.readBytesAsInteger(NitfConstants.NBPR_LENGTH));
+        segment.setNumberOfBlocksPerRow(reader.readBytesAsInteger(NBPR_LENGTH));
     }
 
     private void readNBPC() throws ParseException {
-        segment.setNumberOfBlocksPerColumn(reader.readBytesAsInteger(NitfConstants.NBPC_LENGTH));
+        segment.setNumberOfBlocksPerColumn(reader.readBytesAsInteger(NBPC_LENGTH));
     }
 
     private void readNPPBH() throws ParseException {
-        segment.setNumberOfPixelsPerBlockHorizontal(reader.readBytesAsInteger(NitfConstants.NPPBH_LENGTH));
+        segment.setNumberOfPixelsPerBlockHorizontal(reader.readBytesAsInteger(NPPBH_LENGTH));
     }
 
     private void readNPPBV() throws ParseException {
-        segment.setNumberOfPixelsPerBlockVertical(reader.readBytesAsInteger(NitfConstants.NPPBV_LENGTH));
+        segment.setNumberOfPixelsPerBlockVertical(reader.readBytesAsInteger(NPPBV_LENGTH));
     }
 
     private void readNBPP() throws ParseException {
-        segment.setNumberOfBitsPerPixelPerBand(reader.readBytesAsInteger(NitfConstants.NBPP_LENGTH));
+        segment.setNumberOfBitsPerPixelPerBand(reader.readBytesAsInteger(NBPP_LENGTH));
     }
 
     private void readIDLVL() throws ParseException {
-        segment.setImageDisplayLevel(reader.readBytesAsInteger(NitfConstants.IDLVL_LENGTH));
+        segment.setImageDisplayLevel(reader.readBytesAsInteger(IDLVL_LENGTH));
     }
 
     private void readIALVL() throws ParseException {
-        segment.setAttachmentLevel(reader.readBytesAsInteger(NitfConstants.IALVL_LENGTH));
+        segment.setAttachmentLevel(reader.readBytesAsInteger(IALVL_LENGTH));
     }
 
     private void readILOC() throws ParseException {
-        segment.setImageLocationRow(reader.readBytesAsInteger(NitfConstants.ILOC_HALF_LENGTH));
-        segment.setImageLocationColumn(reader.readBytesAsInteger(NitfConstants.ILOC_HALF_LENGTH));
+        segment.setImageLocationRow(reader.readBytesAsInteger(ILOC_HALF_LENGTH));
+        segment.setImageLocationColumn(reader.readBytesAsInteger(ILOC_HALF_LENGTH));
     }
 
     private void readIMAG() throws ParseException {
-        segment.setImageMagnification(reader.readBytes(NitfConstants.IMAG_LENGTH));
+        segment.setImageMagnification(reader.readBytes(IMAG_LENGTH));
     }
 
     private void readUDIDL() throws ParseException {
-        userDefinedImageDataLength = reader.readBytesAsInteger(NitfConstants.UDIDL_LENGTH);
+        userDefinedImageDataLength = reader.readBytesAsInteger(UDIDL_LENGTH);
     }
 
     private void readUDOFL() throws ParseException {
-        segment.setUserDefinedHeaderOverflow(reader.readBytesAsInteger(NitfConstants.UDOFL_LENGTH));
+        segment.setUserDefinedHeaderOverflow(reader.readBytesAsInteger(UDOFL_LENGTH));
     }
 
     private void readUDID() throws ParseException {
-        TreCollection userDefinedSubheaderTres = parsingStrategy.parseTREs(reader, userDefinedImageDataLength - NitfConstants.UDOFL_LENGTH);
+        TreCollection userDefinedSubheaderTres = parsingStrategy.parseTREs(reader, userDefinedImageDataLength - UDOFL_LENGTH);
         segment.mergeTREs(userDefinedSubheaderTres);
     }
 
     private void readIXSHDL() throws ParseException {
-        imageExtendedSubheaderDataLength = reader.readBytesAsInteger(NitfConstants.IXSHDL_LENGTH);
+        imageExtendedSubheaderDataLength = reader.readBytesAsInteger(IXSHDL_LENGTH);
     }
 
     private void readIXSOFL() throws ParseException {
-        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(NitfConstants.IXSOFL_LENGTH));
+        segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(IXSOFL_LENGTH));
     }
 
     private void readIXSHD() throws ParseException {
-        TreCollection extendedSubheaderTres = parsingStrategy.parseTREs(reader, imageExtendedSubheaderDataLength - NitfConstants.IXSOFL_LENGTH);
+        TreCollection extendedSubheaderTres = parsingStrategy.parseTREs(reader, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
         segment.mergeTREs(extendedSubheaderTres);
     }
 
     private void readCOMRAT() throws ParseException {
-        segment.setCompressionRate(reader.readTrimmedBytes(NitfConstants.COMRAT_LENGTH));
+        segment.setCompressionRate(reader.readTrimmedBytes(COMRAT_LENGTH));
     }
 }

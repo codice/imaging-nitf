@@ -12,14 +12,12 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.image;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-
 import java.nio.ByteBuffer;
 import java.text.ParseException;
-
 import org.junit.Before;
 import org.junit.Test;
 
