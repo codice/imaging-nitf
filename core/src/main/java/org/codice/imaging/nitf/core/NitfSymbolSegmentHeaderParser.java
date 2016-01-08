@@ -14,6 +14,14 @@
  */
 package org.codice.imaging.nitf.core;
 
+import static org.codice.imaging.nitf.core.SymbolConstants.NLIPS_LENGTH;
+import static org.codice.imaging.nitf.core.SymbolConstants.NPIXPL_LENGTH;
+import static org.codice.imaging.nitf.core.SymbolConstants.NWDTH_LENGTH;
+import static org.codice.imaging.nitf.core.SymbolConstants.SNUM_LENGTH;
+import static org.codice.imaging.nitf.core.SymbolConstants.SROT_LENGTH;
+import static org.codice.imaging.nitf.core.SymbolConstants.SYNBPP_LENGTH;
+import static org.codice.imaging.nitf.core.SymbolConstants.SYNELUT_LENGTH;
+import static org.codice.imaging.nitf.core.SymbolConstants.SYTYPE_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SCOLOR_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SDLVL_LENGTH;
@@ -23,10 +31,9 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SNAME
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSHDL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOFL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
-
 import java.text.ParseException;
-
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+
 /**
     Parser for a symbol segment subheader in a NITF 2.0 file.
 */
@@ -88,24 +95,24 @@ class NitfSymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readSTYPE() throws ParseException {
-        String stype = reader.readTrimmedBytes(NitfConstants.SYTYPE_LENGTH);
+        String stype = reader.readTrimmedBytes(SYTYPE_LENGTH);
         segment.setSymbolType(SymbolType.getEnumValue(stype));
     }
 
     private void readNLIPS() throws ParseException {
-        segment.setNumberOfLinesPerSymbol(reader.readBytesAsInteger(NitfConstants.NLIPS_LENGTH));
+        segment.setNumberOfLinesPerSymbol(reader.readBytesAsInteger(NLIPS_LENGTH));
     }
 
     private void readNPIXPL() throws ParseException {
-        segment.setNumberOfPixelsPerLine(reader.readBytesAsInteger(NitfConstants.NPIXPL_LENGTH));
+        segment.setNumberOfPixelsPerLine(reader.readBytesAsInteger(NPIXPL_LENGTH));
     }
 
     private void readNWDTH() throws ParseException {
-        segment.setLineWidth(reader.readBytesAsInteger(NitfConstants.NWDTH_LENGTH));
+        segment.setLineWidth(reader.readBytesAsInteger(NWDTH_LENGTH));
     }
 
     private void readNBPP() throws ParseException {
-        segment.setNumberOfBitsPerPixel(reader.readBytesAsInteger(NitfConstants.SYNBPP_LENGTH));
+        segment.setNumberOfBitsPerPixel(reader.readBytesAsInteger(SYNBPP_LENGTH));
     }
 
     private void readSDLVL() throws ParseException {
@@ -132,15 +139,15 @@ class NitfSymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readSNUM() throws ParseException {
-        segment.setSymbolNumber(reader.readBytes(NitfConstants.SNUM_LENGTH));
+        segment.setSymbolNumber(reader.readBytes(SNUM_LENGTH));
     }
 
     private void readSROT() throws ParseException {
-        segment.setSymbolRotation(reader.readBytesAsInteger(NitfConstants.SROT_LENGTH));
+        segment.setSymbolRotation(reader.readBytesAsInteger(SROT_LENGTH));
     }
 
     private void readNELUT() throws ParseException {
-        numberOfEntriesInLUT = reader.readBytesAsInteger(NitfConstants.SYNELUT_LENGTH);
+        numberOfEntriesInLUT = reader.readBytesAsInteger(SYNELUT_LENGTH);
     }
 
     private void readSXSHDL() throws ParseException {

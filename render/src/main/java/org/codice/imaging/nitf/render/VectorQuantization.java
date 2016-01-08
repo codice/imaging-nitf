@@ -25,9 +25,9 @@ import java.awt.image.WritableRaster;
 
 import javax.imageio.stream.ImageInputStream;
 
-import org.codice.imaging.nitf.core.ImageCompression;
-import org.codice.imaging.nitf.core.ImageRepresentation;
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageCompression;
+import org.codice.imaging.nitf.core.image.ImageRepresentation;
+import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
 class VectorQuantization implements BlockRenderer {
 

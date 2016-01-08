@@ -21,7 +21,7 @@ import java.awt.image.WritableRaster;
 
 import javax.imageio.stream.ImageInputStream;
 
-import org.codice.imaging.nitf.core.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
 class Bilevel implements BlockRenderer {
 

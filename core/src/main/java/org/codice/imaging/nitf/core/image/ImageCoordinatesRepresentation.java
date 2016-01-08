@@ -12,7 +12,9 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.image;
+
+import org.codice.imaging.nitf.core.FileType;
 
 /**
     Image coordinates representation (ICORDS).
