@@ -29,7 +29,7 @@ import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
-class VectorQuantization implements BlockRenderer {
+class VectorQuantizationBlockRenderer implements BlockRenderer {
 
     private NitfImageSegmentHeader mImageSegment = null;
     private ImageInputStream mImageData = null;
