@@ -30,11 +30,11 @@ public class NitfRenderer {
             final ImageInputStream imageData, Graphics2D targetGraphic) throws IOException {
         switch (imageSegmentHeader.getImageCompression()) {
         case BILEVEL:
-            render(new BilevelBlockRenderer(), imageSegmentHeader, imageData, targetGraphic);
+            renderBlocks(new BilevelBlockRenderer(), imageSegmentHeader, imageData, targetGraphic);
             break;
         case NOTCOMPRESSED:
         case NOTCOMPRESSEDMASK:
-            render(new UncompressedBlockRenderer(),
+            renderBlocks(new UncompressedBlockRenderer(),
                     imageSegmentHeader,
                     imageData,
                     targetGraphic);
@@ -44,7 +44,7 @@ public class NitfRenderer {
             break;
         case VECTORQUANTIZATION:
         case VECTORQUANTIZATIONMASK:
-            render(new VectorQuantizationBlockRenderer(),
+            renderBlocks(new VectorQuantizationBlockRenderer(),
                     imageSegmentHeader,
                     imageData,
                     targetGraphic);
@@ -70,7 +70,7 @@ public class NitfRenderer {
         return img;
     }
 
-    private void render(BlockRenderer renderer, NitfImageSegmentHeader imageSegmentHeader,
+    private void renderBlocks(BlockRenderer renderer, NitfImageSegmentHeader imageSegmentHeader,
             ImageInputStream imageInputStream, Graphics2D target) throws IOException {
         renderer.setImageSegment(imageSegmentHeader, imageInputStream);
 
