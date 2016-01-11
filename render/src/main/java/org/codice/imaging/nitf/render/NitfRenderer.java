@@ -87,7 +87,9 @@ public class NitfRenderer {
 
     private void renderJPEG(NitfImageSegmentHeader imageSegmentHeader,
             ImageInputStream imageInputStream, Graphics2D targetGraphic) throws IOException {
+
         skipToMarker(imageInputStream, JpegMarkerCode.START_OF_IMAGE) ;
+
         ImageReader reader = getJPEGimageReader();
         reader.setInput(imageInputStream);
 
@@ -110,6 +112,7 @@ public class NitfRenderer {
             }
         }
     }
+
 
     private void skipToMarker(ImageInputStream imageInputStream, JpegMarkerCode markerCode) throws IOException {
         imageInputStream.mark();
