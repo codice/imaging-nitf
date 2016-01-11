@@ -39,6 +39,7 @@ public class NitfRenderer {
                     imageData,
                     targetGraphic);
             break;
+        case DOWNSAMPLEDJPEG:
         case JPEG:
             skipToMarker(imageData, JpegMarkerCode.START_OF_IMAGE);
             renderJPEG(imageSegmentHeader, imageData, targetGraphic, null);
