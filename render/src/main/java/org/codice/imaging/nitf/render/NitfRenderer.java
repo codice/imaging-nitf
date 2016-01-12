@@ -30,24 +30,29 @@ public class NitfRenderer {
             final ImageInputStream imageData, Graphics2D targetGraphic) throws IOException {
         switch (imageSegmentHeader.getImageCompression()) {
         case BILEVEL:
-            renderBlocks(new BilevelBlockRenderer(), imageSegmentHeader, imageData, targetGraphic);
+            render(new BilevelBlockRenderer(), imageSegmentHeader, imageData, targetGraphic);
             break;
         case NOTCOMPRESSED:
         case NOTCOMPRESSEDMASK:
-            renderBlocks(new UncompressedBlockRenderer(),
+            render(new UncompressedBlockRenderer(),
                     imageSegmentHeader,
                     imageData,
                     targetGraphic);
             break;
         case JPEG:
-            renderJPEG(imageSegmentHeader, imageData, targetGraphic);
+            skipToMarker(imageData, JpegMarkerCode.START_OF_IMAGE);
+            renderJPEG(imageSegmentHeader, imageData, targetGraphic, null);
             break;
         case VECTORQUANTIZATION:
         case VECTORQUANTIZATIONMASK:
-            renderBlocks(new VectorQuantizationBlockRenderer(),
+            render(new VectorQuantizationBlockRenderer(),
                     imageSegmentHeader,
                     imageData,
                     targetGraphic);
+            break;
+        case JPEGMASK:
+            ImageMask imageMask = new ImageMask(imageSegmentHeader, imageData);
+            renderJPEG(imageSegmentHeader, imageData, targetGraphic, imageMask);
             break;
         default:
             System.out.println("Unhandled image compression format: "
@@ -70,7 +75,7 @@ public class NitfRenderer {
         return img;
     }
 
-    private void renderBlocks(BlockRenderer renderer, NitfImageSegmentHeader imageSegmentHeader,
+    private void render(BlockRenderer renderer, NitfImageSegmentHeader imageSegmentHeader,
             ImageInputStream imageInputStream, Graphics2D target) throws IOException {
         renderer.setImageSegment(imageSegmentHeader, imageInputStream);
 
@@ -86,16 +91,20 @@ public class NitfRenderer {
     }
 
     private void renderJPEG(NitfImageSegmentHeader imageSegmentHeader,
-            ImageInputStream imageInputStream, Graphics2D targetGraphic) throws IOException {
-
-        skipToMarker(imageInputStream, JpegMarkerCode.START_OF_IMAGE) ;
-
+            ImageInputStream imageInputStream, Graphics2D targetGraphic, ImageMask imageMask) throws IOException {
         ImageReader reader = getJPEGimageReader();
         reader.setInput(imageInputStream);
+        ThreadLocal<Integer> maskedBlocks = new ThreadLocal<Integer>();
+        maskedBlocks.set(0);
 
         processBlocks(imageSegmentHeader, (rowIndex, columnIndex) -> {
+            if (imageMask != null && imageMask.isMaskedBlock((rowIndex * imageSegmentHeader.getNumberOfBlocksPerRow() + columnIndex), 0)) {
+                maskedBlocks.set(maskedBlocks.get() + 1);
+                return;
+            }
+
             BufferedImage img = reader.read(
-                    columnIndex + rowIndex * imageSegmentHeader.getNumberOfBlocksPerColumn());
+                    (columnIndex + rowIndex * imageSegmentHeader.getNumberOfBlocksPerColumn()) - maskedBlocks.get());
 
             targetGraphic.drawImage(img,
                     columnIndex * imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(),
