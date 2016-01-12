@@ -50,6 +50,10 @@ public class NitfRenderer {
                     imageData,
                     targetGraphic);
             break;
+        case JPEGMASK:
+            ImageMask imageMask = new ImageMask(imageSegmentHeader, imageData);
+            renderJPEG(imageSegmentHeader, imageData, targetGraphic, imageMask);
+            break;
         default:
             System.out.println("Unhandled image compression format: "
                     + imageSegmentHeader.getImageCompression());
