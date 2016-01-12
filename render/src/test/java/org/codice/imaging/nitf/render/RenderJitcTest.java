@@ -265,6 +265,11 @@ public class RenderJitcTest extends TestCase {
         testOneFile("i_3025b.ntf", "JitcNitf21Samples");
     }
 
+    @Test
+    public void testI_3309a() throws IOException, ParseException {
+        testOneFile("i_3309a.ntf", "JitcNitf21Samples");
+    }
+    
     private void testOneFile(final String testfile, final String parentDirectory)
             throws IOException, ParseException {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
