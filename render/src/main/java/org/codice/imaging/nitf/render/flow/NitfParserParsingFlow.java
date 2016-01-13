@@ -4,7 +4,7 @@ import java.text.ParseException;
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
 import org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy;
@@ -22,6 +22,7 @@ public class NitfParserParsingFlow {
     /**
      * Parses the Nitf using an AllDataExtractionParseStrategy.
      *
+     * {@link org.codice.imaging.nitf.core.AllDataExtractionParseStrategy}
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
      */
@@ -33,6 +34,7 @@ public class NitfParserParsingFlow {
     /**
      * Parses the Nitf using the HeaderOnlyNitfParseStrategy.
      *
+     * {@link org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy}
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
      */
@@ -44,6 +46,7 @@ public class NitfParserParsingFlow {
     /**
      * Parses the Nitf using the DataExtensionSegmentNitfParseStrategy.
      *
+     * {@link org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy}
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
      */
@@ -55,6 +58,7 @@ public class NitfParserParsingFlow {
     /**
      * Parses the Nitf using the ImageDataExtractionParseStrategy.
      *
+     * {@link org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy}
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
      */
@@ -66,6 +70,7 @@ public class NitfParserParsingFlow {
     /**
      * Parses the Nitf using the supplied SlottedNitfParseStrategy.
      *
+     * {@link org.codice.imaging.nitf.core.SlottedNitfParseStrategy}
      * @param parseStrategy - The NitfParserStrategy to use for parsing.
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.

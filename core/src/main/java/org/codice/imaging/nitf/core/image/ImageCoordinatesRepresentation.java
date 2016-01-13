@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.image;
 
-import org.codice.imaging.nitf.core.FileType;
+import org.codice.imaging.nitf.core.common.FileType;
 
 /**
     Image coordinates representation (ICORDS).

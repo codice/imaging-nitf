@@ -21,7 +21,7 @@ import static org.codice.imaging.nitf.core.image.ImageConstants.ISUBCAT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.NELUT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.NLUTS_LENGTH;
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Image Band and Image Band LUT parser.

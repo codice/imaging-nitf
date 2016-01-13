@@ -22,6 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Test;
 
 public class SensrbTest {

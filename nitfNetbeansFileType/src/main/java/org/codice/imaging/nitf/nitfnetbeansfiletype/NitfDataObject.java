@@ -17,10 +17,10 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.FileReader;
-import org.codice.imaging.nitf.core.Nitf;
+import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -34,7 +34,7 @@ import org.openide.nodes.Node;
 import org.openide.util.NbBundle.Messages;
 
 @Messages({
-    "LBL_Nitf_LOADER=Files of Nitf"
+    "LBL_Nitf_LOADER=Files of NitfFileHeader"
 })
 @MIMEResolver.ExtensionRegistration(
         displayName = "#LBL_Nitf_LOADER",
@@ -130,7 +130,7 @@ class NitfDataObject extends MultiDataObject {
         return new NitfFileNode(this, Children.create(new NitfChildFactory(parseStrategy), true), getLookup());
     }
 
-    Nitf getNitf() {
+    NitfFileHeader getNitf() {
         return parseStrategy.getNitfHeader();
     }
 

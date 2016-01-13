@@ -12,9 +12,10 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.common;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.NitfReaderDefaultImpl;
 
 /**
     Shared NitfReader implementation.

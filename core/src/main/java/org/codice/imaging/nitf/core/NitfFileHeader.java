@@ -16,18 +16,20 @@ package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
     NITF file data.
 */
-public class Nitf extends AbstractNitfSegment {
+public class NitfFileHeader extends AbstractNitfSegment {
     private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
     private String nitfOriginatingStationId = null;
     private NitfDateTime nitfFileDateTime = null;
     private String nitfFileTitle = null;
-    private NitfFileSecurityMetadata fileSecurityMetadata = null;
+    private FileSecurityMetadata fileSecurityMetadata = null;
     private RGBColour nitfFileBackgroundColour = null;
     private String nitfOriginatorsName = null;
     private String nitfOriginatorsPhoneNumber = null;
@@ -48,7 +50,7 @@ public class Nitf extends AbstractNitfSegment {
     /**
         Default constructor.
     */
-    public Nitf() {
+    public NitfFileHeader() {
     }
 
     /**
@@ -203,12 +205,12 @@ public class Nitf extends AbstractNitfSegment {
     /**
         Set the file security metadata elements for the file.
 
-        See NitfFileSecurityMetadata and NitfSecurityMetadata for the various elements, which
+        See FileSecurityMetadata and SecurityMetadata for the various elements, which
         differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
 
         @param nitfFileSecurityMetadata the security metadata values to set.
     */
-    public final void setFileSecurityMetadata(final NitfFileSecurityMetadata nitfFileSecurityMetadata) {
+    public final void setFileSecurityMetadata(final FileSecurityMetadata nitfFileSecurityMetadata) {
         fileSecurityMetadata = nitfFileSecurityMetadata;
     }
 
@@ -217,7 +219,7 @@ public class Nitf extends AbstractNitfSegment {
 
         @return file security metadata.
     */
-    public final NitfFileSecurityMetadata getFileSecurityMetadata() {
+    public final FileSecurityMetadata getFileSecurityMetadata() {
         return fileSecurityMetadata;
     }
 
@@ -455,7 +457,7 @@ public class Nitf extends AbstractNitfSegment {
      * {@inheritDoc}
      */
     @Override
-    public final NitfSecurityMetadata getSecurityMetadata() {
+    public final SecurityMetadata getSecurityMetadata() {
         return this.fileSecurityMetadata;
     }
 }

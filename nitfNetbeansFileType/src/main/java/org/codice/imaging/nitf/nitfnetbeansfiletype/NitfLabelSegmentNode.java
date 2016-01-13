@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.NitfLabelSegmentHeader;
+import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
@@ -24,7 +24,7 @@ import org.openide.util.Exceptions;
 class NitfLabelSegmentNode extends AbstractSegmentNode {
 
     private final ChildSegmentKey childKey;
-    private final NitfLabelSegmentHeader header;
+    private final LabelSegmentHeader header;
 
     public NitfLabelSegmentNode(final ChildSegmentKey key) throws ParseException {
         super(Children.LEAF);

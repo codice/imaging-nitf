@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.image;
 
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 
 /**

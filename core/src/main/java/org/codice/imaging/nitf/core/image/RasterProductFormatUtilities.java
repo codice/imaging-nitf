@@ -20,11 +20,11 @@ import java.text.ParseException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
+import org.codice.imaging.nitf.core.schema.Rpfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.codice.imaging.nitf.core.schema.Rpfs;
+
 
 /**
     Utility class for Raster Product Format (RPF) handling.

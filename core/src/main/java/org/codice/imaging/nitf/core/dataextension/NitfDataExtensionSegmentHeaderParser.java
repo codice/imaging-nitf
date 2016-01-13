@@ -23,8 +23,8 @@ import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.
 
 import java.text.ParseException;
 
-import org.codice.imaging.nitf.core.NitfReader;
-import org.codice.imaging.nitf.core.NitfSecurityMetadata;
+import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.SecurityMetadata;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 
 /**
@@ -54,7 +54,7 @@ public class NitfDataExtensionSegmentHeaderParser extends AbstractNitfSegmentPar
         readDE();
         readDESID();
         readDESVER();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadata(reader));
 
         if (segment.isTreOverflow(reader.getFileType())) {
             readDESOFLW();

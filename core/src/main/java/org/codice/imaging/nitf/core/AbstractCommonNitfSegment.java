@@ -21,7 +21,7 @@ public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment
         implements org.codice.imaging.nitf.core.common.CommonNitfSegment {
 
     private String segmentIdentifier = null;
-    private NitfSecurityMetadata securityMetadata = null;
+    private SecurityMetadata securityMetadata = null;
 
     /**
      Set the identifier (IID1/SID/LID/TEXTID) for the segment.
@@ -46,19 +46,19 @@ public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment
     /**
         Set the security metadata elements for the segment.
 
-        See NitfSecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
+        See SecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
 
-        @param nitfSecurityMetadata the security metadata values to set.
+        @param metaData the security metadata values to set.
     */
-    public final void setSecurityMetadata(final NitfSecurityMetadata nitfSecurityMetadata) {
-        securityMetadata = nitfSecurityMetadata;
+    public final void setSecurityMetadata(final SecurityMetadata metaData) {
+        this.securityMetadata = metaData;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final NitfSecurityMetadata getSecurityMetadata() {
+    public final SecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
 

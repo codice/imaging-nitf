@@ -18,6 +18,9 @@ import java.text.ParseException;
 import java.util.Arrays;
 
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Parser for a NITF file.
@@ -36,12 +39,12 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     private int userDefinedHeaderDataLength = 0;
     private int extendedHeaderDataLength = 0;
 
-    private Nitf nitf = null;
+    private NitfFileHeader nitfFileHeader = null;
 
     private NitfFileParser(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
-        nitf = new Nitf();
+        nitfFileHeader = new NitfFileHeader();
         reader = nitfReader;
-        parseStrategy.setFileHeader(nitf);
+        parseStrategy.setFileHeader(nitfFileHeader);
         parsingStrategy = parseStrategy;
     };
 
@@ -67,13 +70,13 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
 
     private void readBaseHeaders() throws ParseException {
         readFHDRFVER();
-        reader.setFileType(nitf.getFileType());
+        reader.setFileType(nitfFileHeader.getFileType());
         readCLEVEL();
         readSTYPE();
         readOSTAID();
         readFDT();
         readFTITLE();
-        nitf.setFileSecurityMetadata(new NitfFileSecurityMetadata(reader));
+        nitfFileHeader.setFileSecurityMetadata(new FileSecurityMetadata(reader));
         readENCRYP();
         if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
             readFBKGC();
@@ -224,46 +227,47 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
 
     private void readFHDRFVER() throws ParseException {
         String fhdrfver = reader.readBytes(NitfConstants.FHDR_LENGTH + NitfConstants.FVER_LENGTH);
-        nitf.setFileType(FileType.getEnumValue(fhdrfver));
+        nitfFileHeader.setFileType(FileType.getEnumValue(fhdrfver));
     }
 
     private void readCLEVEL() throws ParseException {
-        nitf.setComplexityLevel(reader.readBytesAsInteger(NitfConstants.CLEVEL_LENGTH));
-        if ((nitf.getComplexityLevel() < NitfConstants.MIN_COMPLEXITY_LEVEL) || (nitf.getComplexityLevel() > NitfConstants.MAX_COMPLEXITY_LEVEL)) {
-            throw new ParseException(String.format("CLEVEL out of range: %d", nitf.getComplexityLevel()), (int) reader.getCurrentOffset());
+        nitfFileHeader.setComplexityLevel(reader.readBytesAsInteger(NitfConstants.CLEVEL_LENGTH));
+        if ((nitfFileHeader.getComplexityLevel() < NitfConstants.MIN_COMPLEXITY_LEVEL) || (
+                nitfFileHeader.getComplexityLevel() > NitfConstants.MAX_COMPLEXITY_LEVEL)) {
+            throw new ParseException(String.format("CLEVEL out of range: %d", nitfFileHeader.getComplexityLevel()), (int) reader.getCurrentOffset());
         }
     }
 
     private void readSTYPE() throws ParseException {
-        nitf.setStandardType(reader.readTrimmedBytes(NitfConstants.STYPE_LENGTH));
+        nitfFileHeader.setStandardType(reader.readTrimmedBytes(NitfConstants.STYPE_LENGTH));
     }
 
     private void readOSTAID() throws ParseException {
-        nitf.setOriginatingStationId(reader.readTrimmedBytes(NitfConstants.OSTAID_LENGTH));
+        nitfFileHeader.setOriginatingStationId(reader.readTrimmedBytes(NitfConstants.OSTAID_LENGTH));
     }
 
     private void readFDT() throws ParseException {
-        nitf.setFileDateTime(readNitfDateTime());
+        nitfFileHeader.setFileDateTime(readNitfDateTime());
     }
 
     private void readFTITLE() throws ParseException {
-        nitf.setFileTitle(reader.readTrimmedBytes(NitfConstants.FTITLE_LENGTH));
+        nitfFileHeader.setFileTitle(reader.readTrimmedBytes(NitfConstants.FTITLE_LENGTH));
     }
 
     private void readFBKGC() throws ParseException {
-        nitf.setFileBackgroundColour(readRGBColour());
+        nitfFileHeader.setFileBackgroundColour(readRGBColour());
     }
 
     private void readONAME() throws ParseException {
-        if ((nitf.getFileType() == FileType.NITF_TWO_ONE) || (nitf.getFileType() == FileType.NSIF_ONE_ZERO)) {
-            nitf.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME_LENGTH));
+        if ((nitfFileHeader.getFileType() == FileType.NITF_TWO_ONE) || (nitfFileHeader.getFileType() == FileType.NSIF_ONE_ZERO)) {
+            nitfFileHeader.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME_LENGTH));
         } else {
-            nitf.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME20_LENGTH));
+            nitfFileHeader.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME20_LENGTH));
         }
     }
 
     private void readOPHONE() throws ParseException {
-        nitf.setOriginatorsPhoneNumber(reader.readTrimmedBytes(NitfConstants.OPHONE_LENGTH));
+        nitfFileHeader.setOriginatorsPhoneNumber(reader.readTrimmedBytes(NitfConstants.OPHONE_LENGTH));
     }
 
     private void readFL() throws ParseException {
@@ -279,18 +283,18 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readLISH(final int i) throws ParseException {
-        if (i < nitf.getImageSegmentSubHeaderLengths().size()) {
-            nitf.getImageSegmentSubHeaderLengths().set(i, reader.readBytesAsInteger(NitfConstants.LISH_LENGTH));
+        if (i < nitfFileHeader.getImageSegmentSubHeaderLengths().size()) {
+            nitfFileHeader.getImageSegmentSubHeaderLengths().set(i, reader.readBytesAsInteger(NitfConstants.LISH_LENGTH));
         } else {
-            nitf.getImageSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LISH_LENGTH));
+            nitfFileHeader.getImageSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LISH_LENGTH));
         }
     }
 
     private void readLI(final int i) throws ParseException {
-        if (i < nitf.getImageSegmentDataLengths().size()) {
-            nitf.getImageSegmentDataLengths().set(i, reader.readBytesAsLong(NitfConstants.LI_LENGTH));
+        if (i < nitfFileHeader.getImageSegmentDataLengths().size()) {
+            nitfFileHeader.getImageSegmentDataLengths().set(i, reader.readBytesAsLong(NitfConstants.LI_LENGTH));
         } else {
-            nitf.getImageSegmentDataLengths().add(reader.readBytesAsLong(NitfConstants.LI_LENGTH));
+            nitfFileHeader.getImageSegmentDataLengths().add(reader.readBytesAsLong(NitfConstants.LI_LENGTH));
         }
     }
 
@@ -300,11 +304,11 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readLSSH() throws ParseException {
-        nitf.getGraphicSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LSSH_LENGTH));
+        nitfFileHeader.getGraphicSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LSSH_LENGTH));
     }
 
     private void readLS() throws ParseException {
-        nitf.getGraphicSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LS_LENGTH));
+        nitfFileHeader.getGraphicSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LS_LENGTH));
     }
 
     private void readNUMX() throws ParseException {
@@ -316,11 +320,11 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readLLSH() throws ParseException {
-        nitf.getLabelSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LLSH_LENGTH));
+        nitfFileHeader.getLabelSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LLSH_LENGTH));
     }
 
     private void readLL() throws ParseException {
-        nitf.getLabelSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LL_LENGTH));
+        nitfFileHeader.getLabelSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LL_LENGTH));
     }
 
     private void readNUMT() throws ParseException {
@@ -328,11 +332,11 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readLTSH() throws ParseException {
-        nitf.getTextSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LTSH_LENGTH));
+        nitfFileHeader.getTextSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LTSH_LENGTH));
     }
 
     private void readLT() throws ParseException {
-        nitf.getTextSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LT_LENGTH));
+        nitfFileHeader.getTextSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LT_LENGTH));
     }
 
     private void readNUMDES() throws ParseException {
@@ -340,18 +344,18 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readLDSH(final int i) throws ParseException {
-        if (i < nitf.getDataExtensionSegmentDataLengths().size()) {
-            nitf.getDataExtensionSegmentSubHeaderLengths().set(i, reader.readBytesAsInteger(NitfConstants.LDSH_LENGTH));
+        if (i < nitfFileHeader.getDataExtensionSegmentDataLengths().size()) {
+            nitfFileHeader.getDataExtensionSegmentSubHeaderLengths().set(i, reader.readBytesAsInteger(NitfConstants.LDSH_LENGTH));
         } else {
-            nitf.getDataExtensionSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LDSH_LENGTH));
+            nitfFileHeader.getDataExtensionSegmentSubHeaderLengths().add(reader.readBytesAsInteger(NitfConstants.LDSH_LENGTH));
         }
     }
 
     private void readLD(final int i) throws ParseException {
-        if (i < nitf.getDataExtensionSegmentDataLengths().size()) {
-            nitf.getDataExtensionSegmentDataLengths().set(i, reader.readBytesAsInteger(NitfConstants.LD_LENGTH));
+        if (i < nitfFileHeader.getDataExtensionSegmentDataLengths().size()) {
+            nitfFileHeader.getDataExtensionSegmentDataLengths().set(i, reader.readBytesAsInteger(NitfConstants.LD_LENGTH));
         } else {
-            nitf.getDataExtensionSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LD_LENGTH));
+            nitfFileHeader.getDataExtensionSegmentDataLengths().add(reader.readBytesAsInteger(NitfConstants.LD_LENGTH));
         }
     }
 
@@ -364,12 +368,12 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDHOFL() throws ParseException {
-        nitf.setUserDefinedHeaderOverflow(reader.readBytesAsInteger(NitfConstants.UDHOFL_LENGTH));
+        nitfFileHeader.setUserDefinedHeaderOverflow(reader.readBytesAsInteger(NitfConstants.UDHOFL_LENGTH));
     }
 
     private void readUDHD() throws ParseException {
         TreCollection userDefinedHeaderTREs = parsingStrategy.parseTREs(reader, userDefinedHeaderDataLength - NitfConstants.UDHOFL_LENGTH);
-        nitf.mergeTREs(userDefinedHeaderTREs);
+        nitfFileHeader.mergeTREs(userDefinedHeaderTREs);
     }
 
     private void readXHDL() throws ParseException {
@@ -377,11 +381,11 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readXHDLOFL() throws ParseException {
-        nitf.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(NitfConstants.XHDLOFL_LENGTH));
+        nitfFileHeader.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(NitfConstants.XHDLOFL_LENGTH));
     }
 
     private void readXHD() throws ParseException {
         TreCollection extendedHeaderTres = parsingStrategy.parseTREs(reader, extendedHeaderDataLength - NitfConstants.XHDLOFL_LENGTH);
-        nitf.mergeTREs(extendedHeaderTres);
+        nitfFileHeader.mergeTREs(extendedHeaderTres);
     }
 }

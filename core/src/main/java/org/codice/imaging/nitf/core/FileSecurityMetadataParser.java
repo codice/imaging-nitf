@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Parser for the file security metadata.
@@ -22,26 +23,26 @@ import java.text.ParseException;
     The security metadata at the file level is the same as the subheaders, except for
     two extra fields (copy number, and number of copies).
 */
-class NitfFileSecurityMetadataParser extends NitfSecurityMetadataParser {
+class FileSecurityMetadataParser extends SecurityMetadataParser {
 
-    public NitfFileSecurityMetadataParser() {
+    public FileSecurityMetadataParser() {
     }
 
-    public final void parse(final NitfReader nitfReader, final NitfFileSecurityMetadata metadata) throws ParseException {
+    public final void parse(final NitfReader nitfReader, final FileSecurityMetadata metadata) throws ParseException {
         doParse(nitfReader, metadata);
         readFileSecurityMetadataExtras(metadata);
     }
 
-    private void readFileSecurityMetadataExtras(final NitfFileSecurityMetadata metadata) throws ParseException {
+    private void readFileSecurityMetadataExtras(final FileSecurityMetadata metadata) throws ParseException {
         readFSCOP(metadata);
         readFSCPYS(metadata);
     }
 
-    private void readFSCOP(final NitfFileSecurityMetadata metadata) throws ParseException {
+    private void readFSCOP(final FileSecurityMetadata metadata) throws ParseException {
         metadata.setFileCopyNumber(reader.readTrimmedBytes(NitfConstants.FSCOP_LENGTH));
     }
 
-    private void readFSCPYS(final NitfFileSecurityMetadata metadata) throws ParseException {
+    private void readFSCPYS(final FileSecurityMetadata metadata) throws ParseException {
         metadata.setFileNumberOfCopies(reader.readTrimmedBytes(NitfConstants.FSCPYS_LENGTH));
     }
 };

@@ -24,10 +24,10 @@ import java.text.ParseException;
 
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.NitfInputStreamReader;
-import org.codice.imaging.nitf.core.NitfReader;
-import org.codice.imaging.nitf.core.NitfSecurityClassification;
-import org.codice.imaging.nitf.core.NitfSecurityMetadata;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.SecurityClassification;
+import org.codice.imaging.nitf.core.SecurityMetadata;
 import org.junit.Test;
 
 public class Nitf21GraphicParsingTest {
@@ -79,8 +79,8 @@ public class Nitf21GraphicParsingTest {
         return getClass().getResourceAsStream(testfile);
     }
 
-    void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+    void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
+        assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());
         assertEquals("", securityMetadata.getCodewords());
         assertEquals("", securityMetadata.getControlAndHandling());

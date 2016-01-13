@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
  * Parse strategy that only extracts headers.

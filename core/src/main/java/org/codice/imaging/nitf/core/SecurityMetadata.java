@@ -15,13 +15,14 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Security metadata for a NITF file header or segment subheader.
 */
-public class NitfSecurityMetadata {
+public class SecurityMetadata {
 
-    private NitfSecurityClassification nitfSecurityClassification = NitfSecurityClassification.UNKNOWN;
+    private SecurityClassification securityClassification = SecurityClassification.UNKNOWN;
     private String nitfSecurityClassificationSystem = null;
     private String nitfCodewords = null;
     private String nitfControlAndHandling = null;
@@ -49,7 +50,7 @@ public class NitfSecurityMetadata {
     /**
         Default constructor.
     */
-    public NitfSecurityMetadata() {
+    public SecurityMetadata() {
     }
 
     /**
@@ -60,18 +61,18 @@ public class NitfSecurityMetadata {
         @param nitfReader the reader to use, positioned at the start of the security metadata.
         @throws ParseException if any error in the metadata is detected.
     */
-    public NitfSecurityMetadata(final NitfReader nitfReader) throws ParseException {
-        NitfSecurityMetadataParser parser = new NitfSecurityMetadataParser();
+    public SecurityMetadata(final NitfReader nitfReader) throws ParseException {
+        SecurityMetadataParser parser = new SecurityMetadataParser();
         parser.parse(nitfReader, this);
     }
 
     /**
         Set the security classification.
 
-        @param securityClassification security classification
+        @param classification security classification
     */
-    public final void setSecurityClassification(final NitfSecurityClassification securityClassification) {
-        nitfSecurityClassification = securityClassification;
+    public final void setSecurityClassification(final SecurityClassification classification) {
+        this.securityClassification = classification;
     }
 
     /**
@@ -79,8 +80,8 @@ public class NitfSecurityMetadata {
 
         @return security classification
     */
-    public final NitfSecurityClassification getSecurityClassification() {
-        return nitfSecurityClassification;
+    public final SecurityClassification getSecurityClassification() {
+        return securityClassification;
     }
 
     /**

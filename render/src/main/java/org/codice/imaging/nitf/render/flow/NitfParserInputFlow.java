@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import org.codice.imaging.nitf.core.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 
 /**
  * The NitfParserInputFlow represents the start of the builder pattern for the Nitf parser.

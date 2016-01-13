@@ -44,5 +44,5 @@ This will compile imaging-nitf and run all of the tests.
     AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
     NitfReader reader = new FileReader(resourceFile);
     NitfFileParser.parse(reader, parseStrategy);
-    Nitf nitf = parseStrategy.getNitfHeader();
+    NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
 ```

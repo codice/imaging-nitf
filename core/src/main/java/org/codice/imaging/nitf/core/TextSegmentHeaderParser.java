@@ -17,22 +17,25 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Parser for a text segment subheader in a NITF file.
 */
-class NitfTextSegmentHeaderParser extends AbstractNitfSegmentParser {
+class TextSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int textExtendedSubheaderLength = 0;
 
-    private NitfTextSegmentHeader segment = null;
+    private TextSegmentHeader segment = null;
 
-    NitfTextSegmentHeaderParser() {
+    TextSegmentHeaderParser() {
     }
 
-    final NitfTextSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    final TextSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
         reader = nitfReader;
-        segment = new NitfTextSegmentHeader();
+        segment = new TextSegmentHeader();
         parsingStrategy = parseStrategy;
 
         readTE();
@@ -40,7 +43,7 @@ class NitfTextSegmentHeaderParser extends AbstractNitfSegmentParser {
         readTXTALVL();
         readTEXTDT();
         readTXTITL();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadata(reader));
         readENCRYP();
         readTXTFMT();
         readTXSHDL();

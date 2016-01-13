@@ -15,13 +15,14 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Parser for security metadata.
 */
-class NitfSecurityMetadataParser {
+class SecurityMetadataParser {
     protected NitfReader reader = null;
-    private NitfSecurityMetadata metadata = null;
+    private SecurityMetadata metadata = null;
 
     private static final int XSCLAS_LENGTH = 1;
     private static final int XSCLSY_LENGTH = 2;
@@ -51,14 +52,14 @@ class NitfSecurityMetadataParser {
 
     private static final String DOWNGRADE_EVENT_MAGIC = "999998";
 
-    public NitfSecurityMetadataParser() {
+    public SecurityMetadataParser() {
     }
 
-    public final void parse(final NitfReader nitfReader, final NitfSecurityMetadata securityMetadata) throws ParseException {
+    public final void parse(final NitfReader nitfReader, final SecurityMetadata securityMetadata) throws ParseException {
         doParse(nitfReader, securityMetadata);
     }
 
-    protected void doParse(final NitfReader nitfReader, final NitfSecurityMetadata securityMetadata) throws ParseException {
+    protected void doParse(final NitfReader nitfReader, final SecurityMetadata securityMetadata) throws ParseException {
         reader = nitfReader;
         metadata = securityMetadata;
 
@@ -108,7 +109,7 @@ class NitfSecurityMetadataParser {
 
     private void readXSCLAS() throws ParseException {
         String fsclas = reader.readBytes(XSCLAS_LENGTH);
-        metadata.setSecurityClassification(NitfSecurityClassification.getEnumValue(fsclas));
+        metadata.setSecurityClassification(SecurityClassification.getEnumValue(fsclas));
     }
 
     private void readXSCLSY() throws ParseException {

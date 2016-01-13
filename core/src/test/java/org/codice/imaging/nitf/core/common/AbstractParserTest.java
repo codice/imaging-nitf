@@ -25,10 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.codice.imaging.nitf.core.FileType;
-import org.codice.imaging.nitf.core.NitfDateTime;
-import org.codice.imaging.nitf.core.NitfReader;
-import org.junit.After;
+    import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

@@ -33,30 +33,32 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOF
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Parser for a symbol segment subheader in a NITF 2.0 file.
 */
-class NitfSymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
+class SymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
 
-    private NitfSymbolSegmentHeader segment = null;
+    private SymbolSegmentHeader segment = null;
 
-    NitfSymbolSegmentHeaderParser() {
+    SymbolSegmentHeaderParser() {
     }
 
-    final NitfSymbolSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    final SymbolSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
-        segment = new NitfSymbolSegmentHeader();
+        segment = new SymbolSegmentHeader();
         parsingStrategy = parseStrategy;
 
         readSY();
         readSID();
         readSNAME();
-        segment.setSecurityMetadata(new NitfSecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadata(reader));
         readENCRYP();
         readSTYPE();
         readNLIPS();

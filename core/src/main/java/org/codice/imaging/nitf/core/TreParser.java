@@ -23,13 +23,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.schema.FieldType;
 import org.codice.imaging.nitf.core.schema.IfType;
 import org.codice.imaging.nitf.core.schema.LoopType;
-
-import org.codice.imaging.nitf.core.schema.Tres;
 import org.codice.imaging.nitf.core.schema.TreType;
-
+import org.codice.imaging.nitf.core.schema.Tres;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
