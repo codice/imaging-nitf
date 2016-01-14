@@ -3,7 +3,7 @@ package org.codice.imaging.nitf.core.common;
 import java.util.Map;
 
 import org.codice.imaging.nitf.core.SecurityMetadata;
-import org.codice.imaging.nitf.core.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
  Common data elements for NITF segment subheaders.

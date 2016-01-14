@@ -20,8 +20,12 @@ import java.text.ParseException;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
+import org.codice.imaging.nitf.core.tre.Tre;
+import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollectionParser;
+import org.codice.imaging.nitf.core.tre.TreEntry;
+import org.codice.imaging.nitf.core.tre.TreGroup;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Test;

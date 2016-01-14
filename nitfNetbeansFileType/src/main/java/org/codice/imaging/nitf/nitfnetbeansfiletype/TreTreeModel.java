@@ -10,11 +10,11 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import org.codice.imaging.nitf.core.Tre;
-import org.codice.imaging.nitf.core.TreCollection;
-import org.codice.imaging.nitf.core.TreEntry;
-import org.codice.imaging.nitf.core.TreEntryList;
-import org.codice.imaging.nitf.core.TreGroup;
+import org.codice.imaging.nitf.core.tre.Tre;
+import org.codice.imaging.nitf.core.tre.TreEntryList;
+import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreEntry;
 
 /**
  * TreeModel implementation for the Tagged Registered Extensions.

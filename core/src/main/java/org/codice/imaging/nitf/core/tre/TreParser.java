@@ -12,8 +12,10 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.tre;
 
+import static org.codice.imaging.nitf.core.tre.TreConstants.AND_CONDITION;
+import static org.codice.imaging.nitf.core.tre.TreConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -27,8 +29,10 @@ import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.schema.FieldType;
 import org.codice.imaging.nitf.core.schema.IfType;
 import org.codice.imaging.nitf.core.schema.LoopType;
-import org.codice.imaging.nitf.core.schema.TreType;
+
 import org.codice.imaging.nitf.core.schema.Tres;
+import org.codice.imaging.nitf.core.schema.TreType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +42,7 @@ import org.slf4j.LoggerFactory;
 class TreParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreParser.class);
+
     private static final String TRE_XML_LOAD_ERROR_MESSAGE = "Exception while loading TRE XML";
 
     private static Tres tresStructure = null;
@@ -80,29 +85,32 @@ class TreParser {
         }
     }
 
-    Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength) throws ParseException {
-        Tre tre = new Tre(tag);
+    Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength)
+            throws ParseException {
+        Tre tre = new TreImpl(tag);
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
             tre.setRawData(reader.readBytesRaw(fieldLength));
         } else {
             TreParams parameters = new TreParams();
             tre.setPrefix(treType.getMdPrefix());
-            TreGroup group = parseTreComponents(treType.getFieldOrLoopOrIf(), reader, parameters);
+            TreGroupImpl group = parseTreComponents(treType.getFieldOrLoopOrIf(),
+                    reader, parameters);
             tre.setEntries(group.getEntries());
         }
         return tre;
     }
 
-    private TreGroup parseTreComponents(final List<Object> fieldOrLoopOrIf, final NitfReader reader, final TreParams params) throws ParseException {
-        TreGroup group = new TreGroup();
+    private TreGroupImpl parseTreComponents(final List<Object> fieldOrLoopOrIf,
+            final NitfReader reader, final TreParams params) throws ParseException {
+        TreGroupImpl group = new TreGroupImpl();
         for (Object fieldLoopIf : fieldOrLoopOrIf) {
             if (fieldLoopIf instanceof FieldType) {
                 group.add(parseField((FieldType) fieldLoopIf, reader, params));
             } else if (fieldLoopIf instanceof LoopType) {
                 group.add(parseLoop((LoopType) fieldLoopIf, reader, params));
             } else if (fieldLoopIf instanceof IfType) {
-                TreGroup ifGroup = parseIf((IfType) fieldLoopIf, reader, params);
+                TreGroupImpl ifGroup = parseIf((IfType) fieldLoopIf, reader, params);
                 group.addAll(ifGroup);
             } else {
                 throw new ParseException("Unhandled fieldLoopIf type parsing problem", 0);
@@ -111,7 +119,8 @@ class TreParser {
         return group;
     }
 
-    private TreEntry parseField(final FieldType field, final NitfReader reader, final TreParams parameters) throws ParseException {
+    private TreEntry parseField(final FieldType field, final NitfReader reader,
+            final TreParams parameters) throws ParseException {
         String fieldKey = field.getName();
         if (fieldKey == null) {
             reader.skip(field.getLength().intValue());
@@ -173,6 +182,7 @@ class TreParser {
         int numopg = parameters.getIntValue("NUMOPG");
         return (numopg + 1) * (numopg) / 2;
     }
+
     private int computeProductNParNParo(final TreParams parameters) throws ParseException {
         int npar = parameters.getIntValue("NPAR");
         int nparo = parameters.getIntValue("NPARO");
@@ -213,13 +223,14 @@ class TreParser {
         }
         TreEntry treEntry = new TreEntry(loopType.getName());
         for (int i = 0; i < numRepetitions; ++i) {
-            TreGroup subGroup = parseTreComponents(loopType.getFieldOrLoopOrIf(), reader, params);
+            TreGroupImpl subGroup = parseTreComponents(loopType.getFieldOrLoopOrIf(),
+                    reader, params);
             treEntry.addGroup(subGroup);
         }
         return treEntry;
     }
 
-    private TreGroup parseIf(final IfType ifType, final NitfReader reader, final TreParams params) throws ParseException {
+    private TreGroupImpl parseIf(final IfType ifType, final NitfReader reader, final TreParams params) throws ParseException {
         String condition = ifType.getCond();
         if (evaluateCondition(condition, params)) {
             return parseTreComponents(ifType.getFieldOrLoopOrIf(), reader, params);
@@ -228,7 +239,7 @@ class TreParser {
     }
 
     private boolean evaluateCondition(final String condition, final TreParams params) {
-        if (condition.contains(NitfConstants.AND_CONDITION)) {
+        if (condition.contains(AND_CONDITION)) {
             return evaluateConditionBooleanAnd(condition, params);
         } else if (condition.endsWith("!=")) {
             return evaluateConditionIsNotEmpty(condition, params);
@@ -237,15 +248,15 @@ class TreParser {
         } else if (condition.contains("=")) {
             return evaluateConditionIsEqual(condition, params);
         } else {
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
     }
 
     private boolean evaluateConditionBooleanAnd(final String condition, final TreParams parameters) {
-        String[] condParts = condition.split(NitfConstants.AND_CONDITION);
+        String[] condParts = condition.split(AND_CONDITION);
         if (condParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         boolean lhs = evaluateCondition(condParts[0], parameters);
         boolean rhs = evaluateCondition(condParts[1], parameters);
@@ -262,7 +273,7 @@ class TreParser {
         String[] conditionParts = condition.split("!=");
         if (conditionParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         String actualValue = parameters.getFieldValue(conditionParts[0]);
         return !conditionParts[1].equals(actualValue);
@@ -272,7 +283,7 @@ class TreParser {
         String[] conditionParts = condition.split("=");
         if (conditionParts.length != 2) {
             // This is an error
-            throw new UnsupportedOperationException(NitfConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
         String actualValue = params.getFieldValue(conditionParts[0]);
         return conditionParts[1].equals(actualValue);

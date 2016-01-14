@@ -58,7 +58,7 @@ import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.SecurityMetadata;
 import org.codice.imaging.nitf.core.PixelJustification;
 import org.codice.imaging.nitf.core.PixelValueType;
-import org.codice.imaging.nitf.core.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 
 /**

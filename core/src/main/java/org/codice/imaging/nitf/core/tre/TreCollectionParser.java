@@ -12,16 +12,25 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.tre;
 
+import static org.codice.imaging.nitf.core.tre.TreConstants.TAGLEN_LENGTH;
+import static org.codice.imaging.nitf.core.tre.TreConstants.TAG_LENGTH;
 import java.text.ParseException;
 import javax.xml.transform.Source;
 import org.codice.imaging.nitf.core.common.NitfReader;
 
-class TreCollectionParser {
+/**
+ * Parser for a TreCollection.
+ */
+public class TreCollectionParser {
 
     private final TreParser treParser;
 
+    /**
+     * default constructor.
+     * @throws ParseException when the TreParser constructor does.
+     */
     public TreCollectionParser() throws ParseException {
         treParser = new TreParser();
     }
@@ -38,17 +47,22 @@ class TreCollectionParser {
         TreCollection treCollection = new TreCollection();
         int bytesRead = 0;
         while (bytesRead < treLength) {
-            String tag = reader.readBytes(NitfConstants.TAG_LENGTH);
-            bytesRead += NitfConstants.TAG_LENGTH;
-            int fieldLength = reader.readBytesAsInteger(NitfConstants.TAGLEN_LENGTH);
-            bytesRead += NitfConstants.TAGLEN_LENGTH;
+            String tag = reader.readBytes(TAG_LENGTH);
+            bytesRead += TAG_LENGTH;
+            int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
+            bytesRead += TAGLEN_LENGTH;
             treCollection.add(treParser.parseOneTre(reader, tag, fieldLength));
             bytesRead += fieldLength;
         }
         return treCollection;
     }
 
-    void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+    /**
+     * Registers TreImpl descriptors for the supplied source.
+     * @param source - The source for the TreImpl descriptor.
+     * @throws ParseException propogated from TreParser.registerAdditionalTREdescriptor.
+     */
+    public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
         treParser.registerAdditionalTREdescriptor(source);
     }
 }

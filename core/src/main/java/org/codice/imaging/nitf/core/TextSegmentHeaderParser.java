@@ -20,6 +20,7 @@ import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
     Parser for a text segment subheader in a NITF file.

@@ -12,11 +12,10 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  * 
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.tre;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 public class TreTest {
@@ -40,7 +39,7 @@ public class TreTest {
 
         entry.initGroups();
         assertEquals(0, entry.getGroups().size());
-        entry.addGroup(new TreGroup());
+        entry.addGroup(new TreGroupImpl());
         assertEquals(1, entry.getGroups().size());
         // check it doesn't kill what we already have
         entry.initGroups();
@@ -54,13 +53,13 @@ public class TreTest {
 
         entry.initGroups();
         assertEquals(0, entry.getGroups().size());
-        TreGroup group1 = new TreGroup();
+        TreGroup group1 = new TreGroupImpl();
         entry.addGroup(group1);
-        TreGroup group2 = new TreGroup();
+        TreGroup group2 = new TreGroupImpl();
         entry.addGroup(group2);
         TreEntry subEntry = new TreEntry("SubEntry");
         group2.add(subEntry);
-        subEntry.addGroup(new TreGroup());
+        subEntry.addGroup(new TreGroupImpl());
         entry.dump();
     }
 }

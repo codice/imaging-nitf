@@ -27,6 +27,8 @@ import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeaderParser;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeaderParser;
+import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollectionParser;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeaderParser;
 
@@ -790,7 +792,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
 
     /**
      *
-     * @param source the source of the additional Tre descriptor.
+     * @param source the source of the additional TreImpl descriptor.
      * @throws ParseException - when the Tres in the source aren't in the expected format.
      */
     public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {

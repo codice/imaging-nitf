@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core.common;
 
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
  * Strategy for parsing NITF file components.
