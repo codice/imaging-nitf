@@ -29,7 +29,7 @@ import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.PixelJustification;
 
-public class Uncompressed implements BlockRenderer {
+public class UncompressedBlockRenderer implements BlockRenderer {
 
     private NitfImageSegmentHeader mImageSegmentHeader = null;
     private ImageInputStream mImageData = null;

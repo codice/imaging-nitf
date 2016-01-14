@@ -13,7 +13,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmRenderer;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.render.NitfRender;
+import org.codice.imaging.nitf.render.NitfRenderer;
 import org.openide.awt.ActionID;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
@@ -90,7 +90,7 @@ public class GraphicViewPane extends TopComponent {
             renderer.render(commands);
         }
         if (imageSegment != null) {
-            NitfRender render = new NitfRender();
+            NitfRenderer render = new NitfRenderer();
             try {
                 imageData.seek(initialImageStreamOffset);
                 render.render(imageSegment, imageData, g2);

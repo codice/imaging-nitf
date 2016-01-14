@@ -23,7 +23,7 @@ import javax.imageio.stream.ImageInputStream;
 
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
-class Bilevel implements BlockRenderer {
+class BilevelBlockRenderer implements BlockRenderer {
 
     private NitfImageSegmentHeader mImageSegmentHeader = null;
     private ImageInputStream mImageData = null;
@@ -396,7 +396,7 @@ class Bilevel implements BlockRenderer {
                     a0colour = flipColour(a0colour);
                     break;
                 default:
-                    throw new IOException("Unsupported 2D Bilevel encoding at row" + blockRow);
+                    throw new IOException("Unsupported 2D BilevelBlockRenderer encoding at row" + blockRow);
             }
             a0 = a0prime;
         }
