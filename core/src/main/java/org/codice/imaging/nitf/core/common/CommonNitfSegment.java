@@ -2,7 +2,7 @@ package org.codice.imaging.nitf.core.common;
 
 import java.util.Map;
 
-import org.codice.imaging.nitf.core.NitfSecurityMetadata;
+import org.codice.imaging.nitf.core.SecurityMetadata;
 import org.codice.imaging.nitf.core.TreCollection;
 
 /**
@@ -25,7 +25,7 @@ public interface CommonNitfSegment {
 
      @return security metadata
      */
-    NitfSecurityMetadata getSecurityMetadata();
+    SecurityMetadata getSecurityMetadata();
 
     /**
      Return the TREs for this segment, in raw form.

@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 
+import org.codice.imaging.nitf.core.common.FileReader;
 import org.junit.rules.ExpectedException;
 import org.junit.Rule;
 import org.junit.Test;

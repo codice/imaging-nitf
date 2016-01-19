@@ -23,9 +23,10 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.EnumSet;
 import java.util.TimeZone;
 
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +47,7 @@ public class Nitf21TextParsingTest {
         NitfFileParser.parse(reader, parseStrategy);
         assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
 
-        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
+        TextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
         assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", parseStrategy.getTextSegmentData().get(0));
     }
@@ -58,12 +59,12 @@ public class Nitf21TextParsingTest {
         NitfFileParser.parse(reader, parseStrategy);
         assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
 
-        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
+        TextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
         assertEquals(0, parseStrategy.getTextSegmentData().size());
     }
 
-    private void assertTextSegmentMetadataIsAsExpected(NitfTextSegmentHeader textSegment) {
+    private void assertTextSegmentMetadataIsAsExpected(TextSegmentHeader textSegment) {
         assertNotNull(textSegment);
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());

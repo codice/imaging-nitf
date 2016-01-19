@@ -76,7 +76,7 @@ public class RenderJitcTest extends TestCase {
     }
 
     @Test
-    public void     testU_4003B() throws IOException, ParseException {
+    public void testU_4003B() throws IOException, ParseException {
         testOneFile("U_4003B.NTF", "JitcNitf20Samples");
     }
 

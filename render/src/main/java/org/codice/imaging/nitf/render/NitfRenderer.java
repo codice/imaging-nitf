@@ -123,7 +123,6 @@ public class NitfRenderer {
         }
     }
 
-
     private void skipToMarker(ImageInputStream imageInputStream, JpegMarkerCode markerCode) throws IOException {
         imageInputStream.mark();
         byte fillByte = (byte) ((markerCode.getValue() >> 8) & 0xFF);

@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
-import org.codice.imaging.nitf.core.Nitf;
+import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
@@ -71,9 +71,9 @@ public class NitfSegmentsFlow {
      * @param consumer - the consumer to pass the Nitf file header to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow fileHeader(Consumer<Nitf> consumer) {
-        Nitf nitf = parseStrategy.getNitfHeader();
-        consumer.accept(nitf);
+    public NitfSegmentsFlow fileHeader(Consumer<NitfFileHeader> consumer) {
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
+        consumer.accept(nitfFileHeader);
         return this;
     }
 }

@@ -16,6 +16,8 @@ package org.codice.imaging.nitf.core;
 
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Default implementation for a NitfReader.

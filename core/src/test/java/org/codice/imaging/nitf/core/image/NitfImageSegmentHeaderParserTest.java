@@ -22,11 +22,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import java.text.ParseException;
 import java.util.LinkedList;
-import org.codice.imaging.nitf.core.FileType;
-import org.codice.imaging.nitf.core.NitfParseStrategy;
-import org.codice.imaging.nitf.core.NitfReader;
-import org.codice.imaging.nitf.core.NitfSecurityClassification;
-import org.codice.imaging.nitf.core.NitfSecurityMetadata;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.SecurityClassification;
+import org.codice.imaging.nitf.core.SecurityMetadata;
 import org.codice.imaging.nitf.core.PixelJustification;
 import org.codice.imaging.nitf.core.PixelValueType;
 import org.junit.Before;
@@ -223,7 +223,7 @@ public class NitfImageSegmentHeaderParserTest {
         assertThat(nitfImageSegmentHeader.getImageBand(3).getImageRepresentation(), is(IREPBAND3));
         assertThat(nitfImageSegmentHeader.getImageBand(3).getSubCategory(), is(ISUBCAT3));
 
-        NitfSecurityMetadata securityMetadata = nitfImageSegmentHeader.getSecurityMetadata();
+        SecurityMetadata securityMetadata = nitfImageSegmentHeader.getSecurityMetadata();
         assertThat(securityMetadata.getSecuritySourceDate(), is(SSSRDT));
         assertThat(securityMetadata.getSecurityControlNumber(), is(SSCTLN));
         assertThat(securityMetadata.getClassificationReason(), is(SSCRSN));
@@ -238,7 +238,7 @@ public class NitfImageSegmentHeaderParserTest {
         assertThat(securityMetadata.getDeclassificationType(), is(SSDCTP));
         assertThat(securityMetadata.getControlAndHandling(), is(SSCTLH));
         assertThat(securityMetadata.getCodewords(), is(SSCODE));
-        assertThat(securityMetadata.getSecurityClassification(), is(NitfSecurityClassification.UNCLASSIFIED));
+        assertThat(securityMetadata.getSecurityClassification(), is(SecurityClassification.UNCLASSIFIED));
         assertThat(securityMetadata.getReleaseInstructions(), is(SSREL));
     }
 }

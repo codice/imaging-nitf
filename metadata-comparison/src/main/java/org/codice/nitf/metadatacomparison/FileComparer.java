@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.codice.imaging.nitf.core.FileReader;
-import org.codice.imaging.nitf.core.FileType;
+import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.image.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
-import org.codice.imaging.nitf.core.Nitf;
 import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.image.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.image.RasterProductFormatAttributes;
 import org.codice.imaging.nitf.core.image.RasterProductFormatUtilities;
@@ -160,8 +160,8 @@ public class FileComparer {
         Map <String, String> metadata = new TreeMap<String, String>();
 
         addCommonFileLevelMetadata(metadata);
-        Nitf nitf = parseStrategy.getNitfHeader();
-        switch (nitf.getFileType()) {
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
+        switch (nitfFileHeader.getFileType()) {
             case NSIF_ONE_ZERO:
                 metadata.put("NITF_FHDR", "NSIF01.00");
                 break;
@@ -172,13 +172,13 @@ public class FileComparer {
                 metadata.put("NITF_FHDR", "NITF02.10");
                 break;
         }
-        if (nitf.getFileType() == FileType.NITF_TWO_ZERO) {
+        if (nitfFileHeader.getFileType() == FileType.NITF_TWO_ZERO) {
             addNITF20FileLevelMetadata(metadata);
         } else {
             addNITF21FileLevelMetadata(metadata);
         }
 
-        TreCollection treCollection = nitf.getTREsRawStructure();
+        TreCollection treCollection = nitfFileHeader.getTREsRawStructure();
         addOldStyleMetadata(metadata, treCollection);
         if (segment1 != null) {
             addFirstImageSegmentMetadata(metadata);
@@ -199,61 +199,61 @@ public class FileComparer {
     }
 
     private void addCommonFileLevelMetadata(Map <String, String> metadata) throws IOException {
-        Nitf nitf = parseStrategy.getNitfHeader();
-        metadata.put("NITF_CLEVEL", String.format("%02d", nitf.getComplexityLevel()));
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
+        metadata.put("NITF_CLEVEL", String.format("%02d", nitfFileHeader.getComplexityLevel()));
         metadata.put("NITF_ENCRYP", "0");
-        metadata.put("NITF_FDT", nitf.getFileDateTime().getSourceString());
-        metadata.put("NITF_FSCAUT", nitf.getFileSecurityMetadata().getClassificationAuthority());
-        metadata.put("NITF_FSCLAS", nitf.getFileSecurityMetadata().getSecurityClassification().getTextEquivalent());
-        metadata.put("NITF_FSCODE", nitf.getFileSecurityMetadata().getCodewords());
-        metadata.put("NITF_FSCTLH", nitf.getFileSecurityMetadata().getControlAndHandling());
-        metadata.put("NITF_FSCTLN", nitf.getFileSecurityMetadata().getSecurityControlNumber());
-        metadata.put("NITF_FSREL", nitf.getFileSecurityMetadata().getReleaseInstructions());
-        metadata.put("NITF_FSCOP", nitf.getFileSecurityMetadata().getFileCopyNumber());
-        metadata.put("NITF_FSCPYS", nitf.getFileSecurityMetadata().getFileNumberOfCopies());
-        metadata.put("NITF_FTITLE", nitf.getFileTitle());
-        metadata.put("NITF_ONAME", nitf.getOriginatorsName());
-        metadata.put("NITF_OPHONE", nitf.getOriginatorsPhoneNumber());
-        metadata.put("NITF_OSTAID", nitf.getOriginatingStationId());
-        metadata.put("NITF_STYPE", nitf.getStandardType());
+        metadata.put("NITF_FDT", nitfFileHeader.getFileDateTime().getSourceString());
+        metadata.put("NITF_FSCAUT", nitfFileHeader.getFileSecurityMetadata().getClassificationAuthority());
+        metadata.put("NITF_FSCLAS", nitfFileHeader.getFileSecurityMetadata().getSecurityClassification().getTextEquivalent());
+        metadata.put("NITF_FSCODE", nitfFileHeader.getFileSecurityMetadata().getCodewords());
+        metadata.put("NITF_FSCTLH", nitfFileHeader.getFileSecurityMetadata().getControlAndHandling());
+        metadata.put("NITF_FSCTLN", nitfFileHeader.getFileSecurityMetadata().getSecurityControlNumber());
+        metadata.put("NITF_FSREL", nitfFileHeader.getFileSecurityMetadata().getReleaseInstructions());
+        metadata.put("NITF_FSCOP", nitfFileHeader.getFileSecurityMetadata().getFileCopyNumber());
+        metadata.put("NITF_FSCPYS", nitfFileHeader.getFileSecurityMetadata().getFileNumberOfCopies());
+        metadata.put("NITF_FTITLE", nitfFileHeader.getFileTitle());
+        metadata.put("NITF_ONAME", nitfFileHeader.getOriginatorsName());
+        metadata.put("NITF_OPHONE", nitfFileHeader.getOriginatorsPhoneNumber());
+        metadata.put("NITF_OSTAID", nitfFileHeader.getOriginatingStationId());
+        metadata.put("NITF_STYPE", nitfFileHeader.getStandardType());
     }
 
     private void addNITF20FileLevelMetadata(Map <String, String> metadata) throws IOException {
-        Nitf nitf = parseStrategy.getNitfHeader();
-        metadata.put("NITF_FSDWNG", nitf.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
-        if (nitf.getFileSecurityMetadata().getDowngradeEvent() != null) {
-            metadata.put("NITF_FSDEVT", nitf.getFileSecurityMetadata().getDowngradeEvent());
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
+        metadata.put("NITF_FSDWNG", nitfFileHeader.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
+        if (nitfFileHeader.getFileSecurityMetadata().getDowngradeEvent() != null) {
+            metadata.put("NITF_FSDEVT", nitfFileHeader.getFileSecurityMetadata().getDowngradeEvent());
         }
     }
 
     private void addNITF21FileLevelMetadata(Map <String, String> metadata) throws IOException {
-        Nitf nitf = parseStrategy.getNitfHeader();
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
         metadata.put("NITF_FBKGC", (String.format("%3d,%3d,%3d",
-                    (int)(nitf.getFileBackgroundColour().getRed() & 0xFF),
-                    (int)(nitf.getFileBackgroundColour().getGreen() & 0xFF),
-                    (int)(nitf.getFileBackgroundColour().getBlue() & 0xFF))));
-        metadata.put("NITF_FSCATP", nitf.getFileSecurityMetadata().getClassificationAuthorityType());
-        metadata.put("NITF_FSCLSY", nitf.getFileSecurityMetadata().getSecurityClassificationSystem());
-        metadata.put("NITF_FSCLTX", nitf.getFileSecurityMetadata().getClassificationText());
-        metadata.put("NITF_FSCRSN", nitf.getFileSecurityMetadata().getClassificationReason());
-        metadata.put("NITF_FSDCDT", nitf.getFileSecurityMetadata().getDeclassificationDate());
-        metadata.put("NITF_FSDCTP", nitf.getFileSecurityMetadata().getDeclassificationType());
-        if (nitf.getFileSecurityMetadata().getDeclassificationExemption().length() > 0) {
-            metadata.put("NITF_FSDCXM", String.format("%4s", nitf.getFileSecurityMetadata().getDeclassificationExemption()));
+                    (int)(nitfFileHeader.getFileBackgroundColour().getRed() & 0xFF),
+                    (int)(nitfFileHeader.getFileBackgroundColour().getGreen() & 0xFF),
+                    (int)(nitfFileHeader.getFileBackgroundColour().getBlue() & 0xFF))));
+        metadata.put("NITF_FSCATP", nitfFileHeader.getFileSecurityMetadata().getClassificationAuthorityType());
+        metadata.put("NITF_FSCLSY", nitfFileHeader.getFileSecurityMetadata().getSecurityClassificationSystem());
+        metadata.put("NITF_FSCLTX", nitfFileHeader.getFileSecurityMetadata().getClassificationText());
+        metadata.put("NITF_FSCRSN", nitfFileHeader.getFileSecurityMetadata().getClassificationReason());
+        metadata.put("NITF_FSDCDT", nitfFileHeader.getFileSecurityMetadata().getDeclassificationDate());
+        metadata.put("NITF_FSDCTP", nitfFileHeader.getFileSecurityMetadata().getDeclassificationType());
+        if (nitfFileHeader.getFileSecurityMetadata().getDeclassificationExemption().length() > 0) {
+            metadata.put("NITF_FSDCXM", String.format("%4s", nitfFileHeader.getFileSecurityMetadata().getDeclassificationExemption()));
         } else {
             metadata.put("NITF_FSDCXM", "");
         }
-        metadata.put("NITF_FSDG", nitf.getFileSecurityMetadata().getDowngrade());
-        metadata.put("NITF_FSDGDT", nitf.getFileSecurityMetadata().getDowngradeDate());
-        metadata.put("NITF_FSSRDT", nitf.getFileSecurityMetadata().getSecuritySourceDate());
+        metadata.put("NITF_FSDG", nitfFileHeader.getFileSecurityMetadata().getDowngrade());
+        metadata.put("NITF_FSDGDT", nitfFileHeader.getFileSecurityMetadata().getDowngradeDate());
+        metadata.put("NITF_FSSRDT", nitfFileHeader.getFileSecurityMetadata().getSecuritySourceDate());
     }
 
     private void addFirstImageSegmentMetadata(Map <String, String> metadata) throws IOException, ParseException {
 
         addCommonImageSegmentMetadata(metadata);
-        Nitf nitf = parseStrategy.getNitfHeader();
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
 
-        if (nitf.getFileType() == FileType.NITF_TWO_ZERO) {
+        if (nitfFileHeader.getFileType() == FileType.NITF_TWO_ZERO) {
             addNITF20ImageSegmentMetadata(metadata);
         } else {
             addNITF21ImageSegmentMetadata(metadata);
@@ -264,8 +264,9 @@ public class FileComparer {
     }
 
     private void addNITF20ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
-        Nitf nitf = parseStrategy.getNitfHeader();
-        metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(nitf.getFileType()));
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
+        metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(
+                nitfFileHeader.getFileType()));
         metadata.put("NITF_ITITLE", segment1.getImageIdentifier2());
         metadata.put("NITF_ISDWNG", segment1.getSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
         if (segment1.getSecurityMetadata().getDowngradeEvent() != null) {
@@ -274,11 +275,12 @@ public class FileComparer {
     }
 
     private void addNITF21ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
-        Nitf nitf = parseStrategy.getNitfHeader();
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
         if (segment1.getImageCoordinatesRepresentation() == ImageCoordinatesRepresentation.NONE) {
             metadata.put("NITF_ICORDS", "");
         } else {
-            metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(nitf.getFileType()));
+            metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(
+                    nitfFileHeader.getFileType()));
         }
         metadata.put("NITF_IID2", segment1.getImageIdentifier2());
         metadata.put("NITF_ISCATP", segment1.getSecurityMetadata().getClassificationAuthorityType());

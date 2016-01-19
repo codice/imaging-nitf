@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 /**
     Security classification.
 */
-public enum NitfSecurityClassification {
+public enum SecurityClassification {
 
     /**
         Unknown security classification.
@@ -61,7 +61,7 @@ public enum NitfSecurityClassification {
 
         @param abbreviation the text abbreviation for the enumeration value.
     */
-    NitfSecurityClassification(final String abbreviation) {
+    SecurityClassification(final String abbreviation) {
         this.textEquivalent = abbreviation;
     }
 
@@ -74,8 +74,8 @@ public enum NitfSecurityClassification {
         @param textEquivalent the single character text equivalent for a security classification.
         @return the security classification (enumerated type)
     */
-    public static NitfSecurityClassification getEnumValue(final String textEquivalent) {
-        for (NitfSecurityClassification classification : values()) {
+    public static SecurityClassification getEnumValue(final String textEquivalent) {
+        for (SecurityClassification classification : values()) {
             if (textEquivalent.equals(classification.textEquivalent)) {
                 return classification;
             }

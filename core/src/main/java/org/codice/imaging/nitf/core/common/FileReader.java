@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +24,6 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +31,11 @@ import org.slf4j.LoggerFactory;
     NitfReader implementation using a (random access) File.
 */
 public class FileReader extends SharedReader implements NitfReader {
+    // Error Messages
+    static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF file: ";
+    static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File Not Found Exception opening file:";
+    static final String NOT_FOUND_MESSAGE_JOINER = " not found: ";
+    static final String READ_MODE = "r";
 
     private static final Logger LOG = LoggerFactory.getLogger(FileReader.class);
 
@@ -45,10 +49,10 @@ public class FileReader extends SharedReader implements NitfReader {
     */
     public FileReader(final File file) throws ParseException {
         try {
-            nitfFile = makeRandomAccessFile(file, NitfConstants.READ_MODE);
+            nitfFile = makeRandomAccessFile(file, READ_MODE);
         } catch (FileNotFoundException ex) {
-            LOG.warn(NitfConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
-            throw new ParseException(file.getPath() + NitfConstants.NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
+            throw new ParseException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
@@ -60,10 +64,10 @@ public class FileReader extends SharedReader implements NitfReader {
     */
     public FileReader(final String filename) throws ParseException {
         try {
-            nitfFile = makeRandomAccessFile(filename, NitfConstants.READ_MODE);
+            nitfFile = makeRandomAccessFile(filename, READ_MODE);
         } catch (FileNotFoundException ex) {
-            LOG.warn(NitfConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
-            throw new ParseException(filename + NitfConstants.NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
+            throw new ParseException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
@@ -122,7 +126,7 @@ public class FileReader extends SharedReader implements NitfReader {
             return bytes;
         } catch (IOException ex) {
             LOG.warn("IO Exception reading raw bytes", ex);
-            throw new ParseException(NitfConstants.GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
+            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
 
@@ -139,7 +143,7 @@ public class FileReader extends SharedReader implements NitfReader {
             } while (bytesToRead > 0);
         } catch (IOException ex) {
             LOG.warn("IO Exception skipping bytes", ex);
-            throw new ParseException(NitfConstants.GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
+            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
 

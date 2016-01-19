@@ -19,7 +19,7 @@ import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.TRE_OVERFLOW;
 
 import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
-import org.codice.imaging.nitf.core.FileType;
+import org.codice.imaging.nitf.core.common.FileType;
 
 /**
     Data Extension Segment (DES) subheader and associated data.

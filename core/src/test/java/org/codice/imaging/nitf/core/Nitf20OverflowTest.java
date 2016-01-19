@@ -25,6 +25,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
@@ -33,6 +36,7 @@ import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,30 +60,30 @@ public class Nitf20OverflowTest {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
         NitfFileParser.parse(reader, parseStrategy);
-        Nitf nitf = parseStrategy.getNitfHeader();
-        assertEquals(FileType.NITF_TWO_ZERO, nitf.getFileType());
-        assertEquals(1, nitf.getComplexityLevel());
-        assertEquals("", nitf.getStandardType());
-        assertEquals("ALLOVERFLO", nitf.getOriginatingStationId());
-        assertEquals("1997-09-15 09:00:00", formatter.format(nitf.getFileDateTime().toDate()));
-        assertEquals("Checks overflow from all possible areas. Created by George Levy.", nitf.getFileTitle());
-        NitfFileSecurityMetadata securityMetadata = nitf.getFileSecurityMetadata();
+        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
+        assertEquals(FileType.NITF_TWO_ZERO, nitfFileHeader.getFileType());
+        assertEquals(1, nitfFileHeader.getComplexityLevel());
+        assertEquals("", nitfFileHeader.getStandardType());
+        assertEquals("ALLOVERFLO", nitfFileHeader.getOriginatingStationId());
+        assertEquals("1997-09-15 09:00:00", formatter.format(nitfFileHeader.getFileDateTime().toDate()));
+        assertEquals("Checks overflow from all possible areas. Created by George Levy.", nitfFileHeader.getFileTitle());
+        FileSecurityMetadata securityMetadata = nitfFileHeader.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
         assertEquals("      ", securityMetadata.getDowngradeDateOrSpecialCase());
         assertNull(securityMetadata.getDowngradeEvent());
 
-        assertEquals("00000", nitf.getFileSecurityMetadata().getFileCopyNumber());
-        assertEquals("00000", nitf.getFileSecurityMetadata().getFileNumberOfCopies());
-        assertEquals("JITC FT HUACHUCA", nitf.getOriginatorsName());
-        assertEquals("(520) 538-5494", nitf.getOriginatorsPhoneNumber());
+        assertEquals("00000", nitfFileHeader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00000", nitfFileHeader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals("JITC FT HUACHUCA", nitfFileHeader.getOriginatorsName());
+        assertEquals("(520) 538-5494", nitfFileHeader.getOriginatorsPhoneNumber());
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
         assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
         assertEquals(1, parseStrategy.getSymbolSegmentHeaders().size());
         assertEquals(1, parseStrategy.getLabelSegmentHeaders().size());
         assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
         assertEquals(7, parseStrategy.getDataExtensionSegmentHeaders().size());
-        assertEquals(1, nitf.getUserDefinedHeaderOverflow());
-        assertEquals(2, nitf.getExtendedHeaderDataOverflow());
+        assertEquals(1, nitfFileHeader.getUserDefinedHeaderOverflow());
+        assertEquals(2, nitfFileHeader.getExtendedHeaderDataOverflow());
 
         NitfImageSegmentHeader imageSegment1 = parseStrategy.getImageSegmentHeaders().get(0);
         assertNotNull(imageSegment1);
@@ -123,7 +127,7 @@ public class Nitf20OverflowTest {
         assertEquals(3, imageSegment1.getUserDefinedHeaderOverflow());
         assertEquals(4, imageSegment1.getExtendedHeaderDataOverflow());
 
-        NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
+        SymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
         assertNotNull(symbolSegment1);
         assertEquals("Text", symbolSegment1.getIdentifier());
         assertEquals("", symbolSegment1.getSymbolName());
@@ -146,11 +150,11 @@ public class Nitf20OverflowTest {
         assertEquals(210, parseStrategy.getSymbolSegmentData().get(0).length);
         assertEquals(5, symbolSegment1.getExtendedHeaderDataOverflow());
 
-        NitfLabelSegmentHeader labelSegment1 = parseStrategy.getLabelSegmentHeaders().get(0);
+        LabelSegmentHeader labelSegment1 = parseStrategy.getLabelSegmentHeaders().get(0);
         assertNotNull(labelSegment1);
         assertEquals("label", labelSegment1.getIdentifier());
         assertNotNull(labelSegment1.getSecurityMetadata());
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, labelSegment1.getSecurityMetadata().getSecurityClassification());
+        assertEquals(SecurityClassification.UNCLASSIFIED, labelSegment1.getSecurityMetadata().getSecurityClassification());
         assertNull(labelSegment1.getSecurityMetadata().getSecurityClassificationSystem());
         assertEquals("", labelSegment1.getSecurityMetadata().getCodewords());
         assertEquals("Control and Handling", labelSegment1.getSecurityMetadata().getControlAndHandling());
@@ -175,7 +179,7 @@ public class Nitf20OverflowTest {
         assertEquals("This is a label on Lenna in an \"OverflowTestFile\"!", parseStrategy.getLabelSegmentData().get(0));
         assertEquals(6, labelSegment1.getExtendedHeaderDataOverflow());
 
-        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
+        TextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertNotNull(textSegment);
         assertEquals("Text ID   ", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
@@ -236,9 +240,9 @@ public class Nitf20OverflowTest {
         is.close();
     }
 
-    void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
+    void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
         assertNotNull(securityMetadata);
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+        assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertNull(securityMetadata.getSecurityClassificationSystem());
         assertEquals("", securityMetadata.getCodewords());
         assertEquals("", securityMetadata.getControlAndHandling());

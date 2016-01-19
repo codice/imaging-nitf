@@ -24,6 +24,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
 import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.image.ImageCategory;
@@ -51,7 +53,7 @@ public class Nitf21SorcerTest {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        Nitf file = parseStrategy.getNitfHeader();
+        NitfFileHeader file = parseStrategy.getNitfHeader();
         assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
         assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
         assertEquals(0, parseStrategy.getSymbolSegmentHeaders().size());
@@ -129,7 +131,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, graphicSegment.getBoundingBox2Row());
         assertEquals(0, graphicSegment.getBoundingBox2Column());
 
-        NitfTextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
+        TextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertNotNull(textSegment);
         assertEquals("       ", textSegment.getIdentifier());
@@ -147,8 +149,8 @@ public class Nitf21SorcerTest {
         return getClass().getResourceAsStream(testfile);
     }
 
-    void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+    void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
+        assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertEquals("", securityMetadata.getSecurityClassificationSystem());
         assertEquals("", securityMetadata.getCodewords());
         assertEquals("", securityMetadata.getControlAndHandling());

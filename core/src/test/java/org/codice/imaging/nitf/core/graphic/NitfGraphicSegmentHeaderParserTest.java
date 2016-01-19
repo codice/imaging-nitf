@@ -25,11 +25,11 @@ import static org.mockito.Mockito.when;
 import java.text.ParseException;
 import java.util.LinkedList;
 
-import org.codice.imaging.nitf.core.FileType;
-import org.codice.imaging.nitf.core.NitfParseStrategy;
-import org.codice.imaging.nitf.core.NitfReader;
-import org.codice.imaging.nitf.core.NitfSecurityClassification;
-import org.codice.imaging.nitf.core.NitfSecurityMetadata;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.SecurityClassification;
+import org.codice.imaging.nitf.core.SecurityMetadata;
 import org.codice.imaging.nitf.core.TreCollection;
 import org.junit.Before;
 import org.junit.Test;
@@ -125,7 +125,7 @@ public class NitfGraphicSegmentHeaderParserTest {
     public void testParse() throws ParseException {
         NitfGraphicSegmentHeaderParser parser = new NitfGraphicSegmentHeaderParser();
         NitfGraphicSegmentHeader header = parser.parse(nitfReader, strategy);
-        NitfSecurityMetadata securityMetaData = header.getSecurityMetadata();
+        SecurityMetadata securityMetaData = header.getSecurityMetadata();
 
         assertThat(header, notNullValue());
         assertThat(header.getBoundingBox1Column(), is(SBND1_COL));
@@ -154,7 +154,7 @@ public class NitfGraphicSegmentHeaderParserTest {
         assertThat(securityMetaData.getDowngradeDateOrSpecialCase(), nullValue());
         assertThat(securityMetaData.getReleaseInstructions(), is(SSREL));
         assertThat(securityMetaData.getDowngradeEvent(), nullValue());
-        assertThat(securityMetaData.getSecurityClassification(), is(NitfSecurityClassification.UNCLASSIFIED));
+        assertThat(securityMetaData.getSecurityClassification(), is(SecurityClassification.UNCLASSIFIED));
         assertThat(securityMetaData.getSecurityClassificationSystem(), is(SSCLSY));
         assertThat(securityMetaData.getSecurityControlNumber(), is(SSCTLN));
         assertThat(securityMetaData.getSecuritySourceDate(), is(SSSRDT));

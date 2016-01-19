@@ -16,6 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 import javax.xml.transform.Source;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 class TreCollectionParser {
 

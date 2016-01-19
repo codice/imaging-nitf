@@ -26,9 +26,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.codice.imaging.nitf.core.NitfDateTime;
-import org.codice.imaging.nitf.core.NitfParseStrategy;
-import org.codice.imaging.nitf.core.NitfReader;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

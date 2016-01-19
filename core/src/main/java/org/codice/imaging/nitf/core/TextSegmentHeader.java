@@ -14,10 +14,12 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.common.NitfDateTime;
+
 /**
     Text segment subheader information.
 */
-public class NitfTextSegmentHeader extends AbstractNitfSubSegment {
+public class TextSegmentHeader extends AbstractNitfSubSegment {
 
     private NitfDateTime textDateTime = null;
     private String textTitle = null;
@@ -27,7 +29,7 @@ public class NitfTextSegmentHeader extends AbstractNitfSubSegment {
     /**
         Default constructor.
     */
-    public NitfTextSegmentHeader() {
+    public TextSegmentHeader() {
     }
 
     /**

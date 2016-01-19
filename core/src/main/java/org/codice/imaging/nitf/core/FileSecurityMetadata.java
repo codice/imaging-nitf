@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     File security metadata.
@@ -22,7 +23,7 @@ import java.text.ParseException;
     The security metadata at the file level is the same as the subheaders, except for
     two extra fields (copy number, and number of copies).
 */
-public class NitfFileSecurityMetadata extends NitfSecurityMetadata {
+public class FileSecurityMetadata extends SecurityMetadata {
     private String nitfFileCopyNumber = null;
     private String nitfFileNumberOfCopies = null;
 
@@ -34,8 +35,8 @@ public class NitfFileSecurityMetadata extends NitfSecurityMetadata {
         @param nitfReader the reader to use, positioned at the start of the file security metadata.
         @throws ParseException if any error in the metadata is detected.
     */
-    public NitfFileSecurityMetadata(final NitfReader nitfReader) throws ParseException {
-        NitfFileSecurityMetadataParser parser = new NitfFileSecurityMetadataParser();
+    public FileSecurityMetadata(final NitfReader nitfReader) throws ParseException {
+        FileSecurityMetadataParser parser = new FileSecurityMetadataParser();
         parser.parse(nitfReader, this);
     }
 

@@ -12,9 +12,11 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.common;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.NitfFileHeader;
+import org.codice.imaging.nitf.core.TreCollection;
 
 /**
  * Strategy for parsing NITF file components.
@@ -24,16 +26,16 @@ public interface NitfParseStrategy {
     /**
      * Set the file-level header for this parsed file.
      *
-     * @param nitf the file-level header
+     * @param nitfFileHeader the file-level header
      */
-    void setFileHeader(Nitf nitf);
+    void setFileHeader(NitfFileHeader nitfFileHeader);
 
     /**
      * Return the file-level header for the parsed file.
      *
      * @return the file-level header
      */
-    Nitf getNitfHeader();
+    NitfFileHeader getNitfHeader();
 
     /**
      * Indication that the "base" file-level headers have been read.

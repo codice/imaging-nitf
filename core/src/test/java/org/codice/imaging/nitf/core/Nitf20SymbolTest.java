@@ -25,6 +25,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +49,7 @@ public class Nitf20SymbolTest {
         NitfFileParser.parse(reader, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
+        SymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
         assertEquals(930, parseStrategy.getSymbolSegmentData().get(0).length);
 
@@ -61,7 +64,7 @@ public class Nitf20SymbolTest {
         NitfFileParser.parse(reader, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        NitfSymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
+        SymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
         assertEquals(1, parseStrategy.getSymbolSegmentHeaders().size());
         assertEquals(0, parseStrategy.getSymbolSegmentData().size());
@@ -78,14 +81,14 @@ public class Nitf20SymbolTest {
     }
 
     private void assertFileSegmentDataIsAsExpected(SlottedNitfParseStrategy parseStrategy) {
-        Nitf file = parseStrategy.getNitfHeader();
+        NitfFileHeader file = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("PLYLIN2", file.getOriginatingStationId());
         assertEquals("1993-09-03 19:16:36", formatter.format(file.getFileDateTime().toDate()));
         assertEquals("checks for rendering of polyline. line width 1, line type 3,4,5. def line type.", file.getFileTitle());
-        NitfFileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
+        FileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
         assertEquals("999998", securityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This  file   will not need a downgrade.", securityMetadata.getDowngradeEvent());
@@ -102,7 +105,7 @@ public class Nitf20SymbolTest {
         assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
     }
 
-    private void assertSymbolSegmentHeaderDataIsAsExpected(NitfSymbolSegmentHeader symbolSegment1) {
+    private void assertSymbolSegmentHeaderDataIsAsExpected(SymbolSegmentHeader symbolSegment1) {
         assertNotNull(symbolSegment1);
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());
@@ -125,9 +128,9 @@ public class Nitf20SymbolTest {
         assertEquals(0, symbolSegment1.getSymbolRotation());
     }
 
-    private void assertUnclasAndEmpty(NitfSecurityMetadata securityMetadata) {
+    private void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
         assertNotNull(securityMetadata);
-        assertEquals(NitfSecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
+        assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
         assertNull(securityMetadata.getSecurityClassificationSystem());
         assertEquals("", securityMetadata.getCodewords());
         assertEquals("", securityMetadata.getControlAndHandling());

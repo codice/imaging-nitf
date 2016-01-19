@@ -38,8 +38,8 @@ import javax.imageio.ImageIO;
 
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.NitfInputStreamReader;
-import org.codice.imaging.nitf.core.NitfReader;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.junit.After;
 import org.junit.AfterClass;
