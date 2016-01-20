@@ -16,11 +16,11 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 import java.util.Arrays;
-
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
     Parser for a NITF file.

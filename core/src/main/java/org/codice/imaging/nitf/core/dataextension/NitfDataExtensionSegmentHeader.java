@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.dataextension;
 
 import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 
 /**

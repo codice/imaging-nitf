@@ -12,12 +12,12 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.tre;
 
 /**
     Tagged registered extension (TRE).
 */
-public class Tre extends TreEntryList {
+class TreImpl extends TreEntryListImpl implements Tre {
     private String prefix = null;
     private byte[] rawData = null;
 
@@ -26,46 +26,38 @@ public class Tre extends TreEntryList {
 
         @param tag the name for the TRE.
     */
-    public Tre(final String tag) {
+    TreImpl(final String tag) {
         super(tag);
     }
 
     /**
-        Set the metadata prefix format string.
-
-        @param mdPrefix the metadata prefix.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setPrefix(final String mdPrefix) {
         prefix = mdPrefix;
     }
 
     /**
-        Return the metadata prefix format string.
-
-        @return the metadata prefix.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final String getPrefix() {
         return prefix;
     }
 
     /**
-        Set the raw data for this TRE.
-        <p>
-        This is only used for TREs that we couldn't parse.
-
-        @param treDataRaw the raw bytes for the TRE.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setRawData(final byte[] treDataRaw) {
         rawData = treDataRaw;
     }
 
     /**
-        Get the raw data for this TRE.
-        <p>
-        This is only used for TREs that we couldn't parse.
-
-        @return the raw bytes for the TRE.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final byte[] getRawData() {
         return rawData;
     }

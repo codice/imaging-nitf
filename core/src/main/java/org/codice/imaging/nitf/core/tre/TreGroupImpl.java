@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.tre;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -24,27 +24,25 @@ import org.slf4j.LoggerFactory;
 /**
     A group of values within a TreEntry.
 */
-public class TreGroup {
+class TreGroupImpl implements TreGroup {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TreGroup.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TreGroupImpl.class);
     private static final int DECIMAL_BASE = 10;
 
     private List<TreEntry> entries = new ArrayList<>();
 
     /**
-        The entries in the TRE entry group.
-
-        @return the list of entries within the group.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final List<TreEntry> getEntries() {
         return entries;
     }
 
     /**
-        Add an entry to the group.
-
-        @param entry the entry to add
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void add(final TreEntry entry) {
         if (entry != null) {
             entries.add(entry);
@@ -52,10 +50,9 @@ public class TreGroup {
     }
 
     /**
-        Add multiple entries to the group.
-
-        @param group the group containing the entry or entries to add
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void addAll(final TreGroup group) {
         if (group != null) {
             entries.addAll(group.getEntries());
@@ -63,22 +60,18 @@ public class TreGroup {
     }
 
     /**
-        Set the list of entries.
-
-        @param treEntries the new list of entries.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setEntries(final List<TreEntry> treEntries) {
         entries = new ArrayList<>();
         entries.addAll(treEntries);
     }
 
     /**
-        Get the entry for a specific tag.
-
-        @param tagName the name (tag) of the field to look up.
-        @return the entry corresponding to the tag name.
-        @throws ParseException when the tag is not found
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final TreEntry getEntry(final String tagName) throws ParseException {
         for (TreEntry entry : entries) {
             if (entry.getName().equals(tagName)) {
@@ -89,24 +82,18 @@ public class TreGroup {
     }
 
     /**
-        Get the field value for a specific tag.
-
-        @param tagName the name (tag) of the field to look up.
-        @return the field value corresponding to the tag name.
-        @throws ParseException when the tag is not found
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final String getFieldValue(final String tagName) throws ParseException {
         TreEntry entry = getEntry(tagName);
         return entry.getFieldValue();
     }
 
     /**
-        Get the field value for a specific tag in integer format.
-
-        @param tagName the name (tag) of the field to look up.
-        @return the field value corresponding to the tag name, as an integer.
-        @throws ParseException when the tag is not found or the value cannot be converted to integer format.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final int getIntValue(final String tagName) throws ParseException {
         try {
             String fv = getFieldValue(tagName);
@@ -117,8 +104,9 @@ public class TreGroup {
     }
 
     /**
-        Debug dump of the entries.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void dump() {
         for (TreEntry entry : entries) {
             LOG.debug("\t----Start Entry---");
@@ -127,6 +115,9 @@ public class TreGroup {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     // CSOFF: DesignForExtension
     @Override
     public String toString() {

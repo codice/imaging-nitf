@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,36 +11,18 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- */
-package org.codice.imaging.nitf.core;
+ **/
+package org.codice.imaging.nitf.core.tre;
 
 /**
-    Named list of entries within a TRE.
-*/
-public class TreEntryList extends TreGroup {
-
-    private String name;
+ Named list of entries within a TRE.
+ */
+public interface TreEntryList extends TreGroup {
 
     /**
-        Constructor.
+     Return the name of the entry list key.
 
-        @param tag the name of the entry list key
-    */
-    public TreEntryList(final String tag) {
-        name = tag;
-    }
-
-    /**
-        Return the name of the entry list key.
-
-        @return the entry list key name
-    */
-    public final String getName() {
-        return name;
-    }
-
-    @Override
-    public final String toString() {
-        return getName();
-    }
+     @return the entry list key name
+     */
+    String getName();
 }

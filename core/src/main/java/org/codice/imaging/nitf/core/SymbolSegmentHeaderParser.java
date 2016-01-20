@@ -35,6 +35,7 @@ import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
     Parser for a symbol segment subheader in a NITF 2.0 file.

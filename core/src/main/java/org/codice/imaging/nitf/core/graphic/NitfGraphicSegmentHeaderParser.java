@@ -30,11 +30,10 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOF
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
 
 import java.text.ParseException;
-
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.SecurityMetadata;
-import org.codice.imaging.nitf.core.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 
 /**
