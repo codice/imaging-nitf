@@ -16,10 +16,12 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 import java.util.Arrays;
+
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.security.FileSecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
@@ -76,7 +78,7 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
         readOSTAID();
         readFDT();
         readFTITLE();
-        nitfFileHeader.setFileSecurityMetadata(new FileSecurityMetadata(reader));
+        nitfFileHeader.setFileSecurityMetadata(new FileSecurityMetadataParser().parseFileSecurityMetadata(reader));
         readENCRYP();
         if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
             readFBKGC();

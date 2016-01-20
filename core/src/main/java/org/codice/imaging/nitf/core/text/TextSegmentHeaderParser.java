@@ -25,11 +25,11 @@ import static org.codice.imaging.nitf.core.text.TextConstants.TXTITL_LENGTH;
 
 import java.text.ParseException;
 
-import org.codice.imaging.nitf.core.SecurityMetadata;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
@@ -66,7 +66,7 @@ public class TextSegmentHeaderParser extends AbstractNitfSegmentParser {
         readTXTALVL();
         readTEXTDT();
         readTXTITL();
-        segment.setSecurityMetadata(new SecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadataParser().parseSecurityMetadata(reader));
         readENCRYP();
         readTXTFMT();
         readTXSHDL();

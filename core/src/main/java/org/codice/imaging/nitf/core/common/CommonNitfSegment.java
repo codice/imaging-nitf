@@ -2,7 +2,7 @@ package org.codice.imaging.nitf.core.common;
 
 import java.util.Map;
 
-import org.codice.imaging.nitf.core.SecurityMetadata;
+import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**

@@ -211,7 +211,7 @@ public class UncompressedBlockRenderer implements BlockRenderer {
                 }
             }
         } else if (mImageSegmentHeader.getImageMode() == ImageMode.BLOCKINTERLEVE) {
-            for (int bandIndex = 0; bandIndex < mImageSegmentHeader.getNumBands(); ++ bandIndex) {
+            for (int bandIndex = 0; bandIndex < mImageSegmentHeader.getNumBands(); ++bandIndex) {
                 for (int row = 0; row < mImageSegmentHeader.getNumberOfPixelsPerBlockVertical(); ++row) {
                     for (int column = 0; column < mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(); ++column) {
                         int i = row * mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal() + column;

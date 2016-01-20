@@ -30,11 +30,12 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOF
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
 
 import java.text.ParseException;
+
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.SecurityMetadata;
+import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 
 /**
     Parser for a graphic segment subheader in a NITF 2.1 / NSIF 1.0 file.
@@ -67,7 +68,7 @@ public class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
         readSY();
         readSID();
         readSNAME();
-        segment.setSecurityMetadata(new SecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadataParser().parseSecurityMetadata(reader));
         readENCRYP();
         readSFMT();
         readSSTRUCT();

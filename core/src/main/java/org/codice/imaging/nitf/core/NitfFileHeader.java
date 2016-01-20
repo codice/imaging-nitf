@@ -16,8 +16,11 @@ package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
+import org.codice.imaging.nitf.core.security.SecurityMetadata;
 
 /**
     NITF file data.

@@ -49,17 +49,19 @@ import static org.codice.imaging.nitf.core.image.ImageConstants.TGTID_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.UDIDL_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.UDOFL_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.XBANDS_LENGTH;
+
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
+
+import org.codice.imaging.nitf.core.PixelJustification;
+import org.codice.imaging.nitf.core.PixelValueType;
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.SecurityMetadata;
-import org.codice.imaging.nitf.core.PixelJustification;
-import org.codice.imaging.nitf.core.PixelValueType;
+import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 
 /**
     Parser for an image segment subheader in a NITF file.
@@ -105,7 +107,7 @@ public class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
         readIDATIM();
         readTGTID();
         readIID2();
-        segment.setSecurityMetadata(new SecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadataParser().parseSecurityMetadata(reader));
         readENCRYP();
         readISORCE();
         readNROWS();
