@@ -17,7 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.transform.Source;
+
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -31,6 +33,8 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreCollectionParser;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeaderParser;
+import org.codice.imaging.nitf.core.text.TextSegmentHeader;
+import org.codice.imaging.nitf.core.text.TextSegmentHeaderParser;
 
 /**
  * "Slotted" parse strategy.

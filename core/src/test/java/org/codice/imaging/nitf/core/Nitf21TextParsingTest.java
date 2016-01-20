@@ -27,6 +27,9 @@ import java.util.TimeZone;
 
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.text.TextDataExtractionParseStrategy;
+import org.codice.imaging.nitf.core.text.TextFormat;
+import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.junit.Before;
 import org.junit.Test;
 

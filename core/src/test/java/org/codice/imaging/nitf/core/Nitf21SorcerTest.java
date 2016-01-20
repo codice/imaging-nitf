@@ -35,6 +35,8 @@ import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.text.TextFormat;
+import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.junit.Before;
 import org.junit.Test;
 

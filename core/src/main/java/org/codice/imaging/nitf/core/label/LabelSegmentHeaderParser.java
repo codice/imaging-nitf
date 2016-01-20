@@ -48,10 +48,10 @@ public class LabelSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     /**
      *
-     * @param nitfReader the reader to use to get the data
-     * @param parseStrategy the parsing strategy to use to process the data
-     * @return the parsed header
-     * @throws ParseException on parse failure
+     * @param nitfReader the reader to use to get the data.
+     * @param parseStrategy the parsing strategy to use to process the data.
+     * @return the parsed header.
+     * @throws ParseException on parse failure.
      *
      */
     public final LabelSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {

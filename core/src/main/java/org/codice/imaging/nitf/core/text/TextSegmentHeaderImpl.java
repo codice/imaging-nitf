@@ -12,14 +12,15 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.text;
 
+import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
     Text segment subheader information.
 */
-public class TextSegmentHeader extends AbstractNitfSubSegment {
+class TextSegmentHeaderImpl extends AbstractNitfSubSegment implements TextSegmentHeader {
 
     private NitfDateTime textDateTime = null;
     private String textTitle = null;
@@ -29,7 +30,7 @@ public class TextSegmentHeader extends AbstractNitfSubSegment {
     /**
         Default constructor.
     */
-    public TextSegmentHeader() {
+    public TextSegmentHeaderImpl() {
     }
 
     /**
@@ -44,12 +45,9 @@ public class TextSegmentHeader extends AbstractNitfSubSegment {
     }
 
     /**
-        Return text date and time.
-        <p>
-        This field shall contain the time (UTC) (Zulu) of origination of the text.
-
-        @return the date and time of the text.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final NitfDateTime getTextDateTime() {
         return textDateTime;
     }
@@ -66,12 +64,9 @@ public class TextSegmentHeader extends AbstractNitfSubSegment {
     }
 
     /**
-        Return text title.
-        <p>
-        This field shall contain the title of the text item.
-
-        @return text title
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final String getTextTitle() {
         return textTitle;
     }
@@ -88,32 +83,24 @@ public class TextSegmentHeader extends AbstractNitfSubSegment {
     }
 
     /**
-        Return the text format indicator.
-        <p>
-        See TextFormat for the meaning of the enumerated values.
-
-        @return the text format
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final TextFormat getTextFormat() {
         return textFormat;
     }
 
     /**
-        Set the text segment data length.
-        <p>
-        This is the length of the contents of the associated data segment.
-
-        @param length the text data segment length, in bytes
-    */
+     * {@inheritDoc}
+     */
     public final void setTextSegmentDataLength(final int length) {
         textSegmentDataLength = length;
     }
 
     /**
-        Return the text data length.
-
-        @return the text data segment length, in bytes
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final int getTextDataLength() {
         return textSegmentDataLength;
     }
