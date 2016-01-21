@@ -31,10 +31,13 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SNAME
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSHDL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOFL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
+
 import java.text.ParseException;
+
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
@@ -59,7 +62,7 @@ class SymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
         readSY();
         readSID();
         readSNAME();
-        segment.setSecurityMetadata(new SecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadataParser().parseSecurityMetadata(reader));
         readENCRYP();
         readSTYPE();
         readNLIPS();

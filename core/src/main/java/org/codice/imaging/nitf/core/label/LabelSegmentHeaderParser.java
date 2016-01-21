@@ -24,12 +24,14 @@ import static org.codice.imaging.nitf.core.label.LabelConstants.LID_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LLOC_HALF_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LXSHDL_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LXSOFL_LENGTH;
+
 import java.text.ParseException;
+
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.SecurityMetadata;
+import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 
 /**
     Parser for a label segment subheader in a NITF 2.0 file.
@@ -62,7 +64,7 @@ public class LabelSegmentHeaderParser extends AbstractNitfSegmentParser {
 
         readLA();
         readLID();
-        segment.setSecurityMetadata(new SecurityMetadata(reader));
+        segment.setSecurityMetadata(new SecurityMetadataParser().parseSecurityMetadata(reader));
         readENCRYP();
         readLFS();
         readLCW();

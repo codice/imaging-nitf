@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.security.SecurityMetadata;
+
 /**
     Common data elements for NITF segment subheaders.
 */
