@@ -12,36 +12,45 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  **/
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.image;
 
 /**
-    Pixel justification (PJUST) options.
-    <p>
-    NITF images can have different "actual bits per pixel" to "number of
-    bits per pixel" (e.g. 12 bits per pixel packed into 16 bits). To determine
-    where the data (as opposed to the padding) is to be found, there is a
-    pixel justification (left or right) setting.
+    Pixel value type (PVTYPE).
 */
-public enum PixelJustification {
+public enum PixelValueType {
+
     /**
-        Unknown justification.
+        Unknown pixel value type.
         <p>
-        This indicates an unknown justification, and typically indicates a broken file or
-        an error during parsing. This is not a valid value in a NITF .
+        This indicates an unknown format, and typically indicates a broken file or
+        an error during parsing. This is not a valid value in a NITF image.
     */
     UNKNOWN (""),
 
     /**
-        Left justification.
+        Integer.
     */
-    LEFT ("L"),
+    INTEGER ("INT"),
 
     /**
-        Right justification.
-        <p>
-        This is the preferred setting.
+        Bi-level.
     */
-    RIGHT ("R");
+    BILEVEL ("B"),
+
+    /**
+        Signed integer.
+    */
+    SIGNEDINTEGER ("SI"),
+
+    /**
+        Real (floating point).
+    */
+    REAL ("R"),
+
+    /**
+        Complex (real and imaginary floating point).
+    */
+    COMPLEX ("C");
 
     private final String textEquivalent;
 
@@ -52,35 +61,35 @@ public enum PixelJustification {
 
         @param abbreviation the text abbreviation for the enumeration value.
     */
-    PixelJustification(final String abbreviation) {
-        textEquivalent = abbreviation;
+    PixelValueType(final String abbreviation) {
+        this.textEquivalent = abbreviation;
     }
 
     /**
-        Create pixel justification from the text equivalent.
+        Create pixel value type from the text equivalent.
         <p>
         This is intended to support file parsing, and is not usually necessary
         for other purposes.
 
-        @param textEquivalent the single character text equivalent for pixel justification.
-        @return the pixel justification enumerated value.
+        @param textEquivalent the text equivalent for a pixel value type
+        @return the pixel value type enumerated value.
     */
-    public static PixelJustification getEnumValue(final String textEquivalent) {
-        for (PixelJustification pj : values()) {
-            if (textEquivalent.equals(pj.textEquivalent)) {
-                return pj;
+    public static PixelValueType getEnumValue(final String textEquivalent) {
+        for (PixelValueType pv : values()) {
+            if (textEquivalent.equals(pv.textEquivalent)) {
+                return pv;
             }
         }
         return UNKNOWN;
     }
 
     /**
-        Return the text equivalent for a pixel justification
+        Return the text equivalent for a pixel value type.
         <p>
         This is intended for debug output and output writing, and is not usually
         necessary for other purposes.
 
-        @return the single character text equivalent for a pixel justification.
+        @return the text equivalent for a pixel value type.
     */
     public String getTextEquivalent() {
         return textEquivalent;

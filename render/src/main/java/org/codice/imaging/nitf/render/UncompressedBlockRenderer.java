@@ -27,7 +27,7 @@ import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.PixelJustification;
+import org.codice.imaging.nitf.core.image.PixelJustification;
 
 public class UncompressedBlockRenderer implements BlockRenderer {
 

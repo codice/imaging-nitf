@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
-import org.codice.imaging.nitf.core.PixelJustification;
-import org.codice.imaging.nitf.core.PixelValueType;
 
 /**
     Image segment subheader information.

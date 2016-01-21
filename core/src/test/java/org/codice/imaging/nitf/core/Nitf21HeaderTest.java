@@ -14,6 +14,8 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.image.PixelValueType;
+import org.codice.imaging.nitf.core.image.PixelJustification;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

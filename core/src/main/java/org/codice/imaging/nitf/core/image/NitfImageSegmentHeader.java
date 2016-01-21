@@ -16,8 +16,6 @@ package org.codice.imaging.nitf.core.image;
 
 import java.util.List;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
-import org.codice.imaging.nitf.core.PixelJustification;
-import org.codice.imaging.nitf.core.PixelValueType;
 import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 
 /**
