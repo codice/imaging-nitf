@@ -14,7 +14,7 @@
  **/
 package org.codice.imaging.nitf.core.common;
 
-    import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
