@@ -21,7 +21,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
-final class ImageMask {
+public final class ImageMask {
 
     private NitfImageSegmentHeader mImageSegmentHeader = null;
 

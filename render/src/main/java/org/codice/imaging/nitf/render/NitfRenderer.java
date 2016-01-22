@@ -12,21 +12,40 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
+
 package org.codice.imaging.nitf.render;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+
+import org.codice.imaging.nitf.core.image.ImageMode;
+import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.render.imagehandler.BandSequentialImageModeHandler;
+import org.codice.imaging.nitf.render.imagehandler.ImageModeHandler;
+import org.codice.imaging.nitf.render.imagehandler.ImageRepresentationHandler;
 
 /**
  * Renderer for NITF files
  */
 public class NitfRenderer {
+
+    private final static Map<ImageMode, ImageModeHandler> IMAGE_MODE_HANDLER_MAP = new HashMap<>();
+    private final static Map<ImageRepresentation, ImageRepresentationHandler> IMAGE_REPRESENTATION_HANDLER_MAP = new HashMap<>();
+
+    static {
+        IMAGE_MODE_HANDLER_MAP.put(ImageMode.BANDSEQUENTIAL, new BandSequentialImageModeHandler());
+        IMAGE_REPRESENTATION_HANDLER_MAP.put(ImageRepresentation.RGBTRUECOLOUR, (currentValue, bandValue, bandIndex) ->
+                currentValue | (bandValue << (8 * (2 - bandIndex))) );
+    }
 
     /**
      * Render to the specified Graphics2D target.
@@ -44,10 +63,15 @@ public class NitfRenderer {
             break;
         case NOTCOMPRESSED:
         case NOTCOMPRESSEDMASK:
-            render(new UncompressedBlockRenderer(),
-                    imageSegmentHeader,
-                    imageData,
-                    targetGraphic);
+            ImageModeHandler modeHandler = IMAGE_MODE_HANDLER_MAP.get(imageSegmentHeader.getImageMode());
+            ImageRepresentationHandler representationHandler = IMAGE_REPRESENTATION_HANDLER_MAP.get(imageSegmentHeader.getImageRepresentation());
+
+            if (modeHandler != null && representationHandler != null) {
+                modeHandler.handleImage(imageSegmentHeader, imageData, targetGraphic, representationHandler);
+            } else {
+                render(new UncompressedBlockRenderer(), imageSegmentHeader, imageData, targetGraphic);
+            }
+
             break;
         case DOWNSAMPLEDJPEG:
         case JPEG:
