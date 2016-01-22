@@ -68,11 +68,11 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
             final int index = bandIndex;
 
             forEachBlock(imageSegmentHeader, matrix, block -> readBlock(imageSegmentHeader, block, imageInputStream,
-                            imageRepresentationHandler, index, imageMask));
+                            imageRepresentationHandler, index));
         }
 
         forEachBlock(imageSegmentHeader, matrix, block -> { renderBlock(imageSegmentHeader, targetImage, block);
-            block.getData().clear(); } );
+                                                            block.getData().clear(); } );
     }
 
     private void checkNull(Object value, String valueName) {
@@ -81,8 +81,7 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
         }
     }
 
-    private void forEachBlock(NitfImageSegmentHeader imageSegmentHeader, ImageBlockMatrix matrix, Consumer<ImageBlock> intBufferConsumer)
-        throws IOException {
+    private void forEachBlock(NitfImageSegmentHeader imageSegmentHeader, ImageBlockMatrix matrix, Consumer<ImageBlock> intBufferConsumer) {
         for (int i = 0; i < imageSegmentHeader.getNumberOfBlocksPerColumn(); i++) {
             for (int j = 0; j < imageSegmentHeader.getNumberOfBlocksPerRow(); j++) {
                 ImageBlock currentBlock = matrix.getImageBlock(i, j);
@@ -92,8 +91,7 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
     }
 
     private void readBlock(NitfImageSegmentHeader imageSegmentHeader, ImageBlock block,
-            ImageInputStream imageInputStream, ImageRepresentationHandler imageRepresentationHandler, int bandIndex,
-            ImageMask imageMask) {
+            ImageInputStream imageInputStream, ImageRepresentationHandler imageRepresentationHandler, int bandIndex) {
 
         final IntBuffer data = block.getData();
         final int blockHeight = imageSegmentHeader.getNumberOfPixelsPerBlockVertical();
@@ -108,7 +106,7 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
                 }
             }
 
-            applyMask(block, imageMask);
+            applyMask(imageSegmentHeader, imageInputStream, block);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -124,9 +122,17 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
         targetImage.drawImage(img, block.getColumn() * blockHeight, block.getRow() * blockWidth, null);
     }
 
-    private void applyMask(ImageBlock block, ImageMask imageMask) throws IOException {
+    private void applyMask(NitfImageSegmentHeader imageSegmentHeader,
+            ImageInputStream imageInputStream, ImageBlock block) throws IOException {
         final IntBuffer data = block.getData();
         final int dataSize = data.array().length;
+        ImageMask imageMask = null;
+
+        if (imageSegmentHeader.getImageCompression() == ImageCompression.NOTCOMPRESSEDMASK) {
+            imageMask = new ImageMask(imageSegmentHeader, imageInputStream);
+        } else {
+            imageMask = new ImageMask(imageSegmentHeader);
+        }
 
         if (imageMask != null) {
             for (int pixel = 0; pixel < dataSize; ++pixel) {
