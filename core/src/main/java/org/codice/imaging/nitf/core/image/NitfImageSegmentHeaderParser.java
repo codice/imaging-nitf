@@ -54,8 +54,6 @@ import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
 
-import org.codice.imaging.nitf.core.PixelJustification;
-import org.codice.imaging.nitf.core.PixelValueType;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;

@@ -27,8 +27,6 @@ import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
-import org.codice.imaging.nitf.core.PixelJustification;
-import org.codice.imaging.nitf.core.PixelValueType;
 import org.junit.Before;
 import org.junit.Test;
 

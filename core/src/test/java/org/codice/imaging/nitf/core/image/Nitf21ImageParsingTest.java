@@ -26,8 +26,6 @@ import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.PixelJustification;
-import org.codice.imaging.nitf.core.PixelValueType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
