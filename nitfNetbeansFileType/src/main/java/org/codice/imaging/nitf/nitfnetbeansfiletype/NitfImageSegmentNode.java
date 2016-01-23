@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
@@ -54,10 +55,10 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
         addSubSegmentProperties(set, header);
-        set.put(new DateProperty("imageDateTime",
+        set.put(new StringProperty("imageDateTime",
                 "Image Date and Time",
                 "Date and time of this image's acquisition.",
-                header.getImageDateTime().toDate()));
+                header.getImageDateTime().getZonedDateTime().format(DateTimeFormatter.ISO_DATE_TIME)));
         set.put(new StringProperty("targetIdentifier",
                 "Target Identifier",
                 "Primary target identifier (BE number and O-suffix, followed by country code",

@@ -15,11 +15,12 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.awt.Color;
+import java.time.format.DateTimeFormatter;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
-import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.NitfConstants;
+import org.codice.imaging.nitf.core.NitfFileHeader;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.openide.loaders.DataNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -49,10 +50,10 @@ class NitfFileNode extends DataNode {
                 "Originating Station ID",
                 "The identification code or name of the originating organisation, system, station or product.",
                 nitfFileHeader.getOriginatingStationId()));
-        set.put(new DateProperty("fileDateTime",
+        set.put(new StringProperty("fileDateTime",
                 "File Date and Time",
                 "Date and time of this file's orgination.",
-                nitfFileHeader.getFileDateTime().toDate()));
+                nitfFileHeader.getFileDateTime().getZonedDateTime().format(DateTimeFormatter.ISO_DATE_TIME)));
         set.put(new StringProperty("fileTitle",
                 "File Title",
                 "The title of the file",

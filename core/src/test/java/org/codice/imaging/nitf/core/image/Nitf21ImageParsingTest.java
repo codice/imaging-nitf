@@ -14,30 +14,28 @@
  **/
 package org.codice.imaging.nitf.core.image;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
+import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
 public class Nitf21ImageParsingTest {
 
-    private SimpleDateFormat formatter = null;
+    private DateTimeFormatter formatter = null;
 
     @Before
     public void beforeTest() {
-        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     @Test
@@ -66,7 +64,7 @@ public class Nitf21ImageParsingTest {
     private void assertImageSegmentMetadataIsAsExpected(NitfImageSegmentHeader imageSegment) {
         assertNotNull(imageSegment);
         assertEquals("Missing ID", imageSegment.getIdentifier());
-        assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime().toDate()));
+        assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime().getZonedDateTime()));
         assertEquals("          ", imageSegment.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment.getImageTargetId().getOSuffix());
         assertEquals("  ", imageSegment.getImageTargetId().getCountryCode());

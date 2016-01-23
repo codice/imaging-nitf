@@ -15,16 +15,9 @@
 package org.codice.imaging.nitf.core.common;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 import org.codice.imaging.nitf.core.RGBColour;
 import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
-import static org.codice.imaging.nitf.core.common.CommonConstants.NITF20_DATE_FORMAT;
-import static org.codice.imaging.nitf.core.common.CommonConstants.NITF21_DATE_FORMAT;
 import static org.codice.imaging.nitf.core.common.CommonConstants.RGB_COLOUR_LENGTH;
-import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,84 +62,21 @@ public abstract class AbstractNitfSegmentParser {
     }
 
     /**
+<<<<<<< HEAD
      * Read in a NITF date/time format.
      *
      * Note that this is relatively tolerant, and may not result in something usable as a date/time class in Java.
+=======
+     * Read in a NitfDateTime from the current reader position.
+>>>>>>> [IMG-75] Be more tolerant of incomplete / empty date fields,
      *
      * @return a NitfDateTime from head of the reader stream.
      * @throws ParseException when the next token is not the expected format for a NitfDateTime.
      *
      * @see NitfDateTime for the "best effort" nature of this parsing.
      */
-    protected final NitfDateTime readNitfDateTime() throws ParseException {
-        NitfDateTime dateTime = new NitfDateTime();
-
-        String sourceString = reader.readBytes(STANDARD_DATE_TIME_LENGTH);
-        dateTime.setSourceString(sourceString);
-
-        switch (reader.getFileType()) {
-            case NITF_TWO_ZERO:
-                parseNitf20Date(sourceString, dateTime);
-                break;
-            case NITF_TWO_ONE:
-            case NSIF_ONE_ZERO:
-                parseNitf21Date(sourceString, dateTime);
-                break;
-            case UNKNOWN:
-            default:
-                LOG.warn("Unknown NITF file type while reading date: " + reader.getFileType());
-                throw new ParseException("Need to set NITF file type prior to reading dates", (int) reader.getCurrentOffset());
-        }
-
-        return dateTime;
-    }
-
-    private void parseNitf20Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
-        String strippedSourceString = sourceString.trim();
-        SimpleDateFormat dateFormat = null;
-        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
-            dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
-        } else if (strippedSourceString.length() == 0) {
-            return;
-        }
-        parseDateString(sourceString, dateFormat, dateTime);
-    }
-
-    private void parseNitf21Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
-        String strippedSourceString = removeHyphens(sourceString.trim());
-
-        SimpleDateFormat dateFormat = null;
-        if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
-            dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT);
-        } else if ((strippedSourceString.length() < STANDARD_DATE_TIME_LENGTH) && (strippedSourceString.length() % 2 == 0)) {
-            dateFormat = new SimpleDateFormat(NITF21_DATE_FORMAT.substring(0, strippedSourceString.length()));
-        }
-        parseDateString(sourceString, dateFormat, dateTime);
-    }
-
-    private static String removeHyphens(final String s) {
-        int i = s.length() - 1;
-        while ((i >= 0) && (s.charAt(i) == '-')) {
-            i--;
-        }
-        return s.substring(0, i + 1);
-    }
-
-    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final NitfDateTime dateTime) throws ParseException {
-        if (dateFormat != null) {
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date date = dateFormat.parse(sourceString);
-            if (date == null) {
-                throw new ParseException(String.format("Bad DATETIME format: %s", sourceString), (int) reader.getCurrentOffset());
-            }
-            Calendar calendar = Calendar.getInstance();
-            calendar.clear();
-            calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-            calendar.setTime(date);
-            dateTime.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH),
-                        calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-        } else {
-            LOG.warn("Unhandled date format: {}", sourceString);
-        }
+    public final NitfDateTime readNitfDateTime() throws ParseException {
+        DateTimeParser dateTimeParser = new DateTimeParser();
+        return dateTimeParser.readNitfDateTime(reader);
     }
 }
