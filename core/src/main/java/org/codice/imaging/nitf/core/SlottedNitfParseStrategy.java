@@ -29,12 +29,14 @@ import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
 import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeaderParser;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeaderParser;
-import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.tre.TreCollectionParser;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeaderParser;
+import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
+import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeaderParser;
 import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.codice.imaging.nitf.core.text.TextSegmentHeaderParser;
+import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreCollectionParser;
 
 /**
  * "Slotted" parse strategy.

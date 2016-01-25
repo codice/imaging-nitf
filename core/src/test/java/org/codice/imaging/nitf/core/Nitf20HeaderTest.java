@@ -14,8 +14,6 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import org.codice.imaging.nitf.core.image.PixelValueType;
-import org.codice.imaging.nitf.core.image.PixelJustification;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -39,10 +37,15 @@ import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.PixelJustification;
+import org.codice.imaging.nitf.core.image.PixelValueType;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
+import org.codice.imaging.nitf.core.symbol.SymbolColour;
+import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
+import org.codice.imaging.nitf.core.symbol.SymbolType;
 import org.codice.imaging.nitf.core.text.TextDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegmentHeader;

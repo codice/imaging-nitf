@@ -25,7 +25,7 @@ import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.SymbolSegmentHeader;
+import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
 import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;

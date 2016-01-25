@@ -1,4 +1,4 @@
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.symbol;
 
 /**
  * Constants used in symbol parsing.
