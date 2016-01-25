@@ -12,16 +12,16 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.symbol;
 
-import static org.codice.imaging.nitf.core.SymbolConstants.NLIPS_LENGTH;
-import static org.codice.imaging.nitf.core.SymbolConstants.NPIXPL_LENGTH;
-import static org.codice.imaging.nitf.core.SymbolConstants.NWDTH_LENGTH;
-import static org.codice.imaging.nitf.core.SymbolConstants.SNUM_LENGTH;
-import static org.codice.imaging.nitf.core.SymbolConstants.SROT_LENGTH;
-import static org.codice.imaging.nitf.core.SymbolConstants.SYNBPP_LENGTH;
-import static org.codice.imaging.nitf.core.SymbolConstants.SYNELUT_LENGTH;
-import static org.codice.imaging.nitf.core.SymbolConstants.SYTYPE_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NLIPS_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NPIXPL_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NWDTH_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SNUM_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SROT_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNBPP_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNELUT_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYTYPE_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SCOLOR_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SDLVL_LENGTH;
@@ -43,20 +43,24 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 /**
     Parser for a symbol segment subheader in a NITF 2.0 file.
 */
-class SymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class SymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
 
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
 
-    private SymbolSegmentHeader segment = null;
+    private SymbolSegmentHeaderImpl segment = null;
 
-    SymbolSegmentHeaderParser() {
-    }
-
-    final SymbolSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    /**
+     *
+     * @param nitfReader The NitfReader to read SymbolSegmentHeaderImpl from.
+     * @param parseStrategy the parsing strategy to use to process the data.
+     * @return the parsed SymbolSegmentHeaderImpl.
+     * @throws ParseException when the input from the NitfReader isn't what was expected.
+     */
+    public final SymbolSegmentHeaderImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
-        segment = new SymbolSegmentHeader();
+        segment = new SymbolSegmentHeaderImpl();
         parsingStrategy = parseStrategy;
 
         readSY();

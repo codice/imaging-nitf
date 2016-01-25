@@ -31,6 +31,9 @@ import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
+import org.codice.imaging.nitf.core.symbol.SymbolColour;
+import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
+import org.codice.imaging.nitf.core.symbol.SymbolType;
 import org.junit.Before;
 import org.junit.Test;
 
