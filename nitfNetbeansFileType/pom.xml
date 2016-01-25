@@ -145,7 +145,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>codice-nitf-imaging-render</artifactId>
+            <artifactId>codice-imaging-nitf-render</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
