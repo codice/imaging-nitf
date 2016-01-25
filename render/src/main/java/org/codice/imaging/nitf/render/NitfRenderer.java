@@ -56,10 +56,8 @@ public class NitfRenderer {
             renderJPEG(imageSegmentHeader, imageData, targetGraphic, imageMask);
             break;
         default:
-            System.out.println("Unhandled image compression format: "
+            throw new UnsupportedOperationException("Unhandled image compression format: "
                     + imageSegmentHeader.getImageCompression());
-            System.exit(0);
-            break;
         }
     }
 
