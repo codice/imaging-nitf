@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>org.codice.imaging.nitf</groupId>
-    <artifactId>codice-nitf-imaging-render</artifactId>
+    <artifactId>codice-imaging-nitf-render</artifactId>
     <version>0.2-SNAPSHOT</version>
 
     <name>Codice Imaging: NITF Render</name>
