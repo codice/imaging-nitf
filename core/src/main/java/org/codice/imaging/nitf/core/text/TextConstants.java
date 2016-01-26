@@ -12,7 +12,6 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-
 package org.codice.imaging.nitf.core.text;
 
 final class TextConstants {

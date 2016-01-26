@@ -12,7 +12,6 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-
 package org.codice.imaging.nitf.render;
 
 import java.io.IOException;
