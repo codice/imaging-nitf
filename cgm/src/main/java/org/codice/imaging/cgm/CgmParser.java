@@ -25,6 +25,7 @@
  */
 package org.codice.imaging.cgm;
 
+import java.io.DataInput;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -283,6 +284,15 @@ public class CgmParser {
      */
     public CgmParser(final byte[] graphicSegmentData) {
         dataReader = new CgmInputReader(graphicSegmentData);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param graphicData the data stream to read
+     */
+    public CgmParser(final DataInput graphicData) {
+        dataReader = new CgmInputReader(graphicData);
     }
 
     /**

@@ -14,12 +14,12 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
-import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.CONTROLLED_EXTENSIONS;
-import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.REGISTERED_EXTENSIONS;
-import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.TRE_OVERFLOW;
-
 import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
 import org.codice.imaging.nitf.core.common.FileType;
+import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.CONTROLLED_EXTENSIONS;
+import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.REGISTERED_EXTENSIONS;
+import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.STREAMING_FILE_HEADER;
+import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.TRE_OVERFLOW;
 
 /**
     Data Extension Segment (DES) subheader and associated data.
@@ -152,12 +152,9 @@ class NitfDataExtensionSegmentHeaderImpl extends AbstractCommonNitfSegment
     }
 
     /**
-        Set the data extension segment data length.
-        <p>
-        This is the length of the contents of the associated data segment.
-
-        @param length the data extension segment data segment length, in bytes
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setDataExtensionSegmentDataLength(final int length) {
         dataExtensionSegmentDataLength = length;
     }
@@ -197,5 +194,10 @@ class NitfDataExtensionSegmentHeaderImpl extends AbstractCommonNitfSegment
         } else {
             return isTreOverflowNitf21();
         }
+    }
+
+    @Override
+    public boolean isStreamingMode() {
+        return STREAMING_FILE_HEADER.equals(getIdentifier().trim());
     }
 }

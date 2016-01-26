@@ -153,7 +153,9 @@ public class Nitf20OverflowTest {
         assertEquals(0, symbolSegment1.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment1.getSymbolNumber());
         assertEquals(0, symbolSegment1.getSymbolRotation());
-        assertEquals(210, parseStrategy.getSymbolSegmentData().get(0).length);
+        byte[] allData = new byte[211];
+        int bytesRead = parseStrategy.getSymbolSegmentData().get(0).read(allData);
+        assertEquals(210, bytesRead);
         assertEquals(5, symbolSegment1.getExtendedHeaderDataOverflow());
 
         LabelSegmentHeader labelSegment1 = parseStrategy.getLabelSegmentHeaders().get(0);

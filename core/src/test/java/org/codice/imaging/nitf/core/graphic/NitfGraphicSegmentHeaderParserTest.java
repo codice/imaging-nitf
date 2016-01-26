@@ -14,31 +14,32 @@
  **/
 package org.codice.imaging.nitf.core.graphic;
 
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.hamcrest.core.Is.*;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.text.ParseException;
 import java.util.LinkedList;
-
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 
 public class NitfGraphicSegmentHeaderParserTest {
     private NitfParseStrategy strategy;
     private NitfReader nitfReader;
-    private LinkedList<String> stringValues = new LinkedList<String>();
-    private LinkedList<Integer> intValues = new LinkedList<Integer>();
+    private final LinkedList<String> stringValues = new LinkedList<>();
+    private final LinkedList<Integer> intValues = new LinkedList<>();
 
     private static final String SSCLAS = "U";
     private static final String SSCLSY = "S1";
@@ -118,13 +119,13 @@ public class NitfGraphicSegmentHeaderParserTest {
         when(nitfReader.readBytesAsInteger(any(Integer.class))).thenAnswer(a -> intValues.pop());
 
         strategy = mock(NitfParseStrategy.class);
-        when(strategy.parseTREs(any(NitfReader.class), any(Integer.class))).thenReturn(new TreCollection());
+        when(strategy.parseTREs(any(NitfReader.class), any(Integer.class), eq(TreSource.GraphicExtendedSubheaderData))).thenReturn(new TreCollection());
     }
 
     @Test
     public void testParse() throws ParseException {
         NitfGraphicSegmentHeaderParser parser = new NitfGraphicSegmentHeaderParser();
-        NitfGraphicSegmentHeader header = parser.parse(nitfReader, strategy);
+        GraphicSegmentHeader header = parser.parse(nitfReader, strategy);
         SecurityMetadata securityMetaData = header.getSecurityMetadata();
 
         assertThat(header, notNullValue());

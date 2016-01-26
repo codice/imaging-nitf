@@ -16,6 +16,8 @@ package org.codice.imaging.nitf.core.common;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import static org.codice.imaging.nitf.core.common.CommonConstants.NITF21_DATE_FORMAT;
 
 /**
     Date / time representation.
@@ -52,6 +54,19 @@ public class NitfDateTime {
     }
 
     /**
+     * Set the date / time components.
+     *
+     * This will modify the source string to match, assuming the target is a NITF 2.1 file.
+     *
+     * @param zdt the ZonedDateTime to set to.
+     */
+    public final void set(final ZonedDateTime zdt) {
+        mZonedDateTime = zdt;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(NITF21_DATE_FORMAT);
+        setSourceString(zdt.format(formatter));
+    }
+
+    /**
         Set the original source value.
         <p>
         This is the value parsed out of the file, including any whitespace and hyphens.
@@ -83,6 +98,17 @@ public class NitfDateTime {
      */
     public final ZonedDateTime getZonedDateTime() {
         return mZonedDateTime;
+    }
+
+    /**
+     * Create a NitfDateTime instance for the current time.
+     *
+     * @return initialised NitfDataTime instance.
+     */
+    public static NitfDateTime getNitfDateTimeForNow() {
+        NitfDateTime ndt = new NitfDateTime();
+        ndt.set(ZonedDateTime.now(ZoneId.of("UTC")));
+        return ndt;
     }
 
 }

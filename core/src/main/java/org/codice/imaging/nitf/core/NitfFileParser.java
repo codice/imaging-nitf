@@ -16,13 +16,15 @@ package org.codice.imaging.nitf.core;
 
 import java.text.ParseException;
 import java.util.Arrays;
-
+import static org.codice.imaging.nitf.core.NitfConstants.UDHOFL_LENGTH;
+import static org.codice.imaging.nitf.core.NitfConstants.XHDLOFL_LENGTH;
 import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Parser for a NITF file.
@@ -374,7 +376,9 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDHD() throws ParseException {
-        TreCollection userDefinedHeaderTREs = parsingStrategy.parseTREs(reader, userDefinedHeaderDataLength - NitfConstants.UDHOFL_LENGTH);
+        TreCollection userDefinedHeaderTREs = parsingStrategy.parseTREs(reader,
+                userDefinedHeaderDataLength - UDHOFL_LENGTH,
+                TreSource.UserDefinedHeaderData);
         nitfFileHeader.mergeTREs(userDefinedHeaderTREs);
     }
 
@@ -387,7 +391,9 @@ public final class NitfFileParser extends AbstractNitfSegmentParser {
     }
 
     private void readXHD() throws ParseException {
-        TreCollection extendedHeaderTres = parsingStrategy.parseTREs(reader, extendedHeaderDataLength - NitfConstants.XHDLOFL_LENGTH);
+        TreCollection extendedHeaderTres = parsingStrategy.parseTREs(reader,
+                extendedHeaderDataLength - XHDLOFL_LENGTH,
+                TreSource.ExtendedHeaderData);
         nitfFileHeader.mergeTREs(extendedHeaderTres);
     }
 }

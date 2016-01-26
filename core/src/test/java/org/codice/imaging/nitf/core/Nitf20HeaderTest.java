@@ -86,8 +86,8 @@ public class Nitf20HeaderTest {
         assertEquals("A", parseStrategy.getTextSegmentData().get(0));
     }
 
-    private void checkCompliantReadResults(SlottedNitfParseStrategy parseStrategy) throws ParseException {
-        NitfFileHeader header = parseStrategy.getNitfHeader();
+    private void checkCompliantReadResults(NitfDataSource dataSource) throws ParseException {
+        NitfFileHeader header = dataSource.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, header.getFileType());
         assertEquals(1, header.getComplexityLevel());
         assertEquals("", header.getStandardType());
@@ -103,12 +103,12 @@ public class Nitf20HeaderTest {
         assertEquals("00001", header.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC Fort Huachuca, AZ", header.getOriginatorsName());
         assertEquals("(602) 538-5458", header.getOriginatorsPhoneNumber());
-        assertEquals(0, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
-        assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
+        assertEquals(0, dataSource.getImageSegmentHeaders().size());
+        assertEquals(0, dataSource.getGraphicSegmentHeaders().size());
+        assertEquals(1, dataSource.getTextSegmentHeaders().size());
+        assertEquals(0, dataSource.getDataExtensionSegmentHeaders().size());
 
-        TextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
+        TextSegmentHeader textSegment = dataSource.getTextSegmentHeaders().get(0);
         assertNotNull(textSegment);
         assertEquals("0000000001", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
@@ -383,7 +383,9 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment1.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment1.getSymbolNumber());
         assertEquals(0, symbolSegment1.getSymbolRotation());
-        assertEquals(7, parseStrategy.getSymbolSegmentData().get(0).length);
+        byte[] allData = new byte[8];
+        int bytesRead = parseStrategy.getSymbolSegmentData().get(0).read(allData);
+        assertEquals(7, bytesRead);
 
         SymbolSegmentHeader symbolSegment2 = parseStrategy.getSymbolSegmentHeaders().get(1);
         assertNotNull(symbolSegment2);
@@ -406,7 +408,9 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment2.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment2.getSymbolNumber());
         assertEquals(0, symbolSegment2.getSymbolRotation());
-        assertEquals(79, parseStrategy.getSymbolSegmentData().get(1).length);
+        byte[] allData2 = new byte[80];
+        int bytesRead2 = parseStrategy.getSymbolSegmentData().get(1).read(allData2);
+        assertEquals(79, bytesRead2);
 
         SymbolSegmentHeader symbolSegment3 = parseStrategy.getSymbolSegmentHeaders().get(2);
         assertNotNull(symbolSegment3);
@@ -429,7 +433,9 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment3.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment3.getSymbolNumber());
         assertEquals(0, symbolSegment3.getSymbolRotation());
-        assertEquals(79, parseStrategy.getSymbolSegmentData().get(2).length);
+        byte[] allData3 = new byte[80];
+        int bytesRead3 = parseStrategy.getSymbolSegmentData().get(2).read(allData3);
+        assertEquals(79, bytesRead3);
 
         SymbolSegmentHeader symbolSegment4 = parseStrategy.getSymbolSegmentHeaders().get(3);
         assertNotNull(symbolSegment4);
@@ -452,7 +458,9 @@ public class Nitf20HeaderTest {
         assertEquals(0, symbolSegment4.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment4.getSymbolNumber());
         assertEquals(0, symbolSegment4.getSymbolRotation());
-        assertEquals(75, parseStrategy.getSymbolSegmentData().get(3).length);
+        byte[] allData4 = new byte[76];
+        int bytesRead4 = parseStrategy.getSymbolSegmentData().get(3).read(allData4);
+        assertEquals(75, bytesRead4);
 
         LabelSegmentHeader labelSegment1 = parseStrategy.getLabelSegmentHeaders().get(0);
         assertNotNull(labelSegment1);

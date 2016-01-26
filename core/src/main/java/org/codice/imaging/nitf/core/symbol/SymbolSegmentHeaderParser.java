@@ -37,6 +37,7 @@ import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNBPP_LENGTH;
 import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNELUT_LENGTH;
 import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYTYPE_LENGTH;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Parser for a symbol segment subheader in a NITF 2.0 file.
@@ -170,7 +171,9 @@ public class SymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readSXSHD() throws ParseException {
-        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader, symbolExtendedSubheaderLength - SXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
+                symbolExtendedSubheaderLength - SXSOFL_LENGTH,
+                TreSource.SymbolExtendedSubheaderData);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 }

@@ -23,7 +23,7 @@ import javax.swing.Action;
 
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmParser;
-import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
@@ -34,7 +34,7 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
     private static final String BOUNDING_BOX_POSITION_DESCRIPTION =
                     "bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.";
 
-    private final NitfGraphicSegmentHeader header;
+    private final GraphicSegmentHeader header;
     private final int graphicSegmentIndex;
     private final DeferredSegmentParseStrategy parseStrategy;
 

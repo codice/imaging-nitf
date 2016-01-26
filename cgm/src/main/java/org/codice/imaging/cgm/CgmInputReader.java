@@ -29,12 +29,12 @@ package org.codice.imaging.cgm;
 import java.awt.Color;
 import java.awt.Point;
 import java.io.ByteArrayInputStream;
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ class CgmInputReader {
     private static final int NUM_BYTES_IN_ENUM_VALUE = 2;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CgmInputReader.class);
-    private final DataInputStream dataStream;
+    private final DataInput dataStream;
 
     CgmInputReader(final byte[] cgmData) {
         dataStream = new DataInputStream(new ByteArrayInputStream(cgmData));
@@ -56,6 +56,10 @@ class CgmInputReader {
 
     CgmInputReader(final InputStream stream) {
         dataStream = new DataInputStream(stream);
+    }
+
+    CgmInputReader(final DataInput dataInput) {
+        dataStream = dataInput;
     }
 
     int readUnsignedShort() throws IOException {

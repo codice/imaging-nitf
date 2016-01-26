@@ -14,12 +14,10 @@
  */
 package org.codice.imaging.nitf.core.common;
 
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.RGBColour;
 import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
 import static org.codice.imaging.nitf.core.common.CommonConstants.RGB_COLOUR_LENGTH;
-
-import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.RGBColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

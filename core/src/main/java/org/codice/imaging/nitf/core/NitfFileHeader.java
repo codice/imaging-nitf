@@ -16,11 +16,11 @@ package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
+import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
 
 /**
     NITF file data.
@@ -49,6 +49,9 @@ public class NitfFileHeader extends AbstractNitfSegment {
     private final List<Integer> lt = new ArrayList<>();
     private final List<Integer> ldsh = new ArrayList<>();
     private final List<Integer> ld = new ArrayList<>();
+
+    private static final int LOWEST_COMPLEXITY_LEVEL = 3;
+    private static final String STANDARD_TYPE_VAL = "BF01";
 
     /**
         Default constructor.
@@ -463,4 +466,36 @@ public class NitfFileHeader extends AbstractNitfSegment {
     public final SecurityMetadata getSecurityMetadata() {
         return this.fileSecurityMetadata;
     }
+
+    /**
+     * Create a default NITF file header.
+     *
+     * @param fileType the type (version) of NITF file to create
+     * @return default valid header.
+     */
+    public static NitfFileHeader getDefault(final FileType fileType) {
+        NitfFileHeader nitfFileHeader = new NitfFileHeader();
+        nitfFileHeader.setFileType(fileType);
+        nitfFileHeader.setComplexityLevel(LOWEST_COMPLEXITY_LEVEL);
+        nitfFileHeader.setStandardType(STANDARD_TYPE_VAL);
+        nitfFileHeader.setOriginatingStationId("");
+        NitfDateTime ndt = NitfDateTime.getNitfDateTimeForNow();
+        nitfFileHeader.setFileDateTime(ndt);
+        nitfFileHeader.setFileTitle("");
+
+        nitfFileHeader.setFileSecurityMetadata(SecurityMetadataFactory.getDefaultFileSecurityMetadata(fileType));
+        RGBColour backgroundColour = new RGBColour(RGBColour.CODICE_LOGO_RED_COMPONENT,
+                RGBColour.CODICE_LOGO_GREEN_COMPONENT, RGBColour.CODICE_LOGO_BLUE_COMPONENT);
+        nitfFileHeader.setFileBackgroundColour(backgroundColour);
+
+        nitfFileHeader.setOriginatorsName("");
+        nitfFileHeader.setOriginatorsPhoneNumber("");
+
+        // The rest of this is made up of things that already work OK as defaults.
+
+        return nitfFileHeader;
+    }
+
+
+
 }

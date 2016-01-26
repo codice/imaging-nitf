@@ -14,9 +14,9 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 
 /**
  Common data extension segment parsing functionality.
@@ -130,11 +130,13 @@ public interface NitfDataExtensionSegmentHeader extends CommonNitfSegment {
     boolean isTreOverflow(FileType fileType);
 
     /**
-     * Sets the length of the data extension segment header.
+     * Set the data extension segment data length.
+     * <p>
+     * This is the length of the contents of the associated data segment.
      *
-     * @param integer - the data extension header length.
+     * @param length the data extension segment data segment length, in bytes
      */
-    void setDataExtensionSegmentDataLength(int integer);
+    void setDataExtensionSegmentDataLength(int length);
 
     /**
      * Merges overflow Tres into this data extension header.
@@ -142,4 +144,11 @@ public interface NitfDataExtensionSegmentHeader extends CommonNitfSegment {
      * @param overflowTres - the Tres to be merged in.
      */
     void mergeTREs(TreCollection overflowTres);
+
+    /**
+     * Check if this DES is streaming mode.
+     *
+     * @return true if DES is streaming mode updates, otherwise false.
+     */
+    boolean isStreamingMode();
 }

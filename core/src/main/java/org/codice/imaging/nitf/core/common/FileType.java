@@ -82,5 +82,16 @@ public enum FileType {
         return UNKNOWN;
     }
 
+    /**
+     * Return the text equivalent for a NITF file type.
+     * <p>
+     * This is intended for debug output and output writing, and is not usually
+     * necessary for other purposes.
+     *
+     * @return the text equivalent for a NITF file type.
+     */
+    public String getTextEquivalent() {
+        return textEquivalent;
+    }
 };
 

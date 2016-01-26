@@ -288,4 +288,14 @@ public interface SecurityMetadata {
      @return the security control number, or an empty string.
      */
     String getSecurityControlNumber();
+
+    /**
+     * Check if the security metadata has the special-case downgrade date value that indicates a text explanation.
+     *
+     * This is important for getDowngradeEvent() checks - there will only be a downgrade event in NITF 2.0 if this value
+     * is present.
+     *
+     * @return true if this file has the special-case downgrade date field.
+     */
+    boolean hasDowngradeMagicValue();
 }

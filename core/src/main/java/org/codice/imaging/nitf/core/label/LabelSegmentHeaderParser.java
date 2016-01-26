@@ -30,6 +30,7 @@ import static org.codice.imaging.nitf.core.label.LabelConstants.LXSHDL_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LXSOFL_LENGTH;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Parser for a label segment subheader in a NITF 2.0 file.
@@ -133,7 +134,9 @@ public class LabelSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readLXSHD() throws ParseException {
-        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader, labelExtendedSubheaderLength - LXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
+                labelExtendedSubheaderLength - LXSOFL_LENGTH,
+                TreSource.LabelExtendedSubheaderData);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 }

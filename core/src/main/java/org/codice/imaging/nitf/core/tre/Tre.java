@@ -49,4 +49,14 @@ public interface Tre extends TreGroup, TreEntryList {
      @return the raw bytes for the TRE.
      */
     byte[] getRawData();
+
+    /**
+     * The source for this TRE.
+     *
+     * In this context, the source is the segment header / subheader that the TRE was read from, or where it should be
+     * written to.
+     *
+     * @return source for the TRE.
+     */
+    TreSource getSource();
 }

@@ -250,4 +250,11 @@ final class SecurityConstants {
      * See MIL-STD-2500A Tables for the various uses.
      */
     protected static final int XSDEVT20_LENGTH = 40;
+
+    /**
+     * Marker field used in the "Security Downgrade" field to indicate that the "Downgrade Event" field is present.
+     * <p>
+     * NITF 2.0 only. See MIL-STD-2500A Tables for usage.
+     */
+    public static final String DOWNGRADE_EVENT_MAGIC = "999998";
 }

@@ -41,7 +41,7 @@ import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
-import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageCoordinates;
@@ -642,7 +642,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
         assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
-        NitfGraphicSegmentHeader segment = parseStrategy.getGraphicSegmentHeaders().get(0);
+        GraphicSegmentHeader segment = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertNotNull(segment);
         assertEquals("POLYGONSET", segment.getIdentifier());
         assertEquals("POLYGON_SET", segment.getGraphicName());
@@ -933,7 +933,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
         assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
 
-        NitfGraphicSegmentHeader segment1 = parseStrategy.getGraphicSegmentHeaders().get(0);
+        GraphicSegmentHeader segment1 = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertNotNull(segment1);
         assertEquals("30", segment1.getIdentifier());
         assertEquals("", segment1.getGraphicName());
@@ -947,7 +947,7 @@ public class Nitf21HeaderTest {
         assertEquals(GraphicColour.COLOUR, segment1.getGraphicColour());
         assertEquals(411, segment1.getBoundingBox2Row());
         assertEquals(788, segment1.getBoundingBox2Column());
-        NitfGraphicSegmentHeader segment2 = parseStrategy.getGraphicSegmentHeaders().get(1);
+        GraphicSegmentHeader segment2 = parseStrategy.getGraphicSegmentHeaders().get(1);
         assertNotNull(segment2);
         assertEquals("35", segment2.getIdentifier());
         assertEquals("", segment2.getGraphicName());

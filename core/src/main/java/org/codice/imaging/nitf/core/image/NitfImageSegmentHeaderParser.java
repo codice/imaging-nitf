@@ -58,6 +58,7 @@ import static org.codice.imaging.nitf.core.image.ImageConstants.UDOFL_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.XBANDS_LENGTH;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Parser for an image segment subheader in a NITF file.
@@ -329,7 +330,9 @@ public class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readUDID() throws ParseException {
-        TreCollection userDefinedSubheaderTres = parsingStrategy.parseTREs(reader, userDefinedImageDataLength - UDOFL_LENGTH);
+        TreCollection userDefinedSubheaderTres = parsingStrategy.parseTREs(reader,
+                userDefinedImageDataLength - UDOFL_LENGTH,
+                TreSource.UserDefinedImageData);
         segment.mergeTREs(userDefinedSubheaderTres);
     }
 
@@ -342,7 +345,9 @@ public class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readIXSHD() throws ParseException {
-        TreCollection extendedSubheaderTres = parsingStrategy.parseTREs(reader, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
+        TreCollection extendedSubheaderTres = parsingStrategy.parseTREs(reader,
+                imageExtendedSubheaderDataLength - IXSOFL_LENGTH,
+                TreSource.ImageExtendedSubheaderData);
         segment.mergeTREs(extendedSubheaderTres);
     }
 
