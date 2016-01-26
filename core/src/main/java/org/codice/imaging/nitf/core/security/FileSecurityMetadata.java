@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -12,7 +12,6 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-
 package org.codice.imaging.nitf.core.security;
 
 /**
