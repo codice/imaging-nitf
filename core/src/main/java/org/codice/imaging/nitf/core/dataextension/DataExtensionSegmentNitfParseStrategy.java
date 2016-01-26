@@ -15,40 +15,57 @@
 package org.codice.imaging.nitf.core.dataextension;
 
 import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
  * Parse strategy that only extracts headers and the DES.
  */
 public class DataExtensionSegmentNitfParseStrategy extends SlottedNitfParseStrategy {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void handleImageSegment(final NitfReader reader, final int i) throws ParseException {
         parseImageSegmentHeaderButSkipData(reader, i);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void handleSymbolSegment(final NitfReader reader, final int i) throws ParseException {
         parseSymbolSegmentHeaderButSkipData(reader, i);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void handleLabelSegment(final NitfReader reader, final int i) throws ParseException {
         parseLabelSegmentHeaderButSkipData(reader, i);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void handleGraphicSegment(final NitfReader reader, final int i) throws ParseException {
         parseGraphicSegmentHeaderButSkipData(reader, i);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void handleTextSegment(final NitfReader reader, final int i) throws ParseException {
         parseTextSegmentHeaderButSkipData(reader, i);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException {
         parseDataExtensionSegmentHeaderAndData(reader, i);

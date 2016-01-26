@@ -14,10 +14,9 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,31 +41,49 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
         input = nitfInputStream;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Boolean canSeek() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void seekToEndOfFile() {
         // Nothing - we can't seek.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void seekBackwards(final long relativeOffset) {
         // Nothing - we can't seek.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void seekToAbsoluteOffset(final long absoluteOffset) {
         // Nothing - we can't seek.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final long getCurrentOffset() {
         return numBytesRead;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final byte[] readBytesRaw(final int count) throws ParseException {
         try {
@@ -86,6 +103,9 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void skip(final long count) throws ParseException {
         long bytesToRead = count;

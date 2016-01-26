@@ -17,9 +17,7 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.transform.Source;
-
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -111,11 +109,17 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         treCollectionParser = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void setFileHeader(final NitfFileHeader nitfFileHeader) {
         nitfFileHeaderFileLevelHeader = nitfFileHeader;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final NitfFileHeader getNitfHeader() {
         return nitfFileHeaderFileLevelHeader;
@@ -166,6 +170,9 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         return textSegmentData;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void baseHeadersRead(final NitfReader reader) {
         try {
@@ -797,15 +804,19 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected abstract void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException;
 
     /**
+     * Register an additional TRE descriptor.
      *
      * @param source the source of the additional TreImpl descriptor.
-     * @throws ParseException - when the Tres in the source aren't in the expected format.
+     * @throws ParseException - when the TRE descriptors in the source are not in the expected format.
      */
     public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
         initialiseTreCollectionParserIfRequired();
         treCollectionParser.registerAdditionalTREdescriptor(source);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final TreCollection parseTREs(final NitfReader reader, final int length) throws ParseException {
         initialiseTreCollectionParserIfRequired();

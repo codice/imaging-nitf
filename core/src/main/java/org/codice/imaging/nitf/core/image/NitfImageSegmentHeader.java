@@ -15,8 +15,8 @@
 package org.codice.imaging.nitf.core.image;
 
 import java.util.List;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
 import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
  Image segment subheader information.
@@ -65,28 +65,29 @@ public interface NitfImageSegmentHeader extends CommonNitfSubSegment {
     String getImageSource();
 
     /**
-     Returns the number of significant rows (NROWS) in the image.
-     <p>
-     "This field shall contain the total number of rows of significant pixels in the image. When the product of the values
-     of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC > NROWS), the rows
-     indexed with the value of the NROWS field to (NPPBV * NBPC) minus 1 shall contain fill data. NOTE: Only the rows
-     indexed 0 to the value of the NROWS field minus 1 of the image contain significant data. The pixel fill values are
-     determined by the application."
-
-     @return the number of significant rows
+     * Returns the number of significant rows (NROWS) in the image.
+     *
+     * <p>
+     * "This field shall contain the total number of rows of significant pixels in the image. When the product of the
+     * values of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC &gt;
+     * NROWS), the rows indexed with the value of the NROWS field to (NPPBV * NBPC) minus 1 shall contain fill data.
+     * NOTE: Only the rows indexed 0 to the value of the NROWS field minus 1 of the image contain significant data. The
+     * pixel fill values are determined by the application."
+     *
+     * @return the number of significant rows
      */
     long getNumberOfRows();
 
     /**
-     Returns the number of significant columns (NCOLS) in the image.
-     <p>
-     "This field shall contain the total number of columns of significant pixels in the image. When the product of
-     the values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR > NCOLS), the
-     columns indexed with the value of the NCOLS field to (NPPBH * NBPR) minus 1 shall contain fill data. NOTE: Only
-     the columns indexed 0 to the value of the NCOLS field minus 1 of the image contain significant data. The pixel
-     fill values are determined by the application."
-
-     @return the number of significant columns
+     * Returns the number of significant columns (NCOLS) in the image.
+     * <p>
+     * "This field shall contain the total number of columns of significant pixels in the image. When the product of the
+     * values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR &gt; NCOLS), the
+     * columns indexed with the value of the NCOLS field to (NPPBH * NBPR) minus 1 shall contain fill data. NOTE: Only
+     * the columns indexed 0 to the value of the NCOLS field minus 1 of the image contain significant data. The pixel
+     * fill values are determined by the application."
+     *
+     * @return the number of significant columns
      */
     long getNumberOfColumns();
 
@@ -204,59 +205,36 @@ public interface NitfImageSegmentHeader extends CommonNitfSubSegment {
     List<String> getImageComments();
 
     /**
-     Return the image compression format (IC) for the image.
-     <p>
-     For NITF 2.1 / NSIF 1.0: "This field shall contain a valid
-     code indicating the form of compression used in
-     representing the image data. Valid values for this
-     field are, C1 to represent bi-level, C3 to represent
-     JPEG, C4 to represent Vector Quantization, C5 to
-     represent lossless JPEG, I1 to represent down
-     sampled JPEG, and NC to represent the image is
-     not compressed. Also valid are M1, M3, M4, and
-     M5 for compressed images, and NM for
-     uncompressed images indicating an image that
-     contains a block mask and/or a pad pixel mask. C6
-     and M6 are reserved values that will represent a
-     future correlated multicomponent compression
-     algorithm. C7 and M7 are reserved values that will
-     represent a future complex SAR compression. C8
-     and M8 are the values for ISO standard
-     compression JPEG 2000. The format of a mask
-     image is identical to the format of its corresponding
-     non-masked image except for the presence of an
-     Image Data Mask at the beginning of the image data
-     area. The format of the Image Data Mask is
-     described in paragraph 5.4.3.2 and is shown in table
-     A-3(A). The definitions of the compression
-     schemes associated with codes C1/M1, C3/M3,
-     C4/M4, and C5/M5 are given, respectively, in ITU-
-     T T.4, AMD2, MIL-STD-188-198A, MIL-STD-
-     188-199, and NGA N0106-97. C1 is found in ITU-
-     T T.4 AMD2, C3 is found in MIL-STD-188-198A,
-     C4 = is found in MIL-STD-188-199, and C5 and I1
-     are found in NGA N0106-97. (NOTE: C2
-     (ARIDPCM) is not valid in NITF 2.1.) The
-     definition of the compression scheme associated
-     with codes C8/M8 is found in ISO/IEC 15444-
-     1:2000 (with amendments 1 and 2)."
-     <p>
-     For NITF 2.0: "This field shall contain a valid code indicating the form of compression used in
-     representing the image data. Valid values for this field are C0, to mean
-     compressed with a user specified algorithm, C1 to mean bi-level, C2 to mean
-     ARIDPCM, C3 to mean JPEG, C4 to mean Vector Quantization and NC to mean
-     the image is not compressed. Also valid are the codes M0, M3 and M4 for
-     compressed images, and NM for uncompressed images, indicating a blocked
-     image that contains a block mask and/or a transparent pixel mask. The format of
-     a mask image is identical to the format of its corresponding non-masked image,
-     except for the presence of an Image Data Mask Subheader at the beginning of
-     the image data area. The format of the Image Data Mask Subheader is described
-     in 5.5.1.5 and is shown in Table IV(A). The definitions of the compression
-     schemes associated with codes C1, C2, C3, and C4 are given, respectively, in
-     MIL-STD-188-196, MIL-STD-188-197A, MIL-STD-188-198A, and MIL-STD-
-     188-199. This field shall not contain C1 or C2 if NBANDS > 1 or NBLOCKS > 1."
-
-     @return the compression format used
+     * Return the image compression format (IC) for the image.
+     * <p>
+     * For NITF 2.1 / NSIF 1.0: "This field shall contain a valid code indicating the form of compression used in
+     * representing the image data. Valid values for this field are, C1 to represent bi-level, C3 to represent JPEG, C4
+     * to represent Vector Quantization, C5 to represent lossless JPEG, I1 to represent down sampled JPEG, and NC to
+     * represent the image is not compressed. Also valid are M1, M3, M4, and M5 for compressed images, and NM for
+     * uncompressed images indicating an image that contains a block mask and/or a pad pixel mask. C6 and M6 are
+     * reserved values that will represent a future correlated multicomponent compression algorithm. C7 and M7 are
+     * reserved values that will represent a future complex SAR compression. C8 and M8 are the values for ISO standard
+     * compression JPEG 2000. The format of a mask image is identical to the format of its corresponding non-masked
+     * image except for the presence of an Image Data Mask at the beginning of the image data area. The format of the
+     * Image Data Mask is described in paragraph 5.4.3.2 and is shown in table A-3(A). The definitions of the
+     * compression schemes associated with codes C1/M1, C3/M3, C4/M4, and C5/M5 are given, respectively, in ITU-T T.4,
+     * AMD2, MIL-STD-188-198A, MIL-STD-188-199, and NGA N0106-97. C1 is found in ITU-T T.4 AMD2, C3 is found in
+     * MIL-STD-188-198A, C4 is found in MIL-STD-188-199, and C5 and I1 are found in NGA N0106-97. (NOTE: C2 (ARIDPCM) is
+     * not valid in NITF 2.1.) The definition of the compression scheme associated with codes C8/M8 is found in ISO/IEC
+     * 15444-1:2000 (with amendments 1 and 2)."
+     * <p>
+     * For NITF 2.0: "This field shall contain a valid code indicating the form of compression used in representing the
+     * image data. Valid values for this field are C0, to mean compressed with a user specified algorithm, C1 to mean
+     * bi-level, C2 to mean ARIDPCM, C3 to mean JPEG, C4 to mean Vector Quantization and NC to mean the image is not
+     * compressed. Also valid are the codes M0, M3 and M4 for compressed images, and NM for uncompressed images,
+     * indicating a blocked image that contains a block mask and/or a transparent pixel mask. The format of a mask image
+     * is identical to the format of its corresponding non-masked image, except for the presence of an Image Data Mask
+     * Subheader at the beginning of the image data area. The format of the Image Data Mask Subheader is described in
+     * 5.5.1.5 and is shown in Table IV(A). The definitions of the compression schemes associated with codes C1, C2, C3,
+     * and C4 are given, respectively, in MIL-STD-188-196, MIL-STD-188-197A, MIL-STD-188-198A, and MIL-STD-188-199. This
+     * field shall not contain C1 or C2 if NBANDS &gt; 1 or NBLOCKS &gt; 1."
+     *
+     * @return the compression format used
      */
     ImageCompression getImageCompression();
 

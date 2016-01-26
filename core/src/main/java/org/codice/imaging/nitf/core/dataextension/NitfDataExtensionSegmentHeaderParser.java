@@ -14,17 +14,15 @@
  **/
 package org.codice.imaging.nitf.core.dataextension;
 
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DE;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESID_LENGTH;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESITEM_LENGTH;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESOFLW_LENGTH;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESSHL_LENGTH;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESVER_LENGTH;
-
-import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
-import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 
 /**
@@ -42,12 +40,13 @@ public class NitfDataExtensionSegmentHeaderParser extends AbstractNitfSegmentPar
     }
 
     /**
+     * Parse SymbolSegmentHeader from the specified reader.
      *
-     * @param nitfReader - the Nitf input reader.
+     * @param nitfReader - the NITF input reader.
      * @return a fully parsed NitfDataExtensionSegmentHeader.
      * @throws ParseException when the parser encounters unexpected input from the reader.
      */
-    public final NitfDataExtensionSegmentHeaderImpl parse(final NitfReader nitfReader) throws ParseException {
+    public final NitfDataExtensionSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
         segment = new NitfDataExtensionSegmentHeaderImpl();
 

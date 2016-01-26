@@ -14,12 +14,10 @@
  */
 package org.codice.imaging.nitf.core.security;
 
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.security.FileSecurityConstants.FSCOP_LENGTH;
 import static org.codice.imaging.nitf.core.security.FileSecurityConstants.FSCPYS_LENGTH;
-
-import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Parser for the file security metadata.
@@ -36,8 +34,9 @@ public class FileSecurityMetadataParser extends SecurityMetadataParser {
     }
 
     /**
+     * Parse FileSecurityMetadata from the specified reader.
      *
-     * @param nitfReader the nitf source data.
+     * @param nitfReader the NITF source data.
      * @return a FileSecurityMetadata object populated with data parsed from nitfReader.
      * @throws ParseException when the input isn't what was expected.
      */

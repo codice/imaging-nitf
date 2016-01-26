@@ -97,6 +97,9 @@ public class TreCollection {
         return !treCollectionEntries.isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
         return "TRE Collection";

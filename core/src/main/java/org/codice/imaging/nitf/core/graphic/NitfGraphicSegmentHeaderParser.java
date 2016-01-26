@@ -14,6 +14,10 @@
  **/
 package org.codice.imaging.nitf.core.graphic;
 
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SBND1_HALF_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SBND2_HALF_LENGTH;
@@ -28,12 +32,6 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SSTRU
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSHDL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOFL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
-
-import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
-import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
@@ -53,8 +51,11 @@ public class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     /**
+     * Parse NitfGraphicSegmentHeader from the specified reader, using the specified parseStrategy.
      *
-     * @param nitfReader - the Nitf input reader.
+     * The reader provides the data. The parse strategy selects which data to store.
+     *
+     * @param nitfReader - the NITF input reader.
      * @param parseStrategy - the strategy that defines which elements to parse or skip.
      * @return a fully parsed NitfGraphicSegmentHeader.
      * @throws ParseException when the parser encounters unexpected input from the reader.

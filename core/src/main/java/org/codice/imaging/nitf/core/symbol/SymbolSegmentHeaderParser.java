@@ -14,14 +14,10 @@
  */
 package org.codice.imaging.nitf.core.symbol;
 
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NLIPS_LENGTH;
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NPIXPL_LENGTH;
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NWDTH_LENGTH;
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SNUM_LENGTH;
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SROT_LENGTH;
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNBPP_LENGTH;
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNELUT_LENGTH;
-import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYTYPE_LENGTH;
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SCOLOR_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SDLVL_LENGTH;
@@ -31,13 +27,15 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SNAME
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSHDL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOFL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
-
-import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
-import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NLIPS_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NPIXPL_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.NWDTH_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SNUM_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SROT_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNBPP_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYNELUT_LENGTH;
+import static org.codice.imaging.nitf.core.symbol.SymbolConstants.SYTYPE_LENGTH;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
@@ -51,13 +49,16 @@ public class SymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
     private SymbolSegmentHeaderImpl segment = null;
 
     /**
+     * Parse SymbolSegmentHeader from the specified reader, using the specified parseStrategy.
+     *
+     * The reader provides the data. The parse strategy selects which data to store.
      *
      * @param nitfReader The NitfReader to read SymbolSegmentHeaderImpl from.
      * @param parseStrategy the parsing strategy to use to process the data.
-     * @return the parsed SymbolSegmentHeaderImpl.
+     * @return the parsed SymbolSegmentHeader.
      * @throws ParseException when the input from the NitfReader isn't what was expected.
      */
-    public final SymbolSegmentHeaderImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final SymbolSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
         segment = new SymbolSegmentHeaderImpl();

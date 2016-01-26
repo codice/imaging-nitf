@@ -1,6 +1,11 @@
 package org.codice.imaging.nitf.render;
 
-public enum JpegMarkerCode {
+/**
+ * Marker codes found in JPEG files.
+ *
+ * Some of these are JPEG 2000 compatible.
+ */
+enum JpegMarkerCode {
 
     BASELINE_DCT((short) 0xFFC0),
     EXTENDED_SEQUENTIAL_DCT((short) 0xFFC1),
@@ -21,12 +26,17 @@ public enum JpegMarkerCode {
     NITF_APPLICATION_SEGMENT((short) 0xFFE6),
     COMMENT((short) 0xFFFE);
 
-    private short value;
-    
+    private final short value;
+
     private JpegMarkerCode(short value) {
-        this.value = value;    
+        this.value = value;
     }
 
+    /**
+     * Value of the marker code.
+     *
+     * @return integer value of the marker code
+     */
     public int getValue() {
         return this.value;
     }

@@ -33,6 +33,14 @@ public class NitfDateTime {
     private int mSecond = 0;
 
     /**
+     * Default constructor.
+     *
+     * This does not produce a valid NitfDateTime - use set().
+     */
+    public NitfDateTime() {
+    }
+
+    /**
         Set the date / time components.
 
         @param year the year (including any century part)
