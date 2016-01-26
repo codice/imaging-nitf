@@ -35,6 +35,7 @@ public class FileReader extends SharedReader implements NitfReader {
     static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF file: ";
     static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File Not Found Exception opening file:";
     static final String NOT_FOUND_MESSAGE_JOINER = " not found: ";
+
     static final String READ_MODE = "r";
 
     private static final Logger LOG = LoggerFactory.getLogger(FileReader.class);
@@ -71,11 +72,17 @@ public class FileReader extends SharedReader implements NitfReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Boolean canSeek() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final long getCurrentOffset() {
         try {
@@ -86,6 +93,9 @@ public class FileReader extends SharedReader implements NitfReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void seekToEndOfFile() throws ParseException {
         try {
@@ -96,6 +106,9 @@ public class FileReader extends SharedReader implements NitfReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void seekBackwards(final long relativeOffset) throws ParseException {
         try {
@@ -106,6 +119,9 @@ public class FileReader extends SharedReader implements NitfReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void seekToAbsoluteOffset(final long absoluteOffset) throws ParseException {
         try {
@@ -116,6 +132,9 @@ public class FileReader extends SharedReader implements NitfReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final byte[] readBytesRaw(final int count) throws ParseException {
         int currentOffset = 0;
@@ -130,6 +149,9 @@ public class FileReader extends SharedReader implements NitfReader {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void skip(final long count) throws ParseException {
         long bytesToRead = count;

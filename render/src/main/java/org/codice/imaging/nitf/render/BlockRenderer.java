@@ -14,17 +14,31 @@
  */
 package org.codice.imaging.nitf.render;
 
-import java.io.IOException;
-
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
-
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
+/**
+ * Image renderer that operates block-by-block.
+ */
 public interface BlockRenderer {
 
+    /**
+     * Configure the renderer to support future image rendering.
+     *
+     * @param imageSegmentHeader the header corresponding to the image segment to be read
+     * @param imageInputStream the source data to be read from
+     * @throws IOException if the imageInputStream is not readable
+     */
     public void setImageSegment(NitfImageSegmentHeader imageSegmentHeader, ImageInputStream imageInputStream) throws IOException;
 
+    /**
+     * Render the next available image block.
+     *
+     * @return image for the specified block
+     * @throws java.io.IOException if the data source is not readable
+     */
     public BufferedImage getNextImageBlock() throws IOException;
 
     /**
@@ -35,6 +49,7 @@ public interface BlockRenderer {
      * @param rowIndex the row of the image block to be read
      * @param columnIndex the column of the image block to be read
      * @return image for the specified block
+     * @throws java.io.IOException if the data source is not readable
      */
     public BufferedImage getImageBlock(int rowIndex, int columnIndex) throws IOException;
 }

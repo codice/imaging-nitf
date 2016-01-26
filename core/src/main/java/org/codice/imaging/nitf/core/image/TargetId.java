@@ -122,6 +122,9 @@ public class TargetId {
         return countryCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
         return beNumber + oSuffix + countryCode;

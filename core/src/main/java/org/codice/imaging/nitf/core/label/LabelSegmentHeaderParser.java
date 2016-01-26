@@ -14,6 +14,10 @@
  */
 package org.codice.imaging.nitf.core.label;
 
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LA;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LALVL_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LCH_LENGTH;
@@ -24,12 +28,6 @@ import static org.codice.imaging.nitf.core.label.LabelConstants.LID_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LLOC_HALF_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LXSHDL_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LXSOFL_LENGTH;
-
-import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
-import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
@@ -49,6 +47,9 @@ public class LabelSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     /**
+     * Parse LabelSegmentHeader from the specified reader, using the specified parseStrategy.
+     *
+     * The reader provides the data. The parse strategy selects which data to store.
      *
      * @param nitfReader the reader to use to get the data.
      * @param parseStrategy the parsing strategy to use to process the data.

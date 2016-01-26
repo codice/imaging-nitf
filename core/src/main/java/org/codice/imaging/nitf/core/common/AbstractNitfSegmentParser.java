@@ -14,19 +14,17 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
-import static org.codice.imaging.nitf.core.common.CommonConstants.NITF20_DATE_FORMAT;
-import static org.codice.imaging.nitf.core.common.CommonConstants.NITF21_DATE_FORMAT;
-import static org.codice.imaging.nitf.core.common.CommonConstants.RGB_COLOUR_LENGTH;
-import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
 import org.codice.imaging.nitf.core.RGBColour;
+import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
+import static org.codice.imaging.nitf.core.common.CommonConstants.NITF20_DATE_FORMAT;
+import static org.codice.imaging.nitf.core.common.CommonConstants.NITF21_DATE_FORMAT;
+import static org.codice.imaging.nitf.core.common.CommonConstants.RGB_COLOUR_LENGTH;
+import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,18 +36,17 @@ public abstract class AbstractNitfSegmentParser {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractNitfSegmentParser.class);
 
     /**
-     *
-     * the NitfReader which streams the input.
+     * The NitfReader which streams the input.
      */
     protected NitfReader reader = null;
 
     /**
-     *
-     * the NitfParsingStrategy.
+     * The NitfParsingStrategy to be used when parsing.
      */
     protected NitfParseStrategy parsingStrategy;
 
     /**
+     * Read a ENCRYP value, and check the result.
      *
      * @throws ParseException when the input doesn't match the expected format for ENCRYP.
      */
@@ -61,6 +58,7 @@ public abstract class AbstractNitfSegmentParser {
     }
 
     /**
+     * Read in an RGBColour.
      *
      * @return the next RGBColour from the head of the reader stream.
      * @throws ParseException when the next token is not the expected format for an RGBColour.
@@ -71,9 +69,14 @@ public abstract class AbstractNitfSegmentParser {
     }
 
     /**
+     * Read in a NITF date/time format.
+     *
+     * Note that this is relatively tolerant, and may not result in something usable as a date/time class in Java.
      *
      * @return a NitfDateTime from head of the reader stream.
      * @throws ParseException when the next token is not the expected format for a NitfDateTime.
+     *
+     * @see NitfDateTime for the "best effort" nature of this parsing.
      */
     protected final NitfDateTime readNitfDateTime() throws ParseException {
         NitfDateTime dateTime = new NitfDateTime();

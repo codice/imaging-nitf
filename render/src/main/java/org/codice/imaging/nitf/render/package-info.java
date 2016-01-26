@@ -14,22 +14,9 @@
  */
 
 /**
- * The classes in this package are intended to simplify parsing and processing of NITF files.
+ * The classes and interfaces in this package provide for rendering of NITF files.
  *
- * They follow the builder pattern to allow chaining method calls in a declarative style. The flow begins with a call to
- * NitfParserInputFlow, which creates a NitfParserParsingFlow, then a NitfSegmentsFlow.
- *
- * Here is an example:
- *
- * <pre>
- * {@code
- *   new NitfParserInputFlow()
- *       .inputStream(getImageInputStream())
- *       .allData()
- *       .fileHeader(header -> System.out.println(header.getIdentifier())
- *       .forEachImage((header, imageInputStream) -> renderImage(header, imageInputStream);
- * }
- * </pre>
+ * By rendering, we mean turning the NITF image data into something that is more familiar to Java programmers, such as
+ * Graphics2D and BufferedImage.
  */
-
-package org.codice.imaging.nitf.render.flow;
+package org.codice.imaging.nitf.render;

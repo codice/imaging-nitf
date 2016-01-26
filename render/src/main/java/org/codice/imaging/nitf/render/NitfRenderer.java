@@ -23,8 +23,19 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
+/**
+ * Renderer for NITF files
+ */
 public class NitfRenderer {
 
+    /**
+     * Render to the specified Graphics2D target.
+     *
+     * @param imageSegmentHeader the image segment header for the segment to be rendered
+     * @param imageData the source data for rendering
+     * @param targetGraphic the target to render to
+     * @throws IOException if the source data could not be read from
+     */
     public final void render(final NitfImageSegmentHeader imageSegmentHeader,
             final ImageInputStream imageData, Graphics2D targetGraphic) throws IOException {
         switch (imageSegmentHeader.getImageCompression()) {
@@ -60,6 +71,14 @@ public class NitfRenderer {
         }
     }
 
+    /**
+     * Render the segment as a BufferedImage.
+     *
+     * @param imageSegmentHeader the image segment header for the segment to be rendered
+     * @param imageData the source data for rendering
+     * @return rendered image
+     * @throws IOException if the source data could not be read from
+     */
     public final BufferedImage render(final NitfImageSegmentHeader imageSegmentHeader,
             final ImageInputStream imageData) throws IOException {
         BufferedImage img = new BufferedImage(imageSegmentHeader.getImageLocationColumn()

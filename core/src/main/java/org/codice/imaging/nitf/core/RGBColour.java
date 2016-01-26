@@ -71,6 +71,9 @@ public class RGBColour {
         return blue;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
         return String.format("[0x%02x,0x%02x,0x%02x]",

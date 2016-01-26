@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.core.common;
 
 import java.util.Map;
-
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
@@ -49,8 +48,9 @@ public interface CommonNitfSegment {
     TreCollection getTREsRawStructure();
 
     /**
+     * Return the TREs for this segment in a flattened Map structure.
      *
-     * @return a java.util.Map containing the Tres.
+     * @return a java.util.Map containing the TREs.
      */
     Map<String, String> getTREsFlat();
 }

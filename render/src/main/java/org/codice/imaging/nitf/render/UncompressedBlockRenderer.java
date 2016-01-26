@@ -28,7 +28,7 @@ import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 
-public class UncompressedBlockRenderer implements BlockRenderer {
+class UncompressedBlockRenderer implements BlockRenderer {
 
     private NitfImageSegmentHeader mImageSegmentHeader = null;
     private ImageInputStream mImageData = null;
@@ -38,7 +38,7 @@ public class UncompressedBlockRenderer implements BlockRenderer {
 
     /**
      * Set the image segment to read from
-     * 
+     *
      * @param imageSegmentHeader the image segment
      * @param imageInputStream the source to read the segment image data from
      * @throws IOException if the read fails

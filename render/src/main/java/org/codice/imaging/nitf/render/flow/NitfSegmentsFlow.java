@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
 /**
- * The NitfSegmentsFlow provides methods for processing the contents of the Nitf.
+ * The NitfSegmentsFlow provides methods for processing the contents of the NITF file.
  */
 public class NitfSegmentsFlow {
 
@@ -42,9 +42,9 @@ public class NitfSegmentsFlow {
     }
 
     /**
-     * Iterates over the images in the Nitf file and passes them to the supplied consumer.
+     * Iterates over the images in the NITF file and passes them to the supplied consumer.
      *
-     * @param consumer - The consumer to pass the image header and image data to.
+     * @param consumer The consumer to pass the image header and image data to.
      * @return this NitfSegmentsFlow.
      */
     public NitfSegmentsFlow forEachImage(BiConsumer<NitfImageSegmentHeader, ImageInputStream> consumer) {
@@ -63,10 +63,9 @@ public class NitfSegmentsFlow {
     }
 
     /**
-     * Iterates over the data extension segments in the Nitf file and passes them to the supplied
-     * consumer.
+     * Iterates over the data extension segments in the NITF file and passes them to the supplied consumer.
      *
-     * @param consumer - The consumer to pass the data extension segment to.
+     * @param consumer The consumer to pass the data extension segment to.
      * @return this NitfSegmentsFlow.
      */
     public NitfSegmentsFlow forEachDataSegment(Consumer<NitfDataExtensionSegmentHeader> consumer) {
@@ -80,9 +79,9 @@ public class NitfSegmentsFlow {
     }
 
     /**
-     * Passes the Nitf file header to the supplied consumer.
+     * Passes the NITF file header to the supplied consumer.
      *
-     * @param consumer - the consumer to pass the Nitf file header to.
+     * @param consumer the consumer to pass the NITF file header to.
      * @return this NitfSegmentsFlow.
      */
     public NitfSegmentsFlow fileHeader(Consumer<NitfFileHeader> consumer) {

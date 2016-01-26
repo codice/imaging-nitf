@@ -56,7 +56,7 @@ public class SecurityMetadataParser {
     private static final String DOWNGRADE_EVENT_MAGIC = "999998";
 
     /**
-     * defauilt constructor.
+     * Default constructor.
      */
     public SecurityMetadataParser() {
     }
@@ -64,7 +64,7 @@ public class SecurityMetadataParser {
     /**
      * Parses data from the given nitfReader and creates a SecurityMetadata object from that.
      *
-     * @param nitfReader the nitf source data.
+     * @param nitfReader the NITF source data.
      * @return the fully populated SecurityMetaData object.
      * @throws ParseException when the input isn't what was expected.
      */
@@ -75,10 +75,15 @@ public class SecurityMetadataParser {
     }
 
     /**
+     * Do low level parse.
      *
-     * @param nitfReader the nitf source data.
+     * This is only exposed for re-use with a specific subclass, and is not general API.
+     *
+     * @param nitfReader the NITF source data.
      * @param securityMetadata the SecurityMetadataImpl class to be populated.
      * @throws ParseException when the input isn't what was expected.
+     *
+     * @see parseSecurityMetadata for the real API.
      */
     protected final void doParse(final NitfReader nitfReader, final SecurityMetadataImpl securityMetadata) throws ParseException {
         reader = nitfReader;

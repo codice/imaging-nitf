@@ -17,13 +17,11 @@ package org.codice.imaging.nitf.render;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageMode;
-
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
-public final class ImageMask {
+final class ImageMask {
 
     private NitfImageSegmentHeader mImageSegmentHeader = null;
 
@@ -48,8 +46,8 @@ public final class ImageMask {
     /**
      * Create an image mask based on a regular number of bytes per block.
      *
-     * This is essentially a way to build an image mask for images that don't
-     * have one, but where the block layout is predictable.
+     * This is essentially a way to build an image mask for images that don't have one, but where the block layout is
+     * predictable (i.e. there is no compression).
      *
      * @param segmentHeader the segment header that specifies the image characteristics
      */
@@ -119,7 +117,7 @@ public final class ImageMask {
         }
         return (BLOCK_NOT_RECORDED == bmrnbndm[blockNumber][bandNumber]);
     }
-    
+
     public boolean isPadPixel(int value) {
         if (tpxcd == -1) {
             return false;
