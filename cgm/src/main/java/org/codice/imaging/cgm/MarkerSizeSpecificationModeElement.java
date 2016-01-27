@@ -27,7 +27,11 @@ package org.codice.imaging.cgm;
 
 import java.awt.Graphics2D;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 class MarkerSizeSpecificationModeElement extends CommonSpecificationModeElement {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MarkerSizeSpecificationModeElement.class);
 
     MarkerSizeSpecificationModeElement() {
         super(CgmIdentifier.MARKER_SIZE_SPECIFICATION_MODE);
@@ -35,7 +39,7 @@ class MarkerSizeSpecificationModeElement extends CommonSpecificationModeElement 
 
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
-        System.out.println("TODO: render for " + getFriendlyName());
+        LOGGER.info("TODO: render for " + getFriendlyName());
     }
 
 }

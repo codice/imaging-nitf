@@ -32,8 +32,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class PolygonSetElement extends ElementHelpers {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PolygonSetElement.class);
+
     private final List<Point> points = new ArrayList<>();
     private final List<Integer> edgeOutFlags = new ArrayList<>();
 
@@ -68,7 +72,7 @@ class PolygonSetElement extends ElementHelpers {
 
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
-        System.out.println("figure out how to render edge out flags");
+        LOGGER.debug("figure out how to render edge out flags");
         applyFilledPrimitiveAttributes(g2, graphicState);
         Polygon polygon = new Polygon();
         for (int pointIndex = 0; pointIndex < points.size(); ++pointIndex) {

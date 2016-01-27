@@ -14,11 +14,15 @@
  **/
 package org.codice.imaging.nitf.core.common;
 
+import static org.hamcrest.Matchers.is;
+
+import static org.junit.Assert.assertThat;
+
 import java.text.ParseException;
 import java.util.Arrays;
-import static org.hamcrest.Matchers.is;
+
 import org.junit.After;
-import static org.junit.Assert.assertThat;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,8 +34,9 @@ import uk.org.lidalia.slf4jtest.TestLogger;
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 public class AbstractParserTest {
+    private static final int STANDARD_DATE_TIME_LENGTH = 14;
 
-    TestLogger logger = TestLoggerFactory.getTestLogger(AbstractNitfSegmentParser.class);
+    private static final TestLogger LOGGER = TestLoggerFactory.getTestLogger(AbstractNitfSegmentParser.class);
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -44,7 +49,7 @@ public class AbstractParserTest {
         parser.reader = mockReader;
         when(mockReader.readBytes(1)).thenReturn("0");
         parser.readENCRYP();
-        assertThat(logger.getLoggingEvents().isEmpty(), is(true));
+        assertThat(LOGGER.getLoggingEvents().isEmpty(), is(true));
 
         try {
             when(mockReader.readBytes(1)).thenReturn("1");
@@ -52,7 +57,7 @@ public class AbstractParserTest {
             exception.expectMessage("Unexpected ENCRYP value");
             parser.readENCRYP();
         } finally {
-            assertThat(logger.getLoggingEvents(), is(Arrays.asList(LoggingEvent.warn("Mismatch while reading ENCRYP"))));
+            assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.warn("Mismatch while reading ENCRYP"))));
         }
     }
 

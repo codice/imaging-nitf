@@ -17,7 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.transform.Source;
+
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -35,6 +37,8 @@ import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.codice.imaging.nitf.core.text.TextSegmentHeaderParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreCollectionParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * "Slotted" parse strategy.
@@ -44,6 +48,8 @@ import org.codice.imaging.nitf.core.tre.TreCollectionParser;
  * the abstract subclass with the data storage (SlottedStorageNitfParseStrategy)
  */
 public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SlottedNitfParseStrategy.class);
+
     /**
      * The file level header.
      */
@@ -198,7 +204,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
                 handleDataExtensionSegment(reader, i);
             }
         } catch (ParseException ex) {
-            System.out.println("Exception should be logged: " + ex);
+            LOGGER.error(ex.getMessage() + ex);
         }
     }
 

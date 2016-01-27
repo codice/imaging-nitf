@@ -28,7 +28,12 @@ package org.codice.imaging.cgm;
 import java.awt.Graphics2D;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 class NoArgumentsElement extends ElementHelpers implements AbstractElement {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoArgumentsElement.class);
 
     NoArgumentsElement(final CgmIdentifier cgmIdentifier) {
         super(cgmIdentifier);
@@ -37,7 +42,7 @@ class NoArgumentsElement extends ElementHelpers implements AbstractElement {
     @Override
     public void readParameters(final CgmInputReader dataReader, final int parameterListLength) throws IOException {
         if (parameterListLength != 0) {
-            System.out.println("****Need to convert");
+            LOGGER.debug("****Need to convert");
             dataReader.skipBytes(parameterListLength);
         }
     }

@@ -29,19 +29,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.codice.imaging.nitf.core.common.FileReader;
-import org.codice.imaging.nitf.core.common.FileType;
+
 import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.image.ImageCoordinatePair;
-import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.NitfFileParser;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.image.RasterProductFormatAttributeParser;
-import org.codice.imaging.nitf.core.image.RasterProductFormatAttributes;
-import org.codice.imaging.nitf.core.image.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.CommonNitfSegment;
+import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.image.ImageCoordinatePair;
@@ -51,14 +46,18 @@ import org.codice.imaging.nitf.core.image.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.image.RasterProductFormatAttributes;
 import org.codice.imaging.nitf.core.image.RasterProductFormatUtilities;
 import org.codice.imaging.nitf.core.tre.Tre;
-import org.codice.imaging.nitf.core.tre.TreGroup;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
+import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
 
 public class FileComparer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileComparer.class);
     static final String OUR_OUTPUT_EXTENSION = ".OURS.txt";
     static final String THEIR_OUTPUT_EXTENSION = ".THEIRS.txt";
 
@@ -82,7 +81,7 @@ public class FileComparer {
             parseStrategy = new DataExtensionSegmentNitfParseStrategy();
             NitfFileParser.parse(reader, parseStrategy);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
 
         if (!parseStrategy.getImageSegmentHeaders().isEmpty()) {
@@ -119,10 +118,8 @@ public class FileComparer {
             outputRPCs();
 
             out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (IOException|ParseException e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -542,7 +539,7 @@ public class FileComparer {
                         rpc.put("MAX_LAT", cleanupNumberString(latMax));
                         rpc.put("MIN_LAT", cleanupNumberString(latMin));
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }
@@ -629,7 +626,7 @@ public class FileComparer {
                 }
             }
         } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
+            LOGGER.error(ex.getMessage() + ex);
         }
     }
 
@@ -744,7 +741,7 @@ public class FileComparer {
                 FileWriter fstream = new FileWriter(filename + THEIR_OUTPUT_EXTENSION);
                 out = new BufferedWriter(fstream);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
             BufferedReader infoOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"), 1000000);
             boolean done = false;
@@ -757,28 +754,28 @@ public class FileComparer {
                             break;
                         }
                         if (line.startsWith("Origin = (")) {
-                            // System.out.println("Filtering on Origin");
+                            LOGGER.debug("Filtering on Origin");
                             continue;
                         }
                         if (line.startsWith("Pixel Size = (")) {
-                            // System.out.println("Filtering on Pixel Size");
+                            LOGGER.debug("Filtering on Pixel Size");
                             continue;
                         }
                         if (line.startsWith("  LINE_DEN_COEFF=") || line.startsWith("  LINE_NUM_COEFF=") || line.startsWith("  SAMP_DEN_COEFF=") || line.startsWith("  SAMP_NUM_COEFF=")) {
-                            // System.out.println("Filtering out RPC coefficients");
+                            LOGGER.debug("Filtering out RPC coefficients");
                             continue;
                         }
                         if (line.startsWith("  LAT_SCALE=") || line.startsWith("  LONG_SCALE=") || line.startsWith("  LAT_OFF=") || line.startsWith("  LONG_OFF=")) {
-                            // System.out.println("Filtering out RPC coefficients");
+                            LOGGER.debug("Filtering out RPC coefficients");
                             continue;
                         }
                         if (line.startsWith("Corner Coordinates:")) {
-                            // System.out.println("Exiting on Corner Coordinates");
+                            LOGGER.debug("Exiting on Corner Coordinates");
                             done = true;
                             break;
                         }
                         if (line.startsWith("Band 1 Block=")) {
-                            // System.out.println("Exiting on Band 1 Block");
+                            LOGGER.debug("Exiting on Band 1 Block");
                             done = true;
                             break;
                         }
@@ -788,18 +785,16 @@ public class FileComparer {
                     } while (infoOutputReader.ready() && (!done));
                     Thread.sleep(100);
                 } while (!done);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (IOException|InterruptedException e) {
+                LOGGER.error(e.getMessage(), e);
             }
             if (out != null) {
                 out.close();
             }
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -811,9 +806,9 @@ public class FileComparer {
 
         if (!patch.getDeltas().isEmpty()) {
             for (Delta<String> delta: patch.getDeltas()) {
-                    System.out.println(delta);
+                    LOGGER.debug(delta.toString());
             }
-            System.out.println("  * Done");
+            LOGGER.debug("  * Done");
         } else {
             new File(filename + THEIR_OUTPUT_EXTENSION).delete();
             new File(filename + OUR_OUTPUT_EXTENSION).delete();
@@ -829,7 +824,7 @@ public class FileComparer {
                         lines.add(line);
                 }
         } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage() + e);
         }
         return lines;
     }

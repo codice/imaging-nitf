@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 */
 public class RasterProductFormatAttributeParser {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RasterProductFormatAttributeParser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RasterProductFormatAttributeParser.class);
 
     private static final int ATTRIBUTE_SECTION_SUBHEADER_LENGTH = 10;
 
@@ -152,7 +152,7 @@ public class RasterProductFormatAttributeParser {
                 case CONTOUR_INTERVAL_ATTR_ID:
                     break;
                 default:
-                    System.out.println(String.format("Unhandled offset record: %d/%d - %d", offsetRecord.attributeId, offsetRecord.parameterId,
+                    LOGGER.info(String.format("Unhandled offset record: %d/%d - %d", offsetRecord.attributeId, offsetRecord.parameterId,
                     offsetRecord.arealCoverageSequenceNumber));
                     break;
             }
@@ -188,7 +188,7 @@ public class RasterProductFormatAttributeParser {
         try {
             return new String(data, "US-ASCII");
         } catch (UnsupportedEncodingException ex) {
-            LOG.warn("UnsupportedEncodingException while trying to convert to ASCII:", ex);
+            LOGGER.error("UnsupportedEncodingException while trying to convert to ASCII:", ex);
         }
         return "";
     }

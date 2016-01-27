@@ -14,6 +14,12 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +31,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.transform.stream.StreamSource;
+
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
@@ -52,24 +60,20 @@ import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
-import static org.hamcrest.Matchers.is;
 import org.junit.After;
 import org.junit.Assert;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
 import uk.org.lidalia.slf4jtest.LoggingEvent;
 import uk.org.lidalia.slf4jtest.TestLogger;
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 public class Nitf21HeaderTest {
 
-    TestLogger logger = TestLoggerFactory.getTestLogger(TreEntry.class);
+    TestLogger LOGGER = TestLoggerFactory.getTestLogger(TreEntry.class);
 
     private DateTimeFormatter formatter = null;
 
@@ -785,7 +789,7 @@ public class Nitf21HeaderTest {
         assertEquals(4, tres.getTREs().size());
         Tre lastTre = tres.getTREs().get(3);
         lastTre.dump();
-        assertThat(logger.getLoggingEvents(), is(Arrays.asList(
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(
             LoggingEvent.debug("\tName: LASTNME"),
             LoggingEvent.debug("\tValue: WEBB                        "),
             LoggingEvent.debug("\tName: FIRSTNME"),

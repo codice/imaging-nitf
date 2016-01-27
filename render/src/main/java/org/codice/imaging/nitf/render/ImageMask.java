@@ -20,8 +20,11 @@ import java.util.List;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class ImageMask {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageMask.class);
 
     private NitfImageSegmentHeader mImageSegmentHeader = null;
 
@@ -73,19 +76,19 @@ public final class ImageMask {
         int bmrlnth = imageInputStream.readShort();
         int tmrlnth = imageInputStream.readShort();
         int tpxcdlnth = imageInputStream.readShort();
-        System.out.println(String.format("Blocked image data offset: 0x%08x", imdatoff));
-        System.out.println(String.format("Block mask record length: 0x%04x", bmrlnth));
-        System.out.println(String.format("Pad Pixel Mask Record Length: 0x%04x", tmrlnth));
-        System.out.println(String.format("Pad Output pixel code length: 0x%04x", tpxcdlnth));
+        LOGGER.debug(String.format("Blocked image data offset: 0x%08x", imdatoff));
+        LOGGER.debug(String.format("Block mask record length: 0x%04x", bmrlnth));
+        LOGGER.debug(String.format("Pad Pixel Mask Record Length: 0x%04x", tmrlnth));
+        LOGGER.debug(String.format("Pad Output pixel code length: 0x%04x", tpxcdlnth));
         if (tpxcdlnth > 0) {
             tpxcd = 0;
             int numBytesToRead = (tpxcdlnth + 7) / 8;
-            System.out.println("Reading TPXCD at length:" + numBytesToRead);
+            LOGGER.debug("Reading TPXCD at length:" + numBytesToRead);
             int bandBits = (int)imageInputStream.readBits(numBytesToRead * 8);
             for (int i = 0; i < mImageSegmentHeader.getNumBands(); ++i) {
                 tpxcd = tpxcd | (bandBits << (8*i));
             }
-            System.out.println(String.format("Pad Output pixel code : 0x%08x", tpxcd));
+            LOGGER.debug(String.format("Pad Output pixel code : 0x%08x", tpxcd));
         }
         int numBandsToRead = 1;
         if (mImageSegmentHeader.getImageMode() == ImageMode.BANDSEQUENTIAL) {
@@ -96,7 +99,7 @@ public final class ImageMask {
             for (int m = 0; m < numBandsToRead; ++m) {
                 for (int n = 0; n < mImageSegmentHeader.getNumberOfBlocksPerRow() * mImageSegmentHeader.getNumberOfBlocksPerColumn(); ++n) {
                     bmrnbndm[n][m] = imageInputStream.readInt();
-                    System.out.println(String.format("mask blocks (band %d) %d: 0x%08x", m, n, bmrnbndm[n][m]));
+                    LOGGER.debug(String.format("mask blocks (band %d) %d: 0x%08x", m, n, bmrnbndm[n][m]));
                 }
             }
         }
@@ -105,7 +108,7 @@ public final class ImageMask {
                 for (int n = 0; n < mImageSegmentHeader.getNumberOfBlocksPerRow() * mImageSegmentHeader.getNumberOfBlocksPerColumn(); ++n) {
                     int val = imageInputStream.readInt();
                     tmrnbndm.add(val);
-                    System.out.println(String.format("mask pixel (band %d) %d: 0x%08x", m, n, val));
+                    LOGGER.debug(String.format("mask pixel (band %d) %d: 0x%08x", m, n, val));
                 }
             }
         }

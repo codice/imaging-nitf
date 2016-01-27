@@ -33,9 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * CGM Parser.
@@ -55,10 +54,11 @@ public class CgmParser {
 
     private CgmInputReader dataReader = null;
     private final List<AbstractElement> commands = new ArrayList<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(CgmParser.class);
 
     private static AbstractElement getElement(final CgmIdentifier elementId) {
         if (ELEMENTS.containsKey(elementId)) {
-            // System.out.println("About to instantiate:" + elementId.getFriendlyName());
+            LOGGER.trace("About to instantiate:" + elementId.getFriendlyName());
             return instantiateElement(elementId);
         }
         return new NoArgumentsElement(CgmIdentifier.UNKNOWN);
@@ -83,7 +83,7 @@ public class CgmParser {
                  IllegalAccessException |
                  IllegalArgumentException |
                  InvocationTargetException ex) {
-            Logger.getLogger(CgmParser.class.getName()).log(Level.SEVERE, elementClass.getSimpleName(), ex);
+            LOGGER.error(ex.getMessage(), ex);
         }
         return null;
     }
@@ -93,7 +93,7 @@ public class CgmParser {
             Constructor<AbstractElement> constructor = elementClass.getDeclaredConstructor(CgmIdentifier.class);
             return constructor.newInstance(elementId);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(CgmParser.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error(ex.getMessage(), ex);
         }
         return null;
     }
@@ -318,7 +318,7 @@ public class CgmParser {
     }
 
     final void dump() {
-        System.out.print(getCommandListAsString());
+        LOGGER.debug(getCommandListAsString());
     }
 
     /**
@@ -350,7 +350,7 @@ public class CgmParser {
             int longFormWord2 = dataReader.readUnsignedShort();
             if ((longFormWord2 & NOT_LAST_PARTITION_FLAG_BIT) == NOT_LAST_PARTITION_FLAG_BIT) {
                 // Don't know how to handle this case yet
-                System.out.println("Not last partition");
+                LOGGER.info("Not last partition");
             }
             parameterListLength = longFormWord2 & LONG_FORM_WORD_LENGTH_BITMASK;
         }

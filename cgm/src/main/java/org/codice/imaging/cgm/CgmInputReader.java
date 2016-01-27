@@ -35,6 +35,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper for CGM input data.
@@ -45,6 +47,7 @@ class CgmInputReader {
     private static final int NUM_BYTES_IN_SIGNED_VDC_INTEGER = 2;
     private static final int NUM_BYTES_IN_ENUM_VALUE = 2;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CgmInputReader.class);
     private final DataInputStream dataStream;
 
     CgmInputReader(final byte[] cgmData) {
@@ -73,7 +76,7 @@ class CgmInputReader {
     String getStringFixed() throws IOException {
         int count = dataStream.readUnsignedByte();
         if (count > LONG_COUNT_FLAG_VALUE) {
-            System.out.println("Need to handle long count");
+            LOGGER.info("Need to handle long count");
         }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < count; ++i) {

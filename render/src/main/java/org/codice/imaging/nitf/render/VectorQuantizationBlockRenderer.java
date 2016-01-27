@@ -14,22 +14,24 @@
  */
 package org.codice.imaging.nitf.render;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.stream.ImageInputStream;
 
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class VectorQuantizationBlockRenderer implements BlockRenderer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(VectorQuantizationBlockRenderer.class);
     private NitfImageSegmentHeader mImageSegment = null;
     private ImageInputStream mImageData = null;
     private ImageMask mMask = null;
@@ -82,12 +84,11 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
                 }
                 return getNextImageBlockRgbLut8();
             } else {
-                System.out.println("Unhandled image representation:" + mImageSegment.getImageRepresentation());
+                throw new UnsupportedOperationException("Unhandled image representation:" + mImageSegment.getImageRepresentation());
             }
         } else {
-            System.out.println("Unhandled ActualBitsPerPixelPerBand: " + mImageSegment.getActualBitsPerPixelPerBand());
+            throw new UnsupportedOperationException("Unhandled ActualBitsPerPixelPerBand: " + mImageSegment.getActualBitsPerPixelPerBand());
         }
-        return null;
     }
 
     @Override
@@ -138,11 +139,11 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
 
     private final void readImageDisplayParameterSubheader() throws IOException {
         mNumberOfImageRows = mImageData.readInt();
-        // System.out.println("mNumberOfImageRows:" + mNumberOfImageRows);
+        LOGGER.debug("mNumberOfImageRows:" + mNumberOfImageRows);
         mNumberOfImageCodesPerRow = mImageData.readInt();
-        // System.out.println("mNumberOfImageCodesPerRow: " + mNumberOfImageCodesPerRow);
+        LOGGER.debug("mNumberOfImageCodesPerRow: " + mNumberOfImageCodesPerRow);
         mImageCodeBitLength = mImageData.readUnsignedByte();
-        // System.out.println("mImageCodeBitLength:" + mImageCodeBitLength);
+        LOGGER.debug("mImageCodeBitLength:" + mImageCodeBitLength);
     }
 
     private final void readCompressionSection() throws IOException {
@@ -152,18 +153,18 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
 
     private final void readCompressionSectionSubheader() throws IOException {
         mCompressionAlgorithmId = mImageData.readUnsignedShort();
-        // System.out.println("mCompressionAlgorithmId:" + mCompressionAlgorithmId);
+        LOGGER.debug("mCompressionAlgorithmId:" + mCompressionAlgorithmId);
         mNumberOfCompressionLookupOffsetRecords = mImageData.readUnsignedShort();
-        // System.out.println("mNumberOfCompressionLookupOffsetRecords:" + mNumberOfCompressionLookupOffsetRecords);
+        LOGGER.debug("mNumberOfCompressionLookupOffsetRecords:" + mNumberOfCompressionLookupOffsetRecords);
         mNumberOfCompressionParameterOffsetRecords = mImageData.readUnsignedShort();
-        // System.out.println("mNumberOfCompressionParameterOffsetRecords:" + mNumberOfCompressionParameterOffsetRecords);
+        LOGGER.debug("mNumberOfCompressionParameterOffsetRecords:" + mNumberOfCompressionParameterOffsetRecords);
     }
 
     private final void readCompressionLookupSubsection() throws IOException {
         mCompressionLookupOffsetTableOffset = mImageData.readInt();
-        // System.out.println("mCompressionLookupOffsetTableOffset:" + mCompressionLookupOffsetTableOffset);
+        LOGGER.debug("mCompressionLookupOffsetTableOffset:" + mCompressionLookupOffsetTableOffset);
         mCompressionLookupTableOffsetRecordLength = mImageData.readUnsignedShort();
-        // System.out.println("mCompressionLookupTableOffsetRecordLength:" + mCompressionLookupTableOffsetRecordLength);
+        LOGGER.debug("mCompressionLookupTableOffsetRecordLength:" + mCompressionLookupTableOffsetRecordLength);
         readCompressionLookupOffsetTable();
         readCompressionLookupTables();
     }
@@ -173,16 +174,16 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
     }
 
     private final void readCompressionLookupOffsetRecords() throws IOException {
-        // System.out.println("mNumberOfCompressionLookupOffsetRecords:" + mNumberOfCompressionLookupOffsetRecords);
+        LOGGER.debug("mNumberOfCompressionLookupOffsetRecords:" + mNumberOfCompressionLookupOffsetRecords);
         for (int i = 0; i < mNumberOfCompressionLookupOffsetRecords; ++i) {
             VQCompressionLookupOffsetRecord record = new VQCompressionLookupOffsetRecord();
             record.compressionLookupTableId = mImageData.readUnsignedShort();
             record.numberOfCompressionLookupRecords = mImageData.readInt();
-            // System.out.println("numberOfCompressionLookupRecords:" + record.numberOfCompressionLookupRecords);
+            LOGGER.debug("numberOfCompressionLookupRecords:" + record.numberOfCompressionLookupRecords);
             record.numberOfValuesPerCompressionLookupRecord = mImageData.readUnsignedShort();
-            // System.out.println("numberOfValuesPerCompressionLookupRecord:" + record.numberOfValuesPerCompressionLookupRecord);
+            LOGGER.debug("numberOfValuesPerCompressionLookupRecord:" + record.numberOfValuesPerCompressionLookupRecord);
             record.compressionLookupValueBitLength = mImageData.readUnsignedShort();
-            // System.out.println("compressionLookupValueBitLength:" + record.compressionLookupValueBitLength);
+            LOGGER.debug("compressionLookupValueBitLength:" + record.compressionLookupValueBitLength);
             record.compressionLookupTableOffset = mImageData.readInt();
             mCompressionLookupOffsetRecords.add(record);
         }
