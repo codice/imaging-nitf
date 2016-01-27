@@ -14,17 +14,11 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-
+import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -34,17 +28,19 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.symbol.SymbolColour;
 import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
 import org.codice.imaging.nitf.core.symbol.SymbolType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
 public class Nitf20SymbolTest {
 
-    private SimpleDateFormat formatter = null;
+    private DateTimeFormatter formatter = null;
 
     @Before
     public void beforeTest() {
-        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     @Test
@@ -92,7 +88,7 @@ public class Nitf20SymbolTest {
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
         assertEquals("PLYLIN2", file.getOriginatingStationId());
-        assertEquals("1993-09-03 19:16:36", formatter.format(file.getFileDateTime().toDate()));
+        assertEquals("1993-09-03 19:16:36", formatter.format(file.getFileDateTime().getZonedDateTime()));
         assertEquals("checks for rendering of polyline. line width 1, line type 3,4,5. def line type.", file.getFileTitle());
         FileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);

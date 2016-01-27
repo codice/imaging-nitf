@@ -14,9 +14,8 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
     Date / time representation.
@@ -25,12 +24,7 @@ public class NitfDateTime {
 
     private String sourceString = null;
 
-    private int mYear = 0;
-    private int mMonth = 0;
-    private int mDay = 0;
-    private int mHour = 0;
-    private int mMinute = 0;
-    private int mSecond = 0;
+    private ZonedDateTime mZonedDateTime = null;
 
     /**
      * Default constructor.
@@ -51,12 +45,10 @@ public class NitfDateTime {
         @param second the seconds of the minute
     */
     public final void set(final int year, final int month, final int day, final int hour, final int minute, final int second) {
-        mYear = year;
-        mMonth = month;
-        mDay = day;
-        mHour = hour;
-        mMinute = minute;
-        mSecond = second;
+        if ((month == 0) || (day == 0)) {
+            mZonedDateTime = null;
+        }
+        mZonedDateTime = ZonedDateTime.of(year, month, day, hour, minute, second, 0, ZoneId.of("UTC"));
     }
 
     /**
@@ -83,20 +75,14 @@ public class NitfDateTime {
     }
 
     /**
-        Return the value of this object as a Date.
-        <p>
-        This is a best-effort, based on the information available, which can be incomplete. If
-        no other information is available, a default Date will be returned.
-
-        @return the value of this object as a Date.
-    */
-    public final Date toDate() {
-        // TODO: fix implementation, check for validity
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        calendar.set(mYear, mMonth - 1, mDay, mHour, mMinute, mSecond);
-        return calendar.getTime();
+     * Return the value of this object as a ZonedDateTime (in UTC).
+     *
+     * This is a best effort conversion, based on the information available, which can be incomplete.
+     *
+     * @return the value of this object as a ZonedDateTime, or null if the date is not valid.
+     */
+    public final ZonedDateTime getZonedDateTime() {
+        return mZonedDateTime;
     }
 
 }

@@ -1,32 +1,24 @@
 /**
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  **/
 package org.codice.imaging.nitf.core;
-
-import org.codice.imaging.nitf.core.image.PixelValueType;
-import org.codice.imaging.nitf.core.image.PixelJustification;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-
+import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -38,6 +30,8 @@ import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.PixelJustification;
+import org.codice.imaging.nitf.core.image.PixelValueType;
 import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
@@ -47,17 +41,19 @@ import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
 import org.codice.imaging.nitf.core.symbol.SymbolType;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegmentHeader;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
 public class Nitf20OverflowTest {
 
-    private SimpleDateFormat formatter = null;
+    private DateTimeFormatter formatter = null;
 
     @Before
     public void beforeTest() {
-        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     @Test
@@ -75,7 +71,7 @@ public class Nitf20OverflowTest {
         assertEquals(1, nitfFileHeader.getComplexityLevel());
         assertEquals("", nitfFileHeader.getStandardType());
         assertEquals("ALLOVERFLO", nitfFileHeader.getOriginatingStationId());
-        assertEquals("1997-09-15 09:00:00", formatter.format(nitfFileHeader.getFileDateTime().toDate()));
+        assertEquals("1997-09-15 09:00:00", formatter.format(nitfFileHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("Checks overflow from all possible areas. Created by George Levy.", nitfFileHeader.getFileTitle());
         FileSecurityMetadata securityMetadata = nitfFileHeader.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
@@ -98,7 +94,7 @@ public class Nitf20OverflowTest {
         NitfImageSegmentHeader imageSegment1 = parseStrategy.getImageSegmentHeaders().get(0);
         assertNotNull(imageSegment1);
         assertEquals("512 Lenna", imageSegment1.getIdentifier());
-        assertEquals("1993-03-25 15:25:59",  formatter.format(imageSegment1.getImageDateTime().toDate()));
+        assertEquals("1993-03-25 15:25:59", formatter.format(imageSegment1.getImageDateTime().getZonedDateTime()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());
         assertEquals("          ", imageSegment1.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment1.getImageTargetId().getOSuffix());

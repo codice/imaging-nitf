@@ -15,8 +15,8 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
+import java.time.format.DateTimeFormatter;
 import javax.swing.Action;
-
 import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -61,10 +61,10 @@ class NitfTextSegmentNode extends AbstractSegmentNode {
         Sheet.Set set = Sheet.createPropertiesSet();
         sheet.put(set);
         addSubSegmentProperties(set, header);
-        set.put(new DateProperty("textDateTime",
+        set.put(new StringProperty("textDateTime",
                 "Text Date and Time",
                 "Date and time of this origination of the text.",
-                header.getTextDateTime().toDate()));
+                header.getTextDateTime().getZonedDateTime().format(DateTimeFormatter.ISO_DATE_TIME)));
         set.put(new StringProperty("textTitle",
                 "Text Title",
                 "The title of the text item",

@@ -14,29 +14,22 @@
  **/
 package org.codice.imaging.nitf.core.common;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-    import org.junit.After;
+import static org.hamcrest.Matchers.is;
+import org.junit.After;
+import static org.junit.Assert.assertThat;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
-
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import uk.org.lidalia.slf4jtest.LoggingEvent;
 import uk.org.lidalia.slf4jtest.TestLogger;
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 public class AbstractParserTest {
-    private static final int STANDARD_DATE_TIME_LENGTH = 14;
 
     TestLogger logger = TestLoggerFactory.getTestLogger(AbstractNitfSegmentParser.class);
 
@@ -45,16 +38,16 @@ public class AbstractParserTest {
 
     @Test
     public void testParseOfENCRYP() throws ParseException {
-        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
+        AbstractNitfSegmentParser parser = mock(AbstractNitfSegmentParser.class, CALLS_REAL_METHODS);
 
-        NitfReader mockReader = Mockito.mock(NitfReader.class);
+        NitfReader mockReader = mock(NitfReader.class);
         parser.reader = mockReader;
-        Mockito.when(mockReader.readBytes(1)).thenReturn("0");
+        when(mockReader.readBytes(1)).thenReturn("0");
         parser.readENCRYP();
         assertThat(logger.getLoggingEvents().isEmpty(), is(true));
 
         try {
-            Mockito.when(mockReader.readBytes(1)).thenReturn("1");
+            when(mockReader.readBytes(1)).thenReturn("1");
             exception.expect(ParseException.class);
             exception.expectMessage("Unexpected ENCRYP value");
             parser.readENCRYP();
@@ -63,73 +56,6 @@ public class AbstractParserTest {
         }
     }
 
-    @Test
-    public void testDateParsingWithoutReaderVersion() throws ParseException {
-        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
-
-        NitfReader mockReader = Mockito.mock(NitfReader.class);
-        parser.reader = mockReader;
-        Mockito.when(mockReader.getFileType()).thenReturn(FileType.UNKNOWN);
-
-        try {
-            exception.expect(ParseException.class);
-            exception.expectMessage("Need to set NITF file type prior to reading dates");
-            NitfDateTime date = parser.readNitfDateTime();
-        } finally {
-            assertThat(logger.getLoggingEvents(), is(Arrays.asList(LoggingEvent.warn("Unknown NITF file type while reading date: UNKNOWN"))));
-        }
-    }
-
-    // Test when we only have yyyyMMdd. Some commercial producers do this, although it should be yyyyMMdd------.
-    @Test
-    public void testDateOnlyParsing() throws ParseException {
-        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
-
-        NitfReader mockReader = Mockito.mock(NitfReader.class);
-        Mockito.when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
-        parser.reader = mockReader;
-        Mockito.when(mockReader.readBytes(STANDARD_DATE_TIME_LENGTH)).thenReturn("20140704");
-
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"),  Locale.US);
-        calendar.clear();
-        calendar.set(2014, Calendar.JULY, 4);
-        Date expectedDate = calendar.getTime();
-        assertEquals(expectedDate, parser.readNitfDateTime().toDate());
-    }
-
-    // Test when we have yyyyMMdd------
-    @Test
-    public void testPaddedDateParsing() throws ParseException {
-        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
-
-        NitfReader mockReader = Mockito.mock(NitfReader.class);
-        Mockito.when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
-        parser.reader = mockReader;
-        Mockito.when(mockReader.readBytes(STANDARD_DATE_TIME_LENGTH)).thenReturn("20140704------");
-
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"),  Locale.US);
-        calendar.clear();
-        calendar.set(2014, Calendar.JULY, 4, 0, 0);
-        Date expectedDate = calendar.getTime();
-        assertEquals(expectedDate, parser.readNitfDateTime().toDate());
-    }
-
-    // Test when we have yyyyMMddHH----
-    @Test
-    public void testPaddedDateHourParsing() throws ParseException {
-        AbstractNitfSegmentParser parser = Mockito.mock(AbstractNitfSegmentParser.class, Mockito.CALLS_REAL_METHODS);
-
-        NitfReader mockReader = Mockito.mock(NitfReader.class);
-        Mockito.when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
-        parser.reader = mockReader;
-        Mockito.when(mockReader.readBytes(STANDARD_DATE_TIME_LENGTH)).thenReturn("2014070423----");
-
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"),  Locale.US);
-        calendar.clear();
-        calendar.set(2014, Calendar.JULY, 4, 23, 0, 0);
-        Date expectedDate = calendar.getTime();
-        assertEquals(expectedDate, parser.readNitfDateTime().toDate());
-    }
 
     @After
     public void clearLoggers() {

@@ -14,6 +14,12 @@
  */
 package org.codice.imaging.nitf.core.text;
 
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import static org.codice.imaging.nitf.core.text.TextConstants.TE;
 import static org.codice.imaging.nitf.core.text.TextConstants.TEXTID20_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TEXTID_LENGTH;
@@ -22,14 +28,6 @@ import static org.codice.imaging.nitf.core.text.TextConstants.TXSOFL_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TXTALVL_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TXTFMT_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TXTITL_LENGTH;
-
-import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
-import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
-import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
