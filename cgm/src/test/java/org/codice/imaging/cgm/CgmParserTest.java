@@ -135,7 +135,7 @@ public class CgmParserTest {
     }
 
     private void testOneImage(String parentDirectory, String testfile) throws IOException {
-        String inputFileName = "/" + parentDirectory + "/" + testfile;
+        String inputFileName = File.separator + parentDirectory + File.separator + testfile;
         System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         try {
@@ -160,7 +160,7 @@ public class CgmParserTest {
             CgmRenderer renderer = new CgmRenderer();
             renderer.setTargetImageGraphics((Graphics2D) targetImage.getGraphics(), segment.getBoundingBox2Column(), segment.getBoundingBox2Row());
             renderer.render(parser.getCommandList());
-            File targetFile = new File(testfile + "cgm.png");
+            File targetFile = new File("target" + File.separator + testfile + "cgm.png");
             ImageIO.write(targetImage, "png", targetFile);
         } catch (ParseException e) {
             System.out.println("Failed to load from InputStream " + e.getMessage());

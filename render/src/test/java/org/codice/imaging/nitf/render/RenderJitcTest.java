@@ -281,7 +281,7 @@ public class RenderJitcTest extends TestCase {
 
     private void testOneFile(final String testfile, final String parentDirectory)
             throws IOException, ParseException {
-        String inputFileName = "/" + parentDirectory + "/" + testfile;
+        String inputFileName = File.separator + parentDirectory + File.separator + testfile;
         System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
 
@@ -296,7 +296,7 @@ public class RenderJitcTest extends TestCase {
 
                     try {
                         BufferedImage img = renderer.render(header, imageData);
-                        ImageIO.write(img, "png", new File(testfile + "_" + i.get() + ".png"));
+                        ImageIO.write(img, "png", new File("target" + File.separator + testfile + "_" + i.get() + ".png"));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
