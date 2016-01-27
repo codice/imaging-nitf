@@ -1,3 +1,4 @@
+<<<<<<< HEAD:render/src/main/java/org/codice/imaging/nitf/render/imagehandler/ImageBlockMatrix.java
 /*
  * Copyright (c) Codice Foundation
  *
@@ -13,6 +14,11 @@
  *
  */
 package org.codice.imaging.nitf.render.imagehandler;
+=======
+package org.codice.imaging.nitf.render.imagemode;
+
+import java.awt.image.DataBuffer;
+>>>>>>> Refactored uncompressed rendering pattern:render/src/main/java/org/codice/imaging/nitf/render/imagemode/ImageBlockMatrix.java
 
 /**
  * The ImageMatrix represents image data stored in a rowcount x columncount matrix.
@@ -24,16 +30,19 @@ class ImageBlockMatrix {
      *
      * @param rowCount - the number of rows in the matrix.
      * @param columnCount - the number of columns in each matrix row.
-     * @param blockSize - the size of a single block in the matrix.
      */
-    public ImageBlockMatrix(int rowCount, int columnCount, int blockSize) {
+    public ImageBlockMatrix(int rowCount, int columnCount) {
         blocks = new ImageBlock[rowCount][columnCount];
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                blocks[i][j] = new ImageBlock(i, j, blockSize);
+                blocks[i][j] = new ImageBlock(i, j);
             }
         }
+    }
+
+    public void initialize(int row, int column, DataBuffer dataBuffer) {
+        blocks[row][column].setDataBuffer(dataBuffer);
     }
 
     /**

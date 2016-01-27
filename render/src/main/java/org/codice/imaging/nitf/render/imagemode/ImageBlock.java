@@ -1,3 +1,4 @@
+<<<<<<< HEAD:render/src/main/java/org/codice/imaging/nitf/render/imagehandler/ImageBlock.java
 /*
  * Copyright (c) Codice Foundation
  *
@@ -13,8 +14,11 @@
  *
  */
 package org.codice.imaging.nitf.render.imagehandler;
+=======
+package org.codice.imaging.nitf.render.imagemode;
+>>>>>>> Refactored uncompressed rendering pattern:render/src/main/java/org/codice/imaging/nitf/render/imagemode/ImageBlock.java
 
-import java.nio.IntBuffer;
+import java.awt.image.DataBuffer;
 
 /**
  * An ImageBlock represents a single block of a larger image.
@@ -22,18 +26,16 @@ import java.nio.IntBuffer;
 class ImageBlock {
     private int row;
     private int column;
-    private IntBuffer data;
+    private DataBuffer data;
 
     /**
      *
      * @param row - the row position of this ImageBlock in the larger image.
      * @param column - the column position of this ImageBlock in the larger image.
-     * @param blockSize - the size of this block.
      */
-    public ImageBlock(int row, int column, int blockSize) {
+    public ImageBlock(int row, int column) {
         this.row = row;
         this.column = column;
-        this.data = IntBuffer.allocate(blockSize);
     }
 
     /**
@@ -56,7 +58,15 @@ class ImageBlock {
      *
      * @return the IntBuffer that contains the data for this ImageBlock.
      */
-    public IntBuffer getData() {
+    public DataBuffer getData() {
         return data;
+    }
+
+    /**
+     *
+     * @param data - the DataBuffer that will hold the block data.
+     */
+    public void setDataBuffer(DataBuffer data) {
+        this.data = data;
     }
 }

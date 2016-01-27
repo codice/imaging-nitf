@@ -1,3 +1,4 @@
+<<<<<<< HEAD:render/src/main/java/org/codice/imaging/nitf/render/imagehandler/ImageModeHandler.java
 /*
  * Copyright (c) Codice Foundation
  *
@@ -13,6 +14,9 @@
  *
  */
 package org.codice.imaging.nitf.render.imagehandler;
+=======
+package org.codice.imaging.nitf.render.imagemode;
+>>>>>>> Refactored uncompressed rendering pattern:render/src/main/java/org/codice/imaging/nitf/render/imagemode/ImageModeHandler.java
 
 import java.awt.*;
 import java.io.IOException;
@@ -20,6 +24,7 @@ import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
 
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
 /**
  * An ImageModeHandler abstracts the processing of an ImageInputStream based on the Nitf Image Mode.
