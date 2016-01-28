@@ -17,9 +17,10 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.common.FileReader;
+
 import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -32,6 +33,8 @@ import org.openide.loaders.MultiFileLoader;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.NbBundle.Messages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Messages({
     "LBL_Nitf_LOADER=Files of NitfFileHeader"
@@ -103,6 +106,7 @@ import org.openide.util.NbBundle.Messages;
 // CSON: MagicNumber
 class NitfDataObject extends MultiDataObject {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MultiDataObject.class);
     private DeferredSegmentParseStrategy parseStrategy;
 
     public NitfDataObject(final FileObject pf, final MultiFileLoader loader) throws IOException {
@@ -115,7 +119,7 @@ class NitfDataObject extends MultiDataObject {
             parseStrategy = new DeferredSegmentParseStrategy();
             NitfFileParser.parse(reader, parseStrategy);
         } catch (ParseException e) {
-            System.out.println("NitfDataObject Exception:" + e);
+            LOGGER.error("NitfDataObject Exception:", e);
             throw new IOException(e);
         }
     }

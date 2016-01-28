@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 class InteriorStyleElement extends ElementHelpers implements AbstractElement {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InteriorStyleElement.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InteriorStyleElement.class);
     private Mode mode = Mode.HOLLOW;
 
     private static final int STYLE_HOLLOW = 0;
@@ -87,7 +87,7 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
                 mode = Mode.INTERPOLATED;
                 break;
             default:
-                LOG.info("Unknown Interior Style value: " + data);
+                LOGGER.info("Unknown Interior Style value: " + data);
                 break;
         }
     }
@@ -101,10 +101,10 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
 
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
-        System.out.println("TODO: render for " + getFriendlyName());
+        LOGGER.debug("TODO: render for " + getFriendlyName());
         StringBuilder builder = new StringBuilder();
         addStringDescription(builder);
-        System.out.print(builder.toString());
+        LOGGER.debug(builder.toString());
     }
 
 }

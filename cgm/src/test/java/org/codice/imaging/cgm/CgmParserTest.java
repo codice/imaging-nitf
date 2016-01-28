@@ -46,11 +46,14 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class CgmParserTest {
+    private final Logger LOGGER = LoggerFactory.getLogger(CgmParserTest.class);
 
     public CgmParserTest() {
     }
@@ -136,16 +139,16 @@ public class CgmParserTest {
 
     private void testOneImage(String parentDirectory, String testfile) throws IOException {
         String inputFileName = File.separator + parentDirectory + File.separator + testfile;
-        System.out.println("================================== Testing :" + inputFileName);
+        LOGGER.info("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         try {
-            System.out.println("loading from InputStream");
+            LOGGER.info("loading from InputStream");
             NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getClass().getResourceAsStream(inputFileName)));
             AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
             NitfFileParser.parse(reader, parseStrategy);
 
             if (parseStrategy.getGraphicSegmentHeaders().isEmpty()) {
-                System.out.println("Loaded file, but found no graphic segments.");
+                LOGGER.info("Loaded file, but found no graphic segments.");
                 System.exit(0);
             }
             NitfGraphicSegmentHeader segment = parseStrategy.getGraphicSegmentHeaders().get(0);
@@ -163,8 +166,7 @@ public class CgmParserTest {
             File targetFile = new File("target" + File.separator + testfile + "cgm.png");
             ImageIO.write(targetImage, "png", targetFile);
         } catch (ParseException e) {
-            System.out.println("Failed to load from InputStream " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Failed to load from InputStream " + e.getMessage());
         }
     }
 }

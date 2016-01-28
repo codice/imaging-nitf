@@ -14,10 +14,12 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.text.ParseException;
-import org.codice.imaging.nitf.core.RGBColour;
 import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
 import static org.codice.imaging.nitf.core.common.CommonConstants.RGB_COLOUR_LENGTH;
+
+import java.text.ParseException;
+
+import org.codice.imaging.nitf.core.RGBColour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,13 +64,9 @@ public abstract class AbstractNitfSegmentParser {
     }
 
     /**
-<<<<<<< HEAD
      * Read in a NITF date/time format.
      *
      * Note that this is relatively tolerant, and may not result in something usable as a date/time class in Java.
-=======
-     * Read in a NitfDateTime from the current reader position.
->>>>>>> [IMG-75] Be more tolerant of incomplete / empty date fields,
      *
      * @return a NitfDateTime from head of the reader stream.
      * @throws ParseException when the next token is not the expected format for a NitfDateTime.

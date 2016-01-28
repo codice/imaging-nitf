@@ -22,9 +22,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+
 import javax.imageio.ImageIO;
+
 import org.codice.imaging.nitf.render.flow.NitfParserInputFlow;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import junit.framework.TestCase;
 
 /**
@@ -34,6 +39,8 @@ import junit.framework.TestCase;
  * http://www.gwg.nga.mil/ntb/baseline/software/testfile/Nitfv2_1/scen_2_1.html
  */
 public class RenderJitcTest extends TestCase {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RenderJitcTest.class);
 
     public RenderJitcTest(String testName) {
         super(testName);
@@ -282,7 +289,7 @@ public class RenderJitcTest extends TestCase {
     private void testOneFile(final String testfile, final String parentDirectory)
             throws IOException, ParseException {
         String inputFileName = File.separator + parentDirectory + File.separator + testfile;
-        System.out.println("================================== Testing :" + inputFileName);
+        LOGGER.info("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
 
         final ThreadLocal<Integer> i = new ThreadLocal<Integer>();
@@ -297,8 +304,8 @@ public class RenderJitcTest extends TestCase {
                     try {
                         BufferedImage img = renderer.render(header, imageData);
                         ImageIO.write(img, "png", new File("target" + File.separator + testfile + "_" + i.get() + ".png"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (IOException|UnsupportedOperationException e) {
+                        LOGGER.error(e.getMessage(), e);
                     }
 
                     i.set(i.get() + 1);

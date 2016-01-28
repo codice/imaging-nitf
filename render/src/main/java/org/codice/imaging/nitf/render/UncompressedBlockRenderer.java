@@ -21,15 +21,20 @@ import java.awt.image.DataBufferUShort;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
+
 import javax.imageio.stream.ImageInputStream;
+
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.image.PixelJustification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class UncompressedBlockRenderer implements BlockRenderer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UncompressedBlockRenderer.class);
     private NitfImageSegmentHeader mImageSegmentHeader = null;
     private ImageInputStream mImageData = null;
     private ImageMask mMask = null;
@@ -68,8 +73,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
             case MULTIBAND:
                 return getNextImageBlockMultiband();
             default:
-                System.out.println("Unhandled image representation:" + mImageSegmentHeader.getImageRepresentation());
-                return null;
+                throw new UnsupportedOperationException("Unhandled image representation:" + mImageSegmentHeader.getImageRepresentation());
         }
     }
 
@@ -81,8 +85,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
 
     private BufferedImage getNextImageBlockMono() throws IOException {
         if ((mImageSegmentHeader.getImageMode() != ImageMode.BLOCKINTERLEVE) || (mImageSegmentHeader.getNumBands() != 1)) {
-            System.out.println("Unsupported mode / band combination: " + mImageSegmentHeader.getImageMode() + ", " + mImageSegmentHeader.getNumBands());
-            return null;
+            throw new UnsupportedOperationException("Unsupported mode / band combination: " + mImageSegmentHeader.getImageMode() + ", " + mImageSegmentHeader.getNumBands());
         }
         // TODO: masked image
         switch (mImageSegmentHeader.getNumberOfBitsPerPixelPerBand()) {
@@ -96,15 +99,13 @@ class UncompressedBlockRenderer implements BlockRenderer {
                 if (mImageSegmentHeader.getNumberOfBitsPerPixelPerBand() < 16) {
                     return getNextImageBlockMonoArbitrary();
                 } else {
-                    System.out.println("Unhandled Mono bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
+                    throw new UnsupportedOperationException("Unhandled Mono bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
                 }
-                return null;
         }
     }
     private BufferedImage getNextImageBlockRGBLUT() throws IOException {
         if ((mImageSegmentHeader.getImageMode() != ImageMode.BLOCKINTERLEVE) || (mImageSegmentHeader.getNumBands() != 1)) {
-            System.out.println("Unsupported mode / band combination: " + mImageSegmentHeader.getImageMode() + ", " + mImageSegmentHeader.getNumBands());
-            return null;
+            throw new UnsupportedOperationException("Unsupported mode / band combination: " + mImageSegmentHeader.getImageMode() + ", " + mImageSegmentHeader.getNumBands());
         }
         // TODO: masked image
         switch (mImageSegmentHeader.getNumberOfBitsPerPixelPerBand()) {
@@ -113,8 +114,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
             case 8:
                 return getNextImageBlockRGBLUT8();
             default:
-                System.out.println("Unhandled RGBLUT bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
-                return null;
+                throw new UnsupportedOperationException("Unhandled RGBLUT bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
         }
     }
 
@@ -122,8 +122,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
         if (mImageSegmentHeader.getActualBitsPerPixelPerBand() == 8) {
             return getNextImageBlockRGB24();
         } else {
-            System.out.println("Unhandled RGBTRUECOLOUR bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
-            return null;
+            throw new UnsupportedOperationException("Unhandled RGBTRUECOLOUR bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
         }
     }
 
@@ -131,8 +130,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
         if (mImageSegmentHeader.getActualBitsPerPixelPerBand() == 8) {
             return getNextImageBlockMultiband8();
         } else {
-            System.out.println("Unhandled MULTIBAND bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
-            return null;
+            throw new UnsupportedOperationException("Unhandled MULTIBAND bit depth:" + mImageSegmentHeader.getNumberOfBitsPerPixelPerBand());
         }
     }
 
@@ -231,7 +229,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
                 }
             }
         } else {
-            System.out.println("Unhandled image mode for RGB24:" + mImageSegmentHeader.getImageMode());
+            throw new UnsupportedOperationException("Unhandled image mode for RGB24:" + mImageSegmentHeader.getImageMode());
         }
 
         int[] imgData = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
@@ -314,8 +312,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
                             mImageData.read();
                             break;
                         default:
-                            System.out.println("unhandled image representation: " + mImageSegmentHeader.getImageBandZeroBase(bandIndex).getImageRepresentation());
-                            break;
+                            throw new UnsupportedOperationException("unhandled image representation: " + mImageSegmentHeader.getImageBandZeroBase(bandIndex).getImageRepresentation());
                     }
                 }
                 if ((mMask == null) || (!mMask.isPadPixel(data[i]))) {
@@ -346,8 +343,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
                             mImageData.skipBytes(mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal());
                             break;
                         default:
-                            System.out.println("unhandled image representation: " + mImageSegmentHeader.getImageBandZeroBase(bandIndex).getImageRepresentation());
-                            break;
+                            throw new UnsupportedOperationException("unhandled image representation: " + mImageSegmentHeader.getImageBandZeroBase(bandIndex).getImageRepresentation());
                     }
 
                 }
@@ -389,8 +385,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
                         mImageData.skipBytes(mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal() * mImageSegmentHeader.getNumberOfPixelsPerBlockVertical());
                         break;
                     default:
-                        System.out.println("unhandled image representation: " + mImageSegmentHeader.getImageBandZeroBase(bandIndex).getImageRepresentation());
-                        break;
+                        throw new UnsupportedOperationException("unhandled image representation: " + mImageSegmentHeader.getImageBandZeroBase(bandIndex).getImageRepresentation());
                     }
                 }
             for (int row = 0; row < mImageSegmentHeader.getNumberOfPixelsPerBlockVertical(); ++row) {
@@ -402,7 +397,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
                 }
             }
         } else {
-            System.out.println("Unhandled image mode for MULTIBAND:" + mImageSegmentHeader.getImageMode());
+            throw new UnsupportedOperationException("Unhandled image mode for MULTIBAND:" + mImageSegmentHeader.getImageMode());
         }
         int[] imgData = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
         System.arraycopy(data, 0, imgData, 0, data.length);
@@ -413,7 +408,7 @@ class UncompressedBlockRenderer implements BlockRenderer {
         // TODO: this should handle mask blocks.
         int numberOfBlocks = rowIndex * mImageSegmentHeader.getNumberOfBlocksPerRow() + columnIndex;
         if (mMask.isMaskedBlock(numberOfBlocks, 0)) {
-            System.out.println("Some masked block");
+            LOGGER.debug("Some masked block");
         }
         return numberOfBlocks * mImageSegmentHeader.getNumberOfBytesPerBlock();
     }

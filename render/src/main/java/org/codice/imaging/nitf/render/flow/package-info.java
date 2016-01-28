@@ -26,7 +26,7 @@
  *   new NitfParserInputFlow()
  *       .inputStream(getImageInputStream())
  *       .allData()
- *       .fileHeader(header -> System.out.println(header.getIdentifier())
+ *       .fileHeader(header -> LOGGER.debug(header.getIdentifier())
  *       .forEachImage((header, imageInputStream) -> renderImage(header, imageInputStream);
  * }
  * </pre>

@@ -170,7 +170,7 @@ enum CgmIdentifier {
     SYMBOL_SIZE(CgmClass.ATTRIBUTE, 50, "SYMBOL SIZE"),
     SYMBOL_ORIENTATION(CgmClass.ATTRIBUTE, 51, "SYMBOL ORIENTATION");
 
-    private static final Logger LOG = LoggerFactory.getLogger(CgmIdentifier.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CgmIdentifier.class);
 
     private final CgmClass classId;
     private final int id;
@@ -187,13 +187,13 @@ enum CgmIdentifier {
     }
 
     static CgmIdentifier findIdentifier(final int elementClass, final int elementId) {
-        // System.out.println(String.format("Searching for for %d:%d", elementClass, elementId));
+        LOGGER.trace(String.format("Searching for %d:%d", elementClass, elementId));
         for (CgmIdentifier cgmIdentifier : values()) {
             if ((cgmIdentifier.classId.getClassIdentifier() == elementClass) && (cgmIdentifier.id == elementId)) {
                 return cgmIdentifier;
             }
         }
-        LOG.warn(String.format("Could not find identifier for %d:%d", elementClass, elementId));
+        LOGGER.warn(String.format("Could not find identifier for %d:%d", elementClass, elementId));
         return UNKNOWN;
     }
 
