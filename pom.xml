@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
 
     <properties>
         <junit.version>4.11</junit.version>
@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
     <name>Codice Imaging: NITF Parent</name>
     <url>http://www.codice.org</url>
+
     <modules>
         <module>shared-test-resources</module>
         <module>core</module>
@@ -23,6 +24,7 @@
         <module>render</module>
         <module>nitfNetbeansFileType</module>
     </modules>
+
     <distributionManagement>
         <snapshotRepository>
             <id>snapshots</id>
@@ -33,6 +35,11 @@
             <url>${releases.repository.url}</url>
         </repository>
     </distributionManagement>
+
+    <scm>
+      <connection>scm:git:git@github.com:codice/imaging-nitf.git</connection>
+      <tag>HEAD</tag>
+  </scm>
 
     <dependencies>
         <dependency>
