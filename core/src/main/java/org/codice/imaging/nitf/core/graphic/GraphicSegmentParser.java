@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.graphic;
 
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
@@ -37,34 +37,34 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
-    Parser for a graphic segment subheader in a NITF 2.1 / NSIF 1.0 file.
+    Parser for a graphic segment in a NITF 2.1 / NSIF 1.0 file.
 */
-public class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class GraphicSegmentParser extends AbstractSegmentParser {
 
     private int graphicExtendedSubheaderLength = 0;
 
-    private NitfGraphicSegmentHeaderImpl segment = null;
+    private GraphicSegmentImpl segment = null;
 
     /**
      * Default constructor.
      */
-    public NitfGraphicSegmentHeaderParser() {
+    public GraphicSegmentParser() {
     }
 
     /**
-     * Parse NitfGraphicSegmentHeader from the specified reader, using the specified parseStrategy.
+     * Parse Graphic segment from the specified reader, using the specified parseStrategy.
      *
      * The reader provides the data. The parse strategy selects which data to store.
      *
      * @param nitfReader - the NITF input reader.
      * @param parseStrategy - the strategy that defines which elements to parse or skip.
-     * @return a fully parsed NitfGraphicSegmentHeader.
+     * @return a fully parsed Graphic segment.
      * @throws ParseException when the parser encounters unexpected input from the reader.
      */
-    public final GraphicSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final GraphicSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
-        segment = new NitfGraphicSegmentHeaderImpl();
+        segment = new GraphicSegmentImpl();
         parsingStrategy = parseStrategy;
 
         readSY();

@@ -18,10 +18,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.List;
-import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmRenderer;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.NitfRenderer;
 import org.openide.awt.ActionID;
 import org.openide.util.Exceptions;
@@ -48,8 +47,7 @@ import org.openide.windows.TopComponent;
 public class GraphicViewPane extends TopComponent {
 
     private List<AbstractElement> commands;
-    private NitfImageSegmentHeader imageSegment;
-    private ImageInputStream imageData;
+    private ImageSegment imageSegment;
     private long initialImageStreamOffset;
 
     /**
@@ -101,8 +99,8 @@ public class GraphicViewPane extends TopComponent {
         if (imageSegment != null) {
             NitfRenderer render = new NitfRenderer();
             try {
-                imageData.seek(initialImageStreamOffset);
-                render.render(imageSegment, imageData, g2);
+                imageSegment.getData().seek(initialImageStreamOffset);
+                render.render(imageSegment, g2);
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
             }
@@ -113,9 +111,8 @@ public class GraphicViewPane extends TopComponent {
         commands = cgmCommands;
     }
 
-    final void setImage(final NitfImageSegmentHeader imageSegmentHeader, final ImageInputStream imageDataReader) throws IOException {
-        imageSegment = imageSegmentHeader;
-        imageData = imageDataReader;
-        initialImageStreamOffset = imageData.getStreamPosition();
+    final void setImage(final ImageSegment imgSegment) throws IOException {
+        imageSegment = imgSegment;
+        initialImageStreamOffset = imageSegment.getData().getStreamPosition();
     }
 }

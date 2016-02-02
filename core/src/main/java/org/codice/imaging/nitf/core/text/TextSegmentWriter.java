@@ -45,45 +45,36 @@ public class TextSegmentWriter extends AbstractSegmentWriter {
     }
 
     /**
-     * Write out the subheader for the specified text segment.
+     * Write out the specified text segment.
      *
-     * @param header the header content to write out
+     * @param textSegment the content to write out
      * @param fileType the type of file (NITF version) to write the text header out for.
      * @throws IOException on write failure.
      * @throws ParseException on TRE parsing failure.
      */
-    public final void writeTextHeader(final TextSegmentHeader header, final FileType fileType) throws IOException, ParseException {
+    public final void writeTextSegment(final TextSegment textSegment, final FileType fileType) throws IOException, ParseException {
         writeFixedLengthString(TextConstants.TE, TextConstants.TE.length());
         if (fileType == FileType.NITF_TWO_ZERO) {
-            writeFixedLengthString(header.getIdentifier(), TEXTID20_LENGTH);
+            writeFixedLengthString(textSegment.getIdentifier(), TEXTID20_LENGTH);
         } else {
-            writeFixedLengthString(header.getIdentifier(), TEXTID_LENGTH);
-            writeFixedLengthNumber(header.getAttachmentLevel(), TXTALVL_LENGTH);
+            writeFixedLengthString(textSegment.getIdentifier(), TEXTID_LENGTH);
+            writeFixedLengthNumber(textSegment.getAttachmentLevel(), TXTALVL_LENGTH);
         }
-        writeDateTime(header.getTextDateTime());
-        writeFixedLengthString(header.getTextTitle(), TXTITL_LENGTH);
-        writeSecurityMetadata(header.getSecurityMetadata(), fileType);
+        writeDateTime(textSegment.getTextDateTime());
+        writeFixedLengthString(textSegment.getTextTitle(), TXTITL_LENGTH);
+        writeSecurityMetadata(textSegment.getSecurityMetadata(), fileType);
         writeENCRYP();
-        writeFixedLengthString(header.getTextFormat().getTextEquivalent(), TXTFMT_LENGTH);
-        byte[] textExtendedSubheaderData = mTreParser.getTREs(header, TreSource.TextExtendedSubheaderData);
+        writeFixedLengthString(textSegment.getTextFormat().getTextEquivalent(), TXTFMT_LENGTH);
+        byte[] textExtendedSubheaderData = mTreParser.getTREs(textSegment, TreSource.TextExtendedSubheaderData);
         int textExtendedSubheaderDataLength = textExtendedSubheaderData.length;
-        if ((textExtendedSubheaderDataLength > 0) || (header.getExtendedHeaderDataOverflow() != 0)) {
+        if ((textExtendedSubheaderDataLength > 0) || (textSegment.getExtendedHeaderDataOverflow() != 0)) {
             textExtendedSubheaderDataLength += TXSOFL_LENGTH;
         }
         writeFixedLengthNumber(textExtendedSubheaderDataLength, TXSHDL_LENGTH);
         if (textExtendedSubheaderDataLength > 0) {
-            writeFixedLengthNumber(header.getExtendedHeaderDataOverflow(), TXSOFL_LENGTH);
+            writeFixedLengthNumber(textSegment.getExtendedHeaderDataOverflow(), TXSOFL_LENGTH);
             mOutput.write(textExtendedSubheaderData);
         }
-    }
-
-    /**
-     * Write out the data associated with this text segment.
-     *
-     * @param textData the data to write out.
-     * @throws IOException on writing failure.
-     */
-    public final void writeTextData(final String textData) throws IOException {
-        mOutput.writeBytes(textData);
+        mOutput.writeBytes(textSegment.getData());
     }
 }

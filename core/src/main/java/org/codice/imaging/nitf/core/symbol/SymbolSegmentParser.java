@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.symbol;
 
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
@@ -40,29 +40,29 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
-    Parser for a symbol segment subheader in a NITF 2.0 file.
+    Parser for a symbol segment in a NITF 2.0 file.
 */
-public class SymbolSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class SymbolSegmentParser extends AbstractSegmentParser {
 
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
 
-    private SymbolSegmentHeaderImpl segment = null;
+    private SymbolSegmentImpl segment = null;
 
     /**
-     * Parse SymbolSegmentHeader from the specified reader, using the specified parseStrategy.
+     * Parse SymbolSegment from the specified reader, using the specified parseStrategy.
      *
      * The reader provides the data. The parse strategy selects which data to store.
      *
-     * @param nitfReader The NitfReader to read SymbolSegmentHeaderImpl from.
+     * @param nitfReader The NitfReader to read the SymbolSegment from.
      * @param parseStrategy the parsing strategy to use to process the data.
-     * @return the parsed SymbolSegmentHeader.
+     * @return the parsed SymbolSegment.
      * @throws ParseException when the input from the NitfReader isn't what was expected.
      */
-    public final SymbolSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final SymbolSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
-        segment = new SymbolSegmentHeaderImpl();
+        segment = new SymbolSegmentImpl();
         parsingStrategy = parseStrategy;
 
         readSY();

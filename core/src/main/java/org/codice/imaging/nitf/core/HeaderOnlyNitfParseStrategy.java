@@ -27,7 +27,7 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
      */
     @Override
     protected final void handleImageSegment(final NitfReader reader, final int i) throws ParseException {
-        parseImageSegmentHeaderButSkipData(reader, i);
+        imageSegments.add(readImageSegment(reader, i, false));
     }
 
     /**
@@ -35,7 +35,7 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
      */
     @Override
     protected final void handleSymbolSegment(final NitfReader reader, final int i) throws ParseException {
-        parseSymbolSegmentHeaderButSkipData(reader, i);
+        symbolSegments.add(readSymbolSegment(reader, i, false));
     }
 
     /**
@@ -43,7 +43,7 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
      */
     @Override
     protected final void handleLabelSegment(final NitfReader reader, final int i) throws ParseException {
-        parseLabelSegmentHeaderButSkipData(reader, i);
+        labelSegments.add(readLabelSegment(reader, i, false));
     }
 
     /**
@@ -51,7 +51,7 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
      */
     @Override
     protected final void handleGraphicSegment(final NitfReader reader, final int i) throws ParseException {
-        parseGraphicSegmentHeaderButSkipData(reader, i);
+        graphicSegments.add(readGraphicSegment(reader, i, false));
     }
 
     /**
@@ -59,7 +59,7 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
      */
     @Override
     protected final void handleTextSegment(final NitfReader reader, final int i) throws ParseException {
-        parseTextSegmentHeaderButSkipData(reader, i);
+        textSegments.add(readTextSegment(reader, i, false));
     }
 
     /**
@@ -67,7 +67,7 @@ public class HeaderOnlyNitfParseStrategy extends SlottedNitfParseStrategy {
      */
     @Override
     protected final void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException {
-        parseDataExtensionSegmentHeaderButSkipData(reader, i);
+        dataExtensionSegments.add(readDataExtensionSegment(reader, i, false));
     }
 
 }

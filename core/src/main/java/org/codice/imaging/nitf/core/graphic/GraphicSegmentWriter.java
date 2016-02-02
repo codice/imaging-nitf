@@ -53,40 +53,41 @@ public class GraphicSegmentWriter extends AbstractSegmentWriter {
     }
 
     /**
-     * Write out the subheader for the specified graphic segment.
+     * Write out the specified graphic segment.
      *
-     * @param header the header content to write out
+     * @param graphicSegment the segment content to write out
      * @throws IOException on write failure.
      * @throws ParseException on TRE parsing failure.
      */
-    public final void writeGraphicHeader(final GraphicSegmentHeader header) throws IOException, ParseException {
+    public final void writeGraphicSegment(final GraphicSegment graphicSegment) throws IOException, ParseException {
         writeFixedLengthString(SY, SY.length());
-        writeFixedLengthString(header.getIdentifier(), SID_LENGTH);
-        writeFixedLengthString(header.getGraphicName(), SNAME_LENGTH);
-        writeSecurityMetadata(header.getSecurityMetadata(), FileType.NITF_TWO_ONE);
+        writeFixedLengthString(graphicSegment.getIdentifier(), SID_LENGTH);
+        writeFixedLengthString(graphicSegment.getGraphicName(), SNAME_LENGTH);
+        writeSecurityMetadata(graphicSegment.getSecurityMetadata(), FileType.NITF_TWO_ONE);
         writeENCRYP();
         writeFixedLengthString(SFMT_CGM, SFMT_CGM.length());
         writeFixedLengthString(SSTRUCT, SSTRUCT.length());
-        writeFixedLengthNumber(header.getGraphicDisplayLevel(), SDLVL_LENGTH);
-        writeFixedLengthNumber(header.getAttachmentLevel(), SALVL_LENGTH);
-        writeFixedLengthNumber(header.getGraphicLocationRow(), SLOC_HALF_LENGTH);
-        writeFixedLengthNumber(header.getGraphicLocationColumn(), SLOC_HALF_LENGTH);
-        writeFixedLengthNumber(header.getBoundingBox1Row(), SBND1_HALF_LENGTH);
-        writeFixedLengthNumber(header.getBoundingBox1Column(), SBND1_HALF_LENGTH);
-        writeFixedLengthString(header.getGraphicColour().getTextEquivalent(), SCOLOR_LENGTH);
-        writeFixedLengthNumber(header.getBoundingBox2Row(), SBND2_HALF_LENGTH);
-        writeFixedLengthNumber(header.getBoundingBox2Column(), SBND2_HALF_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getGraphicDisplayLevel(), SDLVL_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getAttachmentLevel(), SALVL_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getGraphicLocationRow(), SLOC_HALF_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getGraphicLocationColumn(), SLOC_HALF_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getBoundingBox1Row(), SBND1_HALF_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getBoundingBox1Column(), SBND1_HALF_LENGTH);
+        writeFixedLengthString(graphicSegment.getGraphicColour().getTextEquivalent(), SCOLOR_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getBoundingBox2Row(), SBND2_HALF_LENGTH);
+        writeFixedLengthNumber(graphicSegment.getBoundingBox2Column(), SBND2_HALF_LENGTH);
         writeFixedLengthString(SRES, SRES.length()); // SRES2
-        byte[] graphicExtendedSubheaderData = mTreParser.getTREs(header, TreSource.GraphicExtendedSubheaderData);
+        byte[] graphicExtendedSubheaderData = mTreParser.getTREs(graphicSegment, TreSource.GraphicExtendedSubheaderData);
         int graphicExtendedSubheaderDataLength = graphicExtendedSubheaderData.length;
-        if ((graphicExtendedSubheaderDataLength > 0) || (header.getExtendedHeaderDataOverflow() != 0)) {
+        if ((graphicExtendedSubheaderDataLength > 0) || (graphicSegment.getExtendedHeaderDataOverflow() != 0)) {
             graphicExtendedSubheaderDataLength += SXSOFL_LENGTH;
         }
         writeFixedLengthNumber(graphicExtendedSubheaderDataLength, SXSHDL_LENGTH);
         if (graphicExtendedSubheaderDataLength > 0) {
-            writeFixedLengthNumber(header.getExtendedHeaderDataOverflow(), SXSOFL_LENGTH);
+            writeFixedLengthNumber(graphicSegment.getExtendedHeaderDataOverflow(), SXSOFL_LENGTH);
             mOutput.write(graphicExtendedSubheaderData);
         }
+        writeSegmentData(graphicSegment.getData());
     }
 
 }

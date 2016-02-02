@@ -18,12 +18,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.Action;
-
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmParser;
-import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
@@ -34,7 +32,7 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
     private static final String BOUNDING_BOX_POSITION_DESCRIPTION =
                     "bounding box for the CGM graphic, relative to the CCS, image or graphic to which the graphic is attached.";
 
-    private final GraphicSegmentHeader header;
+    private final GraphicSegment header;
     private final int graphicSegmentIndex;
     private final DeferredSegmentParseStrategy parseStrategy;
 
@@ -42,7 +40,7 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
         super(Children.LEAF);
         graphicSegmentIndex = childKey.getIndex();
         parseStrategy = childKey.getParseStrategy();
-        header = parseStrategy.getGraphicSegmentHeader(graphicSegmentIndex);
+        header = parseStrategy.getGraphicSegments().get(graphicSegmentIndex);
         setDisplayName("Graphic Segment: " + getFriendlyName());
     }
 

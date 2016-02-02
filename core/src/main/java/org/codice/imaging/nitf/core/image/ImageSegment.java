@@ -15,13 +15,14 @@
 package org.codice.imaging.nitf.core.image;
 
 import java.util.List;
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
- Image segment subheader information.
+ Image segment information.
  */
-public interface NitfImageSegmentHeader extends CommonNitfSubSegment {
+public interface ImageSegment extends CommonNitfSubSegment {
 
     /**
      Return the date / time (IDATIM) for the image.
@@ -559,13 +560,6 @@ public interface NitfImageSegmentHeader extends CommonNitfSubSegment {
     int getUserDefinedHeaderOverflow();
 
     /**
-     Return the image data length.
-
-     @return the image data segment length, in bytes
-     */
-    long getImageDataLength();
-
-    /**
      * Calculate the number of bytes per block, assuming uncompressed data.
      *
      * Use of this method on compressed images is probably a bad idea.
@@ -575,11 +569,18 @@ public interface NitfImageSegmentHeader extends CommonNitfSubSegment {
     long getNumberOfBytesPerBlock();
 
     /**
-     Set the image data length.
-     <p>
-     This is the length of the contents of the associated data segment.
-
-     @param length the image data segment length, in bytes
+     * Get the data for this image segment.
+     *
+     * You may need to rewind this stream if it has been previously read.
+     *
+     * @return image input stream containing the data.
      */
-    void setImageSegmentDataLength(long length);
+    ImageInputStream getData();
+
+    /**
+     * Set the data for this image segment.
+     *
+     * @param data the data to set.
+     */
+    void setData(ImageInputStream data);
 }

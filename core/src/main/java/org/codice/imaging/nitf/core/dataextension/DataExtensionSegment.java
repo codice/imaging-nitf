@@ -21,7 +21,7 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 /**
  Common data extension segment parsing functionality.
  */
-public interface NitfDataExtensionSegmentHeader extends CommonNitfSegment {
+public interface DataExtensionSegment extends CommonNitfSegment {
 
     /**
      Return the DES version (DESVER).
@@ -99,13 +99,6 @@ public interface NitfDataExtensionSegmentHeader extends CommonNitfSegment {
     String getUserDefinedSubheaderField();
 
     /**
-     Return the data extension segment data length.
-
-     @return the data extension segment length, in bytes
-     */
-    int getDataExtensionSegmentDataLength();
-
-    /**
      * Check if this DES is a NITF 2.1 TRE overflow DES.
      *
      * @return true for NITF 2.1 TRE overflow, otherwise false
@@ -130,15 +123,6 @@ public interface NitfDataExtensionSegmentHeader extends CommonNitfSegment {
     boolean isTreOverflow(FileType fileType);
 
     /**
-     * Set the data extension segment data length.
-     * <p>
-     * This is the length of the contents of the associated data segment.
-     *
-     * @param length the data extension segment data segment length, in bytes
-     */
-    void setDataExtensionSegmentDataLength(int length);
-
-    /**
      * Merges overflow Tres into this data extension header.
      *
      * @param overflowTres - the Tres to be merged in.
@@ -151,4 +135,18 @@ public interface NitfDataExtensionSegmentHeader extends CommonNitfSegment {
      * @return true if DES is streaming mode updates, otherwise false.
      */
     boolean isStreamingMode();
+
+    /**
+     * Set the DES data, if any.
+     *
+     * @param bytes the data for this DES.
+     */
+    void setData(final byte[] bytes);
+
+    /**
+     * Get the data for this DES.
+     *
+     * @return data for this DES.
+     */
+    byte[] getData();
 }

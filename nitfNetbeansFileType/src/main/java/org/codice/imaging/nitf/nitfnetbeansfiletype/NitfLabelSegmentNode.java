@@ -16,15 +16,14 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
+import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
-import org.openide.util.Exceptions;
 
 class NitfLabelSegmentNode extends AbstractSegmentNode {
 
     private final ChildSegmentKey childKey;
-    private final LabelSegmentHeader header;
+    private final LabelSegment header;
 
     public NitfLabelSegmentNode(final ChildSegmentKey key) throws ParseException {
         super(Children.LEAF);
@@ -42,13 +41,7 @@ class NitfLabelSegmentNode extends AbstractSegmentNode {
     }
 
     String getText() {
-        try {
-            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-            return parseStrategy.getLabelSegmentData(header, childKey.getIndex());
-        } catch (ParseException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-        return "";
+        return header.getData();
     }
 
     @Override

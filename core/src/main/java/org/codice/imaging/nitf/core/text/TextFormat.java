@@ -22,11 +22,11 @@ package org.codice.imaging.nitf.core.text;
 public enum TextFormat {
 
     /**
-        Unknown text format.
-        <p>
-        This indicates an unknown format, and typically indicates a broken file or
-        an error during parsing. This is not a valid value in a NITF text subheader.
-    */
+     * Unknown text format.
+     *
+     * This indicates an unknown format, and typically indicates a broken file or an error during parsing. This is not a
+     * valid value in a NITF text segment.
+     */
     UNKNOWN (""),
 
     /**

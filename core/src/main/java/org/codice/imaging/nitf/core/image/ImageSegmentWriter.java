@@ -82,59 +82,59 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
     }
 
     /**
-     * Write out the subheader for the specified image segment.
+     * Write out the specified image segment.
      *
-     * @param header the header content to write out
+     * @param imageSegment the header content to write out
      * @param fileType the type of file (NITF version) to write the image header out for.
      * @throws IOException on write failure.
      * @throws ParseException on TRE parsing failure.
      */
-    public final void writeImageHeader(final NitfImageSegmentHeader header, final FileType fileType) throws IOException, ParseException {
+    public final void writeImageSegment(final ImageSegment imageSegment, final FileType fileType) throws IOException, ParseException {
         writeFixedLengthString(IM, IM.length());
-        writeFixedLengthString(header.getIdentifier(), IID1_LENGTH);
-        writeDateTime(header.getImageDateTime());
-        writeFixedLengthString(header.getImageTargetId().toString(), TGTID_LENGTH);
-        writeFixedLengthString(header.getImageIdentifier2(), IID2_LENGTH);
-        writeSecurityMetadata(header.getSecurityMetadata(), fileType);
+        writeFixedLengthString(imageSegment.getIdentifier(), IID1_LENGTH);
+        writeDateTime(imageSegment.getImageDateTime());
+        writeFixedLengthString(imageSegment.getImageTargetId().toString(), TGTID_LENGTH);
+        writeFixedLengthString(imageSegment.getImageIdentifier2(), IID2_LENGTH);
+        writeSecurityMetadata(imageSegment.getSecurityMetadata(), fileType);
         writeENCRYP();
-        writeFixedLengthString(header.getImageSource(), ISORCE_LENGTH);
-        writeFixedLengthNumber(header.getNumberOfRows(), NROWS_LENGTH);
-        writeFixedLengthNumber(header.getNumberOfColumns(), NCOLS_LENGTH);
-        writeFixedLengthString(header.getPixelValueType().getTextEquivalent(), PVTYPE_LENGTH);
-        writeFixedLengthString(header.getImageRepresentation().getTextEquivalent(), IREP_LENGTH);
-        writeFixedLengthString(header.getImageCategory().getTextEquivalent(), ICAT_LENGTH);
-        writeFixedLengthNumber(header.getActualBitsPerPixelPerBand(), ABPP_LENGTH);
-        writeFixedLengthString(header.getPixelJustification().getTextEquivalent(), PJUST_LENGTH);
-        writeFixedLengthString(header.getImageCoordinatesRepresentation().getTextEquivalent(fileType), ICORDS_LENGTH);
-        if (header.getImageCoordinatesRepresentation() != ImageCoordinatesRepresentation.NONE) {
-            writeFixedLengthString(header.getImageCoordinates().getCoordinate00().getSourceFormat(),
+        writeFixedLengthString(imageSegment.getImageSource(), ISORCE_LENGTH);
+        writeFixedLengthNumber(imageSegment.getNumberOfRows(), NROWS_LENGTH);
+        writeFixedLengthNumber(imageSegment.getNumberOfColumns(), NCOLS_LENGTH);
+        writeFixedLengthString(imageSegment.getPixelValueType().getTextEquivalent(), PVTYPE_LENGTH);
+        writeFixedLengthString(imageSegment.getImageRepresentation().getTextEquivalent(), IREP_LENGTH);
+        writeFixedLengthString(imageSegment.getImageCategory().getTextEquivalent(), ICAT_LENGTH);
+        writeFixedLengthNumber(imageSegment.getActualBitsPerPixelPerBand(), ABPP_LENGTH);
+        writeFixedLengthString(imageSegment.getPixelJustification().getTextEquivalent(), PJUST_LENGTH);
+        writeFixedLengthString(imageSegment.getImageCoordinatesRepresentation().getTextEquivalent(fileType), ICORDS_LENGTH);
+        if (imageSegment.getImageCoordinatesRepresentation() != ImageCoordinatesRepresentation.NONE) {
+            writeFixedLengthString(imageSegment.getImageCoordinates().getCoordinate00().getSourceFormat(),
                     IGEOLO_LENGTH / NUM_PARTS_IN_IGEOLO);
-            writeFixedLengthString(header.getImageCoordinates().getCoordinate0MaxCol().getSourceFormat(),
+            writeFixedLengthString(imageSegment.getImageCoordinates().getCoordinate0MaxCol().getSourceFormat(),
                     IGEOLO_LENGTH / NUM_PARTS_IN_IGEOLO);
-            writeFixedLengthString(header.getImageCoordinates().getCoordinateMaxRowMaxCol().getSourceFormat(),
+            writeFixedLengthString(imageSegment.getImageCoordinates().getCoordinateMaxRowMaxCol().getSourceFormat(),
                     IGEOLO_LENGTH / NUM_PARTS_IN_IGEOLO);
-            writeFixedLengthString(header.getImageCoordinates().getCoordinateMaxRow0().getSourceFormat(),
+            writeFixedLengthString(imageSegment.getImageCoordinates().getCoordinateMaxRow0().getSourceFormat(),
                     IGEOLO_LENGTH / NUM_PARTS_IN_IGEOLO);
         }
-        writeFixedLengthNumber(header.getImageComments().size(), NICOM_LENGTH);
-        for (String comment : header.getImageComments()) {
+        writeFixedLengthNumber(imageSegment.getImageComments().size(), NICOM_LENGTH);
+        for (String comment : imageSegment.getImageComments()) {
             writeFixedLengthString(comment, ICOM_LENGTH);
         }
-        writeFixedLengthString(header.getImageCompression().getTextEquivalent(), IC_LENGTH);
-        if ((header.getImageCompression() != ImageCompression.NOTCOMPRESSED)
-                && (header.getImageCompression() != ImageCompression.NOTCOMPRESSEDMASK)) {
-            writeFixedLengthString(header.getCompressionRate(), COMRAT_LENGTH);
+        writeFixedLengthString(imageSegment.getImageCompression().getTextEquivalent(), IC_LENGTH);
+        if ((imageSegment.getImageCompression() != ImageCompression.NOTCOMPRESSED)
+                && (imageSegment.getImageCompression() != ImageCompression.NOTCOMPRESSEDMASK)) {
+            writeFixedLengthString(imageSegment.getCompressionRate(), COMRAT_LENGTH);
         }
 
-        if (header.getNumBands() <= MAX_NUM_BANDS_IN_NBANDS_FIELD) {
-            writeFixedLengthNumber(header.getNumBands(), NBANDS_LENGTH);
+        if (imageSegment.getNumBands() <= MAX_NUM_BANDS_IN_NBANDS_FIELD) {
+            writeFixedLengthNumber(imageSegment.getNumBands(), NBANDS_LENGTH);
         } else {
             writeFixedLengthNumber(0, NBANDS_LENGTH);
-            writeFixedLengthNumber(header.getNumBands(), XBANDS_LENGTH);
+            writeFixedLengthNumber(imageSegment.getNumBands(), XBANDS_LENGTH);
         }
 
-        for (int i = 0; i < header.getNumBands(); ++i) {
-            NitfImageBand band = header.getImageBandZeroBase(i);
+        for (int i = 0; i < imageSegment.getNumBands(); ++i) {
+            NitfImageBand band = imageSegment.getImageBandZeroBase(i);
             writeFixedLengthString(band.getImageRepresentation(), IREPBAND_LENGTH);
             writeFixedLengthString(band.getSubCategory(), ISUBCAT_LENGTH);
             writeFixedLengthString("N", IFC_LENGTH);
@@ -149,37 +149,39 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
             }
         }
         writeFixedLengthNumber(0, ISYNC_LENGTH);
-        writeFixedLengthString(header.getImageMode().getTextEquivalent(), IMODE_LENGTH);
-        writeFixedLengthNumber(header.getNumberOfBlocksPerRow(), NBPR_LENGTH);
-        writeFixedLengthNumber(header.getNumberOfBlocksPerColumn(), NBPC_LENGTH);
-        writeFixedLengthNumber(header.getNumberOfPixelsPerBlockHorizontal(), NPPBH_LENGTH);
-        writeFixedLengthNumber(header.getNumberOfPixelsPerBlockVertical(), NPPBV_LENGTH);
-        writeFixedLengthNumber(header.getNumberOfBitsPerPixelPerBand(), NBPP_LENGTH);
-        writeFixedLengthNumber(header.getImageDisplayLevel(), IDLVL_LENGTH);
-        writeFixedLengthNumber(header.getAttachmentLevel(), IALVL_LENGTH);
-        writeFixedLengthNumber(header.getImageLocationRow(), ILOC_HALF_LENGTH);
-        writeFixedLengthNumber(header.getImageLocationColumn(), ILOC_HALF_LENGTH);
-        writeFixedLengthString(header.getImageMagnification(), IMAG_LENGTH);
-        byte[] userDefinedImageData = mTreParser.getTREs(header, TreSource.UserDefinedImageData);
+        writeFixedLengthString(imageSegment.getImageMode().getTextEquivalent(), IMODE_LENGTH);
+        writeFixedLengthNumber(imageSegment.getNumberOfBlocksPerRow(), NBPR_LENGTH);
+        writeFixedLengthNumber(imageSegment.getNumberOfBlocksPerColumn(), NBPC_LENGTH);
+        writeFixedLengthNumber(imageSegment.getNumberOfPixelsPerBlockHorizontal(), NPPBH_LENGTH);
+        writeFixedLengthNumber(imageSegment.getNumberOfPixelsPerBlockVertical(), NPPBV_LENGTH);
+        writeFixedLengthNumber(imageSegment.getNumberOfBitsPerPixelPerBand(), NBPP_LENGTH);
+        writeFixedLengthNumber(imageSegment.getImageDisplayLevel(), IDLVL_LENGTH);
+        writeFixedLengthNumber(imageSegment.getAttachmentLevel(), IALVL_LENGTH);
+        writeFixedLengthNumber(imageSegment.getImageLocationRow(), ILOC_HALF_LENGTH);
+        writeFixedLengthNumber(imageSegment.getImageLocationColumn(), ILOC_HALF_LENGTH);
+        writeFixedLengthString(imageSegment.getImageMagnification(), IMAG_LENGTH);
+        byte[] userDefinedImageData = mTreParser.getTREs(imageSegment, TreSource.UserDefinedImageData);
         int userDefinedImageDataLength = userDefinedImageData.length;
-        if ((userDefinedImageDataLength > 0) || (header.getUserDefinedHeaderOverflow() != 0)) {
+        if ((userDefinedImageDataLength > 0) || (imageSegment.getUserDefinedHeaderOverflow() != 0)) {
             userDefinedImageDataLength += UDOFL_LENGTH;
         }
         writeFixedLengthNumber(userDefinedImageDataLength, UDIDL_LENGTH);
         if (userDefinedImageDataLength > 0) {
-            writeFixedLengthNumber(header.getUserDefinedHeaderOverflow(), UDOFL_LENGTH);
+            writeFixedLengthNumber(imageSegment.getUserDefinedHeaderOverflow(), UDOFL_LENGTH);
             mOutput.write(userDefinedImageData);
         }
-        byte[] imageExtendedSubheaderData = mTreParser.getTREs(header, TreSource.ImageExtendedSubheaderData);
+        byte[] imageExtendedSubheaderData = mTreParser.getTREs(imageSegment, TreSource.ImageExtendedSubheaderData);
         int imageExtendedSubheaderDataLength = imageExtendedSubheaderData.length;
-        if ((imageExtendedSubheaderDataLength > 0) || (header.getExtendedHeaderDataOverflow() != 0)) {
+        if ((imageExtendedSubheaderDataLength > 0) || (imageSegment.getExtendedHeaderDataOverflow() != 0)) {
             imageExtendedSubheaderDataLength += IXSOFL_LENGTH;
         }
         writeFixedLengthNumber(imageExtendedSubheaderDataLength, IXSHDL_LENGTH);
         if (imageExtendedSubheaderDataLength > 0) {
-            writeFixedLengthNumber(header.getExtendedHeaderDataOverflow(), IXSOFL_LENGTH);
+            writeFixedLengthNumber(imageSegment.getExtendedHeaderDataOverflow(), IXSOFL_LENGTH);
             mOutput.write(imageExtendedSubheaderData);
         }
+
+        writeSegmentData(imageSegment.getData());
     }
 
 }

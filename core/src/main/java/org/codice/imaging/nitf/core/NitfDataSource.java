@@ -15,13 +15,12 @@
 package org.codice.imaging.nitf.core;
 
 import java.util.List;
-import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
-import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
-import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
-import org.codice.imaging.nitf.core.text.TextSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
+import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.core.label.LabelSegment;
+import org.codice.imaging.nitf.core.symbol.SymbolSegment;
+import org.codice.imaging.nitf.core.text.TextSegment;
 
 /**
  * Data source for NITF file parts.
@@ -40,83 +39,40 @@ public interface NitfDataSource {
      *
      * @return image segment headers
      */
-    List<NitfImageSegmentHeader> getImageSegmentHeaders();
-
-    /**
-     * Return the list of image segment data.
-     *
-     * @return image segment data
-     */
-    List<ImageInputStream> getImageSegmentData();
+    List<ImageSegment> getImageSegments();
 
     /**
      * Return the graphic segment headers associated with this file.
      *
      * @return graphic segment headers
      */
-    List<GraphicSegmentHeader> getGraphicSegmentHeaders();
-
-    /**
-     * Return list of graphic segment data.
-     *
-     * @return graphic segment data
-     */
-    List<ImageInputStream> getGraphicSegmentData();
+    List<GraphicSegment> getGraphicSegments();
 
     /**
      * Return the symbol segment headers associated with this file.
      *
      * @return symbol segment headers
      */
-    List<SymbolSegmentHeader> getSymbolSegmentHeaders();
+    List<SymbolSegment> getSymbolSegments();
 
     /**
-     * Return the list of symbol segment data.
+     * Return the label segments associated with this file.
      *
-     * @return symbol segment data
+     * @return label segments
      */
-    List<ImageInputStream> getSymbolSegmentData();
-
-    /**
-     * Return the label segment headers associated with this file.
-     *
-     * @return label segment headers
-     */
-    List<LabelSegmentHeader> getLabelSegmentHeaders();
-
-    /**
-     * Return list of label segment data.
-     *
-     * @return label segment data
-     */
-    List<String> getLabelSegmentData();
+    List<LabelSegment> getLabelSegments();
 
     /**
      * Return the text segments associated with this file.
      *
      * @return text segments
      */
-    List<TextSegmentHeader> getTextSegmentHeaders();
+    List<TextSegment> getTextSegments();
 
     /**
-     * Return list of text segment data.
+     * Return the data extension segments associated with this file.
      *
-     * @return text segment data
+     * @return data extension segments
      */
-    List<String> getTextSegmentData();
-
-    /**
-     * Return the data extension segment headers associated with this file.
-     *
-     * @return data extension segment headers
-     */
-    List<NitfDataExtensionSegmentHeader> getDataExtensionSegmentHeaders();
-
-    /**
-     * Return list of data extension segment data.
-     *
-     * @return data extension segment data
-     */
-    // TODO: make this return something like a list of DataInputStream
-    List<byte[]> getDataExtensionSegmentData();
+    List<DataExtensionSegment> getDataExtensionSegments();
 }

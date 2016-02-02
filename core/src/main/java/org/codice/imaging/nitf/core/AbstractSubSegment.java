@@ -17,11 +17,11 @@ package org.codice.imaging.nitf.core;
 import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 
 /**
-    Common data elements for NITF data segment subheaders.
-    <p>
-    This excludes the Data Extension Segment subheader.
-*/
-public abstract class AbstractNitfSubSegment extends AbstractCommonNitfSegment
+ * Common data elements for NITF data segments.
+ *
+ * This excludes the Data Extension Segment.
+ */
+public abstract class AbstractSubSegment extends AbstractCommonNitfSegment
         implements CommonNitfSubSegment {
 
     private int extendedHeaderDataOverflow = 0;

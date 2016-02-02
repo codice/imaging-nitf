@@ -17,11 +17,17 @@ package org.codice.imaging.nitf.core;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentWriter;
+import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegmentWriter;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.ImageSegmentWriter;
+import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.label.LabelSegmentWriter;
+import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolSegmentWriter;
+import org.codice.imaging.nitf.core.text.TextSegment;
 import org.codice.imaging.nitf.core.text.TextSegmentWriter;
 import org.codice.imaging.nitf.core.tre.TreParser;
 
@@ -67,57 +73,44 @@ public abstract class SharedNitfWriter implements NitfWriter {
 
     private void writeImageSegments() throws ParseException, IOException {
         ImageSegmentWriter imageSegmentWriter = new ImageSegmentWriter(mOutput, mTreParser);
-        int numberOfImageSegments = mDataSource.getImageSegmentHeaders().size();
-        for (int i = 0; i < numberOfImageSegments; ++i) {
-            imageSegmentWriter.writeImageHeader(mDataSource.getImageSegmentHeaders().get(i), mDataSource.getNitfHeader().getFileType());
-            imageSegmentWriter.writeSegmentData(mDataSource.getImageSegmentData().get(i));
+        for (ImageSegment imageSegment : mDataSource.getImageSegments()) {
+            imageSegmentWriter.writeImageSegment(imageSegment, mDataSource.getNitfHeader().getFileType());
         }
     }
 
     private void writeGraphicSegments() throws IOException, ParseException {
         GraphicSegmentWriter graphicSegmentWriter = new GraphicSegmentWriter(mOutput, mTreParser);
-        int numberOfGraphicSegments = mDataSource.getGraphicSegmentHeaders().size();
-        for (int i = 0; i < numberOfGraphicSegments; ++i) {
-            graphicSegmentWriter.writeGraphicHeader(mDataSource.getGraphicSegmentHeaders().get(i));
-            graphicSegmentWriter.writeSegmentData(mDataSource.getGraphicSegmentData().get(i));
+        for (GraphicSegment graphicSegment : mDataSource.getGraphicSegments()) {
+            graphicSegmentWriter.writeGraphicSegment(graphicSegment);
         }
     }
 
     private void writeSymbolSegments() throws ParseException, IOException {
         SymbolSegmentWriter symbolSegmentWriter = new SymbolSegmentWriter(mOutput, mTreParser);
-        int numberOfSymbolSegments = mDataSource.getSymbolSegmentHeaders().size();
-        for (int i = 0; i < numberOfSymbolSegments; ++i) {
-            symbolSegmentWriter.writeSymbolHeader(mDataSource.getSymbolSegmentHeaders().get(i));
-            symbolSegmentWriter.writeSegmentData(mDataSource.getSymbolSegmentData().get(i));
+        for (SymbolSegment symbolSegment : mDataSource.getSymbolSegments()) {
+            symbolSegmentWriter.writeSymbolSegment(symbolSegment);
         }
     }
 
     private void writeLabelSegments() throws IOException, ParseException {
         LabelSegmentWriter labelSegmentWriter = new LabelSegmentWriter(mOutput, mTreParser);
-        int numberOfLabelSegments = mDataSource.getLabelSegmentHeaders().size();
-        for (int i = 0; i < numberOfLabelSegments; ++i) {
-            labelSegmentWriter.writeLabelHeader(mDataSource.getLabelSegmentHeaders().get(i));
-            labelSegmentWriter.writeLabelData(mDataSource.getLabelSegmentData().get(i));
+        for (LabelSegment labelSegment : mDataSource.getLabelSegments()) {
+            labelSegmentWriter.writeLabel(labelSegment);
         }
     }
 
     private void writeTextSegments() throws ParseException, IOException {
         TextSegmentWriter textSegmentWriter = new TextSegmentWriter(mOutput, mTreParser);
-        int numberOfTextSegments = mDataSource.getTextSegmentHeaders().size();
-        for (int i = 0; i < numberOfTextSegments; ++i) {
-            textSegmentWriter.writeTextHeader(mDataSource.getTextSegmentHeaders().get(i), mDataSource.getNitfHeader().getFileType());
-            textSegmentWriter.writeTextData(mDataSource.getTextSegmentData().get(i));
+        for (TextSegment textSegment : mDataSource.getTextSegments()) {
+            textSegmentWriter.writeTextSegment(textSegment, mDataSource.getNitfHeader().getFileType());
         }
     }
 
     private void writeDataExtensionSegments() throws ParseException, IOException {
-        int numberOfDataExtensionSegments = mDataSource.getDataExtensionSegmentHeaders().size();
-        for (int i = 0; i < numberOfDataExtensionSegments; ++i) {
-            if (!mDataSource.getDataExtensionSegmentHeaders().get(i).isStreamingMode()) {
-                DataExtensionSegmentWriter dataExtensionSegmentWriter = new DataExtensionSegmentWriter(mOutput, mTreParser);
-                dataExtensionSegmentWriter.writeDESHeader(mDataSource.getDataExtensionSegmentHeaders().get(i),
-                        mDataSource.getNitfHeader().getFileType());
-                dataExtensionSegmentWriter.writeDESData(mDataSource.getDataExtensionSegmentData().get(i));
+        DataExtensionSegmentWriter dataExtensionSegmentWriter = new DataExtensionSegmentWriter(mOutput, mTreParser);
+        for (DataExtensionSegment des : mDataSource.getDataExtensionSegments()) {
+            if (!des.isStreamingMode()) {
+                dataExtensionSegmentWriter.writeDESHeader(des, mDataSource.getNitfHeader().getFileType());
             }
         }
     }

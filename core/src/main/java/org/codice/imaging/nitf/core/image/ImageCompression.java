@@ -20,11 +20,11 @@ package org.codice.imaging.nitf.core.image;
 public enum ImageCompression {
 
     /**
-        Unknown image compression format.
-        <p>
-        This indicates an unknown format, and typically indicates a broken file or
-        an error during parsing. This is not a valid value in a NITF image subheader.
-    */
+     * Unknown image compression format.
+     *
+     * This indicates an unknown format, and typically indicates a broken file or an error during parsing. This is not a
+     * valid value in a NITF image segment.
+     */
     UNKNOWN (""),
 
     /**

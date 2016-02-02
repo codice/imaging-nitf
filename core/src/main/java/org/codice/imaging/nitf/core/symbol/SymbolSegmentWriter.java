@@ -55,13 +55,13 @@ public class SymbolSegmentWriter extends AbstractSegmentWriter {
     }
 
     /**
-     * Write out the subheader for the specified symbol segment.
+     * Write out the specified symbol segment.
      *
      * @param header the header content to write out
      * @throws IOException on write failure.
      * @throws ParseException on TRE parsing failure.
      */
-    public final void writeSymbolHeader(final SymbolSegmentHeader header) throws IOException, ParseException {
+    public final void writeSymbolSegment(final SymbolSegment header) throws IOException, ParseException {
         writeFixedLengthString(SY, SY.length());
         writeFixedLengthString(header.getIdentifier(), SID_LENGTH);
         writeFixedLengthString(header.getSymbolName(), SNAME_LENGTH);
@@ -93,5 +93,6 @@ public class SymbolSegmentWriter extends AbstractSegmentWriter {
             writeFixedLengthNumber(header.getExtendedHeaderDataOverflow(), SXSOFL_LENGTH);
             mOutput.write(symbolExtendedSubheaderData);
         }
+        writeSegmentData(header.getData());
     }
 }

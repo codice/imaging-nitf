@@ -15,13 +15,11 @@
 package org.codice.imaging.nitf.render.flow;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 
 /**
  * The NitfSegmentsFlow provides methods for processing the contents of the NITF file.
@@ -42,14 +40,12 @@ public class NitfSegmentsFlow {
     /**
      * Iterates over the images in the NITF file and passes them to the supplied consumer.
      *
-     * @param consumer The consumer to pass the image header and image data to.
+     * @param consumer The consumer to pass the image segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachImage(BiConsumer<NitfImageSegmentHeader, ImageInputStream> consumer) {
-        for (int i = 0; i < mDataSource.getImageSegmentHeaders().size(); i++) {
-            NitfImageSegmentHeader header = mDataSource.getImageSegmentHeaders().get(i);
-            ImageInputStream imageInputStream = mDataSource.getImageSegmentData().get(i);
-            consumer.accept(header, imageInputStream);
+    public NitfSegmentsFlow forEachImage(Consumer<ImageSegment> consumer) {
+        for (ImageSegment imageSegment : mDataSource.getImageSegments()) {
+            consumer.accept(imageSegment);
         }
 
         return this;
@@ -61,10 +57,10 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the data extension segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachDataSegment(Consumer<NitfDataExtensionSegmentHeader> consumer) {
-        List<NitfDataExtensionSegmentHeader> headers = mDataSource.getDataExtensionSegmentHeaders();
+    public NitfSegmentsFlow forEachDataSegment(Consumer<DataExtensionSegment> consumer) {
+        List<DataExtensionSegment> headers = mDataSource.getDataExtensionSegments();
 
-        for (NitfDataExtensionSegmentHeader header : headers) {
+        for (DataExtensionSegment header : headers) {
             consumer.accept(header);
         }
 

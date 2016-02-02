@@ -20,7 +20,7 @@ package org.codice.imaging.nitf.core.image;
 public final class ImageConstants {
     // image segment
     /**
-     * Marker string for NITF Image subheader.
+     * Marker string for NITF Image segment.
      * <p>
      * See MIL-STD-2500C Table A-3.
      */

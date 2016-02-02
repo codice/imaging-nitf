@@ -35,7 +35,7 @@ class ImageSegmentViewAction extends AbstractAction {
         viewer.setBackground(associatedNode.getBackgroundColour());
         viewer.setDisplayName(associatedNode.getFriendlyName());
         try {
-            viewer.setImage(associatedNode.getImageSegmentHeader(), associatedNode.getImageDataReader());
+            viewer.setImage(associatedNode.getImageSegmentHeader());
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }

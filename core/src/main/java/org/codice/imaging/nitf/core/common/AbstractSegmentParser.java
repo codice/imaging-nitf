@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
 /**
     Common segment parsing functionality.
 */
-public abstract class AbstractNitfSegmentParser {
+public abstract class AbstractSegmentParser {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractNitfSegmentParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractSegmentParser.class);
 
     /**
      * The NitfReader which streams the input.

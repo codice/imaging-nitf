@@ -14,12 +14,13 @@
  */
 package org.codice.imaging.nitf.core.symbol;
 
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 
 /**
- Symbol segment subheader information (NITF 2.0 only).
+ Symbol segment information (NITF 2.0 only).
  */
-public interface SymbolSegmentHeader extends CommonNitfSubSegment {
+public interface SymbolSegment extends CommonNitfSubSegment {
 
     /**
      Return the symbol name (SNAME).
@@ -222,18 +223,16 @@ public interface SymbolSegmentHeader extends CommonNitfSubSegment {
     int getSymbolRotation();
 
     /**
-     Return the symbol data length.
-
-     @return the symbol data segment length, in bytes
+     * Get the content of the symbol segment.
+     *
+     * @return stream containing content
      */
-    int getSymbolDataLength();
+    ImageInputStream getData();
 
     /**
-     Set the symbol segment data length.
-     <p>
-     This is the length of the contents of the associated data segment.
-
-     @param length the symbol data segment length, in bytes
+     * Set the data for this segment.
+     *
+     * @param data stream containing data for segment
      */
-    void setSymbolSegmentDataLength(int length);
+    void setData(ImageInputStream data);
 }

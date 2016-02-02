@@ -21,7 +21,7 @@ import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 /**
  Label segment subheader information (NITF 2.0 only).
  */
-public interface LabelSegmentHeader extends CommonNitfSubSegment {
+public interface LabelSegment extends CommonNitfSubSegment {
 
     /**
      Return the row part of the label location (LLOC).
@@ -117,18 +117,16 @@ public interface LabelSegmentHeader extends CommonNitfSubSegment {
     RGBColour getLabelBackgroundColour();
 
     /**
-     Return the label data length.
-
-     @return the label data segment length, in bytes
+     * Get the label data for this label.
+     *
+     * @return the label data as a string
      */
-    int getLabelDataLength();
+    String getData();
 
     /**
-     Set the label segment data length.
-     <p>
-     This is the length of the contents of the associated data segment.
-
-     @param length the label data segment length, in bytes
+     * Set the label data for this label.
+     *
+     * @param labelData to set
      */
-    void setLabelSegmentDataLength(int length);
+    void setData(String labelData);
 }

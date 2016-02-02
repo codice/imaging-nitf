@@ -19,7 +19,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.security.SecurityMetadataWriter;
 import org.codice.imaging.nitf.core.tre.TreParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
@@ -94,7 +94,7 @@ public class NitfFileHeaderWriter extends AbstractSegmentWriter {
                 header.getFileType());
 
         int numberOfDataExtensionSegments = 0;
-        for (NitfDataExtensionSegmentHeader desHeader : mDataSource.getDataExtensionSegmentHeaders()) {
+        for (DataExtensionSegment desHeader : mDataSource.getDataExtensionSegments()) {
             if (!desHeader.isStreamingMode()) {
                 headerLength += NitfConstants.LDSH_LENGTH + NitfConstants.LD_LENGTH;
                 numberOfDataExtensionSegments++;
@@ -120,7 +120,7 @@ public class NitfFileHeaderWriter extends AbstractSegmentWriter {
             fileLength += header.getTextSegmentDataLengths().get(i);
         }
         for (int i = 0; i < numberOfDataExtensionSegments; ++i) {
-            NitfDataExtensionSegmentHeader desHeader = mDataSource.getDataExtensionSegmentHeaders().get(i);
+            DataExtensionSegment desHeader = mDataSource.getDataExtensionSegments().get(i);
             if (!desHeader.isStreamingMode()) {
                 fileLength += header.getDataExtensionSegmentSubHeaderLengths().get(i);
                 fileLength += header.getDataExtensionSegmentDataLengths().get(i);
@@ -159,7 +159,7 @@ public class NitfFileHeaderWriter extends AbstractSegmentWriter {
         }
         writeFixedLengthNumber(numberOfDataExtensionSegments, NitfConstants.NUMDES_LENGTH);
         for (int i = 0; i < numberOfDataExtensionSegments; ++i) {
-            NitfDataExtensionSegmentHeader desHeader = mDataSource.getDataExtensionSegmentHeaders().get(i);
+            DataExtensionSegment desHeader = mDataSource.getDataExtensionSegments().get(i);
             if (!desHeader.isStreamingMode()) {
                 writeFixedLengthNumber(header.getDataExtensionSegmentSubHeaderLengths().get(i), NitfConstants.LDSH_LENGTH);
                 writeFixedLengthNumber(header.getDataExtensionSegmentDataLengths().get(i), NitfConstants.LD_LENGTH);

@@ -43,12 +43,12 @@ public class Nitf21ImageParsingTest {
         ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getImageSegments().size());
 
-        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
+        ImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
         byte[] allData = new byte[1048577];
-        int bytesRead = parseStrategy.getImageSegmentData().get(0).read(allData);
+        int bytesRead = imageSegment.getData().read(allData);
         assertEquals(1048576, bytesRead);
     }
 
@@ -57,13 +57,13 @@ public class Nitf21ImageParsingTest {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getImageSegments().size());
 
-        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
+        ImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
     }
 
-    private void assertImageSegmentMetadataIsAsExpected(NitfImageSegmentHeader imageSegment) {
+    private void assertImageSegmentMetadataIsAsExpected(ImageSegment imageSegment) {
         assertNotNull(imageSegment);
         assertEquals("Missing ID", imageSegment.getIdentifier());
         assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime().getZonedDateTime()));

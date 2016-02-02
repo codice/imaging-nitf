@@ -22,20 +22,20 @@ import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
-import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.text.TextFormat;
-import org.codice.imaging.nitf.core.text.TextSegmentHeader;
+import org.codice.imaging.nitf.core.text.TextSegment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -56,15 +56,15 @@ public class Nitf21SorcerTest {
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
         NitfFileHeader file = parseStrategy.getNitfHeader();
-        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getSymbolSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getLabelSegmentHeaders().size());
-        assertEquals(1, parseStrategy.getTextSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getImageSegments().size());
+        assertEquals(1, parseStrategy.getGraphicSegments().size());
+        assertEquals(0, parseStrategy.getSymbolSegments().size());
+        assertEquals(0, parseStrategy.getLabelSegments().size());
+        assertEquals(1, parseStrategy.getTextSegments().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
 
         // Checks for ImageSegment.
-        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
+        ImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
         assertNotNull(imageSegment);
         assertEquals("Image Id1", imageSegment.getIdentifier());
         assertEquals("2002-10-06 22:03:20", formatter.format(imageSegment.getImageDateTime().getZonedDateTime()));
@@ -118,7 +118,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, imageSegment.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment.getImageMagnification());
 
-        GraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegmentHeaders().get(0);
+        GraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
         assertNotNull(graphicSegment);
         assertEquals("", graphicSegment.getIdentifier());
         assertEquals("", graphicSegment.getGraphicName());
@@ -133,7 +133,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, graphicSegment.getBoundingBox2Row());
         assertEquals(0, graphicSegment.getBoundingBox2Column());
 
-        TextSegmentHeader textSegment = parseStrategy.getTextSegmentHeaders().get(0);
+        TextSegment textSegment = parseStrategy.getTextSegments().get(0);
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertNotNull(textSegment);
         assertEquals("       ", textSegment.getIdentifier());
@@ -141,7 +141,7 @@ public class Nitf21SorcerTest {
         assertEquals("2002-10-06 22:03:20", formatter.format(textSegment.getTextDateTime().getZonedDateTime()));
         assertEquals("", textSegment.getTextTitle());
         assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
-        assertEquals("****************LOCATION INFORMATION (GPS/USER INPUTS)*****************\r\nInput Parameters:\r\nLatitude: \r\nLongitude: \r\nRange: 0 m (0 ft)\r\nBearing: 0 deg (0 mils)\r\nInclination: 0 deg (0 mils)\r\n\r\nOutput Coordinates:\r\nN/A\r\n\r\n***************************PHOTO INFORMATION***********************************\r\n\r\nCamera Make: Canon\r\nCamera Model: Canon PowerShot S30\r\nDate/Time Original: 2002:10:07 08:03:20\r\nDate/Time Digitized: 2002:10:07 08:03:20\r\nExif Version: 0210\r\nComponent Configuration: YCbCr\r\nPixel Width x Height: 683 x 512\r\nX Resolution (dpi): 180.0\r\nY Resolution (dpi): 180.0\r\nOrientation: Top Left\r\nYCbCr Positioning: Centered\r\nColor Space:  RGB\r\nFlash Used: No\r\nFocal Length:  7.1mm\r\nExposure Time:  0.002 s  (1/640)\r\nF-Number: 2.8\r\nFocus Distance: 3.11m\r\nExposure Bias: 0.00\r\nLight Source: Unknown\r\nWhite Balance:  Auto White Balance\r\nMetering Mode: Matrix\r\nShutter Speed: 0.00157 s\r\nAperture Value: 2.96875\r\nEncoding: Baseline\r\nSensing Method:  One-chip color area sensor\r\n\r\n", parseStrategy.getTextSegmentData().get(0));
+        assertEquals("****************LOCATION INFORMATION (GPS/USER INPUTS)*****************\r\nInput Parameters:\r\nLatitude: \r\nLongitude: \r\nRange: 0 m (0 ft)\r\nBearing: 0 deg (0 mils)\r\nInclination: 0 deg (0 mils)\r\n\r\nOutput Coordinates:\r\nN/A\r\n\r\n***************************PHOTO INFORMATION***********************************\r\n\r\nCamera Make: Canon\r\nCamera Model: Canon PowerShot S30\r\nDate/Time Original: 2002:10:07 08:03:20\r\nDate/Time Digitized: 2002:10:07 08:03:20\r\nExif Version: 0210\r\nComponent Configuration: YCbCr\r\nPixel Width x Height: 683 x 512\r\nX Resolution (dpi): 180.0\r\nY Resolution (dpi): 180.0\r\nOrientation: Top Left\r\nYCbCr Positioning: Centered\r\nColor Space:  RGB\r\nFlash Used: No\r\nFocal Length:  7.1mm\r\nExposure Time:  0.002 s  (1/640)\r\nF-Number: 2.8\r\nFocus Distance: 3.11m\r\nExposure Bias: 0.00\r\nLight Source: Unknown\r\nWhite Balance:  Auto White Balance\r\nMetering Mode: Matrix\r\nShutter Speed: 0.00157 s\r\nAperture Value: 2.96875\r\nEncoding: Baseline\r\nSensing Method:  One-chip color area sensor\r\n\r\n", textSegment.getData());
     }
 
     private InputStream getInputStream() {

@@ -18,7 +18,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import static org.codice.imaging.nitf.core.NitfConstants.UDHOFL_LENGTH;
 import static org.codice.imaging.nitf.core.NitfConstants.XHDLOFL_LENGTH;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -29,7 +29,7 @@ import org.codice.imaging.nitf.core.tre.TreSource;
 /**
     Parser for a NITF file.
 */
-public final class NitfFileParser extends AbstractNitfSegmentParser {
+public final class NitfFileParser extends AbstractSegmentParser {
 
     private long nitfFileLength = -1;
 

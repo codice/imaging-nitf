@@ -26,6 +26,7 @@ import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 public class Nitf21GraphicParsingTest {
@@ -35,12 +36,12 @@ public class Nitf21GraphicParsingTest {
         GraphicDataExtractionParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        GraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);
-        assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
+        GraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
+        assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         byte[] allData = new byte[780];
-        int bytesRead = parseStrategy.getGraphicSegmentData().get(0).read(allData);
+        int bytesRead = parseStrategy.getGraphicSegments().get(0).getData().read(allData);
         assertEquals(780, bytesRead);
     }
 
@@ -49,14 +50,14 @@ public class Nitf21GraphicParsingTest {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getGraphicSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getGraphicSegments().size());
 
-        GraphicSegmentHeader graphicSegmentHeader = parseStrategy.getGraphicSegmentHeaders().get(0);
-        assertGraphicSegmentMetadataIsAsExpected(graphicSegmentHeader);
-        assertEquals(0, parseStrategy.getGraphicSegmentData().size());
+        GraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
+        assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
+        assertNull(parseStrategy.getGraphicSegments().get(0).getData());
     }
 
-    private void assertGraphicSegmentMetadataIsAsExpected(GraphicSegmentHeader graphicSegment) {
+    private void assertGraphicSegmentMetadataIsAsExpected(GraphicSegment graphicSegment) {
         assertNotNull(graphicSegment);
         assertEquals("0000000001", graphicSegment.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", graphicSegment.getGraphicName());

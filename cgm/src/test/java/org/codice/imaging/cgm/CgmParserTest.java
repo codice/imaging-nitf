@@ -36,7 +36,7 @@ import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertNotNull;
@@ -144,12 +144,12 @@ public class CgmParserTest {
             AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
             NitfFileParser.parse(reader, parseStrategy);
 
-            if (parseStrategy.getGraphicSegmentHeaders().isEmpty()) {
+            if (parseStrategy.getGraphicSegments().isEmpty()) {
                 LOGGER.info("Loaded file, but found no graphic segments.");
                 System.exit(0);
             }
-            GraphicSegmentHeader segment = parseStrategy.getGraphicSegmentHeaders().get(0);
-            CgmParser parser = new CgmParser(parseStrategy.getGraphicSegmentData().get(0));
+            GraphicSegment segment = parseStrategy.getGraphicSegments().get(0);
+            CgmParser parser = new CgmParser(parseStrategy.getGraphicSegments().get(0).getData());
             parser.buildCommandList();
             // parser.dump();
 

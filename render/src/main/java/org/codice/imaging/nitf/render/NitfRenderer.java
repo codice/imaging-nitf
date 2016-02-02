@@ -26,7 +26,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.imagehandler.BandSequentialImageModeHandler;
 import org.codice.imaging.nitf.render.imagehandler.ImageModeHandler;
 import org.codice.imaging.nitf.render.imagehandler.ImageRepresentationHandler;
@@ -48,114 +48,107 @@ public class NitfRenderer {
     /**
      * Render to the specified Graphics2D target.
      *
-     * @param imageSegmentHeader the image segment header for the segment to be rendered
-     * @param imageData the source data for rendering
+     * @param imageSegment the segment to be rendered
      * @param targetGraphic the target to render to
      * @throws IOException if the source data could not be read from
      */
-    public final void render(final NitfImageSegmentHeader imageSegmentHeader,
-            final ImageInputStream imageData, Graphics2D targetGraphic) throws IOException {
-        switch (imageSegmentHeader.getImageCompression()) {
+    public final void render(final ImageSegment imageSegment, Graphics2D targetGraphic) throws IOException {
+        switch (imageSegment.getImageCompression()) {
         case BILEVEL:
-            render(new BilevelBlockRenderer(), imageSegmentHeader, imageData, targetGraphic);
+            render(new BilevelBlockRenderer(), imageSegment, targetGraphic);
             break;
         case NOTCOMPRESSED:
         case NOTCOMPRESSEDMASK:
-            ImageModeHandler modeHandler = IMAGE_MODE_HANDLER_MAP.get(imageSegmentHeader.getImageMode());
-            ImageRepresentationHandler representationHandler = IMAGE_REPRESENTATION_HANDLER_MAP.get(imageSegmentHeader.getImageRepresentation());
+            ImageModeHandler modeHandler = IMAGE_MODE_HANDLER_MAP.get(imageSegment.getImageMode());
+            ImageRepresentationHandler representationHandler = IMAGE_REPRESENTATION_HANDLER_MAP.get(imageSegment.getImageRepresentation());
 
             if (modeHandler != null && representationHandler != null) {
-                modeHandler.handleImage(imageSegmentHeader, imageData, targetGraphic, representationHandler);
+                modeHandler.handleImage(imageSegment, targetGraphic, representationHandler);
             } else {
-                render(new UncompressedBlockRenderer(), imageSegmentHeader, imageData, targetGraphic);
+                render(new UncompressedBlockRenderer(), imageSegment, targetGraphic);
             }
 
             break;
         case DOWNSAMPLEDJPEG:
         case JPEG:
-            skipToMarker(imageData, JpegMarkerCode.START_OF_IMAGE);
-            renderJPEG(imageSegmentHeader, imageData, targetGraphic, null);
+            skipToMarker(imageSegment.getData(), JpegMarkerCode.START_OF_IMAGE);
+            renderJPEG(imageSegment, targetGraphic, null);
             break;
         case VECTORQUANTIZATION:
         case VECTORQUANTIZATIONMASK:
             render(new VectorQuantizationBlockRenderer(),
-                    imageSegmentHeader,
-                    imageData,
+                    imageSegment,
                     targetGraphic);
             break;
         case JPEGMASK:
-            ImageMask imageMask = new ImageMask(imageSegmentHeader, imageData);
-            renderJPEG(imageSegmentHeader, imageData, targetGraphic, imageMask);
+            ImageMask imageMask = new ImageMask(imageSegment, imageSegment.getData());
+            renderJPEG(imageSegment, targetGraphic, imageMask);
             break;
         default:
             throw new UnsupportedOperationException("Unhandled image compression format: "
-                    + imageSegmentHeader.getImageCompression());
+                    + imageSegment.getImageCompression());
         }
     }
 
     /**
      * Render the segment as a BufferedImage.
      *
-     * @param imageSegmentHeader the image segment header for the segment to be rendered
-     * @param imageData the source data for rendering
+     * @param imageSegment the image segment header for the segment to be rendered
      * @return rendered image
      * @throws IOException if the source data could not be read from
      */
-    public final BufferedImage render(final NitfImageSegmentHeader imageSegmentHeader,
-            final ImageInputStream imageData) throws IOException {
-        BufferedImage img = new BufferedImage(imageSegmentHeader.getImageLocationColumn()
-                + (int) imageSegmentHeader.getNumberOfColumns(),
-                imageSegmentHeader.getImageLocationRow()
-                        + (int) imageSegmentHeader.getNumberOfRows(),
+    public final BufferedImage render(final ImageSegment imageSegment) throws IOException {
+        BufferedImage img = new BufferedImage(imageSegment.getImageLocationColumn()
+                + (int) imageSegment.getNumberOfColumns(),
+                imageSegment.getImageLocationRow()
+                        + (int) imageSegment.getNumberOfRows(),
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D targetGraphic = img.createGraphics();
 
-        render(imageSegmentHeader, imageData, targetGraphic);
+        render(imageSegment, targetGraphic);
         return img;
     }
 
-    private void render(BlockRenderer renderer, NitfImageSegmentHeader imageSegmentHeader,
-            ImageInputStream imageInputStream, Graphics2D target) throws IOException {
-        renderer.setImageSegment(imageSegmentHeader, imageInputStream);
+    private void render(BlockRenderer renderer, ImageSegment imageSegment, Graphics2D target) throws IOException {
+        renderer.setImageSegment(imageSegment, imageSegment.getData());
 
-        processBlocks(imageSegmentHeader, (rowIndex, columnIndex) -> {
+        processBlocks(imageSegment, (rowIndex, columnIndex) -> {
             BufferedImage img = renderer.getImageBlock(rowIndex, columnIndex);
             target.drawImage(img,
-                    imageSegmentHeader.getImageLocationColumn() + columnIndex
-                            * imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(),
-                    imageSegmentHeader.getImageLocationRow()
-                            + rowIndex * imageSegmentHeader.getNumberOfPixelsPerBlockVertical(),
+                    imageSegment.getImageLocationColumn() + columnIndex
+                            * imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                    imageSegment.getImageLocationRow()
+                            + rowIndex * imageSegment.getNumberOfPixelsPerBlockVertical(),
                     null);
         });
     }
 
-    private void renderJPEG(NitfImageSegmentHeader imageSegmentHeader,
-            ImageInputStream imageInputStream, Graphics2D targetGraphic, ImageMask imageMask) throws IOException {
+    private void renderJPEG(ImageSegment imageSegment, Graphics2D targetGraphic, ImageMask imageMask) throws IOException {
         ImageReader reader = getJPEGimageReader();
-        reader.setInput(imageInputStream);
+        reader.setInput(imageSegment.getData());
         ThreadLocal<Integer> maskedBlocks = new ThreadLocal<Integer>();
         maskedBlocks.set(0);
 
-        processBlocks(imageSegmentHeader, (rowIndex, columnIndex) -> {
-            if (imageMask != null && imageMask.isMaskedBlock((rowIndex * imageSegmentHeader.getNumberOfBlocksPerRow() + columnIndex), 0)) {
+        processBlocks(imageSegment, (rowIndex, columnIndex) -> {
+            if (imageMask != null && imageMask.isMaskedBlock((rowIndex * imageSegment.getNumberOfBlocksPerRow() + columnIndex), 0)) {
                 maskedBlocks.set(maskedBlocks.get() + 1);
                 return;
             }
 
             BufferedImage img = reader.read(
-                    (columnIndex + rowIndex * imageSegmentHeader.getNumberOfBlocksPerColumn()) - maskedBlocks.get());
+                    (columnIndex + rowIndex * imageSegment.getNumberOfBlocksPerColumn()) - maskedBlocks.get());
 
             targetGraphic.drawImage(img,
-                    columnIndex * imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(),
-                    rowIndex * imageSegmentHeader.getNumberOfPixelsPerBlockVertical(),
+                    columnIndex * imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                    rowIndex * imageSegment.getNumberOfPixelsPerBlockVertical(),
                     null);
         });
     }
 
-    private void processBlocks(NitfImageSegmentHeader imageSegmentHeader, BlockConsumer consumer)
+    private void processBlocks(ImageSegment imageSegment, BlockConsumer consumer)
             throws IOException {
-        for (int rowIndex = 0; rowIndex < imageSegmentHeader.getNumberOfBlocksPerColumn(); ++rowIndex) {
-            for (int columnIndex = 0; columnIndex < imageSegmentHeader.getNumberOfBlocksPerRow(); ++columnIndex) {
+        for (int rowIndex = 0; rowIndex < imageSegment.getNumberOfBlocksPerColumn(); ++rowIndex) {
+            for (int columnIndex = 0; columnIndex < imageSegment.getNumberOfBlocksPerRow(); ++columnIndex) {
                 consumer.acccept(rowIndex, columnIndex);
             }
         }

@@ -15,11 +15,6 @@
 
 package org.codice.imaging.nitf.core.image;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import java.text.ParseException;
 import java.util.LinkedList;
 import org.codice.imaging.nitf.core.common.FileType;
@@ -27,10 +22,15 @@ import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-public class NitfImageSegmentHeaderParserTest {
+public class ImageSegmentParserTest {
     private NitfParseStrategy strategy;
     private NitfReader nitfReader;
     private LinkedList<String> stringValues = new LinkedList<String>();
@@ -176,8 +176,8 @@ public class NitfImageSegmentHeaderParserTest {
 
     @Test
     public void testParse() throws ParseException {
-        NitfImageSegmentHeaderParser parser = new NitfImageSegmentHeaderParser();
-        NitfImageSegmentHeader nitfImageSegmentHeader = parser.parse(nitfReader, strategy);
+        ImageSegmentParser parser = new ImageSegmentParser();
+        ImageSegment nitfImageSegmentHeader = parser.parse(nitfReader, strategy);
 
         assertThat(nitfImageSegmentHeader.getImageMagnification(), is(IMAG));
         assertThat(nitfImageSegmentHeader.getImageMode(), is(ImageMode.BLOCKINTERLEVE));
@@ -196,7 +196,6 @@ public class NitfImageSegmentHeaderParserTest {
         assertThat(nitfImageSegmentHeader.getImageDateTime().getSourceString(), is(IDATIM));
         assertThat(nitfImageSegmentHeader.getIdentifier(), is(IID1));
         assertThat(nitfImageSegmentHeader.getExtendedHeaderDataOverflow(), is(IXSHDL));
-        assertThat(nitfImageSegmentHeader.getImageDataLength(), is(new Long(UDIDL)));
         assertThat(nitfImageSegmentHeader.getImageLocationRow(), is(ILOC_ROW));
         assertThat(nitfImageSegmentHeader.getImageLocationColumn(), is(ILOC_COL));
         assertThat(nitfImageSegmentHeader.getAttachmentLevel(), is(IALVL));

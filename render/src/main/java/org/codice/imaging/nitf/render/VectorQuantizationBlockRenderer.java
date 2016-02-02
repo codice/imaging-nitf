@@ -20,19 +20,17 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.imageio.stream.ImageInputStream;
-
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class VectorQuantizationBlockRenderer implements BlockRenderer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VectorQuantizationBlockRenderer.class);
-    private NitfImageSegmentHeader mImageSegment = null;
+    private ImageSegment mImageSegment = null;
     private ImageInputStream mImageData = null;
     private ImageMask mMask = null;
 
@@ -60,8 +58,8 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
     private int[][][] mCodebook;
 
     @Override
-    public final void setImageSegment(NitfImageSegmentHeader imageSegmentHeader, ImageInputStream imageInputStream) throws IOException {
-        mImageSegment = imageSegmentHeader;
+    public final void setImageSegment(ImageSegment imageSegment, ImageInputStream imageInputStream) throws IOException {
+        mImageSegment = imageSegment;
         mImageData = imageInputStream;
 
         if (mImageSegment.getImageCompression() == ImageCompression.VECTORQUANTIZATIONMASK) {

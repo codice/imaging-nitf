@@ -20,7 +20,7 @@ package org.codice.imaging.nitf.render;
 
 import java.io.IOException;
 import org.codice.imaging.nitf.core.image.ImageCompression;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -42,13 +42,13 @@ public class NitfRendererTest {
         NitfRenderer renderer = new NitfRenderer();
 
         // Mock up a render source
-        NitfImageSegmentHeader mockImageSegmentHeader = Mockito.mock(NitfImageSegmentHeader.class);
+        ImageSegment mockImageSegmentHeader = Mockito.mock(ImageSegment.class);
         Mockito.when(mockImageSegmentHeader.getImageCompression()).thenReturn(ImageCompression.UNKNOWN);
 
         // Check the exception
         exception.expect(UnsupportedOperationException.class);
         exception.expectMessage("Unhandled image compression format: UNKNOWN");
-        renderer.render(mockImageSegmentHeader, null, null);
+        renderer.render(mockImageSegmentHeader, null);
     }
 
 }

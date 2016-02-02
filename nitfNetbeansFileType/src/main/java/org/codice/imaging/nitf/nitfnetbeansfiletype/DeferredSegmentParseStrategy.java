@@ -22,12 +22,12 @@ import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
-import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
-import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
-import org.codice.imaging.nitf.core.text.TextSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
+import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.core.label.LabelSegment;
+import org.codice.imaging.nitf.core.symbol.SymbolSegment;
+import org.codice.imaging.nitf.core.text.TextSegment;
 
 class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
 
@@ -191,62 +191,40 @@ class DeferredSegmentParseStrategy extends SlottedNitfParseStrategy {
         return dataExtensionSegmentDataOffsets;
     }
 
-    NitfImageSegmentHeader getImageSegmentHeader(final int index) throws ParseException {
+    ImageSegment getImageSegmentHeader(final int index) throws ParseException {
         long segmentHeaderOffset = imageSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
-        return readImageSegmentHeader(fileReader, index);
+        return readImageSegment(fileReader, index, false);
     }
 
-    GraphicSegmentHeader getGraphicSegmentHeader(final int index) throws ParseException {
+    GraphicSegment getGraphicSegment(final int index) throws ParseException {
         long segmentHeaderOffset = graphicSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
-        return readGraphicSegmentHeader(fileReader, index);
+        return readGraphicSegment(fileReader, index, false);
     }
 
-    SymbolSegmentHeader getSymbolSegmentHeader(final int index) throws ParseException {
+    SymbolSegment getSymbolSegmentHeader(final int index) throws ParseException {
         long segmentHeaderOffset = symbolSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
-        return readSymbolSegmentHeader(fileReader, index);
+        return readSymbolSegment(fileReader, index, false);
     }
 
-    LabelSegmentHeader getLabelSegmentHeader(final int index) throws ParseException {
+    LabelSegment getLabelSegmentHeader(final int index) throws ParseException {
         long segmentHeaderOffset = labelSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
-        return readLabelSegmentHeader(fileReader, index);
+        return readLabelSegment(fileReader, index, true);
     }
 
-    String getLabelSegmentData(final LabelSegmentHeader header, final int index) throws ParseException {
-        long segmentDataOffset = labelSegmentDataOffsets.get(index);
-        fileReader.seekToAbsoluteOffset(segmentDataOffset);
-        return fileReader.readBytes(header.getLabelDataLength());
-    }
-
-    TextSegmentHeader getTextSegmentHeader(final int index) throws ParseException {
+    TextSegment getTextSegmentHeader(final int index) throws ParseException {
         long segmentHeaderOffset = textSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
-        return readTextSegmentHeader(fileReader, index);
+        return readTextSegment(fileReader, index, true);
     }
 
-    String getTextSegmentData(final TextSegmentHeader header, final int index) throws ParseException {
-        long segmentDataOffset = textSegmentDataOffsets.get(index);
-        fileReader.seekToAbsoluteOffset(segmentDataOffset);
-        return fileReader.readBytes(header.getTextDataLength());
-    }
-
-    NitfDataExtensionSegmentHeader getDataExtensionSegmentHeader(final int index) throws ParseException {
+    DataExtensionSegment getDataExtensionSegment(final int index) throws ParseException {
         long segmentHeaderOffset = dataExtensionSegmentHeaderOffsets.get(index);
         fileReader.seekToAbsoluteOffset(segmentHeaderOffset);
-        return readDataExtensionSegmentHeader(fileReader, index);
-    }
-
-    void parseDataExtensionSegmentData(final NitfDataExtensionSegmentHeader header, final int index) throws ParseException {
-        long segmentDataOffset = dataExtensionSegmentDataOffsets.get(index);
-        fileReader.seekToAbsoluteOffset(segmentDataOffset);
-        readDataExtensionSegmentData(header, fileReader);
-    }
-
-    byte[] getDataExtensionSegmentData(final int index) {
-        return this.dataExtensionSegmentData.get(index);
+        return readDataExtensionSegment(fileReader, index, false);
     }
 
     final InputStream getGraphicSegmentDataReader(final int index) throws ParseException {

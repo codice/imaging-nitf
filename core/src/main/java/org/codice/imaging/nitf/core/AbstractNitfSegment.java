@@ -17,7 +17,6 @@ package org.codice.imaging.nitf.core;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
@@ -25,8 +24,8 @@ import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
 
 /**
-    Common data elements for NITF segment subheaders and file header.
-*/
+ * Common data elements for NITF segments and file header.
+ */
 public abstract class AbstractNitfSegment implements CommonNitfSegment {
 
     private final TreCollection treCollection = new TreCollection();

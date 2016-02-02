@@ -16,14 +16,14 @@ package org.codice.imaging.nitf.core.image;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
+import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.core.AbstractSubSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
-    Image segment subheader information.
+    Image segment information.
 */
-class NitfImageSegmentHeaderImpl extends AbstractNitfSubSegment
-        implements NitfImageSegmentHeader {
+class ImageSegmentImpl extends AbstractSubSegment implements ImageSegment {
 
     private NitfDateTime imageDateTime = null;
     private TargetId imageTargetId = null;
@@ -53,14 +53,14 @@ class NitfImageSegmentHeaderImpl extends AbstractNitfSubSegment
     private int imageLocationColumn = 0;
     private int imageUserDefinedHeaderOverflow = 0;
     private String imageMagnification = null;
-    private long imageSegmentDataLength = 0;
+    private ImageInputStream imageData = null;
 
     private static final int BITS_PER_BYTE = 8;
 
     /**
         Default constructor.
     */
-    public NitfImageSegmentHeaderImpl() {
+    public ImageSegmentImpl() {
     }
 
     /**
@@ -952,25 +952,6 @@ class NitfImageSegmentHeaderImpl extends AbstractNitfSubSegment
     }
 
     /**
-        Set the image data length.
-        <p>
-        This is the length of the contents of the associated data segment.
-
-        @param length the image data segment length, in bytes
-    */
-    public final void setImageSegmentDataLength(final long length) {
-        imageSegmentDataLength = length;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final long getImageDataLength() {
-        return imageSegmentDataLength;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -980,4 +961,21 @@ class NitfImageSegmentHeaderImpl extends AbstractNitfSubSegment
         long numberOfBytesPerBlock = numberOfPixelsPerBlock * getNumberOfBitsPerPixelPerBand() / BITS_PER_BYTE;
         return numberOfBytesPerBlock;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageInputStream getData() {
+        return imageData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setData(final ImageInputStream data) {
+        imageData = data;
+    }
+
 }
