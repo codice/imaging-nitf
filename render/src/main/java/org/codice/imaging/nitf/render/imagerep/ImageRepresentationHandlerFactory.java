@@ -15,23 +15,17 @@
 package org.codice.imaging.nitf.render.imagerep;
 
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.render.imagehandler.ImageRepresentationHandler;
 
 public class ImageRepresentationHandlerFactory {
     public static ImageRepresentationHandler forNitfImageSegment(NitfImageSegmentHeader header) {
         switch (header.getImageRepresentation()) {
         case RGBTRUECOLOUR: {
-            return getRgbTrueColorHandler(header);
+            return new Rgb24ImageRepresentationHandler();
         }
-        //add other cases here
+        //add other (more complex) cases here
         default:
             return null;
         }
-    }
-
-    private static ImageRepresentationHandler getRgbTrueColorHandler(NitfImageSegmentHeader header) {
-        return (currentValue, imageStream, bandIndex) -> currentValue | (imageStream.read() << (
-                header.getActualBitsPerPixelPerBand() * (2 - bandIndex)));
     }
 }
 

@@ -1,4 +1,3 @@
-<<<<<<< HEAD:render/src/main/java/org/codice/imaging/nitf/render/imagehandler/ImageBlock.java
 /*
  * Copyright (c) Codice Foundation
  *
@@ -13,60 +12,64 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.imagehandler;
-=======
 package org.codice.imaging.nitf.render.imagemode;
->>>>>>> Refactored uncompressed rendering pattern:render/src/main/java/org/codice/imaging/nitf/render/imagemode/ImageBlock.java
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
+import java.util.function.Supplier;
 
 /**
  * An ImageBlock represents a single block of a larger image.
  */
-class ImageBlock {
+public class ImageBlock {
     private int row;
     private int column;
-    private DataBuffer data;
+    private int width;
+    private int height;
+    private Supplier<BufferedImage> imageSupplier;
+    private BufferedImage blockImage;
 
     /**
      *
      * @param row - the row position of this ImageBlock in the larger image.
      * @param column - the column position of this ImageBlock in the larger image.
      */
-    public ImageBlock(int row, int column) {
+    public ImageBlock(int row, int column, int width, int height,
+            Supplier<BufferedImage> imageSupplier) {
         this.row = row;
         this.column = column;
+        this.width = width;
+        this.height = height;
+        this.imageSupplier = imageSupplier;
     }
 
     /**
      *
-     * @return the row position of this ImageBlock in the larger image.
+     * @return the DataBuffer that contains the data for this ImageBlock.
      */
-    public int getRow() {
-        return row;
+    public DataBuffer getDataBuffer() {
+        if (blockImage == null) {
+            blockImage = imageSupplier.get();
+        }
+
+        return blockImage.getRaster().getDataBuffer();
     }
 
-    /**
-     *
-     * @return the column position of this ImageBlock in the larger image.
-     */
-    public int getColumn() {
-        return column;
+    public void render(Graphics2D targetImage, boolean disposeAfterRender) {
+        targetImage.drawImage(blockImage, this.column * this.height, this.row * this.width, null);
+
+        if (disposeAfterRender) {
+            this.blockImage = null;
+        }
     }
 
-    /**
-     *
-     * @return the IntBuffer that contains the data for this ImageBlock.
-     */
-    public DataBuffer getData() {
-        return data;
+    public int getWidth() {
+        return width;
     }
 
-    /**
-     *
-     * @param data - the DataBuffer that will hold the block data.
-     */
-    public void setDataBuffer(DataBuffer data) {
-        this.data = data;
+    public int getHeight() {
+        return height;
     }
+
 }

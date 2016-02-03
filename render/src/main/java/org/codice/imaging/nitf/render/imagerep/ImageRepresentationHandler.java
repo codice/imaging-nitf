@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.render.imagerep;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
 import java.io.IOException;
 
 import javax.imageio.stream.ImageInputStream;
@@ -21,19 +23,33 @@ import javax.imageio.stream.ImageInputStream;
 /**
  * An ImageRepresentationHandler calculates the values for a given pixel based on the current pixel value
  * and the value of the band being read.  This interface abstracts the calculation of a single
- * pixel value based on one or more band values for that pixel.
+ * pixel value based on one or more band values for that pixel.  Classes that implement this
+ * interface are intended to be stateless and therefore, thread-safe.
  */
 
-@FunctionalInterface
 public interface ImageRepresentationHandler {
     /**
      * Applies the bandValue to currentValue based on bandIndex.
      *
-     * @param currentValue - the current value for the pixel.
+     * @param dataBuffer - the buffer that contains the pixel data.
+     * @param pixelIndex - the index of the pixel being rendered.
      * @param imageInputStream - the stream that contains the image data.
-     * @param bandIndex - the index of the band being applied, zero-indexed.
+     * @param bandIndex - the index of the band being applied, zero-based.
      * @return - the new value for the current pixel.
      */
-    int renderPixel(int currentValue, ImageInputStream imageInputStream, int bandIndex) throws
-            IOException;
+    void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream,
+            int bandIndex) throws IOException;
+
+    /**
+     *
+     * @param width - the number of horizontal pixels in the image to be created.
+     * @param height - the number of vertical pixels in the image to be created.
+     * @return a new BufferedImage for this ImageRepresentation.  This method should never return
+     * the same object that was returned in a previous call.
+     */
+    BufferedImage createBufferedImage(int width, int height);
+
+    void applyPixelMask(DataBuffer data, int pixelIndex);
+
+    void renderPadPixel(DataBuffer data, int pixelIndex);
 }

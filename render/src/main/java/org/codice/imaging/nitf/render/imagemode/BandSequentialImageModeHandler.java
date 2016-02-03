@@ -12,19 +12,12 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-<<<<<<< HEAD:render/src/main/java/org/codice/imaging/nitf/render/imagehandler/BandSequentialImageModeHandler.java
-package org.codice.imaging.nitf.render.imagehandler;
-=======
+
 package org.codice.imaging.nitf.render.imagemode;
->>>>>>> Refactored uncompressed rendering pattern:render/src/main/java/org/codice/imaging/nitf/render/imagemode/BandSequentialImageModeHandler.java
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
 import java.io.IOException;
-import java.nio.IntBuffer;
-import java.util.function.Consumer;
 
 import javax.imageio.stream.ImageInputStream;
 
@@ -64,19 +57,22 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
 
         if (!ImageMode.BANDSEQUENTIAL.equals(imageSegmentHeader.getImageMode())) {
             throw new IllegalStateException(
-                    "BandSequentialImageModeHandler(): constructor argument 'imageSegmentHeader' must have be ImageMode of 'S'.");
+                "BandSequentialImageModeHandler(): constructor argument 'imageSegmentHeader' must have be ImageMode of 'S'.");
         }
 
-        ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegmentHeader.getNumberOfBlocksPerColumn(), imageSegmentHeader.getNumberOfBlocksPerRow());
+        ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegmentHeader,
+                () -> imageRepresentationHandler.createBufferedImage(imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(), imageSegmentHeader.getNumberOfPixelsPerBlockVertical()));
 
         for (int bandIndex = 0; bandIndex < imageSegmentHeader.getNumBands(); bandIndex++) {
             final int index = bandIndex;
 
-            forEachBlock(imageSegmentHeader, matrix, block -> readBlock(imageSegmentHeader, block, imageInputStream,
-                            imageRepresentationHandler, index));
+            matrix.forEachBlock(block -> {
+                readBlock(block, imageInputStream, imageRepresentationHandler, index);
+                applyMask(block, imageMask, imageRepresentationHandler);
+            } );
         }
 
-        forEachBlock(imageSegmentHeader, matrix, block -> renderBlock(imageSegmentHeader, targetImage, block));
+        matrix.forEachBlock((block) -> block.render(targetImage, true));
     }
 
     private void checkNull(Object value, String valueName) {
@@ -85,28 +81,16 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
         }
     }
 
-    private void forEachBlock(NitfImageSegmentHeader imageSegmentHeader, ImageBlockMatrix matrix, Consumer<ImageBlock> intBufferConsumer) {
-        for (int i = 0; i < imageSegmentHeader.getNumberOfBlocksPerColumn(); i++) {
-            for (int j = 0; j < imageSegmentHeader.getNumberOfBlocksPerRow(); j++) {
-                ImageBlock currentBlock = matrix.getImageBlock(i, j);
-                intBufferConsumer.accept(currentBlock);
-            }
-        }
-    }
+    private void readBlock(ImageBlock block, ImageInputStream imageInputStream,
+            ImageRepresentationHandler imageRepresentationHandler, int bandIndex) {
 
-    private void readBlock(NitfImageSegmentHeader imageSegmentHeader, ImageBlock block,
-            ImageInputStream imageInputStream, ImageRepresentationHandler imageRepresentationHandler, int bandIndex) {
-
-        final DataBuffer data = block.getData();
-        final int blockHeight = imageSegmentHeader.getNumberOfPixelsPerBlockVertical();
-        final int blockWidth = imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal();
+        final DataBuffer data = block.getDataBuffer();
 
         try {
-            for (int row = 0; row < blockHeight; row++) {
-                for (int column = 0; column < blockWidth; column++) {
-                    int i = row * blockWidth + column;
-                    int bandValue = imageInputStream.read();
-                    data.setElem(i, imageRepresentationHandler.renderPixel(data.getElem(i), imageInputStream, bandIndex));
+            for (int row = 0; row < block.getHeight(); row++) {
+                for (int column = 0; column < block.getWidth(); column++) {
+                    int i = row * block.getWidth() + column;
+                    imageRepresentationHandler.renderPixelBand(data, i, imageInputStream, bandIndex);
                 }
             }
         } catch (IOException e) {
@@ -114,40 +98,19 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
         }
     }
 
-    private void renderBlock(NitfImageSegmentHeader imageSegmentHeader, Graphics2D targetImage, ImageBlock block ) {
-        final int blockWidth = imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal();
-        final int blockHeight = imageSegmentHeader.getNumberOfPixelsPerBlockVertical();
 
-        BufferedImage img = new BufferedImage(blockWidth, blockHeight, BufferedImage.TYPE_INT_ARGB);
-        int[] imgData = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
-        System.arraycopy(block.getData(), 0, imgData, 0, block.getData().length);
-        targetImage.drawImage(img, block.getColumn() * blockHeight, block.getRow() * blockWidth, null);
+    public void applyMask(ImageBlock block, ImageMask imageMask,
+            ImageRepresentationHandler imageRepresentationHandler) {
+        if (imageMask != null) {
+            final int dataSize = block.getWidth() * block.getHeight();
+
+            for (int pixel = 0; pixel < dataSize; ++pixel) {
+                if (imageMask.isPadPixel(block.getDataBuffer().getElem(pixel))) {
+                    imageRepresentationHandler.renderPadPixel(block.getDataBuffer(), pixel);
+                } else {
+                    imageRepresentationHandler.applyPixelMask(block.getDataBuffer(), pixel);
+                }
+            }
+        }
     }
-
-//    private void applyMask(NitfImageSegmentHeader imageSegmentHeader,
-//            ImageInputStream imageInputStream, ImageBlock block) throws IOException {
-//        final DataBuffer data = block.getData();
-//        final int dataSize = data.array().length;
-//        ImageMask imageMask = null;
-//
-//        if (imageSegmentHeader.getImageCompression() == ImageCompression.NOTCOMPRESSEDMASK) {
-//            imageMask = new ImageMask(imageSegmentHeader, imageInputStream);
-//        } else {
-//            imageMask = new ImageMask(imageSegmentHeader);
-//        }
-//
-//        if (imageMask != null) {
-//            for (int pixel = 0; pixel < dataSize; ++pixel) {
-//                data.put(pixel, data.get(pixel) | 0xFF000000);
-//
-//                if (imageMask.isPadPixel(data.get(pixel))) {
-//                    data.put(pixel, 0x00000000);
-//                }
-//            }
-//        } else {
-//            for (int pixel = 0; pixel < dataSize; ++pixel) {
-//                data.put(pixel, data.get(pixel) | 0xFF000000);
-//            }
-//        }
-//    }
 }

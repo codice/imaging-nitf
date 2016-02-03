@@ -1,4 +1,3 @@
-<<<<<<< HEAD:render/src/main/java/org/codice/imaging/nitf/render/imagehandler/ImageModeHandler.java
 /*
  * Copyright (c) Codice Foundation
  *
@@ -13,12 +12,9 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.imagehandler;
-=======
 package org.codice.imaging.nitf.render.imagemode;
->>>>>>> Refactored uncompressed rendering pattern:render/src/main/java/org/codice/imaging/nitf/render/imagemode/ImageModeHandler.java
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.io.IOException;
 
 import javax.imageio.stream.ImageInputStream;
