@@ -18,7 +18,6 @@ import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
-import org.codice.imaging.nitf.core.NitfConstants;
 import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.openide.loaders.DataNode;
@@ -91,7 +90,7 @@ class NitfFileNode extends DataNode {
                         + " (3) the code \"999998\" when a specific event determines at what point declassification "
                         + "or downgrading is to take place.",
                     nitfFileHeader.getFileSecurityMetadata().getDowngradeDateOrSpecialCase()));
-            if (NitfConstants.DOWNGRADE_EVENT_MAGIC.equals(nitfFileHeader.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim())) {
+            if (nitfFileHeader.getFileSecurityMetadata().hasDowngradeMagicValue()) {
                 set.put(new StringProperty("fileDowngradeEvent",
                         "File Downgrade Event",
                         "The event for downgrade. Only present if the File Downgrade Date or Special Case is 999998",

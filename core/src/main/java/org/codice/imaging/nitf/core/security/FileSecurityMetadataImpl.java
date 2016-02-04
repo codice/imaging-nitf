@@ -15,11 +15,11 @@
 package org.codice.imaging.nitf.core.security;
 
 /**
-    File security metadata.
-    <p>
-    The security metadata at the file level is the same as the subheaders, except for
-    two extra fields (copy number, and number of copies).
-*/
+ * File security metadata.
+ * <p>
+ * The security metadata at the file level is the same as the subheaders, except for two extra fields (copy number, and
+ * number of copies).
+ */
 class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecurityMetadata {
     private String nitfFileCopyNumber = null;
     private String nitfFileNumberOfCopies = null;
@@ -69,6 +69,5 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
     public final String getFileNumberOfCopies() {
         return nitfFileNumberOfCopies;
     }
-
 };
 

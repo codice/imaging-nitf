@@ -14,9 +14,11 @@
  */
 package org.codice.imaging.nitf.core.security;
 
+import static org.codice.imaging.nitf.core.security.SecurityConstants.DOWNGRADE_EVENT_MAGIC;
+
 /**
-    Security metadata for a NITF file header or segment subheader.
-*/
+ * Security metadata for a NITF file header or segment subheader.
+ */
 class SecurityMetadataImpl implements SecurityMetadata {
 
     private SecurityClassification securityClassification = SecurityClassification.UNKNOWN;
@@ -511,5 +513,12 @@ class SecurityMetadataImpl implements SecurityMetadata {
     public final String getSecurityControlNumber() {
         return nitfSecurityControlNumber;
     }
-};
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasDowngradeMagicValue() {
+        return (DOWNGRADE_EVENT_MAGIC.equals(getDowngradeDateOrSpecialCase()));
+    }
+};

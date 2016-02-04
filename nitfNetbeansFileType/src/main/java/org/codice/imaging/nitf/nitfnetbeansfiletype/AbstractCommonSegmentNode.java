@@ -18,7 +18,6 @@ import java.awt.Color;
 
 import javax.swing.Action;
 
-import org.codice.imaging.nitf.core.NitfConstants;
 import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
@@ -140,7 +139,7 @@ abstract class AbstractCommonSegmentNode extends AbstractNode {
                         + " (3) the code \"999998\" when a specific event determines at what point declassification "
                         + "or downgrading is to take place.",
                     segment.getSecurityMetadata().getDowngradeDateOrSpecialCase()));
-            if (NitfConstants.DOWNGRADE_EVENT_MAGIC.equals(segment.getSecurityMetadata().getDowngradeDateOrSpecialCase().trim())) {
+            if (segment.getSecurityMetadata().hasDowngradeMagicValue()) {
                 set.put(new StringProperty("fileDowngradeEvent",
                         "File Downgrade Event",
                         "The event for downgrade. Only present if the File Downgrade Date or Special Case is 999998",

@@ -40,6 +40,11 @@ public final class DataExtensionConstants {
      */
     public static final String CONTROLLED_EXTENSIONS = "Controlled Extensions";
 
+    /**
+     * DES Marker field for the obsolete streaming mode content.
+     */
+    public static final String STREAMING_FILE_HEADER = "STREAMING_FILE_HEADER";
+
     // Data Extenstion Segment (DES)
     /**
      * Marker string for Data Extension Segment (DES) segment header.

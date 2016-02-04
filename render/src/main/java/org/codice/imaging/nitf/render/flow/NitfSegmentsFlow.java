@@ -14,14 +14,12 @@
  */
 package org.codice.imaging.nitf.render.flow;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.MemoryCacheImageInputStream;
+import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 
@@ -30,15 +28,15 @@ import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
  */
 public class NitfSegmentsFlow {
 
-    private SlottedNitfParseStrategy parseStrategy;
+    private NitfDataSource mDataSource;
 
-    NitfSegmentsFlow(SlottedNitfParseStrategy parseStrategy) {
-        if (parseStrategy == null) {
+    NitfSegmentsFlow(NitfDataSource dataSource) {
+        if (dataSource == null) {
             throw new IllegalArgumentException(
-                    "ImageSegmentFlow(): constructor argument 'parseStrategy' may not be null.");
+                    "ImageSegmentFlow(): constructor argument 'dataSource' may not be null.");
         }
 
-        this.parseStrategy = parseStrategy;
+        mDataSource = dataSource;
     }
 
     /**
@@ -48,14 +46,9 @@ public class NitfSegmentsFlow {
      * @return this NitfSegmentsFlow.
      */
     public NitfSegmentsFlow forEachImage(BiConsumer<NitfImageSegmentHeader, ImageInputStream> consumer) {
-
-        List<byte[]> imageDataArrays = parseStrategy.getImageSegmentData();
-        List<NitfImageSegmentHeader> headers = parseStrategy.getImageSegmentHeaders();
-
-        for (int i = 0; i < imageDataArrays.size(); i++) {
-            byte[] imageData = imageDataArrays.get(i);
-            NitfImageSegmentHeader header = headers.get(i);
-            ImageInputStream imageInputStream = new MemoryCacheImageInputStream(new ByteArrayInputStream(imageData));
+        for (int i = 0; i < mDataSource.getImageSegmentHeaders().size(); i++) {
+            NitfImageSegmentHeader header = mDataSource.getImageSegmentHeaders().get(i);
+            ImageInputStream imageInputStream = mDataSource.getImageSegmentData().get(i);
             consumer.accept(header, imageInputStream);
         }
 
@@ -69,7 +62,7 @@ public class NitfSegmentsFlow {
      * @return this NitfSegmentsFlow.
      */
     public NitfSegmentsFlow forEachDataSegment(Consumer<NitfDataExtensionSegmentHeader> consumer) {
-        List<NitfDataExtensionSegmentHeader> headers = parseStrategy.getDataExtensionSegmentHeaders();
+        List<NitfDataExtensionSegmentHeader> headers = mDataSource.getDataExtensionSegmentHeaders();
 
         for (NitfDataExtensionSegmentHeader header : headers) {
             consumer.accept(header);
@@ -85,7 +78,7 @@ public class NitfSegmentsFlow {
      * @return this NitfSegmentsFlow.
      */
     public NitfSegmentsFlow fileHeader(Consumer<NitfFileHeader> consumer) {
-        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
+        NitfFileHeader nitfFileHeader = mDataSource.getNitfHeader();
         consumer.accept(nitfFileHeader);
         return this;
     }

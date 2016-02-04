@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
-import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
@@ -118,7 +118,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, imageSegment.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment.getImageMagnification());
 
-        NitfGraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegmentHeaders().get(0);
+        GraphicSegmentHeader graphicSegment = parseStrategy.getGraphicSegmentHeaders().get(0);
         assertNotNull(graphicSegment);
         assertEquals("", graphicSegment.getIdentifier());
         assertEquals("", graphicSegment.getGraphicName());

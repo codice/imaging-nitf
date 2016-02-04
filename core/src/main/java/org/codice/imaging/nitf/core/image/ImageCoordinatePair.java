@@ -14,22 +14,22 @@
  */
 package org.codice.imaging.nitf.core.image;
 
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.HEMISPHERE_MARKER_LENGTH;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LAT_DECIMAL_DEGREES_FORMAT_LENGTH;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LAT_DEGREES_LENGTH;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LAT_DEGREES_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LAT_HEMISPHERE_MARKER_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LAT_MINUTES_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LAT_SECONDS_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LON_DEGREES_LENGTH;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LON_DEGREES_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LON_HEMISPHERE_MARKER_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LON_MINUTES_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.LON_SECONDS_OFFSET;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.MINUTES_IN_ONE_DEGREE;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.MINUTES_LENGTH;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.SECONDS_IN_ONE_MINUTE;
-import static org.codice.imaging.nitf.core.common.CoordinateConstants.SECONDS_LENGTH;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.HEMISPHERE_MARKER_LENGTH;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_DECIMAL_DEGREES_FORMAT_LENGTH;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_DEGREES_LENGTH;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_DEGREES_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_HEMISPHERE_MARKER_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_MINUTES_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_SECONDS_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LON_DEGREES_LENGTH;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LON_DEGREES_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LON_HEMISPHERE_MARKER_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LON_MINUTES_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.LON_SECONDS_OFFSET;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.MINUTES_IN_ONE_DEGREE;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.MINUTES_LENGTH;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.SECONDS_IN_ONE_MINUTE;
+import static org.codice.imaging.nitf.core.image.CoordinateConstants.SECONDS_LENGTH;
 import java.text.ParseException;
 /**
     A coordinate pair (latitude / longitude or equivalent).

@@ -20,7 +20,7 @@ import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
     Graphic segment subheader information (NITF 2.1 / NSIF 1.0 only).
 */
 class NitfGraphicSegmentHeaderImpl extends AbstractNitfSubSegment
-        implements NitfGraphicSegmentHeader {
+        implements GraphicSegmentHeader {
 
     private String graphicName = null;
     private int graphicDisplayLevel = 0;

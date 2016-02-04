@@ -34,6 +34,7 @@ import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SXSOF
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SY;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Parser for a graphic segment subheader in a NITF 2.1 / NSIF 1.0 file.
@@ -60,7 +61,7 @@ public class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
      * @return a fully parsed NitfGraphicSegmentHeader.
      * @throws ParseException when the parser encounters unexpected input from the reader.
      */
-    public final NitfGraphicSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final GraphicSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
         segment = new NitfGraphicSegmentHeaderImpl();
@@ -149,7 +150,9 @@ public class NitfGraphicSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readSXSHD() throws ParseException {
-        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader, graphicExtendedSubheaderLength - SXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
+                graphicExtendedSubheaderLength - SXSOFL_LENGTH,
+                TreSource.GraphicExtendedSubheaderData);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 }

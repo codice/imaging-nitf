@@ -20,14 +20,17 @@ package org.codice.imaging.nitf.core.tre;
 class TreImpl extends TreEntryListImpl implements Tre {
     private String prefix = null;
     private byte[] rawData = null;
+    private final TreSource mSource;
 
     /**
-        Construct TRE with specific tag name.
-
-        @param tag the name for the TRE.
-    */
-    TreImpl(final String tag) {
+     * Construct TRE with specific tag name.
+     *
+     * @param tag the name for the TRE.
+     * @param source the TreSource associated with this TRE
+     */
+    TreImpl(final String tag, final TreSource source) {
         super(tag);
+        mSource = source;
     }
 
     /**
@@ -60,6 +63,14 @@ class TreImpl extends TreEntryListImpl implements Tre {
     @Override
     public final byte[] getRawData() {
         return rawData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final TreSource getSource() {
+        return mSource;
     }
 
 }

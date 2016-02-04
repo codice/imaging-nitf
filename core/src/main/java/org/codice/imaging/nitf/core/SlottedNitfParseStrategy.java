@@ -14,18 +14,17 @@
  */
 package org.codice.imaging.nitf.core;
 
+import java.io.ByteArrayInputStream;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.xml.transform.Source;
-
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
 import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeaderParser;
-import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeader;
+import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
 import org.codice.imaging.nitf.core.graphic.NitfGraphicSegmentHeaderParser;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
 import org.codice.imaging.nitf.core.image.NitfImageSegmentHeaderParser;
@@ -37,71 +36,15 @@ import org.codice.imaging.nitf.core.text.TextSegmentHeader;
 import org.codice.imaging.nitf.core.text.TextSegmentHeaderParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreCollectionParser;
+import org.codice.imaging.nitf.core.tre.TreSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * "Slotted" parse strategy.
- * This could probably be split into
- * an abstract parent called SlottedNitfParseStrategy
- * and
- * the abstract subclass with the data storage (SlottedStorageNitfParseStrategy)
  */
-public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
+public abstract class SlottedNitfParseStrategy extends SlottedNitfStorage implements NitfParseStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(SlottedNitfParseStrategy.class);
-
-    /**
-     * The file level header.
-     */
-    protected NitfFileHeader nitfFileHeaderFileLevelHeader;
-    /**
-     * The list of image segment headers.
-     */
-    protected final List<NitfImageSegmentHeader> imageSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of image segment data.
-     */
-    protected final List<byte[]> imageSegmentData = new ArrayList<>();
-    /**
-     * The list of graphic segment headers.
-     */
-    protected final List<NitfGraphicSegmentHeader> graphicSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of graphic segment data.
-     */
-    protected final List<byte[]> graphicSegmentData = new ArrayList<>();
-    /**
-     * The list of symbol segment headers.
-     */
-    protected final List<SymbolSegmentHeader> symbolSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of symbol segment data.
-     */
-    protected final List<byte[]> symbolSegmentData = new ArrayList<>();
-    /**
-     * The list of label segment headers.
-     */
-    protected final List<LabelSegmentHeader> labelSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of label segment data.
-     */
-    protected final List<String> labelSegmentData = new ArrayList<>();
-    /**
-     * The list of text segment headers.
-     */
-    protected final ArrayList<TextSegmentHeader> textSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of text segment data.
-     */
-    protected final ArrayList<String> textSegmentData = new ArrayList<>();
-    /**
-     * The list of DES headers.
-     */
-    protected final List<NitfDataExtensionSegmentHeader> dataExtensionSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of DES data.
-     */
-    protected final List<byte[]> dataExtensionSegmentData = new ArrayList<>();
 
     /**
      * The TRE parser to use. Must be initialised before use, see initialiseTreCollectionParserIfRequired()
@@ -115,65 +58,9 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         treCollectionParser = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setFileHeader(final NitfFileHeader nitfFileHeader) {
-        nitfFileHeaderFileLevelHeader = nitfFileHeader;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final NitfFileHeader getNitfHeader() {
-        return nitfFileHeaderFileLevelHeader;
-    }
-
-    /**
-     * Return the list of image segment data.
-     *
-     * @return image segment data
-     */
-    public final List<byte[]> getImageSegmentData() {
-        return imageSegmentData;
-    }
-
-    /**
-     * Return the list of symbol segment data.
-     *
-     * @return symbol segment data
-     */
-    public final List<byte[]> getSymbolSegmentData() {
-        return symbolSegmentData;
-    }
-
-    /**
-     * Return list of label segment data.
-     *
-     * @return label segment data
-     */
-    public final List<String> getLabelSegmentData() {
-        return labelSegmentData;
-    }
-
-    /**
-     * Return list of graphic segment data.
-     *
-     * @return graphic segment data
-     */
-    public final List<byte[]> getGraphicSegmentData() {
-        return graphicSegmentData;
-    }
-
-    /**
-     * Return list of text segment data.
-     *
-     * @return text segment data
-     */
-    public final List<String> getTextSegmentData() {
-        return textSegmentData;
+        nitfFileLevelHeader = nitfFileHeader;
     }
 
     /**
@@ -182,25 +69,25 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     @Override
     public final void baseHeadersRead(final NitfReader reader) {
         try {
-            for (int i = 0; i < nitfFileHeaderFileLevelHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
                 handleImageSegment(reader, i);
             }
-            if (nitfFileHeaderFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-                for (int i = 0; i < nitfFileHeaderFileLevelHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
+            if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
+                for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
                     handleSymbolSegment(reader, i);
                 }
-                for (int i = 0; i < nitfFileHeaderFileLevelHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
                    handleLabelSegment(reader, i);
                 }
             } else {
-                for (int i = 0; i < nitfFileHeaderFileLevelHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
+                for (int i = 0; i < nitfFileLevelHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
                    handleGraphicSegment(reader, i);
                 }
             }
-            for (int i = 0; i < nitfFileHeaderFileLevelHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
                 handleTextSegment(reader, i);
             }
-            for (int i = 0; i < nitfFileHeaderFileLevelHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
+            for (int i = 0; i < nitfFileLevelHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
                 handleDataExtensionSegment(reader, i);
             }
         } catch (ParseException ex) {
@@ -220,8 +107,8 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final void parseImageSegmentHeaderAndData(final NitfReader reader, final int i) throws ParseException {
         NitfImageSegmentHeader imageSegmentHeader = readImageSegmentHeader(reader, i);
         imageSegmentHeaders.add(imageSegmentHeader);
-        byte[] data = readImageSegmentData(imageSegmentHeader, reader);
-        imageSegmentData.add(data);
+        ImageInputStream iis = readImageSegmentData(imageSegmentHeader, reader);
+        imageSegmentStreams.add(iis);
     }
 
     /**
@@ -250,7 +137,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final NitfImageSegmentHeader readImageSegmentHeader(final NitfReader reader, final int i) throws ParseException {
         NitfImageSegmentHeaderParser imageSegmentHeaderParser = new NitfImageSegmentHeaderParser();
         NitfImageSegmentHeader imageSegmentHeader = imageSegmentHeaderParser.parse(reader, this);
-        imageSegmentHeader.setImageSegmentDataLength(nitfFileHeaderFileLevelHeader.getImageSegmentDataLengths().get(i));
+        imageSegmentHeader.setImageSegmentDataLength(nitfFileLevelHeader.getImageSegmentDataLengths().get(i));
         return imageSegmentHeader;
     }
 
@@ -271,9 +158,12 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @return byte array of the data, or a null pointer if the data length was zero
      * @throws ParseException on failure.
      */
-    protected final byte[] readImageSegmentData(final NitfImageSegmentHeader imageSegmentHeader, final NitfReader reader) throws ParseException {
+    protected final ImageInputStream readImageSegmentData(final NitfImageSegmentHeader imageSegmentHeader,
+            final NitfReader reader) throws ParseException {
         if (imageSegmentHeader.getImageDataLength() > 0) {
-            return reader.readBytesRaw((int) imageSegmentHeader.getImageDataLength());
+            // TODO: [IMG-77] this implementation probably should have a file-backed option
+            byte[] bytes = reader.readBytesRaw((int) imageSegmentHeader.getImageDataLength());
+            return new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
         }
         return null;
     }
@@ -304,9 +194,9 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @throws ParseException on parse error
      */
     protected final void parseGraphicSegmentHeaderAndData(final NitfReader reader, final int i) throws ParseException {
-        NitfGraphicSegmentHeader graphicSegmentHeader = readGraphicSegmentHeader(reader, i);
+        GraphicSegmentHeader graphicSegmentHeader = readGraphicSegmentHeader(reader, i);
         graphicSegmentHeaders.add(graphicSegmentHeader);
-        byte[] data = readGraphicSegmentData(graphicSegmentHeader, reader);
+        ImageInputStream data = readGraphicSegmentData(graphicSegmentHeader, reader);
         graphicSegmentData.add(data);
     }
 
@@ -318,7 +208,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @throws ParseException on parse error
      */
     protected final void parseGraphicSegmentHeaderButSkipData(final NitfReader reader, final int i) throws ParseException {
-        NitfGraphicSegmentHeader graphicSegmentHeader = readGraphicSegmentHeader(reader, i);
+        GraphicSegmentHeader graphicSegmentHeader = readGraphicSegmentHeader(reader, i);
         skipGraphicSegmentData(graphicSegmentHeader, reader);
         graphicSegmentHeaders.add(graphicSegmentHeader);
     }
@@ -333,10 +223,10 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @return the segment header data
      * @throws ParseException on parse error
      */
-    protected final NitfGraphicSegmentHeader readGraphicSegmentHeader(final NitfReader reader, final int i) throws ParseException {
+    protected final GraphicSegmentHeader readGraphicSegmentHeader(final NitfReader reader, final int i) throws ParseException {
         NitfGraphicSegmentHeaderParser graphicSegmentHeaderParser = new NitfGraphicSegmentHeaderParser();
-        NitfGraphicSegmentHeader graphicSegmentHeader = graphicSegmentHeaderParser.parse(reader, this);
-        graphicSegmentHeader.setGraphicSegmentDataLength(nitfFileHeaderFileLevelHeader.getGraphicSegmentDataLengths().get(i));
+        GraphicSegmentHeader graphicSegmentHeader = graphicSegmentHeaderParser.parse(reader, this);
+        graphicSegmentHeader.setGraphicSegmentDataLength(nitfFileLevelHeader.getGraphicSegmentDataLengths().get(i));
         return graphicSegmentHeader;
     }
 
@@ -348,13 +238,15 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      *
      * @param graphicSegmentHeader the header for the graphic segment that is to be read
      * @param reader the reader to use to read the data.
-     * @return byte array of the segment data, or null if there was no data
+     * @return stream of the segment data, or null if there was no data
      * @throws ParseException on failure.
      */
-    protected final byte[] readGraphicSegmentData(final NitfGraphicSegmentHeader graphicSegmentHeader,
+    protected final ImageInputStream readGraphicSegmentData(final GraphicSegmentHeader graphicSegmentHeader,
             final NitfReader reader) throws ParseException {
         if (graphicSegmentHeader.getGraphicDataLength() > 0) {
-            return reader.readBytesRaw(graphicSegmentHeader.getGraphicDataLength());
+            // TODO: [IMG-77] this implementation probably should have a file-backed option
+            byte[] bytes = reader.readBytesRaw(graphicSegmentHeader.getGraphicDataLength());
+            return new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
         }
         return null;
     }
@@ -369,7 +261,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @param reader the reader to use to skip the data.
      * @throws ParseException on failure.
      */
-    protected final void skipGraphicSegmentData(final NitfGraphicSegmentHeader graphicSegmentHeader, final NitfReader reader) throws ParseException {
+    protected final void skipGraphicSegmentData(final GraphicSegmentHeader graphicSegmentHeader, final NitfReader reader) throws ParseException {
         if (graphicSegmentHeader.getGraphicDataLength() > 0) {
             reader.skip(graphicSegmentHeader.getGraphicDataLength());
         }
@@ -387,7 +279,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final void parseSymbolSegmentHeaderAndData(final NitfReader reader, final int i) throws ParseException {
         SymbolSegmentHeader symbolSegmentHeader = readSymbolSegmentHeader(reader, i);
         symbolSegmentHeaders.add(symbolSegmentHeader);
-        byte[] data = readSymbolSegmentData(symbolSegmentHeader, reader);
+        ImageInputStream data = readSymbolSegmentData(symbolSegmentHeader, reader);
         symbolSegmentData.add(data);
     }
 
@@ -417,7 +309,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final SymbolSegmentHeader readSymbolSegmentHeader(final NitfReader reader, final int i) throws ParseException {
         SymbolSegmentHeaderParser symbolSegmentHeaderParser = new SymbolSegmentHeaderParser();
         SymbolSegmentHeader symbolSegmentHeader = symbolSegmentHeaderParser.parse(reader, this);
-        symbolSegmentHeader.setSymbolSegmentDataLength(nitfFileHeaderFileLevelHeader.getSymbolSegmentDataLengths().get(i));
+        symbolSegmentHeader.setSymbolSegmentDataLength(nitfFileLevelHeader.getSymbolSegmentDataLengths().get(i));
         return symbolSegmentHeader;
     }
 
@@ -432,9 +324,12 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @return the data for the symbol, or null if no data was present
      * @throws ParseException on failure.
      */
-    protected final byte[] readSymbolSegmentData(final SymbolSegmentHeader symbolSegmentHeader, final NitfReader reader) throws ParseException {
+    protected final ImageInputStream readSymbolSegmentData(final SymbolSegmentHeader symbolSegmentHeader,
+            final NitfReader reader) throws ParseException {
         if (symbolSegmentHeader.getSymbolDataLength() > 0) {
-            return reader.readBytesRaw(symbolSegmentHeader.getSymbolDataLength());
+            // TODO: [IMG-77] this implementation probably should have a file-backed option
+            byte[] bytes = reader.readBytesRaw(symbolSegmentHeader.getSymbolDataLength());
+            return new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes));
         }
         return null;
     }
@@ -497,7 +392,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final LabelSegmentHeader readLabelSegmentHeader(final NitfReader reader, final int i) throws ParseException {
         LabelSegmentHeaderParser labelSegmentHeaderParser = new LabelSegmentHeaderParser();
         LabelSegmentHeader labelSegmentHeader = labelSegmentHeaderParser.parse(reader, this);
-        labelSegmentHeader.setLabelSegmentDataLength(nitfFileHeaderFileLevelHeader.getLabelSegmentDataLengths().get(i));
+        labelSegmentHeader.setLabelSegmentDataLength(nitfFileLevelHeader.getLabelSegmentDataLengths().get(i));
         return labelSegmentHeader;
     }
 
@@ -577,7 +472,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final TextSegmentHeader readTextSegmentHeader(final NitfReader reader, final int i) throws ParseException {
         TextSegmentHeaderParser textSegmentHeaderParser = new TextSegmentHeaderParser();
         TextSegmentHeader textSegmentHeader = textSegmentHeaderParser.parse(reader, this);
-        textSegmentHeader.setTextSegmentDataLength(nitfFileHeaderFileLevelHeader.getTextSegmentDataLengths().get(i));
+        textSegmentHeader.setTextSegmentDataLength(nitfFileLevelHeader.getTextSegmentDataLengths().get(i));
         return textSegmentHeader;
     }
 
@@ -656,7 +551,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     protected final NitfDataExtensionSegmentHeader readDataExtensionSegmentHeader(final NitfReader reader, final int i) throws ParseException {
         NitfDataExtensionSegmentHeaderParser dataExtensionSegmentHeaderParser = new NitfDataExtensionSegmentHeaderParser();
         NitfDataExtensionSegmentHeader dataExtensionSegmentHeader = dataExtensionSegmentHeaderParser.parse(reader);
-        dataExtensionSegmentHeader.setDataExtensionSegmentDataLength(nitfFileHeaderFileLevelHeader.getDataExtensionSegmentDataLengths().get(i));
+        dataExtensionSegmentHeader.setDataExtensionSegmentDataLength(nitfFileLevelHeader.getDataExtensionSegmentDataLengths().get(i));
         return dataExtensionSegmentHeader;
     }
 
@@ -675,10 +570,15 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         if (dataExtensionSegmentHeader.getDataExtensionSegmentDataLength() > 0) {
             if (dataExtensionSegmentHeader.isTreOverflow(reader.getFileType())) {
                 initialiseTreCollectionParserIfRequired();
-                TreCollection overflowTres = treCollectionParser.parse(reader, dataExtensionSegmentHeader.getDataExtensionSegmentDataLength());
+                TreCollection overflowTres = treCollectionParser.parse(reader,
+                        dataExtensionSegmentHeader.getDataExtensionSegmentDataLength(),
+                        TreSource.TreOverflowDES);
                 dataExtensionSegmentHeader.mergeTREs(overflowTres);
+                dataExtensionSegmentData.add(null);
             } else if (!"STREAMING_FILE_HEADER".equals(dataExtensionSegmentHeader.getIdentifier().trim())) {
                 dataExtensionSegmentData.add(reader.readBytesRaw(dataExtensionSegmentHeader.getDataExtensionSegmentDataLength()));
+            } else {
+                dataExtensionSegmentData.add(null);
             }
         }
     }
@@ -700,60 +600,6 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         }
     }
 //</editor-fold>
-
-    /**
-     * Return the image segment headers associated with this file.
-     *
-     * @return image segment headers
-     */
-    public final List<NitfImageSegmentHeader> getImageSegmentHeaders() {
-        return imageSegmentHeaders;
-    }
-
-    /**
-     * Return the graphic segment headers associated with this file.
-     *
-     * @return graphic segment headers
-     */
-    public final List<NitfGraphicSegmentHeader> getGraphicSegmentHeaders() {
-        return graphicSegmentHeaders;
-    }
-
-    /**
-     * Return the symbol segment headers associated with this file.
-     *
-     * @return symbol segment headers
-     */
-    public final List<SymbolSegmentHeader> getSymbolSegmentHeaders() {
-        return symbolSegmentHeaders;
-    }
-
-    /**
-     * Return the label segment headers associated with this file.
-     *
-     * @return label segment headers
-     */
-    public final List<LabelSegmentHeader> getLabelSegmentHeaders() {
-        return labelSegmentHeaders;
-    }
-
-    /**
-     * Return the text segments associated with this file.
-     *
-     * @return text segments
-     */
-    public final List<TextSegmentHeader> getTextSegmentHeaders() {
-        return textSegmentHeaders;
-    }
-
-    /**
-     * Return the data extension segment headers associated with this file.
-     *
-     * @return data extension segment headers
-     */
-    public final List<NitfDataExtensionSegmentHeader> getDataExtensionSegmentHeaders() {
-         return dataExtensionSegmentHeaders;
-    }
 
     /**
      * Handle the image segment header and data.
@@ -824,8 +670,8 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final TreCollection parseTREs(final NitfReader reader, final int length) throws ParseException {
+    public final TreCollection parseTREs(final NitfReader reader, final int length, final TreSource source) throws ParseException {
         initialiseTreCollectionParserIfRequired();
-        return treCollectionParser.parse(reader, length);
+        return treCollectionParser.parse(reader, length, source);
     }
 }

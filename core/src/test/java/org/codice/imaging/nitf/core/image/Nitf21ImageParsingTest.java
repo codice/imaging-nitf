@@ -47,7 +47,9 @@ public class Nitf21ImageParsingTest {
 
         NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
-        assertEquals(1048576, parseStrategy.getImageSegmentData().get(0).length);
+        byte[] allData = new byte[1048577];
+        int bytesRead = parseStrategy.getImageSegmentData().get(0).read(allData);
+        assertEquals(1048576, bytesRead);
     }
 
     @Test

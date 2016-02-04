@@ -29,6 +29,7 @@ import static org.codice.imaging.nitf.core.text.TextConstants.TXTALVL_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TXTFMT_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TXTITL_LENGTH;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Parser for a text segment subheader in a NITF file.
@@ -122,7 +123,9 @@ public class TextSegmentHeaderParser extends AbstractNitfSegmentParser {
     }
 
     private void readTXSHD() throws ParseException {
-        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader, textExtendedSubheaderLength - TXSOFL_LENGTH);
+        TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
+                textExtendedSubheaderLength - TXSOFL_LENGTH,
+                TreSource.TextExtendedSubheaderData);
         segment.mergeTREs(extendedSubheaderTREs);
     }
 }

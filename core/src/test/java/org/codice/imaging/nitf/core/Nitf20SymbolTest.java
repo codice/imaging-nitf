@@ -53,8 +53,9 @@ public class Nitf20SymbolTest {
 
         SymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
-        assertEquals(930, parseStrategy.getSymbolSegmentData().get(0).length);
-
+        byte[] allData = new byte[931];
+        int bytesRead = parseStrategy.getSymbolSegmentData().get(0).read(allData);
+        assertEquals(930, bytesRead);
         is.close();
     }
 
@@ -82,8 +83,8 @@ public class Nitf20SymbolTest {
         return getClass().getResourceAsStream(nitf20File);
     }
 
-    private void assertFileSegmentDataIsAsExpected(SlottedNitfParseStrategy parseStrategy) {
-        NitfFileHeader file = parseStrategy.getNitfHeader();
+    private void assertFileSegmentDataIsAsExpected(NitfDataSource dataSource) {
+        NitfFileHeader file = dataSource.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
         assertEquals(1, file.getComplexityLevel());
         assertEquals("", file.getStandardType());
@@ -100,11 +101,11 @@ public class Nitf20SymbolTest {
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC Fort Huachuca, AZ", file.getOriginatorsName());
         assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(0, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getLabelSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
+        assertEquals(0, dataSource.getImageSegmentHeaders().size());
+        assertEquals(0, dataSource.getGraphicSegmentHeaders().size());
+        assertEquals(0, dataSource.getLabelSegmentHeaders().size());
+        assertEquals(0, dataSource.getTextSegmentHeaders().size());
+        assertEquals(0, dataSource.getDataExtensionSegmentHeaders().size());
     }
 
     private void assertSymbolSegmentHeaderDataIsAsExpected(SymbolSegmentHeader symbolSegment1) {

@@ -16,6 +16,7 @@ package org.codice.imaging.nitf.core.security;
 
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import static org.codice.imaging.nitf.core.security.SecurityConstants.XSDEVT20_LENGTH;
 
 /**
     Parser for security metadata.
@@ -51,7 +52,6 @@ public class SecurityMetadataParser {
     private static final int XSCAUT20_LENGTH = 20;
     private static final int XSCTLN20_LENGTH = 20;
     private static final int XSDWNG20_LENGTH = 6;
-    private static final int XSDEVT20_LENGTH = 40;
 
     private static final String DOWNGRADE_EVENT_MAGIC = "999998";
 

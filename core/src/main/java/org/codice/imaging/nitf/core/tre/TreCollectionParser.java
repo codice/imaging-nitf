@@ -14,11 +14,11 @@
  **/
 package org.codice.imaging.nitf.core.tre;
 
-import static org.codice.imaging.nitf.core.tre.TreConstants.TAGLEN_LENGTH;
-import static org.codice.imaging.nitf.core.tre.TreConstants.TAG_LENGTH;
 import java.text.ParseException;
 import javax.xml.transform.Source;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import static org.codice.imaging.nitf.core.tre.TreConstants.TAGLEN_LENGTH;
+import static org.codice.imaging.nitf.core.tre.TreConstants.TAG_LENGTH;
 
 /**
  * Parser for a TreCollection.
@@ -36,14 +36,15 @@ public class TreCollectionParser {
     }
 
     /**
-        Parse the TREs from the current reader.
-
-        @param reader the reader to use.
-        @param treLength the length of the TRE.
-        @return TRE collection.
-        @throws ParseException if the TRE parsing fails (e.g. end of file or TRE that is clearly incorrect).
-    */
-    public final TreCollection parse(final NitfReader reader, final int treLength) throws ParseException {
+     * Parse the TREs from the current reader.
+     *
+     * @param reader the reader to use.
+     * @param treLength the length of the TRE.
+     * @param sourceSegment the source segment (or segment part) for the TRE.
+     * @return TRE collection.
+     * @throws ParseException if the TRE parsing fails (e.g. end of file or TRE that is clearly incorrect).
+     */
+    public final TreCollection parse(final NitfReader reader, final int treLength, final TreSource sourceSegment) throws ParseException {
         TreCollection treCollection = new TreCollection();
         int bytesRead = 0;
         while (bytesRead < treLength) {
@@ -51,7 +52,7 @@ public class TreCollectionParser {
             bytesRead += TAG_LENGTH;
             int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
             bytesRead += TAGLEN_LENGTH;
-            treCollection.add(treParser.parseOneTre(reader, tag, fieldLength));
+            treCollection.add(treParser.parseOneTre(reader, tag, fieldLength, sourceSegment));
             bytesRead += fieldLength;
         }
         return treCollection;
@@ -60,7 +61,7 @@ public class TreCollectionParser {
     /**
      * Registers TreImpl descriptors for the supplied source.
      * @param source - The source for the TreImpl descriptor.
-     * @throws ParseException propogated from TreParser.registerAdditionalTREdescriptor.
+     * @throws ParseException propagated from TreParser.registerAdditionalTREdescriptor.
      */
     public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
         treParser.registerAdditionalTREdescriptor(source);

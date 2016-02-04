@@ -14,32 +14,35 @@
  **/
 package org.codice.imaging.nitf.core.tre;
 
-import static org.codice.imaging.nitf.core.tre.TreConstants.AND_CONDITION;
-import static org.codice.imaging.nitf.core.tre.TreConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
+import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.schema.FieldType;
 import org.codice.imaging.nitf.core.schema.IfType;
 import org.codice.imaging.nitf.core.schema.LoopType;
-
-import org.codice.imaging.nitf.core.schema.Tres;
 import org.codice.imaging.nitf.core.schema.TreType;
-
+import org.codice.imaging.nitf.core.schema.Tres;
+import static org.codice.imaging.nitf.core.tre.TreConstants.AND_CONDITION;
+import static org.codice.imaging.nitf.core.tre.TreConstants.TAGLEN_LENGTH;
+import static org.codice.imaging.nitf.core.tre.TreConstants.TAG_LENGTH;
+import static org.codice.imaging.nitf.core.tre.TreConstants.UNSUPPORTED_IFTYPE_FORMAT_MESSAGE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
     Parser for Tagged Registered Extension (TRE) data.
 */
-class TreParser {
+public class TreParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreParser.class);
 
@@ -75,7 +78,13 @@ class TreParser {
         return jc.createUnmarshaller();
     }
 
-    void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+    /**
+     * Add one or more TRE descriptor to the existing descriptor set.
+     *
+     * @param source the Source to read the TRE descriptors from
+     * @throws ParseException if parsing fails (typically invalid descriptors)
+     */
+    public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
         try {
             Tres extraTres = (Tres) getUnmarshaller().unmarshal(source);
             tresStructure.getTre().addAll(extraTres.getTre());
@@ -85,9 +94,8 @@ class TreParser {
         }
     }
 
-    Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength)
-            throws ParseException {
-        Tre tre = new TreImpl(tag);
+    final Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength, final TreSource source) throws ParseException {
+        Tre tre = new TreImpl(tag, source);
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
             tre.setRawData(reader.readBytesRaw(fieldLength));
@@ -289,4 +297,99 @@ class TreParser {
         return conditionParts[1].equals(actualValue);
     }
 
+    /**
+     * Serialise out the TREs for the specified source.
+     *
+     * @param header the header to read TREs from
+     * @param source the source (which has to match the header) of the TREs.
+     * @return byte array of serialised TREs - may be empty if there are no TREs.
+     * @throws ParseException on TRE parsing problem.
+     * @throws IOException on reading or writing problems.
+     */
+    public final byte[] getTREs(final CommonNitfSegment header, final TreSource source) throws ParseException, IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        for (Tre tre : header.getTREsRawStructure().getTREsForSource(source)) {
+            String name = padStringToLength(tre.getName(), TAG_LENGTH);
+            baos.write(name.getBytes(StandardCharsets.UTF_8));
+            if (tre.getRawData() != null) {
+                String tagLen = padNumberToLength(tre.getRawData().length, TAGLEN_LENGTH);
+                baos.write(tagLen.getBytes(StandardCharsets.UTF_8));
+                baos.write(tre.getRawData());
+            } else {
+                byte[] treData = serializeTRE(tre);
+                baos.write(padNumberToLength(treData.length, TAGLEN_LENGTH).getBytes(StandardCharsets.UTF_8));
+                baos.write(treData);
+            }
+        }
+        return baos.toByteArray();
+    }
+
+    private String padNumberToLength(final long number, final int length) {
+        return String.format("%0" + length + "d", number);
+    }
+
+    private String padStringToLength(final String s, final int length) {
+        return String.format("%1$-" + length + "s", s);
+    }
+
+    /**
+     * Write out one TRE.
+     *
+     * @param tre the TRE to write out
+     * @return byte array containing serialised TRE.
+     * @throws ParseException if TRE serialisation fails.
+     */
+    public final byte[] serializeTRE(final Tre tre) throws ParseException {
+        TreType treType = getTreTypeForTag(tre.getName());
+        TreParams parameters = new TreParams();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        serializeFieldOrLoopOrIf(treType.getFieldOrLoopOrIf(), tre, output, parameters);
+        return output.toByteArray();
+    }
+
+    private void serializeFieldOrLoopOrIf(final List<Object> fieldOrLoopOrIf,
+            final TreGroup treGroup,
+            final ByteArrayOutputStream baos,
+            final TreParams params) throws ParseException {
+        try {
+            for (Object fieldLoopIf : fieldOrLoopOrIf) {
+                if (fieldLoopIf instanceof FieldType) {
+                    byte[] field = getFieldValue((FieldType) fieldLoopIf, treGroup, params);
+                    baos.write(field);
+                } else if (fieldLoopIf instanceof LoopType) {
+                    LoopType loopType = (LoopType) fieldLoopIf;
+                    TreEntry loopDataEntry = treGroup.getEntry(loopType.getName());
+                    for (TreGroup subGroup : loopDataEntry.getGroups()) {
+                        serializeFieldOrLoopOrIf(loopType.getFieldOrLoopOrIf(), subGroup, baos, params);
+                    }
+                } else if (fieldLoopIf instanceof IfType) {
+                    IfType ifType = (IfType) fieldLoopIf;
+                    if (evaluateCondition(ifType.getCond(), params)) {
+                        serializeFieldOrLoopOrIf(ifType.getFieldOrLoopOrIf(), treGroup, baos, params);
+                    }
+                } else {
+                    throw new ParseException("Unexpected TRE structure type", 0);
+                }
+            }
+        } catch (IOException ex) {
+            throw new ParseException("Failed to write TRE:" + ex.getMessage(), 0);
+        }
+    }
+
+    private byte[] getFieldValue(final FieldType fieldType, final TreGroup treGroup, final TreParams params) throws ParseException {
+        String fieldTypeName = fieldType.getName();
+        if ("".equals(fieldTypeName)) {
+            fieldTypeName = fieldType.getLongname();
+        }
+        if (fieldTypeName != null) {
+            TreEntry entry = treGroup.getEntry(fieldTypeName);
+            String value = entry.getFieldValue();
+            params.addParameter(fieldTypeName, value);
+            return value.getBytes(StandardCharsets.UTF_8);
+        } else {
+            // This is a pad field
+            String value = fieldType.getFixedValue();
+            return value.getBytes(StandardCharsets.UTF_8);
+        }
+    }
 }

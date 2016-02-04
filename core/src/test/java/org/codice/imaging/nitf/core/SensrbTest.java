@@ -1,19 +1,20 @@
 /*
  * Copyright (c) Codice Foundation
- * 
+ *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
- * 
+ *
  */
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.tre.TreSource;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -39,7 +40,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 320);
+        TreCollection parseResult = parser.parse(nitfReader, 320, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(45, sensrb.getEntries().size());
@@ -97,7 +98,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 399);
+        TreCollection parseResult = parser.parse(nitfReader, 399, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(45, sensrb.getEntries().size());
@@ -146,7 +147,7 @@ public class SensrbTest {
         assertNotNull(pointSetGroup0);
         assertEquals("Image Center", pointSetGroup0.getFieldValue("POINT_SET_TYPE_MM").trim());
         assertEquals("001", pointSetGroup0.getFieldValue("POINT_COUNT_MM"));
-        
+
         TreEntry pointEntry = pointSetGroup0.getEntry("POINT");
         List<TreGroup> pointEntryGroups = pointEntry.getGroups();
         assertNotNull(pointEntryGroups);
@@ -173,7 +174,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 508);
+        TreCollection parseResult = parser.parse(nitfReader, 508, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(66, sensrb.getEntries().size());
@@ -254,7 +255,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 615);
+        TreCollection parseResult = parser.parse(nitfReader, 615, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(74, sensrb.getEntries().size());
@@ -347,7 +348,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 808);
+        TreCollection parseResult = parser.parse(nitfReader, 808, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(70, sensrb.getEntries().size());
@@ -464,7 +465,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 937);
+        TreCollection parseResult = parser.parse(nitfReader, 937, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(90, sensrb.getEntries().size());
@@ -589,7 +590,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 1152);
+        TreCollection parseResult = parser.parse(nitfReader, 1152, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(90, sensrb.getEntries().size());
@@ -754,7 +755,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 808);
+        TreCollection parseResult = parser.parse(nitfReader, 808, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(70, sensrb.getEntries().size());
@@ -899,7 +900,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 808);
+        TreCollection parseResult = parser.parse(nitfReader, 808, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(70, sensrb.getEntries().size());
@@ -1048,7 +1049,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 937);
+        TreCollection parseResult = parser.parse(nitfReader, 937, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(90, sensrb.getEntries().size());
@@ -1354,7 +1355,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 615);
+        TreCollection parseResult = parser.parse(nitfReader, 615, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(77, sensrb.getEntries().size());
@@ -1553,7 +1554,7 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 615);
+        TreCollection parseResult = parser.parse(nitfReader, 615, TreSource.ImageExtendedSubheaderData);
         Tre sensrb = parseResult.getTREsWithName("SENSRB").get(0);
         assertNotNull(sensrb);
         assertEquals(74, sensrb.getEntries().size());
@@ -1728,6 +1729,6 @@ public class SensrbTest {
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, 1815);
+        TreCollection parseResult = parser.parse(nitfReader, 1815, TreSource.ImageExtendedSubheaderData);
     }
 }
