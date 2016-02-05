@@ -12,14 +12,15 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.imagehandler;
+package org.codice.imaging.nitf.render.imagemode;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
 import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
 /**
- * An ImageModeHandler abstracts the processing of an ImageInputStream based on the NITF Image Mode.
+ * An ImageModeHandler abstracts the processing of an ImageSegment based on the NITF Image Mode.
  *
  * Pixel-by-pixel rendering is delegated to the supplied ImageRepresentationHandler.
  */

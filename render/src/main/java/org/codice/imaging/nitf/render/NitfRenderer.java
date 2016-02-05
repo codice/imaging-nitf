@@ -12,7 +12,6 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-
 package org.codice.imaging.nitf.render;
 
 import java.awt.Graphics2D;
@@ -25,11 +24,11 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageMode;
-import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
-import org.codice.imaging.nitf.render.imagehandler.BandSequentialImageModeHandler;
-import org.codice.imaging.nitf.render.imagehandler.ImageModeHandler;
-import org.codice.imaging.nitf.render.imagehandler.ImageRepresentationHandler;
+import org.codice.imaging.nitf.render.imagemode.BandSequentialImageModeHandler;
+import org.codice.imaging.nitf.render.imagemode.ImageModeHandler;
+import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
+import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandlerFactory;
 
 /**
  * Renderer for NITF files
@@ -37,12 +36,9 @@ import org.codice.imaging.nitf.render.imagehandler.ImageRepresentationHandler;
 public class NitfRenderer {
 
     private final static Map<ImageMode, ImageModeHandler> IMAGE_MODE_HANDLER_MAP = new HashMap<>();
-    private final static Map<ImageRepresentation, ImageRepresentationHandler> IMAGE_REPRESENTATION_HANDLER_MAP = new HashMap<>();
 
     static {
         IMAGE_MODE_HANDLER_MAP.put(ImageMode.BANDSEQUENTIAL, new BandSequentialImageModeHandler());
-        IMAGE_REPRESENTATION_HANDLER_MAP.put(ImageRepresentation.RGBTRUECOLOUR, (currentValue, bandValue, bandIndex) ->
-                currentValue | (bandValue << (8 * (2 - bandIndex))) );
     }
 
     /**
@@ -60,9 +56,9 @@ public class NitfRenderer {
         case NOTCOMPRESSED:
         case NOTCOMPRESSEDMASK:
             ImageModeHandler modeHandler = IMAGE_MODE_HANDLER_MAP.get(imageSegment.getImageMode());
-            ImageRepresentationHandler representationHandler = IMAGE_REPRESENTATION_HANDLER_MAP.get(imageSegment.getImageRepresentation());
+            ImageRepresentationHandler representationHandler = ImageRepresentationHandlerFactory.forImageSegment(imageSegment);
 
-            if (modeHandler != null && representationHandler != null) {
+            if (modeHandler != null && representationHandler != null && imageSegment.getActualBitsPerPixelPerBand() == 8) {
                 modeHandler.handleImage(imageSegment, targetGraphic, representationHandler);
             } else {
                 render(new UncompressedBlockRenderer(), imageSegment, targetGraphic);
