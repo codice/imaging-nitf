@@ -29,12 +29,9 @@ package org.codice.imaging.nitf.core.graphic;
 public enum GraphicColour {
 
     /**
-        Unknown format of symbol.
-        <p>
-        This indicates an unknown format, and may indicate a broken file or
-        an error during parsing. This is not a valid value in a NITF graphic subheader,
-        but there are software products that produce it.
-    */
+     * Unknown format of symbol. This indicates an unknown format, and may indicate a broken file or an error during
+     * parsing. This is not a valid value in a NITF graphic segment, but there are software products that produce it.
+     */
     UNKNOWN (""),
     /**
         Colour format.

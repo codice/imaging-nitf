@@ -22,15 +22,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-
 import javax.imageio.ImageIO;
-
+import javax.imageio.stream.ImageInputStream;
+import junit.framework.TestCase;
 import org.codice.imaging.nitf.render.flow.NitfParserInputFlow;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import junit.framework.TestCase;
 
 /**
  * Tests for JITC NITF 2.0 and NITF 2.1 test cases.
@@ -298,11 +296,12 @@ public class RenderJitcTest extends TestCase {
         new NitfParserInputFlow()
                 .inputStream(getClass().getResourceAsStream(inputFileName))
                 .imageData()
-                .forEachImage((header, imageData) -> {
+                .forEachImage((header) -> {
                     NitfRenderer renderer = new NitfRenderer();
 
-                    try {
-                        BufferedImage img = renderer.render(header, imageData);
+            try {
+                ImageInputStream imageData = header.getData();
+                        BufferedImage img = renderer.render(header);
                         ImageIO.write(img, "png", new File("target" + File.separator + testfile + "_" + i.get() + ".png"));
                     } catch (IOException|UnsupportedOperationException e) {
                         LOGGER.error(e.getMessage(), e);

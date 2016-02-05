@@ -14,32 +14,32 @@
  */
 package org.codice.imaging.nitf.core.text;
 
-import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
+import org.codice.imaging.nitf.core.AbstractSubSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
-    Text segment subheader information.
-*/
-class TextSegmentHeaderImpl extends AbstractNitfSubSegment implements TextSegmentHeader {
+ * Text segment information.
+ */
+class TextSegmentImpl extends AbstractSubSegment implements TextSegment {
 
     private NitfDateTime textDateTime = null;
     private String textTitle = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
-    private int textSegmentDataLength = 0;
+    private String textData = null;
 
     /**
-        Default constructor.
-    */
-    public TextSegmentHeaderImpl() {
+     * Default constructor.
+     */
+    public TextSegmentImpl() {
     }
 
     /**
-        Set text date and time.
-        <p>
-        This field shall contain the time (UTC) (Zulu) of origination of the text.
-
-        @param dateTime the date and time of the text.
-    */
+     * Set text date and time.
+     *
+     * This field shall contain the time (UTC) (Zulu) of origination of the text.
+     *
+     * @param dateTime the date and time of the text.
+     */
     public final void setTextDateTime(final NitfDateTime dateTime) {
         textDateTime = dateTime;
     }
@@ -93,15 +93,16 @@ class TextSegmentHeaderImpl extends AbstractNitfSubSegment implements TextSegmen
     /**
      * {@inheritDoc}
      */
-    public final void setTextSegmentDataLength(final int length) {
-        textSegmentDataLength = length;
+    @Override
+    public final String getData() {
+        return textData;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final int getTextDataLength() {
-        return textSegmentDataLength;
+    public final void setData(final String text) {
+        textData = text;
     }
 }

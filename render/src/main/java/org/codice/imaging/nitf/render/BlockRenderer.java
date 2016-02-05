@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.render;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 
 /**
  * Image renderer that operates block-by-block.
@@ -27,11 +27,11 @@ public interface BlockRenderer {
     /**
      * Configure the renderer to support future image rendering.
      *
-     * @param imageSegmentHeader the header corresponding to the image segment to be read
+     * @param imageSegment the image segment to be read
      * @param imageInputStream the source data to be read from
      * @throws IOException if the imageInputStream is not readable
      */
-    public void setImageSegment(NitfImageSegmentHeader imageSegmentHeader, ImageInputStream imageInputStream) throws IOException;
+    public void setImageSegment(ImageSegment imageSegment, ImageInputStream imageInputStream) throws IOException;
 
     /**
      * Render the next available image block.

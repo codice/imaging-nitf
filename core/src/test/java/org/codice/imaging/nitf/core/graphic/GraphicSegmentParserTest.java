@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class NitfGraphicSegmentHeaderParserTest {
+public class GraphicSegmentParserTest {
     private NitfParseStrategy strategy;
     private NitfReader nitfReader;
     private final LinkedList<String> stringValues = new LinkedList<>();
@@ -124,8 +124,8 @@ public class NitfGraphicSegmentHeaderParserTest {
 
     @Test
     public void testParse() throws ParseException {
-        NitfGraphicSegmentHeaderParser parser = new NitfGraphicSegmentHeaderParser();
-        GraphicSegmentHeader header = parser.parse(nitfReader, strategy);
+        GraphicSegmentParser parser = new GraphicSegmentParser();
+        GraphicSegment header = parser.parse(nitfReader, strategy);
         SecurityMetadata securityMetaData = header.getSecurityMetadata();
 
         assertThat(header, notNullValue());
@@ -134,7 +134,6 @@ public class NitfGraphicSegmentHeaderParserTest {
         assertThat(header.getBoundingBox2Column(), is(SBND2_COL));
         assertThat(header.getBoundingBox2Row(), is(SBND2_ROW));
         assertThat(header.getGraphicColour(), is(GraphicColour.COLOUR));
-        assertThat(header.getGraphicDataLength(), is(0));
         assertThat(header.getGraphicDisplayLevel(), is(SDLVL));
         assertThat(header.getGraphicName(), is(SNAME));
         assertThat(header.getAttachmentLevel(), is(SALVL));

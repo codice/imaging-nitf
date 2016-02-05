@@ -42,7 +42,7 @@ public class DateTimeParserTest {
 
     @Test
     public void testDateParsingWithoutReaderVersion() throws ParseException {
-        AbstractNitfSegmentParser parser = mock(AbstractNitfSegmentParser.class, CALLS_REAL_METHODS);
+        AbstractSegmentParser parser = mock(AbstractSegmentParser.class, CALLS_REAL_METHODS);
         NitfReader mockReader = mock(NitfReader.class);
         parser.reader = mockReader;
         when(mockReader.getFileType()).thenReturn(FileType.UNKNOWN);

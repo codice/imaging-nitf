@@ -25,11 +25,11 @@ import org.codice.imaging.nitf.core.common.FileType;
 public enum ImageCoordinatesRepresentation {
 
     /**
-        Unknown image coordinate representation.
-        <p>
-        This indicates an unknown representation, and typically indicates a broken file or
-        an error during parsing. This is not a valid value in a NITF image subheader.
-    */
+     * Unknown image coordinate representation.
+     *
+     * This indicates an unknown representation, and typically indicates a broken file or an error during parsing. This
+     * is not a valid value in a NITF image segment.
+     */
     UNKNOWN ("", ""),
 
     /**

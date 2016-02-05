@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.List;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreGroup;
 import static org.junit.Assert.assertEquals;
@@ -42,16 +42,16 @@ public class ENGRDATest {
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
         NitfFileHeader file = parseStrategy.getNitfHeader();
-        assertEquals(1, parseStrategy.getImageSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getGraphicSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getSymbolSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getLabelSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getTextSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegmentHeaders().size());
+        assertEquals(1, parseStrategy.getImageSegments().size());
+        assertEquals(0, parseStrategy.getGraphicSegments().size());
+        assertEquals(0, parseStrategy.getSymbolSegments().size());
+        assertEquals(0, parseStrategy.getLabelSegments().size());
+        assertEquals(0, parseStrategy.getTextSegments().size());
+        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
 
         assertEquals(0, file.getTREsRawStructure().getUniqueNamesOfTRE().size());
 
-        NitfImageSegmentHeader imageSegment = parseStrategy.getImageSegmentHeaders().get(0);
+        ImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
         assertEquals(2, imageSegment.getTREsRawStructure().getTREs().size());
 
         List<Tre> engrdaTres = imageSegment.getTREsRawStructure().getTREsWithName("ENGRDA");

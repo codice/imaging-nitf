@@ -16,13 +16,12 @@ package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
-import org.codice.imaging.nitf.core.graphic.GraphicSegmentHeader;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
-import org.codice.imaging.nitf.core.label.LabelSegmentHeader;
-import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
-import org.codice.imaging.nitf.core.text.TextSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
+import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.core.label.LabelSegment;
+import org.codice.imaging.nitf.core.symbol.SymbolSegment;
+import org.codice.imaging.nitf.core.text.TextSegment;
 
 /**
  * A data structure collection that holds the various parts of a NITF file.
@@ -34,53 +33,29 @@ public class SlottedNitfStorage implements NitfDataSource {
      */
     protected NitfFileHeader nitfFileLevelHeader;
     /**
-     * The list of image segment headers.
+     * The list of image segment.
      */
-    protected final List<NitfImageSegmentHeader> imageSegmentHeaders = new ArrayList<>();
+    protected final List<ImageSegment> imageSegments = new ArrayList<>();
     /**
-     * The list of image segment data.
+     * The list of graphic segments.
      */
-    protected final List<ImageInputStream> imageSegmentStreams = new ArrayList<>();
+    protected final List<GraphicSegment> graphicSegments = new ArrayList<>();
     /**
-     * The list of graphic segment headers.
+     * The list of symbol segments.
      */
-    protected final List<GraphicSegmentHeader> graphicSegmentHeaders = new ArrayList<>();
+    protected final List<SymbolSegment> symbolSegments = new ArrayList<>();
     /**
-     * The list of graphic segment data.
+     * The list of label segments.
      */
-    protected final List<ImageInputStream> graphicSegmentData = new ArrayList<>();
+    protected final List<LabelSegment> labelSegments = new ArrayList<>();
     /**
-     * The list of symbol segment headers.
+     * The list of text segments.
      */
-    protected final List<SymbolSegmentHeader> symbolSegmentHeaders = new ArrayList<>();
+    protected final ArrayList<TextSegment> textSegments = new ArrayList<>();
     /**
-     * The list of symbol segment data.
+     * The list of DES.
      */
-    protected final List<ImageInputStream> symbolSegmentData = new ArrayList<>();
-    /**
-     * The list of label segment headers.
-     */
-    protected final List<LabelSegmentHeader> labelSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of label segment data.
-     */
-    protected final List<String> labelSegmentData = new ArrayList<>();
-    /**
-     * The list of text segment headers.
-     */
-    protected final ArrayList<TextSegmentHeader> textSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of text segment data.
-     */
-    protected final ArrayList<String> textSegmentData = new ArrayList<>();
-    /**
-     * The list of DES headers.
-     */
-    protected final List<NitfDataExtensionSegmentHeader> dataExtensionSegmentHeaders = new ArrayList<>();
-    /**
-     * The list of DES data.
-     */
-    protected final List<byte[]> dataExtensionSegmentData = new ArrayList<>();
+    protected final List<DataExtensionSegment> dataExtensionSegments = new ArrayList<>();
 
     @Override
     public final NitfFileHeader getNitfHeader() {
@@ -88,62 +63,32 @@ public class SlottedNitfStorage implements NitfDataSource {
     }
 
     @Override
-    public final List<NitfImageSegmentHeader> getImageSegmentHeaders() {
-        return imageSegmentHeaders;
+    public final List<ImageSegment> getImageSegments() {
+        return imageSegments;
     }
 
     @Override
-    public final List<ImageInputStream> getImageSegmentData() {
-        return imageSegmentStreams;
+    public final List<GraphicSegment> getGraphicSegments() {
+        return graphicSegments;
     }
 
     @Override
-    public final List<GraphicSegmentHeader> getGraphicSegmentHeaders() {
-        return graphicSegmentHeaders;
+    public final List<SymbolSegment> getSymbolSegments() {
+        return symbolSegments;
     }
 
     @Override
-    public final List<ImageInputStream> getGraphicSegmentData() {
-        return graphicSegmentData;
+    public final List<LabelSegment> getLabelSegments() {
+        return labelSegments;
     }
 
     @Override
-    public final List<SymbolSegmentHeader> getSymbolSegmentHeaders() {
-        return symbolSegmentHeaders;
+    public final List<TextSegment> getTextSegments() {
+        return textSegments;
     }
 
     @Override
-    public final List<ImageInputStream> getSymbolSegmentData() {
-        return symbolSegmentData;
-    }
-
-    @Override
-    public final List<LabelSegmentHeader> getLabelSegmentHeaders() {
-        return labelSegmentHeaders;
-    }
-
-    @Override
-    public final List<String> getLabelSegmentData() {
-        return labelSegmentData;
-    }
-
-    @Override
-    public final List<TextSegmentHeader> getTextSegmentHeaders() {
-        return textSegmentHeaders;
-    }
-
-    @Override
-    public final List<String> getTextSegmentData() {
-        return textSegmentData;
-    }
-
-    @Override
-    public final List<NitfDataExtensionSegmentHeader> getDataExtensionSegmentHeaders() {
-        return dataExtensionSegmentHeaders;
-    }
-
-    @Override
-    public final List<byte[]> getDataExtensionSegmentData() {
-        return dataExtensionSegmentData;
+    public final List<DataExtensionSegment> getDataExtensionSegments() {
+        return dataExtensionSegments;
     }
 }

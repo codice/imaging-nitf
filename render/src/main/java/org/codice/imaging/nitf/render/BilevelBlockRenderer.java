@@ -14,18 +14,15 @@
  */
 package org.codice.imaging.nitf.render;
 
-import java.io.IOException;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
-
+import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
-
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 
 class BilevelBlockRenderer implements BlockRenderer {
 
-    private NitfImageSegmentHeader mImageSegmentHeader = null;
+    private ImageSegment mImageSegment = null;
     private ImageInputStream mImageData = null;
     WritableRaster imgRaster = null;
     boolean lineMode2D = false;
@@ -283,21 +280,21 @@ class BilevelBlockRenderer implements BlockRenderer {
     };
 
     @Override
-    public final void setImageSegment(NitfImageSegmentHeader imageSegmentHeader, ImageInputStream imageInputStream) throws IOException {
-        mImageSegmentHeader = imageSegmentHeader;
+    public final void setImageSegment(ImageSegment imageSegment, ImageInputStream imageInputStream) throws IOException {
+        mImageSegment = imageSegment;
         mImageData = imageInputStream;
     }
 
     @Override
     public final BufferedImage getNextImageBlock() throws IOException {
-        if (mImageSegmentHeader.getActualBitsPerPixelPerBand() != 1) {
-            throw new IOException("Unhandled bilevel image depth:" + mImageSegmentHeader.getActualBitsPerPixelPerBand());
+        if (mImageSegment.getActualBitsPerPixelPerBand() != 1) {
+            throw new IOException("Unhandled bilevel image depth:" + mImageSegment.getActualBitsPerPixelPerBand());
         }
-        BufferedImage img = new BufferedImage(mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(),
-                                              mImageSegmentHeader.getNumberOfPixelsPerBlockVertical(),
+        BufferedImage img = new BufferedImage(mImageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                                              mImageSegment.getNumberOfPixelsPerBlockVertical(),
                                               BufferedImage.TYPE_BYTE_BINARY);
         imgRaster = img.getRaster();
-        for (int blockRow = 0; blockRow < mImageSegmentHeader.getNumberOfPixelsPerBlockVertical(); ++blockRow) {
+        for (int blockRow = 0; blockRow < mImageSegment.getNumberOfPixelsPerBlockVertical(); ++blockRow) {
             readScanline(blockRow);
         }
         return img;
@@ -323,7 +320,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         int a0colour = WHITE;
         int a0 = -1;
         int a0prime = 0;
-        while (a0 < mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal()) {
+        while (a0 < mImageSegment.getNumberOfPixelsPerBlockHorizontal()) {
             TwoDmode mode = getTwoDmode();
             int a1;
             int b1 = getBindex(referenceRow, a0colour, a0);
@@ -482,7 +479,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         } else {
             pixelAboveRefPosition = imgRaster.getSample(refposition, referenceRow, 0);
         }
-        for (int i = refposition + 1; i < mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(); ++i) {
+        for (int i = refposition + 1; i < mImageSegment.getNumberOfPixelsPerBlockHorizontal(); ++i) {
             int sampleValue = imgRaster.getSample(i, referenceRow, 0);
             if (sampleValue != pixelAboveRefPosition) {
                 // This is a changing pixel
@@ -495,20 +492,20 @@ class BilevelBlockRenderer implements BlockRenderer {
                 }
             }
         }
-        return mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal();
+        return mImageSegment.getNumberOfPixelsPerBlockHorizontal();
     }
 
     private void readScanline1D(int blockRow) throws IOException {
         int blockColumn = 0;
         int colour = WHITE;
 
-        while (blockColumn < mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal()) {
+        while (blockColumn < mImageSegment.getNumberOfPixelsPerBlockHorizontal()) {
             int runLength = readNextRun(colour);
             writeRun(blockRow, blockColumn, runLength, colour);
             blockColumn += runLength;
             colour = flipColour(colour);
         }
-        if (blockColumn != mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal()) {
+        if (blockColumn != mImageSegment.getNumberOfPixelsPerBlockHorizontal()) {
             throw new IOException("Mismatched number of pixels: " + blockColumn);
         }
     }
@@ -528,7 +525,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         if (EOL != eol) {
             throw new IOException(String.format("Expected EOL, but got 0x%04d", eol));
         }
-        if (TWOD_S_ENCODING.equals(mImageSegmentHeader.getCompressionRate()) || TWOD_H_ENCODING.equals(mImageSegmentHeader.getCompressionRate())) {
+        if (TWOD_S_ENCODING.equals(mImageSegment.getCompressionRate()) || TWOD_H_ENCODING.equals(mImageSegment.getCompressionRate())) {
             lineMode2D = (mImageData.readBits(1) != 0x01);
         }
     }
@@ -554,7 +551,7 @@ class BilevelBlockRenderer implements BlockRenderer {
                 cumulativeLengthOfThisRun += blackRunLength;
             } while (blackRunLength > MAX_TERMINATING_RUN_LENGTH);
         }
-        if (cumulativeLengthOfThisRun > mImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal()) {
+        if (cumulativeLengthOfThisRun > mImageSegment.getNumberOfPixelsPerBlockHorizontal()) {
             throw new IOException("Bad run length: " + cumulativeLengthOfThisRun);
         }
         return cumulativeLengthOfThisRun;

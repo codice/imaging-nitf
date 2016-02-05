@@ -14,13 +14,13 @@
  */
 package org.codice.imaging.nitf.core.label;
 
-import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
+import org.codice.imaging.nitf.core.AbstractSubSegment;
 import org.codice.imaging.nitf.core.RGBColour;
 
 /**
-    Label segment subheader information (NITF 2.0 only).
+    Label segment information (NITF 2.0 only).
 */
-class LabelSegmentHeaderImpl extends AbstractNitfSubSegment implements LabelSegmentHeader {
+class LabelSegmentImpl extends AbstractSubSegment implements LabelSegment {
 
     private int labelLocationRow = 0;
     private int labelLocationColumn = 0;
@@ -29,12 +29,12 @@ class LabelSegmentHeaderImpl extends AbstractNitfSubSegment implements LabelSegm
     private int labelDisplayLevel = 0;
     private RGBColour labelTextColour = null;
     private RGBColour labelBackgroundColour = null;
-    private int labelSegmentDataLength = 0;
+    private String labelText = null;
 
     /**
         Default constructor.
     */
-    LabelSegmentHeaderImpl() {
+    LabelSegmentImpl() {
     }
 
     /**
@@ -202,16 +202,17 @@ class LabelSegmentHeaderImpl extends AbstractNitfSubSegment implements LabelSegm
     /**
      * {@inheritDoc}
      */
-    public final void setLabelSegmentDataLength(final int length) {
-        labelSegmentDataLength = length;
+    @Override
+    public String getData() {
+        return labelText;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final int getLabelDataLength() {
-        return labelSegmentDataLength;
+    public void setData(final String labelData) {
+        labelText = labelData;
     }
 
 }

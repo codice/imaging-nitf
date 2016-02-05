@@ -15,25 +15,23 @@
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
 import java.text.ParseException;
-
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
-
-import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
 
 class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
 
-    private final NitfDataExtensionSegmentHeader header;
+    private final DataExtensionSegment header;
     private final ChildSegmentKey childKey;
 
     public NitfDataExtensionSegmentNode(final ChildSegmentKey key) throws ParseException {
         super(Children.LEAF);
         childKey = key;
         DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-        header = parseStrategy.getDataExtensionSegmentHeader(childKey.getIndex());
+        header = parseStrategy.getDataExtensionSegment(childKey.getIndex());
         setDisplayName("DES: " + getFriendlyName());
     }
 
@@ -83,7 +81,6 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
     final String getText() {
         try {
             DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-            parseStrategy.parseDataExtensionSegmentData(header, childKey.getIndex());
             if (header.isTreOverflowNitf21() || header.isTreOverflowNitf20()) {
                 // TODO: convert to the raw / heirachical repr.
                 StringBuilder sb = new StringBuilder();
@@ -95,7 +92,7 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
                 }
                 return sb.toString();
             } else if ("XML_DATA_CONTENT".equals(header.getIdentifier().trim())) {
-                return new String(parseStrategy.getDataExtensionSegmentData(childKey.getIndex()));
+                return new String(parseStrategy.getDataExtensionSegment(childKey.getIndex()).getData());
             } else {
                 return "[IMG-48] TODO";
             }
@@ -115,13 +112,7 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
     }
 
     TreeModel getTreTreeModel() {
-        try {
-            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-            parseStrategy.parseDataExtensionSegmentData(header, childKey.getIndex());
-            return new TreTreeModel(header.getTREsRawStructure());
-        } catch (ParseException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-        return null;
+        DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
+        return new TreTreeModel(header.getTREsRawStructure());
     }
 }

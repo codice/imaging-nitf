@@ -46,38 +46,29 @@ public class DataExtensionSegmentWriter extends AbstractSegmentWriter {
     /**
      * Write out the subheader information for this data extension segment.
      *
-     * @param header the header to write
+     * @param des the header to write
      * @param fileType the type (NITF version) of file to write out this segment header for.
      * @throws IOException on write failure
      * @throws ParseException on TRE parse problems
      */
-    public final void writeDESHeader(final NitfDataExtensionSegmentHeader header, final FileType fileType) throws IOException, ParseException {
+    public final void writeDESHeader(final DataExtensionSegment des, final FileType fileType) throws IOException, ParseException {
         writeFixedLengthString(DE, DE.length());
-        writeFixedLengthString(header.getIdentifier(), DESID_LENGTH);
-        writeFixedLengthNumber(header.getDESVersion(), DESVER_LENGTH);
-        writeSecurityMetadata(header.getSecurityMetadata(), fileType);
-        if (header.isTreOverflow(fileType)) {
-            writeFixedLengthString(header.getOverflowedHeaderType(), DESOFLW_LENGTH);
-            writeFixedLengthNumber(header.getItemOverflowed(), DESITEM_LENGTH);
+        writeFixedLengthString(des.getIdentifier(), DESID_LENGTH);
+        writeFixedLengthNumber(des.getDESVersion(), DESVER_LENGTH);
+        writeSecurityMetadata(des.getSecurityMetadata(), fileType);
+        if (des.isTreOverflow(fileType)) {
+            writeFixedLengthString(des.getOverflowedHeaderType(), DESOFLW_LENGTH);
+            writeFixedLengthNumber(des.getItemOverflowed(), DESITEM_LENGTH);
         }
-        writeFixedLengthNumber(header.getUserDefinedSubheaderField().length(), DESSHL_LENGTH);
-        if (header.getUserDefinedSubheaderField().length() > 0) {
-            mOutput.writeBytes(header.getUserDefinedSubheaderField());
+        writeFixedLengthNumber(des.getUserDefinedSubheaderField().length(), DESSHL_LENGTH);
+        if (des.getUserDefinedSubheaderField().length() > 0) {
+            mOutput.writeBytes(des.getUserDefinedSubheaderField());
         } else {
-            byte[] treData = mTreParser.getTREs(header, TreSource.TreOverflowDES);
+            byte[] treData = mTreParser.getTREs(des, TreSource.TreOverflowDES);
             mOutput.write(treData);
         }
-    }
-
-    /**
-     * Write out the data associated with this Data Extension Segment.
-     *
-     * @param desData the data to write
-     * @throws IOException on write failure.
-     */
-    public final void writeDESData(final byte[] desData) throws IOException {
-        if (desData != null) {
-            mOutput.write(desData);
+        if (des.getData() != null) {
+            mOutput.write(des.getData());
         }
     }
 }

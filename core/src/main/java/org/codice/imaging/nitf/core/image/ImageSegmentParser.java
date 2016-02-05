@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.image;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -61,9 +61,9 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
-    Parser for an image segment subheader in a NITF file.
+    Parser for an image segment in a NITF file.
 */
-public class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class ImageSegmentParser extends AbstractSegmentParser {
 
     private int numImageComments = 0;
     private int numBands = 0;
@@ -76,27 +76,27 @@ public class NitfImageSegmentHeaderParser extends AbstractNitfSegmentParser {
         ImageCompression.LOSSLESSJPEGMASK, ImageCompression.JPEG2000MASK, ImageCompression.USERDEFINED, ImageCompression.USERDEFINEDMASK,
         ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
 
-    private NitfImageSegmentHeaderImpl segment = null;
+    private ImageSegmentImpl segment = null;
 
     /**
      * Default constructor.
      */
-    public NitfImageSegmentHeaderParser() {
+    public ImageSegmentParser() {
     }
 
     /**
      * Parse the image segment header
      * <p>
-     * This will return the image segment header, but it is not threadsafe. Please create a new parser for each header, or protect against
-     * parallel runs.
+     * This will return the image segment, but it is not threadsafe. Please create a new parser for each segment, or
+     * protect against parallel runs.
      * @param nitfReader the reader to use to get the data
      * @param parseStrategy the parsing strategy to use to process the data
-     * @return the parsed header
+     * @return the parsed image segment
      * @throws ParseException on parse failure
      */
-    public final NitfImageSegmentHeaderImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final ImageSegmentImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
         reader = nitfReader;
-        segment = new NitfImageSegmentHeaderImpl();
+        segment = new ImageSegmentImpl();
         parsingStrategy = parseStrategy;
 
         readIM();

@@ -18,9 +18,9 @@ import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
- * Represents a Nitf TextSegmentHeader.
+ * Represents a NITF Text Segment.
  */
-public interface TextSegmentHeader extends CommonNitfSubSegment {
+public interface TextSegment extends CommonNitfSubSegment {
 
     /**
      Return text date and time.
@@ -50,18 +50,17 @@ public interface TextSegmentHeader extends CommonNitfSubSegment {
     TextFormat getTextFormat();
 
     /**
-     Return the text data length.
-
-     @return the text data segment length, in bytes
+     * Get the text segment data string.
+     *
+     * @return string containing text for this segment.
+     *
      */
-    int getTextDataLength();
+    String getData();
 
     /**
-     Set the text segment data length.
-     <p>
-     This is the length of the contents of the associated data segment.
-
-     @param dataLength the text data segment length, in bytes
+     * Set the text segment data string.
+     *
+     * @param text the text associated with this segment
      */
-    void setTextSegmentDataLength(int dataLength);
+    void setData(String text);
 }

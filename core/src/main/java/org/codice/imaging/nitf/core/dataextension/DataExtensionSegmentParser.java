@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.dataextension;
 
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DE;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESID_LENGTH;
@@ -26,29 +26,29 @@ import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 
 /**
-    Parser for a data extension segment (DES) subheader in a NITF file.
+    Parser for a data extension segment (DES) in a NITF file.
 */
-public class NitfDataExtensionSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class DataExtensionSegmentParser extends AbstractSegmentParser {
     private int userDefinedSubheaderLength = 0;
 
-    private NitfDataExtensionSegmentHeaderImpl segment = null;
+    private DataExtensionSegmentImpl segment = null;
 
     /**
      * Default Constructor.
      */
-    public NitfDataExtensionSegmentHeaderParser() {
+    public DataExtensionSegmentParser() {
     }
 
     /**
-     * Parse SymbolSegmentHeader from the specified reader.
+     * Parse DataExtensionSegment from the specified reader.
      *
      * @param nitfReader - the NITF input reader.
-     * @return a fully parsed NitfDataExtensionSegmentHeader.
+     * @return a fully parsed DataExtensionSegment.
      * @throws ParseException when the parser encounters unexpected input from the reader.
      */
-    public final NitfDataExtensionSegmentHeader parse(final NitfReader nitfReader) throws ParseException {
+    public final DataExtensionSegment parse(final NitfReader nitfReader) throws ParseException {
         reader = nitfReader;
-        segment = new NitfDataExtensionSegmentHeaderImpl();
+        segment = new DataExtensionSegmentImpl();
 
         readDE();
         readDESID();

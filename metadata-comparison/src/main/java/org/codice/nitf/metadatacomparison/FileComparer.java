@@ -38,10 +38,10 @@ import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
-import org.codice.imaging.nitf.core.dataextension.NitfDataExtensionSegmentHeader;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.image.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.RasterProductFormatAttributeParser;
 import org.codice.imaging.nitf.core.image.RasterProductFormatAttributes;
 import org.codice.imaging.nitf.core.image.RasterProductFormatUtilities;
@@ -63,8 +63,8 @@ public class FileComparer {
 
     private String filename = null;
     private SlottedNitfParseStrategy parseStrategy  = null;
-    private NitfImageSegmentHeader segment1 = null;
-    private NitfDataExtensionSegmentHeader des1 = null;
+    private ImageSegment segment1 = null;
+    private DataExtensionSegment des1 = null;
     private BufferedWriter out = null;
 
     FileComparer(String fileName) {
@@ -84,12 +84,12 @@ public class FileComparer {
             LOGGER.error(e.getMessage(), e);
         }
 
-        if (!parseStrategy.getImageSegmentHeaders().isEmpty()) {
-            segment1 = parseStrategy.getImageSegmentHeaders().get(0);
+        if (!parseStrategy.getImageSegments().isEmpty()) {
+            segment1 = parseStrategy.getImageSegments().get(0);
         }
 
-        if (!parseStrategy.getDataExtensionSegmentHeaders().isEmpty()) {
-            des1 = parseStrategy.getDataExtensionSegmentHeaders().get(0);
+        if (!parseStrategy.getDataExtensionSegments().isEmpty()) {
+            des1 = parseStrategy.getDataExtensionSegments().get(0);
         }
         outputData();
     }
@@ -421,9 +421,9 @@ public class FileComparer {
     }
 
     private void outputSubdatasets() throws IOException {
-        if (parseStrategy.getImageSegmentHeaders().size() > 1) {
+        if (parseStrategy.getImageSegments().size() > 1) {
             out.write("Subdatasets:\n");
-            for (int i = 0; i < parseStrategy.getImageSegmentHeaders().size(); ++i) {
+            for (int i = 0; i < parseStrategy.getImageSegments().size(); ++i) {
                 out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
                 out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s\n", i+1, i+1, filename));
             }

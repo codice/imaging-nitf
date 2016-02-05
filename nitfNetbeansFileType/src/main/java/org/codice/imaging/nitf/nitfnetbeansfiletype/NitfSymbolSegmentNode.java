@@ -21,7 +21,7 @@ import java.util.List;
 import javax.swing.Action;
 import org.codice.imaging.cgm.AbstractElement;
 import org.codice.imaging.cgm.CgmParser;
-import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
+import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolType;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -31,7 +31,7 @@ class NitfSymbolSegmentNode extends AbstractSegmentNode {
 
     private final int symbolSegmentIndex;
     private final DeferredSegmentParseStrategy parseStrategy;
-    private final SymbolSegmentHeader header;
+    private final SymbolSegment header;
 
     public NitfSymbolSegmentNode(final ChildSegmentKey childKey) throws ParseException {
         super(Children.LEAF);

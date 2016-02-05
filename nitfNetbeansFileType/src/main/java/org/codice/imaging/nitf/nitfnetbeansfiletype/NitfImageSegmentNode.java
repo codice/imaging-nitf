@@ -20,7 +20,7 @@ import javax.imageio.stream.ImageInputStream;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
@@ -28,7 +28,7 @@ import org.openide.util.Exceptions;
 class NitfImageSegmentNode extends AbstractSegmentNode {
 
     private final int imageSegmentIndex;
-    private final NitfImageSegmentHeader header;
+    private final ImageSegment header;
     private final DeferredSegmentParseStrategy parseStrategy;
 
     public NitfImageSegmentNode(final ChildSegmentKey key) throws ParseException {
@@ -201,7 +201,7 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
         return combineActions(new ImageSegmentViewAction(this), actions);
     }
 
-    final NitfImageSegmentHeader getImageSegmentHeader() {
+    final ImageSegment getImageSegmentHeader() {
         return header;
     }
 

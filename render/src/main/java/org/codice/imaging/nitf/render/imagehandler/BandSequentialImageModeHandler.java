@@ -14,18 +14,15 @@
  */
 package org.codice.imaging.nitf.render.imagehandler;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.function.Consumer;
-
-import javax.imageio.stream.ImageInputStream;
-
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageMode;
-import org.codice.imaging.nitf.core.image.NitfImageSegmentHeader;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.ImageMask;
 
 public class BandSequentialImageModeHandler implements ImageModeHandler {
@@ -37,41 +34,38 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
      * {@inheritDoc}
      */
     @Override
-    public void handleImage(NitfImageSegmentHeader imageSegmentHeader,
-            ImageInputStream imageInputStream, Graphics2D targetImage,
+    public void handleImage(ImageSegment imageSegment, Graphics2D targetImage,
             ImageRepresentationHandler imageRepresentationHandler) throws IOException {
 
-        checkNull(imageInputStream, "imageInputStream");
-        checkNull(imageSegmentHeader, "imageSegmentHeader");
+        checkNull(imageSegment, "imageSegment");
         checkNull(targetImage, "targetImage");
         checkNull(imageRepresentationHandler, "imageRepresentationHandler");
 
         ImageMask iMask = null;
 
-        if (ImageCompression.NOTCOMPRESSEDMASK.equals(imageSegmentHeader.getImageCompression())) {
-            iMask = new ImageMask(imageSegmentHeader, imageInputStream);
+        if (ImageCompression.NOTCOMPRESSEDMASK.equals(imageSegment.getImageCompression())) {
+            iMask = new ImageMask(imageSegment, imageSegment.getData());
         } else {
-            iMask = new ImageMask(imageSegmentHeader);
+            iMask = new ImageMask(imageSegment);
         }
 
         final ImageMask imageMask = iMask;
 
-        if (!ImageMode.BANDSEQUENTIAL.equals(imageSegmentHeader.getImageMode())) {
+        if (!ImageMode.BANDSEQUENTIAL.equals(imageSegment.getImageMode())) {
             throw new IllegalStateException(
-                    "BandSequentialImageModeHandler(): constructor argument 'imageSegmentHeader' must have be ImageMode of 'S'.");
+                    "BandSequentialImageModeHandler():  argument 'imageSegment' must have be ImageMode of 'S'.");
         }
 
-        ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegmentHeader.getNumberOfBlocksPerColumn(), imageSegmentHeader.getNumberOfBlocksPerRow(),
-                imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal() * imageSegmentHeader.getNumberOfPixelsPerBlockVertical());
+        ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment.getNumberOfBlocksPerColumn(), imageSegment.getNumberOfBlocksPerRow(),
+                imageSegment.getNumberOfPixelsPerBlockHorizontal() * imageSegment.getNumberOfPixelsPerBlockVertical());
 
-        for (int bandIndex = 0; bandIndex < imageSegmentHeader.getNumBands(); bandIndex++) {
+        for (int bandIndex = 0; bandIndex < imageSegment.getNumBands(); bandIndex++) {
             final int index = bandIndex;
 
-            forEachBlock(imageSegmentHeader, matrix, block -> readBlock(imageSegmentHeader, block, imageInputStream,
-                            imageRepresentationHandler, index, imageMask));
+            forEachBlock(imageSegment, matrix, block -> readBlock(imageSegment, block, imageRepresentationHandler, index, imageMask));
         }
 
-        forEachBlock(imageSegmentHeader, matrix, block -> { renderBlock(imageSegmentHeader, targetImage, block);
+        forEachBlock(imageSegment, matrix, block -> { renderBlock(imageSegment, targetImage, block);
             block.getData().clear(); } );
     }
 
@@ -81,29 +75,28 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
         }
     }
 
-    private void forEachBlock(NitfImageSegmentHeader imageSegmentHeader, ImageBlockMatrix matrix, Consumer<ImageBlock> intBufferConsumer)
+    private void forEachBlock(ImageSegment imageSegment, ImageBlockMatrix matrix, Consumer<ImageBlock> intBufferConsumer)
         throws IOException {
-        for (int i = 0; i < imageSegmentHeader.getNumberOfBlocksPerColumn(); i++) {
-            for (int j = 0; j < imageSegmentHeader.getNumberOfBlocksPerRow(); j++) {
+        for (int i = 0; i < imageSegment.getNumberOfBlocksPerColumn(); i++) {
+            for (int j = 0; j < imageSegment.getNumberOfBlocksPerRow(); j++) {
                 ImageBlock currentBlock = matrix.getImageBlock(i, j);
                 intBufferConsumer.accept(currentBlock);
             }
         }
     }
 
-    private void readBlock(NitfImageSegmentHeader imageSegmentHeader, ImageBlock block,
-            ImageInputStream imageInputStream, ImageRepresentationHandler imageRepresentationHandler, int bandIndex,
-            ImageMask imageMask) {
+    private void readBlock(ImageSegment imageSegment, ImageBlock block,
+            ImageRepresentationHandler imageRepresentationHandler, int bandIndex, ImageMask imageMask) {
 
         final IntBuffer data = block.getData();
-        final int blockHeight = imageSegmentHeader.getNumberOfPixelsPerBlockVertical();
-        final int blockWidth = imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal();
+        final int blockHeight = imageSegment.getNumberOfPixelsPerBlockVertical();
+        final int blockWidth = imageSegment.getNumberOfPixelsPerBlockHorizontal();
 
         try {
             for (int row = 0; row < blockHeight; row++) {
                 for (int column = 0; column < blockWidth; column++) {
                     int i = row * blockWidth + column;
-                    int bandValue = imageInputStream.read();
+                    int bandValue = imageSegment.getData().read();
                     data.put(i, imageRepresentationHandler.renderPixel(data.get(i), bandValue, bandIndex));
                 }
             }
@@ -114,9 +107,9 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
         }
     }
 
-    private void renderBlock(NitfImageSegmentHeader imageSegmentHeader, Graphics2D targetImage, ImageBlock block ) {
-        final int blockWidth = imageSegmentHeader.getNumberOfPixelsPerBlockHorizontal();
-        final int blockHeight = imageSegmentHeader.getNumberOfPixelsPerBlockVertical();
+    private void renderBlock(ImageSegment imageSegment, Graphics2D targetImage, ImageBlock block ) {
+        final int blockWidth = imageSegment.getNumberOfPixelsPerBlockHorizontal();
+        final int blockHeight = imageSegment.getNumberOfPixelsPerBlockVertical();
 
         BufferedImage img = new BufferedImage(blockWidth, blockHeight, BufferedImage.TYPE_INT_ARGB);
         int[] imgData = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();

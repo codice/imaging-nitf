@@ -17,15 +17,14 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import javax.swing.Action;
-import org.codice.imaging.nitf.core.text.TextSegmentHeader;
+import org.codice.imaging.nitf.core.text.TextSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
-import org.openide.util.Exceptions;
 
 class NitfTextSegmentNode extends AbstractSegmentNode {
 
     private final ChildSegmentKey childKey;
-    private final TextSegmentHeader header;
+    private final TextSegment header;
 
     public NitfTextSegmentNode(final ChildSegmentKey key) throws ParseException {
         super(Children.LEAF);
@@ -46,13 +45,7 @@ class NitfTextSegmentNode extends AbstractSegmentNode {
     }
 
     String getText() {
-        try {
-            DeferredSegmentParseStrategy parseStrategy = childKey.getParseStrategy();
-            return parseStrategy.getTextSegmentData(header, childKey.getIndex());
-        } catch (ParseException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-        return "";
+        return header.getData();
     }
 
     @Override

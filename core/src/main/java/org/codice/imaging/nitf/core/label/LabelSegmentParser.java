@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.label;
 
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LA;
@@ -33,22 +33,22 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
-    Parser for a label segment subheader in a NITF 2.0 file.
+    Parser for a label segment in a NITF 2.0 file.
 */
-public class LabelSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class LabelSegmentParser extends AbstractSegmentParser {
 
     private int labelExtendedSubheaderLength = 0;
 
-    private LabelSegmentHeaderImpl segment = null;
+    private LabelSegmentImpl segment = null;
 
     /**
      * default constructor.
      */
-    public LabelSegmentHeaderParser() {
+    public LabelSegmentParser() {
     }
 
     /**
-     * Parse LabelSegmentHeader from the specified reader, using the specified parseStrategy.
+     * Parse LabelSegment from the specified reader, using the specified parseStrategy.
      *
      * The reader provides the data. The parse strategy selects which data to store.
      *
@@ -58,11 +58,11 @@ public class LabelSegmentHeaderParser extends AbstractNitfSegmentParser {
      * @throws ParseException on parse failure.
      *
      */
-    public final LabelSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final LabelSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
 
         reader = nitfReader;
         parsingStrategy = parseStrategy;
-        segment = new LabelSegmentHeaderImpl();
+        segment = new LabelSegmentImpl();
 
         readLA();
         readLID();

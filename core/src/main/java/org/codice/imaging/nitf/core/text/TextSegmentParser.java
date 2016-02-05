@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.text;
 
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.common.AbstractNitfSegmentParser;
+import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -32,32 +32,32 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
-    Parser for a text segment subheader in a NITF file.
+    Parser for a text segment in a NITF file.
 */
-public class TextSegmentHeaderParser extends AbstractNitfSegmentParser {
+public class TextSegmentParser extends AbstractSegmentParser {
 
     private int textExtendedSubheaderLength = 0;
 
-    private TextSegmentHeaderImpl segment = null;
+    private TextSegmentImpl segment = null;
 
     /**
      * default constructor.
      */
-    public TextSegmentHeaderParser() {
+    public TextSegmentParser() {
     }
 
     /**
-     * Parses the TextSegmentHeader from the give NitfReader.
+     * Parses the TextSegment from the give NitfReader.
      *
-     * @param nitfReader The NitfReader to read TextSegmentHeader from.
+     * @param nitfReader The NitfReader to read TextSegment from.
      * @param parseStrategy the parsing strategy to use to process the data.
-     * @return the parsed TextSegmentHeader.
+     * @return the parsed TextSegment.
      * @throws ParseException when the input from the NitfReader isn't what was expected.
      */
-    public final TextSegmentHeader parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy)
+    public final TextSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy)
             throws ParseException {
         reader = nitfReader;
-        segment = new TextSegmentHeaderImpl();
+        segment = new TextSegmentImpl();
         parsingStrategy = parseStrategy;
 
         readTE();

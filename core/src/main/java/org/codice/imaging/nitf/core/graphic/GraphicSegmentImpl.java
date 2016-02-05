@@ -14,13 +14,14 @@
  */
 package org.codice.imaging.nitf.core.graphic;
 
-import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
+import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.core.AbstractSubSegment;
 
 /**
-    Graphic segment subheader information (NITF 2.1 / NSIF 1.0 only).
+    Graphic segment information (NITF 2.1 / NSIF 1.0 only).
 */
-class NitfGraphicSegmentHeaderImpl extends AbstractNitfSubSegment
-        implements GraphicSegmentHeader {
+class GraphicSegmentImpl extends AbstractSubSegment
+        implements GraphicSegment {
 
     private String graphicName = null;
     private int graphicDisplayLevel = 0;
@@ -31,12 +32,12 @@ class NitfGraphicSegmentHeaderImpl extends AbstractNitfSubSegment
     private GraphicColour graphicColour = GraphicColour.UNKNOWN;
     private int boundingBox2Row = 0;
     private int boundingBox2Column = 0;
-    private int graphicSegmentDataLength = 0;
+    private ImageInputStream dataStream = null;
 
     /**
         Default constructor.
     */
-    public NitfGraphicSegmentHeaderImpl() {
+    public GraphicSegmentImpl() {
     }
 
     /**
@@ -296,15 +297,16 @@ class NitfGraphicSegmentHeaderImpl extends AbstractNitfSubSegment
     /**
      * {@inheritDoc}
      */
-    public final void setGraphicSegmentDataLength(final int length) {
-        graphicSegmentDataLength = length;
+    @Override
+    public void setData(final ImageInputStream data) {
+        dataStream = data;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final int getGraphicDataLength() {
-        return graphicSegmentDataLength;
+    public ImageInputStream getData() {
+        return dataStream;
     }
 }

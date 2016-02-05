@@ -24,19 +24,19 @@ import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.
 /**
     Data Extension Segment (DES) subheader and associated data.
 */
-class NitfDataExtensionSegmentHeaderImpl extends AbstractCommonNitfSegment
-        implements NitfDataExtensionSegmentHeader {
+class DataExtensionSegmentImpl extends AbstractCommonNitfSegment
+        implements DataExtensionSegment {
 
     private int desVersion = -1;
     private String overflowedHeaderType = null;
     private int desItemOverflowed = 0;
     private String userDefinedSubheaderField = null;
-    private int dataExtensionSegmentDataLength = 0;
+    private byte[] desData = null;
 
     /**
         Default constructor.
     */
-    public NitfDataExtensionSegmentHeaderImpl() {
+    public DataExtensionSegmentImpl() {
     }
 
     /**
@@ -155,22 +155,6 @@ class NitfDataExtensionSegmentHeaderImpl extends AbstractCommonNitfSegment
      * {@inheritDoc}
      */
     @Override
-    public final void setDataExtensionSegmentDataLength(final int length) {
-        dataExtensionSegmentDataLength = length;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final int getDataExtensionSegmentDataLength() {
-        return dataExtensionSegmentDataLength;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public final boolean isTreOverflowNitf21() {
         return getIdentifier().trim().equals(TRE_OVERFLOW);
     }
@@ -196,8 +180,27 @@ class NitfDataExtensionSegmentHeaderImpl extends AbstractCommonNitfSegment
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isStreamingMode() {
         return STREAMING_FILE_HEADER.equals(getIdentifier().trim());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setData(final byte[] rawData) {
+        desData = rawData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public byte[] getData() {
+        return desData;
     }
 }

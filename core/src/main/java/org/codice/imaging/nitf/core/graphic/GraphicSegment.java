@@ -14,12 +14,13 @@
  */
 package org.codice.imaging.nitf.core.graphic;
 
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
 
 /**
  * Common graphic segment parsing functionality.
  */
-public interface GraphicSegmentHeader extends CommonNitfSubSegment {
+public interface GraphicSegment extends CommonNitfSubSegment {
     /**
      Return the graphic name (SNAME).
      <p>
@@ -186,18 +187,19 @@ public interface GraphicSegmentHeader extends CommonNitfSubSegment {
     int getBoundingBox2Column();
 
     /**
-     Return the graphic data length.
-
-     @return the graphic data segment length, in bytes
+     * Get the data (CGM stream) associated with this segment.
+     *
+     * @note: You may want to reset the stream if this is not the first use.
+     *
+     * @return stream containing the data for this segment.
      */
-    int getGraphicDataLength();
+    ImageInputStream getData();
 
     /**
-     Set the graphic segment data length.
-     <p>
-     This is the length of the contents of the associated data segment.
-
-     @param length the graphic data segment length, in bytes
+     * Set the data (CGM stream) associated with this segment.
+     *
+     * @param data stream containing data
      */
-    void setGraphicSegmentDataLength(int length);
+    void setData(ImageInputStream data);
+
 }

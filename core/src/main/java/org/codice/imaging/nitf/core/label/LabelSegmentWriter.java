@@ -48,46 +48,37 @@ public class LabelSegmentWriter extends AbstractSegmentWriter {
     }
 
     /**
-     * Write out the subheader for the specified label segment.
+     * Write out the specified label segment.
      *
-     * @param header the header content to write out
+     * @param labelSegment the content to write out
      * @throws IOException on write failure.
      * @throws ParseException on TRE parsing failure.
      */
-    public final void writeLabelHeader(final LabelSegmentHeader header) throws IOException, ParseException {
+    public final void writeLabel(final LabelSegment labelSegment) throws IOException, ParseException {
         writeFixedLengthString(LA, LA.length());
-        writeFixedLengthString(header.getIdentifier(), LID_LENGTH);
-        writeSecurityMetadata(header.getSecurityMetadata(), FileType.NITF_TWO_ZERO);
+        writeFixedLengthString(labelSegment.getIdentifier(), LID_LENGTH);
+        writeSecurityMetadata(labelSegment.getSecurityMetadata(), FileType.NITF_TWO_ZERO);
         writeENCRYP();
         writeFixedLengthString(" ", LFS_LENGTH);
-        writeFixedLengthNumber(header.getLabelCellWidth(), LCW_LENGTH);
-        writeFixedLengthNumber(header.getLabelCellHeight(), LCH_LENGTH);
-        writeFixedLengthNumber(header.getLabelDisplayLevel(), LDLVL_LENGTH);
-        writeFixedLengthNumber(header.getAttachmentLevel(), LALVL_LENGTH);
-        writeFixedLengthNumber(header.getLabelLocationRow(), LLOC_HALF_LENGTH);
-        writeFixedLengthNumber(header.getLabelLocationColumn(), LLOC_HALF_LENGTH);
-        mOutput.write(header.getLabelTextColour().toByteArray());
-        mOutput.write(header.getLabelBackgroundColour().toByteArray());
-        byte[] labelExtendedSubheaderData = mTreParser.getTREs(header, TreSource.LabelExtendedSubheaderData);
+        writeFixedLengthNumber(labelSegment.getLabelCellWidth(), LCW_LENGTH);
+        writeFixedLengthNumber(labelSegment.getLabelCellHeight(), LCH_LENGTH);
+        writeFixedLengthNumber(labelSegment.getLabelDisplayLevel(), LDLVL_LENGTH);
+        writeFixedLengthNumber(labelSegment.getAttachmentLevel(), LALVL_LENGTH);
+        writeFixedLengthNumber(labelSegment.getLabelLocationRow(), LLOC_HALF_LENGTH);
+        writeFixedLengthNumber(labelSegment.getLabelLocationColumn(), LLOC_HALF_LENGTH);
+        mOutput.write(labelSegment.getLabelTextColour().toByteArray());
+        mOutput.write(labelSegment.getLabelBackgroundColour().toByteArray());
+        byte[] labelExtendedSubheaderData = mTreParser.getTREs(labelSegment, TreSource.LabelExtendedSubheaderData);
         int labelExtendedSubheaderDataLength = labelExtendedSubheaderData.length;
-        if ((labelExtendedSubheaderDataLength > 0) || (header.getExtendedHeaderDataOverflow() != 0)) {
+        if ((labelExtendedSubheaderDataLength > 0) || (labelSegment.getExtendedHeaderDataOverflow() != 0)) {
             labelExtendedSubheaderDataLength += LXSOFL_LENGTH;
         }
         writeFixedLengthNumber(labelExtendedSubheaderDataLength, LXSHDL_LENGTH);
         if (labelExtendedSubheaderDataLength > 0) {
-            writeFixedLengthNumber(header.getExtendedHeaderDataOverflow(), LXSOFL_LENGTH);
+            writeFixedLengthNumber(labelSegment.getExtendedHeaderDataOverflow(), LXSOFL_LENGTH);
             mOutput.write(labelExtendedSubheaderData);
         }
-    }
-
-    /**
-     * Write out the data associated with this label segment.
-     *
-     * @param labelData the data to write out.
-     * @throws IOException if there is a writing error.
-     */
-    public final void writeLabelData(final String labelData) throws IOException {
-        mOutput.writeBytes(labelData);
+        mOutput.writeBytes(labelSegment.getData());
     }
 }
 

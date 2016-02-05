@@ -20,11 +20,11 @@ package org.codice.imaging.nitf.core.symbol;
 public enum SymbolColour {
 
     /**
-        Unknown colour encoding.
-        <p>
-        This indicates an unknown colour encoding, and typically indicates a broken file or
-        an error during parsing. This is not a valid value in a NITF symbol subheader.
-    */
+     * Unknown colour encoding.
+     *
+     * This indicates an unknown colour encoding, and typically indicates a broken file or an error during parsing. This
+     * is not a valid value in a NITF symbol segment.
+     */
     UNKNOWN (""),
 
     /**

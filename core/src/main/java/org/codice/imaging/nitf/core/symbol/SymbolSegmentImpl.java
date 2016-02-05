@@ -14,12 +14,13 @@
  */
 package org.codice.imaging.nitf.core.symbol;
 
-import org.codice.imaging.nitf.core.AbstractNitfSubSegment;
+import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.core.AbstractSubSegment;
 
 /**
-    Symbol segment subheader information (NITF 2.0 only).
+    Symbol segment information (NITF 2.0 only).
 */
-class SymbolSegmentHeaderImpl extends AbstractNitfSubSegment implements SymbolSegmentHeader {
+class SymbolSegmentImpl extends AbstractSubSegment implements SymbolSegment {
 
     private String symbolName = null;
     private SymbolType symbolType = null;
@@ -35,12 +36,12 @@ class SymbolSegmentHeaderImpl extends AbstractNitfSubSegment implements SymbolSe
     private String symbolNumber = "000000";
     private int symbolRotation = 0;
     private SymbolColour symbolColourFormat = SymbolColour.UNKNOWN;
-    private int symbolSegmentDataLength = 0;
+    private ImageInputStream dataStream = null;
 
     /**
         Default constructor.
     */
-    public SymbolSegmentHeaderImpl() {
+    public SymbolSegmentImpl() {
     }
 
     /**
@@ -386,15 +387,16 @@ class SymbolSegmentHeaderImpl extends AbstractNitfSubSegment implements SymbolSe
     /**
      * {@inheritDoc}
      */
-    public final void setSymbolSegmentDataLength(final int length) {
-        symbolSegmentDataLength = length;
+    @Override
+    public ImageInputStream getData() {
+        return dataStream;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final int getSymbolDataLength() {
-        return symbolSegmentDataLength;
+    public void setData(final ImageInputStream data) {
+        dataStream = data;
     }
 }

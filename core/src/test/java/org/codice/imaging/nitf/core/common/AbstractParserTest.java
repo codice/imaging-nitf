@@ -36,14 +36,14 @@ import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 public class AbstractParserTest {
     private static final int STANDARD_DATE_TIME_LENGTH = 14;
 
-    private static final TestLogger LOGGER = TestLoggerFactory.getTestLogger(AbstractNitfSegmentParser.class);
+    private static final TestLogger LOGGER = TestLoggerFactory.getTestLogger(AbstractSegmentParser.class);
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testParseOfENCRYP() throws ParseException {
-        AbstractNitfSegmentParser parser = mock(AbstractNitfSegmentParser.class, CALLS_REAL_METHODS);
+        AbstractSegmentParser parser = mock(AbstractSegmentParser.class, CALLS_REAL_METHODS);
 
         NitfReader mockReader = mock(NitfReader.class);
         parser.reader = mockReader;

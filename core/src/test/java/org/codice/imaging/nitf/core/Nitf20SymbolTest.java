@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.symbol.SymbolColour;
-import org.codice.imaging.nitf.core.symbol.SymbolSegmentHeader;
+import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -51,10 +51,10 @@ public class Nitf20SymbolTest {
         NitfFileParser.parse(reader, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        SymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
+        SymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
         byte[] allData = new byte[931];
-        int bytesRead = parseStrategy.getSymbolSegmentData().get(0).read(allData);
+        int bytesRead = symbolSegment1.getData().read(allData);
         assertEquals(930, bytesRead);
         is.close();
     }
@@ -67,10 +67,10 @@ public class Nitf20SymbolTest {
         NitfFileParser.parse(reader, parseStrategy);
         assertFileSegmentDataIsAsExpected(parseStrategy);
 
-        SymbolSegmentHeader symbolSegment1 = parseStrategy.getSymbolSegmentHeaders().get(0);
+        SymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
-        assertEquals(1, parseStrategy.getSymbolSegmentHeaders().size());
-        assertEquals(0, parseStrategy.getSymbolSegmentData().size());
+        assertEquals(1, parseStrategy.getSymbolSegments().size());
+        assertNull(parseStrategy.getSymbolSegments().get(0).getData());
 
         is.close();
     }
@@ -101,14 +101,14 @@ public class Nitf20SymbolTest {
         assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals("JITC Fort Huachuca, AZ", file.getOriginatorsName());
         assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
-        assertEquals(0, dataSource.getImageSegmentHeaders().size());
-        assertEquals(0, dataSource.getGraphicSegmentHeaders().size());
-        assertEquals(0, dataSource.getLabelSegmentHeaders().size());
-        assertEquals(0, dataSource.getTextSegmentHeaders().size());
-        assertEquals(0, dataSource.getDataExtensionSegmentHeaders().size());
+        assertEquals(0, dataSource.getImageSegments().size());
+        assertEquals(0, dataSource.getGraphicSegments().size());
+        assertEquals(0, dataSource.getLabelSegments().size());
+        assertEquals(0, dataSource.getTextSegments().size());
+        assertEquals(0, dataSource.getDataExtensionSegments().size());
     }
 
-    private void assertSymbolSegmentHeaderDataIsAsExpected(SymbolSegmentHeader symbolSegment1) {
+    private void assertSymbolSegmentHeaderDataIsAsExpected(SymbolSegment symbolSegment1) {
         assertNotNull(symbolSegment1);
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());
