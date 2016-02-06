@@ -26,7 +26,10 @@ import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.imagemode.BandSequentialImageModeHandler;
+import org.codice.imaging.nitf.render.imagemode.BlockInterleveImageModeHandler;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandler;
+import org.codice.imaging.nitf.render.imagemode.PixelInterleveImageModeHandler;
+import org.codice.imaging.nitf.render.imagemode.RowInterleveImageModeHandler;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandlerFactory;
 
@@ -39,6 +42,9 @@ public class NitfRenderer {
 
     static {
         IMAGE_MODE_HANDLER_MAP.put(ImageMode.BANDSEQUENTIAL, new BandSequentialImageModeHandler());
+        IMAGE_MODE_HANDLER_MAP.put(ImageMode.PIXELINTERLEVE, new PixelInterleveImageModeHandler());
+        IMAGE_MODE_HANDLER_MAP.put(ImageMode.ROWINTERLEVE, new RowInterleveImageModeHandler());
+        IMAGE_MODE_HANDLER_MAP.put(ImageMode.BLOCKINTERLEVE, new BlockInterleveImageModeHandler());
     }
 
     /**

@@ -66,8 +66,6 @@ class UncompressedBlockRenderer implements BlockRenderer {
                 return getNextImageBlockMono();
             case RGBLUT:
                 return getNextImageBlockRGBLUT();
-            case RGBTRUECOLOUR:
-                return getNextImageBlockRGBTrueColour();
             case MULTIBAND:
                 return getNextImageBlockMultiband();
             default:
@@ -113,14 +111,6 @@ class UncompressedBlockRenderer implements BlockRenderer {
                 return getNextImageBlockRGBLUT8();
             default:
                 throw new UnsupportedOperationException("Unhandled RGBLUT bit depth:" + mImageSegment.getNumberOfBitsPerPixelPerBand());
-        }
-    }
-
-    private BufferedImage getNextImageBlockRGBTrueColour() throws IOException {
-        if (mImageSegment.getActualBitsPerPixelPerBand() == 8) {
-            return getNextImageBlockRGB24();
-        } else {
-            throw new UnsupportedOperationException("Unhandled RGBTRUECOLOUR bit depth:" + mImageSegment.getNumberOfBitsPerPixelPerBand());
         }
     }
 
@@ -176,64 +166,6 @@ class UncompressedBlockRenderer implements BlockRenderer {
         return img;
     }
 
-    private BufferedImage getNextImageBlockRGB24() throws IOException {
-        BufferedImage img = new BufferedImage(mImageSegment.getNumberOfPixelsPerBlockHorizontal(),
-                                              mImageSegment.getNumberOfPixelsPerBlockVertical(),
-                                              BufferedImage.TYPE_INT_ARGB);
-        int[] data = new int[mImageSegment.getNumberOfPixelsPerBlockHorizontal() * mImageSegment.getNumberOfPixelsPerBlockVertical()];
-        if (mImageSegment.getImageMode() == ImageMode.PIXELINTERLEVE) {
-            for (int i = 0; i < data.length; ++i) {
-                for (int bandIndex = 0; bandIndex < mImageSegment.getNumBands(); ++bandIndex) {
-                    data[i] = data[i] | (mImageData.read() << (8 * (2 - bandIndex)));
-                }
-                if ((mMask == null) || (!mMask.isPadPixel(data[i]))) {
-                    data[i] = data[i] | 0xFF000000;
-                }
-            }
-        } else if (mImageSegment.getImageMode() == ImageMode.ROWINTERLEVE) {
-            for (int row = 0; row < mImageSegment.getNumberOfPixelsPerBlockVertical(); ++row) {
-                for (int bandIndex = 0; bandIndex < mImageSegment.getNumBands(); ++ bandIndex) {
-                    for (int column = 0; column < mImageSegment.getNumberOfPixelsPerBlockHorizontal(); ++column) {
-                        int i = row * mImageSegment.getNumberOfPixelsPerBlockHorizontal() + column;
-                        data[i] = data[i] | (mImageData.read() << (8 * (2 - bandIndex)));
-                    }
-                }
-                for (int column = 0; column < mImageSegment.getNumberOfPixelsPerBlockHorizontal(); ++column) {
-                    int i = row * mImageSegment.getNumberOfPixelsPerBlockHorizontal() + column;
-                    if ((mMask == null) || (!mMask.isPadPixel(data[i]))) {
-                        data[i] = data[i] | 0xFF000000;
-                    }
-                }
-            }
-        } else if (mImageSegment.getImageMode() == ImageMode.BLOCKINTERLEVE) {
-            for (int bandIndex = 0; bandIndex < mImageSegment.getNumBands(); ++bandIndex) {
-                for (int row = 0; row < mImageSegment.getNumberOfPixelsPerBlockVertical(); ++row) {
-                    for (int column = 0; column < mImageSegment.getNumberOfPixelsPerBlockHorizontal(); ++column) {
-                        int i = row * mImageSegment.getNumberOfPixelsPerBlockHorizontal() + column;
-                        data[i] = data[i] | (mImageData.read() << (8 * (2 - bandIndex)));
-                    }
-                }
-            }
-            if (mMask != null) {
-                for (int pixel = 0; pixel < data.length; ++pixel) {
-                    data[pixel] = data[pixel] | 0xFF000000;
-                    if (mMask.isPadPixel(data[pixel])) {
-                        data[pixel] = 0x00000000;
-                    }
-                }
-            } else {
-                for (int pixel = 0; pixel < data.length; ++pixel) {
-                    data[pixel] = data[pixel] | 0xFF000000;
-                }
-            }
-        } else {
-            throw new UnsupportedOperationException("Unhandled image mode for RGB24:" + mImageSegment.getImageMode());
-        }
-
-        int[] imgData = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
-        System.arraycopy(data, 0, imgData, 0, data.length);
-        return img;
-    }
 
     private BufferedImage getNextImageBlockMono8() throws IOException {
         BufferedImage img = new BufferedImage(mImageSegment.getNumberOfPixelsPerBlockHorizontal(),
