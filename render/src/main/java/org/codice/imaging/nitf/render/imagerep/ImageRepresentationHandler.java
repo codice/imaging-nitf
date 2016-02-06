@@ -17,8 +17,7 @@ package org.codice.imaging.nitf.render.imagerep;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
-
-import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 
 /**
  * An ImageRepresentationHandler calculates the values for a given pixel based on the current pixel value
@@ -28,17 +27,19 @@ import javax.imageio.stream.ImageInputStream;
  */
 
 public interface ImageRepresentationHandler {
+
+    public static final int NOT_VISIBLE_MAPPED = -1;
+
     /**
      * Applies the bandValue to currentValue based on bandIndex.
      *
      * @param dataBuffer - the buffer that contains the pixel data.
      * @param pixelIndex - the index of the pixel being rendered.
-     * @param imageInputStream - the stream that contains the image data.
+     * @param imageSegment - the image segment that is being rendered.
      * @param bandIndex - the index of the band being applied, zero-based.
-     * @return - the new value for the current pixel.
      */
-    void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream,
-            int bandIndex) throws IOException;
+    void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageSegment imageSegment, int bandIndex)
+            throws IOException;
 
     /**
      *
