@@ -42,7 +42,7 @@ class ImageBlockMatrix {
 
         for (int i = 0; i < this.getMatrixWidth(); i++) {
             for (int j = 0; j < this.getMatrixHeight(); j++) {
-                blocks[i][j] = new ImageBlock(i, j, blockWidth, blockHeight, imageSupplier);
+                blocks[i][j] = new ImageBlock(i, j, getMatrixWidth(), blockWidth, blockHeight, imageSupplier);
             }
         }
     }
