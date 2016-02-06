@@ -64,8 +64,10 @@ public class BandSequentialImageModeHandler extends BaseImageModeHandler impleme
             final int index = bandIndex;
 
             matrix.forEachBlock(block -> {
-                readBlock(block, imageSegment, imageRepresentationHandler, index);
-                applyMask(block, imageMask, imageRepresentationHandler);
+                if (!imageMask.isMaskedBlock(block.getBlockIndex(), index)) {
+                    readBlock(block, imageSegment, imageRepresentationHandler, index);
+                    applyMask(block, imageMask, imageRepresentationHandler);
+                }
             } );
         }
 
