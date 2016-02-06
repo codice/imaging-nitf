@@ -16,7 +16,6 @@ package org.codice.imaging.nitf.render.imagemode;
 
 import java.awt.image.DataBuffer;
 import java.io.IOException;
-import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
@@ -41,14 +40,13 @@ public class BlockInterleveImageModeHandler extends SharedImageModeHandler imple
     protected void readBlock(ImageBlock block, ImageSegment imageSegment, ImageRepresentationHandler imageRepresentationHandler) {
 
         final DataBuffer data = block.getDataBuffer();
-        ImageInputStream imageInputStream = imageSegment.getData();
 
         try {
             for (int bandIndex = 0; bandIndex < imageSegment.getNumBands(); bandIndex++) {
                 for (int row = 0; row < block.getHeight(); row++) {
                     for (int column = 0; column < block.getWidth(); column++) {
                         int i = row * block.getWidth() + column;
-                        imageRepresentationHandler.renderPixelBand(data, i, imageInputStream, bandIndex);
+                        imageRepresentationHandler.renderPixelBand(data, i, imageSegment.getData(), bandIndex);
                     }
                 }
             }
