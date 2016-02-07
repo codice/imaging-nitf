@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014-2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,8 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper for CGM input data.
@@ -47,7 +45,6 @@ class CgmInputReader {
     private static final int NUM_BYTES_IN_SIGNED_VDC_INTEGER = 2;
     private static final int NUM_BYTES_IN_ENUM_VALUE = 2;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CgmInputReader.class);
     private final DataInput dataStream;
 
     CgmInputReader(final byte[] cgmData) {
@@ -80,7 +77,7 @@ class CgmInputReader {
     String getStringFixed() throws IOException {
         int count = dataStream.readUnsignedByte();
         if (count > LONG_COUNT_FLAG_VALUE) {
-            LOGGER.info("Need to handle long count");
+            throw new UnsupportedOperationException("[IMG-98] CGM does not yet support long form strings.");
         }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < count; ++i) {
