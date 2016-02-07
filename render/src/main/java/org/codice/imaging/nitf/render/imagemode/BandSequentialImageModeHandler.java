@@ -25,7 +25,7 @@ import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.ImageMask;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
-public class BandSequentialImageModeHandler implements ImageModeHandler {
+public class BandSequentialImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
     private static final String NULL_ARG_ERROR_MESSAGE =
             "BandSequentialImageModeHandler(): argument '%s' may not be null.";
 
@@ -40,6 +40,7 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
         checkNull(imageSegment, "imageSegment");
         checkNull(targetImage, "targetImage");
         checkNull(imageRepresentationHandler, "imageRepresentationHandler");
+        checkImageMode(imageSegment);
 
         ImageMask iMask = null;
 
@@ -109,5 +110,15 @@ public class BandSequentialImageModeHandler implements ImageModeHandler {
                 }
             }
         }
+    }
+
+    @Override
+    public ImageMode getSupportedImageMode() {
+        return ImageMode.BANDSEQUENTIAL;
+    }
+
+    @Override
+    String getHandlerName() {
+        return "BandSequentialImageModeHandler";
     }
 }
