@@ -17,7 +17,6 @@ package org.codice.imaging.nitf.render.imagemode;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import org.codice.imaging.nitf.core.image.ImageCompression;
-import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.ImageMask;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
@@ -25,7 +24,7 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 /**
  * A shared implementation of the various ImageModeHandler cases.
  */
-abstract class SharedImageModeHandler implements ImageModeHandler {
+abstract class SharedImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
     protected static final String NULL_ARG_ERROR_MESSAGE = "%s: argument '%s' may not be null.";
 
     /**
@@ -61,10 +60,6 @@ abstract class SharedImageModeHandler implements ImageModeHandler {
         matrix.forEachBlock((block) -> block.render(targetImage, true));
     }
 
-    protected abstract String getHandlerName();
-
-    protected abstract ImageMode getSupportedImageMode();
-
     protected abstract void readBlock(ImageBlock block, ImageSegment imageSegment,
             ImageRepresentationHandler imageRepresentationHandler);
 
@@ -78,15 +73,6 @@ abstract class SharedImageModeHandler implements ImageModeHandler {
     private void checkNull(Object value, String valueName) {
         if (value == null) {
             throw new IllegalArgumentException(String.format(NULL_ARG_ERROR_MESSAGE, getHandlerName(), valueName));
-        }
-    }
-
-    private void checkImageMode(ImageSegment imageSegment) throws IllegalStateException {
-        if (!getSupportedImageMode().equals(imageSegment.getImageMode())) {
-            throw new IllegalStateException(String.format("%s: argument 'imageSegment' must have an ImageMode of '%s'.",
-                    getHandlerName(),
-                    getSupportedImageMode().getTextEquivalent()
-            ));
         }
     }
 
