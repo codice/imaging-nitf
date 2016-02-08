@@ -170,6 +170,11 @@ public class RenderJitcTest extends TestCase {
     }
 
     @Test
+    public void testNS3228B() throws IOException, ParseException {
+        testOneFile("ns3228b.nsf", "JitcNitf21Samples");
+    }
+
+    @Test
     public void testI_3228C() throws IOException, ParseException {
         testOneFile("i_3228c.ntf", "JitcNitf21Samples");
     }
