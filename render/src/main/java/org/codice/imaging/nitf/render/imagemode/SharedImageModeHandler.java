@@ -53,8 +53,10 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
                         imageSegment.getNumberOfPixelsPerBlockVertical()));
 
         matrix.forEachBlock(block -> {
-            readBlock(block, imageSegment, imageRepresentationHandler);
-            applyMask(block, imageMask, imageRepresentationHandler);
+            if (!imageMask.isMaskedBlock(block.getBlockIndex(), 0)) {
+                readBlock(block, imageSegment, imageRepresentationHandler);
+                applyMask(block, imageMask, imageRepresentationHandler);
+            }
         });
 
         matrix.forEachBlock((block) -> block.render(targetImage, true));

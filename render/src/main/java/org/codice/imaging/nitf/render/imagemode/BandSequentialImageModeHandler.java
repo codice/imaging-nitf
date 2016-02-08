@@ -18,7 +18,6 @@ package org.codice.imaging.nitf.render.imagemode;
 import java.awt.Graphics2D;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
-import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageSegment;
@@ -65,8 +64,10 @@ public class BandSequentialImageModeHandler extends BaseImageModeHandler impleme
             final int index = bandIndex;
 
             matrix.forEachBlock(block -> {
-                readBlock(block, imageSegment.getData(), imageRepresentationHandler, index);
-                applyMask(block, imageMask, imageRepresentationHandler);
+                if (!imageMask.isMaskedBlock(block.getBlockIndex(), index)) {
+                    readBlock(block, imageSegment, imageRepresentationHandler, index);
+                    applyMask(block, imageMask, imageRepresentationHandler);
+                }
             } );
         }
 
@@ -79,7 +80,7 @@ public class BandSequentialImageModeHandler extends BaseImageModeHandler impleme
         }
     }
 
-    private void readBlock(ImageBlock block, ImageInputStream imageInputStream,
+    private void readBlock(ImageBlock block, ImageSegment imageSegment,
             ImageRepresentationHandler imageRepresentationHandler, int bandIndex) {
 
         final DataBuffer data = block.getDataBuffer();
@@ -88,7 +89,7 @@ public class BandSequentialImageModeHandler extends BaseImageModeHandler impleme
             for (int row = 0; row < block.getHeight(); row++) {
                 for (int column = 0; column < block.getWidth(); column++) {
                     int i = row * block.getWidth() + column;
-                    imageRepresentationHandler.renderPixelBand(data, i, imageInputStream, bandIndex);
+                    imageRepresentationHandler.renderPixelBand(data, i, imageSegment, bandIndex);
                 }
             }
         } catch (IOException e) {
