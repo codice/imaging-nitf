@@ -23,7 +23,11 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 /**
  * ImageModeHandler for Row Interleve mode.
  */
-public class RowInterleveImageModeHandler extends SharedImageModeHandler implements ImageModeHandler {
+class RowInterleveImageModeHandler extends SharedImageModeHandler implements ImageModeHandler {
+
+    RowInterleveImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+        super(imageRepresentationHandler);
+    }
 
     @Override
     protected ImageMode getSupportedImageMode() {

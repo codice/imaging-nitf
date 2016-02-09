@@ -27,12 +27,18 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 abstract class SharedImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
     protected static final String NULL_ARG_ERROR_MESSAGE = "%s: argument '%s' may not be null.";
 
+    protected final ImageRepresentationHandler imageRepresentationHandler;
+
+    protected SharedImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+        checkNull(imageRepresentationHandler, "imageRepresentationHandler");
+        this.imageRepresentationHandler = imageRepresentationHandler;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void handleImage(ImageSegment imageSegment, Graphics2D targetImage,
-            ImageRepresentationHandler imageRepresentationHandler) throws IOException {
+    public void handleImage(ImageSegment imageSegment, Graphics2D targetImage) throws IOException {
 
         nullCheckArguments(imageSegment, targetImage, imageRepresentationHandler);
 

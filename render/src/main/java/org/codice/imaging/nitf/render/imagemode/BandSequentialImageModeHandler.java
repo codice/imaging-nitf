@@ -18,23 +18,30 @@ package org.codice.imaging.nitf.render.imagemode;
 import java.awt.Graphics2D;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.ImageMask;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
-public class BandSequentialImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
+class BandSequentialImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
     private static final String NULL_ARG_ERROR_MESSAGE =
             "BandSequentialImageModeHandler(): argument '%s' may not be null.";
+
+    private ImageRepresentationHandler imageRepresentationHandler;
+
+    BandSequentialImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+        checkNull(imageRepresentationHandler, "imageRepresentationHandler");
+        this.imageRepresentationHandler = imageRepresentationHandler;
+    }
 
     /**
      *
      * {@inheritDoc}
      */
     @Override
-    public void handleImage(ImageSegment imageSegment, Graphics2D targetImage,
-            ImageRepresentationHandler imageRepresentationHandler) throws IOException {
+    public void handleImage(ImageSegment imageSegment, Graphics2D targetImage) throws IOException {
 
         checkNull(imageSegment, "imageSegment");
         checkNull(targetImage, "targetImage");
@@ -64,7 +71,7 @@ public class BandSequentialImageModeHandler extends BaseImageModeHandler impleme
             final int index = bandIndex;
 
             matrix.forEachBlock(block -> {
-                readBlock(block, imageSegment, imageRepresentationHandler, index);
+                readBlock(block, imageSegment.getData(), index);
                 applyMask(block, imageMask, imageRepresentationHandler);
             } );
         }
@@ -78,8 +85,7 @@ public class BandSequentialImageModeHandler extends BaseImageModeHandler impleme
         }
     }
 
-    private void readBlock(ImageBlock block, ImageSegment imageSegment,
-            ImageRepresentationHandler imageRepresentationHandler, int bandIndex) {
+    private void readBlock(ImageBlock block, ImageInputStream imageInputStream, int bandIndex) {
 
         final DataBuffer data = block.getDataBuffer();
 
@@ -87,7 +93,7 @@ public class BandSequentialImageModeHandler extends BaseImageModeHandler impleme
             for (int row = 0; row < block.getHeight(); row++) {
                 for (int column = 0; column < block.getWidth(); column++) {
                     int i = row * block.getWidth() + column;
-                    imageRepresentationHandler.renderPixelBand(data, i, imageSegment.getData(), bandIndex);
+                    imageRepresentationHandler.renderPixelBand(data, i, imageInputStream, bandIndex);
                 }
             }
         } catch (IOException e) {

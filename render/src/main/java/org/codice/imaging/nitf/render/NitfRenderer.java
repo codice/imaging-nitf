@@ -17,36 +17,20 @@ package org.codice.imaging.nitf.render;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.image.ImageMode;
+
 import org.codice.imaging.nitf.core.image.ImageSegment;
-import org.codice.imaging.nitf.render.imagemode.BandSequentialImageModeHandler;
-import org.codice.imaging.nitf.render.imagemode.BlockInterleveImageModeHandler;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandler;
-import org.codice.imaging.nitf.render.imagemode.PixelInterleveImageModeHandler;
-import org.codice.imaging.nitf.render.imagemode.RowInterleveImageModeHandler;
-import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
-import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandlerFactory;
+import org.codice.imaging.nitf.render.imagemode.ImageModeHandlerFactory;
 
 /**
  * Renderer for NITF files
  */
 public class NitfRenderer {
-
-    private final static Map<ImageMode, ImageModeHandler> IMAGE_MODE_HANDLER_MAP = new HashMap<>();
-
-    static {
-        IMAGE_MODE_HANDLER_MAP.put(ImageMode.BANDSEQUENTIAL, new BandSequentialImageModeHandler());
-        IMAGE_MODE_HANDLER_MAP.put(ImageMode.PIXELINTERLEVE, new PixelInterleveImageModeHandler());
-        IMAGE_MODE_HANDLER_MAP.put(ImageMode.ROWINTERLEVE, new RowInterleveImageModeHandler());
-        IMAGE_MODE_HANDLER_MAP.put(ImageMode.BLOCKINTERLEVE, new BlockInterleveImageModeHandler());
-    }
-
     /**
      * Render to the specified Graphics2D target.
      *
@@ -61,11 +45,10 @@ public class NitfRenderer {
             break;
         case NOTCOMPRESSED:
         case NOTCOMPRESSEDMASK:
-            ImageModeHandler modeHandler = IMAGE_MODE_HANDLER_MAP.get(imageSegment.getImageMode());
-            ImageRepresentationHandler representationHandler = ImageRepresentationHandlerFactory.forImageSegment(imageSegment);
+            ImageModeHandler modeHandler = ImageModeHandlerFactory.forImageSegment(imageSegment);
 
-            if (modeHandler != null && representationHandler != null && imageSegment.getActualBitsPerPixelPerBand() == 8) {
-                modeHandler.handleImage(imageSegment, targetGraphic, representationHandler);
+            if (modeHandler != null && imageSegment.getActualBitsPerPixelPerBand() == 8) {
+                modeHandler.handleImage(imageSegment, targetGraphic);
             } else {
                 render(new UncompressedBlockRenderer(), imageSegment, targetGraphic);
             }

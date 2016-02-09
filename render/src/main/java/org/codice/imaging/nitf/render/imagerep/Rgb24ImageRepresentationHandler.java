@@ -4,9 +4,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.util.Map;
+
 import javax.imageio.stream.ImageInputStream;
 
-public class Rgb24ImageRepresentationHandler implements ImageRepresentationHandler {
+class Rgb24ImageRepresentationHandler implements ImageRepresentationHandler {
     private final Map<Integer, Integer> bandMapping;
 
     public Rgb24ImageRepresentationHandler(Map<Integer, Integer> bandMapping) {
