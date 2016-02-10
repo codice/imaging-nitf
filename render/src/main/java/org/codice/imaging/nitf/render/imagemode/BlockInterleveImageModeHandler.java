@@ -23,7 +23,11 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 /**
  * ImageModeHandler for Block Interleve mode.
  */
-public class BlockInterleveImageModeHandler extends SharedImageModeHandler implements ImageModeHandler {
+class BlockInterleveImageModeHandler extends SharedImageModeHandler implements ImageModeHandler {
+
+    BlockInterleveImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+        super(imageRepresentationHandler);
+    }
 
     @Override
     protected ImageMode getSupportedImageMode() {

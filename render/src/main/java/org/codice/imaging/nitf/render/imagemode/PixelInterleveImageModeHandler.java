@@ -23,7 +23,11 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 /**
  * ImageModeHandler for Pixel Interleve mode.
  */
-public class PixelInterleveImageModeHandler extends SharedImageModeHandler implements ImageModeHandler {
+class PixelInterleveImageModeHandler extends SharedImageModeHandler implements ImageModeHandler {
+
+    PixelInterleveImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+        super(imageRepresentationHandler);
+    }
 
     @Override
     protected String getHandlerName() {

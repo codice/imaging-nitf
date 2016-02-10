@@ -16,8 +16,8 @@ package org.codice.imaging.nitf.render.imagemode;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
+
 import org.codice.imaging.nitf.core.image.ImageSegment;
-import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
 /**
  * An ImageModeHandler abstracts the processing of an ImageSegment based on the NITF Image Mode.
@@ -30,9 +30,8 @@ public interface ImageModeHandler {
      *
      * @param imageSegment - the ImageSegment for the image being rendered.
      * @param targetImage - the Graphic2D that the image will be rendered to.
-     * @param imageRepresentationHandler - the ImageRepresentationHandler which will render a single pixel.
      * @throws IOException - propagated from the ImageInputStream.
      */
-    void handleImage(ImageSegment imageSegment, Graphics2D targetImage, ImageRepresentationHandler imageRepresentationHandler)
+    void handleImage(ImageSegment imageSegment, Graphics2D targetImage)
             throws IOException;
 }
