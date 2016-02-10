@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.render.imagerep;
 import java.util.HashMap;
 import java.util.Map;
 import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.core.image.NitfImageBand;
 import static org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler.NOT_VISIBLE_MAPPED;
 
 public class ImageRepresentationHandlerFactory {
@@ -24,13 +25,20 @@ public class ImageRepresentationHandlerFactory {
 
         switch (segment.getImageRepresentation()) {
             case RGBTRUECOLOUR: {
-                Map<Integer, Integer> bandMapping = getRgb24ImageRepresentationMapping(segment);
-                return new Rgb24ImageRepresentationHandler(bandMapping);
+                return getRgb24ImageRepresentationHandler(segment);
+            }
+            case MULTIBAND: {
+                return getHandlerForMultiband(segment);
             }
             //add other (more complex) cases here
             default:
                 return null;
         }
+    }
+
+    private static ImageRepresentationHandler getRgb24ImageRepresentationHandler(ImageSegment segment) {
+        Map<Integer, Integer> bandMapping = getRgb24ImageRepresentationMapping(segment);
+        return new Rgb24ImageRepresentationHandler(bandMapping);
     }
 
     private static Map<Integer, Integer> getRgb24ImageRepresentationMapping(final ImageSegment imageSegment) {
@@ -53,5 +61,37 @@ public class ImageRepresentationHandlerFactory {
             mapping.put(bandIndex, leftShift);
         }
         return mapping;
+    }
+
+    private static ImageRepresentationHandler getHandlerForMultiband(final ImageSegment segment) {
+        if (irepbandsHasRgb(segment)) {
+            return getRgb24ImageRepresentationHandler(segment);
+        }
+        // TODO: M case
+        // TODO: LU case
+        // TODO: no representation
+        return null;
+    }
+
+    private static boolean irepbandsHasRgb(ImageSegment segment) {
+        boolean hasR = false;
+        boolean hasG = false;
+        boolean hasB = false;
+        for (int i = 0; i < segment.getNumBands(); i++) {
+            NitfImageBand band = segment.getImageBandZeroBase(i);
+            if (null != band.getImageRepresentation()) {
+                switch (band.getImageRepresentation()) {
+                    case "R":
+                        hasR = true;
+                        break;
+                    case "G":
+                        hasG = true;
+                    case "B":
+                        hasB = true;
+                        break;
+                }
+            }
+        }
+        return (hasR && hasG && hasB);
     }
 }
