@@ -40,7 +40,7 @@ class PixelInterleveImageModeHandler extends SharedImageModeHandler implements I
     }
 
     @Override
-    protected void readBlock(ImageBlock block, ImageSegment imageSegment, ImageRepresentationHandler imageRepresentationHandler) {
+    protected void readBlock(ImageBlock block, ImageSegment imageSegment) {
 
         final DataBuffer data = block.getDataBuffer();
 

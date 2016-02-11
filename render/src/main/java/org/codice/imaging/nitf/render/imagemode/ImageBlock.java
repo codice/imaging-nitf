@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.render.imagemode;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.util.function.Supplier;
@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 public class ImageBlock {
     private int row;
     private int column;
+    private final int numColumns;
     private int width;
     private int height;
     private Supplier<BufferedImage> imageSupplier;
@@ -34,11 +35,13 @@ public class ImageBlock {
      *
      * @param row - the row position of this ImageBlock in the larger image.
      * @param column - the column position of this ImageBlock in the larger image.
+     * @param numColumns the number of columns in the ImageBlock.
      */
-    public ImageBlock(int row, int column, int width, int height,
+    public ImageBlock(int row, int column, int numColumns, int width, int height,
             Supplier<BufferedImage> imageSupplier) {
         this.row = row;
         this.column = column;
+        this.numColumns = numColumns;
         this.width = width;
         this.height = height;
         this.imageSupplier = imageSupplier;
@@ -72,4 +75,17 @@ public class ImageBlock {
         return height;
     }
 
+    /**
+     * Get the block index in standard rendering order.
+     *
+     * This is a zero-based index for the position of this block if the blocks were "linearised", such that the first
+     * block (column 0) of each row appears at the end of the last block of the previous row. As an example, if you have
+     * 3 rows of 4 columns, this will be a number between 0 and 11, where the first row has 0 to 3, the second row 4 to
+     * 7, and the third row 8 to 11.
+     *
+     * @return block index.
+     */
+    public int getBlockIndex() {
+        return (this.row * this.numColumns) + this.column;
+    }
 }

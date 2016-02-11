@@ -71,9 +71,11 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
             final int index = bandIndex;
 
             matrix.forEachBlock(block -> {
-                readBlock(block, imageSegment.getData(), index);
-                applyMask(block, imageMask, imageRepresentationHandler);
-            } );
+                if (!imageMask.isMaskedBlock(block.getBlockIndex(), index)) {
+                    readBlock(block, imageSegment.getData(), index);
+                    applyMask(block, imageMask);
+                }
+            });
         }
 
         matrix.forEachBlock((block) -> block.render(targetImage, true));
@@ -102,8 +104,7 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
     }
 
 
-    public void applyMask(ImageBlock block, ImageMask imageMask,
-            ImageRepresentationHandler imageRepresentationHandler) {
+    public void applyMask(ImageBlock block, ImageMask imageMask) {
         if (imageMask != null) {
             final int dataSize = block.getWidth() * block.getHeight();
 

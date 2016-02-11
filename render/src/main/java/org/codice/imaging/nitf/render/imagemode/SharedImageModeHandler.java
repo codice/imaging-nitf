@@ -59,15 +59,16 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
                         imageSegment.getNumberOfPixelsPerBlockVertical()));
 
         matrix.forEachBlock(block -> {
-            readBlock(block, imageSegment, imageRepresentationHandler);
-            applyMask(block, imageMask, imageRepresentationHandler);
+            if (!imageMask.isMaskedBlock(block.getBlockIndex(), 0)) {
+                readBlock(block, imageSegment);
+                applyMask(block, imageMask);
+            }
         });
 
         matrix.forEachBlock((block) -> block.render(targetImage, true));
     }
 
-    protected abstract void readBlock(ImageBlock block, ImageSegment imageSegment,
-            ImageRepresentationHandler imageRepresentationHandler);
+    protected abstract void readBlock(ImageBlock block, ImageSegment imageSegment);
 
     private void nullCheckArguments(ImageSegment imageSegment, Graphics2D targetImage,
             ImageRepresentationHandler imageRepresentationHandler) {
@@ -82,7 +83,7 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
         }
     }
 
-    private void applyMask(ImageBlock block, ImageMask imageMask, ImageRepresentationHandler imageRepresentationHandler) {
+    private void applyMask(ImageBlock block, ImageMask imageMask) {
         if (imageMask != null) {
             final int dataSize = block.getWidth() * block.getHeight();
             for (int pixel = 0; pixel < dataSize; ++pixel) {
