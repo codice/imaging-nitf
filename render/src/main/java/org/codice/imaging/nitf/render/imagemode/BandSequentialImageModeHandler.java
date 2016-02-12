@@ -19,17 +19,12 @@ import java.awt.Graphics2D;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.ImageMask;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
 class BandSequentialImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
-    private static final String NULL_ARG_ERROR_MESSAGE =
-            "BandSequentialImageModeHandler(): argument '%s' may not be null.";
-
-    private ImageRepresentationHandler imageRepresentationHandler;
 
     BandSequentialImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
         checkNull(imageRepresentationHandler, "imageRepresentationHandler");
@@ -45,23 +40,9 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
 
         checkNull(imageSegment, "imageSegment");
         checkNull(targetImage, "targetImage");
-        checkNull(imageRepresentationHandler, "imageRepresentationHandler");
         checkImageMode(imageSegment);
 
-        ImageMask iMask = null;
-
-        if (ImageCompression.NOTCOMPRESSEDMASK.equals(imageSegment.getImageCompression())) {
-            iMask = new ImageMask(imageSegment, imageSegment.getData());
-        } else {
-            iMask = new ImageMask(imageSegment);
-        }
-
-        final ImageMask imageMask = iMask;
-
-        if (!ImageMode.BANDSEQUENTIAL.equals(imageSegment.getImageMode())) {
-            throw new IllegalStateException(
-                "BandSequentialImageModeHandler(): argument 'imageSegment' must have be ImageMode of 'S'.");
-        }
+        final ImageMask imageMask = getImageMask(imageSegment);
 
         ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment,
                 () -> imageRepresentationHandler.createBufferedImage(imageSegment.getNumberOfPixelsPerBlockHorizontal(),
@@ -81,12 +62,6 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
         matrix.forEachBlock((block) -> block.render(targetImage, true));
     }
 
-    private void checkNull(Object value, String valueName) {
-        if (value == null) {
-            throw new IllegalArgumentException(String.format(NULL_ARG_ERROR_MESSAGE, valueName));
-        }
-    }
-
     private void readBlock(ImageBlock block, ImageInputStream imageInputStream, int bandIndex) {
 
         final DataBuffer data = block.getDataBuffer();
@@ -100,21 +75,6 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-
-    public void applyMask(ImageBlock block, ImageMask imageMask) {
-        if (imageMask != null) {
-            final int dataSize = block.getWidth() * block.getHeight();
-
-            for (int pixel = 0; pixel < dataSize; ++pixel) {
-                if (imageMask.isPadPixel(block.getDataBuffer().getElem(pixel))) {
-                    imageRepresentationHandler.renderPadPixel(block.getDataBuffer(), pixel);
-                } else {
-                    imageRepresentationHandler.applyPixelMask(block.getDataBuffer(), pixel);
-                }
-            }
         }
     }
 

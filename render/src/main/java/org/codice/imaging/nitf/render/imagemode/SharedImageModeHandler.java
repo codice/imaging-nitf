@@ -16,7 +16,6 @@ package org.codice.imaging.nitf.render.imagemode;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
-import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.ImageMask;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
@@ -25,9 +24,6 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
  * A shared implementation of the various ImageModeHandler cases.
  */
 abstract class SharedImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
-    protected static final String NULL_ARG_ERROR_MESSAGE = "%s: argument '%s' may not be null.";
-
-    protected final ImageRepresentationHandler imageRepresentationHandler;
 
     protected SharedImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
         checkNull(imageRepresentationHandler, "imageRepresentationHandler");
@@ -39,20 +35,11 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
      */
     @Override
     public void handleImage(ImageSegment imageSegment, Graphics2D targetImage) throws IOException {
-
-        nullCheckArguments(imageSegment, targetImage, imageRepresentationHandler);
-
-        ImageMask iMask = null;
-
-        if (ImageCompression.NOTCOMPRESSEDMASK.equals(imageSegment.getImageCompression())) {
-            iMask = new ImageMask(imageSegment, imageSegment.getData());
-        } else {
-            iMask = new ImageMask(imageSegment);
-        }
-
-        final ImageMask imageMask = iMask;
-
+        checkNull(imageSegment, "imageSegment");
+        checkNull(targetImage, "targetImage");
         checkImageMode(imageSegment);
+
+        final ImageMask imageMask = getImageMask(imageSegment);
 
         ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment,
                 () -> imageRepresentationHandler.createBufferedImage(imageSegment.getNumberOfPixelsPerBlockHorizontal(),
@@ -69,31 +56,5 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
     }
 
     protected abstract void readBlock(ImageBlock block, ImageSegment imageSegment);
-
-    private void nullCheckArguments(ImageSegment imageSegment, Graphics2D targetImage,
-            ImageRepresentationHandler imageRepresentationHandler) {
-        checkNull(imageSegment, "imageSegment");
-        checkNull(targetImage, "targetImage");
-        checkNull(imageRepresentationHandler, "imageRepresentationHandler");
-    }
-
-    private void checkNull(Object value, String valueName) {
-        if (value == null) {
-            throw new IllegalArgumentException(String.format(NULL_ARG_ERROR_MESSAGE, getHandlerName(), valueName));
-        }
-    }
-
-    private void applyMask(ImageBlock block, ImageMask imageMask) {
-        if (imageMask != null) {
-            final int dataSize = block.getWidth() * block.getHeight();
-            for (int pixel = 0; pixel < dataSize; ++pixel) {
-                if (imageMask.isPadPixel(block.getDataBuffer().getElem(pixel))) {
-                    imageRepresentationHandler.renderPadPixel(block.getDataBuffer(), pixel);
-                } else {
-                    imageRepresentationHandler.applyPixelMask(block.getDataBuffer(), pixel);
-                }
-            }
-        }
-    }
 
 }
