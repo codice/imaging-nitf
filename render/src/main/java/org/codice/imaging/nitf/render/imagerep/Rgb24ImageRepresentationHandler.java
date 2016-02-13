@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.util.Map;
-
 import javax.imageio.stream.ImageInputStream;
 
 class Rgb24ImageRepresentationHandler implements ImageRepresentationHandler {

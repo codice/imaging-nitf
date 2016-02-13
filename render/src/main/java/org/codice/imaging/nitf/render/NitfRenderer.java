@@ -18,11 +18,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandler;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandlerFactory;
@@ -47,7 +45,7 @@ public class NitfRenderer {
         case NOTCOMPRESSEDMASK:
             ImageModeHandler modeHandler = ImageModeHandlerFactory.forImageSegment(imageSegment);
 
-            if (modeHandler != null && imageSegment.getActualBitsPerPixelPerBand() == 8) {
+            if (modeHandler != null) {
                 modeHandler.handleImage(imageSegment, targetGraphic);
             } else {
                 render(new UncompressedBlockRenderer(), imageSegment, targetGraphic);

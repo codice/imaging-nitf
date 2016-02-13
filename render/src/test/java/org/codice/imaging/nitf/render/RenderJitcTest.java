@@ -18,17 +18,9 @@
  */
 package org.codice.imaging.nitf.render;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import junit.framework.TestCase;
-import org.codice.imaging.nitf.render.flow.NitfParserInputFlow;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Tests for JITC NITF 2.0 and NITF 2.1 test cases.
@@ -36,9 +28,7 @@ import org.slf4j.LoggerFactory;
  * http://www.gwg.nga.mil/ntb/baseline/software/testfile/Nitfv2_0/scen_2_0.html and
  * http://www.gwg.nga.mil/ntb/baseline/software/testfile/Nitfv2_1/scen_2_1.html
  */
-public class RenderJitcTest extends TestCase {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RenderJitcTest.class);
+public class RenderJitcTest extends RenderTestSupport {
 
     public RenderJitcTest(String testName) {
         super(testName);
@@ -185,6 +175,11 @@ public class RenderJitcTest extends TestCase {
     }
 
     @Test
+    public void testI_3301A() throws IOException, ParseException {
+        testOneFile("i_3301a.ntf", "JitcNitf21Samples");
+    }
+
+    @Test
     public void testNS3301B() throws IOException, ParseException {
         testOneFile("ns3301b.nsf", "JitcNitf21Samples");
     }
@@ -282,32 +277,5 @@ public class RenderJitcTest extends TestCase {
     @Test
     public void testNS3228b() throws IOException, ParseException {
         testOneFile("ns3228b.nsf", "JitcNitf21Samples");
-    }
-
-    private void testOneFile(final String testfile, final String parentDirectory)
-            throws IOException, ParseException {
-        String inputFileName = "/" + parentDirectory + "/" + testfile;
-        LOGGER.info("================================== Testing :" + inputFileName);
-        assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
-
-        final ThreadLocal<Integer> i = new ThreadLocal<Integer>();
-        i.set(0);
-
-        new NitfParserInputFlow()
-                .inputStream(getClass().getResourceAsStream(inputFileName))
-                .imageData()
-                .forEachImage((header) -> {
-                    NitfRenderer renderer = new NitfRenderer();
-
-            try {
-                ImageInputStream imageData = header.getData();
-                        BufferedImage img = renderer.render(header);
-                        ImageIO.write(img, "png", new File("target" + File.separator + testfile + "_" + i.get() + ".png"));
-                    } catch (IOException|UnsupportedOperationException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-
-                    i.set(i.get() + 1);
-                });
     }
 }
