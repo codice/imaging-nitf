@@ -14,10 +14,17 @@
  */
 package org.codice.imaging.nitf.render.imagemode;
 
+import java.io.IOException;
+import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.render.ImageMask;
+import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
 abstract class BaseImageModeHandler implements ImageModeHandler {
+    private static final String NULL_ARG_ERROR_MESSAGE = "%s: argument '%s' may not be null.";
+
+    protected ImageRepresentationHandler imageRepresentationHandler;
 
     abstract ImageMode getSupportedImageMode();
 
@@ -29,6 +36,34 @@ abstract class BaseImageModeHandler implements ImageModeHandler {
                     getHandlerName(),
                     getSupportedImageMode().getTextEquivalent()
             ));
+        }
+    }
+
+    protected void checkNull(Object value, String valueName) {
+        if (value == null) {
+            throw new IllegalArgumentException(String.format(NULL_ARG_ERROR_MESSAGE, getHandlerName(), valueName));
+        }
+    }
+
+    protected ImageMask getImageMask(ImageSegment imageSegment) throws IOException {
+        if (ImageCompression.NOTCOMPRESSEDMASK.equals(imageSegment.getImageCompression())) {
+            return new ImageMask(imageSegment, imageSegment.getData());
+        } else {
+            return new ImageMask(imageSegment);
+        }
+    }
+
+    protected void applyMask(ImageBlock block, ImageMask imageMask) {
+        if (imageMask != null) {
+            final int dataSize = block.getWidth() * block.getHeight();
+
+            for (int pixel = 0; pixel < dataSize; ++pixel) {
+                if (imageMask.isPadPixel(block.getDataBuffer().getElem(pixel))) {
+                    imageRepresentationHandler.renderPadPixel(block.getDataBuffer(), pixel);
+                } else {
+                    imageRepresentationHandler.applyPixelMask(block.getDataBuffer(), pixel);
+                }
+            }
         }
     }
 }
