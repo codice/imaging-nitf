@@ -135,7 +135,7 @@ public class CgmParserTest {
     }
 
     private void testOneImage(String parentDirectory, String testfile) throws IOException {
-        String inputFileName = File.separator + parentDirectory + File.separator + testfile;
+        String inputFileName = "/" + parentDirectory + "/" + testfile;
         LOGGER.info("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         try {
