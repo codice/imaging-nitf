@@ -50,10 +50,12 @@ class AbstractWriterTest {
         assertTrue(new File(outputFile).delete());
 
         // Do the same again, but with stream writing
-        OutputStream outputStream = new FileOutputStream(outputFile);
-        writer = new NitfOutputStreamWriter(parseStrategy, outputStream);
-        writer.write();
-        assertTrue(FileUtils.contentEquals(new File(getClass().getResource(sourceFileName).toURI()), new File(outputFile)));
+        try (
+            OutputStream outputStream = new FileOutputStream(outputFile)) {
+            writer = new NitfOutputStreamWriter(parseStrategy, outputStream);
+            writer.write();
+            assertTrue(FileUtils.contentEquals(new File(getClass().getResource(sourceFileName).toURI()), new File(outputFile)));
+        }
         assertTrue(new File(outputFile).delete());
     }
 }
