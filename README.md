@@ -27,13 +27,13 @@ This will compile imaging-nitf and run all of the tests.
   <dependency>
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf-core</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
   </dependency>
   
   <dependency>
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-cgm</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
   </dependency>
 ```
 
