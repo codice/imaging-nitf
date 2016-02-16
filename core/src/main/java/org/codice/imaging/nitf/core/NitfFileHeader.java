@@ -230,23 +230,25 @@ public class NitfFileHeader extends AbstractNitfSegment {
     }
 
     /**
-        Set the background colour (FBKGC) for the file.
-
-        This is only valid for NITF 2.1 and NSIF 1.0 files.
-
-        @param backgroundColour colour to set
-    */
+     * Set the background colour (FBKGC) for the file.
+     *
+     * This is only guaranteed to be valid for NITF 2.1 and NSIF 1.0 files. There are special rules (IPON Section 3.6)
+     * that describe handling in NITF 2.0 files, which may result in unexpected background colours.
+     *
+     * @param backgroundColour colour to set
+     */
     public final void setFileBackgroundColour(final RGBColour backgroundColour) {
         nitfFileBackgroundColour = backgroundColour;
     }
 
     /**
-        Return the background colour (FBKGC) for the file.
-
-        This is only valid for NITF 2.1 and NSIF 1.0 files.
-
-        @return background colour
-    */
+     * Return the background colour (FBKGC) for the file.
+     *
+     * This is only guaranteed to be valid for NITF 2.1 and NSIF 1.0 files. There are special rules (IPON Section 3.6)
+     * that describe handling in NITF 2.0 files, which may result in unexpected background colours.
+     *
+     * @return background colour
+     */
     public final RGBColour getFileBackgroundColour() {
         return nitfFileBackgroundColour;
     }

@@ -15,9 +15,7 @@
 package org.codice.imaging.nitf.core.common;
 
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.RGBColour;
 import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
-import static org.codice.imaging.nitf.core.common.CommonConstants.RGB_COLOUR_LENGTH;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,17 +46,6 @@ public abstract class AbstractSegmentParser {
             LOG.warn("Mismatch while reading ENCRYP");
             throw new ParseException("Unexpected ENCRYP value", (int) reader.getCurrentOffset());
         }
-    }
-
-    /**
-     * Read in an RGBColour.
-     *
-     * @return the next RGBColour from the head of the reader stream.
-     * @throws ParseException when the next token is not the expected format for an RGBColour.
-     */
-    protected final RGBColour readRGBColour() throws ParseException {
-        byte[] rgb = reader.readBytesRaw(RGB_COLOUR_LENGTH);
-        return new RGBColour(rgb);
     }
 
     /**

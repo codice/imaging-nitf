@@ -26,13 +26,6 @@ final class CommonConstants {
      */
     static final int ENCRYP_LENGTH = 1;
 
-    /**
-     * Length of an RGB colour field.
-     * <p>
-     * See, for example, FBKGC in MIL-STD-2500C Table A-1.
-     */
-    static final int RGB_COLOUR_LENGTH = 3;
-
     // Dates
     /**
      * The length of a "proper" formatted date.
