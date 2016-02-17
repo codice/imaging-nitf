@@ -28,6 +28,7 @@ public class RGBColour {
 
     private static final int REQUIRED_DATA_LENGTH = 3;
     private static final int UNSIGNED_BYTE_MASK = 0xFF;
+
     private static final int RED_OFFSET = 0;
     private static final int GREEN_OFFSET = 1;
     private static final int BLUE_OFFSET = 2;
@@ -44,6 +45,13 @@ public class RGBColour {
      * Blue component of the main blue colour in the Codice logo.
      */
     public static final byte CODICE_LOGO_BLUE_COMPONENT = 121;
+
+    /**
+     * Length of an RGB colour field.
+     * <p>
+     * See, for example, FBKGC in MIL-STD-2500C Table A-1.
+     */
+    public static final int RGB_COLOUR_LENGTH = 3;
 
     /**
         Constructor.

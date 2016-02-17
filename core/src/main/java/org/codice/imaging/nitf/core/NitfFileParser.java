@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import static org.codice.imaging.nitf.core.NitfConstants.UDHOFL_LENGTH;
 import static org.codice.imaging.nitf.core.NitfConstants.XHDLOFL_LENGTH;
+import static org.codice.imaging.nitf.core.NitfReaderDefaultImpl.UTF8_CHARSET;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
@@ -82,10 +83,7 @@ public final class NitfFileParser extends AbstractSegmentParser {
         readFTITLE();
         nitfFileHeader.setFileSecurityMetadata(new FileSecurityMetadataParser().parseFileSecurityMetadata(reader));
         readENCRYP();
-        if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
-            readFBKGC();
-        }
-        readONAME();
+        readFBKGCandONAME();
         readOPHONE();
         readFL();
         readHL();
@@ -258,16 +256,35 @@ public final class NitfFileParser extends AbstractSegmentParser {
         nitfFileHeader.setFileTitle(reader.readTrimmedBytes(NitfConstants.FTITLE_LENGTH));
     }
 
-    private void readFBKGC() throws ParseException {
-        nitfFileHeader.setFileBackgroundColour(readRGBColour());
-    }
-
-    private void readONAME() throws ParseException {
+    private void readFBKGCandONAME() throws ParseException {
+        byte[] rgb = reader.readBytesRaw(RGBColour.RGB_COLOUR_LENGTH);
+        // See IPON 2.0 Section 3.6.2 for recommendation to do this in NITF 2.0.
+        nitfFileHeader.setFileBackgroundColour(new RGBColour(rgb));
         if ((nitfFileHeader.getFileType() == FileType.NITF_TWO_ONE) || (nitfFileHeader.getFileType() == FileType.NSIF_ONE_ZERO)) {
             nitfFileHeader.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME_LENGTH));
+        } else if (bytesAreOutsideBCSrange(rgb)) {
+            // High probability NITF 2.0 file employs FBKGC
+            nitfFileHeader.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME_LENGTH));
+        } else if (bytesAreIdentical(rgb)) {
+            // High probability NITF 2.0 file employs FBKGC
+            nitfFileHeader.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME_LENGTH));
         } else {
-            nitfFileHeader.setOriginatorsName(reader.readTrimmedBytes(NitfConstants.ONAME20_LENGTH));
+            // low probability of NITF 2.0 using FBKGC
+            nitfFileHeader.setOriginatorsName(new String(rgb, UTF8_CHARSET) + reader.readTrimmedBytes(NitfConstants.ONAME_LENGTH));
         }
+    }
+
+    private boolean bytesAreOutsideBCSrange(final byte[] rgb) {
+        for (short thisByte : rgb) {
+            if ((thisByte > '~') || (thisByte < ' ')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean bytesAreIdentical(final byte[] rgb) {
+        return ((rgb[0] == rgb[1]) && (rgb[1] == rgb[2]));
     }
 
     private void readOPHONE() throws ParseException {

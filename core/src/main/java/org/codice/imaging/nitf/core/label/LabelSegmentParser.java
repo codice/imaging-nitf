@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core.label;
 
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -118,11 +119,11 @@ public class LabelSegmentParser extends AbstractSegmentParser {
     }
 
     private void readLTC() throws ParseException {
-        segment.setLabelTextColour(readRGBColour());
+        segment.setLabelTextColour(new RGBColour(reader.readBytesRaw(RGBColour.RGB_COLOUR_LENGTH)));
     }
 
     private void readLBC() throws ParseException {
-        segment.setLabelBackgroundColour(readRGBColour());
+        segment.setLabelBackgroundColour(new RGBColour(reader.readBytesRaw(RGBColour.RGB_COLOUR_LENGTH)));
     }
 
     private void readLXSHDL() throws ParseException {
