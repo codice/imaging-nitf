@@ -18,12 +18,19 @@ import java.util.HashMap;
 import java.util.Map;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
-import static org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler.NOT_VISIBLE_MAPPED;
+import org.codice.imaging.nitf.core.image.PixelJustification;
 
 public class ImageRepresentationHandlerFactory {
+
+    private static final int NOT_VISIBLE_MAPPED = -1;
+    private static final int BAND_NOT_FOUND = -2;
+
     public static ImageRepresentationHandler forImageSegment(ImageSegment segment) {
 
         switch (segment.getImageRepresentation()) {
+            case MONOCHROME: {
+                return getMonoImageRepresentationHandler(segment, 0);
+            }
             case RGBTRUECOLOUR: {
                 return getRgb24ImageRepresentationHandler(segment);
             }
@@ -37,6 +44,12 @@ public class ImageRepresentationHandlerFactory {
     }
 
     private static ImageRepresentationHandler getRgb24ImageRepresentationHandler(ImageSegment segment) {
+        if (segment.getNumberOfBitsPerPixelPerBand() != 8) {
+            // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 (enough for CLEVEL 3 and 5)
+            // TODO: implement 16 bit support [IMG-112]
+            // TODO: implement 32 bit support [IMG-113]
+            return null;
+        }
         Map<Integer, Integer> bandMapping = getRgb24ImageRepresentationMapping(segment);
         return new Rgb24ImageRepresentationHandler(bandMapping);
     }
@@ -47,10 +60,10 @@ public class ImageRepresentationHandlerFactory {
             int leftShift;
             switch (imageSegment.getImageBandZeroBase(bandIndex).getImageRepresentation()) {
                 case "R":
-                    leftShift = 16;
+                    leftShift = 2 * Byte.SIZE;
                     break;
                 case "G":
-                    leftShift = 8;
+                    leftShift = Byte.SIZE;
                     break;
                 case "B":
                     leftShift = 0;
@@ -67,7 +80,10 @@ public class ImageRepresentationHandlerFactory {
         if (irepbandsHasRgb(segment)) {
             return getRgb24ImageRepresentationHandler(segment);
         }
-        // TODO: M case
+        int firstMonoBandZeroBase = getFirstMonoBandZeroBase(segment);
+        if (firstMonoBandZeroBase != BAND_NOT_FOUND) {
+            return getMonoImageRepresentationHandler(segment, firstMonoBandZeroBase);
+        }
         // TODO: LU case
         // TODO: no representation
         return null;
@@ -86,6 +102,7 @@ public class ImageRepresentationHandlerFactory {
                         break;
                     case "G":
                         hasG = true;
+                        break;
                     case "B":
                         hasB = true;
                         break;
@@ -93,5 +110,65 @@ public class ImageRepresentationHandlerFactory {
             }
         }
         return (hasR && hasG && hasB);
+    }
+
+    private static int getFirstMonoBandZeroBase(ImageSegment segment) {
+        for (int bandIndex = 0; bandIndex < segment.getNumBands(); bandIndex++) {
+            NitfImageBand band = segment.getImageBandZeroBase(bandIndex);
+            if (null != band.getImageRepresentation() && ("M".equals(band.getImageRepresentation()))) {
+                return bandIndex;
+            }
+        }
+        return BAND_NOT_FOUND;
+    }
+
+    private static ImageRepresentationHandler getMonoImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
+        switch (segment.getPixelValueType()) {
+            case BILEVEL:
+                return getMonoBilevelImageRepresentationHandler(segment, selectedBandZeroBase);
+            case INTEGER:
+                return getMonoIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
+            case SIGNEDINTEGER:
+                // TODO: [IMG-108] implement this
+                return null;
+            case REAL:
+                // TODO: [IMG-107] implement this
+                return null;
+            case COMPLEX:
+                // TODO: [IMG-109] implement this
+                return null;
+            default:
+                throw new UnsupportedOperationException("Unsupported pixel value type:" + segment.getPixelValueType().getTextEquivalent());
+        }
+    }
+
+    private static ImageRepresentationHandler getMonoBilevelImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
+        if (segment.getNumberOfBitsPerPixelPerBand() != 1) {
+            throw new UnsupportedOperationException("Pixel Value of bilevel (B) must be 1 bit per pixel (NBPP = 1)");
+        }
+        return new Mono1ImageRepresentationHandler(selectedBandZeroBase);
+    }
+
+    private static ImageRepresentationHandler getMonoIntegerImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
+        if (segment.getPixelJustification().equals(PixelJustification.LEFT) || (segment.getActualBitsPerPixelPerBand() == segment.getNumberOfBitsPerPixelPerBand())) {
+            switch (segment.getNumberOfBitsPerPixelPerBand()) {
+                case 8:
+                    return new Mono8IntegerImageRepresentationHandler(selectedBandZeroBase);
+                case 12:
+                    return new Mono16BitshiftIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
+                case 16:
+                    return new Mono16IntegerImageRepresentationHandler(selectedBandZeroBase);
+                // TODO: add 32 [IMG-110] and 64 [IMG-111] NBPP cases
+                default:
+                    return null;
+            }
+        } else if (segment.getNumberOfBitsPerPixelPerBand() == 8) {
+            return new Mono8BitshiftIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
+        } else if (segment.getNumberOfBitsPerPixelPerBand() <= 16) {
+            return new Mono16BitshiftIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
+        } else {
+            // TODO: add 32 [IMG-110] and 64 [IMG-111] NBPP cases
+            return null;
+        }
     }
 }

@@ -28,8 +28,6 @@ import javax.imageio.stream.ImageInputStream;
 
 public interface ImageRepresentationHandler {
 
-    public static final int NOT_VISIBLE_MAPPED = -1;
-
     /**
      * Applies the bandValue to currentValue based on bandIndex.
      *
