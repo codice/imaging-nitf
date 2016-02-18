@@ -46,3 +46,19 @@ This will compile imaging-nitf and run all of the tests.
     NitfFileParser.parse(reader, parseStrategy);
     NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
 ```
+
+## Using the Flow API
+
+```java
+    File resourceFile = new File("sample.ntf");
+    new NitfParserInputFlow()
+          .file(resourceFile)
+          .allData()
+          .fileHeader((header) -> handleFileHeader(header))
+          .forEachImageSegment((imageSegment) -> handleImageSegment(imageSegment))
+          .forEachDataSegment((dataSegment) -> handleDataSegment(dataSegment))
+          .forEachSymbolSegment((symbolSegment) -> handleSymbolSegment(symbolSegment))
+          .forEachGraphicSegment((graphicSegment) -> handleGraphicSegment(graphicSegment))
+          .forEachTextSegment((textSegment) -> handleTextSegment(textSegment))
+          .forEachLabelSegment((labelSegment) -> handleLabelSegment(labelSegment));
+```

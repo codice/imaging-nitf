@@ -18,12 +18,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+
 import javax.imageio.ImageIO;
-import junit.framework.TestCase;
+
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.flow.NitfParserInputFlow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import junit.framework.TestCase;
 
 /**
  * Shared code for rendering tests
@@ -52,7 +55,7 @@ public class RenderTestSupport extends TestCase {
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         final ThreadLocal<Integer> i = new ThreadLocal<>();
         i.set(0);
-        new NitfParserInputFlow().inputStream(getClass().getResourceAsStream(inputFileName)).imageData().forEachImage((ImageSegment segment) -> {
+        new NitfParserInputFlow().inputStream(getClass().getResourceAsStream(inputFileName)).imageData().forEachImageSegment((ImageSegment segment) -> {
             NitfRenderer renderer = new NitfRenderer();
             try {
                 BufferedImage img = renderer.render(segment);
