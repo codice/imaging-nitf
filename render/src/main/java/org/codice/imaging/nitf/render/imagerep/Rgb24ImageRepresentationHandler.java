@@ -5,6 +5,7 @@ import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.util.Map;
 import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.render.ImageMask;
 
 class Rgb24ImageRepresentationHandler implements ImageRepresentationHandler {
     private final Map<Integer, Integer> bandMapping;
@@ -16,7 +17,8 @@ class Rgb24ImageRepresentationHandler implements ImageRepresentationHandler {
     @Override
     public void renderPixelBand(DataBuffer data, int pixelIndex, ImageInputStream imageInputStream, int bandIndex)
             throws IOException {
-        data.setElem(pixelIndex, data.getElem(pixelIndex) | (imageInputStream.read() << bandMapping.get(bandIndex)));
+        data.setElem(pixelIndex,
+                0xFF000000 | data.getElem(pixelIndex) | (imageInputStream.read() << bandMapping.get(bandIndex)));
     }
 
     @Override
@@ -25,12 +27,9 @@ class Rgb24ImageRepresentationHandler implements ImageRepresentationHandler {
     }
 
     @Override
-    public void applyPixelMask(DataBuffer data, int pixelIndex) {
-        data.setElem(pixelIndex, data.getElem(pixelIndex) | 0xFF000000);
-    }
-
-    @Override
-    public void renderPadPixel(DataBuffer data, int pixelIndex) {
-        data.setElem(pixelIndex, 0x00000000);
+    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixel) {
+        if (imageMask.isPadPixel(data.getElem(pixel))) {
+            data.setElem(pixel, 0x00000000);
+        }
     }
 }

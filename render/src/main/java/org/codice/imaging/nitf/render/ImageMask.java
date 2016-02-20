@@ -128,4 +128,13 @@ public final class ImageMask {
         return (tpxcd == value);
     }
 
+    /**
+     * Check whether this image mask has valid per-pixel masking.
+     *
+     * @return true if there is valid per-pixel masking, otherwise false
+     */
+    public boolean hasPixelMasks() {
+        return (tpxcd != -1);
+    }
+
 }

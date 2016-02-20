@@ -15,23 +15,21 @@
 package org.codice.imaging.nitf.render.imagerep;
 
 import java.awt.image.DataBuffer;
-import org.codice.imaging.nitf.render.ImageMask;
+import java.io.IOException;
+import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 
 /**
- * Shared implementation details for the MONO image handler implementations.
+ * Image representation handler for 1 bit LUT (RGB) images.
  */
-abstract class SharedMonoImageRepresentationHandler implements ImageRepresentationHandler {
-    protected final int selectedBandZeroBase;
+class RGBLUT1ImageRepresentationHandler extends SharedRGBLUTImageRepresentationHandler {
 
-    public SharedMonoImageRepresentationHandler(final int selectedBandZeroBase) {
-        this.selectedBandZeroBase = selectedBandZeroBase;
+    public RGBLUT1ImageRepresentationHandler(ImageSegment segment) {
+        super(segment);
     }
 
     @Override
-    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixel) {
-        if (imageMask.isPadPixel(data.getElem(pixel))) {
-            data.setElem(pixel, 0x00);
-        }
+    public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex) throws IOException {
+        dataBuffer.setElem(pixelIndex, imageInputStream.readBit());
     }
-
 }
