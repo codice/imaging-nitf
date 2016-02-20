@@ -54,15 +54,11 @@ abstract class BaseImageModeHandler implements ImageModeHandler {
     }
 
     protected void applyMask(ImageBlock block, ImageMask imageMask) {
-        if (imageMask != null) {
+        if ((imageMask != null) && (imageMask.hasPixelMasks())) {
             final int dataSize = block.getWidth() * block.getHeight();
 
-            for (int pixel = 0; pixel < dataSize; ++pixel) {
-                if (imageMask.isPadPixel(block.getDataBuffer().getElem(pixel))) {
-                    imageRepresentationHandler.renderPadPixel(block.getDataBuffer(), pixel);
-                } else {
-                    imageRepresentationHandler.applyPixelMask(block.getDataBuffer(), pixel);
-                }
+            for (int pixelIndex = 0; pixelIndex < dataSize; ++pixelIndex) {
+                imageRepresentationHandler.renderPadPixel(imageMask, block.getDataBuffer(), pixelIndex);
             }
         }
     }

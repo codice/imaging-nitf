@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
 
 /**
  * Image representation handler for 1 bit mono (greyscale) images.
@@ -25,16 +26,16 @@ import javax.imageio.stream.ImageInputStream;
 class Mono1ImageRepresentationHandler extends SharedMonoImageRepresentationHandler implements ImageRepresentationHandler {
 
 
-    public Mono1ImageRepresentationHandler(int selectedBandZeroBase) {
-        super(selectedBandZeroBase);
+    public Mono1ImageRepresentationHandler(int selectedBandZeroBase, IOReaderFunction readerFunc) {
+        super(selectedBandZeroBase, readerFunc);
     }
 
     @Override
     public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex) throws IOException {
         if (bandIndex == selectedBandZeroBase) {
-            dataBuffer.setElem(pixelIndex, ((byte) imageInputStream.readBits(1) == 1 ? 0xFF : 0x00));
+            dataBuffer.setElem(pixelIndex, ((Integer) reader.apply(imageInputStream) == 1 ? 0xFF : 0x00));
         } else {
-            imageInputStream.readBits(1);
+            reader.apply(imageInputStream);
         }
     }
 
