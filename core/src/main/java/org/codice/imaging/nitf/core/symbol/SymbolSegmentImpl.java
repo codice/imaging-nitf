@@ -15,12 +15,12 @@
 package org.codice.imaging.nitf.core.symbol;
 
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.AbstractSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 
 /**
     Symbol segment information (NITF 2.0 only).
 */
-class SymbolSegmentImpl extends AbstractSubSegment implements SymbolSegment {
+class SymbolSegmentImpl extends CommonBasicSegmentImpl implements SymbolSegment {
 
     private String symbolName = null;
     private SymbolType symbolType = null;

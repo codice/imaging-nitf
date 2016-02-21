@@ -15,12 +15,12 @@
 package org.codice.imaging.nitf.core.graphic;
 
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.AbstractSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 
 /**
     Graphic segment information (NITF 2.1 / NSIF 1.0 only).
 */
-class GraphicSegmentImpl extends AbstractSubSegment
+class GraphicSegmentImpl extends CommonBasicSegmentImpl
         implements GraphicSegment {
 
     private String graphicName = null;

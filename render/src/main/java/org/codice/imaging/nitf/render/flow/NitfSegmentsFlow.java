@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.common.CommonNitfSegment;
+import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.image.ImageSegment;
@@ -116,7 +116,7 @@ public class NitfSegmentsFlow {
         return forEachSegment(consumer, () -> mDataSource.getSymbolSegments());
     }
 
-    private <T extends CommonNitfSegment> NitfSegmentsFlow forEachSegment(Consumer<T> consumer, Supplier<List<T>> supplier) {
+    private <T extends CommonSegment> NitfSegmentsFlow forEachSegment(Consumer<T> consumer, Supplier<List<T>> supplier) {
         if (consumer != null && supplier != null) {
             List<T> segments = supplier.get();
 

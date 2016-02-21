@@ -15,37 +15,12 @@
 package org.codice.imaging.nitf.core.common;
 
 import java.util.Map;
-import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
- Common data elements for NITF segment subheaders.
+ * Tagged Record Extension (TRE) handler functionality.
  */
-public interface CommonNitfSegment {
-
-    /**
-     Return the identifier (IID1/SID/LID/TEXTID) for the segment.
-     <p>
-     This field shall contain a valid alphanumeric identification code associated with the
-     segment. The valid codes are determined by the application.
-
-     @return the identifier
-     */
-    String getIdentifier();
-
-    /**
-     Return the security metadata for the segment.
-
-     @return security metadata
-     */
-    SecurityMetadata getSecurityMetadata();
-
-    /**
-     Return the TREs for this segment, in raw form.
-
-     @return TRE collection
-     */
-    TreCollection getTREsRawStructure();
+public interface TaggedRecordExtensionHandler {
 
     /**
      * Return the TREs for this segment in a flattened Map structure.
@@ -53,4 +28,11 @@ public interface CommonNitfSegment {
      * @return a java.util.Map containing the TREs.
      */
     Map<String, String> getTREsFlat();
+
+    /**
+    Return the TREs for this segment, in raw form.
+    @return TRE collection
+     */
+    TreCollection getTREsRawStructure();
+
 }

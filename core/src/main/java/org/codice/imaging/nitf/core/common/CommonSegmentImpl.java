@@ -12,26 +12,23 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.common;
 
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 
 /**
-    Common data elements for NITF segment subheaders.
-*/
-public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment
-        implements org.codice.imaging.nitf.core.common.CommonNitfSegment {
+ * Implementation of common data elements for NITF segments.
+ *
+ * This includes image segments, symbol segments, graphic segments, label segments, text segments and data extension
+ * segments.
+ */
+public class CommonSegmentImpl extends TaggedRecordExtensionHandlerImpl implements CommonSegment {
 
-    private String segmentIdentifier = null;
+    private String segmentIdentifier;
     private SecurityMetadata securityMetadata = null;
 
     /**
-     Set the identifier (IID1/SID/LID/TEXTID) for the segment.
-     <p>
-     This field shall contain a valid alphanumeric identification code associated with the
-     segment. The valid codes are determined by the application.
-
-     @param identifier the identifier for the segment
+     * {@inheritDoc}
      */
     public final void setIdentifier(final String identifier) {
         segmentIdentifier = identifier;
@@ -46,12 +43,9 @@ public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment
     }
 
     /**
-        Set the security metadata elements for the segment.
-
-        See SecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
-
-        @param metaData the security metadata values to set.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setSecurityMetadata(final SecurityMetadata metaData) {
         this.securityMetadata = metaData;
     }
@@ -63,5 +57,6 @@ public abstract class AbstractCommonNitfSegment extends AbstractNitfSegment
     public final SecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
+
 
 }

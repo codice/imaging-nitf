@@ -14,13 +14,13 @@
  */
 package org.codice.imaging.nitf.core.text;
 
-import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
  * Represents a NITF Text Segment.
  */
-public interface TextSegment extends CommonNitfSubSegment {
+public interface TextSegment extends CommonBasicSegment {
 
     /**
      Return text date and time.
@@ -32,6 +32,15 @@ public interface TextSegment extends CommonNitfSubSegment {
     NitfDateTime getTextDateTime();
 
     /**
+     * Set text date and time.
+     *
+     * This field shall contain the time (UTC) (Zulu) of origination of the text.
+     *
+     * @param dateTime the date and time of the text.
+     */
+    void setTextDateTime(final NitfDateTime dateTime);
+
+    /**
      Return text title.
      <p>
      This field shall contain the title of the text item.
@@ -41,6 +50,15 @@ public interface TextSegment extends CommonNitfSubSegment {
     String getTextTitle();
 
     /**
+     * Set text title.
+     * <p>
+     * This field shall contain the title of the text item.
+     *
+     * @param title text title (80 characters maximum).
+     */
+    void setTextTitle(final String title);
+
+    /**
      Return the text format indicator.
      <p>
      See TextFormat for the meaning of the enumerated values.
@@ -48,6 +66,15 @@ public interface TextSegment extends CommonNitfSubSegment {
      @return the text format
      */
     TextFormat getTextFormat();
+
+    /**
+     * Set the text format indicator.
+     * <p>
+     * See TextFormat for the meaning of the enumerated values.
+     *
+     * @param format the text format
+     */
+    void setTextFormat(final TextFormat format);
 
     /**
      * Get the text segment data string.

@@ -14,19 +14,19 @@
  */
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandlerImpl;
 import java.util.ArrayList;
 import java.util.List;
 import static org.codice.imaging.nitf.core.NitfConstants.DEFAULT_ORIGINATING_STATION;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
-import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
 
 /**
     NITF file data.
 */
-public class NitfFileHeader extends AbstractNitfSegment {
+public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
     private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
@@ -455,19 +455,25 @@ public class NitfFileHeader extends AbstractNitfSegment {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the file-level security metadata for the file.
+     *
+     * See FileSecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
+     *
+     * @return file security metadata
      */
-    @Override
-    public final String getIdentifier() {
-        return null;
+    public final FileSecurityMetadata getSecurityMetadata() {
+        return this.fileSecurityMetadata;
     }
 
     /**
-     * {@inheritDoc}
+     * Set the file-level security metadata for the file.
+     *
+     * See FileSecurityMetadata for the various elements, which differ slightly between NITF 2.0 and NITF 2.1/NSIF 1.0.
+     *
+     * @param fsmeta the security metadata to set.
      */
-    @Override
-    public final SecurityMetadata getSecurityMetadata() {
-        return this.fileSecurityMetadata;
+    public final void setSecurityMetadata(final FileSecurityMetadata fsmeta) {
+        this.fileSecurityMetadata = fsmeta;
     }
 
     /**

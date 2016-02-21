@@ -15,12 +15,12 @@
 package org.codice.imaging.nitf.core.symbol;
 
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegment;
 
 /**
  Symbol segment information (NITF 2.0 only).
  */
-public interface SymbolSegment extends CommonNitfSubSegment {
+public interface SymbolSegment extends CommonBasicSegment {
 
     /**
      Return the symbol name (SNAME).

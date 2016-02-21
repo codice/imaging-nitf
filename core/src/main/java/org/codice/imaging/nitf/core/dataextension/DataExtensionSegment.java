@@ -14,14 +14,14 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
-import org.codice.imaging.nitf.core.common.CommonNitfSegment;
+import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
  Common data extension segment parsing functionality.
  */
-public interface DataExtensionSegment extends CommonNitfSegment {
+public interface DataExtensionSegment extends CommonSegment {
 
     /**
      Return the DES version (DESVER).

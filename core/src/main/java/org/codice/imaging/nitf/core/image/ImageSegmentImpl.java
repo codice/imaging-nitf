@@ -17,13 +17,13 @@ package org.codice.imaging.nitf.core.image;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.AbstractSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
     Image segment information.
 */
-class ImageSegmentImpl extends AbstractSubSegment implements ImageSegment {
+class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
 
     private NitfDateTime imageDateTime = null;
     private TargetId imageTargetId = null;
