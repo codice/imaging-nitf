@@ -20,8 +20,11 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Test build of Header segment data
@@ -77,7 +80,7 @@ public class TestHeaderDefaultBuild {
         assertEquals(3, nitf.getComplexityLevel());
         assertEquals("BF01", nitf.getStandardType());
         assertNotNull(nitf.getOriginatingStationId());
-        assertTrue(nitf.getOriginatingStationId().isEmpty());
+        assertFalse(nitf.getOriginatingStationId().isEmpty());
 
         assertNotNull(nitf.getFileDateTime());
         ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);

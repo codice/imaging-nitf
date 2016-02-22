@@ -305,6 +305,10 @@ public final class NitfConstants {
      */
     protected static final long STREAMING_FILE_MODE = 999999999999L;
 
+    /**
+     * Default fill value for originating station identifier (OSTAID).
+     */
+    static final String DEFAULT_ORIGINATING_STATION = "Codice";
     private NitfConstants() {
     }
 }

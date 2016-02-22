@@ -16,6 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import static org.codice.imaging.nitf.core.NitfConstants.DEFAULT_ORIGINATING_STATION;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
@@ -480,7 +481,7 @@ public class NitfFileHeader extends AbstractNitfSegment {
         nitfFileHeader.setFileType(fileType);
         nitfFileHeader.setComplexityLevel(LOWEST_COMPLEXITY_LEVEL);
         nitfFileHeader.setStandardType(STANDARD_TYPE_VAL);
-        nitfFileHeader.setOriginatingStationId("");
+        nitfFileHeader.setOriginatingStationId(DEFAULT_ORIGINATING_STATION);
         NitfDateTime ndt = NitfDateTime.getNitfDateTimeForNow();
         nitfFileHeader.setFileDateTime(ndt);
         nitfFileHeader.setFileTitle("");
