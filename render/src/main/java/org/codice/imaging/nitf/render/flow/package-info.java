@@ -23,11 +23,17 @@
  *
  * <pre>
  * {@code
+ *   File resourceFile = new File("sample.ntf");
  *   new NitfParserInputFlow()
- *       .inputStream(getImageInputStream())
- *       .allData()
- *       .fileHeader(header -> LOGGER.debug(header.getIdentifier())
- *       .forEachImage((header, imageInputStream) -> renderImage(header, imageInputStream);
+ *         .file(resourceFile)
+ *         .allData()
+ *         .fileHeader((header) -> handleFileHeader(header))
+ *         .forEachImageSegment((imageSegment) -> handleImageSegment(imageSegment))
+ *         .forEachDataSegment((dataSegment) -> handleDataSegment(dataSegment))
+ *         .forEachSymbolSegment((symbolSegment) -> handleSymbolSegment(symbolSegment))
+ *         .forEachGraphicSegment((graphicSegment) -> handleGraphicSegment(graphicSegment))
+ *         .forEachTextSegment((textSegment) -> handleTextSegment(textSegment))
+ *         .forEachLabelSegment((labelSegment) -> handleLabelSegment(labelSegment));
  * }
  * </pre>
  */
