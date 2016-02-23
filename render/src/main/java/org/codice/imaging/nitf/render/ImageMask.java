@@ -118,6 +118,11 @@ public final class ImageMask {
         if (bmrnbndm == null) {
             return false;
         }
+
+        if (blockNumber >= bmrnbndm.length || bandNumber >= bmrnbndm[blockNumber].length) {
+            return false;
+        }
+
         return (BLOCK_NOT_RECORDED == bmrnbndm[blockNumber][bandNumber]);
     }
 
