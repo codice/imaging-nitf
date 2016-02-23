@@ -32,10 +32,13 @@ public class ImageRepresentationHandlerFactory {
                 return getMonoImageRepresentationHandler(segment, 0);
             }
             case RGBTRUECOLOUR: {
-                return getRgb24ImageRepresentationHandler(segment);
+                return getRgbImageRepresentationHandler(segment);
             }
             case MULTIBAND: {
                 return getHandlerForMultiband(segment);
+            }
+            case RGBLUT: {
+                return getRgbLUTImageRepresentationHandler(segment);
             }
             //add other (more complex) cases here
             default:
@@ -43,7 +46,7 @@ public class ImageRepresentationHandlerFactory {
         }
     }
 
-    private static ImageRepresentationHandler getRgb24ImageRepresentationHandler(ImageSegment segment) {
+    private static ImageRepresentationHandler getRgbImageRepresentationHandler(ImageSegment segment) {
         if (segment.getNumberOfBitsPerPixelPerBand() != 8) {
             // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 (enough for CLEVEL 3 and 5)
             // TODO: implement 16 bit support [IMG-112]
@@ -78,7 +81,7 @@ public class ImageRepresentationHandlerFactory {
 
     private static ImageRepresentationHandler getHandlerForMultiband(final ImageSegment segment) {
         if (irepbandsHasRgb(segment)) {
-            return getRgb24ImageRepresentationHandler(segment);
+            return getRgbImageRepresentationHandler(segment);
         }
         int firstMonoBandZeroBase = getFirstMonoBandZeroBase(segment);
         if (firstMonoBandZeroBase != BAND_NOT_FOUND) {
@@ -168,6 +171,16 @@ public class ImageRepresentationHandlerFactory {
             return new Mono16BitshiftIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
         } else {
             // TODO: add 32 [IMG-110] and 64 [IMG-111] NBPP cases
+            return null;
+        }
+    }
+
+    private static ImageRepresentationHandler getRgbLUTImageRepresentationHandler(ImageSegment segment) {
+        if (segment.getNumberOfBitsPerPixelPerBand() == 1) {
+            return new RGBLUT1ImageRepresentationHandler(segment);
+        } else if (segment.getNumberOfBitsPerPixelPerBand() == 8) {
+            return new RGBLUT8ImageRepresentationHandler(segment);
+        } else {
             return null;
         }
     }

@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
+import org.codice.imaging.nitf.render.ImageMask;
 
 /**
  * An ImageRepresentationHandler calculates the values for a given pixel based on the current pixel value
@@ -35,11 +36,14 @@ public interface ImageRepresentationHandler {
      * @param pixelIndex - the index of the pixel being rendered.
      * @param imageInputStream - the stream that contains the image data.
      * @param bandIndex - the index of the band being applied, zero-based.
+     *
+     * @throws java.io.IOException if there is a problem reading from the imageInputStream
      */
     void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex)
             throws IOException;
 
     /**
+     * Create a new image of the right type for this image handler.
      *
      * @param width - the number of horizontal pixels in the image to be created.
      * @param height - the number of vertical pixels in the image to be created.
@@ -48,7 +52,12 @@ public interface ImageRepresentationHandler {
      */
     BufferedImage createBufferedImage(int width, int height);
 
-    void applyPixelMask(DataBuffer data, int pixelIndex);
-
-    void renderPadPixel(DataBuffer data, int pixelIndex);
+    /**
+     * Apply image mask to one pixel within a block.
+     *
+     * @param imageMask the image mask information
+     * @param data the data buffer (corresponding the BufferedImage) to mask
+     * @param pixel the pixel index within the block to operate on
+     */
+    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixel);
 }
