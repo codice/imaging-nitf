@@ -50,7 +50,7 @@ public class RenderTestSupport extends TestCase {
     }
 
     protected void testOneFile(final String testfile, final String parentDirectory) throws IOException, ParseException {
-        String inputFileName = File.separator + parentDirectory + File.separator + testfile;
+        String inputFileName = "/" + parentDirectory + "/" + testfile;
         LOGGER.info("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         final ThreadLocal<Integer> i = new ThreadLocal<>();
