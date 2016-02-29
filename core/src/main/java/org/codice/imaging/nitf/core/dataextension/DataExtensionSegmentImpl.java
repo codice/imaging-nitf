@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
-import org.codice.imaging.nitf.core.AbstractCommonNitfSegment;
+import org.codice.imaging.nitf.core.common.CommonSegmentImpl;
 import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.CONTROLLED_EXTENSIONS;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.REGISTERED_EXTENSIONS;
@@ -24,8 +24,7 @@ import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.
 /**
     Data Extension Segment (DES) subheader and associated data.
 */
-class DataExtensionSegmentImpl extends AbstractCommonNitfSegment
-        implements DataExtensionSegment {
+class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensionSegment {
 
     private int desVersion = -1;
     private String overflowedHeaderType = null;

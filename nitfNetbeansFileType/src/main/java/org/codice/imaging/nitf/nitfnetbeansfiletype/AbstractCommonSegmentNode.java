@@ -18,7 +18,7 @@ import java.awt.Color;
 
 import javax.swing.Action;
 
-import org.codice.imaging.nitf.core.common.CommonNitfSegment;
+import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
@@ -31,7 +31,7 @@ abstract class AbstractCommonSegmentNode extends AbstractNode {
     }
 
 
-    protected void addCommonSegmentProperties(final Sheet.Set set, final CommonNitfSegment segment) {
+    protected void addCommonSegmentProperties(final Sheet.Set set, final CommonSegment segment) {
         set.put(new StringProperty("identifier", "Segment Identifier", "Identifier for the segment.", segment.getIdentifier()));
         if (segment.getSecurityMetadata().getSecurityClassification() != null) {
             set.put(new StringProperty("securityClassification",

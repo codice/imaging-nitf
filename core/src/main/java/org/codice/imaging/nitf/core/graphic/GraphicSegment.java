@@ -15,12 +15,12 @@
 package org.codice.imaging.nitf.core.graphic;
 
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegment;
 
 /**
  * Common graphic segment parsing functionality.
  */
-public interface GraphicSegment extends CommonNitfSubSegment {
+public interface GraphicSegment extends CommonBasicSegment {
     /**
      Return the graphic name (SNAME).
      <p>

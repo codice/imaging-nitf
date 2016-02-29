@@ -15,13 +15,13 @@
 package org.codice.imaging.nitf.core.label;
 
 import org.codice.imaging.nitf.core.RGBColour;
-import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegment;
 
 
 /**
  Label segment subheader information (NITF 2.0 only).
  */
-public interface LabelSegment extends CommonNitfSubSegment {
+public interface LabelSegment extends CommonBasicSegment {
 
     /**
      Return the row part of the label location (LLOC).

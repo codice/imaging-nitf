@@ -12,29 +12,22 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
-
-import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+package org.codice.imaging.nitf.core.common;
 
 /**
  * Common data elements for NITF data segments.
  *
  * This excludes the Data Extension Segment.
  */
-public abstract class AbstractSubSegment extends AbstractCommonNitfSegment
-        implements CommonNitfSubSegment {
+public abstract class CommonBasicSegmentImpl extends CommonSegmentImpl implements CommonBasicSegment {
 
     private int extendedHeaderDataOverflow = 0;
     private int segmentAttachmentLevel = 0;
 
     /**
-        Set the extended subheader overflow index (IXSOFL/SXSOFL/LXSOFL/TXSOFL).
-        <p>
-        This is the (1-base) index of the TRE into which extended header data
-        overflows.
-
-        @param overflow the extended header data overflow index
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setExtendedHeaderDataOverflow(final int overflow) {
         extendedHeaderDataOverflow = overflow;
     }
@@ -48,14 +41,9 @@ public abstract class AbstractSubSegment extends AbstractCommonNitfSegment
     }
 
     /**
-        Set the attachment level for the segment.
-        <p>
-        The valid values for this are zero (not attached) or the display level
-        for an image, graphic, symbol or label (as appropriate to the NITF file type)
-        in the file.
-
-        @param attachmentLevel the attachment level
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setAttachmentLevel(final int attachmentLevel) {
         segmentAttachmentLevel = attachmentLevel;
     }
@@ -67,5 +55,4 @@ public abstract class AbstractSubSegment extends AbstractCommonNitfSegment
     public final int getAttachmentLevel() {
         return segmentAttachmentLevel;
     }
-
 }

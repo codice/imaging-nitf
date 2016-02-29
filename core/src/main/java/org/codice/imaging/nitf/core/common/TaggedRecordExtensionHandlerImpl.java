@@ -12,12 +12,11 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.common;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
@@ -26,7 +25,7 @@ import org.codice.imaging.nitf.core.tre.TreGroup;
 /**
  * Common data elements for NITF segments and file header.
  */
-public abstract class AbstractNitfSegment implements CommonNitfSegment {
+public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordExtensionHandler {
 
     private final TreCollection treCollection = new TreCollection();
 

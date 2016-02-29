@@ -25,8 +25,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
-import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.schema.FieldType;
 import org.codice.imaging.nitf.core.schema.IfType;
 import org.codice.imaging.nitf.core.schema.LoopType;
@@ -300,15 +300,15 @@ public class TreParser {
     /**
      * Serialise out the TREs for the specified source.
      *
-     * @param header the header to read TREs from
+     * @param handler the TRE handler to read TREs from
      * @param source the source (which has to match the header) of the TREs.
      * @return byte array of serialised TREs - may be empty if there are no TREs.
      * @throws ParseException on TRE parsing problem.
      * @throws IOException on reading or writing problems.
      */
-    public final byte[] getTREs(final CommonNitfSegment header, final TreSource source) throws ParseException, IOException {
+    public final byte[] getTREs(final TaggedRecordExtensionHandler handler, final TreSource source) throws ParseException, IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        for (Tre tre : header.getTREsRawStructure().getTREsForSource(source)) {
+        for (Tre tre : handler.getTREsRawStructure().getTREsForSource(source)) {
             String name = padStringToLength(tre.getName(), TAG_LENGTH);
             baos.write(name.getBytes(StandardCharsets.UTF_8));
             if (tre.getRawData() != null) {

@@ -33,7 +33,6 @@ import java.util.TreeMap;
 import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
-import org.codice.imaging.nitf.core.common.CommonNitfSegment;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -55,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
+import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 
 public class FileComparer {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileComparer.class);
@@ -461,7 +461,7 @@ public class FileComparer {
         return (des1 != null) && (hasTREsOtherThanRPF(des1.getTREsRawStructure()));
     }
 
-    private void outputTresForSegment(CommonNitfSegment segment, String label) throws IOException {
+    private void outputTresForSegment(TaggedRecordExtensionHandler segment, String label) throws IOException {
         TreCollection treCollection = segment.getTREsRawStructure();
         for (Tre tre : treCollection.getTREs()) {
             if (tre.getRawData() == null) {

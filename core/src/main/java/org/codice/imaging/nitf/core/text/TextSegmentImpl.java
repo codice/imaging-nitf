@@ -14,13 +14,13 @@
  */
 package org.codice.imaging.nitf.core.text;
 
-import org.codice.imaging.nitf.core.AbstractSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
  * Text segment information.
  */
-class TextSegmentImpl extends AbstractSubSegment implements TextSegment {
+class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
 
     private NitfDateTime textDateTime = null;
     private String textTitle = null;
@@ -53,12 +53,9 @@ class TextSegmentImpl extends AbstractSubSegment implements TextSegment {
     }
 
     /**
-        Set text title.
-        <p>
-        This field shall contain the title of the text item.
-
-        @param title text title (80 characters maximum).
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setTextTitle(final String title) {
         textTitle = title;
     }
@@ -72,12 +69,9 @@ class TextSegmentImpl extends AbstractSubSegment implements TextSegment {
     }
 
     /**
-        Set the text format indicator.
-        <p>
-        See TextFormat for the meaning of the enumerated values.
-
-        @param format the text format
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setTextFormat(final TextFormat format) {
         textFormat = format;
     }

@@ -14,13 +14,13 @@
  */
 package org.codice.imaging.nitf.core.label;
 
-import org.codice.imaging.nitf.core.AbstractSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.RGBColour;
 
 /**
     Label segment information (NITF 2.0 only).
 */
-class LabelSegmentImpl extends AbstractSubSegment implements LabelSegment {
+class LabelSegmentImpl extends CommonBasicSegmentImpl implements LabelSegment {
 
     private int labelLocationRow = 0;
     private int labelLocationColumn = 0;

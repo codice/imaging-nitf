@@ -16,13 +16,13 @@ package org.codice.imaging.nitf.core.image;
 
 import java.util.List;
 import javax.imageio.stream.ImageInputStream;
-import org.codice.imaging.nitf.core.common.CommonNitfSubSegment;
+import org.codice.imaging.nitf.core.common.CommonBasicSegment;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
 
 /**
  Image segment information.
  */
-public interface ImageSegment extends CommonNitfSubSegment {
+public interface ImageSegment extends CommonBasicSegment {
 
     /**
      Return the date / time (IDATIM) for the image.
