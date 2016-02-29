@@ -18,7 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.NitfImageBand;
-import org.codice.imaging.nitf.core.image.PixelJustification;
+import org.codice.imaging.nitf.render.datareader.DataReaderFactory;
+import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
 
 public class ImageRepresentationHandlerFactory {
 
@@ -32,10 +33,13 @@ public class ImageRepresentationHandlerFactory {
                 return getMonoImageRepresentationHandler(segment, 0);
             }
             case RGBTRUECOLOUR: {
-                return getRgb24ImageRepresentationHandler(segment);
+                return getRgbImageRepresentationHandler(segment);
             }
             case MULTIBAND: {
                 return getHandlerForMultiband(segment);
+            }
+            case RGBLUT: {
+                return getRgbLUTImageRepresentationHandler(segment);
             }
             //add other (more complex) cases here
             default:
@@ -43,7 +47,7 @@ public class ImageRepresentationHandlerFactory {
         }
     }
 
-    private static ImageRepresentationHandler getRgb24ImageRepresentationHandler(ImageSegment segment) {
+    private static ImageRepresentationHandler getRgbImageRepresentationHandler(ImageSegment segment) {
         if (segment.getNumberOfBitsPerPixelPerBand() != 8) {
             // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 (enough for CLEVEL 3 and 5)
             // TODO: implement 16 bit support [IMG-112]
@@ -78,7 +82,7 @@ public class ImageRepresentationHandlerFactory {
 
     private static ImageRepresentationHandler getHandlerForMultiband(final ImageSegment segment) {
         if (irepbandsHasRgb(segment)) {
-            return getRgb24ImageRepresentationHandler(segment);
+            return getRgbImageRepresentationHandler(segment);
         }
         int firstMonoBandZeroBase = getFirstMonoBandZeroBase(segment);
         if (firstMonoBandZeroBase != BAND_NOT_FOUND) {
@@ -146,28 +150,25 @@ public class ImageRepresentationHandlerFactory {
         if (segment.getNumberOfBitsPerPixelPerBand() != 1) {
             throw new UnsupportedOperationException("Pixel Value of bilevel (B) must be 1 bit per pixel (NBPP = 1)");
         }
-        return new Mono1ImageRepresentationHandler(selectedBandZeroBase);
+        return new Mono1ImageRepresentationHandler(selectedBandZeroBase, DataReaderFactory.forImageSegment(segment));
     }
 
     private static ImageRepresentationHandler getMonoIntegerImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
-        if (segment.getPixelJustification().equals(PixelJustification.LEFT) || (segment.getActualBitsPerPixelPerBand() == segment.getNumberOfBitsPerPixelPerBand())) {
-            switch (segment.getNumberOfBitsPerPixelPerBand()) {
-                case 8:
-                    return new Mono8IntegerImageRepresentationHandler(selectedBandZeroBase);
-                case 12:
-                    return new Mono16BitshiftIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
-                case 16:
-                    return new Mono16IntegerImageRepresentationHandler(selectedBandZeroBase);
-                // TODO: add 32 [IMG-110] and 64 [IMG-111] NBPP cases
-                default:
-                    return null;
-            }
-        } else if (segment.getNumberOfBitsPerPixelPerBand() == 8) {
-            return new Mono8BitshiftIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
+        if (segment.getNumberOfBitsPerPixelPerBand() == 8) {
+            return new Mono8IntegerImageRepresentationHandler(selectedBandZeroBase, DataReaderFactory.forImageSegment(segment));
         } else if (segment.getNumberOfBitsPerPixelPerBand() <= 16) {
-            return new Mono16BitshiftIntegerImageRepresentationHandler(segment, selectedBandZeroBase);
+            return new Mono16IntegerImageRepresentationHandler(selectedBandZeroBase, DataReaderFactory.forImageSegment(segment));
         } else {
             // TODO: add 32 [IMG-110] and 64 [IMG-111] NBPP cases
+            return null;
+        }
+    }
+
+    private static ImageRepresentationHandler getRgbLUTImageRepresentationHandler(ImageSegment segment) {
+        IOReaderFunction readerFunc = DataReaderFactory.forImageSegment(segment);
+        if (readerFunc != null) {
+            return new RGBLUTImageRepresentationHandler(segment, readerFunc);
+        } else {
             return null;
         }
     }

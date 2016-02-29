@@ -12,28 +12,25 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.imagerep;
+package org.codice.imaging.nitf.render.datareader;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
 import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 
 /**
- * Image representation handler for 8 bit images needing bit shifts on data.
+ * IOReaderFunction for eight bit images that require bit shifts (i.e. NBPPB != ABPPB).
  *
- * In NITF, this means actual bits per pixel per band does not equal number of bits per pixel per band. It also handles
- * cases where the number of bits is not a whole byte.
+ * The implementation should handle reading NBPP >= ABPP, where NBPP >= 8, and ABPP >=8, for either left or right pixel
+ * justification.
  */
-class Mono8BitshiftIntegerImageRepresentationHandler extends SharedMonoImageRepresentationHandler implements ImageRepresentationHandler {
+class Bitshift8IOReaderFunction implements IOReaderFunction {
 
     private final int bitsToRead;
     private final int bitShift;
 
-    public Mono8BitshiftIntegerImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
-        super(selectedBandZeroBase);
+    public Bitshift8IOReaderFunction(ImageSegment segment) {
         this.bitsToRead = segment.getNumberOfBitsPerPixelPerBand();
         if (segment.getPixelJustification() == PixelJustification.RIGHT) {
             this.bitShift = Byte.SIZE - segment.getActualBitsPerPixelPerBand();
@@ -43,17 +40,8 @@ class Mono8BitshiftIntegerImageRepresentationHandler extends SharedMonoImageRepr
     }
 
     @Override
-    public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex) throws IOException {
-        if (bandIndex != selectedBandZeroBase) {
-            imageInputStream.readBits(this.bitsToRead);
-        } else {
-            dataBuffer.setElem(pixelIndex, (byte) (imageInputStream.readBits(this.bitsToRead) << this.bitShift));
-        }
-    }
-
-    @Override
-    public BufferedImage createBufferedImage(int width, int height) {
-        return new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+    public Object apply(Object imageInputStream) throws IOException {
+        return (((ImageInputStream) imageInputStream).readBits(this.bitsToRead) << this.bitShift);
     }
 
 }

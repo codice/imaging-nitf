@@ -48,7 +48,7 @@ public class NitfRenderer {
             if (modeHandler != null) {
                 modeHandler.handleImage(imageSegment, targetGraphic);
             } else {
-                render(new UncompressedBlockRenderer(), imageSegment, targetGraphic);
+                throw new UnsupportedOperationException("Unhandled NC/NM format");
             }
 
             break;

@@ -15,24 +15,26 @@
 package org.codice.imaging.nitf.render.imagerep;
 
 import java.awt.image.DataBuffer;
+import org.codice.imaging.nitf.render.ImageMask;
+import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
 
 /**
  * Shared implementation details for the MONO image handler implementations.
  */
 abstract class SharedMonoImageRepresentationHandler implements ImageRepresentationHandler {
     protected final int selectedBandZeroBase;
+    protected final IOReaderFunction reader;
 
-    public SharedMonoImageRepresentationHandler(final int selectedBandZeroBase) {
+    public SharedMonoImageRepresentationHandler(final int selectedBandZeroBase, final IOReaderFunction readerFunc) {
         this.selectedBandZeroBase = selectedBandZeroBase;
+        this.reader = readerFunc;
     }
 
     @Override
-    public void applyPixelMask(DataBuffer data, int pixelIndex) {
-    }
-
-    @Override
-    public void renderPadPixel(DataBuffer data, int pixelIndex) {
-        data.setElem(pixelIndex, 0x00);
+    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixelIndex) {
+        if (imageMask.isPadPixel(data.getElem(pixelIndex))) {
+            data.setElem(pixelIndex, 0x00);
+        }
     }
 
 }
