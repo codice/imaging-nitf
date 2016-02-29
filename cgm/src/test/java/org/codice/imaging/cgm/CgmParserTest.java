@@ -160,7 +160,7 @@ public class CgmParserTest {
             CgmRenderer renderer = new CgmRenderer();
             renderer.setTargetImageGraphics((Graphics2D) targetImage.getGraphics(), segment.getBoundingBox2Column(), segment.getBoundingBox2Row());
             renderer.render(parser.getCommandList());
-            File targetFile = new File("target" + File.separator + testfile + "cgm.png");
+            File targetFile = new File("target" + "/" + testfile + "cgm.png");
             ImageIO.write(targetImage, "png", targetFile);
         } catch (ParseException e) {
             LOGGER.error("Failed to load from InputStream " + e.getMessage());
