@@ -116,6 +116,17 @@ public class NitfSegmentsFlow {
         return forEachSegment(consumer, () -> mDataSource.getSymbolSegments());
     }
 
+    /**
+     * passes this NitfSegmentParserFlow's NitfDataSource to the supplied consumer.
+     *
+     * @param dataSourceConsumer
+     * @return
+     */
+    public NitfSegmentsFlow dataSource(Consumer<NitfDataSource> dataSourceConsumer) {
+        dataSourceConsumer.accept(mDataSource);
+        return this;
+    }
+
     private <T extends CommonSegment> NitfSegmentsFlow forEachSegment(Consumer<T> consumer, Supplier<List<T>> supplier) {
         if (consumer != null && supplier != null) {
             List<T> segments = supplier.get();
