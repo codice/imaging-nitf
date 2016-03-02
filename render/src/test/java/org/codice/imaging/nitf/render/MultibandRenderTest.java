@@ -35,4 +35,14 @@ public class MultibandRenderTest extends RenderTestSupport {
         testOneFile("merlionM.ntf", "Codice");
     }
 
+    @Test
+    public void testTwoBandLUT() throws IOException, ParseException {
+        testOneFile("LUinBand2.ntf", "Codice");
+    }
+
+    @Test
+    public void testSpaceFilledIREPBANDs() throws IOException, ParseException {
+        testOneFile("blank_irepbands.ntf", "Codice");
+    }
+
 }

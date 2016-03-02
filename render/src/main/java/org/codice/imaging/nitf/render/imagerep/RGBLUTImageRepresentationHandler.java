@@ -29,30 +29,36 @@ import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
  */
 class RGBLUTImageRepresentationHandler implements ImageRepresentationHandler {
 
+    private final int selectedBand;
     private final IOReaderFunction reader;
-    protected final IndexColorModel colourModel;
+    private final IndexColorModel colourModel;
 
-    RGBLUTImageRepresentationHandler(ImageSegment segment, IOReaderFunction readerFunc) {
+    RGBLUTImageRepresentationHandler(int selectedBandZeroBase, ImageSegment segment, IOReaderFunction readerFunc) {
+        selectedBand = selectedBandZeroBase;
         if (segment.getImageCompression().equals(ImageCompression.NOTCOMPRESSEDMASK)) {
             colourModel = new IndexColorModel(segment.getActualBitsPerPixelPerBand(),
-                    segment.getImageBandZeroBase(0).getNumLUTEntries(),
-                    segment.getImageBandZeroBase(0).getLUTZeroBase(0).getEntries(),
-                    segment.getImageBandZeroBase(0).getLUTZeroBase(1).getEntries(),
-                    segment.getImageBandZeroBase(0).getLUTZeroBase(2).getEntries(),
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getNumLUTEntries(),
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getLUTZeroBase(0).getEntries(),
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getLUTZeroBase(1).getEntries(),
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getLUTZeroBase(2).getEntries(),
                     0);
         } else {
             colourModel = new IndexColorModel(segment.getActualBitsPerPixelPerBand(),
-                    segment.getImageBandZeroBase(0).getNumLUTEntries(),
-                    segment.getImageBandZeroBase(0).getLUTZeroBase(0).getEntries(),
-                    segment.getImageBandZeroBase(0).getLUTZeroBase(1).getEntries(),
-                    segment.getImageBandZeroBase(0).getLUTZeroBase(2).getEntries());
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getNumLUTEntries(),
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getLUTZeroBase(0).getEntries(),
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getLUTZeroBase(1).getEntries(),
+                    segment.getImageBandZeroBase(selectedBandZeroBase).getLUTZeroBase(2).getEntries());
         }
         reader = readerFunc;
     }
 
     @Override
     public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex) throws IOException {
-        dataBuffer.setElem(pixelIndex, (Integer) reader.apply(imageInputStream));
+        if (bandIndex == selectedBand) {
+            dataBuffer.setElem(pixelIndex, (Integer) reader.apply(imageInputStream));
+        } else {
+            reader.apply(imageInputStream);
+        }
     }
 
     @Override
