@@ -73,7 +73,7 @@ public class TextSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(textExtendedSubheaderDataLength, TXSHDL_LENGTH);
         if (textExtendedSubheaderDataLength > 0) {
             writeFixedLengthNumber(textSegment.getExtendedHeaderDataOverflow(), TXSOFL_LENGTH);
-            mOutput.write(textExtendedSubheaderData);
+            writeBytes(textExtendedSubheaderData, textExtendedSubheaderDataLength - TXSOFL_LENGTH);
         }
         mOutput.writeBytes(textSegment.getData());
     }

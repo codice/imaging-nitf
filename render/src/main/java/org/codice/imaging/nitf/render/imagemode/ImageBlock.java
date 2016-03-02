@@ -21,6 +21,10 @@ import java.util.function.Supplier;
 
 /**
  * An ImageBlock represents a single block of a larger image.
+ *
+ * The concept is that the ImageBlock provides access to part of an underlying
+ * (supplied) image. The ImageBlock is effectively a window into an existing
+ * BufferedImage.
  */
 class ImageBlock {
 
@@ -33,10 +37,14 @@ class ImageBlock {
     private BufferedImage blockImage;
 
     /**
+     * Create a new image block with specified size and position.
      *
-     * @param row - the row position of this ImageBlock in the larger image.
-     * @param column - the column position of this ImageBlock in the larger image.
+     * @param row the row position of this ImageBlock in the larger image.
+     * @param column the column position of this ImageBlock in the larger image.
      * @param numColumns the number of columns in the ImageBlock.
+     * @param width the width of this block in pixels.
+     * @param height the height of this block in pixels.
+     * @param imageSupplier the Supplier of the underlying image to draw into.
      */
     public ImageBlock(int row, int column, int numColumns, int width, int height,
             Supplier<BufferedImage> imageSupplier) {
@@ -49,6 +57,7 @@ class ImageBlock {
     }
 
     /**
+     * Get the data buffer for this block.
      *
      * @return the DataBuffer that contains the data for this ImageBlock.
      */
@@ -60,6 +69,13 @@ class ImageBlock {
         return blockImage.getRaster().getDataBuffer();
     }
 
+    /**
+     * Render this image block into a target image.
+     *
+     * @param targetImage the image to draw into.
+     * @param disposeAfterRender set to true if this block should be disposed of
+     * after the rendering is complete.
+     */
     public void render(Graphics2D targetImage, boolean disposeAfterRender) {
         targetImage.drawImage(blockImage, this.column * this.height, this.row * this.width, null);
 
@@ -68,10 +84,20 @@ class ImageBlock {
         }
     }
 
+    /**
+     * Get the width of this image block.
+     *
+     * @return the width (x dimension) of the block in pixels.
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Get the height of this image block.
+     *
+     * @return the height (y dimension) of the block in pixels.
+     */
     public int getHeight() {
         return height;
     }

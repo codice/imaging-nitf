@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.core.label;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LA;
@@ -66,8 +67,8 @@ public class LabelSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(labelSegment.getAttachmentLevel(), LALVL_LENGTH);
         writeFixedLengthNumber(labelSegment.getLabelLocationRow(), LLOC_HALF_LENGTH);
         writeFixedLengthNumber(labelSegment.getLabelLocationColumn(), LLOC_HALF_LENGTH);
-        mOutput.write(labelSegment.getLabelTextColour().toByteArray());
-        mOutput.write(labelSegment.getLabelBackgroundColour().toByteArray());
+        writeBytes(labelSegment.getLabelTextColour().toByteArray(), RGBColour.RGB_COLOUR_LENGTH);
+        writeBytes(labelSegment.getLabelBackgroundColour().toByteArray(), RGBColour.RGB_COLOUR_LENGTH);
         byte[] labelExtendedSubheaderData = mTreParser.getTREs(labelSegment, TreSource.LabelExtendedSubheaderData);
         int labelExtendedSubheaderDataLength = labelExtendedSubheaderData.length;
         if ((labelExtendedSubheaderDataLength > 0) || (labelSegment.getExtendedHeaderDataOverflow() != 0)) {
@@ -76,7 +77,7 @@ public class LabelSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(labelExtendedSubheaderDataLength, LXSHDL_LENGTH);
         if (labelExtendedSubheaderDataLength > 0) {
             writeFixedLengthNumber(labelSegment.getExtendedHeaderDataOverflow(), LXSOFL_LENGTH);
-            mOutput.write(labelExtendedSubheaderData);
+            writeBytes(labelExtendedSubheaderData, labelExtendedSubheaderDataLength - LXSOFL_LENGTH);
         }
         mOutput.writeBytes(labelSegment.getData());
     }

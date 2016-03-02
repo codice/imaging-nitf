@@ -144,7 +144,7 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
                 writeFixedLengthNumber(band.getNumLUTEntries(), NELUT_LENGTH);
                 for (int j = 0; j < band.getNumLUTs(); ++j) {
                     NitfImageBandLUT lut = band.getLUTZeroBase(j);
-                    mOutput.write(lut.getEntries());
+                    writeBytes(lut.getEntries(), band.getNumLUTEntries());
                 }
             }
         }
@@ -168,7 +168,7 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(userDefinedImageDataLength, UDIDL_LENGTH);
         if (userDefinedImageDataLength > 0) {
             writeFixedLengthNumber(imageSegment.getUserDefinedHeaderOverflow(), UDOFL_LENGTH);
-            mOutput.write(userDefinedImageData);
+            writeBytes(userDefinedImageData, userDefinedImageDataLength - UDOFL_LENGTH);
         }
         byte[] imageExtendedSubheaderData = mTreParser.getTREs(imageSegment, TreSource.ImageExtendedSubheaderData);
         int imageExtendedSubheaderDataLength = imageExtendedSubheaderData.length;
@@ -178,7 +178,7 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(imageExtendedSubheaderDataLength, IXSHDL_LENGTH);
         if (imageExtendedSubheaderDataLength > 0) {
             writeFixedLengthNumber(imageSegment.getExtendedHeaderDataOverflow(), IXSOFL_LENGTH);
-            mOutput.write(imageExtendedSubheaderData);
+            writeBytes(imageExtendedSubheaderData, imageExtendedSubheaderDataLength - IXSOFL_LENGTH);
         }
 
         writeSegmentData(imageSegment.getData());

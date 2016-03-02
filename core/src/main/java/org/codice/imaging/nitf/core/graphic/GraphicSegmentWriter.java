@@ -85,7 +85,7 @@ public class GraphicSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(graphicExtendedSubheaderDataLength, SXSHDL_LENGTH);
         if (graphicExtendedSubheaderDataLength > 0) {
             writeFixedLengthNumber(graphicSegment.getExtendedHeaderDataOverflow(), SXSOFL_LENGTH);
-            mOutput.write(graphicExtendedSubheaderData);
+            writeBytes(graphicExtendedSubheaderData, graphicExtendedSubheaderDataLength - SXSOFL_LENGTH);
         }
         writeSegmentData(graphicSegment.getData());
     }
