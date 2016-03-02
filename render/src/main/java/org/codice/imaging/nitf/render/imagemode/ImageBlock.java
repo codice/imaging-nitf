@@ -22,13 +22,14 @@ import java.util.function.Supplier;
 /**
  * An ImageBlock represents a single block of a larger image.
  */
-public class ImageBlock {
-    private int row;
-    private int column;
+class ImageBlock {
+
+    private final int row;
+    private final int column;
     private final int numColumns;
-    private int width;
-    private int height;
-    private Supplier<BufferedImage> imageSupplier;
+    private final int width;
+    private final int height;
+    private final Supplier<BufferedImage> imageSupplier;
     private BufferedImage blockImage;
 
     /**

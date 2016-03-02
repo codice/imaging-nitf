@@ -4,7 +4,22 @@ import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandlerFactory;
 
+/**
+ * Factory class for creating image mode handlers.
+ */
 public class ImageModeHandlerFactory {
+
+    private ImageModeHandlerFactory() {
+    }
+
+    /**
+     * Get an appropriate image mode handler for the specified image segment.
+     *
+     * @param imageSegment the image segment specifying the image
+     * characteristics.
+     * @return a handler for the image mode, or null if an appropriate reader
+     * could not be found.
+     */
     public static ImageModeHandler forImageSegment(ImageSegment imageSegment) {
         ImageRepresentationHandler imageRepresentationHandler =
                 ImageRepresentationHandlerFactory.forImageSegment(imageSegment);

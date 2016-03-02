@@ -21,11 +21,26 @@ import org.codice.imaging.nitf.core.image.NitfImageBand;
 import org.codice.imaging.nitf.render.datareader.DataReaderFactory;
 import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
 
+/**
+ * Factory class for creating image representation handlers.
+ */
 public class ImageRepresentationHandlerFactory {
 
     private static final int NOT_VISIBLE_MAPPED = -1;
     private static final int BAND_NOT_FOUND = -2;
 
+    private ImageRepresentationHandlerFactory() {
+    }
+
+    /**
+     * Get an appropriate ImageRepresentationHandler for the specified image
+     * segment.
+     *
+     * @param segment the image segment specifying the image characteristics to
+     * be read.
+     * @return a handler for the segment, or null if an appropriate handler
+     * could not be found.
+     */
     public static ImageRepresentationHandler forImageSegment(ImageSegment segment) {
 
         switch (segment.getImageRepresentation()) {

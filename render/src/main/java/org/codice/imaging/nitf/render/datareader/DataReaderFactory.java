@@ -22,6 +22,21 @@ import org.codice.imaging.nitf.core.image.PixelJustification;
  * Factory class for creating data readers.
  */
 public class DataReaderFactory {
+
+    private DataReaderFactory() {
+    }
+
+    /**
+     * Get an appropriate data reader function for the specified image segment.
+     *
+     * In this context, the reader gets the data value for a single pixel for a
+     * single band.
+     *
+     * @param segment the image segment specifying the image characteristics to
+     * be read.
+     * @return a reader for the segment data pixels, or null if an appropriate
+     * reader could not be found.
+     */
     public static IOReaderFunction forImageSegment(ImageSegment segment) {
         if ((segment.getActualBitsPerPixelPerBand() != segment.getNumberOfBitsPerPixelPerBand())
                 && (segment.getPixelJustification() == PixelJustification.RIGHT)) {

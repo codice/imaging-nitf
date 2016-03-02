@@ -22,9 +22,10 @@ import org.codice.imaging.nitf.render.ImageMask;
 
 /**
  * An ImageRepresentationHandler calculates the values for a given pixel based on the current pixel value
- * and the value of the band being read.  This interface abstracts the calculation of a single
- * pixel value based on one or more band values for that pixel.  Classes that implement this
- * interface are intended to be stateless and therefore, thread-safe.
+ * and the value of the band being read.
+ *
+ * This interface abstracts the calculation of each pixel value based on one or
+ * more band values for that pixel.
  */
 
 public interface ImageRepresentationHandler {
@@ -32,10 +33,10 @@ public interface ImageRepresentationHandler {
     /**
      * Applies the bandValue to currentValue based on bandIndex.
      *
-     * @param dataBuffer - the buffer that contains the pixel data.
-     * @param pixelIndex - the index of the pixel being rendered.
-     * @param imageInputStream - the stream that contains the image data.
-     * @param bandIndex - the index of the band being applied, zero-based.
+     * @param dataBuffer the buffer that contains the pixel data.
+     * @param pixelIndex the index of the pixel being rendered.
+     * @param imageInputStream the stream that contains the image data.
+     * @param bandIndex the index of the band being applied, zero-based.
      *
      * @throws java.io.IOException if there is a problem reading from the imageInputStream
      */
@@ -45,8 +46,8 @@ public interface ImageRepresentationHandler {
     /**
      * Create a new image of the right type for this image handler.
      *
-     * @param width - the number of horizontal pixels in the image to be created.
-     * @param height - the number of vertical pixels in the image to be created.
+     * @param width the number of horizontal pixels in the image to be created.
+     * @param height the number of vertical pixels in the image to be created.
      * @return a new BufferedImage for this ImageRepresentation.  This method should never return
      * the same object that was returned in a previous call.
      */

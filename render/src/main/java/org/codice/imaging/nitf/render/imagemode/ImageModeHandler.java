@@ -16,7 +16,6 @@ package org.codice.imaging.nitf.render.imagemode;
 
 import java.awt.Graphics2D;
 import java.io.IOException;
-
 import org.codice.imaging.nitf.core.image.ImageSegment;
 
 /**
@@ -27,10 +26,11 @@ import org.codice.imaging.nitf.core.image.ImageSegment;
 public interface ImageModeHandler {
 
     /**
+     * Handle rendering of this image segment to the specified target.
      *
-     * @param imageSegment - the ImageSegment for the image being rendered.
-     * @param targetImage - the Graphic2D that the image will be rendered to.
-     * @throws IOException - propagated from the ImageInputStream.
+     * @param imageSegment the ImageSegment for the image being rendered.
+     * @param targetImage the Graphics2D that the image will be rendered to.
+     * @throws IOException propagated from the ImageInputStream.
      */
     void handleImage(ImageSegment imageSegment, Graphics2D targetImage)
             throws IOException;

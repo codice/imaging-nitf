@@ -29,6 +29,13 @@ import org.codice.imaging.nitf.render.imagemode.ImageModeHandlerFactory;
  * Renderer for NITF files
  */
 public class NitfRenderer {
+
+    /**
+     * Constructor.
+     */
+    public NitfRenderer() {
+    }
+
     /**
      * Render to the specified Graphics2D target.
      *
