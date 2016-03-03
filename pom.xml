@@ -25,6 +25,7 @@
         <module>cgm</module>
         <module>render</module>
         <module>nitfNetbeansFileType</module>
+        <module>fluent-api</module>
     </modules>
 
     <distributionManagement>

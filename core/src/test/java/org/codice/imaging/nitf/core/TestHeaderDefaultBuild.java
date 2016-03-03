@@ -55,7 +55,7 @@ public class TestHeaderDefaultBuild {
         assertNotNull(nitf);
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
 
-        store.setNitfFileLevelHeader(nitf);
+        store.setFileHeader(nitf);
         NitfFileWriter writer = new NitfFileWriter(store, OUTFILE_NAME);
         writer.write();
 

@@ -12,19 +12,15 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+package org.codice.imaging.nitf.fluent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 
-import org.codice.imaging.nitf.render.flow.NitfParserInputFlow;
-import org.codice.imaging.nitf.render.flow.NitfWriterFlow;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -54,7 +50,7 @@ public class WritingFlowTest {
     public void testNS3038A() throws IOException, ParseException {
         String inputFileName = "/" + DIRECTORY_NAME + "/" + INPUT_FILE_NAME;
         LOGGER.info("================================== Testing :" + inputFileName);
-        assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
+        Assert.assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         modifyNitf(inputFileName);
         verifyResult();
     }
@@ -85,9 +81,9 @@ public class WritingFlowTest {
                 .headerOnly()
                 .fileHeader(
                     header -> {
-                        assertThat(header.getFileTitle(), is(TEST_FILE_TITLE));
-                        assertThat(header.getOriginatorsName(), is(TEST_ORIGINATOR_NAME));
-                        assertThat(header.getOriginatingStationId(), is(TEST_STATIION_ID));
+                        Assert.assertThat(header.getFileTitle(), CoreMatchers.is(TEST_FILE_TITLE));
+                        Assert.assertThat(header.getOriginatorsName(), CoreMatchers.is(TEST_ORIGINATOR_NAME));
+                        Assert.assertThat(header.getOriginatingStationId(), CoreMatchers.is(TEST_STATIION_ID));
                     }
                 );
     }

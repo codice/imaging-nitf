@@ -12,14 +12,14 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.flow;
+package org.codice.imaging.nitf.fluent;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileHeader;
+import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.image.ImageSegment;
@@ -28,20 +28,21 @@ import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.text.TextSegment;
 
 /**
- * The NitfCreationFlow provides methods for creating a NITF from scratch.
+ * The NitfCreationFlow provides methods for creating a NITF file from scratch.
  */
 public class NitfCreationFlow {
-    private AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+    private final SlottedMemoryNitfStorage dataSource = new SlottedMemoryNitfStorage();
 
     /**
      * Sets the file header for this NITF.  Subsequent calls to this method will overwrite
      * the previous file header.  This method must be called before build().
      *
-     * @param nitfFileHeaderSupplier the suipplier that will supply the NitfFileHeader.
+     * @param nitfFileHeaderSupplier the supplier that will supply the
+     * NitfFileHeader.
      * @return this NitfCreationFlow.
      */
     public NitfCreationFlow fileHeader(Supplier<NitfFileHeader> nitfFileHeaderSupplier) {
-        parseStrategy.setFileHeader(nitfFileHeaderSupplier.get());
+        dataSource.setFileHeader(nitfFileHeaderSupplier.get());
         return this;
     }
 
@@ -52,7 +53,7 @@ public class NitfCreationFlow {
      * @return this NitfCreationFlow.
      */
     public NitfCreationFlow imageSegment(Supplier<ImageSegment> imageSegmentSupplier) {
-        return addSegment(parseStrategy.getImageSegments(), imageSegmentSupplier);
+        return addSegment(dataSource.getImageSegments(), imageSegmentSupplier);
     }
 
     /**
@@ -63,7 +64,7 @@ public class NitfCreationFlow {
      */
     public NitfCreationFlow dataExtensionSegment(
             Supplier<DataExtensionSegment> dataExtensionSegmentSupplier) {
-        return addSegment(parseStrategy.getDataExtensionSegments(), dataExtensionSegmentSupplier);
+        return addSegment(dataSource.getDataExtensionSegments(), dataExtensionSegmentSupplier);
     }
 
     /**
@@ -73,7 +74,7 @@ public class NitfCreationFlow {
      * @return this NitfCreationFlow.
      */
     public NitfCreationFlow textSegment(Supplier<TextSegment> textSegmentSupplier) {
-        return addSegment(parseStrategy.getTextSegments(), textSegmentSupplier);
+        return addSegment(dataSource.getTextSegments(), textSegmentSupplier);
     }
 
     /**
@@ -83,7 +84,7 @@ public class NitfCreationFlow {
      * @return this NitfCreationFlow.
      */
     public NitfCreationFlow graphicSegment(Supplier<GraphicSegment> graphicSegmentSupplier) {
-        return addSegment(parseStrategy.getGraphicSegments(), graphicSegmentSupplier);
+        return addSegment(dataSource.getGraphicSegments(), graphicSegmentSupplier);
     }
 
     /**
@@ -93,7 +94,7 @@ public class NitfCreationFlow {
      * @return this NitfCreationFlow
      */
     public NitfCreationFlow symbolSegment(Supplier<SymbolSegment> symbolSegmentSupplier) {
-        return addSegment(parseStrategy.getSymbolSegments(), symbolSegmentSupplier);
+        return addSegment(dataSource.getSymbolSegments(), symbolSegmentSupplier);
     }
 
     /**
@@ -103,7 +104,7 @@ public class NitfCreationFlow {
      * @return this NitfCreationFlow
      */
     public NitfCreationFlow labelSegment(Supplier<LabelSegment> labelSegmentSupplier) {
-        return addSegment(parseStrategy.getLabelSegments(), labelSegmentSupplier);
+        return addSegment(dataSource.getLabelSegments(), labelSegmentSupplier);
     }
 
     /**
@@ -112,12 +113,12 @@ public class NitfCreationFlow {
      * @throws IllegalStateException when called before fileHeader().
      */
     public NitfDataSource build() {
-        if (parseStrategy.getNitfHeader() == null) {
+        if (dataSource.getNitfHeader() == null) {
             throw new IllegalStateException(
                     "NitfCreationFlow.build(): method cannot be called before fileHeader().");
         }
 
-        return this.parseStrategy;
+        return this.dataSource;
     }
 
     private <T> NitfCreationFlow addSegment(List<T> segments, Supplier<T> supplier) {
