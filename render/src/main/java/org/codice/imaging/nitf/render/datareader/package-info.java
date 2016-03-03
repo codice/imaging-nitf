@@ -12,28 +12,16 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.datareader;
-
-import java.io.IOException;
 
 /**
- * Generic interface for reading from an ImageInputStream.
+ * The classes in this package provide shared pixel-level reading.
  *
- * Implementations of this will be provided an image input stream, and will read
- * from that stream, returning the data for a single pixel for a single band.
+ * IOReaderFunction is a FunctionalInterface. Implementations return the right
+ * kind of data for a particular kind of NITF file, taking into account the
+ * pixel representation (e.g. Binary, Integer, Real), bits per pixel (nominal
+ * and actual) and pixel justification (whether valid bits are left or right
+ * justified within nominal bits).
  *
- * @param <T> returned data type
- * @param <R> the stream to read from.
  */
-@FunctionalInterface
-public interface IOReaderFunction<T, R> {
 
-    /**
-     * Read the pixel band data.
-     *
-     * @param param the ImageInputStream to read from.
-     * @return pixel band data.
-     * @throws IOException if reading fails.
-     */
-    T apply(R param) throws IOException;
-}
+package org.codice.imaging.nitf.render.datareader;

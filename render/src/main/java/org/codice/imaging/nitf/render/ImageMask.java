@@ -23,6 +23,16 @@ import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Representation of the image mask.
+ *
+ * In NITF, there are two distinct image mask aspects - the concept that a block
+ * might be missing, and the concept that a pixel value might indicate "no
+ * data".
+ *
+ * Image masking is similar for the block, pixel and row interleve image modes.
+ * Image masking for band-sequential images is handled slightly differently.
+ */
 public final class ImageMask {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageMask.class);
 
@@ -30,7 +40,7 @@ public final class ImageMask {
 
     private int[][] bmrnbndm = null;
     private final List<Integer> tmrnbndm = new ArrayList<>();
-    int tpxcd = -1;
+    private int tpxcd = -1;
 
     private static final int BLOCK_NOT_RECORDED = 0xFFFFFFFF;
 
@@ -114,6 +124,21 @@ public final class ImageMask {
         }
     }
 
+    /**
+     * Test if the specified block is not actually recorded in the file.
+     *
+     * This is always false if the image compression is not a masked variant.
+     *
+     * Image blocks are counted in row-major, column-minor order (e.g. if you
+     * have three blocks across, and two blocks down, the block numbers are 0,
+     * 1, 2 for the first row, and then 3, 4, 5 for the second row).
+     *
+     * @param blockNumber the block number to check for masking.
+     * @param bandNumber the band to check for masking (only used for Band
+     * Sequential).
+     * @return true if the block is masked (not recorded in the file), otherwise
+     * false.
+     */
     public boolean isMaskedBlock(int blockNumber, int bandNumber) {
         if (bmrnbndm == null) {
             return false;
@@ -126,6 +151,15 @@ public final class ImageMask {
         return (BLOCK_NOT_RECORDED == bmrnbndm[blockNumber][bandNumber]);
     }
 
+    /**
+     * Test if the specified pixel value indicates "no data".
+     *
+     * Pad pixels are typically rendered transparent, and should not be included
+     * in image calculations (e.g. statistics, averaging, exploitation).
+     *
+     * @param value the pixel value to test.
+     * @return true if this is a pad ("no data") pixel value, otherwise false.
+     */
     public boolean isPadPixel(int value) {
         if (tpxcd == -1) {
             return false;
@@ -135,6 +169,8 @@ public final class ImageMask {
 
     /**
      * Check whether this image mask has valid per-pixel masking.
+     *
+     * If this is false, isPadPixel() will always return false.
      *
      * @return true if there is valid per-pixel masking, otherwise false
      */

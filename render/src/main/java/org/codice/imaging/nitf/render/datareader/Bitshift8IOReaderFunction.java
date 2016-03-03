@@ -39,6 +39,9 @@ class Bitshift8IOReaderFunction implements IOReaderFunction {
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public Object apply(Object imageInputStream) throws IOException {
         return (((ImageInputStream) imageInputStream).readBits(this.bitsToRead) << this.bitShift);

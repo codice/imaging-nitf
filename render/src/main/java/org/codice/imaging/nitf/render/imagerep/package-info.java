@@ -12,28 +12,18 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.datareader;
-
-import java.io.IOException;
 
 /**
- * Generic interface for reading from an ImageInputStream.
+ * The classes in this package provide image representation handling.
  *
- * Implementations of this will be provided an image input stream, and will read
- * from that stream, returning the data for a single pixel for a single band.
+ * The basic concept is to use the ImageRepresentationHandlerFactory to get an
+ * instance of the required kind of ImageRepresentationHandler for the image
+ * segment. That ImageRepresentationHandler then provides for block-level
+ * rendering, taking into account the various image representations (e.g. RGB,
+ * multi-band, single-band mono, lookup-table).
  *
- * @param <T> returned data type
- * @param <R> the stream to read from.
+ * There are different handler implementations to deal with the various NITF
+ * IREP types.
  */
-@FunctionalInterface
-public interface IOReaderFunction<T, R> {
 
-    /**
-     * Read the pixel band data.
-     *
-     * @param param the ImageInputStream to read from.
-     * @return pixel band data.
-     * @throws IOException if reading fails.
-     */
-    T apply(R param) throws IOException;
-}
+package org.codice.imaging.nitf.render.imagerep;

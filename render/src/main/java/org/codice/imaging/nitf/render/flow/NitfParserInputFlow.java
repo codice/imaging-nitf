@@ -21,14 +21,21 @@ import java.io.InputStream;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 
 /**
- * The NitfParserInputFlow represents the start of the builder pattern for the Nitf parser.
+ * The NitfParserInputFlow represents the start of the builder pattern for the
+ * NITF parser.
  */
 public class NitfParserInputFlow {
 
     /**
-     * Begins a Nitf parsing flow using a file as input.
+     * Constructor.
+     */
+    public NitfParserInputFlow() {
+    }
+
+    /**
+     * Begins a NITF parsing flow using a file as input.
      *
-     * @param inputFile - the Nitf file to read from.
+     * @param inputFile the NITF file to read from.
      * @return a new NitfParserParsingFlow.
      * @throws FileNotFoundException - when the file doesn't exist.
      */
@@ -38,9 +45,9 @@ public class NitfParserInputFlow {
     }
 
     /**
-     *  Begins a Nitf parsing flow using an InputStream as input.
+     * Begins a parsing flow using an InputStream as input.
      *
-     * @param inputStream - the InputStream to read the Nitf data from.
+     * @param inputStream - the InputStream to read the NITF data from.
      * @return a new NitfParserParsingFlow.
      */
     public NitfParserParsingFlow inputStream(InputStream inputStream) {
