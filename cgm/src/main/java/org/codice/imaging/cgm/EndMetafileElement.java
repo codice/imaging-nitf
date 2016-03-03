@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@ package org.codice.imaging.cgm;
 
 class EndMetafileElement extends NoArgumentsElement implements AbstractElement {
 
-    public EndMetafileElement() {
+    EndMetafileElement() {
         super(CgmIdentifier.END_METAFILE);
     }
 

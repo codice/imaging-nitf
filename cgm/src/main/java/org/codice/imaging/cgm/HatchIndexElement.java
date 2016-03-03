@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ import java.awt.Graphics2D;
 
 class HatchIndexElement extends CommonIndexedElement {
 
-    public HatchIndexElement() {
+    HatchIndexElement() {
         super(CgmIdentifier.HATCH_INDEX);
     }
 

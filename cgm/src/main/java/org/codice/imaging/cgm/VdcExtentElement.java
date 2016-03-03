@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,15 +29,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.IOException;
 
-/**
- *
- * @author bradh
- */
 class VdcExtentElement extends ElementHelpers implements AbstractElement {
 
     private VdcExtent vdcExtent;
 
-    public VdcExtentElement() {
+    VdcExtentElement() {
         super(CgmIdentifier.VDC_EXTENT);
     }
 

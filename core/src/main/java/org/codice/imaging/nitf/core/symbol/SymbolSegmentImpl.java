@@ -41,7 +41,7 @@ class SymbolSegmentImpl extends CommonBasicSegmentImpl implements SymbolSegment 
     /**
         Default constructor.
     */
-    public SymbolSegmentImpl() {
+    SymbolSegmentImpl() {
     }
 
     /**

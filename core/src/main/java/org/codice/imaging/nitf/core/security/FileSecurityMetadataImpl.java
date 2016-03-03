@@ -27,7 +27,7 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
     /**
      * Default Constructor.
      */
-    public FileSecurityMetadataImpl() {
+    FileSecurityMetadataImpl() {
     }
 
     /**

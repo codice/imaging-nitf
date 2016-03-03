@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,8 @@ import java.util.List;
 class PolygonElement extends ElementHelpers implements AbstractElement {
 
     private List<Point> points;
-    public PolygonElement() {
+
+    PolygonElement() {
         super(CgmIdentifier.POLYGON);
     }
 

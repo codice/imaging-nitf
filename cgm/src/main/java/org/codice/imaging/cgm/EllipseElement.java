@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ class EllipseElement extends ElementHelpers implements AbstractElement {
     private Point endpointOfFirstConjugateDiameter;
     private Point endpointOfSecondConjugateDiameter;
 
-    public EllipseElement() {
+    EllipseElement() {
         super(CgmIdentifier.ELLIPSE);
     }
 

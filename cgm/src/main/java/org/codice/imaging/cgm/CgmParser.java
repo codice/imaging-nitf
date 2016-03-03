@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,12 +78,8 @@ public class CgmParser {
         try {
             Constructor<AbstractElement> defaultConstructor = elementClass.getDeclaredConstructor();
             return defaultConstructor.newInstance();
-        } catch (NoSuchMethodException |
-                 SecurityException |
-                 InstantiationException |
-                 IllegalAccessException |
-                 IllegalArgumentException |
-                 InvocationTargetException ex) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException
+            | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             LOGGER.error(ex.getMessage(), ex);
         }
         return null;

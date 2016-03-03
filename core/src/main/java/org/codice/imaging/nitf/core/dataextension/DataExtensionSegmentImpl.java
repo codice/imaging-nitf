@@ -35,7 +35,7 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
     /**
         Default constructor.
     */
-    public DataExtensionSegmentImpl() {
+    DataExtensionSegmentImpl() {
     }
 
     /**

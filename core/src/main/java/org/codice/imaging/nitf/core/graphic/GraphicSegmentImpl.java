@@ -37,7 +37,7 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     /**
         Default constructor.
     */
-    public GraphicSegmentImpl() {
+    GraphicSegmentImpl() {
     }
 
     /**

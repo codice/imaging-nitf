@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@ import java.awt.Polygon;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +40,7 @@ class PolygonSetElement extends ElementHelpers {
     private final List<Point> points = new ArrayList<>();
     private final List<Integer> edgeOutFlags = new ArrayList<>();
 
-    public PolygonSetElement() {
+    PolygonSetElement() {
         super(CgmIdentifier.POLYGON_SET);
     }
 

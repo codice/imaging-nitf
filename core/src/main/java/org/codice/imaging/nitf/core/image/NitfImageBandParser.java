@@ -14,14 +14,14 @@
  */
 package org.codice.imaging.nitf.core.image;
 
+import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IFC_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IMFLT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IREPBAND_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.ISUBCAT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.NELUT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.NLUTS_LENGTH;
-import java.text.ParseException;
-import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
     Image Band and Image Band LUT parser.
@@ -39,7 +39,7 @@ class NitfImageBandParser {
         @throws ParseException if an obviously invalid value is detected during parsing,
         or if another problem occurs during parsing (e.g. end of file).
     */
-    public NitfImageBandParser(final NitfReader nitfReader, final NitfImageBand band) throws ParseException {
+    NitfImageBandParser(final NitfReader nitfReader, final NitfImageBand band) throws ParseException {
         reader = nitfReader;
         imageBand = band;
         readIREPBAND();
