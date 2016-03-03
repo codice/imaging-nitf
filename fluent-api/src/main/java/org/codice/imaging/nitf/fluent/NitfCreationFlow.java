@@ -16,7 +16,6 @@ package org.codice.imaging.nitf.fluent;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
@@ -41,7 +40,7 @@ public class NitfCreationFlow {
      * NitfFileHeader.
      * @return this NitfCreationFlow.
      */
-    public NitfCreationFlow fileHeader(Supplier<NitfFileHeader> nitfFileHeaderSupplier) {
+    public final NitfCreationFlow fileHeader(final Supplier<NitfFileHeader> nitfFileHeaderSupplier) {
         dataSource.setFileHeader(nitfFileHeaderSupplier.get());
         return this;
     }
@@ -52,7 +51,7 @@ public class NitfCreationFlow {
      * @param imageSegmentSupplier the supplier that will supply the ImageSegment.
      * @return this NitfCreationFlow.
      */
-    public NitfCreationFlow imageSegment(Supplier<ImageSegment> imageSegmentSupplier) {
+    public final NitfCreationFlow imageSegment(final Supplier<ImageSegment> imageSegmentSupplier) {
         return addSegment(dataSource.getImageSegments(), imageSegmentSupplier);
     }
 
@@ -62,8 +61,8 @@ public class NitfCreationFlow {
      * @param dataExtensionSegmentSupplier the supplier that will supply the DataExtenstionSegment.
      * @return this NitfCreationFlow.
      */
-    public NitfCreationFlow dataExtensionSegment(
-            Supplier<DataExtensionSegment> dataExtensionSegmentSupplier) {
+    public final NitfCreationFlow dataExtensionSegment(
+            final Supplier<DataExtensionSegment> dataExtensionSegmentSupplier) {
         return addSegment(dataSource.getDataExtensionSegments(), dataExtensionSegmentSupplier);
     }
 
@@ -73,7 +72,7 @@ public class NitfCreationFlow {
      * @param textSegmentSupplier the supplier that will supply the TextSegment.
      * @return this NitfCreationFlow.
      */
-    public NitfCreationFlow textSegment(Supplier<TextSegment> textSegmentSupplier) {
+    public final NitfCreationFlow textSegment(final Supplier<TextSegment> textSegmentSupplier) {
         return addSegment(dataSource.getTextSegments(), textSegmentSupplier);
     }
 
@@ -83,7 +82,7 @@ public class NitfCreationFlow {
      * @param graphicSegmentSupplier the supplier that will supply the GraphicSegment.
      * @return this NitfCreationFlow.
      */
-    public NitfCreationFlow graphicSegment(Supplier<GraphicSegment> graphicSegmentSupplier) {
+    public final NitfCreationFlow graphicSegment(final Supplier<GraphicSegment> graphicSegmentSupplier) {
         return addSegment(dataSource.getGraphicSegments(), graphicSegmentSupplier);
     }
 
@@ -93,7 +92,7 @@ public class NitfCreationFlow {
      * @param symbolSegmentSupplier the supplier that will supply the SymbolSegment.
      * @return this NitfCreationFlow
      */
-    public NitfCreationFlow symbolSegment(Supplier<SymbolSegment> symbolSegmentSupplier) {
+    public final NitfCreationFlow symbolSegment(final Supplier<SymbolSegment> symbolSegmentSupplier) {
         return addSegment(dataSource.getSymbolSegments(), symbolSegmentSupplier);
     }
 
@@ -103,7 +102,7 @@ public class NitfCreationFlow {
      * @param labelSegmentSupplier the supplier that will supply the LabelSegment.
      * @return this NitfCreationFlow
      */
-    public NitfCreationFlow labelSegment(Supplier<LabelSegment> labelSegmentSupplier) {
+    public final NitfCreationFlow labelSegment(final Supplier<LabelSegment> labelSegmentSupplier) {
         return addSegment(dataSource.getLabelSegments(), labelSegmentSupplier);
     }
 
@@ -112,7 +111,7 @@ public class NitfCreationFlow {
      * @return the NitfDataSource that represents the NITF built by this NitfCreationFlow.
      * @throws IllegalStateException when called before fileHeader().
      */
-    public NitfDataSource build() {
+    public final NitfDataSource build() {
         if (dataSource.getNitfHeader() == null) {
             throw new IllegalStateException(
                     "NitfCreationFlow.build(): method cannot be called before fileHeader().");
@@ -121,7 +120,7 @@ public class NitfCreationFlow {
         return this.dataSource;
     }
 
-    private <T> NitfCreationFlow addSegment(List<T> segments, Supplier<T> supplier) {
+    private <T> NitfCreationFlow addSegment(final List<T> segments, final Supplier<T> supplier) {
         if (supplier != null) {
             segments.add(supplier.get());
             return this;

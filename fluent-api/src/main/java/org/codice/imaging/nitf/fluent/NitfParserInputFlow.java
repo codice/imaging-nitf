@@ -39,7 +39,7 @@ public class NitfParserInputFlow {
      * @return a new NitfParserParsingFlow.
      * @throws FileNotFoundException - when the file doesn't exist.
      */
-    public NitfParserParsingFlow file(File inputFile) throws FileNotFoundException {
+    public final NitfParserParsingFlow file(final File inputFile) throws FileNotFoundException {
         NitfInputStreamReader nitfReader = new NitfInputStreamReader(new FileInputStream(inputFile));
         return new NitfParserParsingFlow(nitfReader);
     }
@@ -50,7 +50,7 @@ public class NitfParserInputFlow {
      * @param inputStream - the InputStream to read the NITF data from.
      * @return a new NitfParserParsingFlow.
      */
-    public NitfParserParsingFlow inputStream(InputStream inputStream) {
+    public final NitfParserParsingFlow inputStream(final InputStream inputStream) {
         NitfInputStreamReader nitfReader = new NitfInputStreamReader(inputStream);
         return new NitfParserParsingFlow(nitfReader);
     }

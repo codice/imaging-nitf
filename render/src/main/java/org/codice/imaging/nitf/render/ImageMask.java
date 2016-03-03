@@ -71,7 +71,7 @@ public final class ImageMask {
         if (mImageSegment.getImageMode() == ImageMode.BANDSEQUENTIAL) {
             numBandsToRead = mImageSegment.getNumBands();
         }
-        int bytesPerPixel = (int)mImageSegment.getNumberOfBytesPerBlock();
+        int bytesPerPixel = (int) mImageSegment.getNumberOfBytesPerBlock();
         int blockCounter = 0;
         for (int m = 0; m < numBandsToRead; ++m) {
             for (int n = 0; n < mImageSegment.getNumberOfBlocksPerRow() * mImageSegment.getNumberOfBlocksPerColumn(); ++n) {
@@ -92,11 +92,11 @@ public final class ImageMask {
         LOGGER.debug(String.format("Pad Output pixel code length: 0x%04x", tpxcdlnth));
         if (tpxcdlnth > 0) {
             tpxcd = 0;
-            int numBytesToRead = (tpxcdlnth + 7) / 8;
+            int numBytesToRead = (tpxcdlnth + Byte.SIZE - 1) / Byte.SIZE;
             LOGGER.debug("Reading TPXCD at length:" + numBytesToRead);
-            int bandBits = (int)imageInputStream.readBits(numBytesToRead * 8);
+            int bandBits = (int) imageInputStream.readBits(numBytesToRead * Byte.SIZE);
             for (int i = 0; i < mImageSegment.getNumBands(); ++i) {
-                tpxcd = tpxcd | (bandBits << (8*i));
+                tpxcd |= (bandBits << (Byte.SIZE * i));
             }
             LOGGER.debug(String.format("Pad Output pixel code : 0x%08x", tpxcd));
         }
@@ -139,7 +139,7 @@ public final class ImageMask {
      * @return true if the block is masked (not recorded in the file), otherwise
      * false.
      */
-    public boolean isMaskedBlock(int blockNumber, int bandNumber) {
+    public boolean isMaskedBlock(final int blockNumber, final int bandNumber) {
         if (bmrnbndm == null) {
             return false;
         }
@@ -160,7 +160,7 @@ public final class ImageMask {
      * @param value the pixel value to test.
      * @return true if this is a pad ("no data") pixel value, otherwise false.
      */
-    public boolean isPadPixel(int value) {
+    public boolean isPadPixel(final int value) {
         if (tpxcd == -1) {
             return false;
         }

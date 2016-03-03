@@ -25,12 +25,13 @@ import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
  */
 class Mono16IntegerImageRepresentationHandler extends SharedMonoImageRepresentationHandler implements ImageRepresentationHandler {
 
-    public Mono16IntegerImageRepresentationHandler(int selectedBandZeroBase, IOReaderFunction readerFunc) {
+    Mono16IntegerImageRepresentationHandler(final int selectedBandZeroBase, final IOReaderFunction readerFunc) {
         super(selectedBandZeroBase, readerFunc);
     }
 
     @Override
-    public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex) throws IOException {
+    public void renderPixelBand(final DataBuffer dataBuffer, final int pixelIndex,
+            final ImageInputStream imageInputStream, final int bandIndex) throws IOException {
         if (bandIndex == selectedBandZeroBase) {
             dataBuffer.setElem(pixelIndex, (Integer) reader.apply(imageInputStream));
         } else {
@@ -39,7 +40,7 @@ class Mono16IntegerImageRepresentationHandler extends SharedMonoImageRepresentat
     }
 
     @Override
-    public BufferedImage createBufferedImage(int width, int height) {
+    public BufferedImage createBufferedImage(final int width, final int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_USHORT_GRAY);
     }
 }

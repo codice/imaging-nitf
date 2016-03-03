@@ -30,7 +30,7 @@ abstract class BaseImageModeHandler implements ImageModeHandler {
 
     abstract String getHandlerName();
 
-    protected void checkImageMode(ImageSegment imageSegment) throws IllegalStateException {
+    protected void checkImageMode(final ImageSegment imageSegment) {
         if (!getSupportedImageMode().equals(imageSegment.getImageMode())) {
             throw new IllegalStateException(String.format("%s: argument 'imageSegment' must have an ImageMode of '%s'.",
                     getHandlerName(),
@@ -39,13 +39,13 @@ abstract class BaseImageModeHandler implements ImageModeHandler {
         }
     }
 
-    protected void checkNull(Object value, String valueName) {
+    protected void checkNull(final Object value, final String valueName) {
         if (value == null) {
             throw new IllegalArgumentException(String.format(NULL_ARG_ERROR_MESSAGE, getHandlerName(), valueName));
         }
     }
 
-    protected ImageMask getImageMask(ImageSegment imageSegment) throws IOException {
+    protected ImageMask getImageMask(final ImageSegment imageSegment) throws IOException {
         if (ImageCompression.NOTCOMPRESSEDMASK.equals(imageSegment.getImageCompression())) {
             return new ImageMask(imageSegment, imageSegment.getData());
         } else {
@@ -53,7 +53,7 @@ abstract class BaseImageModeHandler implements ImageModeHandler {
         }
     }
 
-    protected void applyMask(ImageBlock block, ImageMask imageMask) {
+    protected void applyMask(final ImageBlock block, final ImageMask imageMask) {
         if ((imageMask != null) && (imageMask.hasPixelMasks())) {
             final int dataSize = block.getWidth() * block.getHeight();
 

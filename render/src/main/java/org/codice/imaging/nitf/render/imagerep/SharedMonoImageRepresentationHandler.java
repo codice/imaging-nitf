@@ -25,13 +25,13 @@ abstract class SharedMonoImageRepresentationHandler implements ImageRepresentati
     protected final int selectedBandZeroBase;
     protected final IOReaderFunction reader;
 
-    public SharedMonoImageRepresentationHandler(final int selectedBandZeroBase, final IOReaderFunction readerFunc) {
-        this.selectedBandZeroBase = selectedBandZeroBase;
+    SharedMonoImageRepresentationHandler(final int selectedBand, final IOReaderFunction readerFunc) {
+        this.selectedBandZeroBase = selectedBand;
         this.reader = readerFunc;
     }
 
     @Override
-    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixelIndex) {
+    public void renderPadPixel(final ImageMask imageMask, final DataBuffer data, final int pixelIndex) {
         if (imageMask.isPadPixel(data.getElem(pixelIndex))) {
             data.setElem(pixelIndex, 0x00);
         }

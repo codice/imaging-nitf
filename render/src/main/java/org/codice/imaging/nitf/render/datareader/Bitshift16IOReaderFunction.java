@@ -30,7 +30,7 @@ class Bitshift16IOReaderFunction implements IOReaderFunction {
     private final int bitsToRead;
     private final int bitShift;
 
-    public Bitshift16IOReaderFunction(ImageSegment segment) {
+    Bitshift16IOReaderFunction(final ImageSegment segment) {
         this.bitsToRead = segment.getNumberOfBitsPerPixelPerBand();
         if (segment.getPixelJustification() == PixelJustification.RIGHT) {
             this.bitShift = Short.SIZE - segment.getActualBitsPerPixelPerBand();
@@ -40,7 +40,7 @@ class Bitshift16IOReaderFunction implements IOReaderFunction {
     }
 
     @Override
-    public Object apply(Object imageInputStream) throws IOException {
+    public Object apply(final Object imageInputStream) throws IOException {
         return (int) (((ImageInputStream) imageInputStream).readBits(this.bitsToRead) << this.bitShift);
     }
 

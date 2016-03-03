@@ -28,32 +28,34 @@ import java.util.function.Supplier;
  */
 class ImageBlock {
 
-    private final int row;
-    private final int column;
-    private final int numColumns;
-    private final int width;
-    private final int height;
-    private final Supplier<BufferedImage> imageSupplier;
+    private final int blockRowIndex;
+    private final int blockColumnIndex;
+    private final int blocksInOneRow;
+    private final int blockWidth;
+    private final int blockHeight;
+    private final Supplier<BufferedImage> supplier;
     private BufferedImage blockImage;
 
     /**
-     * Create a new image block with specified size and position.
+     * Constructor.
      *
-     * @param row the row position of this ImageBlock in the larger image.
-     * @param column the column position of this ImageBlock in the larger image.
-     * @param numColumns the number of columns in the ImageBlock.
-     * @param width the width of this block in pixels.
-     * @param height the height of this block in pixels.
-     * @param imageSupplier the Supplier of the underlying image to draw into.
+     * @param row the row position in blocks of this ImageBlock in the larger
+     * image.
+     * @param column the column position in blocks of this ImageBlock in the
+     * larger image.
+     * @param numColumns the number of columns in the larger image.
+     * @param width the width in pixels of this ImageBlock.
+     * @param height the height in pixels of this ImageBlock.
+     * @param imageSupplier the underlying image source.
      */
-    public ImageBlock(int row, int column, int numColumns, int width, int height,
-            Supplier<BufferedImage> imageSupplier) {
-        this.row = row;
-        this.column = column;
-        this.numColumns = numColumns;
-        this.width = width;
-        this.height = height;
-        this.imageSupplier = imageSupplier;
+    ImageBlock(final int row, final int column, final int numColumns, final int width, final int height,
+            final Supplier<BufferedImage> imageSupplier) {
+        this.blockRowIndex = row;
+        this.blockColumnIndex = column;
+        this.blocksInOneRow = numColumns;
+        this.blockWidth = width;
+        this.blockHeight = height;
+        this.supplier = imageSupplier;
     }
 
     /**
@@ -63,7 +65,7 @@ class ImageBlock {
      */
     public DataBuffer getDataBuffer() {
         if (blockImage == null) {
-            blockImage = imageSupplier.get();
+            blockImage = supplier.get();
         }
 
         return blockImage.getRaster().getDataBuffer();
@@ -76,8 +78,8 @@ class ImageBlock {
      * @param disposeAfterRender set to true if this block should be disposed of
      * after the rendering is complete.
      */
-    public void render(Graphics2D targetImage, boolean disposeAfterRender) {
-        targetImage.drawImage(blockImage, this.column * this.height, this.row * this.width, null);
+    public void render(final Graphics2D targetImage, final boolean disposeAfterRender) {
+        targetImage.drawImage(blockImage, this.blockColumnIndex * this.blockHeight, this.blockRowIndex * this.blockWidth, null);
 
         if (disposeAfterRender) {
             this.blockImage = null;
@@ -90,7 +92,7 @@ class ImageBlock {
      * @return the width (x dimension) of the block in pixels.
      */
     public int getWidth() {
-        return width;
+        return blockWidth;
     }
 
     /**
@@ -99,7 +101,7 @@ class ImageBlock {
      * @return the height (y dimension) of the block in pixels.
      */
     public int getHeight() {
-        return height;
+        return blockHeight;
     }
 
     /**
@@ -113,6 +115,6 @@ class ImageBlock {
      * @return block index.
      */
     public int getBlockIndex() {
-        return (this.row * this.numColumns) + this.column;
+        return (this.blockRowIndex * this.blocksInOneRow) + this.blockColumnIndex;
     }
 }

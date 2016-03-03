@@ -60,5 +60,5 @@ public interface ImageRepresentationHandler {
      * @param data the data buffer (corresponding the BufferedImage) to mask
      * @param pixelIndex the pixel index within the block to operate on
      */
-    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixelIndex);
+    void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixelIndex);
 }

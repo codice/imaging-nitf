@@ -26,9 +26,11 @@ import org.codice.imaging.nitf.render.imagemode.ImageModeHandler;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandlerFactory;
 
 /**
- * Renderer for NITF files
+ * Renderer for NITF files.
  */
 public class NitfRenderer {
+
+    private static final int BYTE_MASK = 0xFF;
 
     /**
      * Constructor.
@@ -43,7 +45,7 @@ public class NitfRenderer {
      * @param targetGraphic the target to render to
      * @throws IOException if the source data could not be read from
      */
-    public final void render(final ImageSegment imageSegment, Graphics2D targetGraphic) throws IOException {
+    public final void render(final ImageSegment imageSegment, final Graphics2D targetGraphic) throws IOException {
         switch (imageSegment.getImageCompression()) {
         case BILEVEL:
             render(new BilevelBlockRenderer(), imageSegment, targetGraphic);
@@ -99,7 +101,7 @@ public class NitfRenderer {
         return img;
     }
 
-    private void render(BlockRenderer renderer, ImageSegment imageSegment, Graphics2D target) throws IOException {
+    private void render(final BlockRenderer renderer, final ImageSegment imageSegment, final Graphics2D target) throws IOException {
         renderer.setImageSegment(imageSegment, imageSegment.getData());
 
         processBlocks(imageSegment, (rowIndex, columnIndex) -> {
@@ -113,7 +115,7 @@ public class NitfRenderer {
         });
     }
 
-    private void renderJPEG(ImageSegment imageSegment, Graphics2D targetGraphic, ImageMask imageMask) throws IOException {
+    private void renderJPEG(final ImageSegment imageSegment, final Graphics2D targetGraphic, final ImageMask imageMask) throws IOException {
         ImageReader reader = getJPEGimageReader();
         reader.setInput(imageSegment.getData());
         ThreadLocal<Integer> maskedBlocks = new ThreadLocal<Integer>();
@@ -135,7 +137,7 @@ public class NitfRenderer {
         });
     }
 
-    private void processBlocks(ImageSegment imageSegment, BlockConsumer consumer)
+    private void processBlocks(final ImageSegment imageSegment, final BlockConsumer consumer)
             throws IOException {
         for (int rowIndex = 0; rowIndex < imageSegment.getNumberOfBlocksPerColumn(); ++rowIndex) {
             for (int columnIndex = 0; columnIndex < imageSegment.getNumberOfBlocksPerRow(); ++columnIndex) {
@@ -144,10 +146,10 @@ public class NitfRenderer {
         }
     }
 
-    private void skipToMarker(ImageInputStream imageInputStream, JpegMarkerCode markerCode) throws IOException {
+    private void skipToMarker(final ImageInputStream imageInputStream, final JpegMarkerCode markerCode) throws IOException {
         imageInputStream.mark();
-        byte fillByte = (byte) ((markerCode.getValue() >> 8) & 0xFF);
-        byte markerByte = (byte) (markerCode.getValue() & 0xFF);
+        byte fillByte = (byte) ((markerCode.getValue() >> Byte.SIZE) & BYTE_MASK);
+        byte markerByte = (byte) (markerCode.getValue() & BYTE_MASK);
 
         int i = 0;
         byte a = imageInputStream.readByte();
@@ -163,6 +165,7 @@ public class NitfRenderer {
             imageInputStream.skipBytes(i - 1);
         }
     }
+
 
     private ImageReader getJPEGimageReader() {
         Iterator<ImageReader> imageReaders = ImageIO.getImageReadersByMIMEType("image/jpeg");

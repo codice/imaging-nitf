@@ -25,7 +25,7 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
  */
 class PixelInterleveImageModeHandler extends SharedImageModeHandler implements ImageModeHandler {
 
-    PixelInterleveImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+    PixelInterleveImageModeHandler(final ImageRepresentationHandler imageRepresentationHandler) {
         super(imageRepresentationHandler);
     }
 
@@ -40,7 +40,7 @@ class PixelInterleveImageModeHandler extends SharedImageModeHandler implements I
     }
 
     @Override
-    protected void readBlock(ImageBlock block, ImageSegment imageSegment) {
+    protected void readBlock(final ImageBlock block, final ImageSegment imageSegment) {
 
         final DataBuffer data = block.getDataBuffer();
 

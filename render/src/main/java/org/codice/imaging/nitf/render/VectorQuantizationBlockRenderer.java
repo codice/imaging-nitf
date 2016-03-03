@@ -45,20 +45,12 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
 
     private int nextImageBlockToRead = 0;
 
-    private class VQCompressionLookupOffsetRecord {
-        int compressionLookupTableId = 0;
-        int numberOfCompressionLookupRecords = 0;
-        int numberOfValuesPerCompressionLookupRecord = 0;
-        int compressionLookupValueBitLength = 0;
-        int compressionLookupTableOffset = 0;
-    }
-
     private final List<VQCompressionLookupOffsetRecord> mCompressionLookupOffsetRecords = new ArrayList<>();
 
     private int[][][] mCodebook;
 
     @Override
-    public final void setImageSegment(ImageSegment imageSegment, ImageInputStream imageInputStream) throws IOException {
+    public final void setImageSegment(final ImageSegment imageSegment, final ImageInputStream imageInputStream) throws IOException {
         mImageSegment = imageSegment;
         mImageData = imageInputStream;
 
@@ -70,7 +62,8 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
 
     @Override
     public final BufferedImage getNextImageBlock() throws IOException {
-        if (mImageSegment.getActualBitsPerPixelPerBand() == 8) {
+        if ((mImageSegment.getActualBitsPerPixelPerBand() == Byte.SIZE)
+                && (mImageSegment.getNumberOfBitsPerPixelPerBand() == Byte.SIZE)) {
             if (mImageSegment.getImageRepresentation() == ImageRepresentation.MONOCHROME) {
                 if ((mMask != null) && (mMask.isMaskedBlock(nextImageBlockToRead++, 0))) {
                    return null;
@@ -85,7 +78,8 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
                 throw new UnsupportedOperationException("Unhandled image representation:" + mImageSegment.getImageRepresentation());
             }
         } else {
-            throw new UnsupportedOperationException("Unhandled ActualBitsPerPixelPerBand: " + mImageSegment.getActualBitsPerPixelPerBand());
+            throw new UnsupportedOperationException("Unhandled BitsPerPixelPerBand: "
+                    + mImageSegment.getActualBitsPerPixelPerBand() + " / " + mImageSegment.getNumberOfBitsPerPixelPerBand());
         }
     }
 
@@ -96,7 +90,8 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
     }
 
     private BufferedImage getNextImageBlockMono8() throws IOException {
-        BufferedImage img = new BufferedImage((int) mImageSegment.getNumberOfPixelsPerBlockHorizontal(), (int) mImageSegment.getNumberOfPixelsPerBlockVertical(), BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage img = new BufferedImage((int) mImageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                (int) mImageSegment.getNumberOfPixelsPerBlockVertical(), BufferedImage.TYPE_BYTE_GRAY);
         renderToImage(img);
         return img;
     }
@@ -107,35 +102,36 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
                                                           mImageSegment.getImageBandZeroBase(0).getLUTZeroBase(0).getEntries(),
                                                           mImageSegment.getImageBandZeroBase(0).getLUTZeroBase(1).getEntries(),
                                                           mImageSegment.getImageBandZeroBase(0).getLUTZeroBase(2).getEntries());
-        BufferedImage img = new BufferedImage((int) mImageSegment.getNumberOfColumns(), (int) mImageSegment.getNumberOfRows(), BufferedImage.TYPE_BYTE_INDEXED, colourModel);
+        BufferedImage img = new BufferedImage((int) mImageSegment.getNumberOfColumns(),
+                (int) mImageSegment.getNumberOfRows(), BufferedImage.TYPE_BYTE_INDEXED, colourModel);
         renderToImage(img);
         return img;
     }
 
-    private void renderToImage(BufferedImage img) throws IOException {
+    private void renderToImage(final BufferedImage img) throws IOException {
         WritableRaster imgRaster = img.getRaster();
         for (int r = 0; r < mNumberOfImageRows; ++r) {
             for (int c = 0; c < mNumberOfImageCodesPerRow; ++c) {
-                int codebookEntry = (int)mImageData.readBits(mImageCodeBitLength);
+                int codebookEntry = (int) mImageData.readBits(mImageCodeBitLength);
                 for (int tableIndex = 0; tableIndex < mNumberOfCompressionLookupOffsetRecords; ++tableIndex) {
                     VQCompressionLookupOffsetRecord record = mCompressionLookupOffsetRecords.get(tableIndex);
                     int[] codebookValues = mCodebook[tableIndex][codebookEntry];
                     imgRaster.setPixels(c * mNumberOfCompressionLookupOffsetRecords,
-                                        (r * record.numberOfValuesPerCompressionLookupRecord) + tableIndex,
-                                        mNumberOfCompressionLookupOffsetRecords,
-                                        1,
-                                        codebookValues);
+                            (r * record.getNumberOfValuesPerCompressionLookupRecord()) + tableIndex,
+                            mNumberOfCompressionLookupOffsetRecords,
+                            1,
+                            codebookValues);
                 }
             }
         }
     }
 
-    private final void readVQHeader() throws IOException {
+    private void readVQHeader() throws IOException {
         readImageDisplayParameterSubheader();
         readCompressionSection();
     }
 
-    private final void readImageDisplayParameterSubheader() throws IOException {
+    private void readImageDisplayParameterSubheader() throws IOException {
         mNumberOfImageRows = mImageData.readInt();
         LOGGER.debug("mNumberOfImageRows:" + mNumberOfImageRows);
         mNumberOfImageCodesPerRow = mImageData.readInt();
@@ -144,12 +140,12 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
         LOGGER.debug("mImageCodeBitLength:" + mImageCodeBitLength);
     }
 
-    private final void readCompressionSection() throws IOException {
+    private void readCompressionSection() throws IOException {
         readCompressionSectionSubheader();
         readCompressionLookupSubsection();
     }
 
-    private final void readCompressionSectionSubheader() throws IOException {
+    private void readCompressionSectionSubheader() throws IOException {
         mCompressionAlgorithmId = mImageData.readUnsignedShort();
         LOGGER.debug("mCompressionAlgorithmId:" + mCompressionAlgorithmId);
         mNumberOfCompressionLookupOffsetRecords = mImageData.readUnsignedShort();
@@ -158,7 +154,7 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
         LOGGER.debug("mNumberOfCompressionParameterOffsetRecords:" + mNumberOfCompressionParameterOffsetRecords);
     }
 
-    private final void readCompressionLookupSubsection() throws IOException {
+    private void readCompressionLookupSubsection() throws IOException {
         mCompressionLookupOffsetTableOffset = mImageData.readInt();
         LOGGER.debug("mCompressionLookupOffsetTableOffset:" + mCompressionLookupOffsetTableOffset);
         mCompressionLookupTableOffsetRecordLength = mImageData.readUnsignedShort();
@@ -167,39 +163,48 @@ class VectorQuantizationBlockRenderer implements BlockRenderer {
         readCompressionLookupTables();
     }
 
-    private final void readCompressionLookupOffsetTable() throws IOException {
+    private void readCompressionLookupOffsetTable() throws IOException {
         readCompressionLookupOffsetRecords();
     }
 
-    private final void readCompressionLookupOffsetRecords() throws IOException {
+    private void readCompressionLookupOffsetRecords() throws IOException {
         LOGGER.debug("mNumberOfCompressionLookupOffsetRecords:" + mNumberOfCompressionLookupOffsetRecords);
         for (int i = 0; i < mNumberOfCompressionLookupOffsetRecords; ++i) {
             VQCompressionLookupOffsetRecord record = new VQCompressionLookupOffsetRecord();
-            record.compressionLookupTableId = mImageData.readUnsignedShort();
-            record.numberOfCompressionLookupRecords = mImageData.readInt();
-            LOGGER.debug("numberOfCompressionLookupRecords:" + record.numberOfCompressionLookupRecords);
-            record.numberOfValuesPerCompressionLookupRecord = mImageData.readUnsignedShort();
-            LOGGER.debug("numberOfValuesPerCompressionLookupRecord:" + record.numberOfValuesPerCompressionLookupRecord);
-            record.compressionLookupValueBitLength = mImageData.readUnsignedShort();
-            LOGGER.debug("compressionLookupValueBitLength:" + record.compressionLookupValueBitLength);
-            record.compressionLookupTableOffset = mImageData.readInt();
+            record.setCompressionLookupTableId(mImageData.readUnsignedShort());
+            record.setNumberOfCompressionLookupRecords(mImageData.readInt());
+            LOGGER.debug("numberOfCompressionLookupRecords:" + record.getNumberOfCompressionLookupRecords());
+            record.setNumberOfValuesPerCompressionLookupRecord(mImageData.readUnsignedShort());
+            LOGGER.debug("numberOfValuesPerCompressionLookupRecord:" + record.getNumberOfValuesPerCompressionLookupRecord());
+            record.setCompressionLookupValueBitLength(mImageData.readUnsignedShort());
+            LOGGER.debug("compressionLookupValueBitLength:" + record.getCompressionLookupValueBitLength());
+            record.setCompressionLookupTableOffset(mImageData.readInt());
             mCompressionLookupOffsetRecords.add(record);
         }
     }
 
-    private final void readCompressionLookupTables() throws IOException {
+    private void readCompressionLookupTables() throws IOException {
         mCodebook = new int[mNumberOfCompressionLookupOffsetRecords][][];
-        for (int compressionLookupTableIndex = 0; compressionLookupTableIndex < mNumberOfCompressionLookupOffsetRecords; ++compressionLookupTableIndex) {
+        for (int compressionLookupTableIndex = 0;
+                compressionLookupTableIndex < mNumberOfCompressionLookupOffsetRecords;
+                ++compressionLookupTableIndex) {
             VQCompressionLookupOffsetRecord record = mCompressionLookupOffsetRecords.get(compressionLookupTableIndex);
+
             // Dimension this codebook entry based on the lookup offset record entry
-            mCodebook[compressionLookupTableIndex] = new int[record.numberOfCompressionLookupRecords][record.numberOfValuesPerCompressionLookupRecord];
+            mCodebook[compressionLookupTableIndex]
+                    = new int[record.getNumberOfCompressionLookupRecords()][record.getNumberOfValuesPerCompressionLookupRecord()];
+
             // Read record entries
-            for (int compressionLookupRecordIndex = 0; compressionLookupRecordIndex < record.numberOfCompressionLookupRecords; ++compressionLookupRecordIndex) {
+            for (int compressionLookupRecordIndex = 0;
+                    compressionLookupRecordIndex < record.getNumberOfCompressionLookupRecords();
+                    ++compressionLookupRecordIndex) {
                 // Read values for this record entry
-                for (int compressionLookupValueIndex = 0; compressionLookupValueIndex < record.numberOfValuesPerCompressionLookupRecord; ++compressionLookupValueIndex) {
+                for (int compressionLookupValueIndex = 0;
+                        compressionLookupValueIndex < record.getNumberOfValuesPerCompressionLookupRecord();
+                        ++compressionLookupValueIndex) {
                     // Stuff it into the codebook.
                     mCodebook[compressionLookupTableIndex][compressionLookupRecordIndex][compressionLookupValueIndex] =
-                        (int) mImageData.readBits(record.compressionLookupValueBitLength);
+ (int) mImageData.readBits(record.getCompressionLookupValueBitLength());
                 }
             }
         }

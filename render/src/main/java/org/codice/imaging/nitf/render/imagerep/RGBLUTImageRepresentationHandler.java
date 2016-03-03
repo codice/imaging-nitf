@@ -33,7 +33,7 @@ class RGBLUTImageRepresentationHandler implements ImageRepresentationHandler {
     private final IOReaderFunction reader;
     private final IndexColorModel colourModel;
 
-    RGBLUTImageRepresentationHandler(int selectedBandZeroBase, ImageSegment segment, IOReaderFunction readerFunc) {
+    RGBLUTImageRepresentationHandler(final int selectedBandZeroBase, final ImageSegment segment, final IOReaderFunction readerFunc) {
         selectedBand = selectedBandZeroBase;
         if (segment.getImageCompression().equals(ImageCompression.NOTCOMPRESSEDMASK)) {
             colourModel = new IndexColorModel(segment.getActualBitsPerPixelPerBand(),
@@ -53,7 +53,8 @@ class RGBLUTImageRepresentationHandler implements ImageRepresentationHandler {
     }
 
     @Override
-    public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex) throws IOException {
+    public void renderPixelBand(final DataBuffer dataBuffer, final int pixelIndex,
+            final ImageInputStream imageInputStream, final int bandIndex) throws IOException {
         if (bandIndex == selectedBand) {
             dataBuffer.setElem(pixelIndex, (Integer) reader.apply(imageInputStream));
         } else {
@@ -62,12 +63,12 @@ class RGBLUTImageRepresentationHandler implements ImageRepresentationHandler {
     }
 
     @Override
-    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixelIndex) {
+    public void renderPadPixel(final ImageMask imageMask, final DataBuffer data, final int pixelIndex) {
         // Handled by the colour model.
     }
 
     @Override
-    public BufferedImage createBufferedImage(int width, int height) {
+    public BufferedImage createBufferedImage(final int width, final int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED, colourModel);
     }
 }

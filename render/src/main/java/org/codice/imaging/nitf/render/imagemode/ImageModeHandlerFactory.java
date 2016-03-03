@@ -7,7 +7,7 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandlerFactory
 /**
  * Factory class for creating image mode handlers.
  */
-public class ImageModeHandlerFactory {
+public final class ImageModeHandlerFactory {
 
     private ImageModeHandlerFactory() {
     }
@@ -20,7 +20,7 @@ public class ImageModeHandlerFactory {
      * @return a handler for the image mode, or null if an appropriate reader
      * could not be found.
      */
-    public static ImageModeHandler forImageSegment(ImageSegment imageSegment) {
+    public static ImageModeHandler forImageSegment(final ImageSegment imageSegment) {
         ImageRepresentationHandler imageRepresentationHandler =
                 ImageRepresentationHandlerFactory.forImageSegment(imageSegment);
 
@@ -29,26 +29,21 @@ public class ImageModeHandlerFactory {
         }
 
         switch (imageSegment.getImageMode()) {
-        case BANDSEQUENTIAL: {
-            return new BandSequentialImageModeHandler(imageRepresentationHandler);
-        }
+            case BANDSEQUENTIAL:
+                return new BandSequentialImageModeHandler(imageRepresentationHandler);
 
-        case PIXELINTERLEVE: {
-            return new PixelInterleveImageModeHandler(imageRepresentationHandler);
-        }
+            case PIXELINTERLEVE:
+                return new PixelInterleveImageModeHandler(imageRepresentationHandler);
 
-        case ROWINTERLEVE: {
-            return new RowInterleveImageModeHandler(imageRepresentationHandler);
-        }
+            case ROWINTERLEVE:
+                return new RowInterleveImageModeHandler(imageRepresentationHandler);
 
-        case BLOCKINTERLEVE: {
-            return new BlockInterleveImageModeHandler(imageRepresentationHandler);
-        }
+            case BLOCKINTERLEVE:
+                return new BlockInterleveImageModeHandler(imageRepresentationHandler);
 
-        default: {
-            throw new UnsupportedOperationException("Unsupported Image Mode: " +
-                    imageSegment.getImageMode().name());
-        }
+            default:
+                throw new UnsupportedOperationException("Unsupported Image Mode: "
+                        + imageSegment.getImageMode().name());
         }
     }
 }

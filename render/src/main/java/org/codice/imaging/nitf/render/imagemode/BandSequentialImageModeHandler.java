@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
 
 class BandSequentialImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
 
-    BandSequentialImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+    BandSequentialImageModeHandler(final ImageRepresentationHandler imageRepresentationHandler) {
         checkNull(imageRepresentationHandler, "imageRepresentationHandler");
         this.imageRepresentationHandler = imageRepresentationHandler;
     }
@@ -36,7 +36,7 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
      * {@inheritDoc}
      */
     @Override
-    public void handleImage(ImageSegment imageSegment, Graphics2D targetImage) throws IOException {
+    public void handleImage(final ImageSegment imageSegment, final Graphics2D targetImage) throws IOException {
 
         checkNull(imageSegment, "imageSegment");
         checkNull(targetImage, "targetImage");
@@ -44,8 +44,8 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
 
         final ImageMask imageMask = getImageMask(imageSegment);
 
-        ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment,
-                () -> imageRepresentationHandler.createBufferedImage(imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+        ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment, ()
+                -> imageRepresentationHandler.createBufferedImage(imageSegment.getNumberOfPixelsPerBlockHorizontal(),
                         imageSegment.getNumberOfPixelsPerBlockVertical()));
 
         for (int bandIndex = 0; bandIndex < imageSegment.getNumBands(); bandIndex++) {
@@ -62,7 +62,7 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
         matrix.forEachBlock((block) -> block.render(targetImage, true));
     }
 
-    private void readBlock(ImageBlock block, ImageInputStream imageInputStream, int bandIndex) {
+    private void readBlock(final ImageBlock block, final ImageInputStream imageInputStream, final int bandIndex) {
 
         final DataBuffer data = block.getDataBuffer();
 

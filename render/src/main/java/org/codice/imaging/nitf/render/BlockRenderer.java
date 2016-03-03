@@ -31,7 +31,7 @@ public interface BlockRenderer {
      * @param imageInputStream the source data to be read from
      * @throws IOException if the imageInputStream is not readable
      */
-    public void setImageSegment(ImageSegment imageSegment, ImageInputStream imageInputStream) throws IOException;
+    void setImageSegment(ImageSegment imageSegment, ImageInputStream imageInputStream) throws IOException;
 
     /**
      * Render the next available image block.
@@ -39,7 +39,7 @@ public interface BlockRenderer {
      * @return image for the specified block
      * @throws java.io.IOException if the data source is not readable
      */
-    public BufferedImage getNextImageBlock() throws IOException;
+    BufferedImage getNextImageBlock() throws IOException;
 
     /**
      * Render a specific image block.
@@ -51,5 +51,5 @@ public interface BlockRenderer {
      * @return image for the specified block
      * @throws java.io.IOException if the data source is not readable
      */
-    public BufferedImage getImageBlock(int rowIndex, int columnIndex) throws IOException;
+    BufferedImage getImageBlock(int rowIndex, int columnIndex) throws IOException;
 }
