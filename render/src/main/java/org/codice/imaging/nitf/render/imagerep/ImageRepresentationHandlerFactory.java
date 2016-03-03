@@ -39,7 +39,7 @@ public class ImageRepresentationHandlerFactory {
                 return getHandlerForMultiband(segment);
             }
             case RGBLUT: {
-                return getRgbLUTImageRepresentationHandler(segment);
+                return getRgbLUTImageRepresentationHandler(segment, 0);
             }
             //add other (more complex) cases here
             default:
@@ -84,13 +84,16 @@ public class ImageRepresentationHandlerFactory {
         if (irepbandsHasRgb(segment)) {
             return getRgbImageRepresentationHandler(segment);
         }
+        int firstLookupTableBandZeroBase = getFirstLookupBandZeroBase(segment);
+        if (firstLookupTableBandZeroBase != BAND_NOT_FOUND) {
+            return getRgbLUTImageRepresentationHandler(segment, firstLookupTableBandZeroBase);
+        }
         int firstMonoBandZeroBase = getFirstMonoBandZeroBase(segment);
         if (firstMonoBandZeroBase != BAND_NOT_FOUND) {
             return getMonoImageRepresentationHandler(segment, firstMonoBandZeroBase);
         }
-        // TODO: LU case
-        // TODO: no representation
-        return null;
+        // No representation, try showing first band
+        return getMonoImageRepresentationHandler(segment, 0);
     }
 
     private static boolean irepbandsHasRgb(ImageSegment segment) {
@@ -120,6 +123,16 @@ public class ImageRepresentationHandlerFactory {
         for (int bandIndex = 0; bandIndex < segment.getNumBands(); bandIndex++) {
             NitfImageBand band = segment.getImageBandZeroBase(bandIndex);
             if (null != band.getImageRepresentation() && ("M".equals(band.getImageRepresentation()))) {
+                return bandIndex;
+            }
+        }
+        return BAND_NOT_FOUND;
+    }
+
+    private static int getFirstLookupBandZeroBase(ImageSegment segment) {
+        for (int bandIndex = 0; bandIndex < segment.getNumBands(); bandIndex++) {
+            NitfImageBand band = segment.getImageBandZeroBase(bandIndex);
+            if (null != band.getImageRepresentation() && ("LU".equals(band.getImageRepresentation()))) {
                 return bandIndex;
             }
         }
@@ -164,10 +177,10 @@ public class ImageRepresentationHandlerFactory {
         }
     }
 
-    private static ImageRepresentationHandler getRgbLUTImageRepresentationHandler(ImageSegment segment) {
+    private static ImageRepresentationHandler getRgbLUTImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
         IOReaderFunction readerFunc = DataReaderFactory.forImageSegment(segment);
         if (readerFunc != null) {
-            return new RGBLUTImageRepresentationHandler(segment, readerFunc);
+            return new RGBLUTImageRepresentationHandler(selectedBandZeroBase, segment, readerFunc);
         } else {
             return null;
         }
