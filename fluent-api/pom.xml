@@ -11,6 +11,8 @@
 
     <artifactId>fluent-api</artifactId>
 
+    <name>Codice Imaging: NITF Fluent API</name>
+    
     <dependencies>
         <dependency>
             <groupId>org.codice.imaging.nitf</groupId>
@@ -27,11 +29,6 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codice.imaging.nitf</groupId>
-            <artifactId>codice-imaging-nitf-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
