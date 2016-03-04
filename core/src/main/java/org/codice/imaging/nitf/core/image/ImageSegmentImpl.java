@@ -60,7 +60,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
     /**
         Default constructor.
     */
-    public ImageSegmentImpl() {
+    ImageSegmentImpl() {
     }
 
     /**

@@ -49,7 +49,7 @@ class SecurityMetadataImpl implements SecurityMetadata {
     /**
         Default constructor.
     */
-    public SecurityMetadataImpl() {
+    SecurityMetadataImpl() {
     }
 
     /**

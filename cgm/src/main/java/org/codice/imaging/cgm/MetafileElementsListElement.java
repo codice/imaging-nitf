@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ class MetafileElementsListElement extends ElementHelpers implements AbstractElem
 
     private final List<CgmIdentifier> elementsList = new ArrayList<>();
 
-    public MetafileElementsListElement() {
+    MetafileElementsListElement() {
         super(CgmIdentifier.METAFILE_ELEMENT_LIST);
     }
 

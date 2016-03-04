@@ -19,7 +19,6 @@ import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +95,7 @@ public class RasterProductFormatAttributeParser {
             OffsetRecord offsetRecord = offsetRecords.get(i);
             bytes.position(ATTRIBUTE_SECTION_SUBHEADER_LENGTH + offsetRecord.attributeRecordOffset);
 
-            switch(offsetRecord.attributeId) {
+            switch (offsetRecord.attributeId) {
                 case CURRENCY_DATE_ATTR_ID:
                     attributes.addCurrencyDate(offsetRecord.arealCoverageSequenceNumber, parseRpfCurrencyDate(bytes, offsetRecord));
                     break;

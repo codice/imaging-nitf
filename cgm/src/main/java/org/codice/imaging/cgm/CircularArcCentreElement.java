@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ class CircularArcCentreElement extends ElementHelpers implements AbstractElement
 
     private static final double FULL_CIRCLE = 360.0;
 
-    public CircularArcCentreElement() {
+    CircularArcCentreElement() {
         super(CgmIdentifier.CIRCULAR_ARC_CENTRE);
     }
 

@@ -30,7 +30,7 @@ class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
     /**
      * Default constructor.
      */
-    public TextSegmentImpl() {
+    TextSegmentImpl() {
     }
 
     /**

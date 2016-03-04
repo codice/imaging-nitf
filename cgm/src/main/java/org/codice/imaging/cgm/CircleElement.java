@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Codice
+ * Copyright (c) 2014, 2016, Codice
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ class CircleElement extends ElementHelpers implements AbstractElement {
     private Point centre;
     private int radius;
 
-    public CircleElement() {
+    CircleElement() {
         super(CgmIdentifier.CIRCLE);
     }
 
