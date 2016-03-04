@@ -31,31 +31,39 @@ public class SlottedNitfStorage implements NitfDataSource {
     /**
      * The file level header.
      */
-    protected NitfFileHeader nitfFileLevelHeader;
+    private NitfFileHeader nitfFileLevelHeader;
     /**
      * The list of image segment.
      */
-    protected final List<ImageSegment> imageSegments = new ArrayList<>();
+    private final List<ImageSegment> imageSegments = new ArrayList<>();
     /**
      * The list of graphic segments.
      */
-    protected final List<GraphicSegment> graphicSegments = new ArrayList<>();
+    private final List<GraphicSegment> graphicSegments = new ArrayList<>();
     /**
      * The list of symbol segments.
      */
-    protected final List<SymbolSegment> symbolSegments = new ArrayList<>();
+    private final List<SymbolSegment> symbolSegments = new ArrayList<>();
     /**
      * The list of label segments.
      */
-    protected final List<LabelSegment> labelSegments = new ArrayList<>();
+    private final List<LabelSegment> labelSegments = new ArrayList<>();
     /**
      * The list of text segments.
      */
-    protected final ArrayList<TextSegment> textSegments = new ArrayList<>();
+    private final ArrayList<TextSegment> textSegments = new ArrayList<>();
     /**
      * The list of DES.
      */
-    protected final List<DataExtensionSegment> dataExtensionSegments = new ArrayList<>();
+    private final List<DataExtensionSegment> dataExtensionSegments = new ArrayList<>();
+
+    /**
+     * Stores the NitfFileHeader.
+     * @param nitfFileHeader - the NITF header to set.
+     */
+    public final void setNitfHeader(final NitfFileHeader nitfFileHeader) {
+        this.nitfFileLevelHeader = nitfFileHeader;
+    }
 
     @Override
     public final NitfFileHeader getNitfHeader() {

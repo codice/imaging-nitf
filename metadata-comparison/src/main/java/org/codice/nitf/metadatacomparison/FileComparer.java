@@ -36,8 +36,9 @@ import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
+import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
 import org.codice.imaging.nitf.core.image.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
@@ -54,7 +55,6 @@ import org.slf4j.LoggerFactory;
 import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
-import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 
 public class FileComparer {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileComparer.class);
@@ -84,12 +84,12 @@ public class FileComparer {
             LOGGER.error(e.getMessage(), e);
         }
 
-        if (!parseStrategy.getImageSegments().isEmpty()) {
-            segment1 = parseStrategy.getImageSegments().get(0);
+        if (!parseStrategy.getNitfDataSource().getImageSegments().isEmpty()) {
+            segment1 = parseStrategy.getNitfDataSource().getImageSegments().get(0);
         }
 
-        if (!parseStrategy.getDataExtensionSegments().isEmpty()) {
-            des1 = parseStrategy.getDataExtensionSegments().get(0);
+        if (!parseStrategy.getNitfDataSource().getDataExtensionSegments().isEmpty()) {
+            des1 = parseStrategy.getNitfDataSource().getDataExtensionSegments().get(0);
         }
         outputData();
     }
@@ -421,9 +421,9 @@ public class FileComparer {
     }
 
     private void outputSubdatasets() throws IOException {
-        if (parseStrategy.getImageSegments().size() > 1) {
+        if (parseStrategy.getNitfDataSource().getImageSegments().size() > 1) {
             out.write("Subdatasets:\n");
-            for (int i = 0; i < parseStrategy.getImageSegments().size(); ++i) {
+            for (int i = 0; i < parseStrategy.getNitfDataSource().getImageSegments().size(); ++i) {
                 out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
                 out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s\n", i+1, i+1, filename));
             }

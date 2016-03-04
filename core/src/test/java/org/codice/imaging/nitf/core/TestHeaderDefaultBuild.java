@@ -14,16 +14,18 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.io.File;
-import java.text.ParseException;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import org.codice.imaging.nitf.core.common.FileReader;
-import org.codice.imaging.nitf.core.common.FileType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.text.ParseException;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+
+import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.junit.Test;
 
 /**
@@ -55,7 +57,7 @@ public class TestHeaderDefaultBuild {
         assertNotNull(nitf);
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
 
-        store.setFileHeader(nitf);
+        store.setNitfHeader(nitf);
         NitfFileWriter writer = new NitfFileWriter(store, OUTFILE_NAME);
         writer.write();
 
