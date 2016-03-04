@@ -16,6 +16,7 @@ package org.codice.imaging.nitf.fluent;
 
 import java.util.List;
 import java.util.function.Supplier;
+
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
@@ -41,7 +42,7 @@ public class NitfCreationFlow {
      * @return this NitfCreationFlow.
      */
     public final NitfCreationFlow fileHeader(final Supplier<NitfFileHeader> nitfFileHeaderSupplier) {
-        dataSource.setFileHeader(nitfFileHeaderSupplier.get());
+        dataSource.setNitfHeader(nitfFileHeaderSupplier.get());
         return this;
     }
 

@@ -40,7 +40,7 @@ class NitfGraphicSegmentNode extends AbstractSegmentNode {
         super(Children.LEAF);
         graphicSegmentIndex = childKey.getIndex();
         parseStrategy = childKey.getParseStrategy();
-        header = parseStrategy.getGraphicSegments().get(graphicSegmentIndex);
+        header = parseStrategy.getNitfDataSource().getGraphicSegments().get(graphicSegmentIndex);
         setDisplayName("Graphic Segment: " + getFriendlyName());
     }
 

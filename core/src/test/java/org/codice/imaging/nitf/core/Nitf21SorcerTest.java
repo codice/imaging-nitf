@@ -23,12 +23,12 @@ import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
-import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
@@ -56,15 +56,15 @@ public class Nitf21SorcerTest {
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
         NitfFileHeader file = parseStrategy.getNitfHeader();
-        assertEquals(1, parseStrategy.getImageSegments().size());
-        assertEquals(1, parseStrategy.getGraphicSegments().size());
-        assertEquals(0, parseStrategy.getSymbolSegments().size());
-        assertEquals(0, parseStrategy.getLabelSegments().size());
-        assertEquals(1, parseStrategy.getTextSegments().size());
-        assertEquals(0, parseStrategy.getDataExtensionSegments().size());
+        assertEquals(1, parseStrategy.getNitfDataSource().getImageSegments().size());
+        assertEquals(1, parseStrategy.getNitfDataSource().getGraphicSegments().size());
+        assertEquals(0, parseStrategy.getNitfDataSource().getSymbolSegments().size());
+        assertEquals(0, parseStrategy.getNitfDataSource().getLabelSegments().size());
+        assertEquals(1, parseStrategy.getNitfDataSource().getTextSegments().size());
+        assertEquals(0, parseStrategy.getNitfDataSource().getDataExtensionSegments().size());
 
         // Checks for ImageSegment.
-        ImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
+        ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(0);
         assertNotNull(imageSegment);
         assertEquals("Image Id1", imageSegment.getIdentifier());
         assertEquals("2002-10-06 22:03:20", formatter.format(imageSegment.getImageDateTime().getZonedDateTime()));
@@ -118,7 +118,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, imageSegment.getImageLocationColumn());
         assertEquals("1.0 ", imageSegment.getImageMagnification());
 
-        GraphicSegment graphicSegment = parseStrategy.getGraphicSegments().get(0);
+        GraphicSegment graphicSegment = parseStrategy.getNitfDataSource().getGraphicSegments().get(0);
         assertNotNull(graphicSegment);
         assertEquals("", graphicSegment.getIdentifier());
         assertEquals("", graphicSegment.getGraphicName());
@@ -133,7 +133,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, graphicSegment.getBoundingBox2Row());
         assertEquals(0, graphicSegment.getBoundingBox2Column());
 
-        TextSegment textSegment = parseStrategy.getTextSegments().get(0);
+        TextSegment textSegment = parseStrategy.getNitfDataSource().getTextSegments().get(0);
         assertUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertNotNull(textSegment);
         assertEquals("       ", textSegment.getIdentifier());
