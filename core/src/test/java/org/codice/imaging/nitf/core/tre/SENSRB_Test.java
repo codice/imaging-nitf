@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.tre;
 
 import org.codice.imaging.nitf.core.tre.TreSource;
 import java.io.BufferedInputStream;
@@ -30,8 +30,10 @@ import org.codice.imaging.nitf.core.tre.TreGroup;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-public class SensrbTest {
+public class SENSRB_Test {
 
     // Has 1, 5, 6
     @Test

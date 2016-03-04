@@ -433,11 +433,31 @@
             <field name="LAYER_ID" length="3"/>
             <field name="BITRATE" length="9"/>
         </loop>
-        <if_remaining_bytes>
+        <if cond="ORIG=1">
             <field name="NLEVELS_I" length="2"/>
             <field name="NBANDS_I" length="5"/>
             <field name="NLAYERS_I" length="3"/>
-        </if_remaining_bytes>
+        </if>
+        <if cond="ORIG=3">
+            <field name="NLEVELS_I" length="2"/>
+            <field name="NBANDS_I" length="5"/>
+            <field name="NLAYERS_I" length="3"/>
+        </if>
+        <if cond="ORIG=5">
+            <field name="NLEVELS_I" length="2"/>
+            <field name="NBANDS_I" length="5"/>
+            <field name="NLAYERS_I" length="3"/>
+        </if>
+        <if cond="ORIG=7">
+            <field name="NLEVELS_I" length="2"/>
+            <field name="NBANDS_I" length="5"/>
+            <field name="NLAYERS_I" length="3"/>
+        </if>
+        <if cond="ORIG=9">
+            <field name="NLEVELS_I" length="2"/>
+            <field name="NBANDS_I" length="5"/>
+            <field name="NLAYERS_I" length="3"/>
+        </if>
     </tre>
 
     <tre name="MAPLOB" length="43" location="image">
