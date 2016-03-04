@@ -14,10 +14,10 @@
  */
 package org.codice.imaging.nitf.core;
 
-import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.security.SecurityMetadataWriter;
@@ -50,11 +50,11 @@ public class NitfFileHeaderWriter extends AbstractSegmentWriter {
      */
     public final void writeFileHeader(final NitfDataSource mDataSource) throws IOException, ParseException {
         NitfFileHeader header = mDataSource.getNitfHeader();
-        mOutput.writeBytes(header.getFileType().getTextEquivalent());
+        writeBytes(header.getFileType().getTextEquivalent(), NitfConstants.FHDR_LENGTH + NitfConstants.FVER_LENGTH);
         writeFixedLengthNumber(header.getComplexityLevel(), NitfConstants.CLEVEL_LENGTH);
         writeFixedLengthString(header.getStandardType(), NitfConstants.STYPE_LENGTH);
         writeFixedLengthString(header.getOriginatingStationId(), NitfConstants.OSTAID_LENGTH);
-        mOutput.writeBytes(header.getFileDateTime().getSourceString());
+        writeDateTime(header.getFileDateTime());
         writeFixedLengthString(header.getFileTitle(), NitfConstants.FTITLE_LENGTH);
         SecurityMetadataWriter securityWriter = new SecurityMetadataWriter(mOutput, mTreParser);
         securityWriter.writeFileSecurityMetadata(header.getFileSecurityMetadata(), header.getFileType());
@@ -169,12 +169,12 @@ public class NitfFileHeaderWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(userDefinedHeaderDataLength, NitfConstants.UDHDL_LENGTH);
         if (userDefinedHeaderDataLength > 0) {
             writeFixedLengthNumber(header.getUserDefinedHeaderOverflow(), NitfConstants.UDHOFL_LENGTH);
-            mOutput.write(userDefinedHeaderData);
+            writeBytes(userDefinedHeaderData, userDefinedHeaderDataLength - NitfConstants.UDHOFL_LENGTH);
         }
         writeFixedLengthNumber(extendedHeaderDataLength, NitfConstants.XHDL_LENGTH);
         if (extendedHeaderDataLength > 0) {
             writeFixedLengthNumber(header.getExtendedHeaderDataOverflow(), NitfConstants.XHDLOFL_LENGTH);
-            mOutput.write(extendedHeaderData);
+            writeBytes(extendedHeaderData, extendedHeaderDataLength - NitfConstants.XHDLOFL_LENGTH);
         }
     }
 

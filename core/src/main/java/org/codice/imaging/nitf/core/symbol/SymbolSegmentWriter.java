@@ -91,7 +91,7 @@ public class SymbolSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthNumber(symbolExtendedSubheaderDataLength, SXSHDL_LENGTH);
         if (symbolExtendedSubheaderDataLength > 0) {
             writeFixedLengthNumber(header.getExtendedHeaderDataOverflow(), SXSOFL_LENGTH);
-            mOutput.write(symbolExtendedSubheaderData);
+            writeBytes(symbolExtendedSubheaderData, symbolExtendedSubheaderDataLength - SXSOFL_LENGTH);
         }
         writeSegmentData(header.getData());
     }
