@@ -38,4 +38,4 @@
  * </pre>
  */
 
-package org.codice.imaging.nitf.render.flow;
+package org.codice.imaging.nitf.fluent;

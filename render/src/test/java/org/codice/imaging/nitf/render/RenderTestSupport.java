@@ -21,8 +21,11 @@ import java.text.ParseException;
 
 import javax.imageio.ImageIO;
 
+import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.image.ImageSegment;
-import org.codice.imaging.nitf.render.flow.NitfParserInputFlow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,20 +54,17 @@ public class RenderTestSupport extends TestCase {
 
     protected void testOneFile(final String testfile, final String parentDirectory) throws IOException, ParseException {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
-        LOGGER.info("================================== Testing :" + inputFileName);
+        System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
-        final ThreadLocal<Integer> i = new ThreadLocal<>();
-        i.set(0);
-        new NitfParserInputFlow().inputStream(getClass().getResourceAsStream(inputFileName)).imageData().forEachImageSegment((ImageSegment segment) -> {
+        NitfReader reader = new NitfInputStreamReader(getClass().getResourceAsStream(inputFileName));
+        ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
+        NitfFileParser.parse(reader, parseStrategy);
+        for (int i = 0; i < parseStrategy.getImageSegments().size(); ++i) {
+            ImageSegment imageSegment = parseStrategy.getImageSegments().get(i);
             NitfRenderer renderer = new NitfRenderer();
-            try {
-                BufferedImage img = renderer.render(segment);
-                ImageIO.write(img, "png", new File("target" + File.separator + testfile + "_" + i.get() + ".png"));
-            } catch (IOException | UnsupportedOperationException e) {
-                fail(e.getMessage());
-            }
-            i.set(i.get() + 1);
-        });
+            BufferedImage img = renderer.render(imageSegment);
+            // TODO: move to automated (perceptual?) comparison
+            ImageIO.write(img, "png", new File("target" + File.separator + testfile + "_" + i + ".png"));
+        }
     }
-
 }
