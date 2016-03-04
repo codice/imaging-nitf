@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.flow;
+package org.codice.imaging.nitf.fluent;
 
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;

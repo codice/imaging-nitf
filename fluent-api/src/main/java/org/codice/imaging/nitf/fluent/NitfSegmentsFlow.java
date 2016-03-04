@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.render.flow;
+package org.codice.imaging.nitf.fluent;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -114,6 +114,17 @@ public class NitfSegmentsFlow {
      */
     public NitfSegmentsFlow forEachSymbolSegment(Consumer<SymbolSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getSymbolSegments());
+    }
+
+    /**
+     * passes this NitfSegmentParserFlow's NitfDataSource to the supplied consumer.
+     *
+     * @param dataSourceConsumer
+     * @return
+     */
+    public NitfSegmentsFlow dataSource(Consumer<NitfDataSource> dataSourceConsumer) {
+        dataSourceConsumer.accept(mDataSource);
+        return this;
     }
 
     private <T extends CommonSegment> NitfSegmentsFlow forEachSegment(Consumer<T> consumer, Supplier<List<T>> supplier) {

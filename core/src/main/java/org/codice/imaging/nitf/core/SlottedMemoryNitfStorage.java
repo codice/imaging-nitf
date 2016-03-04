@@ -27,7 +27,7 @@ public class SlottedMemoryNitfStorage extends SlottedNitfStorage {
      *
      * @param header header to set
      */
-    public final void setNitfFileLevelHeader(final NitfFileHeader header) {
+    public final void setFileHeader(final NitfFileHeader header) {
         nitfFileLevelHeader = header;
     }
 
