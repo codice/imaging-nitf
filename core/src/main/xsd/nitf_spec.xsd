@@ -65,7 +65,6 @@
                 </xs:element>
                 <xs:element name="if" type="ifType"/>
             </xs:choice>
-            <xs:element name="if_remaining_bytes" type="if_remaining_bytesType" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:group>
 
@@ -111,10 +110,6 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-    </xs:complexType>
-
-    <xs:complexType name="if_remaining_bytesType">
-        <xs:group ref="itemType"/>
     </xs:complexType>
 
     <xs:complexType name="fieldType">
