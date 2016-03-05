@@ -27,6 +27,8 @@ import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
@@ -86,23 +88,23 @@ public class Nitf20SymbolTest {
     }
 
     private void assertFileSegmentDataIsAsExpected(NitfDataSource dataSource) {
-        NitfFileHeader file = dataSource.getNitfHeader();
-        assertEquals(FileType.NITF_TWO_ZERO, file.getFileType());
-        assertEquals(1, file.getComplexityLevel());
-        assertEquals("", file.getStandardType());
-        assertEquals("PLYLIN2", file.getOriginatingStationId());
-        assertEquals("1993-09-03 19:16:36", formatter.format(file.getFileDateTime().getZonedDateTime()));
-        assertEquals("checks for rendering of polyline. line width 1, line type 3,4,5. def line type.", file.getFileTitle());
-        FileSecurityMetadata securityMetadata = file.getFileSecurityMetadata();
+        NitfHeader nitfHeader = dataSource.getNitfHeader();
+        assertEquals(FileType.NITF_TWO_ZERO, nitfHeader.getFileType());
+        assertEquals(1, nitfHeader.getComplexityLevel());
+        assertEquals("", nitfHeader.getStandardType());
+        assertEquals("PLYLIN2", nitfHeader.getOriginatingStationId());
+        assertEquals("1993-09-03 19:16:36", formatter.format(nitfHeader.getFileDateTime().getZonedDateTime()));
+        assertEquals("checks for rendering of polyline. line width 1, line type 3,4,5. def line type.", nitfHeader.getFileTitle());
+        FileSecurityMetadata securityMetadata = nitfHeader.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
         assertEquals("999998", securityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This  file   will not need a downgrade.", securityMetadata.getDowngradeEvent());
         assertNull(securityMetadata.getSecuritySourceDate());
 
-        assertEquals("00001", file.getFileSecurityMetadata().getFileCopyNumber());
-        assertEquals("00001", file.getFileSecurityMetadata().getFileNumberOfCopies());
-        assertEquals("JITC Fort Huachuca, AZ", file.getOriginatorsName());
-        assertEquals("(602) 538-5458", file.getOriginatorsPhoneNumber());
+        assertEquals("00001", nitfHeader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00001", nitfHeader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals("JITC Fort Huachuca, AZ", nitfHeader.getOriginatorsName());
+        assertEquals("(602) 538-5458", nitfHeader.getOriginatorsPhoneNumber());
         assertEquals(0, dataSource.getImageSegments().size());
         assertEquals(0, dataSource.getGraphicSegments().size());
         assertEquals(0, dataSource.getLabelSegments().size());

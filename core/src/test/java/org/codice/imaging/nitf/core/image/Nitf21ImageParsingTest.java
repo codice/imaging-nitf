@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
-import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Assert;

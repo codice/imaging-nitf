@@ -14,21 +14,19 @@
  */
 package org.codice.imaging.nitf.core.tre;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.List;
-
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
-import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
@@ -44,7 +42,8 @@ public class ENGRDA_Test {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        NitfFileHeader file = parseStrategy.getNitfHeader();
+
+        NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         assertEquals(1, parseStrategy.getNitfDataSource().getImageSegments().size());
         assertEquals(0, parseStrategy.getNitfDataSource().getGraphicSegments().size());
         assertEquals(0, parseStrategy.getNitfDataSource().getSymbolSegments().size());
@@ -52,7 +51,7 @@ public class ENGRDA_Test {
         assertEquals(0, parseStrategy.getNitfDataSource().getTextSegments().size());
         assertEquals(0, parseStrategy.getNitfDataSource().getDataExtensionSegments().size());
 
-        assertEquals(0, file.getTREsRawStructure().getUniqueNamesOfTRE().size());
+        assertEquals(0, nitfHeader.getTREsRawStructure().getUniqueNamesOfTRE().size());
 
         ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(0);
         assertEquals(2, imageSegment.getTREsRawStructure().getTREs().size());

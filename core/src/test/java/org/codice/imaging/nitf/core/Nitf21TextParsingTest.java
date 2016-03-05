@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.text.TextDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;

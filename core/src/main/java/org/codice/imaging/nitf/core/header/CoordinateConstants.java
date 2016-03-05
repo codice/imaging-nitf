@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core.common;
+package org.codice.imaging.nitf.core.header;
 
 /**
  * Constants used for coordinate parsing.

@@ -17,10 +17,9 @@ package org.codice.imaging.nitf.nitfnetbeansfiletype;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-
-import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -134,7 +133,7 @@ class NitfDataObject extends MultiDataObject {
         return new NitfFileNode(this, Children.create(new NitfChildFactory(parseStrategy), true), getLookup());
     }
 
-    NitfFileHeader getNitf() {
+    NitfHeader getNitfHeader() {
         return parseStrategy.getNitfHeader();
     }
 

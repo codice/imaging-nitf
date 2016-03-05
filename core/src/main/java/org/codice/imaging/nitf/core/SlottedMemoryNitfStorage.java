@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.header.NitfHeader;
+
 /**
  * An in-memory slotted store.
  *
@@ -27,7 +29,7 @@ public class SlottedMemoryNitfStorage extends SlottedNitfStorage {
      *
      * @param header header to set
      */
-    public final void setFileHeader(final NitfFileHeader header) {
+    public final void setFileHeader(final NitfHeader header) {
         super.setNitfHeader(header);
     }
 

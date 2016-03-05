@@ -16,12 +16,11 @@ package org.codice.imaging.nitf.fluent;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import org.codice.imaging.nitf.core.NitfDataSource;
-import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
@@ -34,15 +33,16 @@ public class NitfCreationFlow {
     private final SlottedMemoryNitfStorage dataSource = new SlottedMemoryNitfStorage();
 
     /**
-     * Sets the file header for this NITF.  Subsequent calls to this method will overwrite
-     * the previous file header.  This method must be called before build().
+     * Sets the header for this NITF.
      *
-     * @param nitfFileHeaderSupplier the supplier that will supply the
-     * NitfFileHeader.
+     * Subsequent calls to this method will overwrite the previous file header.
+     * This method must be called before build().
+     *
+     * @param nitfHeaderSupplier the supplier that will supply the NitfHeader.
      * @return this NitfCreationFlow.
      */
-    public final NitfCreationFlow fileHeader(final Supplier<NitfFileHeader> nitfFileHeaderSupplier) {
-        dataSource.setNitfHeader(nitfFileHeaderSupplier.get());
+    public final NitfCreationFlow fileHeader(final Supplier<NitfHeader> nitfHeaderSupplier) {
+        dataSource.setFileHeader(nitfHeaderSupplier.get());
         return this;
     }
 

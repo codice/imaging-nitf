@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
-import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;

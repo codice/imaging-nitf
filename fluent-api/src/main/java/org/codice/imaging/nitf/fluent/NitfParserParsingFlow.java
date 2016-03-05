@@ -22,10 +22,10 @@ import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.FileBackedHeapStrategy;
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.HeapStrategy;
-import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy;
 
 /**
