@@ -21,7 +21,9 @@ import org.codice.imaging.nitf.core.image.PixelJustification;
 /**
  * Factory class for creating data readers.
  */
-public class DataReaderFactory {
+public final class DataReaderFactory {
+
+    private static final int TWELVE_BIT_IMAGE = 12;
 
     private DataReaderFactory() {
     }
@@ -37,7 +39,7 @@ public class DataReaderFactory {
      * @return a reader for the segment data pixels, or null if an appropriate
      * reader could not be found.
      */
-    public static IOReaderFunction forImageSegment(ImageSegment segment) {
+    public static IOReaderFunction forImageSegment(final ImageSegment segment) {
         if ((segment.getActualBitsPerPixelPerBand() != segment.getNumberOfBitsPerPixelPerBand())
                 && (segment.getPixelJustification() == PixelJustification.RIGHT)) {
             return getBitshiftReader(segment);
@@ -45,21 +47,21 @@ public class DataReaderFactory {
         switch (segment.getNumberOfBitsPerPixelPerBand()) {
             case 1:
                 return (imageInputStream) -> ((ImageInputStream) imageInputStream).readBit();
-            case 8:
+            case Byte.SIZE:
                 return (imageInputStream) -> ((ImageInputStream) imageInputStream).readUnsignedByte();
-            case 12:
+            case TWELVE_BIT_IMAGE:
                 return new Bitshift16IOReaderFunction(segment);
-            case 16:
+            case Short.SIZE:
                 return (imageInputStream) -> ((ImageInputStream) imageInputStream).readUnsignedShort();
             default:
                 return null;
         }
     }
 
-    private static IOReaderFunction getBitshiftReader(ImageSegment segment) {
-        if (segment.getNumberOfBitsPerPixelPerBand() <= 8) {
+    private static IOReaderFunction getBitshiftReader(final ImageSegment segment) {
+        if (segment.getNumberOfBitsPerPixelPerBand() <= Byte.SIZE) {
             return new Bitshift8IOReaderFunction(segment);
-        } else if (segment.getNumberOfBitsPerPixelPerBand() <= 16) {
+        } else if (segment.getNumberOfBitsPerPixelPerBand() <= Short.SIZE) {
             return new Bitshift16IOReaderFunction(segment);
         }
 

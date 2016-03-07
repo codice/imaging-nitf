@@ -24,7 +24,7 @@ import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
 /**
  * Factory class for creating image representation handlers.
  */
-public class ImageRepresentationHandlerFactory {
+public final class ImageRepresentationHandlerFactory {
 
     private static final int NOT_VISIBLE_MAPPED = -1;
     private static final int BAND_NOT_FOUND = -2;
@@ -41,29 +41,25 @@ public class ImageRepresentationHandlerFactory {
      * @return a handler for the segment, or null if an appropriate handler
      * could not be found.
      */
-    public static ImageRepresentationHandler forImageSegment(ImageSegment segment) {
+    public static ImageRepresentationHandler forImageSegment(final ImageSegment segment) {
 
         switch (segment.getImageRepresentation()) {
-            case MONOCHROME: {
+            case MONOCHROME:
                 return getMonoImageRepresentationHandler(segment, 0);
-            }
-            case RGBTRUECOLOUR: {
+            case RGBTRUECOLOUR:
                 return getRgbImageRepresentationHandler(segment);
-            }
-            case MULTIBAND: {
+            case MULTIBAND:
                 return getHandlerForMultiband(segment);
-            }
-            case RGBLUT: {
+            case RGBLUT:
                 return getRgbLUTImageRepresentationHandler(segment, 0);
-            }
             //add other (more complex) cases here
             default:
                 return null;
         }
     }
 
-    private static ImageRepresentationHandler getRgbImageRepresentationHandler(ImageSegment segment) {
-        if (segment.getNumberOfBitsPerPixelPerBand() != 8) {
+    private static ImageRepresentationHandler getRgbImageRepresentationHandler(final ImageSegment segment) {
+        if (segment.getNumberOfBitsPerPixelPerBand() != Byte.SIZE) {
             // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 (enough for CLEVEL 3 and 5)
             // TODO: implement 16 bit support [IMG-112]
             // TODO: implement 32 bit support [IMG-113]
@@ -111,7 +107,7 @@ public class ImageRepresentationHandlerFactory {
         return getMonoImageRepresentationHandler(segment, 0);
     }
 
-    private static boolean irepbandsHasRgb(ImageSegment segment) {
+    private static boolean irepbandsHasRgb(final ImageSegment segment) {
         boolean hasR = false;
         boolean hasG = false;
         boolean hasB = false;
@@ -128,13 +124,15 @@ public class ImageRepresentationHandlerFactory {
                     case "B":
                         hasB = true;
                         break;
+                    default:
+                        break;
                 }
             }
         }
         return (hasR && hasG && hasB);
     }
 
-    private static int getFirstMonoBandZeroBase(ImageSegment segment) {
+    private static int getFirstMonoBandZeroBase(final ImageSegment segment) {
         for (int bandIndex = 0; bandIndex < segment.getNumBands(); bandIndex++) {
             NitfImageBand band = segment.getImageBandZeroBase(bandIndex);
             if (null != band.getImageRepresentation() && ("M".equals(band.getImageRepresentation()))) {
@@ -144,7 +142,7 @@ public class ImageRepresentationHandlerFactory {
         return BAND_NOT_FOUND;
     }
 
-    private static int getFirstLookupBandZeroBase(ImageSegment segment) {
+    private static int getFirstLookupBandZeroBase(final ImageSegment segment) {
         for (int bandIndex = 0; bandIndex < segment.getNumBands(); bandIndex++) {
             NitfImageBand band = segment.getImageBandZeroBase(bandIndex);
             if (null != band.getImageRepresentation() && ("LU".equals(band.getImageRepresentation()))) {
@@ -154,7 +152,7 @@ public class ImageRepresentationHandlerFactory {
         return BAND_NOT_FOUND;
     }
 
-    private static ImageRepresentationHandler getMonoImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
+    private static ImageRepresentationHandler getMonoImageRepresentationHandler(final ImageSegment segment, final int selectedBandZeroBase) {
         switch (segment.getPixelValueType()) {
             case BILEVEL:
                 return getMonoBilevelImageRepresentationHandler(segment, selectedBandZeroBase);
@@ -174,17 +172,17 @@ public class ImageRepresentationHandlerFactory {
         }
     }
 
-    private static ImageRepresentationHandler getMonoBilevelImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
+    private static ImageRepresentationHandler getMonoBilevelImageRepresentationHandler(final ImageSegment segment, final int selectedBandZeroBase) {
         if (segment.getNumberOfBitsPerPixelPerBand() != 1) {
             throw new UnsupportedOperationException("Pixel Value of bilevel (B) must be 1 bit per pixel (NBPP = 1)");
         }
         return new Mono1ImageRepresentationHandler(selectedBandZeroBase, DataReaderFactory.forImageSegment(segment));
     }
 
-    private static ImageRepresentationHandler getMonoIntegerImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
-        if (segment.getNumberOfBitsPerPixelPerBand() == 8) {
+    private static ImageRepresentationHandler getMonoIntegerImageRepresentationHandler(final ImageSegment segment, final int selectedBandZeroBase) {
+        if (segment.getNumberOfBitsPerPixelPerBand() == Byte.SIZE) {
             return new Mono8IntegerImageRepresentationHandler(selectedBandZeroBase, DataReaderFactory.forImageSegment(segment));
-        } else if (segment.getNumberOfBitsPerPixelPerBand() <= 16) {
+        } else if (segment.getNumberOfBitsPerPixelPerBand() <= Short.SIZE) {
             return new Mono16IntegerImageRepresentationHandler(selectedBandZeroBase, DataReaderFactory.forImageSegment(segment));
         } else {
             // TODO: add 32 [IMG-110] and 64 [IMG-111] NBPP cases
@@ -192,7 +190,7 @@ public class ImageRepresentationHandlerFactory {
         }
     }
 
-    private static ImageRepresentationHandler getRgbLUTImageRepresentationHandler(ImageSegment segment, int selectedBandZeroBase) {
+    private static ImageRepresentationHandler getRgbLUTImageRepresentationHandler(final ImageSegment segment, final int selectedBandZeroBase) {
         IOReaderFunction readerFunc = DataReaderFactory.forImageSegment(segment);
         if (readerFunc != null) {
             return new RGBLUTImageRepresentationHandler(selectedBandZeroBase, segment, readerFunc);

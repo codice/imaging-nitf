@@ -17,7 +17,6 @@ package org.codice.imaging.nitf.fluent;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.common.CommonSegment;
@@ -35,7 +34,7 @@ public class NitfSegmentsFlow {
 
     private NitfDataSource mDataSource;
 
-    NitfSegmentsFlow(NitfDataSource dataSource) {
+    NitfSegmentsFlow(final NitfDataSource dataSource) {
         if (dataSource == null) {
             throw new IllegalArgumentException(
                     "ImageSegmentFlow(): constructor argument 'dataSource' may not be null.");
@@ -50,7 +49,7 @@ public class NitfSegmentsFlow {
      * @param consumer the consumer to pass the NITF file header to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow fileHeader(Consumer<NitfFileHeader> consumer) {
+    public final NitfSegmentsFlow fileHeader(final Consumer<NitfFileHeader> consumer) {
         NitfFileHeader nitfFileHeader = mDataSource.getNitfHeader();
         consumer.accept(nitfFileHeader);
         return this;
@@ -62,7 +61,7 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the image segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachImageSegment(Consumer<ImageSegment> consumer) {
+    public final NitfSegmentsFlow forEachImageSegment(final Consumer<ImageSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getImageSegments());
     }
 
@@ -72,7 +71,7 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the data extension segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachDataExtensionSegment(Consumer<DataExtensionSegment> consumer) {
+    public final NitfSegmentsFlow forEachDataExtensionSegment(final Consumer<DataExtensionSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getDataExtensionSegments());
     }
 
@@ -82,7 +81,7 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the text segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachTextSegment(Consumer<TextSegment> consumer) {
+    public final NitfSegmentsFlow forEachTextSegment(final Consumer<TextSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getTextSegments());
     }
 
@@ -92,7 +91,7 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the graphic segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachGraphicSegment(Consumer<GraphicSegment> consumer) {
+    public final NitfSegmentsFlow forEachGraphicSegment(final Consumer<GraphicSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getGraphicSegments());
     }
 
@@ -102,7 +101,7 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the label segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachLabelSegment(Consumer<LabelSegment> consumer) {
+    public final NitfSegmentsFlow forEachLabelSegment(final Consumer<LabelSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getLabelSegments());
     }
 
@@ -112,22 +111,22 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the symbol segment to.
      * @return this NitfSegmentsFlow.
      */
-    public NitfSegmentsFlow forEachSymbolSegment(Consumer<SymbolSegment> consumer) {
+    public final NitfSegmentsFlow forEachSymbolSegment(final Consumer<SymbolSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getSymbolSegments());
     }
 
     /**
      * passes this NitfSegmentParserFlow's NitfDataSource to the supplied consumer.
      *
-     * @param dataSourceConsumer
-     * @return
+     * @param dataSourceConsumer the consumer for the data source
+     * @return this NitfSegmentsFlow
      */
-    public NitfSegmentsFlow dataSource(Consumer<NitfDataSource> dataSourceConsumer) {
+    public final NitfSegmentsFlow dataSource(final Consumer<NitfDataSource> dataSourceConsumer) {
         dataSourceConsumer.accept(mDataSource);
         return this;
     }
 
-    private <T extends CommonSegment> NitfSegmentsFlow forEachSegment(Consumer<T> consumer, Supplier<List<T>> supplier) {
+    private <T extends CommonSegment> NitfSegmentsFlow forEachSegment(final Consumer<T> consumer, final Supplier<List<T>> supplier) {
         if (consumer != null && supplier != null) {
             List<T> segments = supplier.get();
 

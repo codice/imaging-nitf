@@ -42,8 +42,8 @@ enum JpegMarkerCode {
 
     private final short value;
 
-    private JpegMarkerCode(short value) {
-        this.value = value;
+    JpegMarkerCode(final short markerValue) {
+        this.value = markerValue;
     }
 
     /**

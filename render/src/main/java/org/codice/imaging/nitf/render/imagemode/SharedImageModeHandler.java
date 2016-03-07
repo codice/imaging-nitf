@@ -25,7 +25,7 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
  */
 abstract class SharedImageModeHandler extends BaseImageModeHandler implements ImageModeHandler {
 
-    protected SharedImageModeHandler(ImageRepresentationHandler imageRepresentationHandler) {
+    protected SharedImageModeHandler(final ImageRepresentationHandler imageRepresentationHandler) {
         checkNull(imageRepresentationHandler, "imageRepresentationHandler");
         this.imageRepresentationHandler = imageRepresentationHandler;
     }
@@ -34,7 +34,7 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
      * {@inheritDoc}
      */
     @Override
-    public void handleImage(ImageSegment imageSegment, Graphics2D targetImage) throws IOException {
+    public void handleImage(final ImageSegment imageSegment, final Graphics2D targetImage) throws IOException {
         checkNull(imageSegment, "imageSegment");
         checkNull(targetImage, "targetImage");
         checkImageMode(imageSegment);
@@ -55,6 +55,6 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
         matrix.forEachBlock((block) -> block.render(targetImage, true));
     }
 
-    protected abstract void readBlock(ImageBlock block, ImageSegment imageSegment);
+    protected abstract void readBlock(final ImageBlock block, final ImageSegment imageSegment);
 
 }

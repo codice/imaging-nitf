@@ -24,15 +24,18 @@ import org.codice.imaging.nitf.core.image.ImageSegment;
  * The ImageMatrix represents image data stored in a rowcount x columncount matrix.
  */
 class ImageBlockMatrix {
-    private ImageBlock[][] blocks;
-    private int matrixWidth;
-    private int matrixHeight;
+    private final ImageBlock[][] blocks;
+    private final int matrixWidth;
+    private final int matrixHeight;
 
     /**
+     * Constructor.
      *
-     * @param imageSegment - the Image Segment that this matrix is being created for.
+     * @param imageSegment the Image Segment that this matrix is being created
+     * for.
+     * @param imageSupplier the underlying buffered image to store the data.
      */
-    public ImageBlockMatrix(ImageSegment imageSegment, Supplier<BufferedImage> imageSupplier) {
+    ImageBlockMatrix(final ImageSegment imageSegment, final Supplier<BufferedImage> imageSupplier) {
         this.matrixWidth = (int) imageSegment.getNumberOfBlocksPerColumn();
         this.matrixHeight = (int) imageSegment.getNumberOfBlocksPerRow();
         int blockWidth = imageSegment.getNumberOfPixelsPerBlockHorizontal();
@@ -48,16 +51,18 @@ class ImageBlockMatrix {
     }
 
     /**
+     * Get a specific image block.
      *
      * @param row - the row to retrieve the ImageBlock from.
      * @param column - the column to retrieve the ImageBlock from.
      * @return - the ImageBlock referenced by (row, column).
      */
-    public ImageBlock getImageBlock(int row, int column) {
+    public ImageBlock getImageBlock(final int row, final int column) {
         return blocks[row][column];
     }
 
     /**
+     * Get the matrix width.
      *
      * @return the number of blocks in a row.
      */
@@ -66,6 +71,7 @@ class ImageBlockMatrix {
     }
 
     /**
+     * Get the matrix height.
      *
      * @return the number of blocks in a column.
      */
@@ -73,7 +79,7 @@ class ImageBlockMatrix {
         return matrixHeight;
     }
 
-    public void forEachBlock(Consumer<ImageBlock> blockConsumer) {
+    public void forEachBlock(final Consumer<ImageBlock> blockConsumer) {
         for (int i = 0; i < this.getMatrixWidth(); i++) {
             for (int j = 0; j < this.getMatrixHeight(); j++) {
                 ImageBlock currentBlock = this.getImageBlock(i, j);

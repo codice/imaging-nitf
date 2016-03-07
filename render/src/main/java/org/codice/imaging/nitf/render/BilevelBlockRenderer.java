@@ -24,8 +24,8 @@ class BilevelBlockRenderer implements BlockRenderer {
 
     private ImageSegment mImageSegment = null;
     private ImageInputStream mImageData = null;
-    WritableRaster imgRaster = null;
-    boolean lineMode2D = false;
+    private WritableRaster imgRaster = null;
+    private boolean lineMode2D = false;
 
     private static final int EOL = 0b000000000001;
     private static final int EOL_LENGTH_IN_BITS = 12;
@@ -35,6 +35,20 @@ class BilevelBlockRenderer implements BlockRenderer {
     private static final int MAX_TERMINATING_RUN_LENGTH = 63;
     private static final String TWOD_S_ENCODING = "2DS";
     private static final String TWOD_H_ENCODING = "2DH";
+    private static final int INITIAL_WHITE_BITRUN_LENGTH = 4;
+
+    private static final int VERTICAL_OFFSET_ONE_PIXEL = 1;
+    private static final int VERTICAL_OFFSET_TWO_PIXELS = 2;
+    private static final int VERTICAL_OFFSET_THREE_PIXELS = 3;
+
+    private static final int VERTICAL_THREE_LEFT = 0b0000010;
+    private static final int VERTICAL_THREE_RIGHT = 0b0000011;
+    private static final int VERTICAL_TWO_LEFT = 0b000010;
+    private static final int VERTICAL_TWO_RIGHT = 0b000011;
+    private static final int VERTICAL_ONE_LEFT = 0b010;
+    private static final int VERTICAL_ONE_RIGHT = 0b011;
+    private static final int PASS = 0b0001;
+    private static final int HORIZONTAL = 0b001;
 
     private static final int WHITE = 0x1;
     private static final int BLACK = 0x0;
@@ -52,8 +66,8 @@ class BilevelBlockRenderer implements BlockRenderer {
         Vertical3Left
     }
 
-    private static class CodebookEntry {
-        private CodebookEntry(int codelength, int code, int result) {
+    private static final class CodebookEntry {
+        private CodebookEntry(final int codelength, final int code, final int result) {
             codeWordLength = codelength;
             codeWord = code;
             runLength = result;
@@ -64,8 +78,14 @@ class BilevelBlockRenderer implements BlockRenderer {
         private final int runLength;
     }
 
+    private static final int ONE_BIT = 1;
+    private static final int THREE_BITS = 3;
+    private static final int FOUR_BITS = 4;
+    private static final int SIX_BITS = 6;
+    private static final int SEVEN_BITS = 7;
 
-    private static final CodebookEntry [] whiteCodeBook = {
+
+    private static final CodebookEntry[] WHITE_CODE_BOOK = {
         new CodebookEntry(8, 0b00110101, 0),
         new CodebookEntry(6, 0b000111, 1),
         new CodebookEntry(4, 0b0111, 2),
@@ -172,7 +192,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         new CodebookEntry(12, 0b000000011111, 2560),
     };
 
-    private static final CodebookEntry [] blackCodeBook = {
+    private static final CodebookEntry[] BLACK_CODE_BOOK = {
         new CodebookEntry(10, 0b0000110111, 0),
         new CodebookEntry(3, 0b10, 1),
         new CodebookEntry(2, 0b11, 2),
@@ -280,7 +300,7 @@ class BilevelBlockRenderer implements BlockRenderer {
     };
 
     @Override
-    public final void setImageSegment(ImageSegment imageSegment, ImageInputStream imageInputStream) throws IOException {
+    public final void setImageSegment(final ImageSegment imageSegment, final ImageInputStream imageInputStream) throws IOException {
         mImageSegment = imageSegment;
         mImageData = imageInputStream;
     }
@@ -306,7 +326,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         return getNextImageBlock();
     }
 
-    private void readScanline(int blockRow) throws IOException {
+    private void readScanline(final int blockRow) throws IOException {
         readEOL();
         if (lineMode2D) {
             readScanline2D(blockRow);
@@ -315,7 +335,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         }
     }
 
-    private void readScanline2D(int blockRow) throws IOException {
+    private void readScanline2D(final int blockRow) throws IOException {
         int referenceRow = blockRow - 1;
         int a0colour = WHITE;
         int a0 = -1;
@@ -357,37 +377,37 @@ class BilevelBlockRenderer implements BlockRenderer {
                     a0colour = flipColour(a0colour);
                     break;
                 case Vertical1Left:
-                    a1 = b1 - 1;
+                    a1 = b1 - VERTICAL_OFFSET_ONE_PIXEL;
                     writeRunFromTo(blockRow, a0, a1, a0colour);
                     a0prime = a1;
                     a0colour = flipColour(a0colour);
                     break;
                 case Vertical2Left:
-                    a1 = b1 - 2;
+                    a1 = b1 - VERTICAL_OFFSET_TWO_PIXELS;
                     writeRunFromTo(blockRow, a0, a1, a0colour);
                     a0prime = a1;
                     a0colour = flipColour(a0colour);
                     break;
                 case Vertical3Left:
-                    a1 = b1 - 3;
+                    a1 = b1 - VERTICAL_OFFSET_THREE_PIXELS;
                     writeRunFromTo(blockRow, a0, a1, a0colour);
                     a0prime = a1;
                     a0colour = flipColour(a0colour);
                     break;
                 case Vertical1Right:
-                    a1 = b1 + 1;
+                    a1 = b1 + VERTICAL_OFFSET_ONE_PIXEL;
                     writeRunFromTo(blockRow, a0, a1, a0colour);
                     a0prime = a1;
                     a0colour = flipColour(a0colour);
                     break;
                 case Vertical2Right:
-                    a1 = b1 + 2;
+                    a1 = b1 + VERTICAL_OFFSET_TWO_PIXELS;
                     writeRunFromTo(blockRow, a0, a1, a0colour);
                     a0prime = a1;
                     a0colour = flipColour(a0colour);
                     break;
                 case Vertical3Right:
-                    a1 = b1 + 3;
+                    a1 = b1 + VERTICAL_OFFSET_THREE_PIXELS;
                     writeRunFromTo(blockRow, a0, a1, a0colour);
                     a0prime = a1;
                     a0colour = flipColour(a0colour);
@@ -399,69 +419,74 @@ class BilevelBlockRenderer implements BlockRenderer {
         }
     }
 
-    private void writeRunFromTo(int blockRow, int startColumn, int endColumn, int colour) {
-        if (startColumn < 0) {
-            startColumn = 0;
+    private void writeRunFromTo(final int blockRow, final int startColumn, final int endColumn, final int colour) {
+        int start = startColumn;
+        if (start < 0) {
+            start = 0;
         }
-        for (int i = startColumn; i < endColumn; ++i) {
+        for (int i = start; i < endColumn; ++i) {
             imgRaster.setSample(i, blockRow, 0, colour);
         }
     }
 
-    private int flipColour(int colour) {
-        return (colour == WHITE) ? BLACK : WHITE;
+    private int flipColour(final int colour) {
+        if (colour == WHITE) {
+            return BLACK;
+        } else {
+            return WHITE;
+        }
     }
 
     private TwoDmode getTwoDmode() throws IOException {
         TwoDmode mode = TwoDmode.Unknown;
         int numberOfCodewordBits = 1;
-        int codeWord = (int)mImageData.readBits(numberOfCodewordBits);
+        int codeWord = (int) mImageData.readBits(numberOfCodewordBits);
         do {
             mode = lookupMode(codeWord, numberOfCodewordBits);
             if (mode == TwoDmode.Unknown) {
                 numberOfCodewordBits++;
-                codeWord = (codeWord << 1) + (int)mImageData.readBits(1);
+                codeWord = (codeWord << 1) + (int) mImageData.readBits(1);
             }
         } while ((mode == TwoDmode.Unknown) && (numberOfCodewordBits <= MAX_VALID_2D_CODEWORD_LENGTH));
         return mode;
     }
 
-    private TwoDmode lookupMode(int codeWord, int numberOfCodewordBits) {
+    private TwoDmode lookupMode(final int codeWord, final int numberOfCodewordBits) {
         switch (numberOfCodewordBits) {
-            case 1:
+            case ONE_BIT:
                 if (codeWord == 1) {
                     return TwoDmode.Vertical0;
                 } else {
                     return TwoDmode.Unknown;
                 }
-            case 3:
-                if (codeWord == 0b011) {
+            case THREE_BITS:
+                if (codeWord == VERTICAL_ONE_RIGHT) {
                     return TwoDmode.Vertical1Right;
-                } else if (codeWord == 0b010) {
+                } else if (codeWord == VERTICAL_ONE_LEFT) {
                     return TwoDmode.Vertical1Left;
-                } else if (codeWord == 0b001) {
+                } else if (codeWord == HORIZONTAL) {
                     return TwoDmode.Horizontal;
                 } else {
                     return TwoDmode.Unknown;
                 }
-            case 4:
-                if (codeWord == 0b0001) {
+            case FOUR_BITS:
+                if (codeWord == PASS) {
                     return TwoDmode.Pass;
                 } else {
                     return TwoDmode.Unknown;
                 }
-            case 6:
-                if (codeWord == 0b000011) {
+            case SIX_BITS:
+                if (codeWord == VERTICAL_TWO_RIGHT) {
                     return TwoDmode.Vertical2Right;
-                } else if (codeWord == 0b000010) {
+                } else if (codeWord == VERTICAL_TWO_LEFT) {
                     return TwoDmode.Vertical2Left;
                 } else {
                     return TwoDmode.Unknown;
                 }
-            case 7:
-                if (codeWord == 0b0000011) {
+            case SEVEN_BITS:
+                if (codeWord == VERTICAL_THREE_RIGHT) {
                     return TwoDmode.Vertical3Right;
-                } else if (codeWord == 0b0000010) {
+                } else if (codeWord == VERTICAL_THREE_LEFT) {
                     return TwoDmode.Vertical3Left;
                 } else {
                     return TwoDmode.Unknown;
@@ -470,6 +495,7 @@ class BilevelBlockRenderer implements BlockRenderer {
                 return TwoDmode.Unknown;
         }
     }
+
 
     private int getBindex(final int referenceRow, final int refcolour, final int refposition) {
         // First find a changing pixel
@@ -495,7 +521,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         return mImageSegment.getNumberOfPixelsPerBlockHorizontal();
     }
 
-    private void readScanline1D(int blockRow) throws IOException {
+    private void readScanline1D(final int blockRow) throws IOException {
         int blockColumn = 0;
         int colour = WHITE;
 
@@ -510,17 +536,17 @@ class BilevelBlockRenderer implements BlockRenderer {
         }
     }
 
-    private void writeRun(int blockRow, int blockColumn, int runLength, int colour) {
+    private void writeRun(final int blockRow, final int blockColumn, final int runLength, final int colour) {
         for (int i = 0; i < runLength; ++i) {
             imgRaster.setSample(blockColumn + i, blockRow, 0, colour);
         }
     }
 
     private void readEOL() throws IOException {
-        int eol = (int)mImageData.readBits(EOL_LENGTH_IN_BITS);
+        int eol = (int) mImageData.readBits(EOL_LENGTH_IN_BITS);
         // check for fill, and keep reading bits until we get something that isn't all fill bits
         while (eol == 0) {
-            eol = (eol << 1) + (int)mImageData.readBits(1);
+            eol = (eol << 1) + (int) mImageData.readBits(1);
         }
         if (EOL != eol) {
             throw new IOException(String.format("Expected EOL, but got 0x%04d", eol));
@@ -530,7 +556,7 @@ class BilevelBlockRenderer implements BlockRenderer {
         }
     }
 
-    private int readNextRun(int colour) throws IOException {
+    private int readNextRun(final int colour) throws IOException {
         int cumulativeLengthOfThisRun = 0;
         if (colour == WHITE) {
             int whiteRunLength;
@@ -558,13 +584,13 @@ class BilevelBlockRenderer implements BlockRenderer {
     }
 
     private int readWhiteRunLength() throws IOException {
-        int numberOfCodewordBits = 4;
-        int codeWord = (int)mImageData.readBits(numberOfCodewordBits);
+        int numberOfCodewordBits = INITIAL_WHITE_BITRUN_LENGTH;
+        int codeWord = (int) mImageData.readBits(numberOfCodewordBits);
         int runLength = 0;
         do {
-            runLength = lookupRunLength(whiteCodeBook, codeWord, numberOfCodewordBits);
+            runLength = lookupRunLength(WHITE_CODE_BOOK, codeWord, numberOfCodewordBits);
             if (runLength == -1) {
-                codeWord = (codeWord << 1) + (int)mImageData.readBits(1);
+                codeWord = (codeWord << 1) + (int) mImageData.readBits(1);
                 ++numberOfCodewordBits;
             }
         } while ((runLength == -1) && (numberOfCodewordBits <= MAX_VALID_BITLENGTH_WHITE));
@@ -573,19 +599,19 @@ class BilevelBlockRenderer implements BlockRenderer {
 
     private int readBlackRunLength() throws IOException {
         int numberOfCodewordBits = 2;
-        int codeWord = (int)mImageData.readBits(numberOfCodewordBits);
+        int codeWord = (int) mImageData.readBits(numberOfCodewordBits);
         int runLength = 0;
         do {
-            runLength = lookupRunLength(blackCodeBook, codeWord, numberOfCodewordBits);
+            runLength = lookupRunLength(BLACK_CODE_BOOK, codeWord, numberOfCodewordBits);
             if (runLength == -1) {
-                codeWord = (codeWord << 1) + (int)mImageData.readBits(1);
+                codeWord = (codeWord << 1) + (int) mImageData.readBits(1);
                 ++numberOfCodewordBits;
             }
         } while ((runLength == -1) && (numberOfCodewordBits <= MAX_VALID_BITLENGTH_BLACK));
         return runLength;
     }
 
-    private int lookupRunLength(final CodebookEntry[] codeBook, int codeWord, int numberOfCodewordBits) throws IOException {
+    private int lookupRunLength(final CodebookEntry[] codeBook, final int codeWord, final int numberOfCodewordBits) throws IOException {
         for (int i = 0; i < codeBook.length; ++i) {
             CodebookEntry entry = codeBook[i];
             if ((entry.codeWordLength == numberOfCodewordBits) && (entry.codeWord == codeWord)) {

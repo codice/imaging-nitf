@@ -27,10 +27,10 @@ import org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy;
  * A builder class that handles parsing.
  */
 public class NitfParserParsingFlow {
-    private final NitfReader nitfReader;
+    private final NitfReader reader;
 
-    NitfParserParsingFlow(NitfReader nitfReader) {
-        this.nitfReader = nitfReader;
+    NitfParserParsingFlow(final NitfReader nitfReader) {
+        this.reader = nitfReader;
     }
 
     /**
@@ -41,7 +41,7 @@ public class NitfParserParsingFlow {
      *
      * @see {@link org.codice.imaging.nitf.core.AllDataExtractionParseStrategy}
      */
-    public NitfSegmentsFlow allData() throws ParseException {
+    public final NitfSegmentsFlow allData() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         return build(parseStrategy);
     }
@@ -54,7 +54,7 @@ public class NitfParserParsingFlow {
      *
      * @see {@link org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy}
      */
-    public NitfSegmentsFlow headerOnly() throws ParseException {
+    public final NitfSegmentsFlow headerOnly() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         return build(parseStrategy);
     }
@@ -68,7 +68,7 @@ public class NitfParserParsingFlow {
      * @see
      * {@link org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy}
      */
-    public NitfSegmentsFlow dataExtensionSegment() throws ParseException {
+    public final NitfSegmentsFlow dataExtensionSegment() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new DataExtensionSegmentNitfParseStrategy();
         return build(parseStrategy);
     }
@@ -82,7 +82,7 @@ public class NitfParserParsingFlow {
      * @see
      * {@link org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy}
      */
-    public NitfSegmentsFlow imageData() throws ParseException {
+    public final NitfSegmentsFlow imageData() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
         return build(parseStrategy);
     }
@@ -96,8 +96,8 @@ public class NitfParserParsingFlow {
      *
      * @see {@link org.codice.imaging.nitf.core.SlottedNitfParseStrategy}
      */
-    public NitfSegmentsFlow build(SlottedNitfParseStrategy parseStrategy) throws ParseException {
-        NitfFileParser.parse(nitfReader, parseStrategy);
+    public final NitfSegmentsFlow build(final SlottedNitfParseStrategy parseStrategy) throws ParseException {
+        NitfFileParser.parse(reader, parseStrategy);
         return new NitfSegmentsFlow(parseStrategy);
     }
 }

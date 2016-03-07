@@ -25,22 +25,28 @@ import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
  */
 class Mono1ImageRepresentationHandler extends SharedMonoImageRepresentationHandler implements ImageRepresentationHandler {
 
+    private static final int MAX_WHITE_BYTE_VALUE = 0xFF;
 
-    public Mono1ImageRepresentationHandler(int selectedBandZeroBase, IOReaderFunction readerFunc) {
+    Mono1ImageRepresentationHandler(final int selectedBandZeroBase, final IOReaderFunction readerFunc) {
         super(selectedBandZeroBase, readerFunc);
     }
 
     @Override
-    public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex, ImageInputStream imageInputStream, int bandIndex) throws IOException {
+    public void renderPixelBand(final DataBuffer dataBuffer, final int pixelIndex,
+            final ImageInputStream imageInputStream, final int bandIndex) throws IOException {
         if (bandIndex == selectedBandZeroBase) {
-            dataBuffer.setElem(pixelIndex, ((Integer) reader.apply(imageInputStream) == 1 ? 0xFF : 0x00));
+            if ((Integer) reader.apply(imageInputStream) == 1) {
+                dataBuffer.setElem(pixelIndex, MAX_WHITE_BYTE_VALUE);
+            } else {
+                dataBuffer.setElem(pixelIndex, 0x00);
+            }
         } else {
             reader.apply(imageInputStream);
         }
     }
 
     @Override
-    public BufferedImage createBufferedImage(int width, int height) {
+    public BufferedImage createBufferedImage(final int width, final int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
     }
 
