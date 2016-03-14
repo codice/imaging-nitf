@@ -48,8 +48,8 @@ import org.codice.imaging.nitf.core.image.ImageCoordinates;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
-import org.codice.imaging.nitf.core.image.NitfImageBand;
-import org.codice.imaging.nitf.core.image.NitfImageBandLUT;
+import org.codice.imaging.nitf.core.image.ImageBand;
+import org.codice.imaging.nitf.core.image.ImageBandLUT;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
@@ -152,24 +152,24 @@ public class Nitf21HeaderTest {
         assertEquals(1, segment1.getNumBands());
 
         // Checks for ImageBand
-        NitfImageBand band1 = segment1.getImageBand(1);
+        ImageBand band1 = segment1.getImageBand(1);
         assertNotNull(band1);
         assertEquals("LU", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());
         assertEquals(3, band1.getNumLUTs());
         assertEquals(2, band1.getNumLUTEntries());
         // Checks for lookup tables
-        NitfImageBandLUT lut1 = band1.getLUT(1);
+        ImageBandLUT lut1 = band1.getLUT(1);
         assertNotNull(lut1);
         assertEquals(2, lut1.getNumberOfEntries());
         assertEquals((byte)0xFF, lut1.getEntry(0));
         assertEquals((byte)0x00, lut1.getEntry(1));
-        NitfImageBandLUT lut2 = band1.getLUT(2);
+        ImageBandLUT lut2 = band1.getLUT(2);
         assertNotNull(lut2);
         assertEquals(2, lut2.getNumberOfEntries());
         assertEquals((byte)0x00, lut2.getEntry(0));
         assertEquals((byte)0xFF, lut2.getEntry(1));
-        NitfImageBandLUT lut3 = band1.getLUT(3);
+        ImageBandLUT lut3 = band1.getLUT(3);
         assertNotNull(lut3);
         assertEquals(2, lut3.getNumberOfEntries());
         assertEquals((byte)0x00, lut3.getEntry(0));
@@ -251,7 +251,7 @@ public class Nitf21HeaderTest {
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
         // Checks for ImageBand
-        NitfImageBand band1 = segment1.getImageBand(1);
+        ImageBand band1 = segment1.getImageBand(1);
         assertNotNull(band1);
         assertEquals("M", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());
@@ -322,7 +322,7 @@ public class Nitf21HeaderTest {
         assertEquals(ImageCompression.JPEG, segment1.getImageCompression());
         assertEquals("00.0", segment1.getCompressionRate());
         assertEquals(1, segment1.getNumBands());
-        NitfImageBand band1 = segment1.getImageBand(1);
+        ImageBand band1 = segment1.getImageBand(1);
         assertNotNull(band1);
         assertEquals("M", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());
@@ -425,7 +425,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment2.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment2.getImageCompression());
         assertEquals(1, segment2.getNumBands());
-        NitfImageBand band1 = segment1.getImageBand(1);
+        ImageBand band1 = segment1.getImageBand(1);
         assertNotNull(band1);
         assertEquals("M", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());
@@ -923,7 +923,7 @@ public class Nitf21HeaderTest {
         assertEquals("", imageSegment.getImageComments().get(2));
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment.getImageCompression());
         assertEquals(1, imageSegment.getNumBands());
-        NitfImageBand band1 = imageSegment.getImageBand(1);
+        ImageBand band1 = imageSegment.getImageBand(1);
         assertNotNull(band1);
         assertEquals("M", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());

@@ -132,8 +132,8 @@ public class ImageSegmentParser extends AbstractSegmentParser {
             readXBANDS();
         }
         for (int i = 0; i < numBands; ++i) {
-            NitfImageBand imageBand = new NitfImageBand();
-            new NitfImageBandParser(reader, imageBand);
+            ImageBand imageBand = new ImageBand();
+            new ImageBandParser(reader, imageBand);
             segment.addImageBand(imageBand);
         }
         readISYNC();

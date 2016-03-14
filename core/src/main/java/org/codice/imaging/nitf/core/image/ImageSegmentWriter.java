@@ -134,7 +134,7 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
         }
 
         for (int i = 0; i < imageSegment.getNumBands(); ++i) {
-            NitfImageBand band = imageSegment.getImageBandZeroBase(i);
+            ImageBand band = imageSegment.getImageBandZeroBase(i);
             writeFixedLengthString(band.getImageRepresentation(), IREPBAND_LENGTH);
             writeFixedLengthString(band.getSubCategory(), ISUBCAT_LENGTH);
             writeFixedLengthString("N", IFC_LENGTH);
@@ -143,7 +143,7 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
             if (band.getNumLUTs() != 0) {
                 writeFixedLengthNumber(band.getNumLUTEntries(), NELUT_LENGTH);
                 for (int j = 0; j < band.getNumLUTs(); ++j) {
-                    NitfImageBandLUT lut = band.getLUTZeroBase(j);
+                    ImageBandLUT lut = band.getLUTZeroBase(j);
                     writeBytes(lut.getEntries(), band.getNumLUTEntries());
                 }
             }

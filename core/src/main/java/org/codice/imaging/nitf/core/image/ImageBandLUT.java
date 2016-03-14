@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.image;
 /**
     Lookup table for an image band.
 */
-public class NitfImageBandLUT {
+public class ImageBandLUT {
 
     private byte[] entries = null;
 
@@ -26,7 +26,7 @@ public class NitfImageBandLUT {
 
         @param lutEntries the LUT data, in order.
     */
-    public NitfImageBandLUT(final byte[] lutEntries) {
+    public ImageBandLUT(final byte[] lutEntries) {
         entries = lutEntries;
     }
 
