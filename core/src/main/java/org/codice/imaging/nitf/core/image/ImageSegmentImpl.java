@@ -41,7 +41,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
     private final List<String> imageComments = new ArrayList<>();
     private ImageCompression imageCompression = ImageCompression.UNKNOWN;
     private String compressionRate = null;
-    private final List<NitfImageBand> imageBands = new ArrayList<>();
+    private final List<ImageBand> imageBands = new ArrayList<>();
     private ImageMode imageMode = ImageMode.UNKNOWN;
     private int numBlocksPerRow = 0;
     private int numBlocksPerColumn = 0;
@@ -536,7 +536,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
 
         @param imageBand the image band to add
     */
-    public final void addImageBand(final NitfImageBand imageBand) {
+    public final void addImageBand(final ImageBand imageBand) {
         imageBands.add(imageBand);
     }
 
@@ -544,7 +544,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public final NitfImageBand getImageBand(final int bandNumber) {
+    public final ImageBand getImageBand(final int bandNumber) {
         return getImageBandZeroBase(bandNumber - 1);
     }
 
@@ -552,7 +552,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public final NitfImageBand getImageBandZeroBase(final int bandNumberZeroBase) {
+    public final ImageBand getImageBandZeroBase(final int bandNumberZeroBase) {
         return imageBands.get(bandNumberZeroBase);
     }
 

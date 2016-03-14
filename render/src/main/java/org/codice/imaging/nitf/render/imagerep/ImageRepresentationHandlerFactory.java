@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.render.imagerep;
 import java.util.HashMap;
 import java.util.Map;
 import org.codice.imaging.nitf.core.image.ImageSegment;
-import org.codice.imaging.nitf.core.image.NitfImageBand;
+import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.render.datareader.DataReaderFactory;
 import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
 
@@ -112,7 +112,7 @@ public final class ImageRepresentationHandlerFactory {
         boolean hasG = false;
         boolean hasB = false;
         for (int i = 0; i < segment.getNumBands(); i++) {
-            NitfImageBand band = segment.getImageBandZeroBase(i);
+            ImageBand band = segment.getImageBandZeroBase(i);
             if (null != band.getImageRepresentation()) {
                 switch (band.getImageRepresentation()) {
                     case "R":
@@ -134,7 +134,7 @@ public final class ImageRepresentationHandlerFactory {
 
     private static int getFirstMonoBandZeroBase(final ImageSegment segment) {
         for (int bandIndex = 0; bandIndex < segment.getNumBands(); bandIndex++) {
-            NitfImageBand band = segment.getImageBandZeroBase(bandIndex);
+            ImageBand band = segment.getImageBandZeroBase(bandIndex);
             if (null != band.getImageRepresentation() && ("M".equals(band.getImageRepresentation()))) {
                 return bandIndex;
             }
@@ -144,7 +144,7 @@ public final class ImageRepresentationHandlerFactory {
 
     private static int getFirstLookupBandZeroBase(final ImageSegment segment) {
         for (int bandIndex = 0; bandIndex < segment.getNumBands(); bandIndex++) {
-            NitfImageBand band = segment.getImageBandZeroBase(bandIndex);
+            ImageBand band = segment.getImageBandZeroBase(bandIndex);
             if (null != band.getImageRepresentation() && ("LU".equals(band.getImageRepresentation()))) {
                 return bandIndex;
             }

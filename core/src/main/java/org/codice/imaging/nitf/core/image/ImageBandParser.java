@@ -26,10 +26,10 @@ import static org.codice.imaging.nitf.core.image.ImageConstants.NLUTS_LENGTH;
 /**
     Image Band and Image Band LUT parser.
 */
-class NitfImageBandParser {
+class ImageBandParser {
 
     private NitfReader reader = null;
-    private NitfImageBand imageBand = null;
+    private ImageBand imageBand = null;
     private int numLUTs = 0;
 
     /**
@@ -39,7 +39,7 @@ class NitfImageBandParser {
         @throws ParseException if an obviously invalid value is detected during parsing,
         or if another problem occurs during parsing (e.g. end of file).
     */
-    NitfImageBandParser(final NitfReader nitfReader, final NitfImageBand band) throws ParseException {
+    ImageBandParser(final NitfReader nitfReader, final ImageBand band) throws ParseException {
         reader = nitfReader;
         imageBand = band;
         readIREPBAND();
@@ -50,7 +50,7 @@ class NitfImageBandParser {
         if (numLUTs > 0) {
             readNELUT();
             for (int i = 0; i < numLUTs; ++i) {
-                NitfImageBandLUT lut = new NitfImageBandLUT(reader.readBytesRaw(imageBand.getNumLUTEntries()));
+                ImageBandLUT lut = new ImageBandLUT(reader.readBytesRaw(imageBand.getNumLUTEntries()));
                 imageBand.addLUT(lut);
             }
         }

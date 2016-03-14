@@ -28,7 +28,7 @@ import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
-import org.codice.imaging.nitf.core.image.NitfImageBand;
+import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
@@ -112,7 +112,7 @@ public class Nitf20OverflowTest {
         assertEquals(0, imageSegment1.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment1.getImageCompression());
         assertEquals(1, imageSegment1.getNumBands());
-        NitfImageBand band1 = imageSegment1.getImageBand(1);
+        ImageBand band1 = imageSegment1.getImageBand(1);
         assertNotNull(band1);
         assertEquals("", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());
