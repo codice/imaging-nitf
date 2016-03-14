@@ -28,7 +28,7 @@ import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
-import org.codice.imaging.nitf.core.image.NitfImageBand;
+import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
@@ -87,19 +87,19 @@ public class Nitf21SorcerTest {
         assertEquals(3, imageSegment.getNumBands());
 
         // Checks for ImageBand
-        NitfImageBand band1 = imageSegment.getImageBand(1);
+        ImageBand band1 = imageSegment.getImageBand(1);
         assertNotNull(band1);
         assertEquals("Y", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());
         assertEquals(0, band1.getNumLUTs());
         assertEquals(0, band1.getNumLUTEntries());
-        NitfImageBand band2 = imageSegment.getImageBand(2);
+        ImageBand band2 = imageSegment.getImageBand(2);
         assertNotNull(band2);
         assertEquals("Cb", band2.getImageRepresentation());
         assertEquals("", band2.getSubCategory());
         assertEquals(0, band2.getNumLUTs());
         assertEquals(0, band2.getNumLUTEntries());
-        NitfImageBand band3 = imageSegment.getImageBand(3);
+        ImageBand band3 = imageSegment.getImageBand(3);
         assertNotNull(band3);
         assertEquals("Cr", band3.getImageRepresentation());
         assertEquals("", band3.getSubCategory());

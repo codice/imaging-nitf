@@ -323,7 +323,7 @@ public interface ImageSegment extends CommonBasicSegment {
      @param bandNumber the index of the band to return.
      @return image band corresponding to the bandNumber index
      */
-    NitfImageBand getImageBand(int bandNumber);
+    ImageBand getImageBand(int bandNumber);
 
     /**
      Return the image band (zero base).
@@ -334,7 +334,7 @@ public interface ImageSegment extends CommonBasicSegment {
      @param bandNumberZeroBase the index of the band to return (0 base).
      @return image band corresponding to the bandNumberZeroBase index
      */
-    NitfImageBand getImageBandZeroBase(int bandNumberZeroBase);
+    ImageBand getImageBandZeroBase(int bandNumberZeroBase);
 
     /**
      Return the image mode (IMODE) for the image.

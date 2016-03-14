@@ -20,18 +20,18 @@ import java.util.List;
 /**
     Image Band.
 */
-public class NitfImageBand {
+public class ImageBand {
 
     // An enum might have been useful, but this is extensible
     private String imageRepresentation = null;
     private String imageSubcategory = null;
     private int numEntriesLUT = 0;
-    private List<NitfImageBandLUT> luts = new ArrayList<NitfImageBandLUT>();
+    private List<ImageBandLUT> luts = new ArrayList<ImageBandLUT>();
 
     /**
         Default constructor.
     */
-    public NitfImageBand() {
+    public ImageBand() {
     }
 
     /**
@@ -153,7 +153,7 @@ public class NitfImageBand {
 
         @param lut the lookup table to add.
     */
-    public final void addLUT(final NitfImageBandLUT lut) {
+    public final void addLUT(final ImageBandLUT lut) {
         luts.add(lut);
     }
 
@@ -163,7 +163,7 @@ public class NitfImageBand {
         @param lutNumber the index of the lookup table (1-base).
         @return the lookup table corresponding to the index.
     */
-    public final NitfImageBandLUT getLUT(final int lutNumber) {
+    public final ImageBandLUT getLUT(final int lutNumber) {
         return getLUTZeroBase(lutNumber - 1);
     }
 
@@ -173,7 +173,7 @@ public class NitfImageBand {
         @param lutNumberZeroBase the index of the lookup table (0-base).
         @return the lookup table corresponding to the index.
     */
-    public final NitfImageBandLUT getLUTZeroBase(final int lutNumberZeroBase) {
+    public final ImageBandLUT getLUTZeroBase(final int lutNumberZeroBase) {
         return luts.get(lutNumberZeroBase);
     }
 }
