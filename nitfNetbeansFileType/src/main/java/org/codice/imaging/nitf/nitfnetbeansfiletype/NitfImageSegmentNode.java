@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
-import org.codice.imaging.nitf.core.image.NitfImageBand;
+import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.openide.nodes.Children;
 import org.openide.nodes.Sheet;
@@ -172,7 +172,7 @@ class NitfImageSegmentNode extends AbstractSegmentNode {
     }
 
     private void addImageBandSetToSheet(final int bandNumber, final Sheet sheet) {
-        NitfImageBand band = header.getImageBandZeroBase(bandNumber);
+        ImageBand band = header.getImageBandZeroBase(bandNumber);
         Sheet.Set bandProperties = Sheet.createPropertiesSet();
         bandProperties.setName("imageBand" + bandNumber);
         bandProperties.setDisplayName(String.format("Image Band %d", bandNumber));

@@ -93,7 +93,7 @@ public class Nitf21ImageParsingTest {
         assertEquals(0, imageSegment.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, imageSegment.getImageCompression());
         assertEquals(1, imageSegment.getNumBands());
-        NitfImageBand band1 = imageSegment.getImageBand(1);
+        ImageBand band1 = imageSegment.getImageBand(1);
         assertNotNull(band1);
         assertEquals("M", band1.getImageRepresentation());
         assertEquals("", band1.getSubCategory());
