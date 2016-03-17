@@ -14,11 +14,16 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
+
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -28,9 +33,6 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.symbol.SymbolColour;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,9 +51,9 @@ public class Nitf20SymbolTest {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
         NitfFileParser.parse(reader, parseStrategy);
-        assertFileSegmentDataIsAsExpected(parseStrategy);
+        assertFileSegmentDataIsAsExpected(parseStrategy.getNitfDataSource());
 
-        SymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
+        SymbolSegment symbolSegment1 = parseStrategy.getNitfDataSource().getSymbolSegments().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
         byte[] allData = new byte[931];
         int bytesRead = symbolSegment1.getData().read(allData);
@@ -65,12 +67,12 @@ public class Nitf20SymbolTest {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
         NitfFileParser.parse(reader, parseStrategy);
-        assertFileSegmentDataIsAsExpected(parseStrategy);
+        assertFileSegmentDataIsAsExpected(parseStrategy.getNitfDataSource());
 
-        SymbolSegment symbolSegment1 = parseStrategy.getSymbolSegments().get(0);
+        SymbolSegment symbolSegment1 = parseStrategy.getNitfDataSource().getSymbolSegments().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
-        assertEquals(1, parseStrategy.getSymbolSegments().size());
-        assertNull(parseStrategy.getSymbolSegments().get(0).getData());
+        assertEquals(1, parseStrategy.getNitfDataSource().getSymbolSegments().size());
+        assertNull(parseStrategy.getNitfDataSource().getSymbolSegments().get(0).getData());
 
         is.close();
     }

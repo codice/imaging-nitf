@@ -1,0 +1,6 @@
+org/codice/imaging/nitf/fluent/NitfParserInputFlow.class
+org/codice/imaging/nitf/fluent/NitfParserParsingFlow.class
+org/codice/imaging/nitf/fluent/NitfSegmentsFlow.class
+org/codice/imaging/nitf/fluent/ImageDataStrategySupplier.class
+org/codice/imaging/nitf/fluent/NitfWriterFlow.class
+org/codice/imaging/nitf/fluent/NitfCreationFlow.class

@@ -14,6 +14,9 @@
  */
 package org.codice.imaging.nitf.core;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,12 +25,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Shared writer test code
@@ -44,7 +46,7 @@ class AbstractWriterTest {
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream(sourceFileName)));
         SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfFileParser.parse(reader, parseStrategy);
-        NitfWriter writer = new NitfFileWriter(parseStrategy, outputFile);
+        NitfWriter writer = new NitfFileWriter(parseStrategy.getNitfDataSource(), outputFile);
         writer.write();
         assertTrue(FileUtils.contentEquals(new File(getClass().getResource(sourceFileName).toURI()), new File(outputFile)));
         assertTrue(new File(outputFile).delete());
@@ -52,7 +54,7 @@ class AbstractWriterTest {
         // Do the same again, but with stream writing
         try (
             OutputStream outputStream = new FileOutputStream(outputFile)) {
-            writer = new NitfOutputStreamWriter(parseStrategy, outputStream);
+            writer = new NitfOutputStreamWriter(parseStrategy.getNitfDataSource(), outputStream);
             writer.write();
             assertTrue(FileUtils.contentEquals(new File(getClass().getResource(sourceFileName).toURI()), new File(outputFile)));
         }
