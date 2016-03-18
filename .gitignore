@@ -16,6 +16,7 @@ hs_err_pid*
 /nitfNetbeansFileType/target/
 /render/target/
 /shared-test-resources/target/
+/fluent-api/target/
 
 # ignore intellij files
 *.iml

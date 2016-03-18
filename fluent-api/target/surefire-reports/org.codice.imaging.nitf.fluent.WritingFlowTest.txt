@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.codice.imaging.nitf.fluent.WritingFlowTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.375 sec
