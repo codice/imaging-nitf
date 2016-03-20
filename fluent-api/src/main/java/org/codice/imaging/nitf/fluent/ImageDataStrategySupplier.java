@@ -1,11 +1,9 @@
 package org.codice.imaging.nitf.fluent;
 
 import java.util.function.Supplier;
-
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
-
 import org.codice.imaging.nitf.core.ConfigurableHeapStrategy;
 import org.codice.imaging.nitf.core.FileBackedHeapStrategy;
 import org.codice.imaging.nitf.core.HeapStrategy;
@@ -14,7 +12,7 @@ import org.codice.imaging.nitf.core.InMemoryHeapStrategy;
 
 /**
  * Supplies an ImageDataStrategy to the SlottedNitfParsingStrategy.
- * <p/>
+ * <p>
  * example:
  * <pre>
  *     {@code
@@ -30,7 +28,7 @@ public class ImageDataStrategySupplier implements Supplier<HeapStrategy<ImageInp
     private HeapStrategy<ImageInputStream> imageDataStrategy;
 
     /**
-     * Creates an instance of ConfigurableImageDataStrategy using the supplied values.
+     * Creates an instance of ConfigurableHeapStrategy using the supplied values.
      *
      * @param maximumSize The absolute maximum number of pixels that should be stored.  If the
      *                    input image is larger than this, it will be ignored.
@@ -38,14 +36,15 @@ public class ImageDataStrategySupplier implements Supplier<HeapStrategy<ImageInp
      */
     public ImageDataStrategySupplier configure(long maximumSize) {
         HeapStrategyConfiguration config = new HeapStrategyConfiguration(maximumSize);
-        this.imageDataStrategy = new ConfigurableHeapStrategy<ImageInputStream>(config, null, null);
+        this.imageDataStrategy = new ConfigurableHeapStrategy<>(config, null, null);
         return this;
     }
 
     /**
-     * Creates an instance of FileBackedImageDataStrategy.  All images are stored in temporary
-     * files until ready to be rendered.  This method decreases heap usage, but increases rendering
-     * time.
+     * Creates an instance of FileBackedHeapStrategy.
+     *
+     * Segment data is stored in temporary files until required. This method decreases heap usage, but increases
+     * rendering time.
      *
      * @return this ImageDataStrategySupplier.
      */

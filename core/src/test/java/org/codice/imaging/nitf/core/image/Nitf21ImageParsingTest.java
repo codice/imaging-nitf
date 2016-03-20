@@ -14,20 +14,19 @@
  **/
 package org.codice.imaging.nitf.core.image;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
-
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,6 +62,7 @@ public class Nitf21ImageParsingTest {
 
         ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
+        assertNull(imageSegment.getData());
     }
 
     private void assertImageSegmentMetadataIsAsExpected(ImageSegment imageSegment) {

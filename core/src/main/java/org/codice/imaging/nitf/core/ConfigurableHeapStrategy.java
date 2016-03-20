@@ -1,10 +1,23 @@
+/*
+ * Copyright (c) Codice Foundation
+ *
+ * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
+ * is distributed along with this program and can be found at
+ * <http://www.gnu.org/licenses/lgpl.html>.
+ *
+ */
 package org.codice.imaging.nitf.core;
 
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
 import java.util.function.Function;
-
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * An implementation of HeapStrategy that either stores the data in memory or on disk based
  * on the supplied configuration.
  *
- * @param <R> - The type to be returned by this heap strategy.
+ * @param <R> The type to be returned by this heap strategy.
  */
 public class ConfigurableHeapStrategy<R> implements HeapStrategy<R> {
     private static final org.slf4j.Logger LOGGER = LoggerFactory
@@ -29,9 +42,9 @@ public class ConfigurableHeapStrategy<R> implements HeapStrategy<R> {
      *                                  HeapStrategy when to use JVM heap or disk. May
      *                                  not be null.
 *      @param fileTFunction a function that will convert a RandomAccessFile into the expected type
-     *                      <R>.
+     *                      &lt;R&gt;.
      * @param inputStreamTFunction a function that will convert a java.io.InputStream into the
-     *                             expected type <R>
+     *                             expected type &lt;R&gt;.
      */
     public ConfigurableHeapStrategy(final HeapStrategyConfiguration dataStrategyConfiguration,
             final Function<RandomAccessFile, R> fileTFunction,

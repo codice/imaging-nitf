@@ -16,10 +16,8 @@ package org.codice.imaging.nitf.fluent;
 
 import java.text.ParseException;
 import java.util.function.Supplier;
-
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
-
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.FileBackedHeapStrategy;
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
@@ -59,7 +57,6 @@ public class NitfParserParsingFlow {
      *
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
-     * @see {@link org.codice.imaging.nitf.core.AllDataExtractionParseStrategy}
      */
     public NitfSegmentsFlow allData() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
@@ -72,7 +69,6 @@ public class NitfParserParsingFlow {
      *
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
-     * @see {@link org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy}
      */
     public NitfSegmentsFlow headerOnly() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
@@ -85,7 +81,6 @@ public class NitfParserParsingFlow {
      *
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
-     * @see {@link org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy}
      */
     public NitfSegmentsFlow dataExtensionSegment() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new DataExtensionSegmentNitfParseStrategy();
@@ -98,7 +93,6 @@ public class NitfParserParsingFlow {
      *
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
-     * @see {@link org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy}
      */
     public NitfSegmentsFlow imageData() throws ParseException {
         SlottedNitfParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
@@ -109,10 +103,10 @@ public class NitfParserParsingFlow {
     /**
      * Parses the NITF file using the supplied SlottedNitfParseStrategy.
      *
-     * @param parseStrategy - The NitfParserStrategy to use for parsing.
+     * @param parseStrategy the SlottedNitfParseStrategy to use for parsing.
      * @return a new NitfSegmentsFlow.
      * @throws ParseException when it's thrown by the parser.
-     * @see {@link org.codice.imaging.nitf.core.SlottedNitfParseStrategy}
+     *
      */
     public NitfSegmentsFlow build(SlottedNitfParseStrategy parseStrategy) throws ParseException {
         NitfFileParser.parse(nitfReader, parseStrategy);

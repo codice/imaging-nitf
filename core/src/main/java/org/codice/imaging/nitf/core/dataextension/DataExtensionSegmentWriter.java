@@ -68,7 +68,7 @@ public class DataExtensionSegmentWriter extends AbstractSegmentWriter {
             mOutput.write(treData);
         }
         if (des.getData() != null) {
-            mOutput.write(des.getData());
+            writeSegmentData(des.getData());
         }
     }
 }
