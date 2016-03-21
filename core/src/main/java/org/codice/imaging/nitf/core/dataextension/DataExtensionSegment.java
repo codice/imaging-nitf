@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.tre.TreCollection;
@@ -139,14 +140,14 @@ public interface DataExtensionSegment extends CommonSegment {
     /**
      * Set the DES data, if any.
      *
-     * @param bytes the data for this DES.
+     * @param stream stream containing the data for this DES.
      */
-    void setData(final byte[] bytes);
+    void setData(final ImageInputStream stream);
 
     /**
      * Get the data for this DES.
      *
      * @return data for this DES.
      */
-    byte[] getData();
+    ImageInputStream getData();
 }

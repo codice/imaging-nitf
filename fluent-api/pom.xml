@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fluent-api</artifactId>
+    <artifactId>codice-imaging-nitf-fluent-api</artifactId>
 
     <name>Codice Imaging: NITF Fluent API</name>
     

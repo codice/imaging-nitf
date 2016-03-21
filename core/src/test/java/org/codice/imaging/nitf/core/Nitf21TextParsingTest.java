@@ -14,19 +14,21 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
+
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.text.TextDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,9 +46,9 @@ public class Nitf21TextParsingTest {
         TextDataExtractionParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getTextSegments().size());
+        assertEquals(1, parseStrategy.getNitfDataSource().getTextSegments().size());
 
-        TextSegment textSegment = parseStrategy.getTextSegments().get(0);
+        TextSegment textSegment = parseStrategy.getNitfDataSource().getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
         assertEquals("Paragon Imaging rftopidf, version 1.0\n\nConverted on Wed Jun 30 11:02:27 1993\n\n", textSegment.getData());
     }
@@ -56,11 +58,11 @@ public class Nitf21TextParsingTest {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getTextSegments().size());
+        assertEquals(1, parseStrategy.getNitfDataSource().getTextSegments().size());
 
-        TextSegment textSegment = parseStrategy.getTextSegments().get(0);
+        TextSegment textSegment = parseStrategy.getNitfDataSource().getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertNull(parseStrategy.getTextSegments().get(0).getData());
+        assertNull(parseStrategy.getNitfDataSource().getTextSegments().get(0).getData());
     }
 
     private void assertTextSegmentMetadataIsAsExpected(TextSegment textSegment) {

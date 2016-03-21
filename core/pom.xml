@@ -79,8 +79,12 @@
                         <id>validate</id>
                         <phase>validate</phase>
                         <configuration>
-                            <configLocation>file:${project.parent.basedir}/checkstyle.xml
+                            <configLocation>
+                                file:${project.parent.basedir}/checkstyle.xml
                             </configLocation>
+                            <suppressionsLocation>
+                                file:${project.basedir}/checkstyle-suppressions.xml
+                            </suppressionsLocation>
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>

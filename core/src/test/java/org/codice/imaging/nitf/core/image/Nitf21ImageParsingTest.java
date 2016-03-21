@@ -26,6 +26,7 @@ import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,9 +44,9 @@ public class Nitf21ImageParsingTest {
         ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getImageSegments().size());
+        assertEquals(1, parseStrategy.getNitfDataSource().getImageSegments().size());
 
-        ImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
+        ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
         byte[] allData = new byte[1048577];
         int bytesRead = imageSegment.getData().read(allData);
@@ -57,10 +58,11 @@ public class Nitf21ImageParsingTest {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getImageSegments().size());
+        assertEquals(1, parseStrategy.getNitfDataSource().getImageSegments().size());
 
-        ImageSegment imageSegment = parseStrategy.getImageSegments().get(0);
+        ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
+        assertNull(imageSegment.getData());
     }
 
     private void assertImageSegmentMetadataIsAsExpected(ImageSegment imageSegment) {

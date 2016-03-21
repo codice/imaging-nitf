@@ -59,8 +59,8 @@ public class RenderTestSupport extends TestCase {
         NitfReader reader = new NitfInputStreamReader(getClass().getResourceAsStream(inputFileName));
         ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
         NitfFileParser.parse(reader, parseStrategy);
-        for (int i = 0; i < parseStrategy.getImageSegments().size(); ++i) {
-            ImageSegment imageSegment = parseStrategy.getImageSegments().get(i);
+        for (int i = 0; i < parseStrategy.getNitfDataSource().getImageSegments().size(); ++i) {
+            ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(i);
             NitfRenderer renderer = new NitfRenderer();
             BufferedImage img = renderer.render(imageSegment);
             // TODO: move to automated (perceptual?) comparison

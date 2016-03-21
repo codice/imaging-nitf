@@ -189,7 +189,7 @@ public interface GraphicSegment extends CommonBasicSegment {
     /**
      * Get the data (CGM stream) associated with this segment.
      *
-     * @note: You may want to reset the stream if this is not the first use.
+     * You may need to rewind this stream if it has been previously read.
      *
      * @return stream containing the data for this segment.
      */

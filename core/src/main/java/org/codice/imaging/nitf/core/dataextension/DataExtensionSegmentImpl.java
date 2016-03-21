@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonSegmentImpl;
 import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.CONTROLLED_EXTENSIONS;
@@ -30,7 +31,7 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
     private String overflowedHeaderType = null;
     private int desItemOverflowed = 0;
     private String userDefinedSubheaderField = null;
-    private byte[] desData = null;
+    private ImageInputStream desData = null;
 
     /**
         Default constructor.
@@ -191,15 +192,15 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
      * {@inheritDoc}
      */
     @Override
-    public void setData(final byte[] rawData) {
-        desData = rawData;
+    public void setData(final ImageInputStream dataStream) {
+        desData = dataStream;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public byte[] getData() {
+    public ImageInputStream getData() {
         return desData;
     }
 }

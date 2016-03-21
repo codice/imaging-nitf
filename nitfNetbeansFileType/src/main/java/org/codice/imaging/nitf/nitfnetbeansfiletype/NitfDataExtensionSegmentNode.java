@@ -14,7 +14,9 @@
  */
 package org.codice.imaging.nitf.nitfnetbeansfiletype;
 
+import java.io.IOException;
 import java.text.ParseException;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.Action;
 import javax.swing.tree.TreeModel;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
@@ -92,11 +94,17 @@ class NitfDataExtensionSegmentNode extends AbstractCommonSegmentNode {
                 }
                 return sb.toString();
             } else if ("XML_DATA_CONTENT".equals(header.getIdentifier().trim())) {
-                return new String(parseStrategy.getDataExtensionSegment(childKey.getIndex()).getData());
+                ImageInputStream iis = parseStrategy.getDataExtensionSegment(childKey.getIndex()).getData();
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = iis.readLine()) != null) {
+                    sb.append(line);
+                }
+                return sb.toString();
             } else {
                 return "[IMG-48] TODO";
             }
-        } catch (ParseException ex) {
+        } catch (ParseException | IOException ex) {
             Exceptions.printStackTrace(ex);
         }
         return "[Unable to get DES content]";
