@@ -12,21 +12,20 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.header;
 
-import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandlerImpl;
 import java.util.ArrayList;
 import java.util.List;
-import static org.codice.imaging.nitf.core.NitfConstants.DEFAULT_ORIGINATING_STATION;
+import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandlerImpl;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
-import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
 
 /**
-    NITF file data.
-*/
-public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
+ * NITF header data.
+ */
+class NitfHeaderImpl extends TaggedRecordExtensionHandlerImpl implements NitfHeader {
     private FileType fileType = FileType.UNKNOWN;
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
@@ -51,13 +50,11 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
     private final List<Integer> ldsh = new ArrayList<>();
     private final List<Integer> ld = new ArrayList<>();
 
-    private static final int LOWEST_COMPLEXITY_LEVEL = 3;
-    private static final String STANDARD_TYPE_VAL = "BF01";
 
     /**
         Default constructor.
     */
-    public NitfFileHeader() {
+    NitfHeaderImpl() {
     }
 
     /**
@@ -66,6 +63,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
         @see FileType FileType enumeration for valid values of the type
         @param type the file type to set
     */
+    @Override
     public final void setFileType(final FileType type) {
         fileType = type;
     }
@@ -76,6 +74,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
         @see FileType FileType enumeration for valid value of the type
         @return the file type
     */
+    @Override
     public final FileType getFileType() {
         return fileType;
     }
@@ -99,6 +98,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return complexity level
     */
+    @Override
     public final int getComplexityLevel() {
         return nitfComplexityLevel;
     }
@@ -117,6 +117,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @param standardType the standard type (four characters maximum).
     */
+    @Override
     public final void setStandardType(final String standardType) {
         nitfStandardType = standardType;
     }
@@ -135,6 +136,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return the standard type.
     */
+    @Override
     public final String getStandardType() {
         return nitfStandardType;
     }
@@ -150,6 +152,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @param originatingStationId the originating station identifier to set
     */
+    @Override
     public final void setOriginatingStationId(final String originatingStationId) {
         nitfOriginatingStationId = originatingStationId;
     }
@@ -163,6 +166,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return the originating station identifier
     */
+    @Override
     public final String getOriginatingStationId() {
         return nitfOriginatingStationId;
     }
@@ -174,6 +178,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @param fileDateTime the date and time for the file
     */
+    @Override
     public final void setFileDateTime(final NitfDateTime fileDateTime) {
         nitfFileDateTime = fileDateTime;
     }
@@ -185,6 +190,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return date time for the file
     */
+    @Override
     public final NitfDateTime getFileDateTime() {
         return nitfFileDateTime;
     }
@@ -196,6 +202,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @param fileTitle the file title
     */
+    @Override
     public final void setFileTitle(final String fileTitle) {
         nitfFileTitle = fileTitle;
     }
@@ -205,6 +212,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return the title of the file, or an empty string if not set
     */
+    @Override
     public final String getFileTitle() {
         return nitfFileTitle;
     }
@@ -217,6 +225,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @param nitfFileSecurityMetadata the security metadata values to set.
     */
+    @Override
     public final void setFileSecurityMetadata(final FileSecurityMetadata nitfFileSecurityMetadata) {
         fileSecurityMetadata = nitfFileSecurityMetadata;
     }
@@ -226,6 +235,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return file security metadata.
     */
+    @Override
     public final FileSecurityMetadata getFileSecurityMetadata() {
         return fileSecurityMetadata;
     }
@@ -238,6 +248,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @param backgroundColour colour to set
      */
+    @Override
     public final void setFileBackgroundColour(final RGBColour backgroundColour) {
         nitfFileBackgroundColour = backgroundColour;
     }
@@ -250,6 +261,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return background colour
      */
+    @Override
     public final RGBColour getFileBackgroundColour() {
         return nitfFileBackgroundColour;
     }
@@ -261,6 +273,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @param originatorsName the originator's name.
     */
+    @Override
     public final void setOriginatorsName(final String originatorsName) {
         nitfOriginatorsName = originatorsName;
     }
@@ -270,6 +283,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return originator's name
     */
+    @Override
     public final String getOriginatorsName() {
         return nitfOriginatorsName;
     }
@@ -281,6 +295,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @param originatorsPhoneNumber the originator's phone number.
     */
+    @Override
     public final void setOriginatorsPhoneNumber(final String originatorsPhoneNumber) {
         nitfOriginatorsPhoneNumber = originatorsPhoneNumber;
     }
@@ -290,6 +305,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return the originator's phone number
     */
+    @Override
     public final String getOriginatorsPhoneNumber() {
         return nitfOriginatorsPhoneNumber;
     }
@@ -314,6 +330,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return the user defined header overflow index
     */
+    @Override
     public final int getUserDefinedHeaderOverflow() {
         return nitfUserDefinedHeaderOverflow;
     }
@@ -323,6 +340,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of image segment subheader lengths
      */
+    @Override
     public final List<Integer> getImageSegmentSubHeaderLengths() {
         return lish;
     }
@@ -332,6 +350,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of image segment data lengths
      */
+    @Override
     public final List<Long> getImageSegmentDataLengths() {
         return li;
     }
@@ -341,6 +360,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of graphic segment subheader lengths
      */
+    @Override
     public final List<Integer> getGraphicSegmentSubHeaderLengths() {
         return lssh;
     }
@@ -350,6 +370,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of graphic segment data lengths
      */
+    @Override
     public final List<Integer> getGraphicSegmentDataLengths() {
         return ls;
     }
@@ -359,6 +380,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of symbol segment subheader lengths
      */
+    @Override
     public final List<Integer> getSymbolSegmentSubHeaderLengths() {
         return lssh;
     }
@@ -368,6 +390,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of symbol segment data lengths
      */
+    @Override
     public final List<Integer> getSymbolSegmentDataLengths() {
         return ls;
     }
@@ -379,6 +402,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of label segment subheader lengths
      */
+    @Override
     public final List<Integer> getLabelSegmentSubHeaderLengths() {
         return llsh;
     }
@@ -390,6 +414,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of label segment data lengths
      */
+    @Override
     public final List<Integer> getLabelSegmentDataLengths() {
         return ll;
     }
@@ -399,6 +424,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of text segment subheader lengths
      */
+    @Override
     public final List<Integer> getTextSegmentSubHeaderLengths() {
         return ltsh;
     }
@@ -408,6 +434,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of text segment data lengths
      */
+    @Override
     public final List<Integer> getTextSegmentDataLengths() {
         return lt;
     }
@@ -417,6 +444,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of data extension segment subheader lengths
      */
+    @Override
     public final List<Integer> getDataExtensionSegmentSubHeaderLengths() {
         return ldsh;
     }
@@ -426,6 +454,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @return the list of data extension segment data lengths
      */
+    @Override
     public final List<Integer> getDataExtensionSegmentDataLengths() {
         return ld;
     }
@@ -450,6 +479,7 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
 
         @return the extended header data overflow index
     */
+    @Override
     public final int getExtendedHeaderDataOverflow() {
         return nitfExtendedHeaderDataOverflow;
     }
@@ -472,39 +502,9 @@ public class NitfFileHeader extends TaggedRecordExtensionHandlerImpl {
      *
      * @param fsmeta the security metadata to set.
      */
+    @Override
     public final void setSecurityMetadata(final FileSecurityMetadata fsmeta) {
         this.fileSecurityMetadata = fsmeta;
     }
-
-    /**
-     * Create a default NITF file header.
-     *
-     * @param fileType the type (version) of NITF file to create
-     * @return default valid header.
-     */
-    public static NitfFileHeader getDefault(final FileType fileType) {
-        NitfFileHeader nitfFileHeader = new NitfFileHeader();
-        nitfFileHeader.setFileType(fileType);
-        nitfFileHeader.setComplexityLevel(LOWEST_COMPLEXITY_LEVEL);
-        nitfFileHeader.setStandardType(STANDARD_TYPE_VAL);
-        nitfFileHeader.setOriginatingStationId(DEFAULT_ORIGINATING_STATION);
-        NitfDateTime ndt = NitfDateTime.getNitfDateTimeForNow();
-        nitfFileHeader.setFileDateTime(ndt);
-        nitfFileHeader.setFileTitle("");
-
-        nitfFileHeader.setFileSecurityMetadata(SecurityMetadataFactory.getDefaultFileSecurityMetadata(fileType));
-        RGBColour backgroundColour = new RGBColour(RGBColour.CODICE_LOGO_RED_COMPONENT,
-                RGBColour.CODICE_LOGO_GREEN_COMPONENT, RGBColour.CODICE_LOGO_BLUE_COMPONENT);
-        nitfFileHeader.setFileBackgroundColour(backgroundColour);
-
-        nitfFileHeader.setOriginatorsName("");
-        nitfFileHeader.setOriginatorsPhoneNumber("");
-
-        // The rest of this is made up of things that already work OK as defaults.
-
-        return nitfFileHeader;
-    }
-
-
 
 }

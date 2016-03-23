@@ -12,12 +12,12 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
+package org.codice.imaging.nitf.core.header;
 
 /**
  * Utility collection of shared constants.
  */
-public final class NitfConstants {
+public final class NitfHeaderConstants {
 
     // NITF file lengths
     // file header
@@ -252,7 +252,8 @@ public final class NitfConstants {
     /**
      * The maximum allowable complexity level value.
      * <p>
-     * Actual complexity levels are only defined to 9.
+     * Actual complexity levels are only defined to 9, except in the motion
+     * imagery extensions (MIE4NITF).
      */
     protected static final int MAX_COMPLEXITY_LEVEL = 99;
 
@@ -309,6 +310,17 @@ public final class NitfConstants {
      * Default fill value for originating station identifier (OSTAID).
      */
     static final String DEFAULT_ORIGINATING_STATION = "Codice";
-    private NitfConstants() {
+
+    /**
+     * The lowest allowable complexity level.
+     */
+    protected static final int LOWEST_COMPLEXITY_LEVEL = 3;
+
+    /**
+     * The standard type (STYPE) value for NITF 2.1 and NSIF 1.0.
+     */
+    protected static final String STANDARD_TYPE_VAL = "BF01";
+
+    private NitfHeaderConstants() {
     }
 }

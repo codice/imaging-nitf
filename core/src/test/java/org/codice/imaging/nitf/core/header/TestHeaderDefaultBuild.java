@@ -12,20 +12,22 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.core;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+package org.codice.imaging.nitf.core.header;
 
 import java.io.File;
 import java.text.ParseException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-
+import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
+import org.codice.imaging.nitf.core.NitfFileWriter;
+import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
+import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
@@ -38,7 +40,7 @@ public class TestHeaderDefaultBuild {
 
     @Test
     public void checkNitf21() {
-        NitfFileHeader nitf = NitfFileHeader.getDefault(FileType.NITF_TWO_ONE);
+        NitfHeader nitf = NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE);
         assertNotNull(nitf);
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
         checkEmptyHeader(nitf);
@@ -53,7 +55,7 @@ public class TestHeaderDefaultBuild {
 
         SlottedMemoryNitfStorage store = new SlottedMemoryNitfStorage();
 
-        NitfFileHeader nitf = NitfFileHeader.getDefault(FileType.NITF_TWO_ONE);
+        NitfHeader nitf = NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE);
         assertNotNull(nitf);
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
 
@@ -72,13 +74,13 @@ public class TestHeaderDefaultBuild {
 
     @Test
     public void checkNsif10() {
-        NitfFileHeader nitf = NitfFileHeader.getDefault(FileType.NSIF_ONE_ZERO);
+        NitfHeader nitf = NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO);
         assertNotNull(nitf);
         assertEquals(FileType.NSIF_ONE_ZERO, nitf.getFileType());
         checkEmptyHeader(nitf);
     }
 
-    private void checkEmptyHeader(NitfFileHeader nitf) {
+    private void checkEmptyHeader(NitfHeader nitf) {
         assertEquals(3, nitf.getComplexityLevel());
         assertEquals("BF01", nitf.getStandardType());
         assertNotNull(nitf.getOriginatingStationId());

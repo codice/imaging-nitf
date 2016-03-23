@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.codice.imaging.nitf.core.NitfDataSource;
-import org.codice.imaging.nitf.core.NitfFileHeader;
 import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
@@ -44,14 +44,14 @@ public class NitfSegmentsFlow {
     }
 
     /**
-     * Passes the NITF file header to the supplied consumer.
+     * Passes the NITF header to the supplied consumer.
      *
-     * @param consumer the consumer to pass the NITF file header to.
+     * @param consumer the consumer to pass the NITF header to.
      * @return this NitfSegmentsFlow.
      */
-    public final NitfSegmentsFlow fileHeader(final Consumer<NitfFileHeader> consumer) {
-        NitfFileHeader nitfFileHeader = mDataSource.getNitfHeader();
-        consumer.accept(nitfFileHeader);
+    public final NitfSegmentsFlow fileHeader(final Consumer<NitfHeader> consumer) {
+        NitfHeader nitfHeader = mDataSource.getNitfHeader();
+        consumer.accept(nitfHeader);
         return this;
     }
 

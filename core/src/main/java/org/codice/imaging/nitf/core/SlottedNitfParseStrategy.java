@@ -27,6 +27,7 @@ import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentParser;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegmentParser;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.ImageSegmentParser;
 import org.codice.imaging.nitf.core.label.LabelSegment;
@@ -94,7 +95,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
     }
 
     @Override
-    public final void setFileHeader(final NitfFileHeader nitfFileHeader) {
+    public final void setFileHeader(final NitfHeader nitfFileHeader) {
         nitfStorage.setNitfHeader(nitfFileHeader);
     }
 
@@ -103,7 +104,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @return the NitfFileHeader.
      */
     @Override
-    public final NitfFileHeader getNitfHeader() {
+    public final NitfHeader getNitfHeader() {
         return nitfStorage.getNitfHeader();
     }
 
@@ -121,28 +122,28 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      */
     @Override
     public final void baseHeadersRead(final NitfReader reader) {
-        NitfFileHeader nitfFileLevelHeader = nitfStorage.getNitfHeader();
+        NitfHeader nitfHeader = nitfStorage.getNitfHeader();
 
         try {
-            for (int i = 0; i < nitfFileLevelHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
+            for (int i = 0; i < nitfHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
                 handleImageSegment(reader, i);
             }
-            if (nitfFileLevelHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-                for (int i = 0; i < nitfFileLevelHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
+            if (nitfHeader.getFileType() == FileType.NITF_TWO_ZERO) {
+                for (int i = 0; i < nitfHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
                     handleSymbolSegment(reader, i);
                 }
-                for (int i = 0; i < nitfFileLevelHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
+                for (int i = 0; i < nitfHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
                    handleLabelSegment(reader, i);
                 }
             } else {
-                for (int i = 0; i < nitfFileLevelHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
+                for (int i = 0; i < nitfHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
                    handleGraphicSegment(reader, i);
                 }
             }
-            for (int i = 0; i < nitfFileLevelHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
+            for (int i = 0; i < nitfHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
                 handleTextSegment(reader, i);
             }
-            for (int i = 0; i < nitfFileLevelHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
+            for (int i = 0; i < nitfHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
                 handleDataExtensionSegment(reader, i);
             }
         } catch (ParseException ex) {

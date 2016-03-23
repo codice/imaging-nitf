@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.header.NitfHeaderWriter;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.text.ParseException;
@@ -61,7 +62,7 @@ public abstract class SharedNitfWriter implements NitfWriter {
      */
     protected final void writeData() throws ParseException, IOException {
         mTreParser = new TreParser();
-        NitfFileHeaderWriter fileHeaderWriter = new NitfFileHeaderWriter(mOutput, mTreParser);
+        NitfHeaderWriter fileHeaderWriter = new NitfHeaderWriter(mOutput, mTreParser);
         fileHeaderWriter.writeFileHeader(mDataSource);
         writeImageSegments();
         writeGraphicSegments();

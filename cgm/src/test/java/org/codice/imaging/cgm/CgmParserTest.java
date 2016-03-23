@@ -37,7 +37,7 @@ import java.text.ParseException;
 import javax.imageio.ImageIO;
 
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
-import org.codice.imaging.nitf.core.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;

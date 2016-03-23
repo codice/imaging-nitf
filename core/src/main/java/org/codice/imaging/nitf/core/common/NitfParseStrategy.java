@@ -14,10 +14,10 @@
  */
 package org.codice.imaging.nitf.core.common;
 
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import java.text.ParseException;
-import org.codice.imaging.nitf.core.NitfFileHeader;
-import org.codice.imaging.nitf.core.tre.TreSource;
 import org.codice.imaging.nitf.core.tre.TreCollection;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
  * Strategy for parsing NITF file components.
@@ -27,16 +27,16 @@ public interface NitfParseStrategy {
     /**
      * Set the file-level header for this parsed file.
      *
-     * @param nitfFileHeader the file-level header
+     * @param nitfHeader the file-level header
      */
-    void setFileHeader(NitfFileHeader nitfFileHeader);
+    void setFileHeader(NitfHeader nitfHeader);
 
     /**
      * Return the file-level header for the parsed file.
      *
      * @return the file-level header
      */
-    NitfFileHeader getNitfHeader();
+    NitfHeader getNitfHeader();
 
     /**
      * Indication that the "base" file-level headers have been read.

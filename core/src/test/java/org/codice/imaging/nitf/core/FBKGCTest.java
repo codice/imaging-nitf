@@ -21,6 +21,8 @@ import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -41,7 +43,7 @@ public class FBKGCTest {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
         NitfFileParser.parse(reader, parseStrategy);
-        NitfFileHeader nitfHeader = parseStrategy.getNitfHeader();
+        NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, nitfHeader.getFileType());
         assertEquals(0x00, nitfHeader.getFileBackgroundColour().getRed());
         assertEquals(0x00, nitfHeader.getFileBackgroundColour().getGreen());

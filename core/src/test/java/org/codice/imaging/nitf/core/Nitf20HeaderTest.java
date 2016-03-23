@@ -24,6 +24,8 @@ import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
@@ -87,7 +89,7 @@ public class Nitf20HeaderTest {
     }
 
     private void checkCompliantReadResults(NitfDataSource dataSource) throws ParseException {
-        NitfFileHeader header = dataSource.getNitfHeader();
+        NitfHeader header = dataSource.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, header.getFileType());
         assertEquals(1, header.getComplexityLevel());
         assertEquals("", header.getStandardType());
@@ -132,22 +134,22 @@ public class Nitf20HeaderTest {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
         NitfFileParser.parse(reader, parseStrategy);
-        NitfFileHeader nitfFileHeader = parseStrategy.getNitfHeader();
-        assertEquals(FileType.NITF_TWO_ZERO, nitfFileHeader.getFileType());
-        assertEquals(1, nitfFileHeader.getComplexityLevel());
-        assertEquals("", nitfFileHeader.getStandardType());
-        assertEquals("U217G0J1", nitfFileHeader.getOriginatingStationId());
-        assertEquals("1992-11-03 13:52:26", formatter.format(nitfFileHeader.getFileDateTime().getZonedDateTime()));
-        assertEquals("This NITF message contains 5 images, 4 symbols, 4 labels and 1 text.", nitfFileHeader.getFileTitle());
-        FileSecurityMetadata securityMetadata = nitfFileHeader.getFileSecurityMetadata();
+        NitfHeader nitfHeader = parseStrategy.getNitfHeader();
+        assertEquals(FileType.NITF_TWO_ZERO, nitfHeader.getFileType());
+        assertEquals(1, nitfHeader.getComplexityLevel());
+        assertEquals("", nitfHeader.getStandardType());
+        assertEquals("U217G0J1", nitfHeader.getOriginatingStationId());
+        assertEquals("1992-11-03 13:52:26", formatter.format(nitfHeader.getFileDateTime().getZonedDateTime()));
+        assertEquals("This NITF message contains 5 images, 4 symbols, 4 labels and 1 text.", nitfHeader.getFileTitle());
+        FileSecurityMetadata securityMetadata = nitfHeader.getFileSecurityMetadata();
         assertUnclasAndEmpty(securityMetadata);
         assertEquals("999998", securityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This message will not need a downgrade.", securityMetadata.getDowngradeEvent());
 
-        assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileCopyNumber());
-        assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileNumberOfCopies());
-        assertEquals("JITC", nitfFileHeader.getOriginatorsName());
-        assertEquals("(602) 538-5458", nitfFileHeader.getOriginatorsPhoneNumber());
+        assertEquals("00001", nitfHeader.getFileSecurityMetadata().getFileCopyNumber());
+        assertEquals("00001", nitfHeader.getFileSecurityMetadata().getFileNumberOfCopies());
+        assertEquals("JITC", nitfHeader.getOriginatorsName());
+        assertEquals("(602) 538-5458", nitfHeader.getOriginatorsPhoneNumber());
         assertEquals(5, parseStrategy.getNitfDataSource().getImageSegments().size());
         assertEquals(0, parseStrategy.getNitfDataSource().getGraphicSegments().size());
         assertEquals(4, parseStrategy.getNitfDataSource().getSymbolSegments().size());
@@ -156,6 +158,7 @@ public class Nitf20HeaderTest {
         assertEquals(0, parseStrategy.getNitfDataSource().getDataExtensionSegments().size());
 
         ImageSegment imageSegment1 = parseStrategy.getNitfDataSource().getImageSegments().get(0);
+
         assertNotNull(imageSegment1);
         assertEquals("Missing ID", imageSegment1.getIdentifier());
         assertEquals("1993-03-25 15:25:59", formatter.format(imageSegment1.getImageDateTime().getZonedDateTime()));

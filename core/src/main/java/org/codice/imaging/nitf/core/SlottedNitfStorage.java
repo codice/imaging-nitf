@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
@@ -31,7 +32,7 @@ public class SlottedNitfStorage implements NitfDataSource {
     /**
      * The file level header.
      */
-    private NitfFileHeader nitfFileLevelHeader;
+    protected NitfHeader nitfHeader;
     /**
      * The list of image segment.
      */
@@ -61,13 +62,13 @@ public class SlottedNitfStorage implements NitfDataSource {
      * Stores the NitfFileHeader.
      * @param nitfFileHeader - the NITF header to set.
      */
-    public final void setNitfHeader(final NitfFileHeader nitfFileHeader) {
-        this.nitfFileLevelHeader = nitfFileHeader;
+    public final void setNitfHeader(final NitfHeader nitfFileHeader) {
+        this.nitfHeader = nitfFileHeader;
     }
 
     @Override
-    public final NitfFileHeader getNitfHeader() {
-        return nitfFileLevelHeader;
+    public final NitfHeader getNitfHeader() {
+        return nitfHeader;
     }
 
     @Override
