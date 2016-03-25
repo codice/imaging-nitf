@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module-Layer: org/codice/imaging/nitf/nitfnetbeansfiletype/layer.xml
-OpenIDE-Module-Localizing-Bundle: org/codice/imaging/nitf/nitfnetbeansfiletype/Bundle.properties
-
