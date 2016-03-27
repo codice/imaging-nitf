@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
+import static org.codice.imaging.nitf.core.TestUtils.checkNitf20SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -37,7 +38,6 @@ import org.codice.imaging.nitf.core.image.PixelValueType;
 import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
-import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.symbol.SymbolColour;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolType;
@@ -76,7 +76,7 @@ public class Nitf20OverflowTest {
         assertEquals("1997-09-15 09:00:00", formatter.format(nitfHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("Checks overflow from all possible areas. Created by George Levy.", nitfHeader.getFileTitle());
         FileSecurityMetadata securityMetadata = nitfHeader.getFileSecurityMetadata();
-        assertUnclasAndEmpty(securityMetadata);
+        checkNitf20SecurityMetadataUnclasAndEmpty(securityMetadata);
         assertEquals("      ", securityMetadata.getDowngradeDateOrSpecialCase());
         assertNull(securityMetadata.getDowngradeEvent());
 
@@ -101,7 +101,7 @@ public class Nitf20OverflowTest {
         assertEquals("          ", imageSegment1.getImageTargetId().getBasicEncyclopediaNumber());
         assertEquals("     ", imageSegment1.getImageTargetId().getOSuffix());
         assertEquals("  ", imageSegment1.getImageTargetId().getCountryCode());
-        assertUnclasAndEmpty(imageSegment1.getSecurityMetadata());
+        checkNitf20SecurityMetadataUnclasAndEmpty(imageSegment1.getSecurityMetadata());
         assertEquals("Unknown", imageSegment1.getImageSource());
         assertEquals(512L, imageSegment1.getNumberOfRows());
         assertEquals(512L, imageSegment1.getNumberOfColumns());
@@ -139,7 +139,7 @@ public class Nitf20OverflowTest {
         assertNotNull(symbolSegment1);
         assertEquals("Text", symbolSegment1.getIdentifier());
         assertEquals("", symbolSegment1.getSymbolName());
-        assertUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
+        checkNitf20SecurityMetadataUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
         assertEquals("      ", symbolSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals(SymbolType.CGM, symbolSegment1.getSymbolType());
         assertEquals(SymbolColour.UNKNOWN, symbolSegment1.getSymbolColour());
@@ -248,24 +248,5 @@ public class Nitf20OverflowTest {
         assertEquals(1, des7.getItemOverflowed());
 
         is.close();
-    }
-
-    void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
-        assertNotNull(securityMetadata);
-        assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
-        assertNull(securityMetadata.getSecurityClassificationSystem());
-        assertEquals("", securityMetadata.getCodewords());
-        assertEquals("", securityMetadata.getControlAndHandling());
-        assertEquals("", securityMetadata.getReleaseInstructions());
-        assertNull(securityMetadata.getDeclassificationType());
-        assertNull(securityMetadata.getDeclassificationDate());
-        assertNull(securityMetadata.getDeclassificationExemption());
-        assertNull(securityMetadata.getDowngrade());
-        assertNull(securityMetadata.getDowngradeDate());
-        assertNull(securityMetadata.getClassificationText());
-        assertNull(securityMetadata.getClassificationAuthorityType());
-        assertEquals("", securityMetadata.getClassificationAuthority());
-        assertNull(securityMetadata.getClassificationReason());
-        assertEquals("", securityMetadata.getSecurityControlNumber());
     }
 }

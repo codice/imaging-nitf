@@ -101,21 +101,6 @@ public class TestHeaderDefaultBuild {
 
         assertEquals("", nitf.getOriginatorsName());
         assertEquals("", nitf.getOriginatorsPhoneNumber());
-
-        assertEquals(0, nitf.getImageSegmentSubHeaderLengths().size());
-        assertEquals(0, nitf.getImageSegmentDataLengths().size());
-
-        assertEquals(0, nitf.getGraphicSegmentSubHeaderLengths().size());
-        assertEquals(0, nitf.getGraphicSegmentDataLengths().size());
-
-        assertEquals(0, nitf.getTextSegmentSubHeaderLengths().size());
-        assertEquals(0, nitf.getTextSegmentDataLengths().size());
-
-        assertEquals(0, nitf.getDataExtensionSegmentSubHeaderLengths().size());
-        assertEquals(0, nitf.getDataExtensionSegmentDataLengths().size());
-
-        assertEquals(0, nitf.getUserDefinedHeaderOverflow());
-        assertEquals(0, nitf.getExtendedHeaderDataOverflow());
     }
 
 }

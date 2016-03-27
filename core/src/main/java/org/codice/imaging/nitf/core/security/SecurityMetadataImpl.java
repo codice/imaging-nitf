@@ -14,12 +14,16 @@
  */
 package org.codice.imaging.nitf.core.security;
 
+import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.security.SecurityConstants.DOWNGRADE_EVENT_MAGIC;
+import static org.codice.imaging.nitf.core.security.SecurityConstants.XSDEVT20_LENGTH;
 
 /**
  * Security metadata for a NITF file header or segment subheader.
  */
 class SecurityMetadataImpl implements SecurityMetadata {
+
+    private FileType nitfFileType = FileType.NITF_TWO_ONE;
 
     private SecurityClassification securityClassification = SecurityClassification.UNKNOWN;
     private String nitfSecurityClassificationSystem = null;
@@ -52,11 +56,20 @@ class SecurityMetadataImpl implements SecurityMetadata {
     SecurityMetadataImpl() {
     }
 
-    /**
-        Set the security classification.
+    public void setFileType(final FileType fileType) {
+        nitfFileType = fileType;
+    }
 
-        @param classification security classification
-    */
+    @Override
+    public final FileType getFileType() {
+        return nitfFileType;
+    }
+
+    /**
+     * Set the security classification.
+     *
+     * @param classification security classification
+     */
     public final void setSecurityClassification(final SecurityClassification classification) {
         this.securityClassification = classification;
     }
@@ -520,5 +533,29 @@ class SecurityMetadataImpl implements SecurityMetadata {
     @Override
     public boolean hasDowngradeMagicValue() {
         return (DOWNGRADE_EVENT_MAGIC.equals(getDowngradeDateOrSpecialCase()));
+    }
+
+    @Override
+    public long getSerialisedLength() {
+        long len = SecurityConstants.XSCLAS_LENGTH + SecurityConstants.XSCLSY_LENGTH + SecurityConstants.XSCODE_LENGTH
+                + SecurityConstants.XSCTLH_LENGTH + SecurityConstants.XSREL_LENGTH + SecurityConstants.XSDCTP_LENGTH
+                + SecurityConstants.XSDCDT_LENGTH + SecurityConstants.XSDCXM_LENGTH + SecurityConstants.XSDG_LENGTH
+                + SecurityConstants.XSDGDT_LENGTH + SecurityConstants.XSCLTX_LENGTH + SecurityConstants.XSCATP_LENGTH
+                + SecurityConstants.XSCAUT_LENGTH + SecurityConstants.XSCRSN_LENGTH + SecurityConstants.XSSRDT_LENGTH
+                + SecurityConstants.XSCTLN_LENGTH;
+        len += calculateExtraHeaderLength();
+        return len;
+    }
+
+    /**
+     * Calculate the extra header length that can occur in NITF 2.0 files for downgrades.
+     *
+     * @return the number of additional bytes that will be required for special downgrade text.
+     */
+    private int calculateExtraHeaderLength() {
+        if ((getFileType().equals(FileType.NITF_TWO_ZERO)) && hasDowngradeMagicValue()) {
+            return XSDEVT20_LENGTH;
+        }
+        return 0;
     }
 };

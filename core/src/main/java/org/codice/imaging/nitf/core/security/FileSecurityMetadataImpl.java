@@ -69,5 +69,16 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
     public final String getFileNumberOfCopies() {
         return nitfFileNumberOfCopies;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getSerialisedLength() {
+        long len = super.getSerialisedLength();
+        len += FileSecurityConstants.FSCOP_LENGTH;
+        len += FileSecurityConstants.FSCPYS_LENGTH;
+        return len;
+    }
 };
 

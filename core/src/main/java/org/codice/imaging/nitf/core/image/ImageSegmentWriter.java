@@ -69,7 +69,6 @@ import org.codice.imaging.nitf.core.tre.TreSource;
 public class ImageSegmentWriter extends AbstractSegmentWriter {
 
     private static final int NUM_PARTS_IN_IGEOLO = 4;
-    private static final int MAX_NUM_BANDS_IN_NBANDS_FIELD = 9;
 
     /**
      * Constructor.
@@ -95,7 +94,7 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
         writeDateTime(imageSegment.getImageDateTime());
         writeFixedLengthString(imageSegment.getImageTargetId().toString(), TGTID_LENGTH);
         writeFixedLengthString(imageSegment.getImageIdentifier2(), IID2_LENGTH);
-        writeSecurityMetadata(imageSegment.getSecurityMetadata(), fileType);
+        writeSecurityMetadata(imageSegment.getSecurityMetadata());
         writeENCRYP();
         writeFixedLengthString(imageSegment.getImageSource(), ISORCE_LENGTH);
         writeFixedLengthNumber(imageSegment.getNumberOfRows(), NROWS_LENGTH);
@@ -126,7 +125,7 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
             writeFixedLengthString(imageSegment.getCompressionRate(), COMRAT_LENGTH);
         }
 
-        if (imageSegment.getNumBands() <= MAX_NUM_BANDS_IN_NBANDS_FIELD) {
+        if (imageSegment.getNumBands() <= ImageConstants.MAX_NUM_BANDS_IN_NBANDS_FIELD) {
             writeFixedLengthNumber(imageSegment.getNumBands(), NBANDS_LENGTH);
         } else {
             writeFixedLengthNumber(0, NBANDS_LENGTH);

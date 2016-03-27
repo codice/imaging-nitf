@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
+import static org.codice.imaging.nitf.core.TestUtils.checkNitf21SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
@@ -35,8 +36,6 @@ import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
-import org.codice.imaging.nitf.core.security.SecurityClassification;
-import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
 import static org.junit.Assert.assertEquals;
@@ -77,7 +76,7 @@ public class Nitf21SorcerTest {
         assertEquals("A1234", imageSegment.getImageTargetId().getOSuffix());
         assertEquals("AU", imageSegment.getImageTargetId().getCountryCode());
         assertEquals("Another title", imageSegment.getImageIdentifier2());
-        assertUnclasAndEmpty(imageSegment.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(imageSegment.getSecurityMetadata());
         assertEquals("", imageSegment.getImageSource());
         assertEquals(512L, imageSegment.getNumberOfRows());
         assertEquals(683L, imageSegment.getNumberOfColumns());
@@ -127,7 +126,7 @@ public class Nitf21SorcerTest {
         assertNotNull(graphicSegment);
         assertEquals("", graphicSegment.getIdentifier());
         assertEquals("", graphicSegment.getGraphicName());
-        assertUnclasAndEmpty(graphicSegment.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(graphicSegment.getSecurityMetadata());
         assertEquals(2, graphicSegment.getGraphicDisplayLevel());
         assertEquals(0, graphicSegment.getAttachmentLevel());
         assertEquals(12, graphicSegment.getGraphicLocationRow());
@@ -139,7 +138,7 @@ public class Nitf21SorcerTest {
         assertEquals(0, graphicSegment.getBoundingBox2Column());
 
         TextSegment textSegment = parseResult.getTextSegments().get(0);
-        assertUnclasAndEmpty(textSegment.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(textSegment.getSecurityMetadata());
         assertNotNull(textSegment);
         assertEquals("       ", textSegment.getIdentifier());
         assertEquals(0, textSegment.getAttachmentLevel());
@@ -154,24 +153,6 @@ public class Nitf21SorcerTest {
 
         assertNotNull("Test file missing", getClass().getResource(testfile));
         return getClass().getResourceAsStream(testfile);
-    }
-
-    void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
-        assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
-        assertEquals("", securityMetadata.getSecurityClassificationSystem());
-        assertEquals("", securityMetadata.getCodewords());
-        assertEquals("", securityMetadata.getControlAndHandling());
-        assertEquals("", securityMetadata.getReleaseInstructions());
-        assertEquals("", securityMetadata.getDeclassificationType());
-        assertEquals("", securityMetadata.getDeclassificationDate());
-        assertEquals("", securityMetadata.getDeclassificationExemption());
-        assertEquals("", securityMetadata.getDowngrade());
-        assertEquals("", securityMetadata.getDowngradeDate());
-        assertEquals("", securityMetadata.getClassificationText());
-        assertEquals("", securityMetadata.getClassificationAuthorityType());
-        assertEquals("", securityMetadata.getClassificationAuthority());
-        assertEquals("", securityMetadata.getClassificationReason());
-        assertEquals("", securityMetadata.getSecurityControlNumber());
     }
 
 }

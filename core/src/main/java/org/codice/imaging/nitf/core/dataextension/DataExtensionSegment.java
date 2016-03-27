@@ -150,4 +150,18 @@ public interface DataExtensionSegment extends CommonSegment {
      * @return data for this DES.
      */
     ImageInputStream getData();
+
+    /**
+     * Get the length of the data for this segment.
+     *
+     * @return the number of bytes of data for this segment.
+     */
+    long getDataLength();
+
+    /**
+     * Set the length of data for this segment.
+     *
+     * @param length the number of bytes of data in this segment.
+     */
+    void setDataLength(final long length);
 }

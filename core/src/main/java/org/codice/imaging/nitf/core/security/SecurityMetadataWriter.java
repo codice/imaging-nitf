@@ -64,11 +64,10 @@ public class SecurityMetadataWriter extends AbstractSegmentWriter {
      * Write out normal segment-level security metadata.
      *
      * @param securityMetadata the metadata to write
-     * @param fileType the type of file (NITF version) to write out.
      * @throws IOException on write failure.
      */
-    public final void writeMetadata(final SecurityMetadata securityMetadata, final FileType fileType) throws IOException {
-        if (fileType == FileType.NITF_TWO_ZERO) {
+    public final void writeMetadata(final SecurityMetadata securityMetadata) throws IOException {
+        if (securityMetadata.getFileType() == FileType.NITF_TWO_ZERO) {
             writeSecurityMetadata20(securityMetadata);
         } else {
             writeSecurityMetadata21(securityMetadata);
@@ -111,26 +110,11 @@ public class SecurityMetadataWriter extends AbstractSegmentWriter {
      * Write file-header level security metadata.
      *
      * @param fsmeta the file-level security metadata to write out
-     * @param fileType the type of file (NITF version) that the security is for.
      * @throws IOException on write failure.
      */
-    public final void writeFileSecurityMetadata(final FileSecurityMetadata fsmeta, final FileType fileType) throws IOException {
-        writeSecurityMetadata(fsmeta, fileType);
+    public final void writeFileSecurityMetadata(final FileSecurityMetadata fsmeta) throws IOException {
+        writeSecurityMetadata(fsmeta);
         writeFixedLengthString(fsmeta.getFileCopyNumber(), FSCOP_LENGTH);
         writeFixedLengthString(fsmeta.getFileNumberOfCopies(), FSCPYS_LENGTH);
-    }
-
-    /**
-     * Calculate the extra header length that can occur in NITF 2.0 files for downgrades.
-     *
-     * @param securityMetadata the security metadata to check.
-     * @param fileType the type (NITF version) of file to verify.
-     * @return the number of additional bytes that will be required for special downgrade text.
-     */
-    public final int calculateExtraHeaderLength(final SecurityMetadata securityMetadata, final FileType fileType) {
-        if ((fileType.equals(FileType.NITF_TWO_ZERO)) && (securityMetadata.hasDowngradeMagicValue())) {
-            return XSDEVT20_LENGTH;
-        }
-        return 0;
     }
 }

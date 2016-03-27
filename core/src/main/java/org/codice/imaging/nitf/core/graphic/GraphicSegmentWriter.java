@@ -18,7 +18,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
-import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SBND1_HALF_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SBND2_HALF_LENGTH;
@@ -63,7 +62,7 @@ public class GraphicSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthString(SY, SY.length());
         writeFixedLengthString(graphicSegment.getIdentifier(), SID_LENGTH);
         writeFixedLengthString(graphicSegment.getGraphicName(), SNAME_LENGTH);
-        writeSecurityMetadata(graphicSegment.getSecurityMetadata(), FileType.NITF_TWO_ONE);
+        writeSecurityMetadata(graphicSegment.getSecurityMetadata());
         writeENCRYP();
         writeFixedLengthString(SFMT_CGM, SFMT_CGM.length());
         writeFixedLengthString(SSTRUCT, SSTRUCT.length());

@@ -22,7 +22,7 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
  * This includes image segments, symbol segments, graphic segments, label segments, text segments and data extension
  * segments.
  */
-public class CommonSegmentImpl extends TaggedRecordExtensionHandlerImpl implements CommonSegment {
+public abstract class CommonSegmentImpl extends TaggedRecordExtensionHandlerImpl implements CommonSegment {
 
     private String segmentIdentifier;
     private SecurityMetadata securityMetadata = null;
@@ -30,6 +30,7 @@ public class CommonSegmentImpl extends TaggedRecordExtensionHandlerImpl implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     public final void setIdentifier(final String identifier) {
         segmentIdentifier = identifier;
     }
@@ -57,6 +58,4 @@ public class CommonSegmentImpl extends TaggedRecordExtensionHandlerImpl implemen
     public final SecurityMetadata getSecurityMetadata() {
         return securityMetadata;
     }
-
-
 }

@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.header;
 
-import java.util.List;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
@@ -34,20 +33,6 @@ public interface NitfHeader extends TaggedRecordExtensionHandler {
     @return complexity level
      */
     int getComplexityLevel();
-
-    /**
-     * Return the DES data lengths.
-     *
-     * @return the list of data extension segment data lengths
-     */
-    List<Integer> getDataExtensionSegmentDataLengths();
-
-    /**
-     * Return the DES subheader lengths.
-     *
-     * @return the list of data extension segment subheader lengths
-     */
-    List<Integer> getDataExtensionSegmentSubHeaderLengths();
 
     /**
      *
@@ -103,52 +88,6 @@ public interface NitfHeader extends TaggedRecordExtensionHandler {
     FileType getFileType();
 
     /**
-     * Return the graphic (or symbol) segment data lengths.
-     *
-     * @return the list of graphic segment data lengths
-     */
-    List<Integer> getGraphicSegmentDataLengths();
-
-    /**
-     * Return the graphic (or symbol) segment subheader lengths.
-     *
-     * @return the list of graphic segment subheader lengths
-     */
-    List<Integer> getGraphicSegmentSubHeaderLengths();
-
-    /**
-     * Return the image segment data lengths.
-     *
-     * @return the list of image segment data lengths
-     */
-    List<Long> getImageSegmentDataLengths();
-
-    /**
-     * Return the image segment subheader lengths.
-     *
-     * @return the list of image segment subheader lengths
-     */
-    List<Integer> getImageSegmentSubHeaderLengths();
-
-    /**
-     * Return the label segment data lengths.
-     *
-     * This will always be an empty list for NITF 2.1 / NSIF 1.0 file, which do not have label segments.
-     *
-     * @return the list of label segment data lengths
-     */
-    List<Integer> getLabelSegmentDataLengths();
-
-    /**
-     * Return the label segment subheader lengths.
-     *
-     * This will always be an empty list for NITF 2.1 / NSIF 1.0 file, which do not have label segments.
-     *
-     * @return the list of label segment subheader lengths
-     */
-    List<Integer> getLabelSegmentSubHeaderLengths();
-
-    /**
      * Return the originating station identifier (OSTAID) for the file.
      *
      * "This field shall contain the identification code or name of the
@@ -190,34 +129,6 @@ public interface NitfHeader extends TaggedRecordExtensionHandler {
      * @return the standard type.
      */
     String getStandardType();
-
-    /**
-     * Return the symbol (or graphic) segment data lengths.
-     *
-     * @return the list of symbol segment data lengths
-     */
-    List<Integer> getSymbolSegmentDataLengths();
-
-    /**
-     * Return the symbol (or graphic) segment subheader lengths.
-     *
-     * @return the list of symbol segment subheader lengths
-     */
-    List<Integer> getSymbolSegmentSubHeaderLengths();
-
-    /**
-     * Return the text segment data lengths.
-     *
-     * @return the list of text segment data lengths
-     */
-    List<Integer> getTextSegmentDataLengths();
-
-    /**
-     * Return the text segment subheader lengths.
-     *
-     * @return the list of text segment subheader lengths
-     */
-    List<Integer> getTextSegmentSubHeaderLengths();
 
     /**
      * Return the user defined header overflow (UDHOFL) for the file.

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.transform.stream.StreamSource;
+import static org.codice.imaging.nitf.core.TestUtils.checkNitf21SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
@@ -47,7 +48,6 @@ import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
-import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
@@ -113,7 +113,7 @@ public class Nitf21HeaderTest {
         assertEquals("I_3034C", header.getOriginatingStationId());
         assertEquals("1997-12-18 12:15:39", formatter.format(header.getFileDateTime().getZonedDateTime()));
         assertEquals("Check an RGB/LUT 1 bit image maps black to red and white to green.", header.getFileTitle());
-        assertUnclasAndEmpty(header.getFileSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(header.getFileSecurityMetadata());
         assertEquals("00001", header.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00001", header.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals(0x20, header.getFileBackgroundColour().getRed());
@@ -135,7 +135,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", segment1.getImageTargetId().getOSuffix());
         assertEquals("  ", segment1.getImageTargetId().getCountryCode());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
-        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(header.getFileSecurityMetadata());
         assertEquals("Unknown", segment1.getImageSource());
         assertEquals(18L, segment1.getNumberOfRows());
         assertEquals(35L, segment1.getNumberOfColumns());
@@ -203,7 +203,7 @@ public class Nitf21HeaderTest {
         assertEquals("i_3001a", nitfHeader.getOriginatingStationId());
         assertEquals("1997-12-17 10:26:30", formatter.format(nitfHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("Checks an uncompressed 1024x1024 8 bit mono image with GEOcentric data. Airfield", nitfHeader.getFileTitle());
-        assertUnclasAndEmpty(nitfHeader.getFileSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(nitfHeader.getFileSecurityMetadata());
         assertEquals("00000", nitfHeader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00000", nitfHeader.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals((byte) 0xFF, nitfHeader.getFileBackgroundColour().getRed());
@@ -225,7 +225,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", segment1.getImageTargetId().getOSuffix());
         assertEquals("  ", segment1.getImageTargetId().getCountryCode());
         assertEquals("- BASE IMAGE -", segment1.getImageIdentifier2());
-        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment1.getSecurityMetadata());
         assertEquals("Unknown", segment1.getImageSource());
         assertEquals(1024L, segment1.getNumberOfRows());
         assertEquals(1024L, segment1.getNumberOfColumns());
@@ -275,7 +275,7 @@ public class Nitf21HeaderTest {
         assertEquals("NS3010A", nitfFileHeader.getOriginatingStationId());
         assertEquals("1997-12-17 16:00:28", formatter.format(nitfFileHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("Checks a JPEG-compressed 231x191 8-bit mono image. blimp. Not divisable by 8.", nitfFileHeader.getFileTitle());
-        assertUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
         assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals((byte)0xFF, nitfFileHeader.getFileBackgroundColour().getRed());
@@ -297,7 +297,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", segment1.getImageTargetId().getOSuffix());
         assertEquals("  ", segment1.getImageTargetId().getCountryCode());
         assertEquals("This is an unclassified image in an unclassified NITF file Q3.", segment1.getImageIdentifier2());
-        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment1.getSecurityMetadata());
         assertEquals("", segment1.getImageSource());
         assertEquals(191L, segment1.getNumberOfRows());
         assertEquals(231L, segment1.getNumberOfColumns());
@@ -345,7 +345,7 @@ public class Nitf21HeaderTest {
         assertEquals("NS3361c", nitfFileHeader.getOriginatingStationId());
         assertEquals("2000-12-12 12:12:12", formatter.format(nitfFileHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("Boston_1 CONTAINS Four Sub-images lined up to show as a single image, dec data.", nitfFileHeader.getFileTitle());
-        assertUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
         assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals((byte)0x00, nitfFileHeader.getFileBackgroundColour().getRed());
@@ -367,7 +367,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", segment1.getImageTargetId().getOSuffix());
         assertEquals("US", segment1.getImageTargetId().getCountryCode());
         assertEquals("LOGAN AIRPORT BOSTON Located at 256,256, display level 4 first image file.", segment1.getImageIdentifier2());
-        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment1.getSecurityMetadata());
         assertEquals("", segment1.getImageSource());
         assertEquals(256L, segment1.getNumberOfRows());
         assertEquals(256L, segment1.getNumberOfColumns());
@@ -400,7 +400,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", segment2.getImageTargetId().getOSuffix());
         assertEquals("US", segment2.getImageTargetId().getCountryCode());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,256, display level 2, second image file.", segment2.getImageIdentifier2());
-        assertUnclasAndEmpty(segment2.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment2.getSecurityMetadata());
         assertEquals("", segment2.getImageSource());
         assertEquals(256L, segment2.getNumberOfRows());
         assertEquals(256L, segment2.getNumberOfColumns());
@@ -438,7 +438,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", segment3.getImageTargetId().getOSuffix());
         assertEquals("US", segment3.getImageTargetId().getCountryCode());
         assertEquals("LOGAN AIRPORT BOSTON located at 256,000, display level 3, third image file.", segment3.getImageIdentifier2());
-        assertUnclasAndEmpty(segment3.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment3.getSecurityMetadata());
         assertEquals("", segment3.getImageSource());
         assertEquals(256L, segment3.getNumberOfRows());
         assertEquals(256L, segment3.getNumberOfColumns());
@@ -471,7 +471,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", segment4.getImageTargetId().getOSuffix());
         assertEquals("US", segment4.getImageTargetId().getCountryCode());
         assertEquals("LOGAN AIRPORT BOSTON located at 000,000, display level 1, fourth image file.", segment4.getImageIdentifier2());
-        assertUnclasAndEmpty(segment4.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment4.getSecurityMetadata());
         assertEquals("", segment4.getImageSource());
         assertEquals(256L, segment4.getNumberOfRows());
         assertEquals(256L, segment4.getNumberOfColumns());
@@ -522,7 +522,7 @@ public class Nitf21HeaderTest {
         assertEquals(1, textSegment.getAttachmentLevel());
         assertEquals("1998-02-17 10:19:39", formatter.format(textSegment.getTextDateTime().getZonedDateTime()));
         assertEquals("                                                    Paragon Imaging Comment File", textSegment.getTextTitle());
-        assertUnclasAndEmpty(textSegment.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(textSegment.getSecurityMetadata());
         Assert.assertEquals(TextFormat.BASICCHARACTERSET, textSegment.getTextFormat());
     }
 
@@ -627,7 +627,7 @@ public class Nitf21HeaderTest {
         assertEquals("NS3051V", nitfFileHeader.getOriginatingStationId());
         assertEquals("1997-09-24 11:25:10", formatter.format(nitfFileHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("Checks for new nitf 2.1 polygon set element, NIST polygonset test 06.", nitfFileHeader.getFileTitle());
-        assertUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
         assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00001", nitfFileHeader.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals(0, nitfFileHeader.getFileBackgroundColour().getRed());
@@ -644,7 +644,7 @@ public class Nitf21HeaderTest {
         assertNotNull(segment);
         assertEquals("POLYGONSET", segment.getIdentifier());
         assertEquals("POLYGON_SET", segment.getGraphicName());
-        assertUnclasAndEmpty(segment.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment.getSecurityMetadata());
         assertEquals(1, segment.getGraphicDisplayLevel());
         assertEquals(0, segment.getAttachmentLevel());
         assertEquals(1100, segment.getGraphicLocationRow());
@@ -674,7 +674,7 @@ public class Nitf21HeaderTest {
         assertEquals("I_3128b", nitfFileHeader.getOriginatingStationId());
         assertEquals("1999-02-10 14:01:44", formatter.format(nitfFileHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("Checks an uncomp. 512x480 w/PIAPR_,PIAIM_ & 3 PIAPE_tags conf. to STD. Lab Gang.", nitfFileHeader.getFileTitle());
-        assertUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(nitfFileHeader.getFileSecurityMetadata());
         assertEquals("00000", nitfFileHeader.getFileSecurityMetadata().getFileCopyNumber());
         assertEquals("00000", nitfFileHeader.getFileSecurityMetadata().getFileNumberOfCopies());
         assertEquals(0, nitfFileHeader.getFileBackgroundColour().getRed());
@@ -733,7 +733,7 @@ public class Nitf21HeaderTest {
         assertEquals("     ", image.getImageTargetId().getOSuffix());
         assertEquals("  ", image.getImageTargetId().getCountryCode());
         assertEquals("- BASE IMAGE -", image.getImageIdentifier2());
-        assertUnclasAndEmpty(image.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(image.getSecurityMetadata());
         assertEquals("Unknown", image.getImageSource());
         assertEquals(480L, image.getNumberOfRows());
         assertEquals(512L, image.getNumberOfColumns());
@@ -825,7 +825,7 @@ public class Nitf21HeaderTest {
         assertNotNull(des);
         assertEquals("LIDARA DES", des.getIdentifier().trim());
         assertEquals(1, des.getDESVersion());
-        assertUnclasAndEmpty(des.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(des.getSecurityMetadata());
     }
 
     @Test
@@ -936,7 +936,7 @@ public class Nitf21HeaderTest {
         assertNotNull(segment1);
         assertEquals("30", segment1.getIdentifier());
         assertEquals("", segment1.getGraphicName());
-        assertUnclasAndEmpty(segment1.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment1.getSecurityMetadata());
         assertEquals(2, segment1.getGraphicDisplayLevel());
         assertEquals(0, segment1.getAttachmentLevel());
         assertEquals(326, segment1.getGraphicLocationRow());
@@ -950,7 +950,7 @@ public class Nitf21HeaderTest {
         assertNotNull(segment2);
         assertEquals("35", segment2.getIdentifier());
         assertEquals("", segment2.getGraphicName());
-        assertUnclasAndEmpty(segment2.getSecurityMetadata());
+        checkNitf21SecurityMetadataUnclasAndEmpty(segment2.getSecurityMetadata());
         assertEquals(3, segment2.getGraphicDisplayLevel());
         assertEquals(0, segment2.getAttachmentLevel());
         assertEquals(275, segment2.getGraphicLocationRow());
@@ -960,24 +960,6 @@ public class Nitf21HeaderTest {
         assertEquals(GraphicColour.COLOUR, segment2.getGraphicColour());
         assertEquals(345, segment2.getBoundingBox2Row());
         assertEquals(836, segment2.getBoundingBox2Column());
-    }
-
-    void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
-        Assert.assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
-        assertEquals("", securityMetadata.getSecurityClassificationSystem());
-        assertEquals("", securityMetadata.getCodewords());
-        assertEquals("", securityMetadata.getControlAndHandling());
-        assertEquals("", securityMetadata.getReleaseInstructions());
-        assertEquals("", securityMetadata.getDeclassificationType());
-        assertEquals("", securityMetadata.getDeclassificationDate());
-        assertEquals("", securityMetadata.getDeclassificationExemption());
-        assertEquals("", securityMetadata.getDowngrade());
-        assertEquals("", securityMetadata.getDowngradeDate());
-        assertEquals("", securityMetadata.getClassificationText());
-        assertEquals("", securityMetadata.getClassificationAuthorityType());
-        assertEquals("", securityMetadata.getClassificationAuthority());
-        assertEquals("", securityMetadata.getClassificationReason());
-        assertEquals("", securityMetadata.getSecurityControlNumber());
     }
 
     @After

@@ -56,13 +56,16 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
      *
      * @param nitfReader The NitfReader to read the SymbolSegment from.
      * @param parseStrategy the parsing strategy to use to process the data.
+     * @param dataLength the length of the segment data part in bytes, excluding the header
      * @return the parsed SymbolSegment.
      * @throws ParseException when the input from the NitfReader isn't what was expected.
      */
-    public final SymbolSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final SymbolSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
+            final long dataLength) throws ParseException {
 
         reader = nitfReader;
         segment = new SymbolSegmentImpl();
+        segment.setDataLength(dataLength);
         parsingStrategy = parseStrategy;
 
         readSY();

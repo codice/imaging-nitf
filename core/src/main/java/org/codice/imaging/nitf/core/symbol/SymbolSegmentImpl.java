@@ -14,8 +14,14 @@
  */
 package org.codice.imaging.nitf.core.symbol;
 
+import java.io.IOException;
+import java.text.ParseException;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
+import org.codice.imaging.nitf.core.common.CommonConstants;
+import org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants;
+import org.codice.imaging.nitf.core.tre.TreParser;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Symbol segment information (NITF 2.0 only).
@@ -37,6 +43,7 @@ class SymbolSegmentImpl extends CommonBasicSegmentImpl implements SymbolSegment 
     private int symbolRotation = 0;
     private SymbolColour symbolColourFormat = SymbolColour.UNKNOWN;
     private ImageInputStream dataStream = null;
+    private long dataLength = 0;
 
     /**
         Default constructor.
@@ -399,4 +406,49 @@ class SymbolSegmentImpl extends CommonBasicSegmentImpl implements SymbolSegment 
     public void setData(final ImageInputStream data) {
         dataStream = data;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getHeaderLength() throws ParseException, IOException {
+        long headerLength = GraphicSegmentConstants.SY.length()
+                + GraphicSegmentConstants.SID_LENGTH
+                + GraphicSegmentConstants.SNAME_LENGTH
+                + getSecurityMetadata().getSerialisedLength()
+                + CommonConstants.ENCRYP_LENGTH
+                + SymbolConstants.SYTYPE_LENGTH
+                + SymbolConstants.NLIPS_LENGTH
+                + SymbolConstants.NPIXPL_LENGTH
+                + SymbolConstants.NWDTH_LENGTH
+                + SymbolConstants.SYNBPP_LENGTH
+                + GraphicSegmentConstants.SDLVL_LENGTH
+                + GraphicSegmentConstants.SALVL_LENGTH
+                + GraphicSegmentConstants.SLOC_HALF_LENGTH * 2
+                + GraphicSegmentConstants.SLOC_HALF_LENGTH * 2
+                + GraphicSegmentConstants.SCOLOR_LENGTH
+                + SymbolConstants.SNUM_LENGTH
+                + SymbolConstants.SROT_LENGTH
+                + SymbolConstants.SYNELUT_LENGTH
+                + GraphicSegmentConstants.SXSHDL_LENGTH;
+        // NOTE: We don't support LUT entries in symbol segments yet.
+        TreParser treParser = new TreParser();
+        int extendedDataLength = treParser.getTREs(this, TreSource.SymbolExtendedSubheaderData).length;
+        if (extendedDataLength > 0) {
+            headerLength += GraphicSegmentConstants.SXSOFL_LENGTH;
+            headerLength += extendedDataLength;
+        }
+        return headerLength;
+    }
+
+    @Override
+    public final long getDataLength() {
+        return dataLength;
+    }
+
+    @Override
+    public void setDataLength(final long length) {
+        dataLength = length;
+    }
+
 }

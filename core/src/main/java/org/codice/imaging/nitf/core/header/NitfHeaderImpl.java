@@ -14,8 +14,6 @@
  */
 package org.codice.imaging.nitf.core.header;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
@@ -38,18 +36,6 @@ class NitfHeaderImpl extends TaggedRecordExtensionHandlerImpl implements NitfHea
     private String nitfOriginatorsPhoneNumber = null;
     private int nitfUserDefinedHeaderOverflow = 0;
     private int nitfExtendedHeaderDataOverflow = 0;
-
-    private final List<Integer> lish = new ArrayList<>();
-    private final List<Long> li = new ArrayList<>();
-    private final List<Integer> lssh = new ArrayList<>();
-    private final List<Integer> ls = new ArrayList<>();
-    private final List<Integer> llsh = new ArrayList<>();
-    private final List<Integer> ll = new ArrayList<>();
-    private final List<Integer> ltsh = new ArrayList<>();
-    private final List<Integer> lt = new ArrayList<>();
-    private final List<Integer> ldsh = new ArrayList<>();
-    private final List<Integer> ld = new ArrayList<>();
-
 
     /**
         Default constructor.
@@ -333,130 +319,6 @@ class NitfHeaderImpl extends TaggedRecordExtensionHandlerImpl implements NitfHea
     @Override
     public final int getUserDefinedHeaderOverflow() {
         return nitfUserDefinedHeaderOverflow;
-    }
-
-    /**
-     * Return the image segment subheader lengths.
-     *
-     * @return the list of image segment subheader lengths
-     */
-    @Override
-    public final List<Integer> getImageSegmentSubHeaderLengths() {
-        return lish;
-    }
-
-    /**
-     * Return the image segment data lengths.
-     *
-     * @return the list of image segment data lengths
-     */
-    @Override
-    public final List<Long> getImageSegmentDataLengths() {
-        return li;
-    }
-
-    /**
-     * Return the graphic (or symbol) segment subheader lengths.
-     *
-     * @return the list of graphic segment subheader lengths
-     */
-    @Override
-    public final List<Integer> getGraphicSegmentSubHeaderLengths() {
-        return lssh;
-    }
-
-    /**
-     * Return the graphic (or symbol) segment data lengths.
-     *
-     * @return the list of graphic segment data lengths
-     */
-    @Override
-    public final List<Integer> getGraphicSegmentDataLengths() {
-        return ls;
-    }
-
-    /**
-     * Return the symbol (or graphic) segment subheader lengths.
-     *
-     * @return the list of symbol segment subheader lengths
-     */
-    @Override
-    public final List<Integer> getSymbolSegmentSubHeaderLengths() {
-        return lssh;
-    }
-
-    /**
-     * Return the symbol (or graphic) segment data lengths.
-     *
-     * @return the list of symbol segment data lengths
-     */
-    @Override
-    public final List<Integer> getSymbolSegmentDataLengths() {
-        return ls;
-    }
-
-    /**
-     * Return the label segment subheader lengths.
-     *
-     * This will always be an empty list for NITF 2.1 / NSIF 1.0 file, which do not have label segments.
-     *
-     * @return the list of label segment subheader lengths
-     */
-    @Override
-    public final List<Integer> getLabelSegmentSubHeaderLengths() {
-        return llsh;
-    }
-
-    /**
-     * Return the label segment data lengths.
-     *
-     * This will always be an empty list for NITF 2.1 / NSIF 1.0 file, which do not have label segments.
-     *
-     * @return the list of label segment data lengths
-     */
-    @Override
-    public final List<Integer> getLabelSegmentDataLengths() {
-        return ll;
-    }
-
-    /**
-     * Return the text segment subheader lengths.
-     *
-     * @return the list of text segment subheader lengths
-     */
-    @Override
-    public final List<Integer> getTextSegmentSubHeaderLengths() {
-        return ltsh;
-    }
-
-    /**
-     * Return the text segment data lengths.
-     *
-     * @return the list of text segment data lengths
-     */
-    @Override
-    public final List<Integer> getTextSegmentDataLengths() {
-        return lt;
-    }
-
-    /**
-     * Return the DES subheader lengths.
-     *
-     * @return the list of data extension segment subheader lengths
-     */
-    @Override
-    public final List<Integer> getDataExtensionSegmentSubHeaderLengths() {
-        return ldsh;
-    }
-
-    /**
-     * Return the DES data lengths.
-     *
-     * @return the list of data extension segment data lengths
-     */
-    @Override
-    public final List<Integer> getDataExtensionSegmentDataLengths() {
-        return ld;
     }
 
     /**

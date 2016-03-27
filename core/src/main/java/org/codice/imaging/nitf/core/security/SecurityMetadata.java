@@ -14,10 +14,19 @@
  */
 package org.codice.imaging.nitf.core.security;
 
+import org.codice.imaging.nitf.core.common.FileType;
+
 /**
- Security metadata for a NITF file header or segment subheader.
+ * Security metadata for a NITF file header or segment subheader.
  */
 public interface SecurityMetadata {
+
+    /**
+     * Get the file type (NITF version) for this metadata.
+     *
+     * @return FileType for this metadata.
+     */
+    FileType getFileType();
 
     /**
      Return the security classification.
@@ -298,4 +307,11 @@ public interface SecurityMetadata {
      * @return true if this file has the special-case downgrade date field.
      */
     boolean hasDowngradeMagicValue();
+
+    /**
+     * Get the length of the metadata.
+     *
+     * @return the length of the serialised metadata, in bytes
+     */
+    long getSerialisedLength();
 }

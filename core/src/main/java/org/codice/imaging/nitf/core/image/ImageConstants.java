@@ -309,6 +309,7 @@ public final class ImageConstants {
      * See MIL-STD-2500C Table A-3.
      */
     public static final int NELUT_LENGTH = 5;
+    static final int MAX_NUM_BANDS_IN_NBANDS_FIELD = 9;
 
     private ImageConstants() {
     }

@@ -14,16 +14,35 @@
  */
 package org.codice.imaging.nitf.core.image;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
+import org.codice.imaging.nitf.core.common.CommonConstants;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IFC_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IMFLT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.IREPBAND_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.ISUBCAT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NELUT_LENGTH;
+import static org.codice.imaging.nitf.core.image.ImageConstants.NLUTS_LENGTH;
+import org.codice.imaging.nitf.core.tre.TreParser;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Image segment information.
 */
 class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
+
+    private static final Set<ImageCompression> HAS_COMRAT = EnumSet.of(ImageCompression.BILEVEL, ImageCompression.JPEG,
+            ImageCompression.VECTORQUANTIZATION, ImageCompression.LOSSLESSJPEG, ImageCompression.JPEG2000, ImageCompression.DOWNSAMPLEDJPEG,
+            ImageCompression.BILEVELMASK, ImageCompression.JPEGMASK, ImageCompression.VECTORQUANTIZATIONMASK,
+            ImageCompression.LOSSLESSJPEGMASK, ImageCompression.JPEG2000MASK, ImageCompression.USERDEFINED, ImageCompression.USERDEFINEDMASK,
+            ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
 
     private NitfDateTime imageDateTime = null;
     private TargetId imageTargetId = null;
@@ -54,6 +73,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
     private int imageUserDefinedHeaderOverflow = 0;
     private String imageMagnification = null;
     private ImageInputStream imageData = null;
+    private long dataLength = 0;
 
     private static final int BITS_PER_BYTE = 8;
 
@@ -978,4 +998,97 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
         imageData = data;
     }
 
+    @Override
+    public final long getDataLength() {
+        return dataLength;
+    }
+
+    @Override
+    public void setDataLength(final long length) {
+        dataLength = length;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getHeaderLength() throws ParseException, IOException {
+        long len = ImageConstants.IM.length()
+                + ImageConstants.IID1_LENGTH
+                + CommonConstants.STANDARD_DATE_TIME_LENGTH
+                + ImageConstants.TGTID_LENGTH
+                + ImageConstants.IID2_LENGTH
+                + getSecurityMetadata().getSerialisedLength()
+                + CommonConstants.ENCRYP_LENGTH
+                + ImageConstants.ISORCE_LENGTH
+                + ImageConstants.NROWS_LENGTH
+                + ImageConstants.NCOLS_LENGTH
+                + ImageConstants.PVTYPE_LENGTH
+                + ImageConstants.IREP_LENGTH
+                + ImageConstants.ICAT_LENGTH
+                + ImageConstants.ABPP_LENGTH
+                + ImageConstants.PJUST_LENGTH
+                + ImageConstants.ICORDS_LENGTH
+                + ImageConstants.NICOM_LENGTH
+                + imageComments.size() * ImageConstants.ICOM_LENGTH
+                + ImageConstants.IC_LENGTH
+                + ImageConstants.NBANDS_LENGTH
+                + ImageConstants.ISYNC_LENGTH
+                + ImageConstants.IMODE_LENGTH
+                + ImageConstants.NBPR_LENGTH
+                + ImageConstants.NBPC_LENGTH
+                + ImageConstants.NPPBH_LENGTH
+                + ImageConstants.NPPBV_LENGTH
+                + ImageConstants.NBPP_LENGTH
+                + ImageConstants.IDLVL_LENGTH
+                + ImageConstants.IALVL_LENGTH
+                + ImageConstants.ILOC_HALF_LENGTH * 2
+                + ImageConstants.IMAG_LENGTH
+                + ImageConstants.UDIDL_LENGTH
+                + ImageConstants.IXSHDL_LENGTH;
+
+        if ((getImageCoordinatesRepresentation() != ImageCoordinatesRepresentation.UNKNOWN)
+                && (getImageCoordinatesRepresentation() != ImageCoordinatesRepresentation.NONE)) {
+            len += ImageConstants.IGEOLO_LENGTH;
+        }
+
+        if (hasCOMRAT()) {
+            len += ImageConstants.COMRAT_LENGTH;
+        }
+
+        if (getNumBands() > ImageConstants.MAX_NUM_BANDS_IN_NBANDS_FIELD) {
+            len += ImageConstants.XBANDS_LENGTH;
+        }
+        for (int i = 0; i < getNumBands(); ++i) {
+            ImageBand band = getImageBandZeroBase(i);
+            len += IREPBAND_LENGTH;
+            len += ISUBCAT_LENGTH;
+            len += IFC_LENGTH;
+            len += IMFLT_LENGTH;
+            len += NLUTS_LENGTH;
+            if (band.getNumLUTs() != 0) {
+                len += NELUT_LENGTH;
+                for (int j = 0; j < band.getNumLUTs(); ++j) {
+                    len += band.getNumLUTEntries();
+                }
+            }
+        }
+
+        TreParser treParser = new TreParser();
+        int userDefinedImageDataLength = treParser.getTREs(this, TreSource.UserDefinedImageData).length;
+        if (userDefinedImageDataLength > 0) {
+            len += ImageConstants.UDOFL_LENGTH;
+            len += userDefinedImageDataLength;
+        }
+        int extendedDataLength = treParser.getTREs(this, TreSource.ImageExtendedSubheaderData).length;
+        if (extendedDataLength > 0) {
+            len += ImageConstants.IXSOFL_LENGTH;
+            len += extendedDataLength;
+        }
+        return len;
+    }
+
+    public Boolean hasCOMRAT() {
+        return HAS_COMRAT.contains(getImageCompression());
+    }
 }
