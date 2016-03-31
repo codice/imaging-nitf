@@ -14,27 +14,24 @@
  **/
 package org.codice.imaging.nitf.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
-
+import static org.codice.imaging.nitf.core.TestUtils.checkNitf20SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
-import org.codice.imaging.nitf.core.security.SecurityClassification;
-import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.symbol.SymbolColour;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -96,7 +93,7 @@ public class Nitf20SymbolTest {
         assertEquals("1993-09-03 19:16:36", formatter.format(nitfHeader.getFileDateTime().getZonedDateTime()));
         assertEquals("checks for rendering of polyline. line width 1, line type 3,4,5. def line type.", nitfHeader.getFileTitle());
         FileSecurityMetadata securityMetadata = nitfHeader.getFileSecurityMetadata();
-        assertUnclasAndEmpty(securityMetadata);
+        checkNitf20SecurityMetadataUnclasAndEmpty(securityMetadata);
         assertEquals("999998", securityMetadata.getDowngradeDateOrSpecialCase());
         assertEquals("This  file   will not need a downgrade.", securityMetadata.getDowngradeEvent());
         assertNull(securityMetadata.getSecuritySourceDate());
@@ -116,7 +113,7 @@ public class Nitf20SymbolTest {
         assertNotNull(symbolSegment1);
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());
-        assertUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
+        checkNitf20SecurityMetadataUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
         assertEquals("999998", symbolSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals("This symbol will never need downgrading.", symbolSegment1.getSecurityMetadata().getDowngradeEvent());
         assertEquals(SymbolType.CGM, symbolSegment1.getSymbolType());
@@ -133,24 +130,5 @@ public class Nitf20SymbolTest {
         assertEquals(0, symbolSegment1.getSymbolLocation2Column());
         assertEquals("000000", symbolSegment1.getSymbolNumber());
         assertEquals(0, symbolSegment1.getSymbolRotation());
-    }
-
-    private void assertUnclasAndEmpty(SecurityMetadata securityMetadata) {
-        assertNotNull(securityMetadata);
-        assertEquals(SecurityClassification.UNCLASSIFIED, securityMetadata.getSecurityClassification());
-        assertNull(securityMetadata.getSecurityClassificationSystem());
-        assertEquals("", securityMetadata.getCodewords());
-        assertEquals("", securityMetadata.getControlAndHandling());
-        assertEquals("", securityMetadata.getReleaseInstructions());
-        assertNull(securityMetadata.getDeclassificationType());
-        assertNull(securityMetadata.getDeclassificationDate());
-        assertNull(securityMetadata.getDeclassificationExemption());
-        assertNull(securityMetadata.getDowngrade());
-        assertNull(securityMetadata.getDowngradeDate());
-        assertNull(securityMetadata.getClassificationText());
-        assertNull(securityMetadata.getClassificationAuthorityType());
-        assertEquals("", securityMetadata.getClassificationAuthority());
-        assertNull(securityMetadata.getClassificationReason());
-        assertEquals("", securityMetadata.getSecurityControlNumber());
     }
 }

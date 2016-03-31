@@ -42,13 +42,15 @@ public class DataExtensionSegmentParser extends AbstractSegmentParser {
     /**
      * Parse DataExtensionSegment from the specified reader.
      *
-     * @param nitfReader - the NITF input reader.
-     * @return a fully parsed DataExtensionSegment.
+     * @param nitfReader the NITF input reader.
+     * @param dataLength the length of the data part of this segment
+     * @return a fully parsed DataExtensionSegment
      * @throws ParseException when the parser encounters unexpected input from the reader.
      */
-    public final DataExtensionSegment parse(final NitfReader nitfReader) throws ParseException {
+    public final DataExtensionSegment parse(final NitfReader nitfReader, final long dataLength) throws ParseException {
         reader = nitfReader;
         segment = new DataExtensionSegmentImpl();
+        segment.setDataLength(dataLength);
 
         readDE();
         readDESID();

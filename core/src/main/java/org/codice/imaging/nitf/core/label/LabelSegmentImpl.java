@@ -14,8 +14,13 @@
  */
 package org.codice.imaging.nitf.core.label;
 
-import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
+import java.io.IOException;
+import java.text.ParseException;
 import org.codice.imaging.nitf.core.RGBColour;
+import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
+import org.codice.imaging.nitf.core.common.CommonConstants;
+import org.codice.imaging.nitf.core.tre.TreParser;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Label segment information (NITF 2.0 only).
@@ -213,6 +218,33 @@ class LabelSegmentImpl extends CommonBasicSegmentImpl implements LabelSegment {
     @Override
     public void setData(final String labelData) {
         labelText = labelData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final long getHeaderLength() throws ParseException, IOException {
+        long headerLength = LabelConstants.LA.length()
+                + LabelConstants.LID_LENGTH
+                + getSecurityMetadata().getSerialisedLength()
+                + CommonConstants.ENCRYP_LENGTH
+                + LabelConstants.LFS_LENGTH
+                + LabelConstants.LCW_LENGTH
+                + LabelConstants.LCH_LENGTH
+                + LabelConstants.LDLVL_LENGTH
+                + LabelConstants.LALVL_LENGTH
+                + LabelConstants.LLOC_HALF_LENGTH * 2
+                + RGBColour.RGB_COLOUR_LENGTH
+                + RGBColour.RGB_COLOUR_LENGTH
+                + LabelConstants.LXSHDL_LENGTH;
+        TreParser treParser = new TreParser();
+        int extendedDataLength = treParser.getTREs(this, TreSource.LabelExtendedSubheaderData).length;
+        if (extendedDataLength > 0) {
+            headerLength += LabelConstants.LXSOFL_LENGTH;
+            headerLength += extendedDataLength;
+        }
+        return headerLength;
     }
 
 }

@@ -18,7 +18,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
-import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SCOLOR_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SDLVL_LENGTH;
@@ -65,7 +64,7 @@ public class SymbolSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthString(SY, SY.length());
         writeFixedLengthString(header.getIdentifier(), SID_LENGTH);
         writeFixedLengthString(header.getSymbolName(), SNAME_LENGTH);
-        writeSecurityMetadata(header.getSecurityMetadata(), FileType.NITF_TWO_ZERO);
+        writeSecurityMetadata(header.getSecurityMetadata());
         writeENCRYP();
         writeFixedLengthString(header.getSymbolType().getTextEquivalent(), SYTYPE_LENGTH);
         writeFixedLengthNumber(header.getNumberOfLinesPerSymbol(), NLIPS_LENGTH);

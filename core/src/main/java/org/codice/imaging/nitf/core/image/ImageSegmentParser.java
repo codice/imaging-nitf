@@ -15,8 +15,6 @@
 package org.codice.imaging.nitf.core.image;
 
 import java.text.ParseException;
-import java.util.EnumSet;
-import java.util.Set;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
@@ -70,12 +68,6 @@ public class ImageSegmentParser extends AbstractSegmentParser {
     private int userDefinedImageDataLength = 0;
     private int imageExtendedSubheaderDataLength = 0;
 
-    private static final Set<ImageCompression> HAS_COMRAT = EnumSet.of(ImageCompression.BILEVEL, ImageCompression.JPEG,
-        ImageCompression.VECTORQUANTIZATION, ImageCompression.LOSSLESSJPEG, ImageCompression.JPEG2000, ImageCompression.DOWNSAMPLEDJPEG,
-        ImageCompression.BILEVELMASK, ImageCompression.JPEGMASK, ImageCompression.VECTORQUANTIZATIONMASK,
-        ImageCompression.LOSSLESSJPEGMASK, ImageCompression.JPEG2000MASK, ImageCompression.USERDEFINED, ImageCompression.USERDEFINEDMASK,
-        ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
-
     private ImageSegmentImpl segment = null;
 
     /**
@@ -91,12 +83,15 @@ public class ImageSegmentParser extends AbstractSegmentParser {
      * protect against parallel runs.
      * @param nitfReader the reader to use to get the data
      * @param parseStrategy the parsing strategy to use to process the data
+     * @param dataLength the length of the data associated with this segment.
      * @return the parsed image segment
      * @throws ParseException on parse failure
      */
-    public final ImageSegmentImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final ImageSegmentImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
+            final long dataLength) throws ParseException {
         reader = nitfReader;
         segment = new ImageSegmentImpl();
+        segment.setDataLength(dataLength);
         parsingStrategy = parseStrategy;
 
         readIM();
@@ -124,7 +119,7 @@ public class ImageSegmentParser extends AbstractSegmentParser {
             segment.addImageComment(reader.readTrimmedBytes(ICOM_LENGTH));
         }
         readIC();
-        if (hasCOMRAT()) {
+        if (segment.hasCOMRAT()) {
             readCOMRAT();
         }
         readNBANDS();
@@ -158,10 +153,6 @@ public class ImageSegmentParser extends AbstractSegmentParser {
             readIXSHD();
         }
         return segment;
-    }
-
-    private Boolean hasCOMRAT() {
-        return HAS_COMRAT.contains(segment.getImageCompression());
     }
 
     private void readIM() throws ParseException {

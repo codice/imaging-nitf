@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.core.security;
 
+import static org.codice.imaging.nitf.core.TestUtils.checkNitf20SecurityMetadataUnclasAndEmpty;
+import static org.codice.imaging.nitf.core.TestUtils.checkNitf21SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,33 +32,13 @@ public class SecurityMetadataGenerationTest {
 
     private void checkNITF21andNSIF10(SecurityMetadata defaultSecurityMetadata) {
         assertNotNull(defaultSecurityMetadata);
-        assertEquals(SecurityClassification.UNCLASSIFIED, defaultSecurityMetadata.getSecurityClassification());
-        assertEquals("  ", defaultSecurityMetadata.getSecurityClassificationSystem());
-        assertEquals("           ", defaultSecurityMetadata.getCodewords());
-        assertEquals("  ", defaultSecurityMetadata.getControlAndHandling());
-        assertEquals("                    ", defaultSecurityMetadata.getReleaseInstructions());
-        assertEquals("  ", defaultSecurityMetadata.getDeclassificationType());
-        assertEquals("        ", defaultSecurityMetadata.getDeclassificationDate());
-        assertEquals("    ", defaultSecurityMetadata.getDeclassificationExemption());
-        assertEquals(" ", defaultSecurityMetadata.getDowngrade());
-        assertEquals("        ", defaultSecurityMetadata.getDowngradeDate());
-        assertEquals("                                           ", defaultSecurityMetadata.getClassificationText());
-        assertEquals(" ", defaultSecurityMetadata.getClassificationAuthorityType());
-        assertEquals("                                        ", defaultSecurityMetadata.getClassificationAuthority());
-        assertEquals(" ", defaultSecurityMetadata.getClassificationReason());
-        assertEquals("        ", defaultSecurityMetadata.getSecuritySourceDate());
-        assertEquals("               ", defaultSecurityMetadata.getSecurityControlNumber());
+
+        checkNitf21SecurityMetadataUnclasAndEmpty(defaultSecurityMetadata);
     }
 
     private void checkNITF20(SecurityMetadata defaultSecurityMetadata) {
         assertNotNull(defaultSecurityMetadata);
-        assertEquals(SecurityClassification.UNCLASSIFIED, defaultSecurityMetadata.getSecurityClassification());
-        assertEquals("                                        ", defaultSecurityMetadata.getCodewords());
-        assertEquals("                                        ", defaultSecurityMetadata.getControlAndHandling());
-        assertEquals("                                        ", defaultSecurityMetadata.getReleaseInstructions());
-        assertEquals("                    ", defaultSecurityMetadata.getClassificationAuthority());
-        assertEquals("                    ", defaultSecurityMetadata.getSecurityControlNumber());
-        assertEquals("      ", defaultSecurityMetadata.getDowngradeDateOrSpecialCase());
+        checkNitf20SecurityMetadataUnclasAndEmpty(defaultSecurityMetadata);
         assertNull(defaultSecurityMetadata.getDowngradeEvent());
     }
 
@@ -83,8 +65,8 @@ public class SecurityMetadataGenerationTest {
         FileSecurityMetadata fsm = SecurityMetadataFactory.getDefaultFileSecurityMetadata(FileType.NITF_TWO_ONE);
         assertNotNull(fsm);
         checkNITF21andNSIF10(fsm);
-        assertEquals("     ", fsm.getFileCopyNumber());
-        assertEquals("     ", fsm.getFileNumberOfCopies());
+        assertEquals("", fsm.getFileCopyNumber());
+        assertEquals("", fsm.getFileNumberOfCopies());
     }
 
     @Test
@@ -92,8 +74,8 @@ public class SecurityMetadataGenerationTest {
         FileSecurityMetadata fsm = SecurityMetadataFactory.getDefaultFileSecurityMetadata(FileType.NSIF_ONE_ZERO);
         assertNotNull(fsm);
         checkNITF21andNSIF10(fsm);
-        assertEquals("     ", fsm.getFileCopyNumber());
-        assertEquals("     ", fsm.getFileNumberOfCopies());
+        assertEquals("", fsm.getFileCopyNumber());
+        assertEquals("", fsm.getFileNumberOfCopies());
     }
 
     @Test
@@ -101,7 +83,7 @@ public class SecurityMetadataGenerationTest {
         FileSecurityMetadata fsm = SecurityMetadataFactory.getDefaultFileSecurityMetadata(FileType.NITF_TWO_ZERO);
         assertNotNull(fsm);
         checkNITF20(fsm);
-        assertEquals("     ", fsm.getFileCopyNumber());
-        assertEquals("     ", fsm.getFileNumberOfCopies());
+        assertEquals("", fsm.getFileCopyNumber());
+        assertEquals("", fsm.getFileNumberOfCopies());
     }
 }

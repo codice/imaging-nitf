@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
-import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LA;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LALVL_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LCH_LENGTH;
@@ -58,7 +57,7 @@ public class LabelSegmentWriter extends AbstractSegmentWriter {
     public final void writeLabel(final LabelSegment labelSegment) throws IOException, ParseException {
         writeFixedLengthString(LA, LA.length());
         writeFixedLengthString(labelSegment.getIdentifier(), LID_LENGTH);
-        writeSecurityMetadata(labelSegment.getSecurityMetadata(), FileType.NITF_TWO_ZERO);
+        writeSecurityMetadata(labelSegment.getSecurityMetadata());
         writeENCRYP();
         writeFixedLengthString(" ", LFS_LENGTH);
         writeFixedLengthNumber(labelSegment.getLabelCellWidth(), LCW_LENGTH);

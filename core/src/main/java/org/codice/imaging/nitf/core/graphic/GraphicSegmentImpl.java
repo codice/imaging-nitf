@@ -14,8 +14,13 @@
  */
 package org.codice.imaging.nitf.core.graphic;
 
+import java.io.IOException;
+import java.text.ParseException;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
+import org.codice.imaging.nitf.core.common.CommonConstants;
+import org.codice.imaging.nitf.core.tre.TreParser;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
     Graphic segment information (NITF 2.1 / NSIF 1.0 only).
@@ -33,6 +38,7 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     private int boundingBox2Row = 0;
     private int boundingBox2Column = 0;
     private ImageInputStream dataStream = null;
+    private long dataLength = 0;
 
     /**
         Default constructor.
@@ -308,5 +314,44 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     @Override
     public ImageInputStream getData() {
         return dataStream;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long getHeaderLength() throws ParseException, IOException {
+        long headerLength = GraphicSegmentConstants.SY.length()
+                + GraphicSegmentConstants.SID_LENGTH
+                + GraphicSegmentConstants.SNAME_LENGTH
+                + getSecurityMetadata().getSerialisedLength()
+                + CommonConstants.ENCRYP_LENGTH
+                + GraphicSegmentConstants.SFMT_CGM.length()
+                + GraphicSegmentConstants.SSTRUCT.length()
+                + GraphicSegmentConstants.SDLVL_LENGTH
+                + GraphicSegmentConstants.SALVL_LENGTH
+                + GraphicSegmentConstants.SLOC_HALF_LENGTH * 2
+                + GraphicSegmentConstants.SBND1_HALF_LENGTH * 2
+                + GraphicSegmentConstants.SCOLOR_LENGTH
+                + GraphicSegmentConstants.SBND2_HALF_LENGTH * 2
+                + GraphicSegmentConstants.SRES.length()
+                + GraphicSegmentConstants.SXSHDL_LENGTH;
+        TreParser treParser = new TreParser();
+        int extendedDataLength = treParser.getTREs(this, TreSource.GraphicExtendedSubheaderData).length;
+        if (extendedDataLength > 0) {
+            headerLength += GraphicSegmentConstants.SXSOFL_LENGTH;
+            headerLength += extendedDataLength;
+        }
+        return headerLength;
+    }
+
+    @Override
+    public final long getDataLength() {
+        return dataLength;
+    }
+
+    @Override
+    public void setDataLength(final long length) {
+        dataLength = length;
     }
 }

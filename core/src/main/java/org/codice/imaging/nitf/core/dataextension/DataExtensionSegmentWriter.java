@@ -55,7 +55,7 @@ public class DataExtensionSegmentWriter extends AbstractSegmentWriter {
         writeFixedLengthString(DE, DE.length());
         writeFixedLengthString(des.getIdentifier(), DESID_LENGTH);
         writeFixedLengthNumber(des.getDESVersion(), DESVER_LENGTH);
-        writeSecurityMetadata(des.getSecurityMetadata(), fileType);
+        writeSecurityMetadata(des.getSecurityMetadata());
         if (des.isTreOverflow(fileType)) {
             writeFixedLengthString(des.getOverflowedHeaderType(), DESOFLW_LENGTH);
             writeFixedLengthNumber(des.getItemOverflowed(), DESITEM_LENGTH);

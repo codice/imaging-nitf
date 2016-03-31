@@ -62,7 +62,7 @@ public class TextSegmentWriter extends AbstractSegmentWriter {
         }
         writeDateTime(textSegment.getTextDateTime());
         writeFixedLengthString(textSegment.getTextTitle(), TXTITL_LENGTH);
-        writeSecurityMetadata(textSegment.getSecurityMetadata(), fileType);
+        writeSecurityMetadata(textSegment.getSecurityMetadata());
         writeENCRYP();
         writeFixedLengthString(textSegment.getTextFormat().getTextEquivalent(), TXTFMT_LENGTH);
         byte[] textExtendedSubheaderData = mTreParser.getTREs(textSegment, TreSource.TextExtendedSubheaderData);

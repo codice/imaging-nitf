@@ -30,8 +30,6 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractSegmentWriter {
 
-    private static final int ENCRYP_LENGTH = 1;
-
     private static final int KILOBYTE = 1024;
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractSegmentWriter.class);
@@ -83,7 +81,7 @@ public abstract class AbstractSegmentWriter {
      * @throws IOException on writing failure.
      */
     protected final void writeENCRYP() throws IOException {
-        writeFixedLengthString("0", ENCRYP_LENGTH);
+        writeFixedLengthString("0", CommonConstants.ENCRYP_LENGTH);
     }
 
     /**
@@ -166,13 +164,12 @@ public abstract class AbstractSegmentWriter {
      * Write out the segment-level security metadata.
      *
      * @param securityMetadata security data for the segment.
-     * @param fileType the type (NITF version) of security data to write out.
      * @throws IOException on writing problems.
      */
-    protected final void writeSecurityMetadata(final SecurityMetadata securityMetadata, final FileType fileType) throws IOException {
+    protected final void writeSecurityMetadata(final SecurityMetadata securityMetadata) throws IOException {
         // TODO: consider making this a member variable. Requires restructing SecurityMetadataWriter and probably writer code
         SecurityMetadataWriter securityMetadataWriter = new SecurityMetadataWriter(mOutput, mTreParser);
-        securityMetadataWriter.writeMetadata(securityMetadata, fileType);
+        securityMetadataWriter.writeMetadata(securityMetadata);
     }
 
     /**

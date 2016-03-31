@@ -56,15 +56,18 @@ public class GraphicSegmentParser extends AbstractSegmentParser {
      *
      * The reader provides the data. The parse strategy selects which data to store.
      *
-     * @param nitfReader - the NITF input reader.
-     * @param parseStrategy - the strategy that defines which elements to parse or skip.
+     * @param nitfReader the NITF input reader.
+     * @param parseStrategy the strategy that defines which elements to parse or skip.
+     * @param dataLength the length of the segment data part in bytes, excluding the header.
      * @return a fully parsed Graphic segment.
      * @throws ParseException when the parser encounters unexpected input from the reader.
      */
-    public final GraphicSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final GraphicSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
+            final long dataLength) throws ParseException {
 
         reader = nitfReader;
         segment = new GraphicSegmentImpl();
+        segment.setDataLength(dataLength);
         parsingStrategy = parseStrategy;
 
         readSY();

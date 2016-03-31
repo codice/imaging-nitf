@@ -14,8 +14,14 @@
  */
 package org.codice.imaging.nitf.core.text;
 
+import java.io.IOException;
+import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
+import org.codice.imaging.nitf.core.common.CommonConstants;
+import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.tre.TreParser;
+import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
  * Text segment information.
@@ -40,6 +46,7 @@ class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
      *
      * @param dateTime the date and time of the text.
      */
+    @Override
     public final void setTextDateTime(final NitfDateTime dateTime) {
         textDateTime = dateTime;
     }
@@ -98,5 +105,28 @@ class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
     @Override
     public final void setData(final String text) {
         textData = text;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final long getHeaderLength() throws ParseException, IOException {
+        long headerLength = TextConstants.TE.length()
+                + TextConstants.TEXTID_LENGTH
+                + TextConstants.TXTALVL_LENGTH
+                + STANDARD_DATE_TIME_LENGTH
+                + TextConstants.TXTITL_LENGTH
+                + getSecurityMetadata().getSerialisedLength()
+                + CommonConstants.ENCRYP_LENGTH
+                + TextConstants.TXTFMT_LENGTH
+                + TextConstants.TXSHDL_LENGTH;
+        TreParser treParser = new TreParser();
+        int extendedDataLength = treParser.getTREs(this, TreSource.TextExtendedSubheaderData).length;
+        if (extendedDataLength > 0) {
+            headerLength += TextConstants.TXSOFL_LENGTH;
+            headerLength += extendedDataLength;
+        }
+        return headerLength;
     }
 }

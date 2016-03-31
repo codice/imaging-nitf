@@ -235,4 +235,18 @@ public interface SymbolSegment extends CommonBasicSegment {
      * @param data stream containing data for segment
      */
     void setData(ImageInputStream data);
+
+    /**
+     * Get the length of the data for this segment.
+     *
+     * @return the number of bytes of data for this segment.
+     */
+    long getDataLength();
+
+    /**
+     * Set the length of data for this segment.
+     *
+     * @param length the number of bytes of data in this segment.
+     */
+    void setDataLength(final long length);
 }

@@ -14,8 +14,11 @@
  */
 package org.codice.imaging.nitf.core.text;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
-    Text format.
+ *     Text format.
     <p>
     This is intended to represent the format of the text in a text segment.
 */
@@ -84,6 +87,43 @@ public enum TextFormat {
         Line Feed character.
     */
     UTF8SUBSET ("U8S");
+
+    private static final Logger LOG = LoggerFactory.getLogger(TextFormat.class);
+
+    /**
+     * Guess the text format used in the provided string.
+     *
+     * The logic as given in the IPON (STDI-0005) Section 3.16.
+     *
+     * @param stringToTest the string to test for format.
+     * @return the likely test format.
+     */
+    public static TextFormat getFormatUsedInString(final String stringToTest) {
+        TextFormat likelyTextFormat = BASICCHARACTERSET;
+        // It might be nice to try to guess MTF, but that isn't going to be reliable.
+        for (char stringChar : stringToTest.toCharArray()) {
+            if ((stringChar == '\n') || (stringChar == '\f') || (stringChar == '\r')) {
+                // These are valid everwhere
+                continue;
+            }
+            if ((stringChar >= ' ') && (stringChar <= '~')) {
+                // These are valid everywhere
+                continue;
+            }
+            if ((stringChar >= '\u00A0') && (stringChar <= '\u00FF')) {
+                if (!likelyTextFormat.equals(UTF8SUBSET)) {
+                    likelyTextFormat = EXTENDEDCHARACTERSET;
+                }
+                continue;
+            }
+            if ((stringChar >= '\uC2A1') && (stringChar <= '\uC3BF')) {
+                likelyTextFormat = UTF8SUBSET;
+                continue;
+            }
+            LOG.warn("Invalid character detected in Text string:" + stringToTest);
+        }
+        return likelyTextFormat;
+    }
 
     private final String textEquivalent;
 

@@ -177,7 +177,7 @@ public class ImageSegmentParserTest {
     @Test
     public void testParse() throws ParseException {
         ImageSegmentParser parser = new ImageSegmentParser();
-        ImageSegment nitfImageSegmentHeader = parser.parse(nitfReader, strategy);
+        ImageSegment nitfImageSegmentHeader = parser.parse(nitfReader, strategy, 0);
 
         assertThat(nitfImageSegmentHeader.getImageMagnification(), is(IMAG));
         assertThat(nitfImageSegmentHeader.getImageMode(), is(ImageMode.BLOCKINTERLEVE));

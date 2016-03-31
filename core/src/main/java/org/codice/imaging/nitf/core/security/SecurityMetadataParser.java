@@ -88,6 +88,7 @@ public class SecurityMetadataParser {
     protected final void doParse(final NitfReader nitfReader, final SecurityMetadataImpl securityMetadata) throws ParseException {
         reader = nitfReader;
         metadata = securityMetadata;
+        securityMetadata.setFileType(nitfReader.getFileType());
 
         switch (nitfReader.getFileType()) {
             case NITF_TWO_ZERO:

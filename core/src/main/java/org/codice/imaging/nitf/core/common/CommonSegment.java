@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.core.common;
 
+import java.io.IOException;
+import java.text.ParseException;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 
 /**
@@ -31,7 +33,10 @@ public interface CommonSegment extends TaggedRecordExtensionHandler {
      * This field shall contain a valid alphanumeric identification code associated with the segment. The valid codes
      * are determined by the application.
      *
-     * @return the identifier
+     * This is a fixed length field in the segment, and any space padding will be included in the result. You may wish
+     * to trim() the result before displaying or storing this field content.
+     *
+     * @return the identifier, including any space padding.
      */
     String getIdentifier();
 
@@ -61,5 +66,14 @@ public interface CommonSegment extends TaggedRecordExtensionHandler {
      */
     void setSecurityMetadata(final SecurityMetadata metaData);
 
+    /**
+     * Get the length of this segment, excluding the data.
+     *
+     * @return actual header length in bytes.
+     *
+     * @throws java.text.ParseException if the underlying data length could not be calculated
+     * @throws java.io.IOException if there was a problem reading configuration data
+     */
+    long getHeaderLength() throws ParseException, IOException;
 
 }

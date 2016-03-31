@@ -33,11 +33,6 @@ public class RoundTripGDALWriterTest extends AbstractWriterTest {
     }
 
     @Test
-    public void roundTripNITFrgb() throws ParseException, URISyntaxException, IOException {
-        roundTripFile("/fromGDAL/rgb.ntf");
-    }
-
-    @Test
     public void roundTripNITFtwoimages() throws ParseException, URISyntaxException, IOException {
         roundTripFile("/fromGDAL/two_images_jp2.ntf");
     }

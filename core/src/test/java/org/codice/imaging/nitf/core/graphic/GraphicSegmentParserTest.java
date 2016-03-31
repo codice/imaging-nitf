@@ -125,7 +125,7 @@ public class GraphicSegmentParserTest {
     @Test
     public void testParse() throws ParseException {
         GraphicSegmentParser parser = new GraphicSegmentParser();
-        GraphicSegment header = parser.parse(nitfReader, strategy);
+        GraphicSegment header = parser.parse(nitfReader, strategy, 0);
         SecurityMetadata securityMetaData = header.getSecurityMetadata();
 
         assertThat(header, notNullValue());

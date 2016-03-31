@@ -20,7 +20,6 @@ import java.text.ParseException;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.xml.transform.Source;
-import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
@@ -39,14 +38,11 @@ import org.codice.imaging.nitf.core.text.TextSegmentParser;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreCollectionParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * "Slotted" parse strategy.
  */
 public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SlottedNitfParseStrategy.class);
 
     private HeapStrategy<ImageInputStream> imageHeapStrategy =
             new InMemoryHeapStrategy<>((InputStream is) -> new MemoryCacheImageInputStream(is));
@@ -117,62 +113,26 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         return this.nitfStorage;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void baseHeadersRead(final NitfReader reader) {
-        NitfHeader nitfHeader = nitfStorage.getNitfHeader();
-
-        try {
-            for (int i = 0; i < nitfHeader.getImageSegmentSubHeaderLengths().size(); ++i) {
-                handleImageSegment(reader, i);
-            }
-            if (nitfHeader.getFileType() == FileType.NITF_TWO_ZERO) {
-                for (int i = 0; i < nitfHeader.getSymbolSegmentSubHeaderLengths().size(); ++i) {
-                    handleSymbolSegment(reader, i);
-                }
-                for (int i = 0; i < nitfHeader.getLabelSegmentSubHeaderLengths().size(); ++i) {
-                   handleLabelSegment(reader, i);
-                }
-            } else {
-                for (int i = 0; i < nitfHeader.getGraphicSegmentSubHeaderLengths().size(); ++i) {
-                   handleGraphicSegment(reader, i);
-                }
-            }
-            for (int i = 0; i < nitfHeader.getTextSegmentSubHeaderLengths().size(); ++i) {
-                handleTextSegment(reader, i);
-            }
-            for (int i = 0; i < nitfHeader.getDataExtensionSegmentSubHeaderLengths().size(); ++i) {
-                handleDataExtensionSegment(reader, i);
-            }
-        } catch (ParseException ex) {
-            LOGGER.error(ex.getMessage() + ex);
-        }
-    }
-
     private void initialiseTreCollectionParserIfRequired() throws ParseException {
         if (treCollectionParser == null) {
             treCollectionParser = new TreCollectionParser();
         }
     }
 
-//<editor-fold defaultstate="collapsed" desc="Image segment methods">
     /**
      * Parse the image segment.
      *
      * @param reader Reader to use for reading
-     * @param i the index of the segment to read (zero base)
      * @param parseData whether to parse the associated data (true) or only to parse the header, skipping over the data
      * (false)
+     * @param dataLength the length of the data associated with this segment.
      * @return the segment
      * @throws ParseException on parse error
      */
-    protected final ImageSegment readImageSegment(final NitfReader reader, final int i, final boolean parseData)
+    protected final ImageSegment readImageSegment(final NitfReader reader, final boolean parseData, final long dataLength)
             throws ParseException {
         ImageSegmentParser imageSegmentParser = new ImageSegmentParser();
-        ImageSegment imageSegment = imageSegmentParser.parse(reader, this);
-        long dataLength = nitfStorage.getNitfHeader().getImageSegmentDataLengths().get(i);
+        ImageSegment imageSegment = imageSegmentParser.parse(reader, this, dataLength);
         if (parseData) {
             if (dataLength > 0) {
                 ImageInputStream iis = imageHeapStrategy.handleSegment(reader, dataLength);
@@ -185,23 +145,20 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         }
         return imageSegment;
     }
-//</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Graphic segment methods">
     /**
      * Parse the graphic segment.
      *
      * @param reader Reader to use for reading
-     * @param i the index of the header to read (zero base)
      * @param parseData whether to extract associated data (true) or to parse only the header and skip over the data
      * (false)
+     * @param dataLength the length of the data associated with this segment.
      * @return the segment header data
      * @throws ParseException on parse error
      */
-    protected final GraphicSegment readGraphicSegment(final NitfReader reader, final int i, final boolean parseData) throws ParseException {
+    protected final GraphicSegment readGraphicSegment(final NitfReader reader, final boolean parseData, final long dataLength) throws ParseException {
         GraphicSegmentParser graphicSegmentParser = new GraphicSegmentParser();
-        GraphicSegment graphicSegment = graphicSegmentParser.parse(reader, this);
-        long dataLength = nitfStorage.getNitfHeader().getGraphicSegmentDataLengths().get(i);
+        GraphicSegment graphicSegment = graphicSegmentParser.parse(reader, this, dataLength);
         if (parseData) {
             if (dataLength > 0) {
                 // TODO: [IMG-77] this implementation probably should have a file-backed option
@@ -215,25 +172,21 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         }
         return graphicSegment;
     }
-//</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Symbol segment methods">
     /**
      * Parse the symbol segment.
      *
      * @param reader Reader to use for reading
-     * @param i the index of the header to read (zero base)
      * @param parseData whether to parse (true) or skip (false) the data for this symbol segment
+     * @param dataLength the length of the data associated with this segment.
      * @return the segment header data
      * @throws ParseException on parse error
      */
-    protected final SymbolSegment readSymbolSegment(final NitfReader reader, final int i, final boolean parseData) throws ParseException {
+    protected final SymbolSegment readSymbolSegment(final NitfReader reader, final boolean parseData, final long dataLength) throws ParseException {
         SymbolSegmentParser symbolSegmentParser = new SymbolSegmentParser();
-        SymbolSegment symbolSegment = symbolSegmentParser.parse(reader, this);
-        long dataLength = nitfStorage.getNitfHeader().getSymbolSegmentDataLengths().get(i);
+        SymbolSegment symbolSegment = symbolSegmentParser.parse(reader, this, dataLength);
         if (parseData) {
             if (dataLength > 0) {
-                // TODO: [IMG-77] this implementation probably should have a file-backed option
                 byte[] bytes = reader.readBytesRaw((int) dataLength);
                 symbolSegment.setData(new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes)));
             }
@@ -244,25 +197,22 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         }
         return symbolSegment;
     }
-//</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Label Segment Methods">
     /**
      * Parse the label segment.
      *
      * The reader will be positioned at the start of the associated data segment.
      *
      * @param reader Reader to use for reading
-     * @param i the index of the header to read (zero base)
+     * @param dataLength the length of the data part of the segment
      * @param parseData whether to parse out the text for the label (true) or just parse the header and skip the text
      * (false)
      * @return the segment header data
      * @throws ParseException on parse error
      */
-    protected final LabelSegment readLabelSegment(final NitfReader reader, final int i, final boolean parseData) throws ParseException {
+    protected final LabelSegment readLabelSegment(final NitfReader reader, final long dataLength, final boolean parseData) throws ParseException {
         LabelSegmentParser labelSegmentParser = new LabelSegmentParser();
         LabelSegment labelSegment = labelSegmentParser.parse(reader, this);
-        final long dataLength = nitfStorage.getNitfHeader().getLabelSegmentDataLengths().get(i);
         if (parseData) {
             if (dataLength > 0) {
                 labelSegment.setData(reader.readBytes((int) dataLength));
@@ -274,23 +224,20 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         }
         return labelSegment;
     }
-//</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="Text segment methods">
     /**
      * Parse the text segment.
      *
      * @param reader Reader to use for reading
-     * @param i the index of the segment to read (zero base)
+     * @param dataLength the length of the data part of the segment
      * @param parseData whether to extract associated text data (true) or just parse the header and skip the text
      * (false)
      * @return the text segment
      * @throws ParseException on parse error
      */
-    protected final TextSegment readTextSegment(final NitfReader reader, final int i, final boolean parseData) throws ParseException {
+    protected final TextSegment readTextSegment(final NitfReader reader, final long dataLength, final boolean parseData) throws ParseException {
         TextSegmentParser textSegmentParser = new TextSegmentParser();
         TextSegment textSegment = textSegmentParser.parse(reader, this);
-        long dataLength = nitfStorage.getNitfHeader().getTextSegmentDataLengths().get(i);
         if (parseData) {
             if (dataLength > 0) {
                 String text = reader.readBytes((int) dataLength);
@@ -305,23 +252,20 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         }
         return textSegment;
     }
-//</editor-fold>
 
-//<editor-fold defaultstate="collapsed" desc="DES methods">
     /**
      * Parse the data extension segment.
      *
      * @param reader Reader to use for reading
-     * @param i the index of the segment to read (zero base)
      * @param parseData whether to parse the DES content (true) or skip over it (false).
+     * @param dataLength the length of the data part of this segment
      * @return the DES
      * @throws ParseException on parse error
      */
-    protected final DataExtensionSegment readDataExtensionSegment(final NitfReader reader, final int i,
-            final boolean parseData) throws ParseException {
+    protected final DataExtensionSegment readDataExtensionSegment(final NitfReader reader, final boolean parseData,
+            final long dataLength) throws ParseException {
         DataExtensionSegmentParser dataExtensionSegmentParser = new DataExtensionSegmentParser();
-        DataExtensionSegment dataExtensionSegment = dataExtensionSegmentParser.parse(reader);
-        long dataLength = nitfStorage.getNitfHeader().getDataExtensionSegmentDataLengths().get(i);
+        DataExtensionSegment dataExtensionSegment = dataExtensionSegmentParser.parse(reader, dataLength);
         if (parseData) {
             if (dataLength > 0) {
                 readDataExtensionSegmentData(dataExtensionSegment, reader, dataLength);
@@ -359,61 +303,6 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
             }
         }
     }
-//</editor-fold>
-
-    /**
-     * Handle the image segment header and data.
-     *
-     * @param reader the reader to use, assumed to be positioned at the start of the header
-     * @param i the index (zero base) of the segment to read
-     * @throws ParseException if there is a problem handling the segment
-     */
-    protected abstract void handleImageSegment(final NitfReader reader, final int i) throws ParseException;
-
-    /**
-     * Handle the symbol segment header and data.
-     *
-     * @param reader the reader to use, assumed to be positioned at the start of the header
-     * @param i the index (zero base) of the segment to read
-     * @throws ParseException if there is a problem handling the segment
-     */
-    protected abstract void handleSymbolSegment(final NitfReader reader, final int i) throws ParseException;
-
-    /**
-     * Handle the label segment header and data.
-     *
-     * @param reader the reader to use, assumed to be positioned at the start of the header
-     * @param i the index (zero base) of the segment to read
-     * @throws ParseException if there is a problem handling the segment
-     */
-    protected abstract void handleLabelSegment(final NitfReader reader, final int i) throws ParseException;
-
-    /**
-     * Handle the graphic segment header and data.
-     *
-     * @param reader the reader to use, assumed to be positioned at the start of the header
-     * @param i the index (zero base) of the segment to read
-     * @throws ParseException if there is a problem handling the segment
-     */
-    protected abstract void handleGraphicSegment(final NitfReader reader, final int i) throws ParseException;
-
-    /**
-     * Handle the text segment header and data.
-     *
-     * @param reader the reader to use, assumed to be positioned at the start of the header
-     * @param i the index (zero base) of the segment to read
-     * @throws ParseException if there is a problem handling the segment
-     */
-    protected abstract void handleTextSegment(final NitfReader reader, final int i) throws ParseException;
-
-    /**
-     * Handle the data extension segment header and data.
-     *
-     * @param reader the reader to use, assumed to be positioned at the start of the header
-     * @param i the index (zero base) of the segment to read
-     * @throws ParseException if there is a problem handling the segment
-     */
-    protected abstract void handleDataExtensionSegment(final NitfReader reader, final int i) throws ParseException;
 
     /**
      * Register an additional TRE descriptor.
