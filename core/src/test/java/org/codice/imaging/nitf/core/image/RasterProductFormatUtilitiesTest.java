@@ -17,34 +17,34 @@ package org.codice.imaging.nitf.core.image;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import java.io.IOException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 public class RasterProductFormatUtilitiesTest {
 
     @Test
-    public void checkA1() throws IOException, ParseException {
+    public void checkA1() throws IOException, NitfFormatException {
         RasterProductFormatUtilities rpfUtils = new RasterProductFormatUtilities();
         assertEquals("CM", rpfUtils.getAbbreviationForFileName("foo.A11"));
         assertEquals("Combat Charts, 1:10,000 scale", rpfUtils.getNameForFileName("foo.A11"));
     }
 
     @Test
-    public void checkZZ() throws IOException, ParseException {
+    public void checkZZ() throws IOException, NitfFormatException {
         RasterProductFormatUtilities rpfUtils = new RasterProductFormatUtilities();
         assertEquals("", rpfUtils.getAbbreviationForFileName("foo.ZZA"));
         assertEquals("IFR Enroute High/Low", rpfUtils.getNameForFileName("foo.ZZA"));
     }
 
     @Test
-    public void checkLF() throws IOException, ParseException {
+    public void checkLF() throws IOException, NitfFormatException {
         RasterProductFormatUtilities rpfUtils = new RasterProductFormatUtilities();
         assertEquals("LFC-FR (Day)", rpfUtils.getAbbreviationForFileName("foo.LF2"));
         assertEquals("Low Flying Chart (Day) - Host Nation", rpfUtils.getNameForFileName("foo.LF2"));
     }
 
     @Test
-    public void checkBadExtension() throws IOException, ParseException {
+    public void checkBadExtension() throws IOException, NitfFormatException {
         RasterProductFormatUtilities rpfUtils = new RasterProductFormatUtilities();
         assertNull(rpfUtils.getAbbreviationForFileName("foo"));
         assertNull(rpfUtils.getNameForFileName("foo.A1"));

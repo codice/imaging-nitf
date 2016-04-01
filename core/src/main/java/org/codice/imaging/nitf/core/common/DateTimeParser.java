@@ -42,7 +42,7 @@ public class DateTimeParser {
         return s.substring(0, i + 1);
     }
 
-    private void parseNitf21Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
+    private void parseNitf21Date(final String sourceString, final NitfDateTime dateTime) throws NitfFormatException {
         String strippedSourceString = removeHyphens(sourceString.trim());
         SimpleDateFormat dateFormat = null;
         if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
@@ -53,7 +53,7 @@ public class DateTimeParser {
         parseDateString(sourceString, dateFormat, dateTime);
     }
 
-    private void parseNitf20Date(final String sourceString, final NitfDateTime dateTime) throws ParseException {
+    private void parseNitf20Date(final String sourceString, final NitfDateTime dateTime) throws NitfFormatException {
         String strippedSourceString = sourceString.trim();
         SimpleDateFormat dateFormat = null;
         if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
@@ -69,9 +69,9 @@ public class DateTimeParser {
      *
      * @param reader the reader to parse from
      * @return a NitfDateTime from head of the reader stream.
-     * @throws ParseException when the next token is not the expected format for a NitfDateTime.
+     * @throws NitfFormatException when the next token is not the expected format for a NitfDateTime.
      */
-    public final NitfDateTime readNitfDateTime(final NitfReader reader) throws ParseException {
+    public final NitfDateTime readNitfDateTime(final NitfReader reader) throws NitfFormatException {
         NitfDateTime dateTime = new NitfDateTime();
         String sourceString = reader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH);
         dateTime.setSourceString(sourceString);
@@ -86,12 +86,13 @@ public class DateTimeParser {
             case UNKNOWN:
             default:
                 LOG.warn("Unknown NITF file type while reading date: " + reader.getFileType());
-                throw new ParseException("Need to set NITF file type prior to reading dates", (int) reader.getCurrentOffset());
+                throw new NitfFormatException("Need to set NITF file type prior to reading dates", reader.getCurrentOffset());
         }
         return dateTime;
     }
 
-    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final NitfDateTime dateTime) throws ParseException {
+    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final NitfDateTime dateTime)
+            throws NitfFormatException {
         if (dateFormat != null) {
             Date date;
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

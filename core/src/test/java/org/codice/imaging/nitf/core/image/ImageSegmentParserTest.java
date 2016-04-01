@@ -15,9 +15,9 @@
 
 package org.codice.imaging.nitf.core.image;
 
-import java.text.ParseException;
 import java.util.LinkedList;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
@@ -100,7 +100,7 @@ public class ImageSegmentParserTest {
     private static final int IXSHDL = 0;
 
     @Before
-    public void setup() throws ParseException {
+    public void setup() throws NitfFormatException {
         stringValues.clear();
         intValues.clear();
         this.nitfReader = mock(NitfReader.class);
@@ -175,7 +175,7 @@ public class ImageSegmentParserTest {
     }
 
     @Test
-    public void testParse() throws ParseException {
+    public void testParse() throws NitfFormatException {
         ImageSegmentParser parser = new ImageSegmentParser();
         ImageSegment nitfImageSegmentHeader = parser.parse(nitfReader, strategy, 0);
 

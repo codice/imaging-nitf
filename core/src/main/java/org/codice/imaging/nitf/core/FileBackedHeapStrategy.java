@@ -18,8 +18,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.ParseException;
 import java.util.function.Function;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
      */
     @Override
     public final R handleSegment(final NitfReader reader,
-            final long dataLength) throws ParseException {
+            final long dataLength) throws NitfFormatException {
         LOGGER.info(String.format("Storing %s bytes in temporary file.", dataLength));
         byte[] bytes = reader.readBytesRaw((int) dataLength);
 

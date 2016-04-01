@@ -16,9 +16,9 @@ package org.codice.imaging.nitf.core.image;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,9 +74,9 @@ public class RasterProductFormatAttributeParser {
 
         @param bytes ByteBuffer of DES data.
         @return attributes for the RPF DES.
-        @throws ParseException if the data format is not as expected.
+        @throws NitfFormatException if the data format is not as expected.
     */
-    public final RasterProductFormatAttributes parseRpfDes(final ByteBuffer bytes) throws ParseException {
+    public final RasterProductFormatAttributes parseRpfDes(final ByteBuffer bytes) throws NitfFormatException {
         RasterProductFormatAttributesImpl attributes = new RasterProductFormatAttributesImpl();
 
         int numberOfAttributeOffsetRecords = bytes.getShort();
@@ -160,23 +160,23 @@ public class RasterProductFormatAttributeParser {
         return attributes;
     }
 
-    private String parseRpfCurrencyDate(final ByteBuffer bytes, final OffsetRecord offsetRecord) throws ParseException {
+    private String parseRpfCurrencyDate(final ByteBuffer bytes, final OffsetRecord offsetRecord) throws NitfFormatException {
         if (offsetRecord.parameterId != 1) {
-            throw new ParseException("Unexpected parameter id when parsing currency date:" + offsetRecord.parameterId, bytes.position());
+            throw new NitfFormatException("Unexpected parameter id when parsing currency date:" + offsetRecord.parameterId, bytes.position());
         }
         return readAsci(bytes, DATE_LENGTH);
     }
 
-    private String parseRpfProductionDate(final ByteBuffer bytes, final OffsetRecord offsetRecord) throws ParseException {
+    private String parseRpfProductionDate(final ByteBuffer bytes, final OffsetRecord offsetRecord) throws NitfFormatException {
         if (offsetRecord.parameterId != 1) {
-            throw new ParseException("Unexpected parameter id when parsing production date:" + offsetRecord.parameterId, bytes.position());
+            throw new NitfFormatException("Unexpected parameter id when parsing production date:" + offsetRecord.parameterId, bytes.position());
         }
         return readAsci(bytes, DATE_LENGTH);
     }
 
-    private String parseRpfSignificantDate(final ByteBuffer bytes, final OffsetRecord offsetRecord) throws ParseException {
+    private String parseRpfSignificantDate(final ByteBuffer bytes, final OffsetRecord offsetRecord) throws NitfFormatException {
         if (offsetRecord.parameterId != 1) {
-            throw new ParseException("Unexpected parameter id when parsing significant date:" + offsetRecord.parameterId, bytes.position());
+            throw new NitfFormatException("Unexpected parameter id when parsing significant date:" + offsetRecord.parameterId, bytes.position());
         }
         return readAsci(bytes, DATE_LENGTH);
     }

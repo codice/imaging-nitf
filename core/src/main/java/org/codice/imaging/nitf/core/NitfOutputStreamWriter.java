@@ -17,9 +17,9 @@ package org.codice.imaging.nitf.core;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 /**
  * A NitfWriter implementation that works on streaming data.
@@ -41,7 +41,7 @@ public class NitfOutputStreamWriter extends SharedNitfWriter {
     public final void write() {
         try {
             writeData();
-        } catch (ParseException | IOException ex) {
+        } catch (NitfFormatException | IOException ex) {
             Logger.getLogger(NitfOutputStreamWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

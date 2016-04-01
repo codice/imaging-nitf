@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.image;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import java.nio.ByteBuffer;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,7 +58,7 @@ public class RasterProductFormatAttributeParserTest {
     }
 
     @Test
-    public void testParseRpfDes() throws ParseException {
+    public void testParseRpfDes() throws NitfFormatException {
         RasterProductFormatAttributeParser parser = new RasterProductFormatAttributeParser();
         RasterProductFormatAttributes rasterProductFormatAttributes = parser.parseRpfDes(byteBuffer);
 

@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.security;
 
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.security.SecurityConstants.XSDEVT20_LENGTH;
 
@@ -66,9 +66,9 @@ public class SecurityMetadataParser {
      *
      * @param nitfReader the NITF source data.
      * @return the fully populated SecurityMetaData object.
-     * @throws ParseException when the input isn't what was expected.
+     * @throws NitfFormatException when the input isn't what was expected.
      */
-    public final SecurityMetadata parseSecurityMetadata(final NitfReader nitfReader) throws ParseException {
+    public final SecurityMetadata parseSecurityMetadata(final NitfReader nitfReader) throws NitfFormatException {
         this.metadata = new SecurityMetadataImpl();
         doParse(nitfReader, this.metadata);
         return this.metadata;
@@ -81,11 +81,11 @@ public class SecurityMetadataParser {
      *
      * @param nitfReader the NITF source data.
      * @param securityMetadata the SecurityMetadataImpl class to be populated.
-     * @throws ParseException when the input isn't what was expected.
+     * @throws NitfFormatException when the input isn't what was expected.
      *
      * @see parseSecurityMetadata for the real API.
      */
-    protected final void doParse(final NitfReader nitfReader, final SecurityMetadataImpl securityMetadata) throws ParseException {
+    protected final void doParse(final NitfReader nitfReader, final SecurityMetadataImpl securityMetadata) throws NitfFormatException {
         reader = nitfReader;
         metadata = securityMetadata;
         securityMetadata.setFileType(nitfReader.getFileType());
@@ -100,16 +100,16 @@ public class SecurityMetadataParser {
                 break;
             case UNKNOWN:
             default:
-                throw new ParseException("Need to set NITF version before reading metadata", (int) reader.getCurrentOffset());
+                throw new NitfFormatException("Need to set NITF version before reading metadata", (int) reader.getCurrentOffset());
          }
     }
 
     /**
      * reads the common security metadata elements.
      *
-     * @throws ParseException when the input isn't what was expected.
+     * @throws NitfFormatException when the input isn't what was expected.
      */
-    protected final void readCommonSecurityMetadata() throws ParseException {
+    protected final void readCommonSecurityMetadata() throws NitfFormatException {
         readXSCLAS();
         readXSCLSY();
         readXSCODE();
@@ -131,9 +131,9 @@ public class SecurityMetadataParser {
     /**
      * reads the Nitf 2.0 file security attributes.
      *
-     * @throws ParseException when the input isn't what was expected.
+     * @throws NitfFormatException when the input isn't what was expected.
      */
-    protected final void readNitf20FileSecurityItems() throws ParseException {
+    protected final void readNitf20FileSecurityItems() throws NitfFormatException {
         readXSCLAS();
         readXSCODE20();
         readXSCTLH20();
@@ -144,96 +144,96 @@ public class SecurityMetadataParser {
         readXSDEVT20();
     }
 
-    private void readXSCLAS() throws ParseException {
+    private void readXSCLAS() throws NitfFormatException {
         String fsclas = reader.readBytes(XSCLAS_LENGTH);
         metadata.setSecurityClassification(SecurityClassification.getEnumValue(fsclas));
     }
 
-    private void readXSCLSY() throws ParseException {
+    private void readXSCLSY() throws NitfFormatException {
         metadata.setSecurityClassificationSystem(reader.readTrimmedBytes(XSCLSY_LENGTH));
     }
 
-    private void readXSCODE() throws ParseException {
+    private void readXSCODE() throws NitfFormatException {
         metadata.setCodewords(reader.readTrimmedBytes(XSCODE_LENGTH));
     }
 
-    private void readXSCTLH() throws ParseException {
+    private void readXSCTLH() throws NitfFormatException {
         metadata.setControlAndHandling(reader.readTrimmedBytes(XSCTLH_LENGTH));
     }
 
-    private void readXSREL() throws ParseException {
+    private void readXSREL() throws NitfFormatException {
         metadata.setReleaseInstructions(reader.readTrimmedBytes(XSREL_LENGTH));
     }
 
-    private void readXSDCTP() throws ParseException {
+    private void readXSDCTP() throws NitfFormatException {
         metadata.setDeclassificationType(reader.readTrimmedBytes(XSDCTP_LENGTH));
     }
 
-    private void readXSDCDT() throws ParseException {
+    private void readXSDCDT() throws NitfFormatException {
         metadata.setDeclassificationDate(reader.readTrimmedBytes(XSDCDT_LENGTH));
     }
 
-    private void readXSDCXM() throws ParseException {
+    private void readXSDCXM() throws NitfFormatException {
         metadata.setDeclassificationExemption(reader.readTrimmedBytes(XSDCXM_LENGTH));
     }
 
-    private void readXSDG() throws ParseException {
+    private void readXSDG() throws NitfFormatException {
         metadata.setDowngrade(reader.readTrimmedBytes(XSDG_LENGTH));
     }
 
-    private void readXSDGDT() throws ParseException {
+    private void readXSDGDT() throws NitfFormatException {
         metadata.setDowngradeDate(reader.readTrimmedBytes(XSDGDT_LENGTH));
     }
 
-    private void readXSCLTX() throws ParseException {
+    private void readXSCLTX() throws NitfFormatException {
         metadata.setClassificationText(reader.readTrimmedBytes(XSCLTX_LENGTH));
     }
 
-    private void readXSCATP() throws ParseException {
+    private void readXSCATP() throws NitfFormatException {
         metadata.setClassificationAuthorityType(reader.readTrimmedBytes(XSCATP_LENGTH));
     }
 
-    private void readXSCAUT() throws ParseException {
+    private void readXSCAUT() throws NitfFormatException {
         metadata.setClassificationAuthority(reader.readTrimmedBytes(XSCAUT_LENGTH));
     }
 
-    private void readXSCRSN() throws ParseException {
+    private void readXSCRSN() throws NitfFormatException {
         metadata.setClassificationReason(reader.readTrimmedBytes(XSCRSN_LENGTH));
     }
 
-    private void readXSSRDT() throws ParseException {
+    private void readXSSRDT() throws NitfFormatException {
         metadata.setSecuritySourceDate(reader.readTrimmedBytes(XSSRDT_LENGTH));
     }
 
-    private void readXSCTLN() throws ParseException {
+    private void readXSCTLN() throws NitfFormatException {
         metadata.setSecurityControlNumber(reader.readTrimmedBytes(XSCTLN_LENGTH));
     }
 
-    private void readXSCODE20() throws ParseException {
+    private void readXSCODE20() throws NitfFormatException {
         metadata.setCodewords(reader.readTrimmedBytes(XSCODE20_LENGTH));
     }
 
-    private void readXSCTLH20() throws ParseException {
+    private void readXSCTLH20() throws NitfFormatException {
         metadata.setControlAndHandling(reader.readTrimmedBytes(XSCTLH20_LENGTH));
     }
 
-    private void readXSREL20() throws ParseException {
+    private void readXSREL20() throws NitfFormatException {
         metadata.setReleaseInstructions(reader.readTrimmedBytes(XSREL20_LENGTH));
     }
 
-    private void readXSCAUT20() throws ParseException {
+    private void readXSCAUT20() throws NitfFormatException {
         metadata.setClassificationAuthority(reader.readTrimmedBytes(XSCAUT20_LENGTH));
     }
 
-    private void readXSCTLN20() throws ParseException {
+    private void readXSCTLN20() throws NitfFormatException {
         metadata.setSecurityControlNumber(reader.readTrimmedBytes(XSCTLN20_LENGTH));
     }
 
-    private void readXSDWNG20() throws ParseException {
+    private void readXSDWNG20() throws NitfFormatException {
         metadata.setDowngradeDateOrSpecialCase(reader.readBytes(XSDWNG20_LENGTH));
     }
 
-    private void readXSDEVT20() throws ParseException {
+    private void readXSDEVT20() throws NitfFormatException {
         if (DOWNGRADE_EVENT_MAGIC.equals(metadata.getDowngradeDateOrSpecialCase())) {
             metadata.setDowngradeEvent(reader.readTrimmedBytes(XSDEVT20_LENGTH));
         }

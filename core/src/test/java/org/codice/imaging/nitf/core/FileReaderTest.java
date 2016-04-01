@@ -18,9 +18,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 
 import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.rules.ExpectedException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,25 +33,25 @@ public class FileReaderTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testBadFilenameConstructorArgument() throws ParseException, URISyntaxException {
+    public void testBadFilenameConstructorArgument() throws NitfFormatException, URISyntaxException {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         FileReader goodReader = new FileReader(getClass().getResource(testfile).getPath());
         assertNotNull(goodReader);
 
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("no such file not found: no such file");
         FileReader badReader = new FileReader("no such file");
     }
 
     @Test
-    public void testBadFileConstructorArgument() throws ParseException, URISyntaxException {
+    public void testBadFileConstructorArgument() throws NitfFormatException, URISyntaxException {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         FileReader goodReader = new FileReader(new File(getClass().getResource(testfile).toURI()));
         assertNotNull(goodReader);
 
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("no such file not found: no such file");
         FileReader badReader = new FileReader(new File("no such file"));
     }

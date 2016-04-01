@@ -16,9 +16,9 @@ package org.codice.imaging.nitf.core.image;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.image.ImageConstants.ABPP_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.COMRAT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IALVL_LENGTH;
@@ -86,9 +86,9 @@ public class ImageSegmentWriter extends AbstractSegmentWriter {
      * @param imageSegment the header content to write out
      * @param fileType the type of file (NITF version) to write the image header out for.
      * @throws IOException on write failure.
-     * @throws ParseException on TRE parsing failure.
+     * @throws NitfFormatException on TRE parsing failure.
      */
-    public final void writeImageSegment(final ImageSegment imageSegment, final FileType fileType) throws IOException, ParseException {
+    public final void writeImageSegment(final ImageSegment imageSegment, final FileType fileType) throws IOException, NitfFormatException {
         writeFixedLengthString(IM, IM.length());
         writeFixedLengthString(imageSegment.getIdentifier(), IID1_LENGTH);
         writeDateTime(imageSegment.getImageDateTime());

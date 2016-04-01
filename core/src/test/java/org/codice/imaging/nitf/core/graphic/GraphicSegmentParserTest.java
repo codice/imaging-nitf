@@ -14,9 +14,9 @@
  **/
 package org.codice.imaging.nitf.core.graphic;
 
-import java.text.ParseException;
 import java.util.LinkedList;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
@@ -75,7 +75,7 @@ public class GraphicSegmentParserTest {
     private static final int SDLVL = 60;
 
     @Before
-    public void setup() throws ParseException {
+    public void setup() throws NitfFormatException {
         stringValues.clear();
         intValues.clear();
         this.nitfReader = mock(NitfReader.class);
@@ -123,7 +123,7 @@ public class GraphicSegmentParserTest {
     }
 
     @Test
-    public void testParse() throws ParseException {
+    public void testParse() throws NitfFormatException {
         GraphicSegmentParser parser = new GraphicSegmentParser();
         GraphicSegment header = parser.parse(nitfReader, strategy, 0);
         SecurityMetadata securityMetaData = header.getSecurityMetadata();

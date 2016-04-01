@@ -16,9 +16,9 @@ package org.codice.imaging.nitf.core.label;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LA;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LALVL_LENGTH;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LCH_LENGTH;
@@ -52,9 +52,9 @@ public class LabelSegmentWriter extends AbstractSegmentWriter {
      *
      * @param labelSegment the content to write out
      * @throws IOException on write failure.
-     * @throws ParseException on TRE parsing failure.
+     * @throws NitfFormatException on TRE parsing failure.
      */
-    public final void writeLabel(final LabelSegment labelSegment) throws IOException, ParseException {
+    public final void writeLabel(final LabelSegment labelSegment) throws IOException, NitfFormatException {
         writeFixedLengthString(LA, LA.length());
         writeFixedLengthString(labelSegment.getIdentifier(), LID_LENGTH);
         writeSecurityMetadata(labelSegment.getSecurityMetadata());

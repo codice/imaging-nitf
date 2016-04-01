@@ -15,10 +15,10 @@
 package org.codice.imaging.nitf.core.symbol;
 
 import java.io.IOException;
-import java.text.ParseException;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.CommonConstants;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants;
 import org.codice.imaging.nitf.core.tre.TreParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
@@ -411,7 +411,7 @@ class SymbolSegmentImpl extends CommonBasicSegmentImpl implements SymbolSegment 
      * {@inheritDoc}
      */
     @Override
-    public long getHeaderLength() throws ParseException, IOException {
+    public long getHeaderLength() throws NitfFormatException, IOException {
         long headerLength = GraphicSegmentConstants.SY.length()
                 + GraphicSegmentConstants.SID_LENGTH
                 + GraphicSegmentConstants.SNAME_LENGTH

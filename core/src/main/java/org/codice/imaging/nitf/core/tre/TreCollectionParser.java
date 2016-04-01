@@ -14,8 +14,8 @@
  **/
 package org.codice.imaging.nitf.core.tre;
 
-import java.text.ParseException;
 import javax.xml.transform.Source;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.tre.TreConstants.TAGLEN_LENGTH;
 import static org.codice.imaging.nitf.core.tre.TreConstants.TAG_LENGTH;
@@ -29,9 +29,9 @@ public class TreCollectionParser {
 
     /**
      * default constructor.
-     * @throws ParseException when the TreParser constructor does.
+     * @throws NitfFormatException when the TreParser constructor does.
      */
-    public TreCollectionParser() throws ParseException {
+    public TreCollectionParser() throws NitfFormatException {
         treParser = new TreParser();
     }
 
@@ -42,9 +42,9 @@ public class TreCollectionParser {
      * @param treLength the length of the TRE.
      * @param sourceSegment the source segment (or segment part) for the TRE.
      * @return TRE collection.
-     * @throws ParseException if the TRE parsing fails (e.g. end of file or TRE that is clearly incorrect).
+     * @throws NitfFormatException if the TRE parsing fails (e.g. end of file or TRE that is clearly incorrect).
      */
-    public final TreCollection parse(final NitfReader reader, final int treLength, final TreSource sourceSegment) throws ParseException {
+    public final TreCollection parse(final NitfReader reader, final int treLength, final TreSource sourceSegment) throws NitfFormatException {
         TreCollection treCollection = new TreCollection();
         int bytesRead = 0;
         while (bytesRead < treLength) {
@@ -61,9 +61,9 @@ public class TreCollectionParser {
     /**
      * Registers TreImpl descriptors for the supplied source.
      * @param source - The source for the TreImpl descriptor.
-     * @throws ParseException propagated from TreParser.registerAdditionalTREdescriptor.
+     * @throws NitfFormatException propagated from TreParser.registerAdditionalTREdescriptor.
      */
-    public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+    public final void registerAdditionalTREdescriptor(final Source source) throws NitfFormatException {
         treParser.registerAdditionalTREdescriptor(source);
     }
 }

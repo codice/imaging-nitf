@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.awt.Color;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 /**
     Red / Green / Blue colour representation.
@@ -57,11 +57,11 @@ public class RGBColour {
         Constructor.
 
         @param rgb three element array of the red, green and blue component values for the colour
-        @throws ParseException if the array does not have the right length.
+        @throws NitfFormatException if the array does not have the right length.
     */
-    public RGBColour(final byte[] rgb) throws ParseException {
+    public RGBColour(final byte[] rgb) throws NitfFormatException {
         if (rgb.length != REQUIRED_DATA_LENGTH) {
-            throw new ParseException("Incorrect number of bytes in RGB constructor array", 0);
+            throw new NitfFormatException("Incorrect number of bytes in RGB constructor array", 0);
         }
         red = rgb[RED_OFFSET];
         green = rgb[GREEN_OFFSET];

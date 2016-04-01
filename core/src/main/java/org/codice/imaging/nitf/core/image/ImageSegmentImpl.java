@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.core.image;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -24,6 +23,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.CommonConstants;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IFC_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IMFLT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IREPBAND_LENGTH;
@@ -1012,7 +1012,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public long getHeaderLength() throws ParseException, IOException {
+    public long getHeaderLength() throws NitfFormatException, IOException {
         long len = ImageConstants.IM.length()
                 + ImageConstants.IID1_LENGTH
                 + CommonConstants.STANDARD_DATE_TIME_LENGTH

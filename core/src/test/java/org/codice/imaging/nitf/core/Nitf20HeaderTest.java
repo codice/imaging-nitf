@@ -18,11 +18,11 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import static org.codice.imaging.nitf.core.TestUtils.checkNitf20SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
@@ -60,7 +60,7 @@ public class Nitf20HeaderTest {
     }
 
     @Test
-    public void testCompliantHeaderReadInputStream() throws IOException, ParseException {
+    public void testCompliantHeaderReadInputStream() throws IOException, NitfFormatException {
         final String simpleNitf20File = "/JitcNitf20Samples/U_1114A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
@@ -74,7 +74,7 @@ public class Nitf20HeaderTest {
     }
 
     @Test
-    public void testCompliantHeaderReadFile() throws IOException, ParseException {
+    public void testCompliantHeaderReadFile() throws IOException, NitfFormatException {
         final String simpleNitf20File = "/JitcNitf20Samples/U_1114A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
@@ -87,7 +87,7 @@ public class Nitf20HeaderTest {
         assertEquals("A", parseStrategy.getNitfDataSource().getTextSegments().get(0).getData());
     }
 
-    private void checkCompliantReadResults(NitfDataSource dataSource) throws ParseException {
+    private void checkCompliantReadResults(NitfDataSource dataSource) throws NitfFormatException {
         NitfHeader header = dataSource.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, header.getFileType());
         assertEquals(1, header.getComplexityLevel());
@@ -124,7 +124,7 @@ public class Nitf20HeaderTest {
     }
 
     @Test
-    public void testU1123() throws IOException, ParseException {
+    public void testU1123() throws IOException, NitfFormatException {
         final String nitf20File = "/JitcNitf20Samples/U_1123A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(nitf20File));

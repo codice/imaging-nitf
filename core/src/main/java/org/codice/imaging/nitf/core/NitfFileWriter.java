@@ -16,9 +16,9 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 /**
  * A NitfWriter implementation that works on files.
@@ -48,7 +48,7 @@ public class NitfFileWriter extends SharedNitfWriter {
                 mOutput = outputFile;
                 writeData();
             }
-        } catch (IOException | ParseException ex) {
+        } catch (IOException | NitfFormatException ex) {
             Logger.getLogger(NitfFileWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

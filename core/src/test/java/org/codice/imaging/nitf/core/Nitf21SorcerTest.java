@@ -17,11 +17,11 @@ package org.codice.imaging.nitf.core;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import static org.codice.imaging.nitf.core.TestUtils.checkNitf21SecurityMetadataUnclasAndEmpty;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
@@ -53,7 +53,7 @@ public class Nitf21SorcerTest {
     }
 
     @Test
-    public void testSorcerParse() throws IOException, ParseException {
+    public void testSorcerParse() throws IOException, NitfFormatException {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         HeapStrategy<ImageInputStream> imageDataStrategy = new FileBackedHeapStrategy<>(file -> new FileImageInputStream(file));
         parseStrategy.setImageHeapStrategy(imageDataStrategy);

@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.image;
 
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IFC_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IMFLT_LENGTH;
@@ -36,10 +36,10 @@ class ImageBandParser {
         Construct from a NitfReader instance.
 
         @param nitfReader the reader, positioned to read an image band.
-        @throws ParseException if an obviously invalid value is detected during parsing,
+        @throws NitfFormateException if an obviously invalid value is detected during parsing,
         or if another problem occurs during parsing (e.g. end of file).
     */
-    ImageBandParser(final NitfReader nitfReader, final ImageBand band) throws ParseException {
+    ImageBandParser(final NitfReader nitfReader, final ImageBand band) throws NitfFormatException {
         reader = nitfReader;
         imageBand = band;
         readIREPBAND();
@@ -56,27 +56,27 @@ class ImageBandParser {
         }
     }
 
-    private void readIREPBAND() throws ParseException {
+    private void readIREPBAND() throws NitfFormatException {
         imageBand.setImageRepresentation(reader.readTrimmedBytes(IREPBAND_LENGTH));
     }
 
-    private void readISUBCAT() throws ParseException {
+    private void readISUBCAT() throws NitfFormatException {
         imageBand.setImageSubcategory(reader.readTrimmedBytes(ISUBCAT_LENGTH));
     }
 
-    private void readIFC() throws ParseException {
+    private void readIFC() throws NitfFormatException {
         reader.skip(IFC_LENGTH);
     }
 
-    private void readIMFLT() throws ParseException {
+    private void readIMFLT() throws NitfFormatException {
         reader.skip(IMFLT_LENGTH);
     }
 
-    private void readNLUTS() throws ParseException {
+    private void readNLUTS() throws NitfFormatException {
         numLUTs = reader.readBytesAsInteger(NLUTS_LENGTH);
     }
 
-    private void readNELUT() throws ParseException {
+    private void readNELUT() throws NitfFormatException {
         imageBand.setNumLUTEntries(reader.readBytesAsInteger(NELUT_LENGTH));
     }
 }

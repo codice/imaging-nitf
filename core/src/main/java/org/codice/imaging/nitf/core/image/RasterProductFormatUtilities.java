@@ -16,10 +16,10 @@ package org.codice.imaging.nitf.core.image;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.schema.Rpfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,17 +44,17 @@ public class RasterProductFormatUtilities {
         <p>
         This performs internal initialisation.
 
-        @throws ParseException if the internal initialisation fails.
+        @throws NitfFormatException if the internal initialisation fails.
     */
-    public RasterProductFormatUtilities() throws ParseException {
+    public RasterProductFormatUtilities() throws NitfFormatException {
         try (InputStream is = getClass().getResourceAsStream("/rpf_codes.xml")) {
             unmarshal(is);
         } catch (JAXBException ex) {
             LOG.warn("JAXBException parsing RPF codes", ex);
-            throw new ParseException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+            throw new NitfFormatException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
         } catch (IOException ex) {
             LOG.warn("IOException parsing RPF codes", ex);
-            throw new ParseException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+            throw new NitfFormatException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
         }
     }
 

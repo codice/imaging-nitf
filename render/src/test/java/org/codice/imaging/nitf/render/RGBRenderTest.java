@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.render;
 
 import java.io.IOException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -30,7 +30,7 @@ public class RGBRenderTest extends RenderTestSupport {
     }
 
     @Test
-    public void testRectangular() throws IOException, ParseException {
+    public void testRectangular() throws IOException, NitfFormatException {
         testOneFile("merlionRGB.ntf", "Codice");
     }
 

@@ -17,10 +17,10 @@ package org.codice.imaging.nitf.core;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import static org.codice.imaging.nitf.core.TestUtils.checkNitf20SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
@@ -59,7 +59,7 @@ public class Nitf20OverflowTest {
     }
 
     @Test
-    public void testU1130F() throws IOException, ParseException {
+    public void testU1130F() throws IOException, NitfFormatException {
         final String nitf20File = "/JitcNitf20Samples/U_1130F.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(nitf20File));

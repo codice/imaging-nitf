@@ -21,9 +21,8 @@ import static org.junit.Assert.assertNull;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
-
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
@@ -43,7 +42,7 @@ public class Nitf21TextParsingTest {
     }
 
     @Test
-    public void testExtractionWithOptionTurnedOn() throws IOException, ParseException {
+    public void testExtractionWithOptionTurnedOn() throws IOException, NitfFormatException {
         TextDataExtractionParseStrategy parseStrategy = new TextDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);
@@ -55,7 +54,7 @@ public class Nitf21TextParsingTest {
     }
 
     @Test
-    public void testExtractionWithDefault() throws IOException, ParseException {
+    public void testExtractionWithDefault() throws IOException, NitfFormatException {
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);

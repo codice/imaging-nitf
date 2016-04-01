@@ -16,8 +16,8 @@ package org.codice.imaging.nitf.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.function.Function;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class InMemoryHeapStrategy<R> implements HeapStrategy<R> {
      */
     @Override
     public final R handleSegment(final NitfReader reader, final long length)
-            throws ParseException {
+            throws NitfFormatException {
         LOGGER.info(String.format("Storing %s bytes in heap space.", length));
         ByteArrayInputStream inputStream = new ByteArrayInputStream(
                 reader.readBytesRaw((int) length));

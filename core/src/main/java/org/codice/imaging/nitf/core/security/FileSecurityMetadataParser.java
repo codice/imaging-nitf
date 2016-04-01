@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.security;
 
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.security.FileSecurityConstants.FSCOP_LENGTH;
 import static org.codice.imaging.nitf.core.security.FileSecurityConstants.FSCPYS_LENGTH;
@@ -38,25 +38,25 @@ public class FileSecurityMetadataParser extends SecurityMetadataParser {
      *
      * @param nitfReader the NITF source data.
      * @return a FileSecurityMetadata object populated with data parsed from nitfReader.
-     * @throws ParseException when the input isn't what was expected.
+     * @throws NitfFormatException when the input isn't what was expected.
      */
-    public final FileSecurityMetadata parseFileSecurityMetadata(final NitfReader nitfReader) throws ParseException {
+    public final FileSecurityMetadata parseFileSecurityMetadata(final NitfReader nitfReader) throws NitfFormatException {
         FileSecurityMetadataImpl metadata = new FileSecurityMetadataImpl();
         super.doParse(nitfReader, metadata);
         readFileSecurityMetadataExtras(metadata);
         return metadata;
     }
 
-    private void readFileSecurityMetadataExtras(final FileSecurityMetadataImpl metadata) throws ParseException {
+    private void readFileSecurityMetadataExtras(final FileSecurityMetadataImpl metadata) throws NitfFormatException {
         readFSCOP(metadata);
         readFSCPYS(metadata);
     }
 
-    private void readFSCOP(final FileSecurityMetadataImpl metadata) throws ParseException {
+    private void readFSCOP(final FileSecurityMetadataImpl metadata) throws NitfFormatException {
         metadata.setFileCopyNumber(reader.readTrimmedBytes(FSCOP_LENGTH));
     }
 
-    private void readFSCPYS(final FileSecurityMetadataImpl metadata) throws ParseException {
+    private void readFSCPYS(final FileSecurityMetadataImpl metadata) throws NitfFormatException {
         metadata.setFileNumberOfCopies(reader.readTrimmedBytes(FSCPYS_LENGTH));
     }
 };

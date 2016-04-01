@@ -17,10 +17,10 @@ package org.codice.imaging.nitf.core;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
 import static org.junit.Assert.assertNotNull;
@@ -39,7 +39,7 @@ public class StreamingModeTest {
     }
 
     @Test
-    public void checkStreamingModeSourceRewrite() throws ParseException, URISyntaxException, IOException {
+    public void checkStreamingModeSourceRewrite() throws NitfFormatException, URISyntaxException, IOException {
         final String testfile = "/JitcNitf21Samples/ns3321a.nsf";
         String outputFile = FilenameUtils.getName(testfile);
         assertNotNull("Test file missing", getClass().getResource(testfile));

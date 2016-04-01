@@ -16,9 +16,9 @@ package org.codice.imaging.nitf.core.tre;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.List;
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
@@ -38,7 +38,7 @@ public class ENGRDA_Test {
     }
 
     @Test
-    public void testGreen2007Parse() throws ParseException {
+    public void testGreen2007Parse() throws NitfFormatException {
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
         NitfFileParser.parse(reader, parseStrategy);

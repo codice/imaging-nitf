@@ -14,19 +14,10 @@
  */
 package org.codice.imaging.nitf.core.tre;
 
-import org.codice.imaging.nitf.core.tre.TreSource;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import org.codice.imaging.nitf.core.tre.Tre;
-import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.tre.TreCollectionParser;
-import org.codice.imaging.nitf.core.tre.TreEntry;
-import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.junit.Test;
@@ -37,7 +28,7 @@ public class SENSRB_Test {
 
     // Has 1, 5, 6
     @Test
-    public void testSensrbMinimal() throws ParseException {
+    public void testSensrbMinimal() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_minimal.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -95,7 +86,7 @@ public class SENSRB_Test {
 
     // Has 1, 5, 6, 11
     @Test
-    public void testSensrbSinglePointSet() throws ParseException {
+    public void testSensrbSinglePointSet() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_single_point_set.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -171,7 +162,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 4, 5, 6
     @Test
-    public void testSensrbSituationalAwareness() throws ParseException {
+    public void testSensrbSituationalAwareness() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_situational_awareness.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -252,7 +243,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 4, 5, 6, 7
     @Test
-    public void testSensrbGeo() throws ParseException {
+    public void testSensrbGeo() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_geo.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -345,7 +336,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 4, 5, 6, 9, 11
     @Test
-    public void testSensrbGeoPlus() throws ParseException {
+    public void testSensrbGeoPlus() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_geo_plus.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -462,7 +453,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 3, 4, 5, 6, 8, 10, 11, 14
     @Test
-    public void testSensrbAccurate() throws ParseException {
+    public void testSensrbAccurate() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_accurate.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -587,7 +578,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 3, 4, 5, 6, 8, 10, 11, 12 (for 6), 14
     @Test
-    public void testSensrbTimeStamped6() throws ParseException {
+    public void testSensrbTimeStamped6() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped6.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -752,7 +743,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 4, 5, 6, 9, 11, 12 (for 9), 15
     @Test
-    public void testSensrbTimeStamped9() throws ParseException {
+    public void testSensrbTimeStamped9() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped9.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -897,7 +888,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 4, 5, 6, 9, 11, 13 (for 9), 15
     @Test
-    public void testSensrbPixel9() throws ParseException {
+    public void testSensrbPixel9() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_pixel9.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -1046,7 +1037,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 3, 4, 5, 6, 8, 10, 11, 12 (for 8), 13 (for 6 and 8) 14
     @Test
-    public void testSensrbTimePixel8Pixel6() throws ParseException {
+    public void testSensrbTimePixel8Pixel6() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timepixel8_pixel6.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -1352,7 +1343,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 4, 5, 6, 7, 10, 12 (for 7 and 10), 13 (for 10) and 15
     @Test
-    public void testSensrbTime7TimePixel10() throws ParseException {
+    public void testSensrbTime7TimePixel10() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timestamped7_timepixel10.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -1551,7 +1542,7 @@ public class SENSRB_Test {
 
     // Has 1, 2, 4, 5, 6, 7, 10, 12 (for 5), 13 (for 5 and 7) and 15
     @Test
-    public void testSensrbPixel7TimePixel5() throws ParseException {
+    public void testSensrbPixel7TimePixel5() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SENSRB_timepixel5_pixel7.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
@@ -1726,7 +1717,7 @@ public class SENSRB_Test {
     }
 
     @Test
-    public void testSensrbSample() throws ParseException {
+    public void testSensrbSample() throws NitfFormatException {
         InputStream testDataStream = getClass().getResourceAsStream("/SENSRB/SB_Seattle_WithUncertainties.txt");
         BufferedInputStream bufferedStream = new BufferedInputStream(testDataStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);

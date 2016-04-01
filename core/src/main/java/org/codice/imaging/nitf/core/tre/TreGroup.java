@@ -14,8 +14,8 @@
  **/
 package org.codice.imaging.nitf.core.tre;
 
-import java.text.ParseException;
 import java.util.List;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 /**
  A group of values within a TreEntry.
@@ -54,28 +54,27 @@ public interface TreGroup {
 
      @param tagName the name (tag) of the field to look up.
      @return the entry corresponding to the tag name.
-     @throws ParseException when the tag is not found
+     @throws NitfFormatException when the tag is not found
      */
-    TreEntry getEntry(String tagName) throws ParseException;
+    TreEntry getEntry(String tagName) throws NitfFormatException;
 
     /**
      Get the field value for a specific tag.
 
      @param tagName the name (tag) of the field to look up.
      @return the field value corresponding to the tag name.
-     @throws ParseException when the tag is not found
+     @throws NitfFormatException when the tag is not found
      */
-    String getFieldValue(String tagName) throws ParseException;
-
+    String getFieldValue(String tagName) throws NitfFormatException;
 
     /**
      Get the field value for a specific tag in integer format.
 
      @param tagName the name (tag) of the field to look up.
      @return the field value corresponding to the tag name, as an integer.
-     @throws ParseException when the tag is not found or the value cannot be converted to integer format.
+     @throws NitfFormatException when the tag is not found or the value cannot be converted to integer format.
      */
-    int getIntValue(String tagName) throws ParseException;
+    int getIntValue(String tagName) throws NitfFormatException;
 
     /**
      Debug dump of the entries.

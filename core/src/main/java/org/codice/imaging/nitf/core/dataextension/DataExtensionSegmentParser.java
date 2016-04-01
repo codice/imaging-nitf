@@ -14,8 +14,8 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DE;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESID_LENGTH;
@@ -45,9 +45,9 @@ public class DataExtensionSegmentParser extends AbstractSegmentParser {
      * @param nitfReader the NITF input reader.
      * @param dataLength the length of the data part of this segment
      * @return a fully parsed DataExtensionSegment
-     * @throws ParseException when the parser encounters unexpected input from the reader.
+     * @throws NitfFormatException when the parser encounters unexpected input from the reader.
      */
-    public final DataExtensionSegment parse(final NitfReader nitfReader, final long dataLength) throws ParseException {
+    public final DataExtensionSegment parse(final NitfReader nitfReader, final long dataLength) throws NitfFormatException {
         reader = nitfReader;
         segment = new DataExtensionSegmentImpl();
         segment.setDataLength(dataLength);
@@ -66,31 +66,31 @@ public class DataExtensionSegmentParser extends AbstractSegmentParser {
         return segment;
     }
 
-    private void readDE() throws ParseException {
+    private void readDE() throws NitfFormatException {
         reader.verifyHeaderMagic(DE);
     }
 
-    private void readDESID() throws ParseException {
+    private void readDESID() throws NitfFormatException {
         segment.setIdentifier(reader.readBytes(DESID_LENGTH));
     }
 
-    private void readDESVER() throws ParseException {
+    private void readDESVER() throws NitfFormatException {
         segment.setDESVersion(reader.readBytesAsInteger(DESVER_LENGTH));
     }
 
-    private void readDESOFLW() throws ParseException {
+    private void readDESOFLW() throws NitfFormatException {
         segment.setOverflowedHeaderType(reader.readTrimmedBytes(DESOFLW_LENGTH));
     }
 
-    private void readDESITEM() throws ParseException {
+    private void readDESITEM() throws NitfFormatException {
         segment.setItemOverflowed(reader.readBytesAsInteger(DESITEM_LENGTH));
     }
 
-    private void readDSSHL() throws ParseException {
+    private void readDSSHL() throws NitfFormatException {
         userDefinedSubheaderLength = reader.readBytesAsInteger(DESSHL_LENGTH);
     }
 
-    private void readDSSHF() throws ParseException {
+    private void readDSSHF() throws NitfFormatException {
         segment.setUserDefinedSubheaderField(reader.readBytes(userDefinedSubheaderLength));
     }
 }

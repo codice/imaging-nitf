@@ -14,9 +14,9 @@
  */
 package org.codice.imaging.nitf.core.image;
 
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.text.ParseException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -49,7 +49,7 @@ public class TargetIdTest {
     }
 
     @Test
-    public void testGoodTargetIdConstructorArgumentLength() throws ParseException {
+    public void testGoodTargetIdConstructorArgumentLength() throws NitfFormatException {
         String targetIdArgument = "ABCDEFGHIJUVWXYAU";
         TargetId tgtid = new TargetId(targetIdArgument);
         assertNotNull(tgtid);
@@ -59,17 +59,17 @@ public class TargetIdTest {
     }
 
     @Test
-    public void testNullTargetIdConstructorArgument() throws ParseException {
+    public void testNullTargetIdConstructorArgument() throws NitfFormatException {
         String targetIdArgument = null;
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Null argument for TargetId");
         TargetId tgtid = new TargetId(targetIdArgument);
     }
 
     @Test
-    public void testBadTargetIdConstructorArgumentLength() throws ParseException {
+    public void testBadTargetIdConstructorArgumentLength() throws NitfFormatException {
         String targetIdArgument = "ABCDEFGHIJUVWXYA";
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Incorrect length for TargetId:16");
         TargetId tgtid = new TargetId(targetIdArgument);
     }

@@ -14,10 +14,9 @@
  **/
 package org.codice.imaging.nitf.core;
 
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-
-import java.text.ParseException;
 
 import org.junit.rules.ExpectedException;
 import org.junit.Rule;
@@ -28,12 +27,12 @@ public class RGBColourTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testBadRGBColourConstructorArgumentLength() throws ParseException {
+    public void testBadRGBColourConstructorArgumentLength() throws NitfFormatException {
         byte[] rgb = new byte[3];
         RGBColour goodColour = new RGBColour(rgb);
         assertNotNull(goodColour);
         byte[] shortArray = new byte[2];
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Incorrect number of bytes in RGB constructor array");
         RGBColour failColour = new RGBColour(shortArray);
     }

@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -28,32 +28,32 @@ public class RoundTripWPAFB2009WriterTest extends AbstractWriterTest {
     }
 
     @Test
-    public void roundTripWPAFBr0() throws IOException, ParseException, URISyntaxException {
+    public void roundTripWPAFBr0() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/WPAFB-21Oct2009/20091021203850-01001116-VIS.ntf.r0");
     }
 
     @Test
-    public void roundTripWPAFBr1() throws IOException, ParseException, URISyntaxException {
+    public void roundTripWPAFBr1() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/WPAFB-21Oct2009/20091021203850-01001116-VIS.ntf.r1");
     }
 
     @Test
-    public void roundTripWPAFBr2() throws IOException, ParseException, URISyntaxException {
+    public void roundTripWPAFBr2() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/WPAFB-21Oct2009/20091021203850-01001116-VIS.ntf.r2");
     }
 
     @Test
-    public void roundTripWPAFBr3() throws IOException, ParseException, URISyntaxException {
+    public void roundTripWPAFBr3() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/WPAFB-21Oct2009/20091021203850-01001116-VIS.ntf.r3");
     }
 
     @Test
-    public void roundTripWPAFBr4() throws IOException, ParseException, URISyntaxException {
+    public void roundTripWPAFBr4() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/WPAFB-21Oct2009/20091021203850-01001116-VIS.ntf.r4");
     }
 
     @Test
-    public void roundTripWPAFBr5() throws IOException, ParseException, URISyntaxException {
+    public void roundTripWPAFBr5() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/WPAFB-21Oct2009/20091021203850-01001116-VIS.ntf.r5");
     }
 }

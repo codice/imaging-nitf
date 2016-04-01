@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
-import java.text.ParseException;
 import java.util.logging.Level;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
@@ -46,14 +45,14 @@ public class FileReader extends SharedReader implements NitfReader {
         Constructor for File.
 
         @param file the File to read the NITF file contents from.
-        @throws ParseException if file does not exist as a regular file, or some other errors occurs during opening of the file.
+        @throws NitfFormatException if file does not exist as a regular file, or some other error occurs during opening of the file.
     */
-    public FileReader(final File file) throws ParseException {
+    public FileReader(final File file) throws NitfFormatException {
         try {
             nitfFile = makeRandomAccessFile(file, READ_MODE);
         } catch (FileNotFoundException ex) {
             LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
-            throw new ParseException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            throw new NitfFormatException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
@@ -61,14 +60,14 @@ public class FileReader extends SharedReader implements NitfReader {
         Constructor for string file name.
 
         @param filename the name of the file to read the NITF file contents from.
-        @throws ParseException if file does not exist as a regular file, or some other errors occurs during opening of the file.
+        @throws NitfFormatException if file does not exist as a regular file, or some other error occurs during opening of the file.
     */
-    public FileReader(final String filename) throws ParseException {
+    public FileReader(final String filename) throws NitfFormatException {
         try {
             nitfFile = makeRandomAccessFile(filename, READ_MODE);
         } catch (FileNotFoundException ex) {
             LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
-            throw new ParseException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            throw new NitfFormatException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
         }
     }
 
@@ -97,12 +96,12 @@ public class FileReader extends SharedReader implements NitfReader {
      * {@inheritDoc}
      */
     @Override
-    public final void seekToEndOfFile() throws ParseException {
+    public final void seekToEndOfFile() throws NitfFormatException {
         try {
             nitfFile.seek(nitfFile.length());
         } catch (IOException ex) {
             LOG.warn("IO Exception seeking to end of file: {}", ex);
-            throw new ParseException("Unable to seek to end of file: " + ex.getMessage(), 0);
+            throw new NitfFormatException("Unable to seek to end of file: " + ex.getMessage());
         }
     }
 
@@ -110,12 +109,12 @@ public class FileReader extends SharedReader implements NitfReader {
      * {@inheritDoc}
      */
     @Override
-    public final void seekBackwards(final long relativeOffset) throws ParseException {
+    public final void seekBackwards(final long relativeOffset) throws NitfFormatException {
         try {
             nitfFile.seek(nitfFile.getFilePointer() - relativeOffset);
         } catch (IOException ex) {
             LOG.warn("IO Exception seeking backwards", ex);
-            throw new ParseException("Unable to seek backwards: " + ex.getMessage(), 0);
+            throw new NitfFormatException("Unable to seek backwards: " + ex.getMessage());
         }
     }
 
@@ -123,12 +122,12 @@ public class FileReader extends SharedReader implements NitfReader {
      * {@inheritDoc}
      */
     @Override
-    public final void seekToAbsoluteOffset(final long absoluteOffset) throws ParseException {
+    public final void seekToAbsoluteOffset(final long absoluteOffset) throws NitfFormatException {
         try {
             nitfFile.seek(absoluteOffset);
         } catch (IOException ex) {
             LOG.warn("IO Exception seeking to absolute offset", ex);
-            throw new ParseException("Unable to seek to absolute offset: " + ex.getMessage(), 0);
+            throw new NitfFormatException("Unable to seek to absolute offset: " + ex.getMessage());
         }
     }
 
@@ -136,16 +135,16 @@ public class FileReader extends SharedReader implements NitfReader {
      * {@inheritDoc}
      */
     @Override
-    public final byte[] readBytesRaw(final int count) throws ParseException {
-        int currentOffset = 0;
+    public final byte[] readBytesRaw(final int count) throws NitfFormatException {
+        long currentOffset = 0;
         try {
-            currentOffset = (int) nitfFile.getFilePointer();
+            currentOffset = nitfFile.getFilePointer();
             byte[] bytes = new byte[count];
             nitfFile.readFully(bytes);
             return bytes;
         } catch (IOException ex) {
             LOG.warn("IO Exception reading raw bytes", ex);
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
+            throw new NitfFormatException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
 
@@ -153,11 +152,11 @@ public class FileReader extends SharedReader implements NitfReader {
      * {@inheritDoc}
      */
     @Override
-    public final void skip(final long count) throws ParseException {
+    public final void skip(final long count) throws NitfFormatException {
         long bytesToRead = count;
-        int currentOffset = 0;
+        long currentOffset = 0;
         try {
-            currentOffset = (int) nitfFile.getFilePointer();
+            currentOffset = nitfFile.getFilePointer();
             long thisRead = 0;
             do {
                 thisRead = nitfFile.skipBytes((int) bytesToRead);
@@ -165,7 +164,7 @@ public class FileReader extends SharedReader implements NitfReader {
             } while (bytesToRead > 0);
         } catch (IOException ex) {
             LOG.warn("IO Exception skipping bytes", ex);
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
+            throw new NitfFormatException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), currentOffset);
         }
     }
 
@@ -182,13 +181,13 @@ public class FileReader extends SharedReader implements NitfReader {
      *
      * @param offset the point in the file the input stream should read from
      * @return input stream for the specified content
-     * @throws ParseException if creating the input stream fails.
+     * @throws NitfFormatException if creating the input stream fails.
      */
-    public final InputStream getInputStreamAt(final long offset) throws ParseException {
+    public final InputStream getInputStreamAt(final long offset) throws NitfFormatException {
         try {
             return Channels.newInputStream(nitfFile.getChannel().position(offset));
         } catch (IOException ex) {
-            throw new ParseException("IOException while getting input stream: " + ex, (int) offset);
+            throw new NitfFormatException("IOException while getting input stream: " + ex, (int) offset);
         }
     }
 
@@ -197,16 +196,16 @@ public class FileReader extends SharedReader implements NitfReader {
      *
      * @param offset the point in the file the image input stream should read from
      * @return image input stream for the specified content
-     * @throws ParseException if creating the image input stream fails.
+     * @throws NitfFormatException if creating the image input stream fails.
      */
-    public final ImageInputStream getImageInputStreamAt(final long offset) throws ParseException {
+    public final ImageInputStream getImageInputStreamAt(final long offset) throws NitfFormatException {
         try {
             ImageInputStream iis = new FileImageInputStream(nitfFile);
             iis.seek(offset);
             return iis;
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(FileReader.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ParseException("Error seeking while creating image input stream: " + ex, (int) offset);
+            throw new NitfFormatException("Error seeking while creating image input stream: " + ex, (int) offset);
         }
     }
 

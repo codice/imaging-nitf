@@ -14,8 +14,8 @@
  */
 package org.codice.imaging.nitf.core.graphic;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
@@ -60,11 +60,10 @@ public class GraphicSegmentParser extends AbstractSegmentParser {
      * @param parseStrategy the strategy that defines which elements to parse or skip.
      * @param dataLength the length of the segment data part in bytes, excluding the header.
      * @return a fully parsed Graphic segment.
-     * @throws ParseException when the parser encounters unexpected input from the reader.
+     * @throws NitfFormatException when the parser encounters unexpected input from the reader.
      */
     public final GraphicSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
-            final long dataLength) throws ParseException {
-
+            final long dataLength) throws NitfFormatException {
         reader = nitfReader;
         segment = new GraphicSegmentImpl();
         segment.setDataLength(dataLength);
@@ -92,67 +91,67 @@ public class GraphicSegmentParser extends AbstractSegmentParser {
         return segment;
     }
 
-    private void readSY() throws ParseException {
+    private void readSY() throws NitfFormatException {
         reader.verifyHeaderMagic(SY);
     }
 
-    private void readSID() throws ParseException {
+    private void readSID() throws NitfFormatException {
         segment.setIdentifier(reader.readTrimmedBytes(SID_LENGTH));
     }
 
-    private void readSNAME() throws ParseException {
+    private void readSNAME() throws NitfFormatException {
         segment.setGraphicName(reader.readTrimmedBytes(SNAME_LENGTH));
     }
 
-    private void readSFMT() throws ParseException {
+    private void readSFMT() throws NitfFormatException {
         reader.verifyHeaderMagic(SFMT_CGM);
     }
 
-    private void readSSTRUCT() throws ParseException {
+    private void readSSTRUCT() throws NitfFormatException {
         reader.verifyHeaderMagic(SSTRUCT);
     }
 
-    private void readSDLVL() throws ParseException {
+    private void readSDLVL() throws NitfFormatException {
         segment.setGraphicDisplayLevel(reader.readBytesAsInteger(SDLVL_LENGTH));
     }
 
-    private void readSALVL() throws ParseException {
+    private void readSALVL() throws NitfFormatException {
         segment.setAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
     }
 
-    private void readSLOC() throws ParseException {
+    private void readSLOC() throws NitfFormatException {
         segment.setGraphicLocationRow(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
         segment.setGraphicLocationColumn(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
     }
 
-    private void readSBND1() throws ParseException {
+    private void readSBND1() throws NitfFormatException {
         segment.setBoundingBox1Row(reader.readBytesAsInteger(SBND1_HALF_LENGTH));
         segment.setBoundingBox1Column(reader.readBytesAsInteger(SBND1_HALF_LENGTH));
     }
 
-    private void readSCOLOR() throws ParseException {
+    private void readSCOLOR() throws NitfFormatException {
         String scolor = reader.readBytes(SCOLOR_LENGTH);
         segment.setGraphicColour(GraphicColour.getEnumValue(scolor));
     }
 
-    private void readSBND2() throws ParseException {
+    private void readSBND2() throws NitfFormatException {
         segment.setBoundingBox2Row(reader.readBytesAsInteger(SBND2_HALF_LENGTH));
         segment.setBoundingBox2Column(reader.readBytesAsInteger(SBND2_HALF_LENGTH));
     }
 
-    private void readSRES() throws ParseException {
+    private void readSRES() throws NitfFormatException {
         reader.verifyHeaderMagic(SRES);
     }
 
-    private void readSXSHDL() throws ParseException {
+    private void readSXSHDL() throws NitfFormatException {
         graphicExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
     }
 
-    private void readSXSOFL() throws ParseException {
+    private void readSXSOFL() throws NitfFormatException {
         segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(SXSOFL_LENGTH));
     }
 
-    private void readSXSHD() throws ParseException {
+    private void readSXSHD() throws NitfFormatException {
         TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
                 graphicExtendedSubheaderLength - SXSOFL_LENGTH,
                 TreSource.GraphicExtendedSubheaderData);

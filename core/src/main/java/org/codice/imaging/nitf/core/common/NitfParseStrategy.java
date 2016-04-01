@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
@@ -46,62 +45,62 @@ public interface NitfParseStrategy {
      * @param source the source segment part for the TRE (where it is being read
      * from)
      * @return TRE collection for this header part
-     * @throws java.text.ParseException if there is a problem loading the TRE descriptions, or in parsing TREs.
+     * @throws NitfFormatException if there is a problem loading the TRE descriptions, or in parsing TREs.
      */
-    TreCollection parseTREs(NitfReader reader, int length, TreSource source) throws ParseException;
+    TreCollection parseTREs(NitfReader reader, int length, TreSource source) throws NitfFormatException;
 
     /**
      * Handle the text segment header and data.
      *
      * @param reader the reader to use, assumed to be positioned at the start of the header
      * @param dataLength the length of the data in this segment.
-     * @throws ParseException if there is a problem handling the segment
+     * @throws NitfFormatException if there is a problem handling the segment
      */
-    void handleTextSegment(final NitfReader reader, final long dataLength) throws ParseException;
+    void handleTextSegment(final NitfReader reader, final long dataLength) throws NitfFormatException;
 
     /**
      * Handle the data extension segment header and data.
      *
      * @param reader the reader to use, assumed to be positioned at the start of the header
      * @param dataLength the length of the data in this segment.
-     * @throws ParseException if there is a problem handling the segment
+     * @throws NitfFormatException if there is a problem handling the segment
      */
-    void handleDataExtensionSegment(final NitfReader reader, final long dataLength) throws ParseException;
+    void handleDataExtensionSegment(final NitfReader reader, final long dataLength) throws NitfFormatException;
 
     /**
      * Handle the graphic segment header and data.
      *
      * @param reader the reader to use, assumed to be positioned at the start of the header
      * @param dataLength the length of the data in this segment.
-     * @throws ParseException if there is a problem handling the segment
+     * @throws NitfFormatException if there is a problem handling the segment
      */
-    void handleGraphicSegment(final NitfReader reader, final long dataLength) throws ParseException;
+    void handleGraphicSegment(final NitfReader reader, final long dataLength) throws NitfFormatException;
 
     /**
      * Handle the image segment header and data.
      *
      * @param reader the reader to use, assumed to be positioned at the start of the header
      * @param dataLength the length of the data in this segment.
-     * @throws ParseException if there is a problem handling the segment
+     * @throws NitfFormatException if there is a problem handling the segment
      */
-    void handleImageSegment(final NitfReader reader, final long dataLength) throws ParseException;
+    void handleImageSegment(final NitfReader reader, final long dataLength) throws NitfFormatException;
 
     /**
      * Handle the label segment header and data.
      *
      * @param reader the reader to use, assumed to be positioned at the start of the header
      * @param dataLength the length of the data in this segment.
-     * @throws ParseException if there is a problem handling the segment
+     * @throws NitfFormatException if there is a problem handling the segment
      */
-    void handleLabelSegment(final NitfReader reader, final long dataLength) throws ParseException;
+    void handleLabelSegment(final NitfReader reader, final long dataLength) throws NitfFormatException;
 
     /**
      * Handle the symbol segment header and data.
      *
      * @param reader the reader to use, assumed to be positioned at the start of the header
      * @param dataLength the length of the data in this segment.
-     * @throws ParseException if there is a problem handling the segment
+     * @throws NitfFormatException if there is a problem handling the segment
      */
-    void handleSymbolSegment(final NitfReader reader, final long dataLength) throws ParseException;
+    void handleSymbolSegment(final NitfReader reader, final long dataLength) throws NitfFormatException;
 
 }

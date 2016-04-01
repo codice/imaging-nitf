@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.text.ParseException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import static org.junit.Assert.assertEquals;
@@ -41,12 +40,12 @@ public class DateTimeParserTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testDateParsingWithoutReaderVersion() throws ParseException {
+    public void testDateParsingWithoutReaderVersion() throws NitfFormatException {
         AbstractSegmentParser parser = mock(AbstractSegmentParser.class, CALLS_REAL_METHODS);
         NitfReader mockReader = mock(NitfReader.class);
         parser.reader = mockReader;
         when(mockReader.getFileType()).thenReturn(FileType.UNKNOWN);
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Need to set NITF file type prior to reading dates");
         NitfDateTime date = parser.readNitfDateTime();
 
@@ -54,7 +53,7 @@ public class DateTimeParserTest {
 
     // Test when we have yyyyMMddHH----
     @Test
-    public void testPaddedDateHourParsing() throws ParseException {
+    public void testPaddedDateHourParsing() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("2014070423----");
@@ -65,7 +64,7 @@ public class DateTimeParserTest {
 
     // Test when we have yyyyMMdd------
     @Test
-    public void testPaddedDateParsing() throws ParseException {
+    public void testPaddedDateParsing() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("20140704------");
@@ -76,7 +75,7 @@ public class DateTimeParserTest {
 
     // Test when we only have yyyyMMdd. Some commercial producers do this, although it should be yyyyMMdd------.
     @Test
-    public void testDateOnlyParsing() throws ParseException {
+    public void testDateOnlyParsing() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("20140704");
@@ -87,7 +86,7 @@ public class DateTimeParserTest {
 
     // Test when we only have all -.
     @Test
-    public void testEmptyParsing() throws ParseException {
+    public void testEmptyParsing() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("--------------");
@@ -99,7 +98,7 @@ public class DateTimeParserTest {
 
     // Test incomplete format.
     @Test
-    public void testIncompleteParsing() throws ParseException {
+    public void testIncompleteParsing() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("3");
@@ -111,7 +110,7 @@ public class DateTimeParserTest {
 
     // Test when we have all - markers in NITF 2.0 .
     @Test
-    public void testEmptyParsing20() throws ParseException {
+    public void testEmptyParsing20() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ZERO);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("--------------");
@@ -123,7 +122,7 @@ public class DateTimeParserTest {
 
     // Test when we have just the Z marker in NITF 2.0 .
     @Test
-    public void testEmptyZParsing20() throws ParseException {
+    public void testEmptyZParsing20() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ZERO);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("--------Z-----");
@@ -134,7 +133,7 @@ public class DateTimeParserTest {
 
     // Test when we have just spaces in NITF 2.0 .
     @Test
-    public void testEmptySpaceParsing20() throws ParseException {
+    public void testEmptySpaceParsing20() throws NitfFormatException {
         NitfReader mockReader = mock(NitfReader.class);
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ZERO);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("              ");

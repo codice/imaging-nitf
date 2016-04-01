@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core;
 
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
@@ -32,7 +32,7 @@ public interface HeapStrategy<R> {
      * @param reader the NitfReader which contains the segment data.
      * @param length the length of the segment data.
      * @return an InputStream to read the segment data from.
-     * @throws ParseException when reading 'length' bytes from 'reader' causes one.
+     * @throws NitfFormatException when reading 'length' bytes from 'reader' causes one.
      */
-    R handleSegment(final NitfReader reader, long length) throws ParseException;
+    R handleSegment(final NitfReader reader, long length) throws NitfFormatException;
 }

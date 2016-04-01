@@ -15,10 +15,10 @@
 package org.codice.imaging.nitf.core.label;
 
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.CommonConstants;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.TreParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
@@ -224,7 +224,7 @@ class LabelSegmentImpl extends CommonBasicSegmentImpl implements LabelSegment {
      * {@inheritDoc}
      */
     @Override
-    public final long getHeaderLength() throws ParseException, IOException {
+    public final long getHeaderLength() throws NitfFormatException, IOException {
         long headerLength = LabelConstants.LA.length()
                 + LabelConstants.LID_LENGTH
                 + getSecurityMetadata().getSerialisedLength()

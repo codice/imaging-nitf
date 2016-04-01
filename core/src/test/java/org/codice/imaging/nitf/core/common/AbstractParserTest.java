@@ -18,7 +18,6 @@ import static org.hamcrest.Matchers.is;
 
 import static org.junit.Assert.assertThat;
 
-import java.text.ParseException;
 import java.util.Arrays;
 
 import org.junit.After;
@@ -42,7 +41,7 @@ public class AbstractParserTest {
     public ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testParseOfENCRYP() throws ParseException {
+    public void testParseOfENCRYP() throws NitfFormatException {
         AbstractSegmentParser parser = mock(AbstractSegmentParser.class, CALLS_REAL_METHODS);
 
         NitfReader mockReader = mock(NitfReader.class);
@@ -53,7 +52,7 @@ public class AbstractParserTest {
 
         try {
             when(mockReader.readBytes(1)).thenReturn("1");
-            exception.expect(ParseException.class);
+            exception.expect(NitfFormatException.class);
             exception.expectMessage("Unexpected ENCRYP value");
             parser.readENCRYP();
         } finally {

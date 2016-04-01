@@ -19,12 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.schema.FieldType;
@@ -55,17 +55,17 @@ public class TreParser {
         <p>
         This does reasonably complex initialisation, so try to re-use it if possible.
 
-        @throws ParseException if the initialisation fails.
+        @throws NitfFormatException if the initialisation fails.
     */
-    public TreParser() throws ParseException {
+    public TreParser() throws NitfFormatException {
         try (InputStream is = getClass().getResourceAsStream("/nitf_spec.xml")) {
             unmarshal(is);
         } catch (JAXBException ex) {
             LOG.warn("JAXBException parsing TRE XML specification", ex);
-            throw new ParseException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+            throw new NitfFormatException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage());
         } catch (IOException ex) {
             LOG.warn("IOException parsing TRE XML specification", ex);
-            throw new ParseException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+            throw new NitfFormatException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage());
         }
     }
 
@@ -82,19 +82,19 @@ public class TreParser {
      * Add one or more TRE descriptor to the existing descriptor set.
      *
      * @param source the Source to read the TRE descriptors from
-     * @throws ParseException if parsing fails (typically invalid descriptors)
+     * @throws NitfFormatException if parsing fails (typically invalid descriptors)
      */
-    public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+    public final void registerAdditionalTREdescriptor(final Source source) throws NitfFormatException {
         try {
             Tres extraTres = (Tres) getUnmarshaller().unmarshal(source);
             tresStructure.getTre().addAll(extraTres.getTre());
         } catch (JAXBException ex) {
             LOG.warn("JAXBException parsing additional TRE XML specification", ex);
-            throw new ParseException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+            throw new NitfFormatException(TRE_XML_LOAD_ERROR_MESSAGE + ex.getMessage());
         }
     }
 
-    final Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength, final TreSource source) throws ParseException {
+    final Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength, final TreSource source) throws NitfFormatException {
         Tre tre = new TreImpl(tag, source);
         TreType treType = getTreTypeForTag(tag);
         if (treType == null) {
@@ -110,7 +110,7 @@ public class TreParser {
     }
 
     private TreGroupImpl parseTreComponents(final List<Object> fieldOrLoopOrIf,
-            final NitfReader reader, final TreParams params) throws ParseException {
+            final NitfReader reader, final TreParams params) throws NitfFormatException {
         TreGroupImpl group = new TreGroupImpl();
         for (Object fieldLoopIf : fieldOrLoopOrIf) {
             if (fieldLoopIf instanceof FieldType) {
@@ -121,14 +121,14 @@ public class TreParser {
                 TreGroupImpl ifGroup = parseIf((IfType) fieldLoopIf, reader, params);
                 group.addAll(ifGroup);
             } else {
-                throw new ParseException("Unhandled fieldLoopIf type parsing problem", 0);
+                throw new NitfFormatException("Unhandled fieldLoopIf type parsing problem");
             }
         }
         return group;
     }
 
     private TreEntry parseField(final FieldType field, final NitfReader reader,
-            final TreParams parameters) throws ParseException {
+            final TreParams parameters) throws NitfFormatException {
         String fieldKey = field.getName();
         if (fieldKey == null) {
             reader.skip(field.getLength().intValue());
@@ -144,7 +144,7 @@ public class TreParser {
             } else if (field.getLengthVar() != null) {
                 fieldLength = Integer.parseInt(parameters.getFieldValue(field.getLengthVar()));
             } else {
-                throw new ParseException("Unhandled field type parsing issue", 0);
+                throw new UnsupportedOperationException("Unhandled field type parsing issue");
             }
             String fieldValue = reader.readBytes(fieldLength);
             if (fieldKey.isEmpty()) {
@@ -156,7 +156,7 @@ public class TreParser {
         }
     }
 
-    private int computeFormula(final String formula, final TreParams treParas) throws ParseException {
+    private int computeFormula(final String formula, final TreParams treParas) throws NitfFormatException {
         int result = 0;
         switch (formula) {
             case "(NPART+1)*(NPART)/2":
@@ -181,28 +181,28 @@ public class TreParser {
         return result;
     }
 
-    private int computeAverageNPart(final TreParams parameters) throws ParseException {
+    private int computeAverageNPart(final TreParams parameters) throws NitfFormatException {
         int npart = parameters.getIntValue("NPART");
         return (npart + 1) * (npart) / 2;
     }
 
-    private int computeAverageNumOrg(final TreParams parameters) throws ParseException {
+    private int computeAverageNumOrg(final TreParams parameters) throws NitfFormatException {
         int numopg = parameters.getIntValue("NUMOPG");
         return (numopg + 1) * (numopg) / 2;
     }
 
-    private int computeProductNParNParo(final TreParams parameters) throws ParseException {
+    private int computeProductNParNParo(final TreParams parameters) throws NitfFormatException {
         int npar = parameters.getIntValue("NPAR");
         int nparo = parameters.getIntValue("NPARO");
         return npar * nparo;
     }
 
-    private int computeNplnMinus(final TreParams parameters) throws ParseException {
+    private int computeNplnMinus(final TreParams parameters) throws NitfFormatException {
         int npln = parameters.getIntValue("NPLN");
         return npln - 1;
     }
 
-    private int computeProductNxptsNypts(final TreParams parameters) throws ParseException {
+    private int computeProductNxptsNypts(final TreParams parameters) throws NitfFormatException {
         int nxpts = parameters.getIntValue("NXPTS");
         int nypts = parameters.getIntValue("NYPTS");
         return nxpts * nypts;
@@ -217,7 +217,7 @@ public class TreParser {
         return null;
     }
 
-    private TreEntry parseLoop(final LoopType loopType, final NitfReader reader, final TreParams params) throws ParseException {
+    private TreEntry parseLoop(final LoopType loopType, final NitfReader reader, final TreParams params) throws NitfFormatException {
         int numRepetitions = 0;
         if (loopType.getIterations() != null) {
             numRepetitions = loopType.getIterations().intValue();
@@ -238,7 +238,7 @@ public class TreParser {
         return treEntry;
     }
 
-    private TreGroupImpl parseIf(final IfType ifType, final NitfReader reader, final TreParams params) throws ParseException {
+    private TreGroupImpl parseIf(final IfType ifType, final NitfReader reader, final TreParams params) throws NitfFormatException {
         String condition = ifType.getCond();
         if (evaluateCondition(condition, params)) {
             return parseTreComponents(ifType.getFieldOrLoopOrIf(), reader, params);
@@ -303,10 +303,10 @@ public class TreParser {
      * @param handler the TRE handler to read TREs from
      * @param source the source (which has to match the header) of the TREs.
      * @return byte array of serialised TREs - may be empty if there are no TREs.
-     * @throws ParseException on TRE parsing problem.
+     * @throws NitfFormatException on TRE parsing problem.
      * @throws IOException on reading or writing problems.
      */
-    public final byte[] getTREs(final TaggedRecordExtensionHandler handler, final TreSource source) throws ParseException, IOException {
+    public final byte[] getTREs(final TaggedRecordExtensionHandler handler, final TreSource source) throws NitfFormatException, IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         for (Tre tre : handler.getTREsRawStructure().getTREsForSource(source)) {
             String name = padStringToLength(tre.getName(), TAG_LENGTH);
@@ -337,9 +337,9 @@ public class TreParser {
      *
      * @param tre the TRE to write out
      * @return byte array containing serialised TRE.
-     * @throws ParseException if TRE serialisation fails.
+     * @throws NitfFormatException if TRE serialisation fails.
      */
-    public final byte[] serializeTRE(final Tre tre) throws ParseException {
+    public final byte[] serializeTRE(final Tre tre) throws NitfFormatException {
         TreType treType = getTreTypeForTag(tre.getName());
         TreParams parameters = new TreParams();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -350,7 +350,7 @@ public class TreParser {
     private void serializeFieldOrLoopOrIf(final List<Object> fieldOrLoopOrIf,
             final TreGroup treGroup,
             final ByteArrayOutputStream baos,
-            final TreParams params) throws ParseException {
+            final TreParams params) throws NitfFormatException {
         try {
             for (Object fieldLoopIf : fieldOrLoopOrIf) {
                 if (fieldLoopIf instanceof FieldType) {
@@ -368,15 +368,15 @@ public class TreParser {
                         serializeFieldOrLoopOrIf(ifType.getFieldOrLoopOrIf(), treGroup, baos, params);
                     }
                 } else {
-                    throw new ParseException("Unexpected TRE structure type", 0);
+                    throw new NitfFormatException("Unexpected TRE structure type");
                 }
             }
         } catch (IOException ex) {
-            throw new ParseException("Failed to write TRE:" + ex.getMessage(), 0);
+            throw new NitfFormatException("Failed to write TRE:" + ex.getMessage());
         }
     }
 
-    private byte[] getFieldValue(final FieldType fieldType, final TreGroup treGroup, final TreParams params) throws ParseException {
+    private byte[] getFieldValue(final FieldType fieldType, final TreGroup treGroup, final TreParams params) throws NitfFormatException {
         String fieldTypeName = fieldType.getName();
         if ("".equals(fieldTypeName)) {
             fieldTypeName = fieldType.getLongname();

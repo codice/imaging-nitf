@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.fluent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -47,7 +47,7 @@ public class WritingFlowTest {
     }
 
     @Test
-    public void testNS3038A() throws IOException, ParseException {
+    public void testNS3038A() throws IOException, NitfFormatException {
         String inputFileName = "/" + DIRECTORY_NAME + "/" + INPUT_FILE_NAME;
         LOGGER.info("================================== Testing :" + inputFileName);
         Assert.assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
@@ -56,7 +56,7 @@ public class WritingFlowTest {
     }
 
     public void modifyNitf(final String inputFileName) throws
-            IOException, ParseException {
+            IOException, NitfFormatException {
 
         new NitfParserInputFlow()
                 .inputStream(getClass().getResourceAsStream(inputFileName))
@@ -75,7 +75,7 @@ public class WritingFlowTest {
                 );
     }
 
-    private void verifyResult() throws ParseException, FileNotFoundException {
+    private void verifyResult() throws NitfFormatException, FileNotFoundException {
         new NitfParserInputFlow()
                 .file(outputFile)
                 .headerOnly()

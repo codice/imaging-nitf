@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -28,32 +28,32 @@ public class RoundTripECRGTest extends AbstractWriterTest {
     }
 
     @Test
-    public void roundTripECRG9s() throws IOException, ParseException, URISyntaxException {
+    public void roundTripECRG9s() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/ECRG/000000009s0013.lf2");
     }
 
     @Test
-    public void roundTripECRG9t() throws IOException, ParseException, URISyntaxException {
+    public void roundTripECRG9t() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/ECRG/000000009t0013.lf2");
     }
 
     @Test
-    public void roundTripECRGhh() throws IOException, ParseException, URISyntaxException {
+    public void roundTripECRGhh() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/ECRG/00000000hh0013.lf2");
     }
 
     @Test
-    public void roundTripECRGhj() throws IOException, ParseException, URISyntaxException {
+    public void roundTripECRGhj() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/ECRG/00000000hj0013.lf2");
     }
 
     @Test
-    public void roundTripECRGr8() throws IOException, ParseException, URISyntaxException {
+    public void roundTripECRGr8() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/ECRG/00000000r80013.lf2");
     }
 
     @Test
-    public void roundTripECRGr9() throws IOException, ParseException, URISyntaxException {
+    public void roundTripECRGr9() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/ECRG/00000000r90013.lf2");
     }
 }

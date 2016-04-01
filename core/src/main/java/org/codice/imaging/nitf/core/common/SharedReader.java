@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.NitfReaderDefaultImpl;
 
 /**
@@ -23,27 +22,27 @@ import org.codice.imaging.nitf.core.NitfReaderDefaultImpl;
 abstract class SharedReader extends NitfReaderDefaultImpl implements NitfReader {
 
     @Override
-    public final Integer readBytesAsInteger(final int count) throws ParseException {
+    public final Integer readBytesAsInteger(final int count) throws NitfFormatException {
         return defaultReadBytesAsInteger(count);
     }
 
     @Override
-    public final Long readBytesAsLong(final int count) throws ParseException {
+    public final Long readBytesAsLong(final int count) throws NitfFormatException {
         return defaultReadBytesAsLong(count);
     }
 
     @Override
-    public final Double readBytesAsDouble(final int count) throws ParseException {
+    public final Double readBytesAsDouble(final int count) throws NitfFormatException {
         return defaultReadBytesAsDouble(count);
     }
 
     @Override
-    public final String readTrimmedBytes(final int count) throws ParseException {
+    public final String readTrimmedBytes(final int count) throws NitfFormatException {
         return defaultReadTrimmedBytes(count);
     }
 
     @Override
-    public final String readBytes(final int count) throws ParseException {
+    public final String readBytes(final int count) throws NitfFormatException {
         return defaultReadBytes(count);
     }
 

@@ -16,8 +16,8 @@ package org.codice.imaging.nitf.core.symbol;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SCOLOR_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SDLVL_LENGTH;
@@ -58,9 +58,9 @@ public class SymbolSegmentWriter extends AbstractSegmentWriter {
      *
      * @param header the header content to write out
      * @throws IOException on write failure.
-     * @throws ParseException on TRE parsing failure.
+     * @throws NitfFormatException on TRE parsing failure.
      */
-    public final void writeSymbolSegment(final SymbolSegment header) throws IOException, ParseException {
+    public final void writeSymbolSegment(final SymbolSegment header) throws IOException, NitfFormatException {
         writeFixedLengthString(SY, SY.length());
         writeFixedLengthString(header.getIdentifier(), SID_LENGTH);
         writeFixedLengthString(header.getSymbolName(), SNAME_LENGTH);

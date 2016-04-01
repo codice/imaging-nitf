@@ -16,12 +16,12 @@ package org.codice.imaging.nitf.core.header;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import org.codice.imaging.nitf.core.common.CommonConstants;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.image.ImageSegment;
@@ -36,8 +36,6 @@ import org.codice.imaging.nitf.core.tre.TreSource;
  * Writer for the top level file header.
  */
 public class NitfHeaderWriter extends AbstractSegmentWriter {
-
-    private static final int BASIC_HEADER_LENGTH = 388;
 
     /**
      * Constructor.
@@ -54,9 +52,9 @@ public class NitfHeaderWriter extends AbstractSegmentWriter {
      *
      * @param dataSource the data source to take NITF structure from.
      * @throws IOException on read or write problems
-     * @throws ParseException on TRE parsing problems
+     * @throws NitfFormatException on TRE parsing problems
      */
-    public final void writeFileHeader(final NitfDataSource dataSource) throws IOException, ParseException {
+    public final void writeFileHeader(final NitfDataSource dataSource) throws IOException, NitfFormatException {
         NitfHeader header = dataSource.getNitfHeader();
         writeBytes(header.getFileType().getTextEquivalent(), NitfHeaderConstants.FHDR_LENGTH + NitfHeaderConstants.FVER_LENGTH);
         writeFixedLengthNumber(header.getComplexityLevel(), NitfHeaderConstants.CLEVEL_LENGTH);

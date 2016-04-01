@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.image;
 
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 /**
     A Target ID (TGTID) representation.
@@ -54,14 +54,14 @@ public class TargetId {
         Construct a target identifier from the string representation.
 
         @param identifier the full identifier (in BBBBBBBBBBOOOOOCC form).
-        @throws ParseException if the identifier is not of the expected length.
+        @throws NitfFormatException if the identifier is not of the expected length.
     */
-    public TargetId(final String identifier) throws ParseException {
+    public TargetId(final String identifier) throws NitfFormatException {
         if (identifier == null) {
-            throw new ParseException("Null argument for TargetId", 0);
+            throw new NitfFormatException("Null argument for TargetId", 0);
         }
         if (identifier.length() != TGTID_LENGTH) {
-            throw new ParseException("Incorrect length for TargetId:" + identifier.length(), 0);
+            throw new NitfFormatException("Incorrect length for TargetId:" + identifier.length(), 0);
         }
         beNumber = identifier.substring(0, BE_LENGTH);
         oSuffix = identifier.substring(BE_LENGTH, BE_LENGTH + OSUFFIX_LENGTH);

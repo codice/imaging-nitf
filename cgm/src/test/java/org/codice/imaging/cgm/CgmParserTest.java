@@ -32,11 +32,11 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 
 import javax.imageio.ImageIO;
 
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -165,7 +165,7 @@ public class CgmParserTest {
             renderer.render(parser.getCommandList());
             File targetFile = new File("target" + "/" + testfile + "cgm.png");
             ImageIO.write(targetImage, "png", targetFile);
-        } catch (ParseException e) {
+        } catch (NitfFormatException e) {
             LOGGER.error("Failed to load from InputStream " + e.getMessage());
         }
     }

@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 
@@ -28,99 +28,99 @@ public class RoundTripNITF20WriterTest extends AbstractWriterTest {
     public RoundTripNITF20WriterTest() {
     }
     @Test
-    public void roundTripNitf20_U1001A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1001A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1001A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U1034A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1034A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1034A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U1036A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1036A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1036A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U1050A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1050A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1050A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U1060A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1060A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1060A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U1101A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1101A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1101A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U1114A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1114A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1114A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U1122A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1122A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1122A.NTF");
     }
 
     // Ideally U_1123A would appear here, but it has a bad LFS value (0x31, instead of 0x20) which
     // we won't generate on writing. Hence, it won't round trip.
     @Test
-    public void roundTripNitf20_U1130F() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U1130F() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_1130F.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U2001A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U2001A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_2001A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U3002A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U3002A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_3002A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U3010A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U3010A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_3010A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U3050B() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U3050B() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_3050B.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U3058B() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U3058B() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_3058B.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U4002A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U4002A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_4002A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U4003B() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U4003B() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_4003B.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U4004B() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U4004B() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_4004B.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U4005A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U4005A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_4005A.NTF");
     }
 
     @Test
-    public void roundTripNitf20_U4007A() throws IOException, ParseException, URISyntaxException {
+    public void roundTripNitf20_U4007A() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf20Samples/U_4007A.NTF");
     }
 }

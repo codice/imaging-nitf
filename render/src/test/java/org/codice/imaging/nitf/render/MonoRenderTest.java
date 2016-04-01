@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.render;
 
 import java.io.IOException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -31,7 +31,7 @@ public class MonoRenderTest extends RenderTestSupport {
     }
 
     @Test
-    public void test16bitMono() throws IOException, ParseException {
+    public void test16bitMono() throws IOException, NitfFormatException {
         testOneFile("headmono16.ntf", "Codice");
     }
 

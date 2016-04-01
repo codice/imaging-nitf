@@ -14,8 +14,8 @@
  */
 package org.codice.imaging.nitf.core.graphic;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 
 // TODO: make public if we keep this
@@ -25,7 +25,7 @@ class GraphicDataExtractionParseStrategy extends SlottedNitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final void handleImageSegment(final NitfReader reader, final long dataLength) throws ParseException {
+    public final void handleImageSegment(final NitfReader reader, final long dataLength) throws NitfFormatException {
         nitfStorage.getImageSegments().add(readImageSegment(reader, false, dataLength));
     }
 
@@ -33,7 +33,7 @@ class GraphicDataExtractionParseStrategy extends SlottedNitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final void handleSymbolSegment(final NitfReader reader, final long dataLength) throws ParseException {
+    public final void handleSymbolSegment(final NitfReader reader, final long dataLength) throws NitfFormatException {
         nitfStorage.getSymbolSegments().add(readSymbolSegment(reader, false, dataLength));
     }
 
@@ -41,7 +41,7 @@ class GraphicDataExtractionParseStrategy extends SlottedNitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final void handleLabelSegment(final NitfReader reader, final long dataLength) throws ParseException {
+    public final void handleLabelSegment(final NitfReader reader, final long dataLength) throws NitfFormatException {
         nitfStorage.getLabelSegments().add(readLabelSegment(reader, dataLength, false));
     }
 
@@ -49,7 +49,7 @@ class GraphicDataExtractionParseStrategy extends SlottedNitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final void handleGraphicSegment(final NitfReader reader, final long dataLength) throws ParseException {
+    public final void handleGraphicSegment(final NitfReader reader, final long dataLength) throws NitfFormatException {
         nitfStorage.getGraphicSegments().add(readGraphicSegment(reader, true, dataLength));
     }
 
@@ -57,7 +57,7 @@ class GraphicDataExtractionParseStrategy extends SlottedNitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final void handleTextSegment(final NitfReader reader, final long dataLength) throws ParseException {
+    public final void handleTextSegment(final NitfReader reader, final long dataLength) throws NitfFormatException {
         nitfStorage.getTextSegments().add(readTextSegment(reader, dataLength, false));
     }
 
@@ -65,7 +65,7 @@ class GraphicDataExtractionParseStrategy extends SlottedNitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final void handleDataExtensionSegment(final NitfReader reader, final long dataLength) throws ParseException {
+    public final void handleDataExtensionSegment(final NitfReader reader, final long dataLength) throws NitfFormatException {
         nitfStorage.getDataExtensionSegments().add(readDataExtensionSegment(reader, false, dataLength));
     }
 

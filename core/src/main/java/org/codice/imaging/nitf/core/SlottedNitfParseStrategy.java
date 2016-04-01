@@ -16,10 +16,10 @@ package org.codice.imaging.nitf.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.xml.transform.Source;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
@@ -113,7 +113,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
         return this.nitfStorage;
     }
 
-    private void initialiseTreCollectionParserIfRequired() throws ParseException {
+    private void initialiseTreCollectionParserIfRequired() throws NitfFormatException {
         if (treCollectionParser == null) {
             treCollectionParser = new TreCollectionParser();
         }
@@ -127,10 +127,10 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * (false)
      * @param dataLength the length of the data associated with this segment.
      * @return the segment
-     * @throws ParseException on parse error
+     * @throws NitfFormatException if there is a problem reading the segment header or data
      */
     protected final ImageSegment readImageSegment(final NitfReader reader, final boolean parseData, final long dataLength)
-            throws ParseException {
+            throws NitfFormatException {
         ImageSegmentParser imageSegmentParser = new ImageSegmentParser();
         ImageSegment imageSegment = imageSegmentParser.parse(reader, this, dataLength);
         if (parseData) {
@@ -154,9 +154,10 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * (false)
      * @param dataLength the length of the data associated with this segment.
      * @return the segment header data
-     * @throws ParseException on parse error
+     * @throws NitfFormatException if there is a problem reading the segment header or data
      */
-    protected final GraphicSegment readGraphicSegment(final NitfReader reader, final boolean parseData, final long dataLength) throws ParseException {
+    protected final GraphicSegment readGraphicSegment(final NitfReader reader, final boolean parseData, final long dataLength)
+            throws NitfFormatException {
         GraphicSegmentParser graphicSegmentParser = new GraphicSegmentParser();
         GraphicSegment graphicSegment = graphicSegmentParser.parse(reader, this, dataLength);
         if (parseData) {
@@ -180,9 +181,10 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @param parseData whether to parse (true) or skip (false) the data for this symbol segment
      * @param dataLength the length of the data associated with this segment.
      * @return the segment header data
-     * @throws ParseException on parse error
+     * @throws NitfFormatException if there is a problem reading the segment header or data
      */
-    protected final SymbolSegment readSymbolSegment(final NitfReader reader, final boolean parseData, final long dataLength) throws ParseException {
+    protected final SymbolSegment readSymbolSegment(final NitfReader reader, final boolean parseData, final long dataLength)
+            throws NitfFormatException {
         SymbolSegmentParser symbolSegmentParser = new SymbolSegmentParser();
         SymbolSegment symbolSegment = symbolSegmentParser.parse(reader, this, dataLength);
         if (parseData) {
@@ -208,9 +210,10 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @param parseData whether to parse out the text for the label (true) or just parse the header and skip the text
      * (false)
      * @return the segment header data
-     * @throws ParseException on parse error
+     * @throws NitfFormatException if there is a problem reading the segment header or data
      */
-    protected final LabelSegment readLabelSegment(final NitfReader reader, final long dataLength, final boolean parseData) throws ParseException {
+    protected final LabelSegment readLabelSegment(final NitfReader reader, final long dataLength, final boolean parseData)
+            throws NitfFormatException {
         LabelSegmentParser labelSegmentParser = new LabelSegmentParser();
         LabelSegment labelSegment = labelSegmentParser.parse(reader, this);
         if (parseData) {
@@ -233,9 +236,9 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @param parseData whether to extract associated text data (true) or just parse the header and skip the text
      * (false)
      * @return the text segment
-     * @throws ParseException on parse error
+     * @throws NitfFormatException if there is a problem reading the segment header or data
      */
-    protected final TextSegment readTextSegment(final NitfReader reader, final long dataLength, final boolean parseData) throws ParseException {
+    protected final TextSegment readTextSegment(final NitfReader reader, final long dataLength, final boolean parseData) throws NitfFormatException {
         TextSegmentParser textSegmentParser = new TextSegmentParser();
         TextSegment textSegment = textSegmentParser.parse(reader, this);
         if (parseData) {
@@ -260,10 +263,10 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * @param parseData whether to parse the DES content (true) or skip over it (false).
      * @param dataLength the length of the data part of this segment
      * @return the DES
-     * @throws ParseException on parse error
+     * @throws NitfFormatException if there is a problem reading the segment header or data
      */
     protected final DataExtensionSegment readDataExtensionSegment(final NitfReader reader, final boolean parseData,
-            final long dataLength) throws ParseException {
+            final long dataLength) throws NitfFormatException {
         DataExtensionSegmentParser dataExtensionSegmentParser = new DataExtensionSegmentParser();
         DataExtensionSegment dataExtensionSegment = dataExtensionSegmentParser.parse(reader, dataLength);
         if (parseData) {
@@ -286,10 +289,10 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      *
      * @param dataExtensionSegment the data extension segment that is to be completed
      * @param reader the reader to use to read the data.
-     * @throws ParseException on failure.
+     * @throws NitfFormatException if there is a problem reading the segment header or data
      */
     private void readDataExtensionSegmentData(final DataExtensionSegment dataExtensionSegment,
-            final NitfReader reader, final long dataLength) throws ParseException {
+            final NitfReader reader, final long dataLength) throws NitfFormatException {
         if (dataLength > 0) {
             if (dataExtensionSegment.isTreOverflow(reader.getFileType())) {
                 initialiseTreCollectionParserIfRequired();
@@ -308,9 +311,9 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * Register an additional TRE descriptor.
      *
      * @param source the source of the additional TreImpl descriptor.
-     * @throws ParseException - when the TRE descriptors in the source are not in the expected format.
+     * @throws NitfFormatException - when the TRE descriptors in the source are not in the expected format.
      */
-    public final void registerAdditionalTREdescriptor(final Source source) throws ParseException {
+    public final void registerAdditionalTREdescriptor(final Source source) throws NitfFormatException {
         initialiseTreCollectionParserIfRequired();
         treCollectionParser.registerAdditionalTREdescriptor(source);
     }
@@ -319,7 +322,7 @@ public abstract class SlottedNitfParseStrategy implements NitfParseStrategy {
      * {@inheritDoc}
      */
     @Override
-    public final TreCollection parseTREs(final NitfReader reader, final int length, final TreSource source) throws ParseException {
+    public final TreCollection parseTREs(final NitfReader reader, final int length, final TreSource source) throws NitfFormatException {
         initialiseTreCollectionParserIfRequired();
         return treCollectionParser.parse(reader, length, source);
     }

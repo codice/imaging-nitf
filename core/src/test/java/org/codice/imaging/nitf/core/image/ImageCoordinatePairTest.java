@@ -14,9 +14,9 @@
  */
 package org.codice.imaging.nitf.core.image;
 
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.text.ParseException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -40,15 +40,15 @@ public class ImageCoordinatePairTest {
     }
 
     @Test
-    public void testNullArgumentDMS() throws ParseException {
+    public void testNullArgumentDMS() throws NitfFormatException {
         ImageCoordinatePair coord = new ImageCoordinatePair();
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Null argument for DMS parsing");
         coord.setFromDMS(null);
     }
 
     @Test
-    public void testValidArgumentDMS() throws ParseException {
+    public void testValidArgumentDMS() throws NitfFormatException {
         ImageCoordinatePair coord = new ImageCoordinatePair();
         coord.setFromDMS("333019S1502203E");
         assertNotNull(coord);
@@ -58,33 +58,33 @@ public class ImageCoordinatePairTest {
     }
 
     @Test
-    public void testBadArgumentLengthDMS() throws ParseException {
+    public void testBadArgumentLengthDMS() throws NitfFormatException {
         ImageCoordinatePair coord = new ImageCoordinatePair();
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Incorrect length for DMS parsing:14");
         coord.setFromDMS("333019S1502203");
     }
 
     @Test
-    public void testBadFirstHemisphereArgumentDMS() throws ParseException {
+    public void testBadFirstHemisphereArgumentDMS() throws NitfFormatException {
         ImageCoordinatePair coord = new ImageCoordinatePair();
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Incorrect format for N/S flag while DMS parsing: X(333019X1502203E)");
         coord.setFromDMS("333019X1502203E");
     }
 
     @Test
-    public void testBadSecondHemisphereArgumentDMS() throws ParseException {
+    public void testBadSecondHemisphereArgumentDMS() throws NitfFormatException {
         ImageCoordinatePair coord = new ImageCoordinatePair();
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Incorrect format for E/W flag while DMS parsing: Y(333019S1502203Y)");
         coord.setFromDMS("333019S1502203Y");
     }
 
     @Test
-    public void testNumberFormatArgumentDMS() throws ParseException {
+    public void testNumberFormatArgumentDMS() throws NitfFormatException {
         ImageCoordinatePair coord = new ImageCoordinatePair();
-        exception.expect(ParseException.class);
+        exception.expect(NitfFormatException.class);
         exception.expectMessage("Incorrect DMS format: 333019S1502x03E");
         coord.setFromDMS("333019S1502x03E");
     }

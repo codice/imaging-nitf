@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -28,17 +28,17 @@ public class RoundTripGDALWriterTest extends AbstractWriterTest {
     }
 
     @Test
-    public void roundTripNITFU0006A() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFU0006A() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromGDAL/U_0006A.NTF");
     }
 
     @Test
-    public void roundTripNITFtwoimages() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFtwoimages() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromGDAL/two_images_jp2.ntf");
     }
 
     @Test
-    public void roundTripNITFtwoimagesjpeg() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFtwoimagesjpeg() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromGDAL/two_images_jpeg.ntf");
     }
 }

@@ -6,4 +6,5 @@
 
 <suppressions>
     <suppress checks="." files="org[\\/]codice[\\/]imaging[\\/]nitf[\\/]core[\\/]schema[\\/]"/>
+	<suppress checks="." files="org[\\/]codice[\\/]imaging[\\/]nitf[\\/]core[\\/]common[\\/]CommonSegment.java"/>
 </suppressions>

@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.text.ParseException;
 import static org.codice.imaging.nitf.core.common.CommonConstants.ENCRYP_LENGTH;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +38,12 @@ public abstract class AbstractSegmentParser {
     /**
      * Read a ENCRYP value, and check the result.
      *
-     * @throws ParseException when the input doesn't match the expected format for ENCRYP.
+     * @throws NitfFormatException when the input doesn't match the expected format for ENCRYP.
      */
-    protected final void readENCRYP() throws ParseException {
+    protected final void readENCRYP() throws NitfFormatException {
         if (!"0".equals(reader.readBytes(ENCRYP_LENGTH))) {
             LOG.warn("Mismatch while reading ENCRYP");
-            throw new ParseException("Unexpected ENCRYP value", (int) reader.getCurrentOffset());
+            throw new NitfFormatException("Unexpected ENCRYP value", (int) reader.getCurrentOffset());
         }
     }
 
@@ -54,11 +53,11 @@ public abstract class AbstractSegmentParser {
      * Note that this is relatively tolerant, and may not result in something usable as a date/time class in Java.
      *
      * @return a NitfDateTime from head of the reader stream.
-     * @throws ParseException when the next token is not the expected format for a NitfDateTime.
+     * @throws NitfFormatException when the next token is not the expected format for a NitfDateTime.
      *
      * @see NitfDateTime for the "best effort" nature of this parsing.
      */
-    public final NitfDateTime readNitfDateTime() throws ParseException {
+    public final NitfDateTime readNitfDateTime() throws NitfFormatException {
         DateTimeParser dateTimeParser = new DateTimeParser();
         return dateTimeParser.readNitfDateTime(reader);
     }

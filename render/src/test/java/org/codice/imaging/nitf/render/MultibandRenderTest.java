@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.render;
 
 import java.io.IOException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -31,17 +31,17 @@ public class MultibandRenderTest extends RenderTestSupport {
     }
 
     @Test
-    public void testThreeBandMono() throws IOException, ParseException {
+    public void testThreeBandMono() throws IOException, NitfFormatException {
         testOneFile("merlionM.ntf", "Codice");
     }
 
     @Test
-    public void testTwoBandLUT() throws IOException, ParseException {
+    public void testTwoBandLUT() throws IOException, NitfFormatException {
         testOneFile("LUinBand2.ntf", "Codice");
     }
 
     @Test
-    public void testSpaceFilledIREPBANDs() throws IOException, ParseException {
+    public void testSpaceFilledIREPBANDs() throws IOException, NitfFormatException {
         testOneFile("blank_irepbands.ntf", "Codice");
     }
 

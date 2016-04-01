@@ -15,10 +15,10 @@
 package org.codice.imaging.nitf.core.dataextension;
 
 import java.io.IOException;
-import java.text.ParseException;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonSegmentImpl;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.CONTROLLED_EXTENSIONS;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESITEM_LENGTH;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESOFLW_LENGTH;
@@ -214,7 +214,7 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
      * {@inheritDoc}
      */
     @Override
-    public long getHeaderLength() throws ParseException, IOException {
+    public long getHeaderLength() throws NitfFormatException, IOException {
         long headerLength = DataExtensionConstants.DE.length()
                 + DataExtensionConstants.DESID_LENGTH
                 + DataExtensionConstants.DESVER_LENGTH

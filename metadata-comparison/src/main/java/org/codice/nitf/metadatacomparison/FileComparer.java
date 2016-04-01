@@ -23,21 +23,40 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import difflib.Delta;
+import difflib.DiffUtils;
+import difflib.Patch;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
-import org.codice.imaging.nitf.core.header.NitfHeader;
+import static org.codice.imaging.nitf.core.common.FileType.NITF_TWO_ONE;
+import static org.codice.imaging.nitf.core.common.FileType.NITF_TWO_ZERO;
+import static org.codice.imaging.nitf.core.common.FileType.NSIF_ONE_ZERO;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
+import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfHeader;
+import static org.codice.imaging.nitf.core.image.ImageCompression.BILEVEL;
+import static org.codice.imaging.nitf.core.image.ImageCompression.BILEVELMASK;
+import static org.codice.imaging.nitf.core.image.ImageCompression.DOWNSAMPLEDJPEG;
+import static org.codice.imaging.nitf.core.image.ImageCompression.JPEG;
+import static org.codice.imaging.nitf.core.image.ImageCompression.JPEG2000;
+import static org.codice.imaging.nitf.core.image.ImageCompression.JPEG2000MASK;
+import static org.codice.imaging.nitf.core.image.ImageCompression.JPEGMASK;
+import static org.codice.imaging.nitf.core.image.ImageCompression.LOSSLESSJPEG;
+import static org.codice.imaging.nitf.core.image.ImageCompression.VECTORQUANTIZATION;
+import static org.codice.imaging.nitf.core.image.ImageCompression.VECTORQUANTIZATIONMASK;
 import org.codice.imaging.nitf.core.image.ImageCoordinatePair;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
@@ -48,12 +67,7 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import difflib.Delta;
-import difflib.DiffUtils;
-import difflib.Patch;
 
 public class FileComparer {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileComparer.class);
@@ -79,7 +93,7 @@ public class FileComparer {
             NitfReader reader = new FileReader(new File(filename));
             parseStrategy = new DataExtensionSegmentNitfParseStrategy();
             NitfFileParser.parse(reader, parseStrategy);
-        } catch (ParseException e) {
+        } catch (NitfFormatException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
@@ -117,7 +131,7 @@ public class FileComparer {
             outputRPCs();
 
             out.close();
-        } catch (IOException|ParseException e) {
+        } catch (IOException|NitfFormatException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -172,7 +186,7 @@ public class FileComparer {
         }
     }
 
-    private void outputBaseMetadata() throws IOException, ParseException {
+    private void outputBaseMetadata() throws IOException, NitfFormatException {
         Map <String, String> metadata = new TreeMap<String, String>();
 
         addCommonFileLevelMetadata(metadata);
@@ -264,7 +278,7 @@ public class FileComparer {
         metadata.put("NITF_FSSRDT", nitfHeader.getFileSecurityMetadata().getSecuritySourceDate());
     }
 
-    private void addFirstImageSegmentMetadata(Map <String, String> metadata) throws IOException, ParseException {
+    private void addFirstImageSegmentMetadata(Map <String, String> metadata) throws IOException, NitfFormatException {
 
         addCommonImageSegmentMetadata(metadata);
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
@@ -366,7 +380,7 @@ public class FileComparer {
         }
     }
 
-    private void addRpfNamesMetadata(Map <String, String> metadata) throws IOException, ParseException {
+    private void addRpfNamesMetadata(Map <String, String> metadata) throws IOException, NitfFormatException {
         if (filename.toLowerCase().endsWith(".ntf")) {
             // GDAL does this off the filename, not off the IID2, so it won't show these for "plain" NITF files
             return;
@@ -537,7 +551,7 @@ public class FileComparer {
                         double latMax = latOff + (latScale / 2.0);
                         rpc.put("MAX_LAT", cleanupNumberString(latMax));
                         rpc.put("MIN_LAT", cleanupNumberString(latMin));
-                    } catch (ParseException e) {
+                    } catch (NitfFormatException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
                 }
@@ -624,7 +638,7 @@ public class FileComparer {
                     metadata.put("NITF_RPF_SignificantDate", attributes.getSignificantDate(dateIndices.iterator().next()));
                 }
             }
-        } catch (ParseException ex) {
+        } catch (NitfFormatException ex) {
             LOGGER.error(ex.getMessage() + ex);
         }
     }

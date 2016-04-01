@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -24,37 +24,37 @@ import org.junit.Test;
  */
 public class BasicWriterTest extends AbstractWriterTest {
     @Test
-    public void roundTripSimpleFile() throws ParseException, URISyntaxException, IOException {
+    public void roundTripSimpleFile() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/WithBE.ntf");
     }
 
     @Test
-    public void roundTripDESFile() throws IOException, ParseException, URISyntaxException {
+    public void roundTripDESFile() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/autzen-utm10.ntf");
     }
 
     @Test
-    public void roundTripGraphicSegmentExt() throws IOException, ParseException, URISyntaxException {
+    public void roundTripGraphicSegmentExt() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/gdal3453.ntf");
     }
 
     @Test
-    public void roundTripMultiImageFile() throws ParseException, URISyntaxException, IOException {
+    public void roundTripMultiImageFile() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/JitcNitf21Samples/ns3361c.nsf");
     }
 
     @Test
-    public void roundTripGraphicFile() throws IOException, ParseException, URISyntaxException {
+    public void roundTripGraphicFile() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf21Samples/i_3051e.ntf");
     }
 
     @Test
-    public void roundTripGraphic2File() throws IOException, ParseException, URISyntaxException {
+    public void roundTripGraphic2File() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf21Samples/ns3051v.nsf");
     }
 
     @Test
-    public void roundTripTREs() throws IOException, ParseException, URISyntaxException {
+    public void roundTripTREs() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf21Samples/i_3128b.ntf");
     }
 }

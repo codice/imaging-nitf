@@ -14,9 +14,9 @@
  **/
 package org.codice.imaging.nitf.core.tre;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,20 +72,20 @@ class TreGroupImpl implements TreGroup {
      * {@inheritDoc}
      */
     @Override
-    public final TreEntry getEntry(final String tagName) throws ParseException {
+    public final TreEntry getEntry(final String tagName) throws NitfFormatException {
         for (TreEntry entry : entries) {
             if (entry.getName().equals(tagName)) {
                 return entry;
             }
         }
-        throw new ParseException(String.format("Failed to look up %s", tagName), 0);
+        throw new NitfFormatException(String.format("Failed to look up %s", tagName));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final String getFieldValue(final String tagName) throws ParseException {
+    public final String getFieldValue(final String tagName) throws NitfFormatException {
         TreEntry entry = getEntry(tagName);
         return entry.getFieldValue();
     }
@@ -94,12 +94,12 @@ class TreGroupImpl implements TreGroup {
      * {@inheritDoc}
      */
     @Override
-    public final int getIntValue(final String tagName) throws ParseException {
+    public final int getIntValue(final String tagName) throws NitfFormatException {
         try {
             String fv = getFieldValue(tagName);
             return Integer.parseInt(fv, DECIMAL_BASE);
-        } catch (ParseException ex) {
-            throw new ParseException(String.format("Failed to look up %s as integer value", tagName), 0);
+        } catch (NitfFormatException ex) {
+            throw new NitfFormatException(String.format("Failed to look up %s as integer value", tagName));
         }
     }
 

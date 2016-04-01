@@ -15,8 +15,8 @@
 package org.codice.imaging.nitf.core;
 
 import java.nio.charset.Charset;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 
 /**
@@ -55,10 +55,10 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
 
     /** {@inheritDoc} */
     @Override
-    public final void verifyHeaderMagic(final String magicHeader) throws ParseException {
+    public final void verifyHeaderMagic(final String magicHeader) throws NitfFormatException {
         String actualHeader = readBytes(magicHeader.length());
         if (!actualHeader.equals(magicHeader)) {
-            throw new ParseException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), (int) getCurrentOffset());
+            throw new NitfFormatException(String.format("Missing \'%s\' magic header, got \'%s\'", magicHeader, actualHeader), getCurrentOffset());
         }
     }
 
@@ -69,15 +69,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
 
         @param count the number of bytes to read and convert to an integer.
         @return integer representation of the specified number of bytes.
-        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
     */
-    protected final Integer defaultReadBytesAsInteger(final int count) throws ParseException {
+    protected final Integer defaultReadBytesAsInteger(final int count) throws NitfFormatException {
         String intString = readBytes(count);
         Integer intValue = 0;
         try {
             intValue = Integer.parseInt(intString);
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Integer format: [%s]", intString), (int) getCurrentOffset());
+            throw new NitfFormatException(String.format("Bad Integer format: [%s]", intString), getCurrentOffset());
         }
         return intValue;
     }
@@ -89,15 +89,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
 
         @param count the number of bytes to read and convert to a long integer.
         @return long integer representation of the specified number of bytes.
-        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
     */
-    protected final Long defaultReadBytesAsLong(final int count) throws ParseException {
+    protected final Long defaultReadBytesAsLong(final int count) throws NitfFormatException {
         String longString = readBytes(count);
         Long longValue = 0L;
         try {
             longValue = Long.parseLong(longString);
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Long format: %s", longString), (int) getCurrentOffset());
+            throw new NitfFormatException(String.format("Bad Long format: %s", longString), getCurrentOffset());
         }
         return longValue;
     }
@@ -109,15 +109,15 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
 
         @param count the number of bytes to read and convert to a double.
         @return double representation of the specified number of bytes.
-        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
     */
-    protected final Double defaultReadBytesAsDouble(final int count) throws ParseException {
+    protected final Double defaultReadBytesAsDouble(final int count) throws NitfFormatException {
         String doubleString = readBytes(count);
         Double doubleValue = 0.0;
         try {
             doubleValue = Double.parseDouble(doubleString.trim());
         } catch (NumberFormatException ex) {
-            throw new ParseException(String.format("Bad Double format: %s", doubleString), (int) getCurrentOffset());
+            throw new NitfFormatException(String.format("Bad Double format: %s", doubleString), getCurrentOffset());
         }
         return doubleValue;
     }
@@ -129,9 +129,9 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
 
         @param count the number of bytes to read.
         @return trimmed string contents.
-        @throws ParseException if something went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
-    protected final String defaultReadTrimmedBytes(final int count) throws ParseException {
+    protected final String defaultReadTrimmedBytes(final int count) throws NitfFormatException {
         return rightTrim(readBytes(count));
     }
 
@@ -156,9 +156,9 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
 
         @param count the number of bytes to read.
         @return string contents.
-        @throws ParseException if something went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
-    protected final String defaultReadBytes(final int count) throws ParseException {
+    protected final String defaultReadBytes(final int count) throws NitfFormatException {
         return new String(readBytesRaw(count), UTF8_CHARSET);
     }
 

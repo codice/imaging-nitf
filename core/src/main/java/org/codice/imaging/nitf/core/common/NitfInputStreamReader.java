@@ -16,7 +16,6 @@ package org.codice.imaging.nitf.core.common;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,21 +84,21 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
      * {@inheritDoc}
      */
     @Override
-    public final byte[] readBytesRaw(final int count) throws ParseException {
+    public final byte[] readBytesRaw(final int count) throws NitfFormatException {
         try {
             byte[] bytes = new byte[count];
             int thisRead = input.read(bytes, 0, count);
             if (thisRead == -1) {
-                throw new ParseException("End of file reading from NITF stream.", (int) numBytesRead);
+                throw new NitfFormatException("End of file reading from NITF stream.", numBytesRead);
             } else if (thisRead < count) {
-                throw new ParseException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count),
-                                         (int) (numBytesRead + thisRead));
+                throw new NitfFormatException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count),
+                                         numBytesRead + thisRead);
             }
             numBytesRead += thisRead;
             return bytes;
         } catch (IOException ex) {
             LOG.warn("IO Exception reading raw bytes", ex);
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), (int) numBytesRead);
+            throw new NitfFormatException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
         }
     }
 
@@ -107,7 +106,7 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
      * {@inheritDoc}
      */
     @Override
-    public final void skip(final long count) throws ParseException {
+    public final void skip(final long count) throws NitfFormatException {
         long bytesToRead = count;
         try {
             long thisRead = 0;
@@ -118,7 +117,7 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
             } while (bytesToRead > 0);
         } catch (IOException ex) {
             LOG.warn("IO Exception skipping bytes", ex);
-            throw new ParseException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), (int) numBytesRead);
+            throw new NitfFormatException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
         }
     }
 }

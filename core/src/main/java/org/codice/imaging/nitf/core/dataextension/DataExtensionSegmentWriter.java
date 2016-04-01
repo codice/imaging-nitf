@@ -16,9 +16,9 @@ package org.codice.imaging.nitf.core.dataextension;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DE;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESID_LENGTH;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESITEM_LENGTH;
@@ -49,9 +49,9 @@ public class DataExtensionSegmentWriter extends AbstractSegmentWriter {
      * @param des the header to write
      * @param fileType the type (NITF version) of file to write out this segment header for.
      * @throws IOException on write failure
-     * @throws ParseException on TRE parse problems
+     * @throws NitfFormatException on TRE parse problems
      */
-    public final void writeDESHeader(final DataExtensionSegment des, final FileType fileType) throws IOException, ParseException {
+    public final void writeDESHeader(final DataExtensionSegment des, final FileType fileType) throws IOException, NitfFormatException {
         writeFixedLengthString(DE, DE.length());
         writeFixedLengthString(des.getIdentifier(), DESID_LENGTH);
         writeFixedLengthNumber(des.getDESVersion(), DESVER_LENGTH);

@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.core.header;
 
 import java.io.File;
-import java.text.ParseException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
@@ -24,6 +23,7 @@ import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -47,7 +47,7 @@ public class TestHeaderDefaultBuild {
     }
 
     @Test
-    public void writeEmptyHeader() throws ParseException {
+    public void writeEmptyHeader() throws NitfFormatException {
         final String OUTFILE_NAME = "empty.ntf";
         if (new File(OUTFILE_NAME).exists()) {
             new File(OUTFILE_NAME).delete();

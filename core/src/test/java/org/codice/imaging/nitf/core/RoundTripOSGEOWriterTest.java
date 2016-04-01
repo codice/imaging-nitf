@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -28,27 +28,27 @@ public class RoundTripOSGEOWriterTest extends AbstractWriterTest {
     }
 
     @Test
-    public void roundTripNITFGNC() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFGNC() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromOSGEO/0000M033.GN3");
     }
 
     @Test
-    public void roundTripNITFONC() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFONC() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromOSGEO/cadrg/001zc013.on1");
     }
 
     @Test
-    public void roundTripNITFCGM() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFCGM() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromOSGEO/bugs/NITF21_CGM_ANNO_Uncompressed_unmasked.ntf");
     }
 
     @Test
-    public void roundTripNITFbug3337() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFbug3337() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromOSGEO/bugs/bug3337.ntf");
     }
 
     @Test
-    public void roundTripNITFI3430A() throws ParseException, URISyntaxException, IOException {
+    public void roundTripNITFI3430A() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromOSGEO/bugs/i_3430a.ntf");
     }
 }

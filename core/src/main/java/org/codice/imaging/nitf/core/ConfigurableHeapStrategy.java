@@ -16,8 +16,8 @@ package org.codice.imaging.nitf.core;
 
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.text.ParseException;
 import java.util.function.Function;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public class ConfigurableHeapStrategy<R> implements HeapStrategy<R> {
      */
     @Override
     public final R handleSegment(final NitfReader reader, final long length)
-            throws ParseException {
+            throws NitfFormatException {
         if (!isRenderable(length)) {
             reader.skip(length);
             return null;

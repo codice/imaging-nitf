@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.core.text;
 
 import java.io.File;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
 import org.codice.imaging.nitf.core.NitfDataSource;
 import org.codice.imaging.nitf.core.NitfFileWriter;
@@ -23,6 +22,7 @@ import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
 import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.header.NitfHeaderFactory;
@@ -40,7 +40,7 @@ public class TestTextSegmentAddition {
     }
 
     @Test
-    public void writeSimpleHeader() throws ParseException {
+    public void writeSimpleHeader() throws NitfFormatException {
         final String OUTFILE_NAME = "textsegment_simple.ntf";
         if (new File(OUTFILE_NAME).exists()) {
             new File(OUTFILE_NAME).delete();
@@ -71,7 +71,7 @@ public class TestTextSegmentAddition {
     }
 
     @Test
-    public void writeSegmentWithId() throws ParseException {
+    public void writeSegmentWithId() throws NitfFormatException {
         final String OUTFILE_NAME = "textsegment_withId.ntf";
         if (new File(OUTFILE_NAME).exists()) {
             new File(OUTFILE_NAME).delete();
@@ -104,7 +104,7 @@ public class TestTextSegmentAddition {
     }
 
     @Test
-    public void writeTwoTextSegments() throws ParseException {
+    public void writeTwoTextSegments() throws NitfFormatException {
         final String OUTFILE_NAME = "twotextsegments.ntf";
         TextSegment textSegment2 = makeTwoSegmentFile(OUTFILE_NAME);
         NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
@@ -131,7 +131,7 @@ public class TestTextSegmentAddition {
     }
 
     @Test
-    public void modifyTwoTextSegments() throws ParseException {
+    public void modifyTwoTextSegments() throws NitfFormatException {
         final String OUTFILE_NAME = "twotextsegments_mod.ntf";
         TextSegment textSegment2 = makeTwoSegmentFile(OUTFILE_NAME);
         NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
@@ -191,7 +191,7 @@ public class TestTextSegmentAddition {
     }
 
     @Test
-    public void deleteTextSegment() throws ParseException {
+    public void deleteTextSegment() throws NitfFormatException {
         final String OUTFILE_NAME = "twotextsegments_delete.ntf";
         TextSegment textSegment2 = makeTwoSegmentFile(OUTFILE_NAME);
         NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
@@ -265,7 +265,7 @@ public class TestTextSegmentAddition {
         return store;
     }
 
-    private NitfDataSource verifyBasicHeader(final String OUTFILE_NAME) throws ParseException {
+    private NitfDataSource verifyBasicHeader(final String OUTFILE_NAME) throws NitfFormatException {
         FileReader reader = new FileReader(OUTFILE_NAME);
         assertNotNull(reader);
         SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();

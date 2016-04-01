@@ -14,8 +14,8 @@
  */
 package org.codice.imaging.nitf.core.symbol;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
@@ -58,11 +58,10 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
      * @param parseStrategy the parsing strategy to use to process the data.
      * @param dataLength the length of the segment data part in bytes, excluding the header
      * @return the parsed SymbolSegment.
-     * @throws ParseException when the input from the NitfReader isn't what was expected.
+     * @throws NitfFormatException when the input from the NitfReader isn't what was expected.
      */
     public final SymbolSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
-            final long dataLength) throws ParseException {
-
+            final long dataLength) throws NitfFormatException {
         reader = nitfReader;
         segment = new SymbolSegmentImpl();
         segment.setDataLength(dataLength);
@@ -97,83 +96,83 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
         return segment;
     }
 
-    private void readSY() throws ParseException {
+    private void readSY() throws NitfFormatException {
         reader.verifyHeaderMagic(SY);
     }
 
-    private void readSID() throws ParseException {
+    private void readSID() throws NitfFormatException {
         segment.setIdentifier(reader.readTrimmedBytes(SID_LENGTH));
     }
 
-    private void readSNAME() throws ParseException {
+    private void readSNAME() throws NitfFormatException {
         segment.setSymbolName(reader.readTrimmedBytes(SNAME_LENGTH));
     }
 
-    private void readSTYPE() throws ParseException {
+    private void readSTYPE() throws NitfFormatException {
         String stype = reader.readTrimmedBytes(SYTYPE_LENGTH);
         segment.setSymbolType(SymbolType.getEnumValue(stype));
     }
 
-    private void readNLIPS() throws ParseException {
+    private void readNLIPS() throws NitfFormatException {
         segment.setNumberOfLinesPerSymbol(reader.readBytesAsInteger(NLIPS_LENGTH));
     }
 
-    private void readNPIXPL() throws ParseException {
+    private void readNPIXPL() throws NitfFormatException {
         segment.setNumberOfPixelsPerLine(reader.readBytesAsInteger(NPIXPL_LENGTH));
     }
 
-    private void readNWDTH() throws ParseException {
+    private void readNWDTH() throws NitfFormatException {
         segment.setLineWidth(reader.readBytesAsInteger(NWDTH_LENGTH));
     }
 
-    private void readNBPP() throws ParseException {
+    private void readNBPP() throws NitfFormatException {
         segment.setNumberOfBitsPerPixel(reader.readBytesAsInteger(SYNBPP_LENGTH));
     }
 
-    private void readSDLVL() throws ParseException {
+    private void readSDLVL() throws NitfFormatException {
         segment.setSymbolDisplayLevel(reader.readBytesAsInteger(SDLVL_LENGTH));
     }
 
-    private void readSALVL() throws ParseException {
+    private void readSALVL() throws NitfFormatException {
         segment.setAttachmentLevel(reader.readBytesAsInteger(SALVL_LENGTH));
     }
 
-    private void readSLOC() throws ParseException {
+    private void readSLOC() throws NitfFormatException {
         segment.setSymbolLocationRow(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
         segment.setSymbolLocationColumn(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
     }
 
-    private void readSLOC2() throws ParseException {
+    private void readSLOC2() throws NitfFormatException {
         segment.setSymbolLocation2Row(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
         segment.setSymbolLocation2Column(reader.readBytesAsInteger(SLOC_HALF_LENGTH));
     }
 
-    private void readSCOLOR() throws ParseException {
+    private void readSCOLOR() throws NitfFormatException {
         String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
         segment.setSymbolColourFormat(SymbolColour.getEnumValue(scolor));
     }
 
-    private void readSNUM() throws ParseException {
+    private void readSNUM() throws NitfFormatException {
         segment.setSymbolNumber(reader.readBytes(SNUM_LENGTH));
     }
 
-    private void readSROT() throws ParseException {
+    private void readSROT() throws NitfFormatException {
         segment.setSymbolRotation(reader.readBytesAsInteger(SROT_LENGTH));
     }
 
-    private void readNELUT() throws ParseException {
+    private void readNELUT() throws NitfFormatException {
         numberOfEntriesInLUT = reader.readBytesAsInteger(SYNELUT_LENGTH);
     }
 
-    private void readSXSHDL() throws ParseException {
+    private void readSXSHDL() throws NitfFormatException {
         symbolExtendedSubheaderLength = reader.readBytesAsInteger(SXSHDL_LENGTH);
     }
 
-    private void readSXSOFL() throws ParseException {
+    private void readSXSOFL() throws NitfFormatException {
         segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(SXSOFL_LENGTH));
     }
 
-    private void readSXSHD() throws ParseException {
+    private void readSXSHD() throws NitfFormatException {
         TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
                 symbolExtendedSubheaderLength - SXSOFL_LENGTH,
                 TreSource.SymbolExtendedSubheaderData);

@@ -14,8 +14,6 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.text.ParseException;
-
 /**
     Interface for reader.
 */
@@ -47,9 +45,9 @@ public interface NitfReader {
         <p>
         This is only valid if the reader can seek.
 
-        @throws ParseException if there was a problem performing the required operation.
+        @throws NitfFormatException if there was a problem performing the required operation.
     */
-    void seekToEndOfFile() throws ParseException;
+    void seekToEndOfFile() throws NitfFormatException;
 
     /**
         Seek backwards from the current position.
@@ -57,9 +55,9 @@ public interface NitfReader {
         This is only valid if the reader can seek.
 
         @param relativeOffset the number of bytes to seek backwards.
-        @throws ParseException if there was a problem performing the required operation.
+        @throws NitfFormatException if there was a problem performing the required operation.
     */
-    void seekBackwards(final long relativeOffset) throws ParseException;
+    void seekBackwards(final long relativeOffset) throws NitfFormatException;
 
     /**
         Seek to an absolute position.
@@ -67,9 +65,9 @@ public interface NitfReader {
         This is only valid if the reader can seek.
 
         @param absoluteOffset the position to.
-        @throws ParseException if there was a problem performing the required operation.
+        @throws NitfFormatException if there was a problem performing the required operation.
     */
-    void seekToAbsoluteOffset(final long absoluteOffset) throws ParseException;
+    void seekToAbsoluteOffset(final long absoluteOffset) throws NitfFormatException;
 
     /**
         Return the current offset into the NITF file.
@@ -84,9 +82,9 @@ public interface NitfReader {
         This is intended to verify header values and other constants during parsing.
 
         @param magicHeader the string content to match.
-        @throws ParseException if the content did not match, or something else went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if the content did not match, or something else went wrong during parsing (e.g. end of file).
     */
-    void verifyHeaderMagic(final String magicHeader) throws ParseException;
+    void verifyHeaderMagic(final String magicHeader) throws NitfFormatException;
 
     /**
         Read an integer value from the file.
@@ -98,9 +96,9 @@ public interface NitfReader {
 
         @param count the number of bytes to read and convert to an integer.
         @return integer representation of the specified number of bytes.
-        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
     */
-    Integer readBytesAsInteger(final int count) throws ParseException;
+    Integer readBytesAsInteger(final int count) throws NitfFormatException;
 
     /**
         Read a long integer value from the file.
@@ -112,9 +110,9 @@ public interface NitfReader {
 
         @param count the number of bytes to read and convert to a long integer.
         @return long integer representation of the specified number of bytes.
-        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
     */
-    Long readBytesAsLong(final int count) throws ParseException;
+    Long readBytesAsLong(final int count) throws NitfFormatException;
 
     /**
         Read a double value from the file.
@@ -126,36 +124,36 @@ public interface NitfReader {
 
         @param count the number of bytes to read and convert to a double.
         @return double representation of the specified number of bytes.
-        @throws ParseException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if the content could not be converted, or something else went wrong during parsing (e.g. end of file).
     */
-    Double readBytesAsDouble(final int count) throws ParseException;
+    Double readBytesAsDouble(final int count) throws NitfFormatException;
 
     /**
         Read a string from the file, removing any trailing whitespace.
 
         @param count the number of bytes to read.
         @return trimmed string contents.
-        @throws ParseException if something went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
-    String readTrimmedBytes(final int count) throws ParseException;
+    String readTrimmedBytes(final int count) throws NitfFormatException;
 
     /**
         Read a string from the file.
 
         @param count the number of bytes to read.
         @return string contents.
-        @throws ParseException if something went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
-    String readBytes(final int count) throws ParseException;
+    String readBytes(final int count) throws NitfFormatException;
 
     /**
         Read bytes from the file.
 
         @param count the number of bytes to read.
         @return byte array of the file content.
-        @throws ParseException if something went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
-    byte[] readBytesRaw(final int count) throws ParseException;
+    byte[] readBytesRaw(final int count) throws NitfFormatException;
 
     /**
         Skip over file contents.
@@ -163,7 +161,7 @@ public interface NitfReader {
         This is used to ignore some of the file content (e.g. data segments, when only parsing out the metadata).
 
         @param count the number of bytes to skip.
-        @throws ParseException if something went wrong during parsing (e.g. end of file).
+        @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
-    void skip(final long count) throws ParseException;
+    void skip(final long count) throws NitfFormatException;
 }

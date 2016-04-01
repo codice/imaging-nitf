@@ -21,12 +21,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
@@ -45,7 +45,7 @@ class AbstractWriterTest {
         return getClass().getResourceAsStream(testfile);
     }
 
-    protected void roundTripFile(String sourceFileName) throws URISyntaxException, ParseException, IOException {
+    protected void roundTripFile(String sourceFileName) throws URISyntaxException, NitfFormatException, IOException {
         String outputFile = FilenameUtils.getName(sourceFileName);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream(sourceFileName)));
         SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();

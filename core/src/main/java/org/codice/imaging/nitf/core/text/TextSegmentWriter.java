@@ -16,9 +16,9 @@ package org.codice.imaging.nitf.core.text;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.text.TextConstants.TEXTID20_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TEXTID_LENGTH;
 import static org.codice.imaging.nitf.core.text.TextConstants.TXSHDL_LENGTH;
@@ -50,9 +50,9 @@ public class TextSegmentWriter extends AbstractSegmentWriter {
      * @param textSegment the content to write out
      * @param fileType the type of file (NITF version) to write the text header out for.
      * @throws IOException on write failure.
-     * @throws ParseException on TRE parsing failure.
+     * @throws NitfFormatException on TRE parsing failure.
      */
-    public final void writeTextSegment(final TextSegment textSegment, final FileType fileType) throws IOException, ParseException {
+    public final void writeTextSegment(final TextSegment textSegment, final FileType fileType) throws IOException, NitfFormatException {
         writeFixedLengthString(TextConstants.TE, TextConstants.TE.length());
         if (fileType == FileType.NITF_TWO_ZERO) {
             writeFixedLengthString(textSegment.getIdentifier(), TEXTID20_LENGTH);

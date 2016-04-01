@@ -15,11 +15,11 @@
 package org.codice.imaging.nitf.core.text;
 
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.CommonConstants;
 import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
 import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.TreParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
@@ -111,7 +111,7 @@ class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
      * {@inheritDoc}
      */
     @Override
-    public final long getHeaderLength() throws ParseException, IOException {
+    public final long getHeaderLength() throws NitfFormatException, IOException {
         long headerLength = TextConstants.TE.length()
                 + TextConstants.TEXTID_LENGTH
                 + TextConstants.TXTALVL_LENGTH

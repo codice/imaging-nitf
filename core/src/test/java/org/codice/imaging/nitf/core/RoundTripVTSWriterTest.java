@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.junit.Test;
 
 /**
@@ -30,12 +30,12 @@ public class RoundTripVTSWriterTest extends AbstractWriterTest {
     }
 
     @Test
-    public void roundTripVTS20_good() throws ParseException, URISyntaxException, IOException {
+    public void roundTripVTS20_good() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromVTS/GHSarNITF20_good.ntf");
     }
 
     @Test
-    public void roundTripVTS21_good() throws ParseException, URISyntaxException, IOException {
+    public void roundTripVTS21_good() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/fromVTS/GHSarNITF21_good.ntf");
     }
 }

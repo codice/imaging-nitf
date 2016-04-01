@@ -17,7 +17,6 @@ package org.codice.imaging.nitf.render;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 
 import javax.imageio.ImageIO;
 
@@ -30,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import junit.framework.TestCase;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 /**
  * Shared code for rendering tests
@@ -52,7 +52,7 @@ public class RenderTestSupport extends TestCase {
         super.tearDown();
     }
 
-    protected void testOneFile(final String testfile, final String parentDirectory) throws IOException, ParseException {
+    protected void testOneFile(final String testfile, final String parentDirectory) throws IOException, NitfFormatException {
         String inputFileName = "/" + parentDirectory + "/" + testfile;
         System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));

@@ -14,9 +14,9 @@
  */
 package org.codice.imaging.nitf.core.text;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
@@ -52,10 +52,10 @@ public class TextSegmentParser extends AbstractSegmentParser {
      * @param nitfReader The NitfReader to read TextSegment from.
      * @param parseStrategy the parsing strategy to use to process the data.
      * @return the parsed TextSegment.
-     * @throws ParseException when the input from the NitfReader isn't what was expected.
+     * @throws NitfFormatException when the input from the NitfReader isn't what was expected.
      */
     public final TextSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy)
-            throws ParseException {
+            throws NitfFormatException {
         reader = nitfReader;
         segment = new TextSegmentImpl();
         parsingStrategy = parseStrategy;
@@ -76,11 +76,11 @@ public class TextSegmentParser extends AbstractSegmentParser {
         return segment;
     }
 
-    private void readTE() throws ParseException {
+    private void readTE() throws NitfFormatException {
        reader.verifyHeaderMagic(TE);
     }
 
-    private void readTEXTID() throws ParseException {
+    private void readTEXTID() throws NitfFormatException {
         switch (reader.getFileType()) {
             case NITF_TWO_ZERO:
                 segment.setIdentifier(reader.readBytes(TEXTID20_LENGTH));
@@ -91,38 +91,38 @@ public class TextSegmentParser extends AbstractSegmentParser {
                 break;
             case UNKNOWN:
             default:
-                throw new ParseException("Unsupported reader version", (int) reader.getCurrentOffset());
+                throw new NitfFormatException("Unsupported reader version", (int) reader.getCurrentOffset());
         }
     }
 
-    private void readTXTALVL() throws ParseException {
+    private void readTXTALVL() throws NitfFormatException {
         if ((reader.getFileType() == FileType.NITF_TWO_ONE) || (reader.getFileType() == FileType.NSIF_ONE_ZERO)) {
             segment.setAttachmentLevel(reader.readBytesAsInteger(TXTALVL_LENGTH));
         }
     }
 
-    private void readTEXTDT() throws ParseException {
+    private void readTEXTDT() throws NitfFormatException {
         segment.setTextDateTime(readNitfDateTime());
     }
 
-    private void readTXTITL() throws ParseException {
+    private void readTXTITL() throws NitfFormatException {
         segment.setTextTitle(reader.readTrimmedBytes(TXTITL_LENGTH));
     }
 
-    private void readTXTFMT() throws ParseException {
+    private void readTXTFMT() throws NitfFormatException {
         String txtfmt = reader.readTrimmedBytes(TXTFMT_LENGTH);
         segment.setTextFormat(TextFormat.getEnumValue(txtfmt));
     }
 
-    private void readTXSHDL() throws ParseException {
+    private void readTXSHDL() throws NitfFormatException {
         textExtendedSubheaderLength = reader.readBytesAsInteger(TXSHDL_LENGTH);
     }
 
-    private void readTXSOFL() throws ParseException {
+    private void readTXSOFL() throws NitfFormatException {
         segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(TXSOFL_LENGTH));
     }
 
-    private void readTXSHD() throws ParseException {
+    private void readTXSHD() throws NitfFormatException {
         TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
                 textExtendedSubheaderLength - TXSOFL_LENGTH,
                 TreSource.TextExtendedSubheaderData);

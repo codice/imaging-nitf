@@ -16,8 +16,8 @@ package org.codice.imaging.nitf.core.graphic;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SBND1_HALF_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SBND2_HALF_LENGTH;
@@ -56,9 +56,9 @@ public class GraphicSegmentWriter extends AbstractSegmentWriter {
      *
      * @param graphicSegment the segment content to write out
      * @throws IOException on write failure.
-     * @throws ParseException on TRE parsing failure.
+     * @throws NitfFormatException on TRE parsing failure.
      */
-    public final void writeGraphicSegment(final GraphicSegment graphicSegment) throws IOException, ParseException {
+    public final void writeGraphicSegment(final GraphicSegment graphicSegment) throws IOException, NitfFormatException {
         writeFixedLengthString(SY, SY.length());
         writeFixedLengthString(graphicSegment.getIdentifier(), SID_LENGTH);
         writeFixedLengthString(graphicSegment.getGraphicName(), SNAME_LENGTH);

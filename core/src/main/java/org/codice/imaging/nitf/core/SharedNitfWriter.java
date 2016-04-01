@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core;
 import org.codice.imaging.nitf.core.header.NitfHeaderWriter;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.text.ParseException;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentWriter;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
@@ -57,10 +57,10 @@ public abstract class SharedNitfWriter implements NitfWriter {
     /**
      * Write out the data to the specified target.
      *
-     * @throws ParseException if there is a problem reading data
+     * @throws NitfFormatException if there is a problem reading data
      * @throws IOException if there is a problem writing data
      */
-    protected final void writeData() throws ParseException, IOException {
+    protected final void writeData() throws NitfFormatException, IOException {
         mTreParser = new TreParser();
         NitfHeaderWriter fileHeaderWriter = new NitfHeaderWriter(mOutput, mTreParser);
         fileHeaderWriter.writeFileHeader(mDataSource);
@@ -72,42 +72,42 @@ public abstract class SharedNitfWriter implements NitfWriter {
         writeDataExtensionSegments();
     }
 
-    private void writeImageSegments() throws ParseException, IOException {
+    private void writeImageSegments() throws NitfFormatException, IOException {
         ImageSegmentWriter imageSegmentWriter = new ImageSegmentWriter(mOutput, mTreParser);
         for (ImageSegment imageSegment : mDataSource.getImageSegments()) {
             imageSegmentWriter.writeImageSegment(imageSegment, mDataSource.getNitfHeader().getFileType());
         }
     }
 
-    private void writeGraphicSegments() throws IOException, ParseException {
+    private void writeGraphicSegments() throws IOException, NitfFormatException {
         GraphicSegmentWriter graphicSegmentWriter = new GraphicSegmentWriter(mOutput, mTreParser);
         for (GraphicSegment graphicSegment : mDataSource.getGraphicSegments()) {
             graphicSegmentWriter.writeGraphicSegment(graphicSegment);
         }
     }
 
-    private void writeSymbolSegments() throws ParseException, IOException {
+    private void writeSymbolSegments() throws NitfFormatException, IOException {
         SymbolSegmentWriter symbolSegmentWriter = new SymbolSegmentWriter(mOutput, mTreParser);
         for (SymbolSegment symbolSegment : mDataSource.getSymbolSegments()) {
             symbolSegmentWriter.writeSymbolSegment(symbolSegment);
         }
     }
 
-    private void writeLabelSegments() throws IOException, ParseException {
+    private void writeLabelSegments() throws IOException, NitfFormatException {
         LabelSegmentWriter labelSegmentWriter = new LabelSegmentWriter(mOutput, mTreParser);
         for (LabelSegment labelSegment : mDataSource.getLabelSegments()) {
             labelSegmentWriter.writeLabel(labelSegment);
         }
     }
 
-    private void writeTextSegments() throws ParseException, IOException {
+    private void writeTextSegments() throws NitfFormatException, IOException {
         TextSegmentWriter textSegmentWriter = new TextSegmentWriter(mOutput, mTreParser);
         for (TextSegment textSegment : mDataSource.getTextSegments()) {
             textSegmentWriter.writeTextSegment(textSegment, mDataSource.getNitfHeader().getFileType());
         }
     }
 
-    private void writeDataExtensionSegments() throws ParseException, IOException {
+    private void writeDataExtensionSegments() throws NitfFormatException, IOException {
         DataExtensionSegmentWriter dataExtensionSegmentWriter = new DataExtensionSegmentWriter(mOutput, mTreParser);
         for (DataExtensionSegment des : mDataSource.getDataExtensionSegments()) {
             if (!des.isStreamingMode()) {

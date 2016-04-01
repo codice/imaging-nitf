@@ -17,8 +17,8 @@ package org.codice.imaging.nitf.core;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
@@ -34,7 +34,7 @@ public class FBKGCTest {
 
 
     @Test
-    public void testU1125C() throws IOException, ParseException {
+    public void testU1125C() throws IOException, NitfFormatException {
         final String nitf20File = "/JitcNitf20Samples/U_1125C.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(nitf20File));

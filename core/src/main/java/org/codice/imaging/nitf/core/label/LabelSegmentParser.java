@@ -14,9 +14,9 @@
  */
 package org.codice.imaging.nitf.core.label;
 
-import java.text.ParseException;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LA;
@@ -56,10 +56,10 @@ public class LabelSegmentParser extends AbstractSegmentParser {
      * @param nitfReader the reader to use to get the data.
      * @param parseStrategy the parsing strategy to use to process the data.
      * @return the parsed header.
-     * @throws ParseException on parse failure.
+     * @throws NitfFormatException on parse failure.
      *
      */
-    public final LabelSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws ParseException {
+    public final LabelSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws NitfFormatException {
 
         reader = nitfReader;
         parsingStrategy = parseStrategy;
@@ -85,56 +85,56 @@ public class LabelSegmentParser extends AbstractSegmentParser {
         return segment;
     }
 
-    private void readLA() throws ParseException {
+    private void readLA() throws NitfFormatException {
         reader.verifyHeaderMagic(LA);
     }
 
-    private void readLID() throws ParseException {
+    private void readLID() throws NitfFormatException {
         segment.setIdentifier(reader.readTrimmedBytes(LID_LENGTH));
     }
 
-    private void readLFS() throws ParseException {
+    private void readLFS() throws NitfFormatException {
         reader.skip(LFS_LENGTH);
     }
 
-    private void readLCW() throws ParseException {
+    private void readLCW() throws NitfFormatException {
         segment.setLabelCellWidth(reader.readBytesAsInteger(LCW_LENGTH));
     }
 
-    private void readLCH() throws ParseException {
+    private void readLCH() throws NitfFormatException {
         segment.setLabelCellHeight(reader.readBytesAsInteger(LCH_LENGTH));
     }
 
-    private void readLDLVL() throws ParseException {
+    private void readLDLVL() throws NitfFormatException {
         segment.setLabelDisplayLevel(reader.readBytesAsInteger(LDLVL_LENGTH));
     }
 
-    private void readLALVL() throws ParseException {
+    private void readLALVL() throws NitfFormatException {
         segment.setAttachmentLevel(reader.readBytesAsInteger(LALVL_LENGTH));
     }
 
-    private void readLLOC() throws ParseException {
+    private void readLLOC() throws NitfFormatException {
         segment.setLabelLocationRow(reader.readBytesAsInteger(LLOC_HALF_LENGTH));
         segment.setLabelLocationColumn(reader.readBytesAsInteger(LLOC_HALF_LENGTH));
     }
 
-    private void readLTC() throws ParseException {
+    private void readLTC() throws NitfFormatException {
         segment.setLabelTextColour(new RGBColour(reader.readBytesRaw(RGBColour.RGB_COLOUR_LENGTH)));
     }
 
-    private void readLBC() throws ParseException {
+    private void readLBC() throws NitfFormatException {
         segment.setLabelBackgroundColour(new RGBColour(reader.readBytesRaw(RGBColour.RGB_COLOUR_LENGTH)));
     }
 
-    private void readLXSHDL() throws ParseException {
+    private void readLXSHDL() throws NitfFormatException {
         labelExtendedSubheaderLength = reader.readBytesAsInteger(LXSHDL_LENGTH);
     }
 
-    private void readLXSOFL() throws ParseException {
+    private void readLXSOFL() throws NitfFormatException {
         segment.setExtendedHeaderDataOverflow(reader.readBytesAsInteger(LXSOFL_LENGTH));
     }
 
-    private void readLXSHD() throws ParseException {
+    private void readLXSHD() throws NitfFormatException {
         TreCollection extendedSubheaderTREs = parsingStrategy.parseTREs(reader,
                 labelExtendedSubheaderLength - LXSOFL_LENGTH,
                 TreSource.LabelExtendedSubheaderData);

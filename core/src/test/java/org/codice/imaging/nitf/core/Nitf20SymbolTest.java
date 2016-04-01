@@ -17,10 +17,10 @@ package org.codice.imaging.nitf.core;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import static org.codice.imaging.nitf.core.TestUtils.checkNitf20SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfFileParser;
@@ -45,7 +45,7 @@ public class Nitf20SymbolTest {
     }
 
     @Test
-    public void testU1060A() throws IOException, ParseException {
+    public void testU1060A() throws IOException, NitfFormatException {
         InputStream is = getInputStream();
         AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
@@ -61,7 +61,7 @@ public class Nitf20SymbolTest {
     }
 
     @Test
-    public void testNoSegmentDataU1060A() throws IOException, ParseException {
+    public void testNoSegmentDataU1060A() throws IOException, NitfFormatException {
         InputStream is = getInputStream();
         HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
