@@ -58,10 +58,10 @@ public class TargetId {
     */
     public TargetId(final String identifier) throws NitfFormatException {
         if (identifier == null) {
-            throw new NitfFormatException("Null argument for TargetId", 0);
+            throw new NitfFormatException("Null argument for TargetId");
         }
         if (identifier.length() != TGTID_LENGTH) {
-            throw new NitfFormatException("Incorrect length for TargetId:" + identifier.length(), 0);
+            throw new NitfFormatException("Incorrect length for TargetId:" + identifier.length());
         }
         beNumber = identifier.substring(0, BE_LENGTH);
         oSuffix = identifier.substring(BE_LENGTH, BE_LENGTH + OSUFFIX_LENGTH);

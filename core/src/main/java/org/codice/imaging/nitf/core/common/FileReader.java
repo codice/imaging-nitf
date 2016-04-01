@@ -52,7 +52,7 @@ public class FileReader extends SharedReader implements NitfReader {
             nitfFile = makeRandomAccessFile(file, READ_MODE);
         } catch (FileNotFoundException ex) {
             LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + file.getPath(), ex);
-            throw new NitfFormatException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            throw new NitfFormatException(file.getPath() + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ public class FileReader extends SharedReader implements NitfReader {
             nitfFile = makeRandomAccessFile(filename, READ_MODE);
         } catch (FileNotFoundException ex) {
             LOG.warn(FILE_NOT_FOUND_EXCEPTION_MESSAGE + filename, ex);
-            throw new NitfFormatException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage(), 0);
+            throw new NitfFormatException(filename + NOT_FOUND_MESSAGE_JOINER +  ex.getMessage());
         }
     }
 

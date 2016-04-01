@@ -213,7 +213,7 @@ public final class NitfFileParser extends AbstractSegmentParser {
         if (reader.canSeek()) {
             readStreamingModeHeader();
         } else {
-            throw new NitfFormatException("No support for streaming mode unless input is seekable", 0);
+            throw new NitfFormatException("No support for streaming mode unless input is seekable");
         }
     }
 

@@ -61,7 +61,7 @@ public class RGBColour {
     */
     public RGBColour(final byte[] rgb) throws NitfFormatException {
         if (rgb.length != REQUIRED_DATA_LENGTH) {
-            throw new NitfFormatException("Incorrect number of bytes in RGB constructor array", 0);
+            throw new NitfFormatException("Incorrect number of bytes in RGB constructor array");
         }
         red = rgb[RED_OFFSET];
         green = rgb[GREEN_OFFSET];

@@ -105,16 +105,16 @@ public class ImageCoordinatePair {
             buildLatitudeFromDecimalDegrees(latDegrees, latMinutes, latSeconds, latNS);
             buildLongitudeFromDecimalDegrees(lonDegrees, lonMinutes, lonSeconds, lonEW);
         } catch (NumberFormatException ex) {
-            throw new NitfFormatException(String.format("Incorrect DMS format: %s", dms), 0);
+            throw new NitfFormatException(String.format("Incorrect DMS format: %s", dms));
         }
     }
 
     private void checkDMSparameterIsProbablyValid(final String dms) throws NitfFormatException {
         if (dms == null) {
-            throw new NitfFormatException("Null argument for DMS parsing", 0);
+            throw new NitfFormatException("Null argument for DMS parsing");
         }
         if (dms.length() != "ddmmssXdddmmssY".length()) {
-            throw new NitfFormatException("Incorrect length for DMS parsing:" + dms.length(), 0);
+            throw new NitfFormatException("Incorrect length for DMS parsing:" + dms.length());
         }
     }
     private void checkNSFlagIsValid(final String latNS, final String dms) throws NitfFormatException {
@@ -163,7 +163,7 @@ public class ImageCoordinatePair {
     */
     public final void setFromUTMUPSNorth(final String utm) throws NitfFormatException {
         if (utm.length() != "zzeeeeeennnnnnn".length()) {
-            throw new NitfFormatException("Incorrect length for UTM / UPS North String", 0);
+            throw new NitfFormatException("Incorrect length for UTM / UPS North String");
         }
         sourceString = utm;
     }
@@ -176,7 +176,7 @@ public class ImageCoordinatePair {
      */
     public final void setFromDecimalDegrees(final String dd) throws NitfFormatException {
         if (dd.length() != "+dd.ddd+ddd.ddd".length()) {
-            throw new NitfFormatException("Incorrect length for decimal degrees parsing", 0);
+            throw new NitfFormatException("Incorrect length for decimal degrees parsing");
         }
         sourceString = dd;
         String latPart = dd.substring(0, LAT_DECIMAL_DEGREES_FORMAT_LENGTH);
@@ -185,7 +185,7 @@ public class ImageCoordinatePair {
             lat = Double.parseDouble(latPart);
             lon = Double.parseDouble(lonPart);
         } catch (NumberFormatException ex) {
-            throw new NitfFormatException(String.format("Incorrect decimal degrees format: %s", dd), 0);
+            throw new NitfFormatException(String.format("Incorrect decimal degrees format: %s", dd));
         }
     }
 

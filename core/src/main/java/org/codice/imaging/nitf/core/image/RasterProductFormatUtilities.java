@@ -51,10 +51,10 @@ public class RasterProductFormatUtilities {
             unmarshal(is);
         } catch (JAXBException ex) {
             LOG.warn("JAXBException parsing RPF codes", ex);
-            throw new NitfFormatException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+            throw new NitfFormatException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage());
         } catch (IOException ex) {
             LOG.warn("IOException parsing RPF codes", ex);
-            throw new NitfFormatException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage(), 0);
+            throw new NitfFormatException(RPF_LOAD_ERROR_MESSAGE + ex.getMessage());
         }
     }
 
