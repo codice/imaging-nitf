@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.common;
 
 /**
- * Exception indicating a problem in the NITF format.
+ * Exception indicating a problem in the NITF file or stream format.
  */
 public class NitfFormatException extends Exception {
 
@@ -44,7 +44,7 @@ public class NitfFormatException extends Exception {
      * Construct NITF format exception specifying location.
      *
      * @param message a text description of the format issue.
-     * @param offset the location (in file offset) of the format issue.
+     * @param offset the location (in bytes as a file offset) of the format issue.
      */
     public NitfFormatException(final String message, final long offset) {
         super(message);
