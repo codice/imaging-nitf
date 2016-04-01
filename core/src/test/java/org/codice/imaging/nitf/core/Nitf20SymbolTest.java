@@ -23,8 +23,8 @@ import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.header.NitfHeader;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 import org.codice.imaging.nitf.core.symbol.SymbolColour;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
@@ -47,12 +47,12 @@ public class Nitf20SymbolTest {
     @Test
     public void testU1060A() throws IOException, NitfFormatException {
         InputStream is = getInputStream();
-        AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
-        NitfFileParser.parse(reader, parseStrategy);
-        assertFileSegmentDataIsAsExpected(parseStrategy.getNitfDataSource());
+        NitfParser.parse(reader, parseStrategy);
+        assertFileSegmentDataIsAsExpected(parseStrategy.getDataSource());
 
-        SymbolSegment symbolSegment1 = parseStrategy.getNitfDataSource().getSymbolSegments().get(0);
+        SymbolSegment symbolSegment1 = parseStrategy.getDataSource().getSymbolSegments().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
         byte[] allData = new byte[931];
         int bytesRead = symbolSegment1.getData().read(allData);
@@ -63,15 +63,15 @@ public class Nitf20SymbolTest {
     @Test
     public void testNoSegmentDataU1060A() throws IOException, NitfFormatException {
         InputStream is = getInputStream();
-        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
-        NitfFileParser.parse(reader, parseStrategy);
-        assertFileSegmentDataIsAsExpected(parseStrategy.getNitfDataSource());
+        NitfParser.parse(reader, parseStrategy);
+        assertFileSegmentDataIsAsExpected(parseStrategy.getDataSource());
 
-        SymbolSegment symbolSegment1 = parseStrategy.getNitfDataSource().getSymbolSegments().get(0);
+        SymbolSegment symbolSegment1 = parseStrategy.getDataSource().getSymbolSegments().get(0);
         assertSymbolSegmentHeaderDataIsAsExpected(symbolSegment1);
-        assertEquals(1, parseStrategy.getNitfDataSource().getSymbolSegments().size());
-        assertNull(parseStrategy.getNitfDataSource().getSymbolSegments().get(0).getData());
+        assertEquals(1, parseStrategy.getDataSource().getSymbolSegments().size());
+        assertNull(parseStrategy.getDataSource().getSymbolSegments().get(0).getData());
 
         is.close();
     }
@@ -84,7 +84,7 @@ public class Nitf20SymbolTest {
         return getClass().getResourceAsStream(nitf20File);
     }
 
-    private void assertFileSegmentDataIsAsExpected(NitfDataSource dataSource) {
+    private void assertFileSegmentDataIsAsExpected(DataSource dataSource) {
         NitfHeader nitfHeader = dataSource.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, nitfHeader.getFileType());
         assertEquals(1, nitfHeader.getComplexityLevel());

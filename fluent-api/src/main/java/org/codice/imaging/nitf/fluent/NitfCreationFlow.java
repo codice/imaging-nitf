@@ -16,8 +16,8 @@ package org.codice.imaging.nitf.fluent;
 
 import java.util.List;
 import java.util.function.Supplier;
-import org.codice.imaging.nitf.core.NitfDataSource;
-import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
+import org.codice.imaging.nitf.core.DataSource;
+import org.codice.imaging.nitf.core.SlottedStorage;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.header.NitfHeader;
@@ -30,7 +30,7 @@ import org.codice.imaging.nitf.core.text.TextSegment;
  * The NitfCreationFlow provides methods for creating a NITF file from scratch.
  */
 public class NitfCreationFlow {
-    private final SlottedMemoryNitfStorage dataSource = new SlottedMemoryNitfStorage();
+    private final SlottedStorage dataSource = new SlottedStorage();
 
     /**
      * Sets the header for this NITF.
@@ -42,7 +42,7 @@ public class NitfCreationFlow {
      * @return this NitfCreationFlow.
      */
     public final NitfCreationFlow fileHeader(final Supplier<NitfHeader> nitfHeaderSupplier) {
-        dataSource.setFileHeader(nitfHeaderSupplier.get());
+        dataSource.setNitfHeader(nitfHeaderSupplier.get());
         return this;
     }
 
@@ -109,10 +109,10 @@ public class NitfCreationFlow {
 
     /**
      *
-     * @return the NitfDataSource that represents the NITF built by this NitfCreationFlow.
+     * @return the DataSource that represents the NITF built by this NitfCreationFlow.
      * @throws IllegalStateException when called before fileHeader().
      */
-    public final NitfDataSource build() {
+    public final DataSource build() {
         if (dataSource.getNitfHeader() == null) {
             throw new IllegalStateException(
                     "NitfCreationFlow.build(): method cannot be called before fileHeader().");

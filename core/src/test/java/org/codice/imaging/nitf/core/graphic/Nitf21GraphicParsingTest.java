@@ -14,48 +14,47 @@
  **/
 package org.codice.imaging.nitf.core.graphic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
+import org.codice.imaging.nitf.core.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 public class Nitf21GraphicParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, NitfFormatException {
-        GraphicDataExtractionParseStrategy parseStrategy = new GraphicDataExtractionParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.GRAPHIC_DATA);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
-        NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getNitfDataSource().getGraphicSegments().size());
+        NitfParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getDataSource().getGraphicSegments().size());
 
-        GraphicSegment graphicSegment = parseStrategy.getNitfDataSource().getGraphicSegments().get(0);
+        GraphicSegment graphicSegment = parseStrategy.getDataSource().getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
         byte[] allData = new byte[780];
-        int bytesRead = parseStrategy.getNitfDataSource().getGraphicSegments().get(0).getData().read(allData);
+        int bytesRead = parseStrategy.getDataSource().getGraphicSegments().get(0).getData().read(allData);
         assertEquals(780, bytesRead);
     }
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, NitfFormatException {
-        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
-        NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getNitfDataSource().getGraphicSegments().size());
+        NitfParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getDataSource().getGraphicSegments().size());
 
-        GraphicSegment graphicSegment = parseStrategy.getNitfDataSource().getGraphicSegments().get(0);
+        GraphicSegment graphicSegment = parseStrategy.getDataSource().getGraphicSegments().get(0);
         assertGraphicSegmentMetadataIsAsExpected(graphicSegment);
-        assertNull(parseStrategy.getNitfDataSource().getGraphicSegments().get(0).getData());
+        assertNull(parseStrategy.getDataSource().getGraphicSegments().get(0).getData());
     }
 
     private void assertGraphicSegmentMetadataIsAsExpected(GraphicSegment graphicSegment) {

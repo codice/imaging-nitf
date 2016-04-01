@@ -47,7 +47,7 @@ public class DateTimeParserTest {
         when(mockReader.getFileType()).thenReturn(FileType.UNKNOWN);
         exception.expect(NitfFormatException.class);
         exception.expectMessage("Need to set NITF file type prior to reading dates");
-        NitfDateTime date = parser.readNitfDateTime();
+        DateTime date = parser.readNitfDateTime();
 
     }
 
@@ -91,7 +91,7 @@ public class DateTimeParserTest {
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("--------------");
         DateTimeParser parser = new DateTimeParser();
-        NitfDateTime ndt = parser.readNitfDateTime(mockReader);
+        DateTime ndt = parser.readNitfDateTime(mockReader);
         assertNull(ndt.getZonedDateTime());
         assertEquals("--------------", ndt.getSourceString());
     }
@@ -103,7 +103,7 @@ public class DateTimeParserTest {
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ONE);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("3");
         DateTimeParser parser = new DateTimeParser();
-        NitfDateTime ndt = parser.readNitfDateTime(mockReader);
+        DateTime ndt = parser.readNitfDateTime(mockReader);
         assertNull(ndt.getZonedDateTime());
         assertEquals("3", ndt.getSourceString());
     }
@@ -115,7 +115,7 @@ public class DateTimeParserTest {
         when(mockReader.getFileType()).thenReturn(FileType.NITF_TWO_ZERO);
         when(mockReader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH)).thenReturn("--------------");
         DateTimeParser parser = new DateTimeParser();
-        NitfDateTime ndt = parser.readNitfDateTime(mockReader);
+        DateTime ndt = parser.readNitfDateTime(mockReader);
         assertNull(ndt.getZonedDateTime());
         assertEquals("--------------", ndt.getSourceString());
     }

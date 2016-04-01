@@ -14,6 +14,9 @@
  */
 package org.codice.nitf.metadatacomparison;
 
+import difflib.Delta;
+import difflib.DiffUtils;
+import difflib.Patch;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,13 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import difflib.Delta;
-import difflib.DiffUtils;
-import difflib.Patch;
-import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.core.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import static org.codice.imaging.nitf.core.common.FileType.NITF_TWO_ONE;
@@ -44,9 +41,8 @@ import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
-import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentNitfParseStrategy;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.header.NitfHeader;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import static org.codice.imaging.nitf.core.image.ImageCompression.BILEVEL;
 import static org.codice.imaging.nitf.core.image.ImageCompression.BILEVELMASK;
 import static org.codice.imaging.nitf.core.image.ImageCompression.DOWNSAMPLEDJPEG;
@@ -67,6 +63,8 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class FileComparer {
@@ -75,7 +73,7 @@ public class FileComparer {
     static final String THEIR_OUTPUT_EXTENSION = ".THEIRS.txt";
 
     private String filename = null;
-    private SlottedNitfParseStrategy parseStrategy  = null;
+    private SlottedParseStrategy parseStrategy = null;
     private ImageSegment segment1 = null;
     private DataExtensionSegment des1 = null;
     private BufferedWriter out = null;
@@ -91,18 +89,18 @@ public class FileComparer {
     private void generateOurMetadata() {
         try {
             NitfReader reader = new FileReader(new File(filename));
-            parseStrategy = new DataExtensionSegmentNitfParseStrategy();
-            NitfFileParser.parse(reader, parseStrategy);
+            parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.DES_DATA);
+            NitfParser.parse(reader, parseStrategy);
         } catch (NitfFormatException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        if (!parseStrategy.getNitfDataSource().getImageSegments().isEmpty()) {
-            segment1 = parseStrategy.getNitfDataSource().getImageSegments().get(0);
+        if (!parseStrategy.getDataSource().getImageSegments().isEmpty()) {
+            segment1 = parseStrategy.getDataSource().getImageSegments().get(0);
         }
 
-        if (!parseStrategy.getNitfDataSource().getDataExtensionSegments().isEmpty()) {
-            des1 = parseStrategy.getNitfDataSource().getDataExtensionSegments().get(0);
+        if (!parseStrategy.getDataSource().getDataExtensionSegments().isEmpty()) {
+            des1 = parseStrategy.getDataSource().getDataExtensionSegments().get(0);
         }
         outputData();
     }
@@ -434,9 +432,9 @@ public class FileComparer {
     }
 
     private void outputSubdatasets() throws IOException {
-        if (parseStrategy.getNitfDataSource().getImageSegments().size() > 1) {
+        if (parseStrategy.getDataSource().getImageSegments().size() > 1) {
             out.write("Subdatasets:\n");
-            for (int i = 0; i < parseStrategy.getNitfDataSource().getImageSegments().size(); ++i) {
+            for (int i = 0; i < parseStrategy.getDataSource().getImageSegments().size(); ++i) {
                 out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
                 out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s\n", i+1, i+1, filename));
             }

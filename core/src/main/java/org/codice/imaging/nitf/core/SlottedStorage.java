@@ -27,7 +27,7 @@ import org.codice.imaging.nitf.core.text.TextSegment;
 /**
  * A data structure collection that holds the various parts of a NITF file.
  */
-public class SlottedNitfStorage implements NitfDataSource {
+public class SlottedStorage implements DataSource {
 
     /**
      * The file level header.
@@ -58,10 +58,7 @@ public class SlottedNitfStorage implements NitfDataSource {
      */
     private final List<DataExtensionSegment> dataExtensionSegments = new ArrayList<>();
 
-    /**
-     * Stores the NitfFileHeader.
-     * @param nitfFileHeader - the NITF header to set.
-     */
+    @Override
     public final void setNitfHeader(final NitfHeader nitfFileHeader) {
         this.nitfHeader = nitfFileHeader;
     }

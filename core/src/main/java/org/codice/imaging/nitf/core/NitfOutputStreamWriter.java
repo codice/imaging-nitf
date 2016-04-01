@@ -32,7 +32,7 @@ public class NitfOutputStreamWriter extends SharedNitfWriter {
      * @param nitfDataSource the source of data to be written out.
      * @param outputStream the output stream to write the data to.
      */
-    public NitfOutputStreamWriter(final NitfDataSource nitfDataSource, final OutputStream outputStream) {
+    public NitfOutputStreamWriter(final DataSource nitfDataSource, final OutputStream outputStream) {
         super(nitfDataSource);
         mOutput = new DataOutputStream(outputStream);
     }

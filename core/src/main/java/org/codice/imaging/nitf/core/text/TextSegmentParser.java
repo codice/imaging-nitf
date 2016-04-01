@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.text;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityMetadataParser;
 import static org.codice.imaging.nitf.core.text.TextConstants.TE;
@@ -54,7 +54,7 @@ public class TextSegmentParser extends AbstractSegmentParser {
      * @return the parsed TextSegment.
      * @throws NitfFormatException when the input from the NitfReader isn't what was expected.
      */
-    public final TextSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy)
+    public final TextSegment parse(final NitfReader nitfReader, final ParseStrategy parseStrategy)
             throws NitfFormatException {
         reader = nitfReader;
         segment = new TextSegmentImpl();

@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.image;
 import java.util.List;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonBasicSegment;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 
 /**
  Image segment information.
@@ -31,7 +31,7 @@ public interface ImageSegment extends CommonBasicSegment {
 
      @return the date / time that the image was captured, or null if unknown.
      */
-    NitfDateTime getImageDateTime();
+    DateTime getImageDateTime();
 
     /**
      Return the target identifier (TGTID) for the image.

@@ -34,7 +34,7 @@ public class ImageDataStrategySupplier implements Supplier<HeapStrategy<ImageInp
      *                    input image is larger than this, it will be ignored.
      * @return this ImageDataStrategySupplier.
      */
-    public ImageDataStrategySupplier configure(long maximumSize) {
+    public final ImageDataStrategySupplier configure(final long maximumSize) {
         HeapStrategyConfiguration config = new HeapStrategyConfiguration(maximumSize);
         this.imageDataStrategy = new ConfigurableHeapStrategy<>(config, null, null);
         return this;
@@ -48,7 +48,7 @@ public class ImageDataStrategySupplier implements Supplier<HeapStrategy<ImageInp
      *
      * @return this ImageDataStrategySupplier.
      */
-    public ImageDataStrategySupplier file() {
+    public final ImageDataStrategySupplier file() {
         this.imageDataStrategy = new FileBackedHeapStrategy<>(
                 file -> new FileImageInputStream(file));
         return this;
@@ -60,14 +60,14 @@ public class ImageDataStrategySupplier implements Supplier<HeapStrategy<ImageInp
      *
      * @return this ImageDataStrategySupplier.
      */
-    public ImageDataStrategySupplier inMemory() {
+    public final ImageDataStrategySupplier inMemory() {
         this.imageDataStrategy = new InMemoryHeapStrategy<>(
                 is -> new MemoryCacheImageInputStream(is));
         return this;
     }
 
     @Override
-    public HeapStrategy<ImageInputStream> get() {
+    public final HeapStrategy<ImageInputStream> get() {
         return this.imageDataStrategy;
     }
 }

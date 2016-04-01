@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core.symbol;
 
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SCOLOR_LENGTH;
@@ -60,7 +60,7 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
      * @return the parsed SymbolSegment.
      * @throws NitfFormatException when the input from the NitfReader isn't what was expected.
      */
-    public final SymbolSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
+    public final SymbolSegment parse(final NitfReader nitfReader, final ParseStrategy parseStrategy,
             final long dataLength) throws NitfFormatException {
         reader = nitfReader;
         segment = new SymbolSegmentImpl();

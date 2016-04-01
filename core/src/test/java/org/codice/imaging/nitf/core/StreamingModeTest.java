@@ -22,7 +22,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -45,10 +45,10 @@ public class StreamingModeTest {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
         File resourceFile = new File(getClass().getResource(testfile).getFile());
-        SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
         NitfReader reader = new FileReader(resourceFile);
-        NitfFileParser.parse(reader, parseStrategy);
-        NitfWriter writer = new NitfFileWriter(parseStrategy.getNitfDataSource(), outputFile);
+        NitfParser.parse(reader, parseStrategy);
+        NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), outputFile);
         writer.write();
         assertTrue(FileUtils.contentEquals(new File(getClass().getResource("/ns3321a.nsf.reference").toURI()), new File(outputFile)));
         assertTrue(new File(outputFile).delete());

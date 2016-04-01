@@ -138,7 +138,7 @@ public class AbstractSegmentWriterTest {
     public void testWriteDateTimeValidLength() throws Exception {
         DataOutput mockOutput = mock(DataOutput.class);
         AbstractSegmentWriter testWriter = new AbstractSegmentWriterImpl(mockOutput);
-        NitfDateTime testDateTime = new NitfDateTime();
+        DateTime testDateTime = new DateTime();
         testDateTime.setSourceString("20160302021155");
         testWriter.writeDateTime(testDateTime);
         verify(mockOutput).writeBytes("20160302021155");
@@ -149,7 +149,7 @@ public class AbstractSegmentWriterTest {
     public void testWriteDateTimeShortLength() throws Exception {
         DataOutput mockOutput = mock(DataOutput.class);
         AbstractSegmentWriter testWriter = new AbstractSegmentWriterImpl(mockOutput);
-        NitfDateTime testDateTime = new NitfDateTime();
+        DateTime testDateTime = new DateTime();
         testDateTime.setSourceString("2016030202");
         testWriter.writeDateTime(testDateTime);
         verify(mockOutput).writeBytes("2016030202----");
@@ -160,7 +160,7 @@ public class AbstractSegmentWriterTest {
     public void testWriteDateTimeLongLength() throws Exception {
         DataOutput mockOutput = mock(DataOutput.class);
         AbstractSegmentWriter testWriter = new AbstractSegmentWriterImpl(mockOutput);
-        NitfDateTime testDateTime = new NitfDateTime();
+        DateTime testDateTime = new DateTime();
         testDateTime.setSourceString("201603020211567");
         testWriter.writeDateTime(testDateTime);
         verify(mockOutput).writeBytes("--------------");

@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.text;
 
 import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
 
 /**
@@ -39,7 +39,7 @@ public final class TextSegmentFactory {
         TextSegment textSegment = new TextSegmentImpl();
         textSegment.setIdentifier("");
         textSegment.setAttachmentLevel(0);
-        textSegment.setTextDateTime(NitfDateTime.getNitfDateTimeForNow());
+        textSegment.setTextDateTime(DateTime.getNitfDateTimeForNow());
         textSegment.setTextTitle("");
         textSegment.setSecurityMetadata(SecurityMetadataFactory.getDefaultMetadata(fileType));
         textSegment.setTextFormat(TextFormat.UTF8SUBSET);

@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core.header;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import org.codice.imaging.nitf.core.NitfDataSource;
+import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
 import org.codice.imaging.nitf.core.common.CommonConstants;
@@ -54,7 +54,7 @@ public class NitfHeaderWriter extends AbstractSegmentWriter {
      * @throws IOException on read or write problems
      * @throws NitfFormatException on TRE parsing problems
      */
-    public final void writeFileHeader(final NitfDataSource dataSource) throws IOException, NitfFormatException {
+    public final void writeFileHeader(final DataSource dataSource) throws IOException, NitfFormatException {
         NitfHeader header = dataSource.getNitfHeader();
         writeBytes(header.getFileType().getTextEquivalent(), NitfHeaderConstants.FHDR_LENGTH + NitfHeaderConstants.FVER_LENGTH);
         writeFixedLengthNumber(header.getComplexityLevel(), NitfHeaderConstants.CLEVEL_LENGTH);

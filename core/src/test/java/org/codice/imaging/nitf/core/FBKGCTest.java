@@ -21,8 +21,8 @@ import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.header.NitfHeader;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -40,9 +40,9 @@ public class FBKGCTest {
         assertNotNull("Test file missing", getClass().getResource(nitf20File));
 
         InputStream is = getClass().getResourceAsStream(nitf20File);
-        AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy();
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(is));
-        NitfFileParser.parse(reader, parseStrategy);
+        NitfParser.parse(reader, parseStrategy);
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         assertEquals(FileType.NITF_TWO_ZERO, nitfHeader.getFileType());
         assertEquals(0x00, nitfHeader.getFileBackgroundColour().getRed());

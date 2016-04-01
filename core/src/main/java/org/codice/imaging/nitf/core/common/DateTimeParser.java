@@ -42,7 +42,7 @@ public class DateTimeParser {
         return s.substring(0, i + 1);
     }
 
-    private void parseNitf21Date(final String sourceString, final NitfDateTime dateTime) throws NitfFormatException {
+    private void parseNitf21Date(final String sourceString, final DateTime dateTime) throws NitfFormatException {
         String strippedSourceString = removeHyphens(sourceString.trim());
         SimpleDateFormat dateFormat = null;
         if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
@@ -53,7 +53,7 @@ public class DateTimeParser {
         parseDateString(sourceString, dateFormat, dateTime);
     }
 
-    private void parseNitf20Date(final String sourceString, final NitfDateTime dateTime) throws NitfFormatException {
+    private void parseNitf20Date(final String sourceString, final DateTime dateTime) throws NitfFormatException {
         String strippedSourceString = sourceString.trim();
         SimpleDateFormat dateFormat = null;
         if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
@@ -65,14 +65,14 @@ public class DateTimeParser {
     }
 
     /**
-     * Read in a NitfDateTime from the current reader position.
+     * Read in a DateTime from the current reader position.
      *
      * @param reader the reader to parse from
-     * @return a NitfDateTime from head of the reader stream.
-     * @throws NitfFormatException when the next token is not the expected format for a NitfDateTime.
+     * @return a DateTime from head of the reader stream.
+     * @throws NitfFormatException when the next token is not the expected format for a DateTime.
      */
-    public final NitfDateTime readNitfDateTime(final NitfReader reader) throws NitfFormatException {
-        NitfDateTime dateTime = new NitfDateTime();
+    public final DateTime readNitfDateTime(final NitfReader reader) throws NitfFormatException {
+        DateTime dateTime = new DateTime();
         String sourceString = reader.readBytes(CommonConstants.STANDARD_DATE_TIME_LENGTH);
         dateTime.setSourceString(sourceString);
         switch (reader.getFileType()) {
@@ -91,7 +91,7 @@ public class DateTimeParser {
         return dateTime;
     }
 
-    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final NitfDateTime dateTime)
+    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final DateTime dateTime)
             throws NitfFormatException {
         if (dateFormat != null) {
             Date date;

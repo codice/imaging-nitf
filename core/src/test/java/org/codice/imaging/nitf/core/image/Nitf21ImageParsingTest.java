@@ -18,11 +18,11 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
-import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
+import org.codice.imaging.nitf.core.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -41,12 +41,12 @@ public class Nitf21ImageParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOn() throws IOException, NitfFormatException {
-        ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.IMAGE_DATA);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
-        NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getNitfDataSource().getImageSegments().size());
+        NitfParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getDataSource().getImageSegments().size());
 
-        ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(0);
+        ImageSegment imageSegment = parseStrategy.getDataSource().getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
         byte[] allData = new byte[1048577];
         int bytesRead = imageSegment.getData().read(allData);
@@ -55,12 +55,12 @@ public class Nitf21ImageParsingTest {
 
     @Test
     public void testExtractionWithOptionTurnedOff() throws IOException, NitfFormatException {
-        HeaderOnlyNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
-        NitfFileParser.parse(reader, parseStrategy);
-        assertEquals(1, parseStrategy.getNitfDataSource().getImageSegments().size());
+        NitfParser.parse(reader, parseStrategy);
+        assertEquals(1, parseStrategy.getDataSource().getImageSegments().size());
 
-        ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(0);
+        ImageSegment imageSegment = parseStrategy.getDataSource().getImageSegments().get(0);
         assertImageSegmentMetadataIsAsExpected(imageSegment);
         assertNull(imageSegment.getData());
     }

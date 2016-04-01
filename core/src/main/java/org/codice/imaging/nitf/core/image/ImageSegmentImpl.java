@@ -22,7 +22,7 @@ import java.util.Set;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.CommonConstants;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IFC_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IMFLT_LENGTH;
@@ -44,7 +44,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
             ImageCompression.LOSSLESSJPEGMASK, ImageCompression.JPEG2000MASK, ImageCompression.USERDEFINED, ImageCompression.USERDEFINEDMASK,
             ImageCompression.ARIDPCM, ImageCompression.ARIDPCMMASK);
 
-    private NitfDateTime imageDateTime = null;
+    private DateTime imageDateTime = null;
     private TargetId imageTargetId = null;
     private String imageIdentifier2 = null;
     private String imageSource = null;
@@ -90,7 +90,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
 
         @param dateTime the date time for the image.
     */
-    public final void setImageDateTime(final NitfDateTime dateTime) {
+    public final void setImageDateTime(final DateTime dateTime) {
         imageDateTime = dateTime;
     }
 
@@ -98,7 +98,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public final NitfDateTime getImageDateTime() {
+    public final DateTime getImageDateTime() {
         return imageDateTime;
     }
 

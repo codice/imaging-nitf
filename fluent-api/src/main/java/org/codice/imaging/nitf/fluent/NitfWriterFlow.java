@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import org.codice.imaging.nitf.core.NitfDataSource;
+import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.NitfOutputStreamWriter;
 
 /**
@@ -73,10 +73,10 @@ public class NitfWriterFlow {
      * Writes the NITF to the current OutputStream.  If either outputStream() or file() hasn't
      * been called, no operation will be performed.
      *
-     * @param dataSource the NitfDataSource that represents the state of the NITF.
+     * @param dataSource the DataSource that represents the state of the NITF.
      * @return this NitfWriterFlow.
      */
-    public final NitfWriterFlow write(final NitfDataSource dataSource) {
+    public final NitfWriterFlow write(final DataSource dataSource) {
         if (this.outStream != null) {
             NitfOutputStreamWriter nitfWriter = new NitfOutputStreamWriter(dataSource, outStream);
             nitfWriter.write();

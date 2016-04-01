@@ -178,7 +178,7 @@ public abstract class AbstractSegmentWriter {
      * @param dateTime the date-time to write out.
      * @throws IOException on writing problems.
      */
-    protected final void writeDateTime(final NitfDateTime dateTime) throws IOException {
+    protected final void writeDateTime(final DateTime dateTime) throws IOException {
         if (dateTime.getSourceString().length() == STANDARD_DATE_TIME_LENGTH) {
             writeBytes(dateTime.getSourceString(), STANDARD_DATE_TIME_LENGTH);
         } else if (dateTime.getSourceString().length() > STANDARD_DATE_TIME_LENGTH) {

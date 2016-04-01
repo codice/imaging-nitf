@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.fluent;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import org.codice.imaging.nitf.core.NitfDataSource;
+import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
@@ -32,9 +32,9 @@ import org.codice.imaging.nitf.core.text.TextSegment;
  */
 public class NitfSegmentsFlow {
 
-    private NitfDataSource mDataSource;
+    private DataSource mDataSource;
 
-    NitfSegmentsFlow(final NitfDataSource dataSource) {
+    NitfSegmentsFlow(final DataSource dataSource) {
         if (dataSource == null) {
             throw new IllegalArgumentException(
                     "ImageSegmentFlow(): constructor argument 'dataSource' may not be null.");
@@ -116,12 +116,12 @@ public class NitfSegmentsFlow {
     }
 
     /**
-     * passes this NitfSegmentParserFlow's NitfDataSource to the supplied consumer.
+     * passes this NitfSegmentParserFlow's DataSource to the supplied consumer.
      *
      * @param dataSourceConsumer the consumer for the data source
      * @return this NitfSegmentsFlow
      */
-    public final NitfSegmentsFlow dataSource(final Consumer<NitfDataSource> dataSourceConsumer) {
+    public final NitfSegmentsFlow dataSource(final Consumer<DataSource> dataSourceConsumer) {
         dataSourceConsumer.accept(mDataSource);
         return this;
     }

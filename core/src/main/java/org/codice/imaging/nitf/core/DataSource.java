@@ -15,9 +15,9 @@
 package org.codice.imaging.nitf.core;
 
 import java.util.List;
-import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.core.text.TextSegment;
 /**
  * Data source for NITF file parts.
  */
-public interface NitfDataSource {
+public interface DataSource {
 
     /**
      * Return the file-level header for the parsed file.
@@ -34,6 +34,13 @@ public interface NitfDataSource {
      * @return the file-level header
      */
     NitfHeader getNitfHeader();
+
+    /**
+     * Stores the NITF header.
+     *
+     * @param nitfFileHeader - the NITF header to set.
+     */
+    void setNitfHeader(final NitfHeader nitfFileHeader);
 
     /**
      * Return the image segment headers associated with this file.

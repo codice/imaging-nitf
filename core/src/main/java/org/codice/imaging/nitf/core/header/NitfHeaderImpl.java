@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core.header;
 
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandlerImpl;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 
@@ -28,7 +28,7 @@ class NitfHeaderImpl extends TaggedRecordExtensionHandlerImpl implements NitfHea
     private int nitfComplexityLevel = 0;
     private String nitfStandardType = null;
     private String nitfOriginatingStationId = null;
-    private NitfDateTime nitfFileDateTime = null;
+    private DateTime nitfFileDateTime = null;
     private String nitfFileTitle = null;
     private FileSecurityMetadata fileSecurityMetadata = null;
     private RGBColour nitfFileBackgroundColour = null;
@@ -165,7 +165,7 @@ class NitfHeaderImpl extends TaggedRecordExtensionHandlerImpl implements NitfHea
         @param fileDateTime the date and time for the file
     */
     @Override
-    public final void setFileDateTime(final NitfDateTime fileDateTime) {
+    public final void setFileDateTime(final DateTime fileDateTime) {
         nitfFileDateTime = fileDateTime;
     }
 
@@ -177,7 +177,7 @@ class NitfHeaderImpl extends TaggedRecordExtensionHandlerImpl implements NitfHea
         @return date time for the file
     */
     @Override
-    public final NitfDateTime getFileDateTime() {
+    public final DateTime getFileDateTime() {
         return nitfFileDateTime;
     }
 

@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.label;
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LA;
 import static org.codice.imaging.nitf.core.label.LabelConstants.LALVL_LENGTH;
@@ -59,7 +59,7 @@ public class LabelSegmentParser extends AbstractSegmentParser {
      * @throws NitfFormatException on parse failure.
      *
      */
-    public final LabelSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws NitfFormatException {
+    public final LabelSegment parse(final NitfReader nitfReader, final ParseStrategy parseStrategy) throws NitfFormatException {
 
         reader = nitfReader;
         parsingStrategy = parseStrategy;
