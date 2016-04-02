@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core.header;
 
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 
@@ -63,7 +63,7 @@ public interface NitfHeader extends TaggedRecordExtensionHandler {
      *
      * @return date time for the file
      */
-    NitfDateTime getFileDateTime();
+    DateTime getFileDateTime();
 
     /**
      * Return the file security metadata for the file.
@@ -181,7 +181,7 @@ public interface NitfHeader extends TaggedRecordExtensionHandler {
      *
      * @param fileDateTime the date and time for the file
      */
-    void setFileDateTime(final NitfDateTime fileDateTime);
+    void setFileDateTime(final DateTime fileDateTime);
 
     /**
      * Set the file security metadata elements for the file.

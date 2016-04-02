@@ -17,19 +17,16 @@ package org.codice.imaging.nitf.render;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import org.codice.imaging.nitf.core.header.NitfFileParser;
+import junit.framework.TestCase;
+import org.codice.imaging.nitf.core.SlottedParseStrategy;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.image.ImageDataExtractionParseStrategy;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import junit.framework.TestCase;
-import org.codice.imaging.nitf.core.common.NitfFormatException;
 
 /**
  * Shared code for rendering tests
@@ -57,10 +54,10 @@ public class RenderTestSupport extends TestCase {
         System.out.println("================================== Testing :" + inputFileName);
         assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
         NitfReader reader = new NitfInputStreamReader(getClass().getResourceAsStream(inputFileName));
-        ImageDataExtractionParseStrategy parseStrategy = new ImageDataExtractionParseStrategy();
-        NitfFileParser.parse(reader, parseStrategy);
-        for (int i = 0; i < parseStrategy.getNitfDataSource().getImageSegments().size(); ++i) {
-            ImageSegment imageSegment = parseStrategy.getNitfDataSource().getImageSegments().get(i);
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.IMAGE_DATA);
+        NitfParser.parse(reader, parseStrategy);
+        for (int i = 0; i < parseStrategy.getDataSource().getImageSegments().size(); ++i) {
+            ImageSegment imageSegment = parseStrategy.getDataSource().getImageSegments().get(i);
             NitfRenderer renderer = new NitfRenderer();
             BufferedImage img = renderer.render(imageSegment);
             // TODO: move to automated (perceptual?) comparison

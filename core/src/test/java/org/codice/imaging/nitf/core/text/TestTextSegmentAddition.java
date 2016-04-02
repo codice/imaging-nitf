@@ -15,17 +15,16 @@
 package org.codice.imaging.nitf.core.text;
 
 import java.io.File;
-import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
-import org.codice.imaging.nitf.core.NitfDataSource;
+import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.NitfFileWriter;
-import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
-import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.core.SlottedParseStrategy;
+import org.codice.imaging.nitf.core.SlottedStorage;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.header.NitfHeaderFactory;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -46,7 +45,7 @@ public class TestTextSegmentAddition {
             new File(OUTFILE_NAME).delete();
         }
 
-        SlottedMemoryNitfStorage store = createBasicStore();
+        SlottedStorage store = createBasicStore();
         TextSegment textSegment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
         textSegment.setTextTitle("Some Title");
         textSegment.setData("This is the body.\r\nIt has two lines.");
@@ -54,7 +53,7 @@ public class TestTextSegmentAddition {
         store.getTextSegments().add(textSegment);
         NitfFileWriter writer = new NitfFileWriter(store, OUTFILE_NAME);
         writer.write();
-        NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
+        DataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
         assertEquals(0, dataSource.getImageSegments().size());
         assertEquals(0, dataSource.getGraphicSegments().size());
         assertEquals(1, dataSource.getTextSegments().size());
@@ -77,7 +76,7 @@ public class TestTextSegmentAddition {
             new File(OUTFILE_NAME).delete();
         }
 
-        SlottedMemoryNitfStorage store = createBasicStore();
+        SlottedStorage store = createBasicStore();
         TextSegment textSegment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
         textSegment.setTextTitle("Some Title");
         textSegment.setData("This is the body.\r\nIt has two lines.");
@@ -86,7 +85,7 @@ public class TestTextSegmentAddition {
         store.getTextSegments().add(textSegment);
         NitfFileWriter writer = new NitfFileWriter(store, OUTFILE_NAME);
         writer.write();
-        NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
+        DataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
         assertEquals(0, dataSource.getImageSegments().size());
         assertEquals(0, dataSource.getGraphicSegments().size());
         assertEquals(1, dataSource.getTextSegments().size());
@@ -107,7 +106,7 @@ public class TestTextSegmentAddition {
     public void writeTwoTextSegments() throws NitfFormatException {
         final String OUTFILE_NAME = "twotextsegments.ntf";
         TextSegment textSegment2 = makeTwoSegmentFile(OUTFILE_NAME);
-        NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
+        DataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
         assertEquals(0, dataSource.getImageSegments().size());
         assertEquals(0, dataSource.getGraphicSegments().size());
         assertEquals(2, dataSource.getTextSegments().size());
@@ -134,7 +133,7 @@ public class TestTextSegmentAddition {
     public void modifyTwoTextSegments() throws NitfFormatException {
         final String OUTFILE_NAME = "twotextsegments_mod.ntf";
         TextSegment textSegment2 = makeTwoSegmentFile(OUTFILE_NAME);
-        NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
+        DataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
         new File(OUTFILE_NAME).delete();
 
         assertEquals(0, dataSource.getImageSegments().size());
@@ -168,7 +167,7 @@ public class TestTextSegmentAddition {
 
         NitfFileWriter writer = new NitfFileWriter(dataSource, OUTFILE_UPDATED_NAME);
         writer.write();
-        NitfDataSource dataSourceUpdated = verifyBasicHeader(OUTFILE_UPDATED_NAME);
+        DataSource dataSourceUpdated = verifyBasicHeader(OUTFILE_UPDATED_NAME);
         assertEquals(0, dataSourceUpdated.getImageSegments().size());
         assertEquals(0, dataSourceUpdated.getGraphicSegments().size());
         assertEquals(2, dataSourceUpdated.getTextSegments().size());
@@ -194,7 +193,7 @@ public class TestTextSegmentAddition {
     public void deleteTextSegment() throws NitfFormatException {
         final String OUTFILE_NAME = "twotextsegments_delete.ntf";
         TextSegment textSegment2 = makeTwoSegmentFile(OUTFILE_NAME);
-        NitfDataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
+        DataSource dataSource = verifyBasicHeader(OUTFILE_NAME);
         new File(OUTFILE_NAME).delete();
         assertEquals(0, dataSource.getImageSegments().size());
         assertEquals(0, dataSource.getGraphicSegments().size());
@@ -220,7 +219,7 @@ public class TestTextSegmentAddition {
 
         NitfFileWriter writer = new NitfFileWriter(dataSource, OUTFILE_UPDATED_NAME);
         writer.write();
-        NitfDataSource dataSourceUpdated = verifyBasicHeader(OUTFILE_UPDATED_NAME);
+        DataSource dataSourceUpdated = verifyBasicHeader(OUTFILE_UPDATED_NAME);
         assertEquals(0, dataSourceUpdated.getImageSegments().size());
         assertEquals(0, dataSourceUpdated.getGraphicSegments().size());
         assertEquals(1, dataSourceUpdated.getTextSegments().size());
@@ -238,7 +237,7 @@ public class TestTextSegmentAddition {
         if (new File(OUTFILE_NAME).exists()) {
             new File(OUTFILE_NAME).delete();
         }
-        SlottedMemoryNitfStorage store = createBasicStore();
+        SlottedStorage store = createBasicStore();
         TextSegment textSegment1 = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
         textSegment1.setTextTitle("Some Title");
         textSegment1.setData("This is the body.\r\nIt has two lines.");
@@ -256,8 +255,8 @@ public class TestTextSegmentAddition {
         return textSegment2;
     }
 
-    private SlottedMemoryNitfStorage createBasicStore() {
-        SlottedMemoryNitfStorage store = new SlottedMemoryNitfStorage();
+    private SlottedStorage createBasicStore() {
+        SlottedStorage store = new SlottedStorage();
         NitfHeader nitf = NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE);
         assertNotNull(nitf);
         assertEquals(FileType.NITF_TWO_ONE, nitf.getFileType());
@@ -265,12 +264,12 @@ public class TestTextSegmentAddition {
         return store;
     }
 
-    private NitfDataSource verifyBasicHeader(final String OUTFILE_NAME) throws NitfFormatException {
+    private DataSource verifyBasicHeader(final String OUTFILE_NAME) throws NitfFormatException {
         FileReader reader = new FileReader(OUTFILE_NAME);
         assertNotNull(reader);
-        SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
-        NitfFileParser.parse(reader, parseStrategy);
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
+        NitfParser.parse(reader, parseStrategy);
         assertEquals(FileType.NITF_TWO_ONE, parseStrategy.getNitfHeader().getFileType());
-        return parseStrategy.getNitfDataSource();
+        return parseStrategy.getDataSource();
     }
 }

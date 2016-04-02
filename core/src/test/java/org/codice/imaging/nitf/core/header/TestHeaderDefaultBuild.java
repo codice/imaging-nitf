@@ -17,10 +17,9 @@ package org.codice.imaging.nitf.core.header;
 import java.io.File;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import org.codice.imaging.nitf.core.HeaderOnlyNitfParseStrategy;
 import org.codice.imaging.nitf.core.NitfFileWriter;
-import org.codice.imaging.nitf.core.SlottedMemoryNitfStorage;
-import org.codice.imaging.nitf.core.SlottedNitfParseStrategy;
+import org.codice.imaging.nitf.core.SlottedParseStrategy;
+import org.codice.imaging.nitf.core.SlottedStorage;
 import org.codice.imaging.nitf.core.common.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
@@ -53,7 +52,7 @@ public class TestHeaderDefaultBuild {
             new File(OUTFILE_NAME).delete();
         }
 
-        SlottedMemoryNitfStorage store = new SlottedMemoryNitfStorage();
+        SlottedStorage store = new SlottedStorage();
 
         NitfHeader nitf = NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE);
         assertNotNull(nitf);
@@ -65,8 +64,8 @@ public class TestHeaderDefaultBuild {
 
         FileReader reader = new FileReader(OUTFILE_NAME);
         assertNotNull(reader);
-        SlottedNitfParseStrategy parseStrategy = new HeaderOnlyNitfParseStrategy();
-        NitfFileParser.parse(reader, parseStrategy);
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
+        NitfParser.parse(reader, parseStrategy);
         assertEquals(FileType.NITF_TWO_ONE, parseStrategy.getNitfHeader().getFileType());
 
         new File(OUTFILE_NAME).delete();

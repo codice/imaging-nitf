@@ -38,7 +38,7 @@ import org.codice.imaging.nitf.core.tre.TreParser;
 public abstract class SharedNitfWriter implements NitfWriter {
 
     private TreParser mTreParser = null;
-    private NitfDataSource mDataSource = null;
+    private DataSource mDataSource = null;
 
     /**
      * The target to write the data to.
@@ -50,7 +50,7 @@ public abstract class SharedNitfWriter implements NitfWriter {
      *
      * @param dataSource the parseStrategy that provides the data to be written out.
      */
-    protected SharedNitfWriter(final NitfDataSource dataSource) {
+    protected SharedNitfWriter(final DataSource dataSource) {
         mDataSource = dataSource;
     }
 

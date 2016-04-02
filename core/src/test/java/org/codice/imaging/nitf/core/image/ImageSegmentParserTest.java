@@ -18,7 +18,7 @@ package org.codice.imaging.nitf.core.image;
 import java.util.LinkedList;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ImageSegmentParserTest {
-    private NitfParseStrategy strategy;
+    private ParseStrategy strategy;
     private NitfReader nitfReader;
     private LinkedList<String> stringValues = new LinkedList<String>();
     private LinkedList<Integer> intValues = new LinkedList<Integer>();
@@ -171,7 +171,7 @@ public class ImageSegmentParserTest {
         when(nitfReader.readTrimmedBytes(any(Integer.class))).thenAnswer(a -> stringValues.pop());
         when(nitfReader.readBytesAsInteger(any(Integer.class))).thenAnswer(a -> intValues.pop());
         when(nitfReader.readBytesAsLong(any(Integer.class))).thenAnswer(a -> new Long(intValues.pop()));
-        strategy = mock(NitfParseStrategy.class);
+        strategy = mock(ParseStrategy.class);
     }
 
     @Test

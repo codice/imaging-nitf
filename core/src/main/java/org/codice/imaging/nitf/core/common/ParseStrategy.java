@@ -21,7 +21,7 @@ import org.codice.imaging.nitf.core.tre.TreSource;
 /**
  * Strategy for parsing NITF file components.
  */
-public interface NitfParseStrategy {
+public interface ParseStrategy {
 
     /**
      * Set the file-level header for this parsed file.

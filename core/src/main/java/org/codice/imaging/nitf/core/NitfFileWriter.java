@@ -35,7 +35,7 @@ public class NitfFileWriter extends SharedNitfWriter {
      * @param nitfDataSource the source of data to be written out
      * @param outputFileName the name (including path) of the target file
      */
-    public NitfFileWriter(final NitfDataSource nitfDataSource, final String outputFileName) {
+    public NitfFileWriter(final DataSource nitfDataSource, final String outputFileName) {
         super(nitfDataSource);
         mOutputFileName = outputFileName;
     }

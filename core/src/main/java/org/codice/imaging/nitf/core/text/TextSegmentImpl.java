@@ -18,7 +18,7 @@ import java.io.IOException;
 import org.codice.imaging.nitf.core.common.CommonBasicSegmentImpl;
 import org.codice.imaging.nitf.core.common.CommonConstants;
 import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.TreParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
@@ -28,7 +28,7 @@ import org.codice.imaging.nitf.core.tre.TreSource;
  */
 class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
 
-    private NitfDateTime textDateTime = null;
+    private DateTime textDateTime = null;
     private String textTitle = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
     private String textData = null;
@@ -47,7 +47,7 @@ class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
      * @param dateTime the date and time of the text.
      */
     @Override
-    public final void setTextDateTime(final NitfDateTime dateTime) {
+    public final void setTextDateTime(final DateTime dateTime) {
         textDateTime = dateTime;
     }
 
@@ -55,7 +55,7 @@ class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
      * {@inheritDoc}
      */
     @Override
-    public final NitfDateTime getTextDateTime() {
+    public final DateTime getTextDateTime() {
         return textDateTime;
     }
 

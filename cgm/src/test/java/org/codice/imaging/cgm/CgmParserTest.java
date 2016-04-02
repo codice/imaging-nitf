@@ -25,24 +25,21 @@
  */
 package org.codice.imaging.cgm;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
-import org.codice.imaging.nitf.core.AllDataExtractionParseStrategy;
+import org.codice.imaging.nitf.core.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -144,15 +141,15 @@ public class CgmParserTest {
         try {
             LOGGER.info("loading from InputStream");
             NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getClass().getResourceAsStream(inputFileName)));
-            AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
-            NitfFileParser.parse(reader, parseStrategy);
+            SlottedParseStrategy parseStrategy = new SlottedParseStrategy();
+            NitfParser.parse(reader, parseStrategy);
 
-            if (parseStrategy.getNitfDataSource().getGraphicSegments().isEmpty()) {
+            if (parseStrategy.getDataSource().getGraphicSegments().isEmpty()) {
                 LOGGER.info("Loaded file, but found no graphic segments.");
                 System.exit(0);
             }
-            GraphicSegment segment = parseStrategy.getNitfDataSource().getGraphicSegments().get(0);
-            CgmParser parser = new CgmParser(parseStrategy.getNitfDataSource().getGraphicSegments().get(0).getData());
+            GraphicSegment segment = parseStrategy.getDataSource().getGraphicSegments().get(0);
+            CgmParser parser = new CgmParser(parseStrategy.getDataSource().getGraphicSegments().get(0).getData());
             parser.buildCommandList();
             // parser.dump();
 

@@ -22,8 +22,8 @@ import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import static org.codice.imaging.nitf.core.header.NitfHeaderConstants.UDHOFL_LENGTH;
 import static org.codice.imaging.nitf.core.header.NitfHeaderConstants.XHDLOFL_LENGTH;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadataParser;
@@ -35,9 +35,9 @@ import org.slf4j.LoggerFactory;
 /**
     Parser for a NITF file.
 */
-public final class NitfFileParser extends AbstractSegmentParser {
+public final class NitfParser extends AbstractSegmentParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NitfFileParser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NitfParser.class);
 
     private long nitfFileLength = -1;
 
@@ -63,11 +63,11 @@ public final class NitfFileParser extends AbstractSegmentParser {
     private final List<Integer> ldsh = new ArrayList<>();
     private final List<Long> ld = new ArrayList<>();
 
-    private NitfFileParser(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws NitfFormatException {
+    private NitfParser(final NitfReader nitfReader, final ParseStrategy parseStrategy) throws NitfFormatException {
         nitfFileHeader = new NitfHeaderImpl();
         reader = nitfReader;
-        parseStrategy.setFileHeader(nitfFileHeader);
         parsingStrategy = parseStrategy;
+        parseStrategy.setFileHeader(nitfFileHeader);
     };
 
     /**
@@ -79,8 +79,8 @@ public final class NitfFileParser extends AbstractSegmentParser {
      * @param parseStrategy the parsing strategy
      * @throws NitfFormatException if an error occurs during parsing
      */
-    public static void parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy) throws NitfFormatException {
-        NitfFileParser parser = new NitfFileParser(nitfReader, parseStrategy);
+    public static void parse(final NitfReader nitfReader, final ParseStrategy parseStrategy) throws NitfFormatException {
+        NitfParser parser = new NitfParser(nitfReader, parseStrategy);
 
         parser.readBaseHeaders();
         if (parser.isStreamingMode()) {

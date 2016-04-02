@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core.text;
 
 import org.codice.imaging.nitf.core.common.CommonBasicSegment;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 
 /**
  * Represents a NITF Text Segment.
@@ -29,7 +29,7 @@ public interface TextSegment extends CommonBasicSegment {
 
      @return the date and time of the text.
      */
-    NitfDateTime getTextDateTime();
+    DateTime getTextDateTime();
 
     /**
      * Set text date and time.
@@ -38,7 +38,7 @@ public interface TextSegment extends CommonBasicSegment {
      *
      * @param dateTime the date and time of the text.
      */
-    void setTextDateTime(final NitfDateTime dateTime);
+    void setTextDateTime(final DateTime dateTime);
 
     /**
      Return text title.

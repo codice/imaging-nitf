@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
@@ -54,12 +54,12 @@ public class Nitf21SorcerTest {
 
     @Test
     public void testSorcerParse() throws IOException, NitfFormatException {
-        AllDataExtractionParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
         HeapStrategy<ImageInputStream> imageDataStrategy = new FileBackedHeapStrategy<>(file -> new FileImageInputStream(file));
         parseStrategy.setImageHeapStrategy(imageDataStrategy);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream()));
-        NitfFileParser.parse(reader, parseStrategy);
-        NitfDataSource parseResult = parseStrategy.getNitfDataSource();
+        NitfParser.parse(reader, parseStrategy);
+        DataSource parseResult = parseStrategy.getDataSource();
         assertEquals(1, parseResult.getImageSegments().size());
         assertEquals(1, parseResult.getGraphicSegments().size());
         assertEquals(0, parseResult.getSymbolSegments().size());

@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core.graphic;
 
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SALVL_LENGTH;
 import static org.codice.imaging.nitf.core.graphic.GraphicSegmentConstants.SBND1_HALF_LENGTH;
@@ -62,7 +62,7 @@ public class GraphicSegmentParser extends AbstractSegmentParser {
      * @return a fully parsed Graphic segment.
      * @throws NitfFormatException when the parser encounters unexpected input from the reader.
      */
-    public final GraphicSegment parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
+    public final GraphicSegment parse(final NitfReader nitfReader, final ParseStrategy parseStrategy,
             final long dataLength) throws NitfFormatException {
         reader = nitfReader;
         segment = new GraphicSegmentImpl();

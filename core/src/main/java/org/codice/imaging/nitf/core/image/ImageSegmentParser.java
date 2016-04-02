@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.image;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.codice.imaging.nitf.core.image.ImageConstants.ABPP_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.COMRAT_LENGTH;
@@ -87,7 +87,7 @@ public class ImageSegmentParser extends AbstractSegmentParser {
      * @return the parsed image segment
      * @throws NitfFormatException on parse failure
      */
-    public final ImageSegmentImpl parse(final NitfReader nitfReader, final NitfParseStrategy parseStrategy,
+    public final ImageSegmentImpl parse(final NitfReader nitfReader, final ParseStrategy parseStrategy,
             final long dataLength) throws NitfFormatException {
         reader = nitfReader;
         segment = new ImageSegmentImpl();

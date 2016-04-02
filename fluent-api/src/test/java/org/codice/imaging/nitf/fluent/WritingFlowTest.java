@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,7 +59,7 @@ public class WritingFlowTest {
 
         new NitfParserInputFlow()
                 .inputStream(getClass().getResourceAsStream(inputFileName))
-                .imageData()
+                .allData()
                 .fileHeader(
                     header -> {
                         header.setFileTitle(TEST_FILE_TITLE);

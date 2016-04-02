@@ -22,7 +22,7 @@ import static org.codice.imaging.nitf.core.common.CommonConstants.NITF21_DATE_FO
 /**
     Date / time representation.
 */
-public class NitfDateTime {
+public class DateTime {
 
     private String sourceString = null;
 
@@ -33,7 +33,7 @@ public class NitfDateTime {
      *
      * This does not produce a valid NitfDateTime - use set().
      */
-    public NitfDateTime() {
+    public DateTime() {
     }
 
     /**
@@ -101,12 +101,12 @@ public class NitfDateTime {
     }
 
     /**
-     * Create a NitfDateTime instance for the current time.
+     * Create a DateTime instance for the current time.
      *
      * @return initialised NitfDataTime instance.
      */
-    public static NitfDateTime getNitfDateTimeForNow() {
-        NitfDateTime ndt = new NitfDateTime();
+    public static DateTime getNitfDateTimeForNow() {
+        DateTime ndt = new DateTime();
         ndt.set(ZonedDateTime.now(ZoneId.of("UTC")));
         return ndt;
     }

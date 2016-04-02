@@ -17,7 +17,7 @@ package org.codice.imaging.nitf.core.graphic;
 import java.util.LinkedList;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfParseStrategy;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 
 
 public class GraphicSegmentParserTest {
-    private NitfParseStrategy strategy;
+    private ParseStrategy strategy;
     private NitfReader nitfReader;
     private final LinkedList<String> stringValues = new LinkedList<>();
     private final LinkedList<Integer> intValues = new LinkedList<>();
@@ -118,7 +118,7 @@ public class GraphicSegmentParserTest {
         intValues.push(SDLVL);
         when(nitfReader.readBytesAsInteger(any(Integer.class))).thenAnswer(a -> intValues.pop());
 
-        strategy = mock(NitfParseStrategy.class);
+        strategy = mock(ParseStrategy.class);
         when(strategy.parseTREs(any(NitfReader.class), any(Integer.class), eq(TreSource.GraphicExtendedSubheaderData))).thenReturn(new TreCollection());
     }
 

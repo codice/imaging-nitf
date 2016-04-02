@@ -33,7 +33,7 @@ public abstract class AbstractSegmentParser {
     /**
      * The NitfParsingStrategy to be used when parsing.
      */
-    protected NitfParseStrategy parsingStrategy;
+    protected ParseStrategy parsingStrategy;
 
     /**
      * Read a ENCRYP value, and check the result.
@@ -52,12 +52,12 @@ public abstract class AbstractSegmentParser {
      *
      * Note that this is relatively tolerant, and may not result in something usable as a date/time class in Java.
      *
-     * @return a NitfDateTime from head of the reader stream.
-     * @throws NitfFormatException when the next token is not the expected format for a NitfDateTime.
+     * @return a DateTime from head of the reader stream.
+     * @throws NitfFormatException when the next token is not the expected format for a DateTime.
      *
-     * @see NitfDateTime for the "best effort" nature of this parsing.
+     * @see DateTime for the "best effort" nature of this parsing.
      */
-    public final NitfDateTime readNitfDateTime() throws NitfFormatException {
+    public final DateTime readNitfDateTime() throws NitfFormatException {
         DateTimeParser dateTimeParser = new DateTimeParser();
         return dateTimeParser.readNitfDateTime(reader);
     }

@@ -16,7 +16,7 @@ package org.codice.imaging.nitf.core.header;
 
 import org.codice.imaging.nitf.core.RGBColour;
 import org.codice.imaging.nitf.core.common.FileType;
-import org.codice.imaging.nitf.core.common.NitfDateTime;
+import org.codice.imaging.nitf.core.common.DateTime;
 import static org.codice.imaging.nitf.core.header.NitfHeaderConstants.LOWEST_COMPLEXITY_LEVEL;
 import static org.codice.imaging.nitf.core.header.NitfHeaderConstants.STANDARD_TYPE_VAL;
 import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
@@ -41,7 +41,7 @@ public final class NitfHeaderFactory {
         nitfFileHeader.setComplexityLevel(LOWEST_COMPLEXITY_LEVEL);
         nitfFileHeader.setStandardType(STANDARD_TYPE_VAL);
         nitfFileHeader.setOriginatingStationId(NitfHeaderConstants.DEFAULT_ORIGINATING_STATION);
-        NitfDateTime ndt = NitfDateTime.getNitfDateTimeForNow();
+        DateTime ndt = DateTime.getNitfDateTimeForNow();
         nitfFileHeader.setFileDateTime(ndt);
         nitfFileHeader.setFileTitle("");
         nitfFileHeader.setFileSecurityMetadata(SecurityMetadataFactory.getDefaultFileSecurityMetadata(fileType));

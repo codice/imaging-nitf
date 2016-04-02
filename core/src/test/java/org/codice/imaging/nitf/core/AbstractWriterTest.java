@@ -29,7 +29,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfFileParser;
+import org.codice.imaging.nitf.core.header.NitfParser;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -48,14 +48,14 @@ class AbstractWriterTest {
     protected void roundTripFile(String sourceFileName) throws URISyntaxException, NitfFormatException, IOException {
         String outputFile = FilenameUtils.getName(sourceFileName);
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream(sourceFileName)));
-        SlottedNitfParseStrategy parseStrategy = new AllDataExtractionParseStrategy();
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
         HeapStrategyConfiguration heapStrategyConfiguration = new HeapStrategyConfiguration(length -> length > ABOUT_100K);
         HeapStrategy<ImageInputStream> imageDataStrategy = new ConfigurableHeapStrategy<>(heapStrategyConfiguration,
                 file -> new FileImageInputStream(file), is -> new MemoryCacheImageInputStream(is));
         parseStrategy.setImageHeapStrategy(imageDataStrategy);
 
-        NitfFileParser.parse(reader, parseStrategy);
-        NitfWriter writer = new NitfFileWriter(parseStrategy.getNitfDataSource(), outputFile);
+        NitfParser.parse(reader, parseStrategy);
+        NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), outputFile);
         writer.write();
         assertTrue(FileUtils.contentEquals(new File(getClass().getResource(sourceFileName).toURI()), new File(outputFile)));
         assertTrue(new File(outputFile).delete());
@@ -63,7 +63,7 @@ class AbstractWriterTest {
         // Do the same again, but with stream writing
         try (
             OutputStream outputStream = new FileOutputStream(outputFile)) {
-            writer = new NitfOutputStreamWriter(parseStrategy.getNitfDataSource(), outputStream);
+            writer = new NitfOutputStreamWriter(parseStrategy.getDataSource(), outputStream);
             writer.write();
             assertTrue(FileUtils.contentEquals(new File(getClass().getResource(sourceFileName).toURI()), new File(outputFile)));
         }
