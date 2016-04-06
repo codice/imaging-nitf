@@ -560,6 +560,15 @@ public interface ImageSegment extends CommonBasicSegment {
     int getUserDefinedHeaderOverflow();
 
     /**
+     * Set the user defined header overflow (UDHOFL) for the image.
+     * <p>
+     * This is the (1-base) index of the TRE into which user defined header data overflows.
+     *
+     * @param overflow the user defined header overflow index
+     */
+    void setUserDefinedHeaderOverflow(final int overflow);
+
+    /**
      * Calculate the number of bytes per block, assuming uncompressed data.
      *
      * Use of this method on compressed images is probably a bad idea.

@@ -312,7 +312,7 @@ public class SlottedParseStrategy implements ParseStrategy {
     private void readDataExtensionSegmentData(final DataExtensionSegment dataExtensionSegment,
             final NitfReader reader, final long dataLength) throws NitfFormatException {
         if (dataLength > 0) {
-            if (dataExtensionSegment.isTreOverflow(reader.getFileType())) {
+            if (dataExtensionSegment.isTreOverflow()) {
                 initialiseTreCollectionParserIfRequired();
                 TreCollection overflowTres = treCollectionParser.parse(reader,
                         (int) dataLength,

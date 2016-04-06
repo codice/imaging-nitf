@@ -952,13 +952,9 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
     }
 
     /**
-        Set the user defined header overflow (UDHOFL) for the image.
-        <p>
-        This is the (1-base) index of the TRE into which user defined header data
-        overflows.
-
-        @param overflow the user defined header overflow index
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setUserDefinedHeaderOverflow(final int overflow) {
         imageUserDefinedHeaderOverflow = overflow;
     }

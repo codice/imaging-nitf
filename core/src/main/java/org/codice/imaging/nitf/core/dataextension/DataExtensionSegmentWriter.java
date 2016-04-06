@@ -17,7 +17,6 @@ package org.codice.imaging.nitf.core.dataextension;
 import java.io.DataOutput;
 import java.io.IOException;
 import org.codice.imaging.nitf.core.common.AbstractSegmentWriter;
-import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DE;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.DESID_LENGTH;
@@ -47,16 +46,15 @@ public class DataExtensionSegmentWriter extends AbstractSegmentWriter {
      * Write out the subheader information for this data extension segment.
      *
      * @param des the header to write
-     * @param fileType the type (NITF version) of file to write out this segment header for.
      * @throws IOException on write failure
      * @throws NitfFormatException on TRE parse problems
      */
-    public final void writeDESHeader(final DataExtensionSegment des, final FileType fileType) throws IOException, NitfFormatException {
+    public final void writeDESHeader(final DataExtensionSegment des) throws IOException, NitfFormatException {
         writeFixedLengthString(DE, DE.length());
         writeFixedLengthString(des.getIdentifier(), DESID_LENGTH);
         writeFixedLengthNumber(des.getDESVersion(), DESVER_LENGTH);
         writeSecurityMetadata(des.getSecurityMetadata());
-        if (des.isTreOverflow(fileType)) {
+        if (des.isTreOverflow()) {
             writeFixedLengthString(des.getOverflowedHeaderType(), DESOFLW_LENGTH);
             writeFixedLengthNumber(des.getItemOverflowed(), DESITEM_LENGTH);
         }

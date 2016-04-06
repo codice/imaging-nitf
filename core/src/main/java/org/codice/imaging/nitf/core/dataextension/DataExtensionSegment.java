@@ -16,7 +16,6 @@ package org.codice.imaging.nitf.core.dataextension;
 
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonSegment;
-import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 
 /**
@@ -116,12 +115,11 @@ public interface DataExtensionSegment extends CommonSegment {
     /**
      * Check if this DES is a TRE overflow DES.
      * <p>
-     * This handles both NITF 2.0 and NITF 2.1 / NSIF 1.0 files, but you need to specify which file type.
+     * This handles both NITF 2.0 and NITF 2.1 / NSIF 1.0 files
      *
-     * @param fileType the file type (NITF version)
      * @return true for TRE overflow, otherwise false
      */
-    boolean isTreOverflow(FileType fileType);
+    boolean isTreOverflow();
 
     /**
      * Merges overflow Tres into this data extension header.

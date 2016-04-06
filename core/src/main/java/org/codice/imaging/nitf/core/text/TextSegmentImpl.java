@@ -31,7 +31,7 @@ class TextSegmentImpl extends CommonBasicSegmentImpl implements TextSegment {
     private DateTime textDateTime = null;
     private String textTitle = null;
     private TextFormat textFormat = TextFormat.UNKNOWN;
-    private String textData = null;
+    private String textData = "";
 
     /**
      * Default constructor.

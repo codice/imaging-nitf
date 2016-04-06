@@ -14,8 +14,8 @@
  */
 package org.codice.imaging.nitf.core.text;
 
-import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.DateTime;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
 
 /**

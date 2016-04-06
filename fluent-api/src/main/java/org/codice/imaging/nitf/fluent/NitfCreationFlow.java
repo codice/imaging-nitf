@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.fluent;
 import java.util.List;
 import java.util.function.Supplier;
 import org.codice.imaging.nitf.core.DataSource;
+import org.codice.imaging.nitf.core.NitfFileWriter;
 import org.codice.imaging.nitf.core.SlottedStorage;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
@@ -64,7 +65,43 @@ public class NitfCreationFlow {
      */
     public final NitfCreationFlow dataExtensionSegment(
             final Supplier<DataExtensionSegment> dataExtensionSegmentSupplier) {
-        return addSegment(dataSource.getDataExtensionSegments(), dataExtensionSegmentSupplier);
+        if (dataExtensionSegmentSupplier == null) {
+            return this;
+        }
+        DataExtensionSegment des = dataExtensionSegmentSupplier.get();
+        if (des == null) {
+            return this;
+        }
+        this.dataSource.getDataExtensionSegments().add(des);
+        if (des.isTreOverflow()) {
+            int index = dataSource.getDataExtensionSegments().size();
+            switch (des.getOverflowedHeaderType()) {
+                case "UDHD":
+                    dataSource.getNitfHeader().setUserDefinedHeaderOverflow(index);
+                    break;
+                case "XHD":
+                    dataSource.getNitfHeader().setExtendedHeaderDataOverflow(index);
+                    break;
+                case "UDID":
+                    dataSource.getImageSegments().get(des.getItemOverflowed() - 1).setUserDefinedHeaderOverflow(index);
+                    break;
+                case "IXSHD":
+                    dataSource.getImageSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
+                    break;
+                case "SXSHD":
+                    dataSource.getGraphicSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
+                    break;
+                case "LXSHD":
+                    dataSource.getLabelSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
+                    break;
+                case "TXSHD":
+                    dataSource.getTextSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Cannot set TRE overflow for: " + des.getOverflowedHeaderType());
+            }
+        }
+        return this;
     }
 
     /**
@@ -128,5 +165,15 @@ public class NitfCreationFlow {
         }
 
         return null;
+    }
+
+    /**
+     * Write out the created file.
+     *
+     * @param filename the name of the file to write to
+     */
+    public final void write(final String filename) {
+        NitfFileWriter nitfWriter = new NitfFileWriter(build(), filename);
+        nitfWriter.write();
     }
 }

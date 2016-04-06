@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core;
 
-import org.codice.imaging.nitf.core.header.NitfHeaderWriter;
 import java.io.DataOutput;
 import java.io.IOException;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
@@ -22,6 +21,7 @@ import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentWriter;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegmentWriter;
+import org.codice.imaging.nitf.core.header.NitfHeaderWriter;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.ImageSegmentWriter;
 import org.codice.imaging.nitf.core.label.LabelSegment;
@@ -111,7 +111,7 @@ public abstract class SharedNitfWriter implements NitfWriter {
         DataExtensionSegmentWriter dataExtensionSegmentWriter = new DataExtensionSegmentWriter(mOutput, mTreParser);
         for (DataExtensionSegment des : mDataSource.getDataExtensionSegments()) {
             if (!des.isStreamingMode()) {
-                dataExtensionSegmentWriter.writeDESHeader(des, mDataSource.getNitfHeader().getFileType());
+                dataExtensionSegmentWriter.writeDESHeader(des);
             }
         }
     }

@@ -15,8 +15,8 @@
 package org.codice.imaging.nitf.core.header;
 
 import org.codice.imaging.nitf.core.RGBColour;
-import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.DateTime;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 
@@ -247,4 +247,21 @@ public interface NitfHeader extends TaggedRecordExtensionHandler {
      */
     void setStandardType(final String standardType);
 
+    /**
+     * Set the user defined header overflow (UDHOFL) for the file.
+     * <p>
+     * This is the (1-base) index of the TRE into which user defined header data overflows.
+     *
+     * @param overflowIndex the user defined header overflow index
+     */
+    void setUserDefinedHeaderOverflow(final int overflowIndex);
+
+    /**
+     * Set the extended header data overflow (XHDOFL) for the file.
+     * <p>
+     * This is the (1-base) index of the TRE into which extended header data overflows.
+     *
+     * @param overflow the extended header data overflow index
+     */
+    void setExtendedHeaderDataOverflow(final int overflow);
 }
