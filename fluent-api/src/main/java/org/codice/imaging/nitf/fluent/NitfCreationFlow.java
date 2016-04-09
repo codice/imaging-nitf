@@ -160,11 +160,13 @@ public class NitfCreationFlow {
 
     private <T> NitfCreationFlow addSegment(final List<T> segments, final Supplier<T> supplier) {
         if (supplier != null) {
-            segments.add(supplier.get());
-            return this;
+            T segment = supplier.get();
+            if (segment != null) {
+                segments.add(segment);
+            }
         }
 
-        return null;
+        return this;
     }
 
     /**

@@ -68,21 +68,24 @@ public class CreationFlowTest {
     @Test
     public void createTwoTextNitf() throws FileNotFoundException, NitfFormatException {
         final String filename = "text.ntf";
-        new NitfCreationFlow()
-                .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
-                .textSegment(() -> {
-                    TextSegment segment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
-                    segment.setTextTitle("Better title");
-                    segment.setTextFormat(TextFormat.BASICCHARACTERSET);
-                    return segment;
-                })
-                .textSegment(() -> {
-                    TextSegment segment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
-                    segment.setTextTitle("Better title");
-                    segment.setTextFormat(TextFormat.BASICCHARACTERSET);
-                    return segment;
-                })
-                .write(filename);
+        NitfCreationFlow flow = new NitfCreationFlow();
+        flow.fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
+            .textSegment(() -> {
+                TextSegment segment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
+                segment.setTextTitle("Better title");
+                segment.setTextFormat(TextFormat.BASICCHARACTERSET);
+                return segment;
+            })
+            .textSegment(() -> {
+                TextSegment segment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
+                segment.setTextTitle("Better title");
+                segment.setTextFormat(TextFormat.BASICCHARACTERSET);
+                return segment;
+            })
+            .write(filename);
+
+        assertThat(flow.build().getTextSegments().size(), is(2));
+
         new NitfParserInputFlow()
                 .file(new File(filename))
                 .allData()
@@ -246,6 +249,16 @@ public class CreationFlowTest {
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO))
                 .dataExtensionSegment(null);
         assertThat(flow, is(notNullValue()));
+        assertThat(flow.build().getDataExtensionSegments().size(), is(0));
+    }
+
+    @Test
+    public void addTextSegmentNullSupplier() {
+        NitfCreationFlow flow = new NitfCreationFlow()
+                .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ZERO))
+                .textSegment(null);
+        assertThat(flow, is(notNullValue()));
+        assertThat(flow.build().getTextSegments().size(), is(0));
     }
 
     @Test
