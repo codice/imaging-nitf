@@ -49,7 +49,7 @@ public class DataExtensionSegmentParser extends AbstractSegmentParser {
      */
     public final DataExtensionSegment parse(final NitfReader nitfReader, final long dataLength) throws NitfFormatException {
         reader = nitfReader;
-        segment = new DataExtensionSegmentImpl();
+        segment = new DataExtensionSegmentImpl(nitfReader.getFileType());
         segment.setDataLength(dataLength);
 
         readDE();
@@ -57,7 +57,7 @@ public class DataExtensionSegmentParser extends AbstractSegmentParser {
         readDESVER();
         segment.setSecurityMetadata(new SecurityMetadataParser().parseSecurityMetadata(reader));
 
-        if (segment.isTreOverflow(reader.getFileType())) {
+        if (segment.isTreOverflow()) {
             readDESOFLW();
             readDESITEM();
         }

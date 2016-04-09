@@ -32,6 +32,7 @@ import static org.codice.imaging.nitf.core.dataextension.DataExtensionConstants.
 */
 class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensionSegment {
 
+    private final FileType nitfVersion;
     private int desVersion = -1;
     private String overflowedHeaderType = null;
     private int desItemOverflowed = 0;
@@ -42,7 +43,8 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
     /**
         Default constructor.
     */
-    DataExtensionSegmentImpl() {
+    DataExtensionSegmentImpl(final FileType fileType) {
+        nitfVersion = fileType;
     }
 
     /**
@@ -178,11 +180,13 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
      * {@inheritDoc}
      */
     @Override
-    public final boolean isTreOverflow(final FileType fileType) {
-        if (fileType == FileType.NITF_TWO_ZERO) {
+    public final boolean isTreOverflow() {
+        if (nitfVersion == FileType.NITF_TWO_ZERO) {
             return isTreOverflowNitf20();
-        } else {
+        } else if ((nitfVersion.equals(FileType.NITF_TWO_ONE)) || (nitfVersion.equals(FileType.NSIF_ONE_ZERO))) {
             return isTreOverflowNitf21();
+        } else {
+            throw new UnsupportedOperationException("Unsupported NITF version for TRE overflow determination:" + nitfVersion.getTextEquivalent());
         }
     }
 

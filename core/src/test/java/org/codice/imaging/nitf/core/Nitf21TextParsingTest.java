@@ -26,7 +26,6 @@ import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,7 +59,7 @@ public class Nitf21TextParsingTest {
 
         TextSegment textSegment = parseStrategy.getDataSource().getTextSegments().get(0);
         assertTextSegmentMetadataIsAsExpected(textSegment);
-        assertNull(parseStrategy.getDataSource().getTextSegments().get(0).getData());
+        assertEquals("", parseStrategy.getDataSource().getTextSegments().get(0).getData());
     }
 
     private void assertTextSegmentMetadataIsAsExpected(TextSegment textSegment) {
