@@ -37,6 +37,7 @@ public final class TextSegmentFactory {
      */
     public static TextSegment getDefault(final FileType fileType) {
         TextSegment textSegment = new TextSegmentImpl();
+        textSegment.setFileType(fileType);
         textSegment.setIdentifier("");
         textSegment.setAttachmentLevel(0);
         textSegment.setTextDateTime(DateTime.getNitfDateTimeForNow());

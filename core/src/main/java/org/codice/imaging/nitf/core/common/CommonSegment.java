@@ -74,4 +74,18 @@ public interface CommonSegment extends TaggedRecordExtensionHandler {
      * @throws java.io.IOException if there was a problem reading configuration data
      */
     long getHeaderLength() throws NitfFormatException, IOException;
+
+    /**
+     * Get the FileType (NITF / NSIF version) for the segment.
+     *
+     * @return the file type for the segment
+     */
+    FileType getFileType();
+
+    /**
+     * Set the FileType (NITF / NSIF version) for the segment.
+     *
+     * @param fileType the fileType for the segment
+     */
+    void setFileType(final FileType fileType);
 }

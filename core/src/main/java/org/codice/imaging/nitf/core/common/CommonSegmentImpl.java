@@ -26,6 +26,7 @@ public abstract class CommonSegmentImpl extends TaggedRecordExtensionHandlerImpl
 
     private String segmentIdentifier;
     private SecurityMetadata securityMetadata = null;
+    private FileType nitfFileType = FileType.UNKNOWN;
 
     /**
      * {@inheritDoc}
@@ -57,5 +58,21 @@ public abstract class CommonSegmentImpl extends TaggedRecordExtensionHandlerImpl
     @Override
     public final SecurityMetadata getSecurityMetadata() {
         return securityMetadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setFileType(final FileType fileType) {
+        nitfFileType = fileType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final FileType getFileType() {
+        return nitfFileType;
     }
 }

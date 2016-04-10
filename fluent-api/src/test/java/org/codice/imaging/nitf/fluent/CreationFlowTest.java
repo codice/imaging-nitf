@@ -14,14 +14,24 @@
  */
 package org.codice.imaging.nitf.fluent;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
+import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentFactory;
 import org.codice.imaging.nitf.core.header.NitfHeaderFactory;
+import org.codice.imaging.nitf.core.image.ImageBand;
+import org.codice.imaging.nitf.core.image.ImageRepresentation;
+import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.core.image.ImageSegmentFactory;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
@@ -62,7 +72,32 @@ public class CreationFlowTest {
                             assertThat(header.getFileSecurityMetadata().getSecurityClassification(), is(SecurityClassification.UNCLASSIFIED));
                         }
                 );
-        assertThat(new File(filename).delete(), is(true));
+        new File(filename).deleteOnExit();
+    }
+
+    @Test
+    public void createImageNitf() throws FileNotFoundException, NitfFormatException {
+        final String filename = "image.ntf";
+        NitfCreationFlow flow = new NitfCreationFlow();
+        flow.fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
+                .imageSegment(() -> {
+                    ImageSegment imageSegment = ImageSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
+                    return imageSegment;
+                })
+                .write(filename);
+
+        assertThat(flow.build().getImageSegments().size(), is(1));
+        new NitfParserInputFlow()
+                .file(new File(filename))
+                .allData()
+                .fileHeader(header -> {
+                    assertThat(header.getFileType(), is(FileType.NITF_TWO_ONE));
+                })
+                .forEachImageSegment(imageSegment -> {
+                    assertThat(imageSegment.getFileType(), is(FileType.NITF_TWO_ONE));
+                });
+
+        new File(filename).deleteOnExit();
     }
 
     @Test
@@ -104,7 +139,7 @@ public class CreationFlowTest {
                             assertThat(textSegment.getTextFormat(), is(TextFormat.BASICCHARACTERSET));
                             assertThat(textSegment.getData(), is(""));
                 });
-        assertThat(new File(filename).delete(), is(true));
+        new File(filename).deleteOnExit();
     }
 
     @Test
@@ -133,7 +168,7 @@ public class CreationFlowTest {
                             assertThat(des.getDataLength(), is(0L));
                             assertThat(des.getOverflowedHeaderType(), is(nullValue()));
                         });
-        assertThat(new File(filename).delete(), is(true));
+        new File(filename).deleteOnExit();
     }
 
     @Test
@@ -164,7 +199,7 @@ public class CreationFlowTest {
                             assertThat(des.getOverflowedHeaderType(), is("UDHD"));
                             assertThat(des.getItemOverflowed(), is(0));
                         });
-        assertThat(new File(filename).delete(), is(true));
+        new File(filename).deleteOnExit();
     }
 
     @Test
@@ -194,7 +229,7 @@ public class CreationFlowTest {
                             assertThat(des.getOverflowedHeaderType(), is("XHD"));
                             assertThat(des.getItemOverflowed(), is(0));
                         });
-        assertThat(new File(filename).delete(), is(true));
+        new File(filename).deleteOnExit();
     }
 
     @Test
@@ -233,7 +268,80 @@ public class CreationFlowTest {
         assertThat(secondSegment, is(notNullValue()));
         assertThat(secondSegment.getExtendedHeaderDataOverflow(), is(1));
 
-        assertThat(new File(filename).delete(), is(true));
+        new File(filename).deleteOnExit();
+    }
+
+    @Test
+    public void createImageOverflowDESNitf() throws IOException, FileNotFoundException, NitfFormatException {
+        final String filename = "overflowImage.ntf";
+        byte[] bytes = new byte[]{0};
+        InputStream is1 = new ByteArrayInputStream(bytes);
+        InputStream is2 = new ByteArrayInputStream(bytes);
+        ImageBand band = new ImageBand();
+        band.setImageRepresentation("M");
+        ImageInputStream iis1 = ImageIO.createImageInputStream(is1);
+        ImageInputStream iis2 = ImageIO.createImageInputStream(is2);
+        new NitfCreationFlow()
+                .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
+                .imageSegment(() -> {
+                    ImageSegment imageSegment1 = ImageSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
+                    imageSegment1.setImageRepresentation(ImageRepresentation.MONOCHROME);
+                    imageSegment1.addImageBand(band);
+                    imageSegment1.setNumberOfBitsPerPixelPerBand(8);
+                    imageSegment1.setNumberOfRows(1);
+                    imageSegment1.setNumberOfBlocksPerRow(1);
+                    imageSegment1.setNumberOfColumns(1);
+                    imageSegment1.setNumberOfBlocksPerColumn(1);
+                    imageSegment1.setData(iis1);
+                    imageSegment1.setDataLength(1L);
+                    return imageSegment1;
+                })
+                .imageSegment(() -> {
+                    ImageSegment imageSegment2 = ImageSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
+                    imageSegment2.setImageRepresentation(ImageRepresentation.MONOCHROME);
+                    imageSegment2.addImageBand(band);
+                    imageSegment2.setNumberOfBitsPerPixelPerBand(8);
+                    imageSegment2.setNumberOfColumns(1);
+                    imageSegment2.setNumberOfRows(1);
+                    imageSegment2.setNumberOfBlocksPerColumn(1);
+                    imageSegment2.setNumberOfBlocksPerRow(1);
+                    imageSegment2.setData(iis2);
+                    imageSegment2.setDataLength(1L);
+                    return imageSegment2;
+                })
+                .dataExtensionSegment(() -> DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ONE, "IXSHD", 2))
+                .dataExtensionSegment(() -> DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ONE, "UDID", 2))
+                .write(filename);
+
+        List<ImageSegment> imageSegments = new ArrayList<>();
+        List<DataExtensionSegment> desList = new ArrayList<>();
+        new NitfParserInputFlow()
+                .file(new File(filename))
+                .allData()
+                .forEachImageSegment(imageSegment -> imageSegments.add(imageSegment))
+                .forEachDataExtensionSegment(des -> {
+                    desList.add(des);
+                    assertThat(des.getSecurityMetadata().getSecurityClassification(), is(SecurityClassification.UNCLASSIFIED));
+                    assertThat(des.getDESVersion(), is(1));
+                    assertThat(des.getIdentifier().trim(), is("TRE_OVERFLOW"));
+                });
+        ImageSegment firstSegment = imageSegments.get(0);
+        assertThat(firstSegment, is(notNullValue()));
+
+        ImageSegment secondSegment = imageSegments.get(1);
+        assertThat(secondSegment, is(notNullValue()));
+        assertThat(secondSegment.getUserDefinedHeaderOverflow(), is(2));
+        assertThat(secondSegment.getExtendedHeaderDataOverflow(), is(1));
+
+        DataExtensionSegment firstDES = desList.get(0);
+        assertThat(firstDES.getOverflowedHeaderType(), is("IXSHD"));
+        assertThat(firstDES.getItemOverflowed(), is(2));
+
+        DataExtensionSegment secondDES = desList.get(1);
+        assertThat(secondDES.getOverflowedHeaderType(), is("UDID"));
+        assertThat(secondDES.getItemOverflowed(), is(2));
+
+        new File(filename).deleteOnExit();
     }
 
     @Test
