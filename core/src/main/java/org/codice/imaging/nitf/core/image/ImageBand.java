@@ -23,10 +23,10 @@ import java.util.List;
 public class ImageBand {
 
     // An enum might have been useful, but this is extensible
-    private String imageRepresentation = null;
-    private String imageSubcategory = null;
+    private String imageRepresentation = "";
+    private String imageSubcategory = "";
     private int numEntriesLUT = 0;
-    private List<ImageBandLUT> luts = new ArrayList<ImageBandLUT>();
+    private List<ImageBandLUT> luts = new ArrayList<>();
 
     /**
         Default constructor.

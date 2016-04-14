@@ -35,9 +35,9 @@ import org.codice.imaging.nitf.core.common.NitfFormatException;
 */
 public class TargetId {
 
-    private String beNumber = null;
-    private String oSuffix = null;
-    private String countryCode = null;
+    private String beNumber = "";
+    private String oSuffix = "";
+    private String countryCode = "";
 
     private static final int BE_LENGTH = 10;
     private static final int OSUFFIX_LENGTH = 5;
