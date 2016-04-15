@@ -19,6 +19,8 @@ import java.util.function.Supplier;
 import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.NitfFileWriter;
 import org.codice.imaging.nitf.core.SlottedStorage;
+import org.codice.imaging.nitf.core.common.CommonBasicSegment;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.header.NitfHeader;
@@ -71,6 +73,11 @@ public class NitfCreationFlow {
         DataExtensionSegment des = dataExtensionSegmentSupplier.get();
         if (des == null) {
             return this;
+        }
+        FileType desFileType = des.getFileType();
+        FileType headerFileType = dataSource.getNitfHeader().getFileType();
+        if (!desFileType.equals(headerFileType) || desFileType.equals(FileType.UNKNOWN)) {
+            throw new IllegalStateException("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
         }
         this.dataSource.getDataExtensionSegments().add(des);
         if (des.isTreOverflow()) {
@@ -159,13 +166,20 @@ public class NitfCreationFlow {
     }
 
     private <T> NitfCreationFlow addSegment(final List<T> segments, final Supplier<T> supplier) {
-        if (supplier != null) {
-            T segment = supplier.get();
-            if (segment != null) {
-                segments.add(segment);
-            }
+        if (supplier == null) {
+            return this;
         }
 
+        T segment = supplier.get();
+        if (segment == null) {
+            return this;
+        }
+
+        FileType fileType = ((CommonBasicSegment) segment).getFileType();
+        if ((fileType != dataSource.getNitfHeader().getFileType()) || (fileType == FileType.UNKNOWN)) {
+            throw new IllegalStateException("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
+        }
+        segments.add(segment);
         return this;
     }
 

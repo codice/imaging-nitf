@@ -376,4 +376,31 @@ public class CreationFlowTest {
                 .dataExtensionSegment(() -> null);
         assertThat(flow, is(notNullValue()));
     }
+
+    @Test
+    public void addMismatchedSegmentTypes() {
+        NitfCreationFlow flow = new NitfCreationFlow()
+                .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO));
+        exception.expect(IllegalStateException.class);
+        exception.expectMessage("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
+        flow.textSegment(() -> TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE));
+    }
+
+    @Test
+    public void addUnknownSegmentType() {
+        NitfCreationFlow flow = new NitfCreationFlow()
+                .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO));
+        exception.expect(IllegalStateException.class);
+        exception.expectMessage("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
+        flow.imageSegment(() -> ImageSegmentFactory.getDefault(FileType.UNKNOWN));
+    }
+
+    @Test
+    public void addMismatchedDES() {
+        NitfCreationFlow flow = new NitfCreationFlow()
+                .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ZERO));
+        exception.expect(IllegalStateException.class);
+        exception.expectMessage("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
+        flow.dataExtensionSegment(() -> DataExtensionSegmentFactory.getDefault(FileType.NITF_TWO_ONE));
+    }
 }
