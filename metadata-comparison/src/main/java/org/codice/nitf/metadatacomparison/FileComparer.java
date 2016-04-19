@@ -328,7 +328,7 @@ public class FileComparer {
         metadata.put("NITF_ISSRDT", segment1.getSecurityMetadata().getSecuritySourceDate());
     }
 
-    private void addCommonImageSegmentMetadata(Map <String, String> metadata) throws IOException {
+    private void addCommonImageSegmentMetadata(Map<String, String> metadata) throws IOException, NitfFormatException {
         metadata.put("NITF_ABPP", String.format("%02d", segment1.getActualBitsPerPixelPerBand()));
         metadata.put("NITF_CCS_COLUMN", String.format("%d", segment1.getImageLocationColumn()));
         metadata.put("NITF_CCS_ROW", String.format("%d", segment1.getImageLocationRow()));
@@ -372,7 +372,7 @@ public class FileComparer {
         metadata.put("NITF_PJUST", segment1.getPixelJustification().getTextEquivalent());
         metadata.put("NITF_PVTYPE", segment1.getPixelValueType().getTextEquivalent());
         if (segment1.getImageTargetId().toString().length() > 0) {
-            metadata.put("NITF_TGTID", rightTrim(segment1.getImageTargetId().toString()));
+            metadata.put("NITF_TGTID", rightTrim(segment1.getImageTargetId().getAsText()));
         } else {
             metadata.put("NITF_TGTID", "");
         }

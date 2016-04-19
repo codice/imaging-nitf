@@ -34,7 +34,7 @@ public class ImageSegmentFactoryTest {
     }
 
     @Test
-    public void checkDefaultBuild() {
+    public void checkDefaultBuild() throws NitfFormatException {
         ImageSegment segment = ImageSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
         assertNotNull(segment);
         assertEquals(FileType.NITF_TWO_ONE, segment.getFileType());
@@ -42,7 +42,7 @@ public class ImageSegmentFactoryTest {
         assertEquals("", segment.getIdentifier());
 
         assertNotNull(segment.getImageTargetId());
-        assertEquals("", segment.getImageTargetId().toString().trim());
+        assertEquals("", segment.getImageTargetId().getAsText().trim());
 
         assertEquals("", segment.getImageIdentifier2());
 
@@ -70,7 +70,7 @@ public class ImageSegmentFactoryTest {
 
         TargetId tgtid = new TargetId("ABCDEFGHIJUVWXYAU");
         segment.setImageTargetId(tgtid);
-        assertEquals(tgtid.toString(), segment.getImageTargetId().toString());
+        assertEquals(tgtid.getAsText(), segment.getImageTargetId().getAsText());
 
         segment.setImageIdentifier2("Secondary Identifier");
         assertEquals("Secondary Identifier", segment.getImageIdentifier2());

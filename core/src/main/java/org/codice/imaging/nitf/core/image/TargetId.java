@@ -123,10 +123,30 @@ public class TargetId {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the text equivalent of this target identifier.
+     *
+     * @return a space-padded string containing the target identifier.
+     * @throws NitfFormatException if any of the fields are null, or are too long to fit.
      */
-    @Override
-    public final String toString() {
-        return beNumber + oSuffix + countryCode;
+    public final String getAsText() throws NitfFormatException {
+        if (beNumber == null) {
+            throw new NitfFormatException("Cannot generate string target identifier with null BE number");
+        }
+        if (oSuffix == null) {
+            throw new NitfFormatException("Cannot generate string target identifier with null O-suffix");
+        }
+        if (countryCode == null) {
+            throw new NitfFormatException("Cannot generate string target identifier with null country code");
+        }
+        return padStringToLength(beNumber, BE_LENGTH)
+                + padStringToLength(oSuffix, OSUFFIX_LENGTH)
+                + padStringToLength(countryCode, COUNTRYCODE_LENGTH);
+    }
+
+    private String padStringToLength(final String s, final int length) throws NitfFormatException {
+        if (s.length() > length) {
+            throw new NitfFormatException("TargetId field value is too long");
+        }
+        return String.format("%1$-" + length + "s", s);
     }
 }
