@@ -42,7 +42,7 @@ public class ImageSegmentFactoryTest {
         assertEquals("", segment.getIdentifier());
 
         assertNotNull(segment.getImageTargetId());
-        assertEquals("", segment.getImageTargetId().getAsText().trim());
+        assertEquals("", segment.getImageTargetId().textValue().trim());
 
         assertEquals("", segment.getImageIdentifier2());
 
@@ -70,7 +70,7 @@ public class ImageSegmentFactoryTest {
 
         TargetId tgtid = new TargetId("ABCDEFGHIJUVWXYAU");
         segment.setImageTargetId(tgtid);
-        assertEquals(tgtid.getAsText(), segment.getImageTargetId().getAsText());
+        assertEquals(tgtid.textValue(), segment.getImageTargetId().textValue());
 
         segment.setImageIdentifier2("Secondary Identifier");
         assertEquals("Secondary Identifier", segment.getImageIdentifier2());
