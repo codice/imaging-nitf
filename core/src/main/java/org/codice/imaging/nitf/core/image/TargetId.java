@@ -125,10 +125,15 @@ public class TargetId {
     /**
      * Get the text equivalent of this target identifier.
      *
+     * This will produce the text form of the target identifier, in BBBBBBBBBBOOOOOCC form. The component elements
+     * cannot be null, although they can be space filled (or empty, in which case they will be space filled as
+     * required). Note that there are likely MIDB rules on valid ranges for BE numbers and O-suffixes that are not
+     * enforced here.
+     *
      * @return a space-padded string containing the target identifier.
      * @throws NitfFormatException if any of the fields are null, or are too long to fit.
      */
-    public final String getAsText() throws NitfFormatException {
+    public final String textValue() throws NitfFormatException {
         if (beNumber == null) {
             throw new NitfFormatException("Cannot generate string target identifier with null BE number");
         }

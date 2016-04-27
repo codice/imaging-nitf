@@ -45,14 +45,14 @@ public class TargetIdTest {
         tgtid.setCountryCode("AU");
         assertEquals("AU", tgtid.getCountryCode());
 
-        assertEquals("ABCDEFGHIJUVWXYAU", tgtid.getAsText());
+        assertEquals("ABCDEFGHIJUVWXYAU", tgtid.textValue());
     }
 
     @Test
     public void testPartialFillCountryCode() throws NitfFormatException {
         TargetId targetId = new TargetId();
         targetId.setCountryCode("AS");
-        assertEquals("               AS", targetId.getAsText());
+        assertEquals("               AS", targetId.textValue());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class TargetIdTest {
         TargetId targetId = new TargetId();
         // This example is a bit silly, but we're unit testing.
         targetId.setOSuffix("UVWXY");
-        assertEquals("          UVWXY  ", targetId.getAsText());
+        assertEquals("          UVWXY  ", targetId.textValue());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class TargetIdTest {
         TargetId targetId = new TargetId();
         targetId.setBasicEncyclopediaNumber("ABCDEFGHIJ");
         targetId.setCountryCode("AS");
-        assertEquals("ABCDEFGHIJ     AS", targetId.getAsText());
+        assertEquals("ABCDEFGHIJ     AS", targetId.textValue());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class TargetIdTest {
         targetId.setBasicEncyclopediaNumber(null);
         exception.expect(NitfFormatException.class);
         exception.expectMessage("Cannot generate string target identifier with null BE number");
-        targetId.getAsText();
+        targetId.textValue();
     }
 
     @Test
@@ -112,7 +112,7 @@ public class TargetIdTest {
         targetId.setOSuffix(null);
         exception.expect(NitfFormatException.class);
         exception.expectMessage("Cannot generate string target identifier with null O-suffix");
-        targetId.getAsText();
+        targetId.textValue();
     }
 
     @Test
@@ -121,7 +121,7 @@ public class TargetIdTest {
         targetId.setCountryCode(null);
         exception.expect(NitfFormatException.class);
         exception.expectMessage("Cannot generate string target identifier with null country code");
-        targetId.getAsText();
+        targetId.textValue();
     }
 
     @Test
@@ -130,6 +130,6 @@ public class TargetIdTest {
         targetId.setBasicEncyclopediaNumber("ABCDEFGHIJK");
         exception.expect(NitfFormatException.class);
         exception.expectMessage("TargetId field value is too long");
-        targetId.getAsText();
+        targetId.textValue();
     }
 }

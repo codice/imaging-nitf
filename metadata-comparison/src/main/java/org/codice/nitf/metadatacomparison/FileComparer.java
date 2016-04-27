@@ -372,7 +372,7 @@ public class FileComparer {
         metadata.put("NITF_PJUST", segment1.getPixelJustification().getTextEquivalent());
         metadata.put("NITF_PVTYPE", segment1.getPixelValueType().getTextEquivalent());
         if (segment1.getImageTargetId().toString().length() > 0) {
-            metadata.put("NITF_TGTID", rightTrim(segment1.getImageTargetId().getAsText()));
+            metadata.put("NITF_TGTID", rightTrim(segment1.getImageTargetId().textValue()));
         } else {
             metadata.put("NITF_TGTID", "");
         }
