@@ -61,32 +61,6 @@
         </loop>
     </tre>
 
-<!-- Looks like the test data is broken -->
-<!--
-    <tre name="ACFTA" length="132" location="image">
-        <field name="AC_MSN_ID" length="10" type="string"/>
-        <field name="SCTYPE" length="1" type="string"/>
-        <field name="SCNUM" length="4" type="integer"/>
-        <field name="SENSOR_ID" length="3" type="string"/>
-        <field name="PATCH_TOT" length="4" type="integer" minval="0"/>
-        <field name="MTI_TOT" length="3" type="integer" minval="0"/>
-        <field name="PDATE" length="7" type="string"/>
-        <field name="IMHOSTNO" length="3" type="integer" minval="0"/>
-        <field name="IMREQID" length="5" type="integer" minval="0"/>
-        <field name="SCENE_SOURCE" length="1" type="integer" minval="0" maxval="6"/>
-        <field name="MPLAN" length="2" type="integer" minval="1" maxval="99"/>
-        <field name="ENTLOC" length="21" type="string"/>
-        <field name="ENTELV" length="6" type="integer" minval="-1000" maxval="30000" unit="ft"/>
-        <field name="EXITLOC" length="21" type="string"/>
-        <field name="EXITELV" length="6" type="integer" minval="-1000" maxval="30000" unit="ft"/>
-        <field name="TMAP" length="7" type="real" minval="0.0" unit="degrees"/>
-        <field name="RCS" length="3" type="integer" minval="40" maxval="80"/>
-        <field name="ROW_SPACING" length="7" type="real"/>
-        <field name="COL_SPACING" length="7" type="real"/>
-        <field name="SENSERIAL" length="4" type="integer"/>
-        <field name="ABSWVER" length="7" type="string"/>
-    </tre>
--->
     <tre name="ACFTB" length="207" location="image">
         <field name="AC_MSN_ID" length="20"/>
         <field name="AC_TAIL_NO" length="10"/>
@@ -495,7 +469,7 @@
         <field name="TOTAL_TILES_ROWS" length="5" type="integer" minval="1" maxval="99999"/>
     </tre>
 
-    <!-- STDI-0002 Appendix E (ASDE 2.1/CN1), Table E-19 -->
+    <!-- STDI-0002 Appendix E (ASDE 2.1/CN1), Section 3.10 and Table E-19 -->
     <tre name="MTIRPB" minlength="119" maxlength="42035">
         <field name="MTI_DP" length="2" type="string"/>
         <field name="MTI_PACKET_ID" length="3" minval="1" maxval="999" type="integer"/>
@@ -1703,18 +1677,4 @@
         <field name="SUN_AZ" length="5"/>
     </tre>
 
-<!-- This doesn't work yet
-    <tre name="RPFHDR" length="62" location="file">
-        <field name="ENDIANESS_FLAG" length="1"/>
-        <field name="HEADER_SECT_LENGTH" length="2"/>
-        <field name="FILENAME" length="12"/>
-        <field name="INDICATOR" length="1"/>
-        <field name="STANDARD" length="15"/>
-        <field name="STANDARD_DATE" length="8"/>
-        <field name="CLASSIFICATION" length="1"/>
-        <field name="COUNTRYCODE" length="2"/>
-        <field name="RELEASABLE" length="2"/>
-        <field name="LOCATIONSECT" length="4"/>
-    </tre>
--->
 </tres>
