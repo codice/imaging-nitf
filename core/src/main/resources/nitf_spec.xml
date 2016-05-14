@@ -297,6 +297,28 @@
         </loop>
     </tre>
 
+    <!-- STDI-0002 Appendix E (ASDE 2.1/CN1), Table E-10 -->
+    <tre name="EXOPTA" length="107" location="image">
+        <field name="ANGLE_TO_NORTH" length="3" type="string"/>
+        <field name="MEAN_GSD" length="5" type="string"/>
+        <field length="1" fixed_value="1"/>
+        <field name="DYNAMIC_RANGE" length="5" type="string"/>
+        <field length="7" fixed_value="       "/>
+        <field name="OBL_ANG" length="5" type="string"/>
+        <field name="ROLL_ANG" length="6" type="string"/>
+        <field name="PRIME_ID" length="12" type="string"/>
+        <field name="PRIME_BE" length="15" type="string"/>
+        <field length="5" fixed_value="     "/>
+        <field name="N_SEC" length="3" type="integer" minval="0" maxval="250"/>
+        <field length="2" fixed_value="  "/>
+        <field length="7" fixed_value="0000001"/>
+        <field name="N_SEG" length="3" type="integer" minval="1" maxval="999"/>
+        <field name="MAX_LP_SEG" length="6" type="string"/>
+        <field length="12" fixed_value="            "/>
+        <field name="SUN_EL" length="5" type="real"/>
+        <field name="SUN_AZ" length="5" type="real"/>
+    </tre>
+
     <!-- STDI-0002 Appendix E (ASDE 2.1/CN1), Table E-12 -->
     <tre name="EXPLTB" length="101" location="image">
         <field name="ANGLE_TO_NORTH" length="7" type="real" minval="0.0" maxval="359.999"/>
@@ -1179,6 +1201,12 @@
         <field name="TNIS" length="3" type="integer"/>
         <field name="RSSIZ" length="21" type="real"/>
         <field name="CSSIZ" length="21" type="real"/>
+    </tre>
+
+    <tre name="SECTGA" length="28" location="image">
+        <field name="SEC_ID" length="12" type="string"/>
+        <field name="SEC_BE" length="15" type="string"/>
+        <field length="1" fixed_value="0"/>
     </tre>
 
     <tre name="SENSRB" location="image">
