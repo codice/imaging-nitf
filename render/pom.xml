@@ -6,12 +6,12 @@
     <parent>
         <groupId>org.codice.imaging.nitf</groupId>
         <artifactId>codice-imaging-nitf</artifactId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3</version>
     </parent>
 
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf-render</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
 
     <name>Codice Imaging: NITF Render</name>
 
@@ -127,7 +127,7 @@
         <dependency>
             <groupId>org.codice.imaging.nitf</groupId>
             <artifactId>codice-imaging-nitf-core</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>0.3</version>
         </dependency>
 
         <dependency>
