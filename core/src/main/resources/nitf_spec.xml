@@ -578,6 +578,22 @@
         <field name="BATCH_NO" length="6" type="string"/>
     </tre>
 
+    <tre name="PIAEQA" length="130">
+        <field name="EQPCODE" length="7" type="string"/>
+        <field name="EQPNOMEN" length="45" type="string"/>
+        <field name="EQPMAN" length="64" type="string"/>
+        <field name="OBTYPE" length="1" type="string"/>
+        <field name="ORDBAT" length="3" type="string"/>
+        <field name="CTRYPROD" length="2" type="string"/>
+        <field name="CTRYDSN" length="2" type="string"/>
+        <field name="OBJVIEW" length="6" type="string"/>
+    </tre>
+
+    <tre name="PIAEVA" length="46">
+        <field name="EVENTNAME" length="38" type="string"/>
+        <field name="EVENTTYPE" length="8" type="string"/>
+    </tre>
+
     <tre name="PIAIMB" md_prefix="NITF_PIAIMB_" length="337" location="image">
         <field name="CLOUDCVR" length="3"/>
         <field name="SRP" length="1"/>
@@ -621,6 +637,14 @@
         <field name="FIRSTNME" length="28" type="string"/>
         <field name="MIDNME" length="28" type="string"/>
         <field name="DOB" length="6" type="string"/>
+        <field name="ASSOCTRY" length="2" type="string"/>
+    </tre>
+
+    <tre name="PIAPEB" length="94" location="image">
+        <field name="LASTNME" length="28" type="string"/>
+        <field name="FIRSTNME" length="28" type="string"/>
+        <field name="MIDNME" length="28" type="string"/>
+        <field name="DOB" length="8" type="string"/>
         <field name="ASSOCTRY" length="2" type="string"/>
     </tre>
 
@@ -692,6 +716,19 @@
         <loop counter="ATEXTREP" md_prefix="ATEXT_%02d" name="ATEXT">
             <field name="" longname="ATEXT" length="255" type="string"/>
         </loop>
+    </tre>
+
+    <tre name="PIATGB" length="117">
+        <field name="TGTUTM" length="15" type="string"/>
+        <field name="PIATGAID" length="15" type="string"/>
+        <field name="PIACTRY" length="2" type="string"/>
+        <field name="PIACAT" length="5" type="string"/>
+        <field name="TGTGEO" length="15" type="string"/>
+        <field name="DATUM" length="3" type="string"/>
+        <field name="TGTNAME" length="38" type="string"/>
+        <field name="PERCOVER" length="3" type="integer"/>
+        <field name="TGTLAT" length="10" type="real"/>
+        <field name="TGTLON" length="11" type="real"/>
     </tre>
 
     <tre name="PRJPSB" minlength="113" maxlength="248" location="file">
