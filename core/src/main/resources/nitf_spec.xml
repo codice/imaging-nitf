@@ -578,6 +578,17 @@
         <field name="BATCH_NO" length="6" type="string"/>
     </tre>
 
+    <tre name="PIAEQA" length="130">
+        <field name="EQPCODE" length="7" type="string"/>
+        <field name="EQPNOMEN" length="45" type="string"/>
+        <field name="EQPMAN" length="64" type="string"/>
+        <field name="OBTYPE" length="1" type="string"/>
+        <field name="ORDBAT" length="3" type="string"/>
+        <field name="CTRYPROD" length="2" type="string"/>
+        <field name="CTRYDSN" length="2" type="string"/>
+        <field name="OBJVIEW" length="6" type="string"/>
+    </tre>
+
     <tre name="PIAIMB" md_prefix="NITF_PIAIMB_" length="337" location="image">
         <field name="CLOUDCVR" length="3"/>
         <field name="SRP" length="1"/>
