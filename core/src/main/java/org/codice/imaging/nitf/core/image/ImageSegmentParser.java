@@ -284,11 +284,11 @@ public class ImageSegmentParser extends AbstractSegmentParser {
     }
 
     private void readNPPBH() throws NitfFormatException {
-        segment.setNumberOfPixelsPerBlockHorizontal(reader.readBytesAsInteger(NPPBH_LENGTH));
+        segment.setNumberOfPixelsPerBlockHorizontalRaw(reader.readBytesAsInteger(NPPBH_LENGTH));
     }
 
     private void readNPPBV() throws NitfFormatException {
-        segment.setNumberOfPixelsPerBlockVertical(reader.readBytesAsInteger(NPPBV_LENGTH));
+        segment.setNumberOfPixelsPerBlockVerticalRaw(reader.readBytesAsInteger(NPPBV_LENGTH));
     }
 
     private void readNBPP() throws NitfFormatException {

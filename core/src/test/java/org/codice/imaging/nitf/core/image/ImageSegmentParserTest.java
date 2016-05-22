@@ -201,8 +201,8 @@ public class ImageSegmentParserTest {
         assertThat(nitfImageSegmentHeader.getAttachmentLevel(), is(IALVL));
         assertThat(nitfImageSegmentHeader.getImageDisplayLevel(), is(IDLVL));
         assertThat(nitfImageSegmentHeader.getNumberOfBitsPerPixelPerBand(), is(NBPP));
-        assertThat(nitfImageSegmentHeader.getNumberOfPixelsPerBlockHorizontal(), is(NPPBH));
-        assertThat(nitfImageSegmentHeader.getNumberOfPixelsPerBlockVertical(), is(NPPBV));
+        assertThat(nitfImageSegmentHeader.getNumberOfPixelsPerBlockHorizontalRaw(), is(NPPBH));
+        assertThat(nitfImageSegmentHeader.getNumberOfPixelsPerBlockVerticalRaw(), is(NPPBV));
         assertThat(nitfImageSegmentHeader.getNumberOfBlocksPerColumn(), is(NBPC));
         assertThat(nitfImageSegmentHeader.getNumberOfBlocksPerRow(), is(NBPR));
         assertThat(nitfImageSegmentHeader.getImageComments().size(), is(NICOM));

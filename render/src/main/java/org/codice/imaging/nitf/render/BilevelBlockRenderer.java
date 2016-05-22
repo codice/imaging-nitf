@@ -310,8 +310,8 @@ class BilevelBlockRenderer implements BlockRenderer {
         if (mImageSegment.getActualBitsPerPixelPerBand() != 1) {
             throw new IOException("Unhandled bilevel image depth:" + mImageSegment.getActualBitsPerPixelPerBand());
         }
-        BufferedImage img = new BufferedImage(mImageSegment.getNumberOfPixelsPerBlockHorizontal(),
-                                              mImageSegment.getNumberOfPixelsPerBlockVertical(),
+        BufferedImage img = new BufferedImage((int) mImageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                                              (int) mImageSegment.getNumberOfPixelsPerBlockVertical(),
                                               BufferedImage.TYPE_BYTE_BINARY);
         imgRaster = img.getRaster();
         for (int blockRow = 0; blockRow < mImageSegment.getNumberOfPixelsPerBlockVertical(); ++blockRow) {
@@ -518,7 +518,7 @@ class BilevelBlockRenderer implements BlockRenderer {
                 }
             }
         }
-        return mImageSegment.getNumberOfPixelsPerBlockHorizontal();
+        return (int) mImageSegment.getNumberOfPixelsPerBlockHorizontal();
     }
 
     private void readScanline1D(final int blockRow) throws IOException {

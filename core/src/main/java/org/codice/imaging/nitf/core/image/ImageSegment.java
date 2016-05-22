@@ -569,7 +569,7 @@ public interface ImageSegment extends CommonBasicSegment {
      *
      * @param numberOfPixelsPerBlockHorizontal the number of pixels per block, horizontal.
      */
-    void setNumberOfPixelsPerBlockHorizontal(final int numberOfPixelsPerBlockHorizontal);
+    void setNumberOfPixelsPerBlockHorizontalRaw(final int numberOfPixelsPerBlockHorizontal);
 
     /**
      * Return the number of pixels per block - horizontal direction (NPPBH).
@@ -581,7 +581,18 @@ public interface ImageSegment extends CommonBasicSegment {
      *
      * @return the number of pixels per block, horizontal.
      */
-    int getNumberOfPixelsPerBlockHorizontal();
+    int getNumberOfPixelsPerBlockHorizontalRaw();
+
+    /**
+     * Return the number of pixels per block - horizontal direction (NPPBH).
+     * <p>
+     * This is basically the same as getNumberOfPixelsPerBlockHorizontalRaw, except that it deals with the case where
+     * NBPR == "0001" and NPPBH = "0000" and will return the actual number of pixels horizontally (i.e. the NCOLS
+     * value) for that case.
+     *
+     * @return the number of pixels per block, horizontal.
+     */
+     long getNumberOfPixelsPerBlockHorizontal();
 
     /**
      * Set the number of pixels per block - vertical direction (NPPBV).
@@ -593,7 +604,7 @@ public interface ImageSegment extends CommonBasicSegment {
      *
      * @param numberOfPixelsPerBlockVertical the number of pixels per block, vertical.
      */
-    void setNumberOfPixelsPerBlockVertical(final int numberOfPixelsPerBlockVertical);
+    void setNumberOfPixelsPerBlockVerticalRaw(final int numberOfPixelsPerBlockVertical);
 
     /**
      * Return the number of pixels per block - vertical direction (NPPBV).
@@ -605,7 +616,18 @@ public interface ImageSegment extends CommonBasicSegment {
      *
      * @return the number of pixels per block, vertical.
      */
-    int getNumberOfPixelsPerBlockVertical();
+    int getNumberOfPixelsPerBlockVerticalRaw();
+
+    /**
+     * Return the number of pixels per block - vertical direction (NPPBH).
+     * <p>
+     * This is basically the same as getNumberOfPixelsPerBlockVerticalRaw, except that it deals with the case where
+     * NBPC == "0001" and NPPBV = "0000" and will return the actual number of pixels vertically (i.e. the NROWS
+     * value) for that case.
+     *
+     * @return the number of pixels per block, vertical.
+     */
+    long getNumberOfPixelsPerBlockVertical();
 
     /**
      * Set the number of bits per pixel per band (NBPP).

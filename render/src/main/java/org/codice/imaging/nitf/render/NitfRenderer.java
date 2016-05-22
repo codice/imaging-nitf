@@ -108,9 +108,9 @@ public class NitfRenderer {
             BufferedImage img = renderer.getImageBlock(rowIndex, columnIndex);
             target.drawImage(img,
                     imageSegment.getImageLocationColumn() + columnIndex
-                            * imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                            * (int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
                     imageSegment.getImageLocationRow()
-                            + rowIndex * imageSegment.getNumberOfPixelsPerBlockVertical(),
+                            + rowIndex * (int) imageSegment.getNumberOfPixelsPerBlockVertical(),
                     null);
         });
     }
@@ -131,8 +131,8 @@ public class NitfRenderer {
                     (columnIndex + rowIndex * imageSegment.getNumberOfBlocksPerColumn()) - maskedBlocks.get());
 
             targetGraphic.drawImage(img,
-                    columnIndex * imageSegment.getNumberOfPixelsPerBlockHorizontal(),
-                    rowIndex * imageSegment.getNumberOfPixelsPerBlockVertical(),
+                    columnIndex * (int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                    rowIndex * (int) imageSegment.getNumberOfPixelsPerBlockVertical(),
                     null);
         });
     }

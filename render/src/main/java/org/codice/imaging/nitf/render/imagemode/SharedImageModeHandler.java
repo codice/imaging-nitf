@@ -42,8 +42,8 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
         final ImageMask imageMask = getImageMask(imageSegment);
 
         ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment,
-                () -> imageRepresentationHandler.createBufferedImage(imageSegment.getNumberOfPixelsPerBlockHorizontal(),
-                        imageSegment.getNumberOfPixelsPerBlockVertical()));
+                () -> imageRepresentationHandler.createBufferedImage((int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                        (int) imageSegment.getNumberOfPixelsPerBlockVertical()));
 
         matrix.forEachBlock(block -> {
             if (!imageMask.isMaskedBlock(block.getBlockIndex(), 0)) {

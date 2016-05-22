@@ -406,7 +406,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public final void setNumberOfPixelsPerBlockHorizontal(final int numberOfPixelsPerBlockHorizontal) {
+    public final void setNumberOfPixelsPerBlockHorizontalRaw(final int numberOfPixelsPerBlockHorizontal) {
         numPixelsPerBlockHorizontal = numberOfPixelsPerBlockHorizontal;
     }
 
@@ -414,7 +414,7 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public final int getNumberOfPixelsPerBlockHorizontal() {
+    public final int getNumberOfPixelsPerBlockHorizontalRaw() {
         return numPixelsPerBlockHorizontal;
     }
 
@@ -422,7 +422,19 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public final void setNumberOfPixelsPerBlockVertical(final int numberOfPixelsPerBlockVertical) {
+    public final long getNumberOfPixelsPerBlockHorizontal() {
+        if ((numPixelsPerBlockHorizontal == 0) && (numBlocksPerRow == 1)) {
+            return numColumns;
+        } else {
+            return numPixelsPerBlockHorizontal;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setNumberOfPixelsPerBlockVerticalRaw(final int numberOfPixelsPerBlockVertical) {
         numPixelsPerBlockVertical = numberOfPixelsPerBlockVertical;
     }
 
@@ -430,8 +442,20 @@ class ImageSegmentImpl extends CommonBasicSegmentImpl implements ImageSegment {
      * {@inheritDoc}
      */
     @Override
-    public final int getNumberOfPixelsPerBlockVertical() {
+    public final int getNumberOfPixelsPerBlockVerticalRaw() {
         return numPixelsPerBlockVertical;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final long getNumberOfPixelsPerBlockVertical() {
+        if ((numPixelsPerBlockVertical == 0) && (numBlocksPerColumn == 1)) {
+            return numRows;
+        } else {
+            return numPixelsPerBlockVertical;
+        }
     }
 
     /**
