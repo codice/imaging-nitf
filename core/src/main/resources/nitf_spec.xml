@@ -589,6 +589,11 @@
         <field name="OBJVIEW" length="6" type="string"/>
     </tre>
 
+    <tre name="PIAEVA" length="46">
+        <field name="EVENTNAME" length="38" type="string"/>
+        <field name="EVENTTYPE" length="8" type="string"/>
+    </tre>
+
     <tre name="PIAIMB" md_prefix="NITF_PIAIMB_" length="337" location="image">
         <field name="CLOUDCVR" length="3"/>
         <field name="SRP" length="1"/>
