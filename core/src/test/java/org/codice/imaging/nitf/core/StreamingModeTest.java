@@ -44,7 +44,7 @@ public class StreamingModeTest {
         String outputFile = FilenameUtils.getName(testfile);
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
-        File resourceFile = new File(getClass().getResource(testfile).getFile());
+        File resourceFile = new File(getClass().getResource(testfile).toURI().getPath());
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
         NitfReader reader = new FileReader(resourceFile);
         NitfParser.parse(reader, parseStrategy);

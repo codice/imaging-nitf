@@ -18,6 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
 import static org.codice.imaging.nitf.core.TestUtils.checkNitf20SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.FileReader;
@@ -73,12 +74,12 @@ public class Nitf20HeaderTest {
     }
 
     @Test
-    public void testCompliantHeaderReadFile() throws IOException, NitfFormatException {
+    public void testCompliantHeaderReadFile() throws IOException, NitfFormatException, URISyntaxException {
         final String simpleNitf20File = "/JitcNitf20Samples/U_1114A.NTF";
 
         assertNotNull("Test file missing", getClass().getResource(simpleNitf20File));
 
-        File resourceFile = new File(getClass().getResource(simpleNitf20File).getFile());
+        File resourceFile = new File(getClass().getResource(simpleNitf20File).toURI().getPath());
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.TEXT_DATA);
         NitfReader reader = new FileReader(resourceFile);
         NitfParser.parse(reader, parseStrategy);
