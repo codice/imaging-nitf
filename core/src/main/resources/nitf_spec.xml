@@ -640,6 +640,14 @@
         <field name="ASSOCTRY" length="2" type="string"/>
     </tre>
 
+    <tre name="PIAPEB" length="94" location="image">
+        <field name="LASTNME" length="28" type="string"/>
+        <field name="FIRSTNME" length="28" type="string"/>
+        <field name="MIDNME" length="28" type="string"/>
+        <field name="DOB" length="8" type="string"/>
+        <field name="ASSOCTRY" length="2" type="string"/>
+    </tre>
+
     <tre name="PIAPRC" minlength="201" maxlength="63759" location="file"> <!-- same as PIAPRD apparently ? -->
         <field name="ACCESSID" length="64" type="string"/>
         <field name="FMCONTROL" length="32" type="string"/>
