@@ -35,4 +35,8 @@ public class MonoRenderTest extends RenderTestSupport {
         testOneFile("headmono16.ntf", "Codice");
     }
 
+    @Test
+    public void test7bitIn8bitMono() throws IOException, NitfFormatException {
+        testOneFile("headmono7.ntf", "Codice");
+    }
 }
