@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tres>
+    <tre name="JITCID" location="image">
+        <field name="Info" length="200"/>
+    </tre>
+</tres>
