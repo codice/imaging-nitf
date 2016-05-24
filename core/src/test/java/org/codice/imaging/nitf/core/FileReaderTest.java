@@ -36,7 +36,7 @@ public class FileReaderTest {
     public void testBadFilenameConstructorArgument() throws NitfFormatException, URISyntaxException {
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
-        FileReader goodReader = new FileReader(getClass().getResource(testfile).getPath());
+        FileReader goodReader = new FileReader(getClass().getResource(testfile).toURI().getPath());
         assertNotNull(goodReader);
 
         exception.expect(NitfFormatException.class);

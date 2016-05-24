@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -94,11 +95,11 @@ public class Nitf21HeaderTest {
     }
 
     @Test
-    public void testCompliantHeaderReadFile() throws IOException, NitfFormatException {
+    public void testCompliantHeaderReadFile() throws IOException, NitfFormatException, URISyntaxException {
         final String simpleNitf21File = "/JitcNitf21Samples/i_3034c.ntf";
         assertNotNull("Test file missing", getClass().getResource(simpleNitf21File));
 
-        File resourceFile = new File(getClass().getResource(simpleNitf21File).getFile());
+        File resourceFile = new File(getClass().getResource(simpleNitf21File).toURI().getPath());
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
         NitfReader reader = new FileReader(resourceFile);
         NitfParser.parse(reader, parseStrategy);
@@ -580,11 +581,11 @@ public class Nitf21HeaderTest {
     }
 
     @Test
-    public void testStreamingModeParsingFromFile() throws IOException, NitfFormatException {
+    public void testStreamingModeParsingFromFile() throws IOException, NitfFormatException, URISyntaxException {
         final String testfile = "/JitcNitf21Samples/ns3321a.nsf";
         assertNotNull("Test file missing", getClass().getResource(testfile));
 
-        File resourceFile = new File(getClass().getResource(testfile).getFile());
+        File resourceFile = new File(getClass().getResource(testfile).toURI().getPath());
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
         NitfReader reader = new FileReader(resourceFile);
         NitfParser.parse(reader, parseStrategy);
