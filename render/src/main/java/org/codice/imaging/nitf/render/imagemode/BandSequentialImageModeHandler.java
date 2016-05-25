@@ -45,8 +45,8 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
         final ImageMask imageMask = getImageMask(imageSegment);
 
         ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment, ()
-                -> imageRepresentationHandler.createBufferedImage(imageSegment.getNumberOfPixelsPerBlockHorizontal(),
-                        imageSegment.getNumberOfPixelsPerBlockVertical()));
+                -> imageRepresentationHandler.createBufferedImage((int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                        (int) imageSegment.getNumberOfPixelsPerBlockVertical()));
 
         for (int bandIndex = 0; bandIndex < imageSegment.getNumBands(); bandIndex++) {
             final int index = bandIndex;

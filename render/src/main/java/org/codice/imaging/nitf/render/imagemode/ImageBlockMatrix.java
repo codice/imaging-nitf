@@ -38,8 +38,8 @@ class ImageBlockMatrix {
     ImageBlockMatrix(final ImageSegment imageSegment, final Supplier<BufferedImage> imageSupplier) {
         this.matrixWidth = (int) imageSegment.getNumberOfBlocksPerColumn();
         this.matrixHeight = (int) imageSegment.getNumberOfBlocksPerRow();
-        int blockWidth = imageSegment.getNumberOfPixelsPerBlockHorizontal();
-        int blockHeight = imageSegment.getNumberOfPixelsPerBlockVertical();
+        int blockWidth = (int) imageSegment.getNumberOfPixelsPerBlockHorizontal();
+        int blockHeight = (int) imageSegment.getNumberOfPixelsPerBlockVertical();
 
         blocks = new ImageBlock[matrixWidth][matrixHeight];
 

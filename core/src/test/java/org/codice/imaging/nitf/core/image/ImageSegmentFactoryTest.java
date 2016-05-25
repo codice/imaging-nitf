@@ -145,9 +145,9 @@ public class ImageSegmentFactoryTest {
         segment.setNumberOfBlocksPerColumn(1);
         assertEquals(1, segment.getNumberOfBlocksPerColumn());
 
-        segment.setNumberOfPixelsPerBlockHorizontal(75);
+        segment.setNumberOfPixelsPerBlockHorizontalRaw(75);
         assertEquals(75, segment.getNumberOfPixelsPerBlockHorizontal());
-        segment.setNumberOfPixelsPerBlockVertical(340);
+        segment.setNumberOfPixelsPerBlockVerticalRaw(340);
         assertEquals(340, segment.getNumberOfPixelsPerBlockVertical());
 
         segment.setNumberOfBitsPerPixelPerBand(11);
