@@ -24,3 +24,6 @@ hs_err_pid*
 .idea/
 /core/nbproject/
 /fluent-api/nbproject/
+/trewrap/nbproject/
+/trewrap/target/
+/registryparser/target/

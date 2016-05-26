@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NitfTreValueLookup tre="ACFTB" field="SENSOR_ID">
+	<Value value="ACESHY" description="Airborne Cueing and Exploitation System - Hyperspectral"/>
+	<Value value="AG3607" description="Daedalus Argo ST 3607 Multi-spectral Imager, Bands 1 - 14 are visible near-infrared (400 - 1000 um). Band 15 is MWIR (4530 um). Band 16 is LWIR (9920 um)."/>
+	<Value value="AIP" description="None"/>
+	<Value value="ALIRT" description="Airborne LADAR Imaging Research Testbed Sensor System"/>
+	<Value value="ANAPY8" description="Lynx Block 20 Radar"/>
+	<Value value="ANZPY1" description="STARLite Radar that is integrated onto Gray Eagle"/>
+	<Value value="APG-73" description="None"/>
+	<Value value="APG79" description="Advanced Electronically Steered Array (AESA) radar ground-mapping mode. For F/A-18E/F aircraft."/>
+	<Value value="APS149" description="The Littoral Surveillance Radar System (LSRS), APS-149, is an Early Operational Capability (EOC) platform developed to utilize Ground Moving Target Indicator (GMTI) and Synthetic Aperture Radar (SAR)"/>
+	<Value value="AREOS" description="Airborne Reconnaissance Electro Optical System"/>
+	<Value value="ASARS1" description="None"/>
+	<Value value="ASARS2" description="None"/>
+	<Value value="ASTOR" description="Airborne Stand-Off Radar (ASTOR). For Astor Program"/>
+	<Value value="ATFLIR" description="Advanced Targeting Forward Looking Infrared (ATFLIR). For all F/A-18 aircraft."/>
+	<Value value="BGREN" description="Airborne Hyperspectral Spectrometer; 228 bands; LWIR"/>
+	<Value value="BPEARL" description="Black Pearl - from Urban Robotics; Infrared focal plane"/>
+	<Value value="BUCKEY" description="The LiDAR sensor operating on the BuckEye imaging system"/>
+	<Value value="CA236" description="Darkstar EO"/>
+	<Value value="CA260" description="None"/>
+	<Value value="CA261" description="None"/>
+	<Value value="CA270" description="None"/>
+	<Value value="CA279H" description="High Altitude"/>
+	<Value value="CA279M" description="Medium Altitude"/>
+	<Value value="CA295" description="None"/>
+	<Value value="CH1EO" description="For Constant Hawk"/>
+	<Value value="CH96MP" description="Constant Hawk 96 megapixel camera"/>
+	<Value value="D500" description="None"/>
+	<Value value="DB110" description="None"/>
+	<Value value="DLTV" description="Alias for EO Zoo"/>
+	<Value value="DPY-1" description="Lxyn Block 30 Radar"/>
+	<Value value="DS-SAR" description="Darkstar Radar"/>
+	<Value value="DSS301" description="Digital Sensor System model 301"/>
+	<Value value="DSS322" description="Digital Sensor System model 322"/>
+	<Value value="DSS439" description="Digital Sensor System 439"/>
+	<Value value="DYNMTI" description="Dynamite. Airborne MWIR; FLIR Systems SC8300 Camera"/>
+	<Value value="DYNMTV" description="Dynamite. Airborne visible camera; Ikegami HDL-F30 with Fujinon XA88-12.5 BE SM Lens"/>
+	<Value value="ECMPS" description="ECOMPASS is an airborne hyperspectral spectrometer; 256 bands; V/NIR/SWIR"/>
+	<Value value="EF350L" description="Euroflir 350 L. EO/IR electro-optical gyrostabilized observation systems"/>
+	<Value value="EF410" description="Euroflir 410. EO/IR electro-optical gyrostabilized observation systems"/>
+	<Value value="EO Nos" description="Predator EO Nose Camera"/>
+	<Value value="EO Spo" description="Predator EO Telephoto Camera"/>
+	<Value value="EO Zoo" description="Predator EO Zoom Camera"/>
+	<Value value="FOP" description="FOPEN (Foliage Penetration Radar)"/>
+	<Value value="FSBS2" description="This value is necessary to indicate imagery for the Fire Scout Brite Star II payload"/>
+	<Value value="GEOMOS" description="For Gorgon Stare EO mosaic products. Indicates that the image is a rectified mosaic of the individual Gorgon Stare EO frame images collected as part of a single 'frame number' collection."/>
+	<Value value="GEOxx" description="Where xxx=000 to 999; denotes the index of the individual EO camera, or IR camera-field position combination for the image in questoin. Denotes an individual Gorgon Stare EO Pan frame image."/>
+	<Value value="GHR" description="Global Hawk Radar"/>
+	<Value value="GIRMOS" description="For Gorgon Stare IR mosaic products. Indicates that the image is a rectified mosaic of teh individual Gorgon Stare IR frame images collected as part of a single &quot;frame number&quot; collection."/>
+	<Value value="GIRxxx" description="Where xxx=000 to 999; denotes the index of the individual EO camera, or IR camera-field position combination for the image in question. Denotes an individual Gorgon Stare IR frame image."/>
+	<Value value="GR-M80" description="Operationally Responsive Space-1 (ORS-1 is an Intelligence, Surveillance, and Reconnaissance (ISR) satellite providing imagery in support of USCENTCOM. The satellite payload is derived from the U-2 SYERS-2A sensor and will provide EO, IR and Multispectral imagery. The new sensor is called GR-M80. The system maximizes the use of existing airborne tasking, collection, processing, exploitation and dissemination (TCPED) systems, therby minimizing the modifications required."/>
+	<Value value="HALOE" description="High Altitude LiDAR Operations and Evaluation sensor system (formerly Multimode Laser ISR (MSLISR)). HALOE is a LiDAR-based high resolution, wide-area, 3D imaging system supporting DTED Level 6(+) geospatial data collection."/>
+	<Value value="HGSAR" description="Harfang SAR"/>
+	<Value value="HSAR" description="None"/>
+	<Value value="HYCAS" description="Airborne Hyperspectral. The Air Force is currently developing and deploying HyCAS, a real-time hyperspectral sensor. This sensor is initially targeted at MQ-1 Predator. This sensor will generate multiple NITF products and need valid sensor ID fields for archival and searching."/>
+	<Value value="HYDICE" description="None"/>
+	<Value value="IR Amb" description="Predator IR Camera"/>
+	<Value value="IR M50" description="Predator IR M500 Camera"/>
+	<Value value="IR M60" description="Predator IR M600 Camera"/>
+	<Value value="IRLS" description="ATARS"/>
+	<Value value="JAUDIT" description="Jungle Airborne Under Dense-vegetation Imaging Technology sensor system. JAUDIT is a linear-mode LiDAR system."/>
+	<Value value="JSE8CA" description="JS for Joint STARS, E8C for platform, A for current hardware revision"/>
+	<Value value="L101H2" description="Hyperspectral sensor package for MQ-1/MQ-9"/>
+	<Value value="LAEO" description="ATARS"/>
+	<Value value="LIDAR" description="Generic value used for early LiDAR collections. The value is deprecated for use with new LiDAR sensors. See additional registered values for specific LiDAR sensors (e.g. ALIRT, BUCKEY, JAUDIT...)"/>
+	<Value value="LiMIT" description="The LiMIT sensor is part of the Paul Revere aircraft and produces SAR imagery."/>
+	<Value value="MAEO" description="ATARS"/>
+	<Value value="MARS" description="Airborne Hyperspectral - 321 bands; V/NIR/SWIR"/>
+	<Value value="MASIVS" description="Multi-Aperture Sparse Imager Video System (MASIVS) is an 880 Megapixel, Color, Wide-Area EO Sensor"/>
+	<Value value="MBSAR" description="Multiband SAR Sensor"/>
+	<Value value="MFASMR" description="Multi-Function Active Sensor (MFAS) Maritime Radar. This sensor is a 360 degree X-Band 2-dimensional Active Electronically Scanned Array (AESA) Radar that supports both maritime and air/ground modes of operation."/>
+	<Value value="MOSP" description="Harfang EO/IR Zoom Camera"/>
+	<Value value="MPRTIP" description="Multi-Platform Radar Technology Insertion Program 2D multi-mode radar"/>
+	<Value value="MS-177" description="MS-177 Multi-Spectral EO/IR Sensor"/>
+	<Value value="MSSL1" description="Airborne Hyperspectral - V/NIR/SWIR"/>
+	<Value value="MTNR" description="Mountaineer is an airborne hyperpectral spectrometer - 128 bands; LWIR"/>
+	<Value value="MTSADL" description="Raytheon MTS - a daylight video frame camera"/>
+	<Value value="MTSAID" description="Raytheon MTS - a fusion of digital infrared and daylight video frame cameras"/>
+	<Value value="MTSAIL" description="Raytheon MTS - a fusion of digital infrared and lowlight video frame cameras"/>
+	<Value value="MTSAIR" description="Raytheon MTS - a digital infrared video frame camera"/>
+	<Value value="MTSALL" description="Raytheon MTS - a lowlight video frame camera"/>
+	<Value value="MTSASI" description="Raytheon MTS - a digital infrared video frame camera, short wave"/>
+	<Value value="MTSCLI" description="Raytheon MTS - a digital infrared video frame camera, long wave"/>
+	<Value value="MTSCMI" description="Raytheon MTS - a digital infrared video frame camera, medium wave"/>
+	<Value value="MTSCSA" description="Raytheon MTS - a situational awareness lowlight video frame camera"/>
+	<Value value="MTSCSS" description="Raytheon MTS - a digital infrared video frame camera, short wave, situational awareness mode"/>
+	<Value value="MTSCST" description="Raytheon MTS - a digital infrared video frame camera, short wave, tactical"/>
+	<Value value="MTSCVN" description="Raytheon MTS - a digital video frame camera, very near infrared"/>
+	<Value value="MX20EN" description="L3 WESCAM MX-20 Electro-Optical daylight video frame camera, narrow field of view"/>
+	<Value value="MX20EW" description="L3 WESCAM MX-20 Electro-Optical color daylight video frame camera, wide field of view"/>
+	<Value value="MX20IR" description="L3 WESCAM MX-20 digital infrared video frame camera"/>
+	<Value value="OBC" description="Optical Bar Camera"/>
+	<Value value="OM_33" description="Mirage F1CR, Omera 33 frame camera"/>
+	<Value value="OM_40" description="Mirage F1CR, Omera 40 panoramic camera"/>
+	<Value value="PANO" description="SPERWER front camera"/>
+	<Value value="PEARL" description="Airborne 3 band multi-spectral imager; R,G, B; Urban Robotics; CMOS focal plane; Model 1DS MKIII"/>
+	<Value value="PKSAR" description="Peace Krypton (PK) Synthetic Aperture Radar (SAR) sensor for the Peace Krypton system"/>
+	<Value value="PLHRI" description="Pan Line High Resolution imagery"/>
+	<Value value="PRESTO" description="Airborne Stand-Off Reconnaissance Pod"/>
+	<Value value="RADEOS" description="Rapid Deployment Electro-Optical System"/>
+	<Value value="RDLK" description="Red Lake is an airborne panchromatic sensor; Princeton Instruments; Model EP16000; 16 megapixel"/>
+	<Value value="RTNESS" description="Comprised of a Radar (SAR &amp; MTI) and EO/IR Electro-Optical Receiver Unit (ERU)"/>
+	<Value value="S1S2SW" description="Airborne Hyperspectral"/>
+	<Value value="S3MWIR" description="Airborne MWIR context imager"/>
+	<Value value="S4LWIR" description="Airborne Hyperspectral; 256 bands; LWIR"/>
+	<Value value="S5SWIR" description="Airborne Hyperspectral; 170 bands; NIR/SWIR"/>
+	<Value value="SHARP" description="SHAred Reconnaissance Pod"/>
+	<Value value="SIR-C" description="None"/>
+	<Value value="SPMWIR" description="Spectral Infrared Remote Imaging Transition Testbed (SPIRITT) mid-wavelength infrared scanning sensor"/>
+	<Value value="SPSWIR" description="Spectral Infrared Remote Imaging Transition Testbed (SPIRITT) short-wavelength infrared scanning sensor"/>
+	<Value value="SPVIS" description="Spectral Infrared Remote Imaging Transition Testbed (SPIRITT) visible wavelength scanning sensor"/>
+	<Value value="SPVNIR" description="Spectral Infrared Remote Imaging Transition Testbed (SPIRITT) visible near-infrared wavelength scanning sensor"/>
+	<Value value="SYERS" description="Senior Year Electro-optical Reconnaissance System"/>
+	<Value value="SYERS2" description="For SYERS-2 and SYERS-2A"/>
+	<Value value="TARSAR" description="TARS SAR"/>
+	<Value value="TMAEO" description="Theater Airborne Reconnaissance Systems (TARS) "/>
+	<Value value="TSAR" description="Tactical SAR on Predator"/>
+</NitfTreValueLookup>

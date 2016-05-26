@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NitfTreValueLookup tre="ACFTB" field="SCENE_SOURCE">
+	<Sensor ident="APS149">
+		<Value value="0" description="Pre-planned"/>
+	</Sensor>
+	<Sensor ident="AREOS">
+		<Value value="0" description="Pre-planned"/>
+		<Value value="2" description="Target of Opportunity"/>
+	</Sensor>
+	<Sensor ident="ASARS-2">
+		<Value value="1" description="Scene Update (uplink)"/>
+		<Value value="2" description="Scene Update (manual - via pilot's cockpit display unit)"/>
+		<Value value="3" description="Immediate Scene (immediate spot or search range adjust)"/>
+		<Value value="5" description="Preplanned Tape Modification"/>
+		<Value value="6" description="SSS"/>
+	</Sensor>
+	<Sensor ident="CA279M &amp; CA279H">
+		<Value value="0" description="Pre-planned"/>
+		<Value value="2" description="Manual"/>
+	</Sensor>
+	<Sensor ident="DB110 (For RAPTOR)">
+		<Value value="1" description="Dynamic"/>
+		<Value value="2" description="Target of Opportunity"/>
+		<Value value="3" description="Manual"/>
+	</Sensor>
+	<Sensor ident="JSE8CA">
+		<Value value="1" description="Manual"/>
+	</Sensor>
+	<Sensor ident="MASIVS">
+		<Value value="1" description="Origin of scene request not tracked"/>
+	</Sensor>
+	<Sensor ident="MFASMR">
+		<Value value="1" description="Origin of scene request not tracked"/>
+	</Sensor>
+	<Sensor ident="OM_33">
+		<Value value="0" description="Pre-planned"/>
+	</Sensor>
+	<Sensor ident="OM_40">
+		<Value value="0" description="Pre-planned"/>
+	</Sensor>
+	<Sensor ident="Predefined Value">
+		<Value value="0" description="Pre-planned"/>
+	</Sensor>
+</NitfTreValueLookup>
