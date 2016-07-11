@@ -18,7 +18,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
 import java.util.function.Function;
+
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
 
     private final Function<RandomAccessFile, R> resultConversionFunction;
 
+    private File dataFile;
+
     /**
      * @param resultConverter a function that converts a RandomAccessFile to &lt;R&gt;
      */
@@ -46,12 +50,10 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
      * {@inheritDoc}
      */
     @Override
-    public final R handleSegment(final NitfReader reader,
-            final long dataLength) throws NitfFormatException {
+    public final R handleSegment(final NitfReader reader, final long dataLength)
+            throws NitfFormatException {
         LOGGER.info(String.format("Storing %s bytes in temporary file.", dataLength));
         byte[] bytes = reader.readBytesRaw((int) dataLength);
-
-        File dataFile = null;
 
         try {
             dataFile = File.createTempFile("nitf", (String) null);
@@ -67,6 +69,17 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
             return result;
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public final void cleanUp() {
+        if (dataFile != null) {
+            try {
+                Files.deleteIfExists(dataFile.toPath());
+            } catch (IOException e) {
+                LOGGER.warn("Unable to delete file.", e);
+            }
         }
     }
 }

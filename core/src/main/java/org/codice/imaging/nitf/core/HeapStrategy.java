@@ -35,4 +35,11 @@ public interface HeapStrategy<R> {
      * @throws NitfFormatException when reading 'length' bytes from 'reader' causes one.
      */
     R handleSegment(final NitfReader reader, long length) throws NitfFormatException;
+
+    /**
+     * Performs necessary cleanup for a given HeapStratgey implementation. This should
+     * called once the strategy is no longer needed.
+     *
+     */
+    void cleanUp();
 }

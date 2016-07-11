@@ -20,10 +20,12 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
+
 import org.codice.imaging.nitf.core.FileBackedHeapStrategy;
 import org.codice.imaging.nitf.core.HeapStrategy;
 import org.codice.imaging.nitf.core.SlottedParseStrategy;
@@ -52,7 +54,8 @@ public class NitfParserParsingFlow {
      * @param imageDataStrategySupplier a supplier for the ImageDataStrategy.
      * @return this NitfParserParsingFlow.
      */
-    public final NitfParserParsingFlow imageDataStrategy(final Supplier<HeapStrategy<ImageInputStream>> imageDataStrategySupplier) {
+    public final NitfParserParsingFlow imageDataStrategy(
+            final Supplier<HeapStrategy<ImageInputStream>> imageDataStrategySupplier) {
         this.imageDataStrategy = imageDataStrategySupplier.get();
         return this;
     }
@@ -109,7 +112,8 @@ public class NitfParserParsingFlow {
      * @throws NitfFormatException when it's thrown by the parser.
      */
     public final NitfSegmentsFlow headerOnly() throws NitfFormatException {
-        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
+        SlottedParseStrategy parseStrategy =
+                new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
         parseStrategy.setImageHeapStrategy(imageDataStrategy);
         return build(parseStrategy);
     }
@@ -120,13 +124,13 @@ public class NitfParserParsingFlow {
      * @param parseStrategy the SlottedParseStrategy to use for parsing.
      * @return a new NitfSegmentsFlow.
      * @throws NitfFormatException when it's thrown by the parser.
-     *
      */
-    public final NitfSegmentsFlow build(final SlottedParseStrategy parseStrategy) throws NitfFormatException {
+    public final NitfSegmentsFlow build(final SlottedParseStrategy parseStrategy)
+            throws NitfFormatException {
         for (Source treDescriptor : treDescriptors) {
             parseStrategy.registerAdditionalTREdescriptor(treDescriptor);
         }
         NitfParser.parse(reader, parseStrategy);
-        return new NitfSegmentsFlow(parseStrategy.getDataSource());
+        return new NitfSegmentsFlow(parseStrategy.getDataSource(), imageDataStrategy::cleanUp);
     }
 }
