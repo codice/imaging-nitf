@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -159,7 +160,7 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
         @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
     protected final String defaultReadBytes(final int count) throws NitfFormatException {
-        return new String(readBytesRaw(count), UTF8_CHARSET);
+        return new String(readBytesRaw(count), StandardCharsets.ISO_8859_1);
     }
 
 }

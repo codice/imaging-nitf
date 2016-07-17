@@ -29,7 +29,12 @@ import static org.junit.Assert.assertNotNull;
 class SharedTreTest {
     
     protected Tre parseTRE(String testData, int expectedLength, String treTag) throws NitfFormatException {
-        InputStream inputStream = new ByteArrayInputStream(testData.getBytes());
+        byte bytes[] = testData.getBytes();
+        return parseTRE(bytes, expectedLength, treTag);
+    }
+
+    protected Tre parseTRE(byte[] bytes, int expectedLength, String treTag) throws NitfFormatException {
+        InputStream inputStream = new ByteArrayInputStream(bytes);
         BufferedInputStream bufferedStream = new BufferedInputStream(inputStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();

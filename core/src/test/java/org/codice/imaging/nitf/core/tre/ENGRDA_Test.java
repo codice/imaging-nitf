@@ -95,20 +95,20 @@ public class ENGRDA_Test {
     public void BuildENGRDA() throws NitfFormatException {
         Tre engrda = TreFactory.getDefault("ENGRDA", TreSource.UserDefinedHeaderData);
         assertNotNull(engrda);
-        engrda.add(new TreEntry("RESRC", "GEOMOS"));
-        engrda.add(new TreEntry("RECNT", "1"));
+        engrda.add(new TreEntry("RESRC", "GEOMOS", "string"));
+        engrda.add(new TreEntry("RECNT", "1", "integer"));
         TreEntry records = new TreEntry("RECORDS");
         engrda.add(records);
         TreGroup record0 = new TreGroupImpl();
-        record0.add(new TreEntry("ENGLN", "11"));
-        record0.add(new TreEntry("ENGLBL", "TEMPERATURE"));
-        record0.add(new TreEntry("ENGMTXC", "3"));
-        record0.add(new TreEntry("ENGMTXR", "1"));
-        record0.add(new TreEntry("ENGTYP", "A"));
-        record0.add(new TreEntry("ENGDTS", "1"));
-        record0.add(new TreEntry("ENGDATU", "NA"));
-        record0.add(new TreEntry("ENGDATC", "3"));
-        record0.add(new TreEntry("ENGDATA", "374"));
+        record0.add(new TreEntry("ENGLN", "11", "integer"));
+        record0.add(new TreEntry("ENGLBL", "TEMPERATURE", "string"));
+        record0.add(new TreEntry("ENGMTXC", "3", "integer"));
+        record0.add(new TreEntry("ENGMTXR", "1", "integer"));
+        record0.add(new TreEntry("ENGTYP", "A", "string"));
+        record0.add(new TreEntry("ENGDTS", "1", "integer"));
+        record0.add(new TreEntry("ENGDATU", "NA", "string"));
+        record0.add(new TreEntry("ENGDATC", "3", "integer"));
+        record0.add(new TreEntry("ENGDATA", "374", "string"));
         records.addGroup(record0);
 
         TreParser parser = new TreParser();

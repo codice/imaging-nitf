@@ -30,19 +30,22 @@ public class TreEntry {
 
     private String name = null;
     private String value = null;
+    private String dataType = null;
     private List<TreGroup> groups = null;
 
     /**
-        Construct a TRE entry with a specific field name, field value and parent.
-        <p>
-        This is the simple (not-repeating) TRE entry form.
-
-        @param fieldName the field name of the new TRE entry.
-        @param fieldValue the field value for the new TRE entry.
+     * Construct a TRE entry with a specific field name, field value and parent.
+     * <p>
+     * This is the simple (not-repeating) TRE entry form.
+     *
+     * @param fieldName the field name of the new TRE entry.
+     * @param fieldValue the field value for the new TRE entry.
+     * @param fieldType the data type ("string", "real", "UINT8", "integer") for the data
     */
-    public TreEntry(final String fieldName, final String fieldValue) {
+    public TreEntry(final String fieldName, final String fieldValue, final String fieldType) {
         name = fieldName;
         value = fieldValue;
+        dataType = fieldType;
     }
 
     /**
@@ -118,6 +121,17 @@ public class TreEntry {
     */
     public final void addGroup(final TreGroup group) {
         groups.add(group);
+    }
+
+    /**
+     * Return the data type for this TRE entry.
+     *
+     * This is only meaningful if it is a simple entry (not a nested group).
+     *
+     * @return the data type as a string, or null for a group.
+     */
+    public final String getDataType() {
+        return dataType;
     }
 
     /**

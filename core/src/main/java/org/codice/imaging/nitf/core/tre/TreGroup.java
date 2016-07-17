@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core.tre;
 
+import java.math.BigInteger;
 import java.util.List;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 
@@ -71,10 +72,39 @@ public interface TreGroup {
      Get the field value for a specific tag in integer format.
 
      @param tagName the name (tag) of the field to look up.
-     @return the field value corresponding to the tag name, as an integer.
+     @return the field value corresponding to the tag name, as a integer.
      @throws NitfFormatException when the tag is not found or the value cannot be converted to integer format.
      */
     int getIntValue(String tagName) throws NitfFormatException;
+
+    /**
+     * Get the field value for a specific tag in long integer format.
+     *
+     * @param tagName the name (tag) of the field to look up.
+     * @return the field value corresponding to the tag name, as a long integer.
+     * @throws NitfFormatException when the tag is not found or the value cannot
+     * be converted to long integer format.
+     */
+    long getLongIntegerValue(String tagName) throws NitfFormatException;
+
+    /**
+     * Get the field value for a specific tag as a BigInteger.
+     *
+     * @param tagName the name (tag) of the field to look up.
+     * @return the field value corresponding to the tag name.
+     * @throws NitfFormatException when the tag is not found or the value cannot
+     * be converted to a number format.
+     */
+    BigInteger getBigIntegerValue(String tagName) throws NitfFormatException;
+
+    /**
+     * Get the field value for a specific tag in double format.
+     *
+     * @param tagName the name (tag) of the field to look up.
+     * @return the field value corresponding to the tag name, as an double.
+     * @throws NitfFormatException when the tag is not found or the value cannot be converted to double format.
+     */
+    double getDoubleValue(String tagName) throws NitfFormatException;
 
     /**
      Debug dump of the entries.

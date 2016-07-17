@@ -37,10 +37,14 @@ public abstract class SharedTreTestSupport {
 
     protected Tre parseTRE(String testData, String treTag) throws NitfFormatException {
         InputStream inputStream = new ByteArrayInputStream(testData.getBytes());
+        return parseTRE(inputStream, testData.length(), treTag);
+    }
+
+    protected Tre parseTRE(InputStream inputStream, int len, String treTag) throws NitfFormatException {
         BufferedInputStream bufferedStream = new BufferedInputStream(inputStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, testData.length(), TreSource.ImageExtendedSubheaderData);
+        TreCollection parseResult = parser.parse(nitfReader, len, TreSource.ImageExtendedSubheaderData);
         assertEquals(1, parseResult.getTREs().size());
         Tre tre = parseResult.getTREsWithName(treTag).get(0);
         assertNotNull(tre);
