@@ -33,6 +33,6 @@ public class SegmentsFlowTest {
     public void NullSource() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("ImageSegmentFlow(): constructor argument 'dataSource' may not be null.");
-        NitfSegmentsFlow flow = new NitfSegmentsFlow(null);
+        NitfSegmentsFlow flow = new NitfSegmentsFlow(null, null);
     }
 }

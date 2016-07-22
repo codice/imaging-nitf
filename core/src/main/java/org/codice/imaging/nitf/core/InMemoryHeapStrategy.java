@@ -52,4 +52,9 @@ public class InMemoryHeapStrategy<R> implements HeapStrategy<R> {
         R result = resultConversionFunction.apply(inputStream);
         return result;
     }
+
+    @Override
+    public final void cleanUp() {
+        // Nothing to do
+    }
 }

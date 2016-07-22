@@ -77,6 +77,12 @@ public class ConfigurableHeapStrategy<R> implements HeapStrategy<R> {
         }
     }
 
+    @Override
+    public final void cleanUp() {
+        inMemoryImageDataStrategy.cleanUp();
+        fileBackedImageDataStrategy.cleanUp();
+    }
+
     /**
      *
      * @param length the length of the image data segment.

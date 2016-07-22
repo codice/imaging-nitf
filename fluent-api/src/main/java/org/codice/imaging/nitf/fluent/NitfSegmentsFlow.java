@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.fluent;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
 import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
@@ -32,15 +33,19 @@ import org.codice.imaging.nitf.core.text.TextSegment;
  */
 public class NitfSegmentsFlow {
 
+    private final Runnable callback;
+
     private DataSource mDataSource;
 
-    NitfSegmentsFlow(final DataSource dataSource) {
+    NitfSegmentsFlow(final DataSource dataSource, final Runnable runnable) {
         if (dataSource == null) {
             throw new IllegalArgumentException(
                     "ImageSegmentFlow(): constructor argument 'dataSource' may not be null.");
         }
 
         mDataSource = dataSource;
+
+        this.callback = runnable;
     }
 
     /**
@@ -71,7 +76,8 @@ public class NitfSegmentsFlow {
      * @param consumer The consumer to pass the data extension segment to.
      * @return this NitfSegmentsFlow.
      */
-    public final NitfSegmentsFlow forEachDataExtensionSegment(final Consumer<DataExtensionSegment> consumer) {
+    public final NitfSegmentsFlow forEachDataExtensionSegment(
+            final Consumer<DataExtensionSegment> consumer) {
         return forEachSegment(consumer, () -> mDataSource.getDataExtensionSegments());
     }
 
@@ -126,7 +132,8 @@ public class NitfSegmentsFlow {
         return this;
     }
 
-    private <T extends CommonSegment> NitfSegmentsFlow forEachSegment(final Consumer<T> consumer, final Supplier<List<T>> supplier) {
+    private <T extends CommonSegment> NitfSegmentsFlow forEachSegment(final Consumer<T> consumer,
+            final Supplier<List<T>> supplier) {
         if (consumer != null && supplier != null) {
             List<T> segments = supplier.get();
 
@@ -138,5 +145,12 @@ public class NitfSegmentsFlow {
         }
 
         return this;
+    }
+
+    /**
+     * Performs necessary cleanup.
+     */
+    public final void end() {
+        this.callback.run();
     }
 }
