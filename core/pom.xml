@@ -110,6 +110,7 @@
                     <resourceBundles>
                         <resourceBundle>org.codice.imaging.nitf:codice-imaging-nitf-shared-test-resources:${project.version}</resourceBundle>
                     </resourceBundles>
+                    <attachToMain>false</attachToMain>
                     <outputBuildDirectory>${project.build.directory}/src/test/resources</outputBuildDirectory>
                 </configuration>
                 <executions>
