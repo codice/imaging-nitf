@@ -146,7 +146,8 @@ public class FileComparer {
         }
         if (segment1 == null) {
             out.write("Coordinate System is `'\n");
-        } else if (segment1.getImageCoordinatesRepresentation() == ImageCoordinatesRepresentation.UTMUPSNORTH) {
+        } else if (segment1.getImageCoordinatesRepresentation() == ImageCoordinatesRepresentation.UTMNORTH) {
+            // Note that this only handles one special case.
             out.write("Coordinate System is:\n");
             out.write("PROJCS[\"unnamed\",\n");
             out.write("    GEOGCS[\"WGS 84\",\n");

@@ -153,7 +153,7 @@ public class ImageCoordinatePair {
     }
 
     /**
-        Set the value from UTM / UPS North.
+        Set the value from UTM North.
         <p>
         This format will not be converted to degrees, so getLatitude and getLongitude() will return
         default (0) values.
@@ -161,11 +161,43 @@ public class ImageCoordinatePair {
         @param utm the string representation of the coordinates.
         @throws NitfFormatException if the string does not have the correct length / format.
     */
-    public final void setFromUTMUPSNorth(final String utm) throws NitfFormatException {
+    public final void setFromUTMNorth(final String utm) throws NitfFormatException {
         if (utm.length() != "zzeeeeeennnnnnn".length()) {
-            throw new NitfFormatException("Incorrect length for UTM / UPS North String");
+            throw new NitfFormatException("Incorrect length for UTM North string");
         }
         sourceString = utm;
+    }
+
+    /**
+     * Set the value from UTM South.
+     * <p>
+     * This format will not be converted to degrees, so getLatitude and
+     * getLongitude() will return default (0) values.
+     *
+     * @param utm the string representation of the coordinates.
+     * @throws NitfFormatException if the string does not have the correct length / format.
+    */
+    public final void setFromUTMSouth(final String utm) throws NitfFormatException {
+        if (utm.length() != "zzeeeeeennnnnnn".length()) {
+            throw new NitfFormatException("Incorrect length for UTM South string");
+        }
+        sourceString = utm;
+    }
+
+    /**
+     * Set the value from UPS.
+     * <p>
+     * This format will not be converted to degrees, so getLatitude and
+     * getLongitude() will return default (0) values.
+     *
+     * @param ups the string representation of the coordinates.
+     * @throws NitfFormatException if the string does not have the correct length / format.
+    */
+    public final void setFromUPS(final String ups) throws NitfFormatException {
+        if (ups.length() != "Peeeeeeennnnnnn".length()) {
+            throw new NitfFormatException("Incorrect length for UPS string");
+        }
+        sourceString = ups;
     }
 
     /**

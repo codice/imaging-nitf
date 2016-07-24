@@ -17,8 +17,8 @@ package org.codice.imaging.nitf.core.image;
 import org.codice.imaging.nitf.core.common.AbstractSegmentParser;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 import static org.codice.imaging.nitf.core.image.ImageConstants.ABPP_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.COMRAT_LENGTH;
 import static org.codice.imaging.nitf.core.image.ImageConstants.IALVL_LENGTH;
@@ -217,7 +217,6 @@ public class ImageSegmentParser extends AbstractSegmentParser {
     }
 
     private void readIGEOLO() throws NitfFormatException {
-        // TODO: this really only handle the GEO and D cases, not the UTM / UPS representations.
         final int numCoordinates = 4;
         final int coordinatePairLength = IGEOLO_LENGTH / numCoordinates;
         String igeolo = reader.readBytes(IGEOLO_LENGTH);
@@ -232,8 +231,14 @@ public class ImageSegmentParser extends AbstractSegmentParser {
                 case DECIMALDEGREES:
                     coords[i].setFromDecimalDegrees(coordStr);
                     break;
-                case UTMUPSNORTH:
-                    coords[i].setFromUTMUPSNorth(coordStr);
+                case UTMNORTH:
+                    coords[i].setFromUTMNorth(coordStr);
+                    break;
+                case UTMSOUTH:
+                    coords[i].setFromUTMSouth(coordStr);
+                    break;
+                case UPS:
+                    coords[i].setFromUPS(coordStr);
                     break;
                 case GEOCENTRIC:
                     coords[i].setFromDMS(coordStr);

@@ -47,14 +47,21 @@ public enum ImageCoordinatesRepresentation {
         <p>
         This is not valid in NITF 2.0 files.
     */
-    UTMUPSNORTH ("N", null),
+    UTMNORTH ("N", null),
 
     /**
         UTM, Southern Hemisphere.
         <p>
         This is not valid in NITF 2.0 files.
     */
-    UTMUPSSOUTH ("S", null),
+    UTMSOUTH ("S", null),
+
+    /**
+     * UPS, Northern or Southern Hemisphere.
+     * <p>
+     * This is a RFC-NTB-050 change, and is not valid in NITF 2.0 files.
+     */
+    UPS ("P", null),
 
     /**
         Geographic representation.
