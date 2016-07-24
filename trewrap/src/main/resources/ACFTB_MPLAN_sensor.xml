@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NitfTreValueLookup tre="ACFTB" field="MPLAN">
+	<Sensor ident="AIP">
+		<Value value="013" description="Monopulse Calibration"/>
+		<Value value="014" description="Wide Area MTI (WAMTI)"/>
+		<Value value="015" description="Coarse Resolution Search"/>
+		<Value value="016" description="Medium Resolution Search"/>
+		<Value value="017" description="High Resolution Search"/>
+		<Value value="018" description="Point Imaging"/>
+		<Value value="019" description="Swath MTI (SMTI)"/>
+		<Value value="020" description="Repetitive Point Imaging"/>
+		<Value value="022" description="Spot-3A"/>
+		<Value value="023" description="Spot-1A"/>
+		<Value value="028" description="Enhanced Point Imaging"/>
+		<Value value="029" description="Scalable Point Imaging"/>
+	</Sensor>
+	<Sensor ident="ANAPY8">
+		<Value value="001" description="Single Spot"/>
+		<Value value="002" description="Dwell Spot"/>
+		<Value value="003" description="Zoom Spot"/>
+		<Value value="004" description="Transit Strip"/>
+		<Value value="005" description="Geo Strip"/>
+		<Value value="006" description="Brick Map"/>
+	</Sensor>
+	<Sensor ident="ANZPY1">
+		<Value value="001" description="Georeferenced Strip Mode"/>
+		<Value value="002" description="Transit Strip Mode"/>
+		<Value value="003" description="reserved for future use"/>
+		<Value value="004" description="Spot Mode"/>
+	</Sensor>
+	<Sensor ident="APG-73">
+		<Value value="001" description="Search"/>
+		<Value value="002" description="Spotlight"/>
+	</Sensor>
+	<Sensor ident="APS149">
+		<Value value="001" description="SAR Spotlight, geocoded high resolution"/>
+		<Value value="002" description="SAR Spotlight, non-geocoded high resolution"/>
+		<Value value="003" description="SAR Spotlight, geocoded low resolution"/>
+		<Value value="004" description="SAR Spotlight, non-geocoded low resolution"/>
+	</Sensor>
+	<Sensor ident="AREOS">
+		<Value value="018" description="NIR/PC. PC = Narrow Field of View"/>
+		<Value value="019" description="NIR/GC. GC = Wide Field of View"/>
+		<Value value="020" description="IR2/PC.  PC = Narrow Field of View"/>
+		<Value value="021" description="IR2/GC.  GC = Wide Field of View"/>
+		<Value value="022" description="DUALBAND PC.  PC = Narrow Field of View"/>
+		<Value value="023" description="DUALBAND GC.  GC = Wide Field of View"/>
+		<Value value="024" description="IRLS"/>
+	</Sensor>
+	<Sensor ident="ASARS-2">
+		<Value value="001" description="Search"/>
+		<Value value="002" description="Spot 3"/>
+		<Value value="004" description="Spot 1"/>
+		<Value value="007" description="Continuous Spot 3"/>
+		<Value value="008" description="Continuous Spot 1"/>
+		<Value value="009" description="EMTI Wide Frame Search"/>
+		<Value value="010" description="EMTI Narrow Frame Search"/>
+		<Value value="011" description="EMTI Augment Spot"/>
+		<Value value="012" description="EMTI Wide Area MIT (WAMTI)"/>
+		<Value value="013" description="Monopulse Calibration"/>
+	</Sensor>
+	<Sensor ident="ASTOR">
+		<Value value="001" description="Enhanced Spot Mode"/>
+		<Value value="002" description="Spot Mode"/>
+		<Value value="003" description="Swath 1 Mode"/>
+		<Value value="005" description="Subscan (SS) MTI Exo-clutter Mode"/>
+		<Value value="006" description="Subscan (SS) MTI Exo/Endo-clutter Mode"/>
+		<Value value="007" description="Wide Area Scan (WAS) MTI Exo-clutter Mode"/>
+		<Value value="008" description="Wide Area Scan (WAS) MTI Exo/Endo-clutter Mode"/>
+	</Sensor>
+	<Sensor ident="CA279M &amp; CA279H">
+		<Value value="005" description="EO Point Target"/>
+		<Value value="006" description="EO Wide Area Search"/>
+		<Value value="007" description="EO Defined Area Target.  &quot;Defined Area&quot; refers to a target with 4 corner points in the collection request."/>
+		<Value value="008" description="EO Strip Target"/>
+		<Value value="015" description="IR Point Target"/>
+		<Value value="016" description="IR Wide Area Search"/>
+		<Value value="017" description="IR Defined Area Target.  &quot;Defined Area&quot; refers to a target with 4 corner points in the collection request."/>
+		<Value value="018" description="IR Strip Target"/>
+		<Value value="024" description="Dual Band Spot"/>
+		<Value value="025" description="Dual Band Point Target"/>
+		<Value value="026" description="Dual Band Wide Area Search.  &quot;Wide Area&quot; is interpreted as unbounded collection (i.e. turn sensor on indefinitely)"/>
+		<Value value="027" description="Dual Band Defined Area Target.  &quot;Defined Area&quot; refers to a target with 4 corner points in the collection request"/>
+		<Value value="028" description="Dual Band Strip Target"/>
+	</Sensor>
+	<Sensor ident="DB110 (For RAPTOR)">
+		<Value value="007" description="EO, Narrow Field of View, Full Format, Full Resolution (1x1)"/>
+		<Value value="008" description="EO, Narrow Field of View, Full Format, Half Resolution (2x2)"/>
+		<Value value="009" description="EO, Narrow Field of View, Half Format, Full Resolution (1x1)"/>
+		<Value value="010" description="EO, Narrow Field of View, Half Format, Full Resolution (2x2)"/>
+		<Value value="011" description="EO, Wide Field of View, Full Format, Full Resolution (1x1)"/>
+		<Value value="012" description="EO, Wide Field of View, Half Format, Full Resolution (2x2)"/>
+		<Value value="017" description="IR, Narrow Field of View"/>
+		<Value value="018" description="IR, Wide Field of View"/>
+		<Value value="099" description="Null Sensor Mode"/>
+	</Sensor>
+	<Sensor ident="DPY-1">
+		<Value value="001" description="Single Spot"/>
+		<Value value="002" description="Dwell Spot"/>
+		<Value value="003" description="Zoom Spot"/>
+		<Value value="004" description="Transit Strip"/>
+		<Value value="005" description="Geo Strip"/>
+		<Value value="006" description="Brick Map"/>
+	</Sensor>
+	<Sensor ident="DSS301, DSS322, DSS439">
+		<Value value="007" description="EO, Medium Format"/>
+		<Value value="017" description="IR, Medium Format"/>
+	</Sensor>
+	<Sensor ident="GEOxxx &amp; GIRxxx">
+		<Value value="001" description="Panchromatic Persistent Surveillance Baseline Mode"/>
+		<Value value="002-100" description="Reserved"/>
+		<Value value="101" description="Infrared Persistent Surveillance Baseline Mode"/>
+		<Value value="102-999" description="Reserved"/>
+	</Sensor>
+	<Sensor ident="GR-M80">
+		<Value value="001" description="Full Field of View, Full Resolution, Bands: NIR"/>
+		<Value value="002" description="Full Field of View, Full Resolution, Bands: NIR, RED, GRN"/>
+		<Value value="003" description="Half Field of View, Full Resolution, Bands: NIR, RED GRN, SWIR1, SWIR2, MWIR1, MWIR2"/>
+		<Value value="004" description="Half Field of View, Half Resolution, Bands: SWIR1, SWIR2, MWIR1, MWIR2"/>
+		<Value value="0990" description="(Mode 99) Null Sensor Mode"/>
+	</Sensor>
+	<Sensor ident="General Purpose, EO, IR, and Spectral">
+		<Value value="001 - 003" description="Reserved"/>
+		<Value value="004" description="EO Spot"/>
+		<Value value="005" description="EO Point Target"/>
+		<Value value="006" description="EO Wide Area Search"/>
+		<Value value="007- 013" description="Reserved"/>
+		<Value value="014" description="IR Spot"/>
+		<Value value="015" description="IR Point Target"/>
+		<Value value="016" description="IR Wide Area Search"/>
+		<Value value="017 - 023" description="Reserved"/>
+		<Value value="024" description="Multi-Spectral Spot"/>
+		<Value value="025" description="Multi-Spectral Point Target"/>
+		<Value value="026" description="Multi-Spectral Wide Area Search"/>
+		<Value value="027 - 033" description="Reserved"/>
+		<Value value="034" description="HSI Spot "/>
+		<Value value="035" description="HSI Point Target"/>
+		<Value value="036" description="HSI Wide Area Search"/>
+		<Value value="037 - 999" description="Reserved"/>
+	</Sensor>
+	<Sensor ident="JSE8CA">
+		<Value value="001" description="Low resolution, small spot image"/>
+		<Value value="002" description="Low resolution, medium spot image"/>
+		<Value value="003" description="Low resolution, large spot image"/>
+		<Value value="004" description="Medium resolution, small spot image"/>
+		<Value value="005" description="Medium resolution, medium spot image"/>
+		<Value value="006" description="Medium resolution, large spot image"/>
+		<Value value="007" description="High Resolution, small spot image"/>
+		<Value value="008" description="High Resolution, medium spot image"/>
+		<Value value="009" description="High Resolution, large spot image"/>
+		<Value value="010" description="Low Resolution, small spot swath composite"/>
+		<Value value="011" description="Low Resolution, medium spot swath composite"/>
+		<Value value="012" description="Low Resolution, large spot swath composite"/>
+		<Value value="019" description="Any other composite image"/>
+	</Sensor>
+	<Sensor ident="MASIVS">
+		<Value value="001" description="Wide Area EO Region of Interest (ROI)"/>
+		<Value value="010" description="Wide Area EO Full Field of View"/>
+	</Sensor>
+	<Sensor ident="MBSAR">
+		<Value value="001" description="Linear Strip Mode"/>
+		<Value value="002" description="Linear Spot Mode"/>
+		<Value value="003" description="Nonlinear Strip Mode"/>
+		<Value value="004" description="Nonlinear Spot Mode"/>
+	</Sensor>
+	<Sensor ident="MFASMR">
+		<Value value="001" description="ISAR"/>
+		<Value value="002" description="Strip SAR"/>
+		<Value value="003" description="Spot SAR"/>
+	</Sensor>
+	<Sensor ident="MPRTIP">
+		<Value value="050" description="Reserved"/>
+		<Value value="051" description="Single Spot SAR High Resolution"/>
+		<Value value="052" description="Single Spot SAR Medium-B Resolution"/>
+		<Value value="053" description="Single Spot SAR Medium-A Resolution"/>
+		<Value value="054" description="Single Spot SAR Medium Resolution"/>
+		<Value value="055" description="Reserved"/>
+		<Value value="056" description="Reserved"/>
+		<Value value="057" description="Continuous Spot SAR High Resolution"/>
+		<Value value="058" description="Continuous Spot SAR Medium-B Resolution"/>
+		<Value value="059" description="Continuous Spot SAR Medium-A Resolution"/>
+		<Value value="060" description="Continuous Spot SAR Medium Resolution"/>
+		<Value value="061" description="Reserved"/>
+		<Value value="062" description="Concurrent Spot SAR High Resolution"/>
+		<Value value="063" description="Concurrent Spot SAR Medium-B Resolution"/>
+		<Value value="064" description="Concurrent Spot SAR Medium-A Resolution"/>
+		<Value value="065" description="Concurrent Spot SAR Medium Resolution"/>
+		<Value value="066" description="Reserved"/>
+		<Value value="067" description="Swath SAR High Resolution"/>
+		<Value value="068" description="Swath SAR Medium Resolution"/>
+		<Value value="069" description="Swath SAR Low Resolution"/>
+		<Value value="070" description="Reserved"/>
+		<Value value="071" description="Maritime ISAR (Hi Res)"/>
+		<Value value="072" description="Maritime ISAR (Med Res)"/>
+		<Value value="073" description="Maritime ISAR (Low Res)"/>
+	</Sensor>
+	<Sensor ident="MS-177">
+		<Value value="001" description="Mode 001 (MSI): Full field of view; Full Resolution: PAN Full Field of View; Half Resolution: NIR, GRN Half Field of View, Half Resolution: SWIR1, SWIR2, MWIR1, MWIR2 "/>
+		<Value value="002" description="Mode 002 (WAS): Full field of view; Half Resolution: PAN Half Field of View; Quarter Resolution: SWIR1, MWIR2 "/>
+	</Sensor>
+	<Sensor ident="OM_33">
+		<Value value="004" description="EO Spot"/>
+	</Sensor>
+	<Sensor ident="OM_40">
+		<Value value="017" description="EO Panoramic"/>
+	</Sensor>
+	<Sensor ident="PANO">
+		<Value value="017" description="EO Panoramic"/>
+	</Sensor>
+	<Sensor ident="PKSAR">
+		<Value value="011" description="Swath"/>
+		<Value value="012" description="Swath Calibration"/>
+		<Value value="020" description="Spot"/>
+		<Value value="022" description="Spot Calibration"/>
+		<Value value="030" description="High Resolution"/>
+		<Value value="032" description="High Resolution Spot Calibration"/>
+	</Sensor>
+	<Sensor ident="RTNESS">
+		<Value value="001" description="SAR Polar Spot. Polar Format Processing"/>
+		<Value value="003" description="Ground Moving Target Indication"/>
+		<Value value="004" description="EO Spot"/>
+		<Value value="005" description="EO Repeated Spot. Repeat interval controlled through tasking."/>
+		<Value value="006" description="EO Wide Area Search"/>
+		<Value value="007" description="IR Spot"/>
+		<Value value="008" description="IR Repeated Spot.  Repeat interval controlled through tasking."/>
+		<Value value="009" description="IR Wide Area Search"/>
+		<Value value="011" description="EO Gimbal Angle Point. Engineering Test."/>
+		<Value value="012" description="IR Gimal Angle Point.  Engineering Test."/>
+		<Value value="014" description="SAR Polar Spot IBIT.  Initiated Built-in Test."/>
+		<Value value="021" description="EO Earth Fixed Inertial.  Engineering Test."/>
+		<Value value="022" description="IR Earth Fixed Inertial.  Engineering Test."/>
+		<Value value="027" description="SAR RMA Spot.  Range Migration Algorithm (RMA) Processing."/>
+		<Value value="029" description="SAR RMA Coarse Resolution WAS.  RMA Processing."/>
+		<Value value="030" description="SAR RMA Medium Resolution WAS.  RMA Processing."/>
+		<Value value="031" description="SAR RMA Fine Resolution WAS.  RMA Processing."/>
+		<Value value="032" description="SAR RMA Spot IBIT. Initiated Built-in Test."/>
+	</Sensor>
+	<Sensor ident="SHARP &amp; TARSAR">
+		<Value value="011" description="High Resolution Spotlight - Near Range"/>
+		<Value value="012" description="High Resolution Spotlight - Far Range"/>
+		<Value value="021" description="Medium Resolution Spotlight - Near Range"/>
+		<Value value="022" description="Medium Resolution Spotlight - Far Range"/>
+		<Value value="031" description="Medium Resolution Stripmap - Near Range"/>
+		<Value value="032" description="Medium Resolution Stripmap - Far Range"/>
+		<Value value="041" description="Low Resolution Stripmap - Near Range"/>
+		<Value value="042" description="Low Resolution Stripmap - Far Range"/>
+		<Value value="051" description="MTI - Far Range"/>
+		<Value value="052" description="MTI - Near Range"/>
+	</Sensor>
+	<Sensor ident="SYERS2">
+		<Value value="010" description="(Mode 01) Full Field of View; Full Resolution: NIR, RED, GRn. Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR1, MWIR2"/>
+		<Value value="020" description="(Mode 02) Full Field of View; Full Resolution: NIR, RED, GRN"/>
+		<Value value="030" description="(Mode 03) Half Field of View, Full Resolution: NIR, RED, GRN"/>
+		<Value value="040" description="(Mode 04) Full Field of View; Half Resolution: NIR, RED, GRN. Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR1, MWIR2"/>
+		<Value value="050" description="(Mode 05) Full Field of View; Half Resolution: NIR, RED, GRN"/>
+		<Value value="070" description="(Mode 07) Half Field of View; Full Resolution: NIR, RED, GRN. Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR1, MWIR2"/>
+		<Value value="080" description="(Mode 08, Sub-mode 0) Half Field of View; Half Resolution: NIR, RED, GRN. Half Field of View; Half Resolution: SWIR1, MWIR1, MWIR2"/>
+		<Value value="081" description="(Mode 08, Sub-mode 1) Half Field of View; Half Resolution: NIR, RED, GRN. Half Field of View; Half Resolution: SWIR1, MWIR1, MWIR2"/>
+		<Value value="082" description="(Mode 08, Sub-mode 2) Half Field of View; Half Resolution: NIR, RED, GRN. Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR2"/>
+		<Value value="083" description="(Mode 08, Sub-mode 3) Half Field of View; Half Resolution: NIR, RED, GRN. Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR1"/>
+		<Value value="090" description="(Mode 09 Sub-mode 0) Half Field of View; Full Resolution: NIR. Half Field of View; Half Resolution: SWIR2, MWIR1, MWIR2"/>
+		<Value value="091" description="(Mode 09, Sub-mode 1) Half Field of View; Full Resolution: NIR. Half Field of View; Half Resolution: SWIR1, MWIR1, MWIR2"/>
+		<Value value="092" description="(Mode 09, Sub-mode 2) Half Field of View; Full Resolution: NIR. Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR2"/>
+		<Value value="093" description="(Mode 09, Sub-mode 3) Half Field of View; Full Resolution: NIR. Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR1"/>
+		<Value value="100" description="(Mode 10, Sub-mode 0) Half Field of View; Full Resolution: NIR, GRN. Half Field of View; Half Resolution: SWIR1, SWIR2"/>
+		<Value value="101" description="(Mode 10, Sub-mode 1) Half Field of View; Full Resolution: NIR, GRN. Half Field of View; Half Resolution: SWIR1, MWIR2"/>
+		<Value value="102" description="(Mode 10, Sub-mode 2) Half Field of View; Full Resolution: NIR, GRN. Half Field of View; Half Resolution: SWIR2, MWIR2"/>
+		<Value value="103" description="(Mode 10, Sub-mode 3) Half Field of View; Full Resolution: NIR, GRN. Half Field of View; Half Resolution; MWIR1, MWIR2"/>
+		<Value value="120" description="(Mode 12) Half Field of View; Half Resolution: SWIR1, SWIR2, MWIR1, MWIR2"/>
+		<Value value="990" description="(Mode 99) Null Sensor Mode, not in direct pointing"/>
+	</Sensor>
+</NitfTreValueLookup>

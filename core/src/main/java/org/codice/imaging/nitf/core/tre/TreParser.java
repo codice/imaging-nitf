@@ -312,24 +312,28 @@ public class TreParser {
             String name = padStringToLength(tre.getName(), TAG_LENGTH);
             baos.write(name.getBytes(StandardCharsets.UTF_8));
             if (tre.getRawData() != null) {
-                String tagLen = padNumberToLength(tre.getRawData().length, TAGLEN_LENGTH);
+                String tagLen = padIntegerToLength(tre.getRawData().length, TAGLEN_LENGTH);
                 baos.write(tagLen.getBytes(StandardCharsets.UTF_8));
                 baos.write(tre.getRawData());
             } else {
                 byte[] treData = serializeTRE(tre);
-                baos.write(padNumberToLength(treData.length, TAGLEN_LENGTH).getBytes(StandardCharsets.UTF_8));
+                baos.write(padIntegerToLength(treData.length, TAGLEN_LENGTH).getBytes(StandardCharsets.UTF_8));
                 baos.write(treData);
             }
         }
         return baos.toByteArray();
     }
 
-    private String padNumberToLength(final long number, final int length) {
+    private String padIntegerToLength(final long number, final int length) {
         return String.format("%0" + length + "d", number);
     }
 
     private String padStringToLength(final String s, final int length) {
         return String.format("%1$-" + length + "s", s);
+    }
+
+    private String padRealToLength(final double number, final int length) {
+        return String.format("%" + length + "f", number);
     }
 
     /**
@@ -341,6 +345,7 @@ public class TreParser {
      */
     public final byte[] serializeTRE(final Tre tre) throws NitfFormatException {
         TreType treType = getTreTypeForTag(tre.getName());
+        checkTreLocationMatchesTreSource(treType.getLocation(), tre.getSource());
         TreParams parameters = new TreParams();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         serializeFieldOrLoopOrIf(treType.getFieldOrLoopOrIf(), tre, output, parameters);
@@ -383,7 +388,7 @@ public class TreParser {
         }
         if (fieldTypeName != null) {
             TreEntry entry = treGroup.getEntry(fieldTypeName);
-            String value = entry.getFieldValue();
+            String value = getValidatedValue(fieldType, entry, params);
             params.addParameter(fieldTypeName, value);
             return value.getBytes(StandardCharsets.UTF_8);
         } else {
@@ -392,4 +397,122 @@ public class TreParser {
             return value.getBytes(StandardCharsets.UTF_8);
         }
     }
+
+    private String getValidatedValue(final FieldType fieldType, final TreEntry entry, final TreParams params) throws NitfFormatException {
+        String value = entry.getFieldValue();
+        if (value == null) {
+            throw new NitfFormatException("Cannot serialize null entry for: " + fieldType.getName());
+        }
+        if ((fieldType.getLength() != null) && (value.length() != fieldType.getLength().intValue())) {
+            // Try to pad out to the required length.
+            if (fieldType.getType() == null) {
+                String err = "Cannot pad unknown data type for " + fieldType.getName();
+                LOG.error(err);
+                throw new NitfFormatException(err);
+            }
+            if (fieldType.getType().equals("integer")) {
+                value = getValidatedIntegerValue(value, fieldType);
+            }
+
+            if (fieldType.getType().equals("string")) {
+                value = padStringToLength(value, fieldType.getLength().intValue());
+            }
+
+            if (fieldType.getType().equals("real")) {
+                value = getValidatedRealValue(value, fieldType);
+            }
+            if (value.length() != fieldType.getLength().intValue()) {
+                throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
+            }
+        }
+        if (fieldType.getLengthVar() != null) {
+            String lengthVar = fieldType.getLengthVar();
+            int specifiedLength = params.getIntValue(lengthVar);
+            if (specifiedLength != value.length()) {
+                String err = String.format("Actual length for %s did not match specified length of %d", fieldType.getName(), specifiedLength);
+                LOG.error(err);
+                throw new NitfFormatException(err);
+            }
+        }
+        return value;
+    }
+
+    private String getValidatedIntegerValue(final String value, final FieldType fieldType) throws NitfFormatException {
+        String paddedValue;
+        try {
+            int intValue = Integer.parseInt(value);
+            validateIntegerValueRange(intValue, fieldType);
+            paddedValue = padIntegerToLength(intValue, fieldType.getLength().intValue());
+        } catch (NumberFormatException ex) {
+            String err = "Could not parse " + fieldType.getName() + " value " + value + " as a number.";
+            LOG.error(err);
+            throw new NitfFormatException(err);
+        }
+        return paddedValue;
+    }
+
+    private void validateIntegerValueRange(final int intValue, final FieldType fieldType) throws NitfFormatException {
+        if (fieldType.getMinval() != null) {
+            int minValue = Integer.parseInt(fieldType.getMinval());
+            if (intValue < minValue) {
+                throw new NitfFormatException(String.format("Minimum value for %s is %d, got %d", fieldType.getName(), minValue, intValue));
+            }
+        }
+        if (fieldType.getMaxval() != null) {
+            int maxValue = Integer.parseInt(fieldType.getMaxval());
+            if (intValue > maxValue) {
+                throw new NitfFormatException(String.format("Maximum value for %s is %d, got %d", fieldType.getName(), maxValue, intValue));
+            }
+        }
+    }
+
+    private String getValidatedRealValue(final String value, final FieldType fieldType) throws NitfFormatException {
+        String paddedValue;
+        try {
+            double realValue = Double.parseDouble(value);
+            validateRealValueRange(realValue, fieldType);
+            paddedValue = padRealToLength(realValue, fieldType.getLength().intValue());
+        } catch (NumberFormatException ex) {
+            String err = "Could not parse " + fieldType.getName() + " value " + value + " as a floating point number.";
+            LOG.error(err);
+            throw new NitfFormatException(err);
+        }
+        return paddedValue;
+    }
+
+    private void validateRealValueRange(final double realValue, final FieldType fieldType) throws NitfFormatException {
+        if (fieldType.getMinval() != null) {
+            double minValue = Double.parseDouble(fieldType.getMinval());
+            if (realValue < minValue) {
+                throw new NitfFormatException(String.format("Minimum value for %s is %f, got %f", fieldType.getName(), minValue, realValue));
+            }
+        }
+        if (fieldType.getMaxval() != null) {
+            double maxValue = Double.parseDouble(fieldType.getMaxval());
+            if (realValue > maxValue) {
+                throw new NitfFormatException(String.format("Maximum value for %s is %f, got %f", fieldType.getName(), maxValue, realValue));
+            }
+        }
+    }
+
+    private void checkTreLocationMatchesTreSource(final String location, final TreSource source) throws NitfFormatException {
+        if (location == null) {
+            // We don't have a fixed location for this TRE.
+            return;
+        }
+        if (source.equals(TreSource.TreOverflowDES)) {
+            // Anything can go into overflow
+            return;
+        }
+        if (location.equalsIgnoreCase("file")) {
+            if ((!source.equals(TreSource.UserDefinedHeaderData)) && (!source.equals(TreSource.ExtendedHeaderData))) {
+                throw new NitfFormatException("TRE is only permitted in a file-level header, or in an overflow DES");
+            }
+        } else if (location.equalsIgnoreCase("image")) {
+            if ((!source.equals(TreSource.ImageExtendedSubheaderData)) && (!source.equals(TreSource.UserDefinedImageData))) {
+                throw new NitfFormatException("TRE is only permitted in an image-related sub-header, or in an overflow DES");
+            }
+        }
+    }
+
 }

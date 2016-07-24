@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="NitfTreValueLookup">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Value" maxOccurs="unbounded">
+                    <xs:attribute name="tre" type="xs:string" use="xs:required"></xs:attribute>
+                    <xs:attribute name="field" type="xs:string" use="xs:required"></xs:attribute>
+                    <xs:complexType>
+                        <xs:attribute name="value" type="xs:string" use="xs:required"></xs:attribute>
+                        <xs:attribute name="description" type="xs:string" use="xs:required"></xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+

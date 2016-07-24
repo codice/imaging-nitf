@@ -24,15 +24,21 @@ import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.header.NitfParser;
 import org.codice.imaging.nitf.core.image.ImageSegment;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * This checks the parsing of ENGRDA TRE.
  */
 public class ENGRDA_Test {
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     public ENGRDA_Test() {
     }
@@ -73,7 +79,7 @@ public class ENGRDA_Test {
         assertEquals(1, group15.getIntValue("ENGMTXR"));
         assertEquals("A", group15.getFieldValue("ENGTYP"));
         assertEquals(1, group15.getIntValue("ENGDTS"));
-        assertEquals("NA", group15.getFieldValue("ENGDTU"));
+        assertEquals("NA", group15.getFieldValue("ENGDATU"));
         assertEquals("170", group15.getFieldValue("ENGDATA"));
     }
 
@@ -85,4 +91,30 @@ public class ENGRDA_Test {
         return getClass().getResourceAsStream(greenFile);
     }
 
+    @Test
+    public void BuildENGRDA() throws NitfFormatException {
+        Tre engrda = TreFactory.getDefault("ENGRDA", TreSource.UserDefinedHeaderData);
+        assertNotNull(engrda);
+        engrda.add(new TreEntry("RESRC", "GEOMOS"));
+        engrda.add(new TreEntry("RECNT", "1"));
+        TreEntry records = new TreEntry("RECORDS");
+        engrda.add(records);
+        TreGroup record0 = new TreGroupImpl();
+        record0.add(new TreEntry("ENGLN", "11"));
+        record0.add(new TreEntry("ENGLBL", "TEMPERATURE"));
+        record0.add(new TreEntry("ENGMTXC", "3"));
+        record0.add(new TreEntry("ENGMTXR", "1"));
+        record0.add(new TreEntry("ENGTYP", "A"));
+        record0.add(new TreEntry("ENGDTS", "1"));
+        record0.add(new TreEntry("ENGDATU", "NA"));
+        record0.add(new TreEntry("ENGDATC", "3"));
+        record0.add(new TreEntry("ENGDATA", "374"));
+        records.addGroup(record0);
+
+        TreParser parser = new TreParser();
+        byte[] serialisedTre = parser.serializeTRE(engrda);
+        assertNotNull(serialisedTre);
+        assertEquals("ENGRDA", engrda.getName());
+        assertArrayEquals("GEOMOS              00111TEMPERATURE00030001A1NA00000003374".getBytes(), serialisedTre);
+    }
 }

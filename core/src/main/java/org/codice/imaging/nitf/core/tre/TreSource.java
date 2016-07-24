@@ -41,6 +41,8 @@ public enum TreSource {
     /**
      * TRE is associated with the Graphic Subheader "SXSHD" extended subheader
      * data field.
+     *
+     * (Not NITF 2.0).
      */
     GraphicExtendedSubheaderData,
     /**
