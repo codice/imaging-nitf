@@ -28,7 +28,7 @@ import org.codice.imaging.nitf.core.tre.TreSource;
 class GraphicSegmentImpl extends CommonBasicSegmentImpl
         implements GraphicSegment {
 
-    private String graphicName = null;
+    private String graphicName = "";
     private int graphicDisplayLevel = 0;
     private int graphicLocationRow = 0;
     private int graphicLocationColumn = 0;
@@ -47,12 +47,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the graphic name (SNAME).
-        <p>
-        This field shall contain an alphanumeric name for the graphic.
-
-        @param name the graphic name, 20 characters maximum.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setGraphicName(final String name) {
         graphicName = name;
     }
@@ -66,25 +63,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the graphic display level (SDLVL).
-        <p>
-        From MIL-STD-2500C: "This field shall contain a valid
-        value that indicates the graphic display level of the
-        graphic relative to other displayed file components in a
-        composite display. The valid values are 001 to 999.
-        The display level of each displayable file component
-        (image or graphic) within a file shall be unique; that is,
-        each number from 001 to 999 is the display level of, at
-        most, one item. The meaning of display level is
-        discussed in paragraph 5.3.3. The graphic or image
-        component in the file having the minimum display level
-        shall have attachment level 0 (ALVL000) (BCS zeros
-        (0x30))."
-        <p>
-        Note that explanation mixes display level and attachment level.
-
-        @param displayLevel the display level (integer format).
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setGraphicDisplayLevel(final int displayLevel) {
         graphicDisplayLevel = displayLevel;
     }
@@ -98,22 +79,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the row part of the graphic location (SLOC).
-        <p>
-        From MIL-STD-2500C: "The graphics location is specified by
-        providing the location of the graphic’s origin point
-        relative to the position (location of the CCS, image, or
-        graphic to which it is attached. This field shall contain
-        the graphic location offset from the ILOC or SLOC value
-        of the CCS, image, or graphic to which the graphic is
-        attached or from the origin of the CCS when the graphic
-        is unattached (SALVL000). A row and column value of
-        000 indicates no offset. Positive row and column values
-        indicate offsets down and to the right, while negative
-        row and column values indicate offsets up and to the left."
-
-        @param rowNumber the row number for the graphic location.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setGraphicLocationRow(final int rowNumber) {
         graphicLocationRow = rowNumber;
     }
@@ -127,22 +95,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the column part of the graphic location (SLOC).
-        <p>
-        From MIL-STD-2500C: "The graphics location is specified by
-        providing the location of the graphic’s origin point
-        relative to the position (location of the CCS, image, or
-        graphic to which it is attached. This field shall contain
-        the graphic location offset from the ILOC or SLOC value
-        of the CCS, image, or graphic to which the graphic is
-        attached or from the origin of the CCS when the graphic
-        is unattached (SALVL000). A row and column value of
-        000 indicates no offset. Positive row and column values
-        indicate offsets down and to the right, while negative
-        row and column values indicate offsets up and to the left."
-
-        @param columnNumber the column number for the graphic location.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setGraphicLocationColumn(final int columnNumber) {
         graphicLocationColumn = columnNumber;
     }
@@ -156,25 +111,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the row part of the first bounding box location (SBND1).
-        <p>
-        From MIL-STD-2500C: "This field shall contain
-        an ordered pair of integers defining a location in
-        Cartesian coordinates for use with CGM graphics. It is
-        the upper left corner of the bounding box for the CGM
-        graphic. See paragraph 5.5.2.1 for a description. The
-        format is rrrrrccccc, where rrrrr is the row and ccccc is
-        the column offset from ILOC or SLOC value of the item
-        to which the graphic is attached. If the graphic is
-        unattached (value of the SALVL field is equal to BCS
-        zeros (0x30)), rrrrr and ccccc represent offsets from the
-        origin of the coordinate system that is common to all
-        images and graphics in the file having the value of BCS
-        zeros (0x30) in the SALVL field. The range for rrrrr
-        and ccccc shall be -9999 to 99999."
-
-        @param rowNumber the row number for the first bounding box location.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setBoundingBox1Row(final int rowNumber) {
         boundingBox1Row = rowNumber;
     }
@@ -188,25 +127,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the column part of the first bounding box location (SBND1).
-        <p>
-        From MIL-STD-2500C: "This field shall contain
-        an ordered pair of integers defining a location in
-        Cartesian coordinates for use with CGM graphics. It is
-        the upper left corner of the bounding box for the CGM
-        graphic. See paragraph 5.5.2.1 for a description. The
-        format is rrrrrccccc, where rrrrr is the row and ccccc is
-        the column offset from ILOC or SLOC value of the item
-        to which the graphic is attached. If the graphic is
-        unattached (value of the SALVL field is equal to BCS
-        zeros (0x30)), rrrrr and ccccc represent offsets from the
-        origin of the coordinate system that is common to all
-        images and graphics in the file having the value of BCS
-        zeros (0x30) in the SALVL field. The range for rrrrr
-        and ccccc shall be -9999 to 99999."
-
-        @param columnNumber the column number for the first bounding box location.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setBoundingBox1Column(final int columnNumber) {
         boundingBox1Column = columnNumber;
     }
@@ -220,10 +143,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the graphic colour (SCOLOR).
-
-        @param colour the graphic colour.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setGraphicColour(final GraphicColour colour) {
         graphicColour = colour;
     }
@@ -237,25 +159,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the row part of the second bounding box location (SBND2).
-        <p>
-        From MIL-STD-2500C: "This field shall
-        contain an ordered pair of integers defining a location in
-        Cartesian coordinates for use with CGM graphics. It is
-        the lower right corner of the bounding box for the CGM
-        graphic. See paragraph 5.5.2.1 for a description. The
-        format is rrrrrccccc, where rrrrr is the row and ccccc is
-        the column offset from ILOC or SLOC value of the item
-        to which the graphic is attached. If the graphic is
-        unattached (SALVL field value is BCS zeros(0x30)),
-        rrrrr and ccccc represent offsets from the origin of the
-        coordinate system that is common to all images and
-        graphics in the file having the value of BCS zeros (0x30)
-        in the SALVL field. The range for rrrrr and ccccc shall
-        be -9999 to 99999."
-
-        @param rowNumber the row number for the second bounding box location.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setBoundingBox2Row(final int rowNumber) {
         boundingBox2Row = rowNumber;
     }
@@ -269,25 +175,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
     }
 
     /**
-        Set the column part of the second bounding box location (SBND2).
-        <p>
-        From MIL-STD-2500C: "This field shall
-        contain an ordered pair of integers defining a location in
-        Cartesian coordinates for use with CGM graphics. It is
-        the lower right corner of the bounding box for the CGM
-        graphic. See paragraph 5.5.2.1 for a description. The
-        format is rrrrrccccc, where rrrrr is the row and ccccc is
-        the column offset from ILOC or SLOC value of the item
-        to which the graphic is attached. If the graphic is
-        unattached (SALVL field value is BCS zeros(0x30)),
-        rrrrr and ccccc represent offsets from the origin of the
-        coordinate system that is common to all images and
-        graphics in the file having the value of BCS zeros (0x30)
-        in the SALVL field. The range for rrrrr and ccccc shall
-        be -9999 to 99999."
-
-        @param columnNumber the column number for the second bounding box location.
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public final void setBoundingBox2Column(final int columnNumber) {
         boundingBox2Column = columnNumber;
     }
@@ -350,6 +240,9 @@ class GraphicSegmentImpl extends CommonBasicSegmentImpl
         return dataLength;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setDataLength(final long length) {
         dataLength = length;
