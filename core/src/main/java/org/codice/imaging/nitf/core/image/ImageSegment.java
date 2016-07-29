@@ -223,19 +223,25 @@ public interface ImageSegment extends CommonBasicSegment {
     /**
      * Set the image coordinate representation (ICORDS) for the image.
      * <p>
-     * For NITF 2.1 / NSIF 1.0: "This field shall contain a valid code indicating the type of coordinate representation
-     * used for providing an approximate location of the image in the Image Geographic Location field (IGEOLO). The
-     * valid values for this field are: U = UTM expressed in Military Grid Reference System (MGRS) form, N = UTM/UPS
-     * (Northern hemisphere), S = UTM/UPS (Southern hemisphere), G = GEOGRAPHIC, and D = Decimal degrees. (Choice
-     * between N and S is based on hemisphere of northernmost point.) The default Geodetic reference system is WGS84
-     * (appendix B, paragraph B.4.12 and figure B-1). If no coordinate system is identified, the space (BCS 0x20) shall
-     * be used."
+     * For NITF 2.1 / NSIF 1.0: "This field shall contain a valid code
+     * indicating the type of coordinate representation used for providing an
+     * approximate location of the image in the Image Geographic Location field
+     * (IGEOLO). The valid values for this field are: U = UTM expressed in
+     * Military Grid Reference System (MGRS) form, N = UTM (Northern
+     * hemisphere), S = UTM (Southern hemisphere), P = UPS (north or south polar
+     * regions), G = GEOGRAPHIC, and D = Decimal degrees. (Choice between N and
+     * S is based on hemisphere of northernmost point.) The default Geodetic
+     * reference system is WGS84 (appendix B, paragraph B.4.12 and figure B-1).
+     * If no coordinate system is identified, the space (BCS 0x20) shall be
+     * used."
      * <p>
-     * For NITF 2.0: "This field shall contain a valid code indicating the geo-referenced coordinate system for the
-     * image. The valid values for this field are: U=UTM, G=Geodetic (Geographic), C=Geocentric, N=None."
+     * For NITF 2.0: "This field shall contain a valid code indicating the
+     * geo-referenced coordinate system for the image. The valid values for this
+     * field are: U=UTM, G=Geodetic (Geographic), C=Geocentric, N=None."
      * <p>
-     * Note that those codes are translated into enumerated values to avoid the ambiguity associated with N, however the
-     * valid representations do differ between NITF 2.1 / NSIF 1.0 and NITF 2.0.
+     * Note that those codes are translated into enumerated values to avoid the
+     * ambiguity associated with N, however the valid representations do differ
+     * between NITF 2.1 / NSIF 1.0 and NITF 2.0.
      *
      * @param representation the image coordinate representation
      */
@@ -244,16 +250,21 @@ public interface ImageSegment extends CommonBasicSegment {
     /**
      * Return the image coordinate representation (ICORDS) for the image.
      * <p>
-     * For NITF 2.1 / NSIF 1.0: "This field shall contain a valid code indicating the type of coordinate representation
-     * used for providing an approximate location of the image in the Image Geographic Location field (IGEOLO). The
-     * valid values for this field are: U = UTM expressed in Military Grid Reference System (MGRS) form, N = UTM/UPS
-     * (Northern hemisphere), S = UTM/UPS (Southern hemisphere), G = GEOGRAPHIC, and D = Decimal degrees. (Choice
-     * between N and S is based on hemisphere of northernmost point.) The default Geodetic reference system is WGS84
-     * (appendix B, paragraph B.4.12 and figure B-1). If no coordinate system is identified, the space (BCS 0x20) shall
-     * be used."
+     * For NITF 2.1 / NSIF 1.0: "This field shall contain a valid code
+     * indicating the type of coordinate representation used for providing an
+     * approximate location of the image in the Image Geographic Location field
+     * (IGEOLO). The valid values for this field are: U = UTM expressed in
+     * Military Grid Reference System (MGRS) form, N = UTM (Northern
+     * hemisphere), S = UTM (Southern hemisphere), P = UPS (north or south polar
+     * regions), G = GEOGRAPHIC, and D = Decimal degrees. (Choice between N and
+     * S is based on hemisphere of northernmost point.) The default Geodetic
+     * reference system is WGS84 (appendix B, paragraph B.4.12 and figure B-1).
+     * If no coordinate system is identified, the space (BCS 0x20) shall be
+     * used."
      * <p>
-     * For NITF 2.0: "This field shall contain a valid code indicating the geo-referenced coordinate system for the
-     * image. The valid values for this field are: U=UTM, G=Geodetic (Geographic), C=Geocentric, N=None."
+     * For NITF 2.0: "This field shall contain a valid code indicating the
+     * geo-referenced coordinate system for the image. The valid values for this
+     * field are: U=UTM, G=Geodetic (Geographic), C=Geocentric, N=None."
      *
      * @return the image coordinate representation
      */
