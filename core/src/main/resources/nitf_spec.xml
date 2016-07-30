@@ -88,34 +88,34 @@
     </tre>
 -->
     <tre name="ACFTB" length="207" location="image">
-        <field name="AC_MSN_ID" length="20"/>
-        <field name="AC_TAIL_NO" length="10"/>
-        <field name="AC_TO" length="12"/>
-        <field name="SENSOR_ID_TYPE" length="4"/>
-        <field name="SENSOR_ID" length="6"/>
-        <field name="SCENE_SOURCE" length="1"/>
-        <field name="SCNUM" length="6"/>
-        <field name="PDATE" length="8"/>
-        <field name="IMHOSTNO" length="6"/>
-        <field name="IMREQID" length="5"/>
-        <field name="MPLAN" length="3"/>
-        <field name="ENTLOC" length="25"/>
-        <field name="LOC_ACCY" length="6"/>
-        <field name="ENTELV" length="6"/>
-        <field name="ELV_UNIT" length="1"/>
-        <field name="EXITLOC" length="25"/>
-        <field name="EXITELV" length="6"/>
-        <field name="TMAP" length="7"/>
-        <field name="ROW_SPACING" length="7"/>
-        <field name="ROW_SPACING_UNITS" length="1"/>
-        <field name="COL_SPACING" length="7"/>
-        <field name="COL_SPACING_UNITS" length="1"/>
-        <field name="FOCAL_LENGTH" length="6"/>
-        <field name="SENSERIAL" length="6"/>
-        <field name="ABSWVER" length="7"/>
-        <field name="CAL_DATE" length="8"/>
-        <field name="PATCH_TOT" length="4"/>
-        <field name="MTI_TOT" length="3"/>
+        <field name="AC_MSN_ID" length="20" type="string"/>
+        <field name="AC_TAIL_NO" length="10" type="string"/>
+        <field name="AC_TO" length="12" type="string"/>
+        <field name="SENSOR_ID_TYPE" length="4" type="string"/>
+        <field name="SENSOR_ID" length="6" type="string"/>
+        <field name="SCENE_SOURCE" length="1" type="integer"/>
+        <field name="SCNUM" length="6" type="integer"/>
+        <field name="PDATE" length="8" type="string"/>
+        <field name="IMHOSTNO" length="6" type="integer"/>
+        <field name="IMREQID" length="5" type="integer"/>
+        <field name="MPLAN" length="3" type="integer"/>
+        <field name="ENTLOC" length="25" type="string"/>
+        <field name="LOC_ACCY" length="6" type="string"/>
+        <field name="ENTELV" length="6" type="integer"/>
+        <field name="ELV_UNIT" length="1" type="string"/>
+        <field name="EXITLOC" length="25" type="string"/>
+        <field name="EXITELV" length="6" type="integer"/>
+        <field name="TMAP" length="7" type="real"/>
+        <field name="ROW_SPACING" length="7" type="real"/>
+        <field name="ROW_SPACING_UNITS" length="1" type="string"/>
+        <field name="COL_SPACING" length="7" type="real"/>
+        <field name="COL_SPACING_UNITS" length="1" type="string"/>
+        <field name="FOCAL_LENGTH" length="6" type="real"/>
+        <field name="SENSERIAL" length="6" type="integer"/>
+        <field name="ABSWVER" length="7" type="string"/>
+        <field name="CAL_DATE" length="8" type="string"/>
+        <field name="PATCH_TOT" length="4" type="integer"/>
+        <field name="MTI_TOT" length="3" type="integer"/>
     </tre>
 
     <tre name="AIMIDB" length="89" location="image">
@@ -146,10 +146,10 @@
         <field name="LAYOVER_ANGLE" length="3" type="integer" minval="0" maxval="359" unit="degrees"/>
         <field name="SHADOW_ANGLE" length="3" type="integer" minval="0" maxval="359" unit="degrees"/>
         <field length="16" fixed_value="                "/>
-        <field name="FRLC_LOC" length="21"/>
-        <field name="LRLC_LOC" length="21"/>
-        <field name="LRFC_LOC" length="21"/>
-        <field name="FRFC_LOC" length="21"/>
+        <field name="FRLC_LOC" length="21" type="string"/>
+        <field name="LRLC_LOC" length="21" type="string"/>
+        <field name="LRFC_LOC" length="21" type="string"/>
+        <field name="FRFC_LOC" length="21" type="string"/>
         <field length="5" fixed_value="010.0"/>
     </tre>
 
@@ -291,7 +291,7 @@
             <field name="ENGMTXR" length="4" type="integer" minval="1"/>
             <field name="ENGTYP" length="1" type="string"/>
             <field name="ENGDTS" length="1" type="integer"/>
-            <field name="ENGDTU" length="2" type="string"/>
+            <field name="ENGDATU" length="2" type="string"/>
             <field name="ENGDATC" length="8" type="integer" minval="1" maxval="99999932"/>
             <field name="ENGDATA" length_var="ENGDATC"/>
         </loop>
@@ -447,38 +447,38 @@
     </tre>
 
     <tre name="J2KLRA" location="image">
-        <field name="ORIG" length="1"/>
-        <field name="NLEVELS_O" length="2"/>
-        <field name="NBANDS_O" length="5"/>
-        <field name="NLAYERS_O" length="3"/>
+        <field name="ORIG" length="1" type="integer"/>
+        <field name="NLEVELS_O" length="2" type="integer"/>
+        <field name="NBANDS_O" length="5" type="integer"/>
+        <field name="NLAYERS_O" length="3" type="integer"/>
         <loop counter="NLAYERS_O" md_prefix="LAYER_%03d_" name="LAYER">
-            <field name="LAYER_ID" length="3"/>
-            <field name="BITRATE" length="9"/>
+            <field name="LAYER_ID" length="3" type="integer"/>
+            <field name="BITRATE" length="9" type="string"/>
         </loop>
         <if cond="ORIG=1">
-            <field name="NLEVELS_I" length="2"/>
-            <field name="NBANDS_I" length="5"/>
-            <field name="NLAYERS_I" length="3"/>
+            <field name="NLEVELS_I" length="2" type="integer"/>
+            <field name="NBANDS_I" length="5" type="integer"/>
+            <field name="NLAYERS_I" length="3" type="integer"/>
         </if>
         <if cond="ORIG=3">
-            <field name="NLEVELS_I" length="2"/>
-            <field name="NBANDS_I" length="5"/>
-            <field name="NLAYERS_I" length="3"/>
+            <field name="NLEVELS_I" length="2" type="integer"/>
+            <field name="NBANDS_I" length="5" type="integer"/>
+            <field name="NLAYERS_I" length="3" type="integer"/>
         </if>
         <if cond="ORIG=5">
-            <field name="NLEVELS_I" length="2"/>
-            <field name="NBANDS_I" length="5"/>
-            <field name="NLAYERS_I" length="3"/>
+            <field name="NLEVELS_I" length="2" type="integer"/>
+            <field name="NBANDS_I" length="5" type="integer"/>
+            <field name="NLAYERS_I" length="3" type="integer"/>
         </if>
         <if cond="ORIG=7">
-            <field name="NLEVELS_I" length="2"/>
-            <field name="NBANDS_I" length="5"/>
-            <field name="NLAYERS_I" length="3"/>
+            <field name="NLEVELS_I" length="2" type="integer"/>
+            <field name="NBANDS_I" length="5" type="integer"/>
+            <field name="NLAYERS_I" length="3" type="integer"/>
         </if>
         <if cond="ORIG=9">
-            <field name="NLEVELS_I" length="2"/>
-            <field name="NBANDS_I" length="5"/>
-            <field name="NLAYERS_I" length="3"/>
+            <field name="NLEVELS_I" length="2" type="integer"/>
+            <field name="NBANDS_I" length="5" type="integer"/>
+            <field name="NLAYERS_I" length="3" type="integer"/>
         </if>
     </tre>
 
@@ -595,41 +595,42 @@
     </tre>
 
     <tre name="PIAIMB" md_prefix="NITF_PIAIMB_" length="337" location="image">
-        <field name="CLOUDCVR" length="3"/>
-        <field name="SRP" length="1"/>
-        <field name="SENSMODE" length="12"/>
-        <field name="SENSNAME" length="18"/>
-        <field name="SOURCE" length="255"/>
-        <field name="COMGEN" length="2"/>
-        <field name="SUBQUAL" length="1"/>
-        <field name="PIAMSNNUM" length="7"/>
-        <field name="CAMSPECS" length="32"/>
-        <field name="PROJID" length="2"/>
-        <field name="GENERATION" length="1"/>
-        <field name="ESD" length="1"/>
-        <field name="OTHERCOND" length="2"/>
+        <field name="CLOUDCVR" length="3" type="integer"/>
+        <field name="SRP" length="1" type="string"/>
+        <field name="SENSMODE" length="12" type="string"/>
+        <field name="SENSNAME" length="18" type="string"/>
+        <field name="SOURCE" length="255" type="string"/>
+        <field name="COMGEN" length="2" type="integer"/>
+        <field name="SUBQUAL" length="1" type="string"/>
+        <field name="PIAMSNNUM" length="7" type="string"/>
+        <field name="CAMSPECS" length="32" type="string"/>
+        <field name="PROJID" length="2" type="string"/>
+        <field name="GENERATION" length="1" type="integer"/>
+        <field name="ESD" length="1" type="string"/>
+        <field name="OTHERCOND" length="2" type="string"/>
     </tre>
 
     <tre name="PIAIMC" md_prefix="NITF_PIAIMC_" length="362" location="image">
-        <field name="CLOUDCVR" length="3"/>
-        <field name="SRP" length="1"/>
-        <field name="SENSMODE" length="12"/>
-        <field name="SENSNAME" length="18"/>
-        <field name="SOURCE" length="255"/>
-        <field name="COMGEN" length="2"/>
-        <field name="SUBQUAL" length="1"/>
-        <field name="PIAMSNNUM" length="7"/>
-        <field name="CAMSPECS" length="32"/>
-        <field name="PROJID" length="2"/>
-        <field name="GENERATION" length="1"/>
-        <field name="ESD" length="1"/>
-        <field name="OTHERCOND" length="2"/>
-        <field name="MEANGSD" length="7"/>
-        <field name="IDATUM" length="3"/>
-        <field name="IELLIP" length="3"/>
-        <field name="PREPROC" length="2"/>
-        <field name="IPROJ" length="2"/>
-        <field name="SATTRACK" length="8"/>
+        <field name="CLOUDCVR" length="3" type="integer"/>
+        <field name="SRP" length="1" type="string"/>
+        <field name="SENSMODE" length="12" type="string"/>
+        <field name="SENSNAME" length="18" type="string"/>
+        <field name="SOURCE" length="255" type="string"/>
+        <field name="COMGEN" length="2" type="integer"/>
+        <field name="SUBQUAL" length="1" type="string"/>
+        <field name="PIAMSNNUM" length="7" type="string"/>
+        <field name="CAMSPECS" length="32" type="string"/>
+        <field name="PROJID" length="2" type="string"/>
+        <field name="GENERATION" length="1" type="integer"/>
+        <field name="ESD" length="1" type="string"/>
+        <field name="OTHERCOND" length="2" type="string"/>
+        <field name="MEANGSD" length="7" type="integer"/>
+        <field name="IDATUM" length="3" type="string"/>
+        <field name="IELLIP" length="3" type="string"/>
+        <field name="PREPROC" length="2" type="string"/>
+        <field name="IPROJ" length="2" type="string"/>
+        <field name="SATTRACK_PATH" length="4" type="integer"/>
+        <field name="SATTRACK_ROW" length="4" type="integer"/>
     </tre>
 
     <tre name="PIAPEA" length="92" location="image">
