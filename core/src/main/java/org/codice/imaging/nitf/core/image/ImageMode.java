@@ -51,7 +51,36 @@ public enum ImageMode {
     /**
         Band sequential.
     */
-    BANDSEQUENTIAL ("S");
+    BANDSEQUENTIAL ("S"),
+
+    /**
+     * Temporal band sequential.
+     *
+     * This is only valid for MIE4NITF images.
+     */
+    TEMPORALBANDSEQUENTIAL ("D"),
+
+    /**
+     * Temporal interleave by sample.
+     *
+     * This is only valid for MIE4NITF images containing uncompressed data,
+     * (i.e. IC is NC or NM).
+     */
+    TEMPORALINTERLEAVEBYSAMPLE ("E"),
+
+    /**
+     * Temporal band sequential by block.
+     *
+     * This is only valid for MIE4NITF images.
+     */
+    TEMPORALBANDBANDSEQUENTIALBYBLOCK ("F"),
+
+    /**
+     * Temporal band interleave by block.
+     *
+     * This is only valid for MIE4NITF images.
+     */
+    TEMPORALBANDINTERLEAVEBYBLOCK ("T");
 
     private final String textEquivalent;
 
@@ -77,7 +106,7 @@ public enum ImageMode {
     */
     public static ImageMode getEnumValue(final String textEquivalent) {
         for (ImageMode imode : values()) {
-            if (textEquivalent.equals(imode.textEquivalent)) {
+            if (imode.textEquivalent.equals(textEquivalent)) {
                 return imode;
             }
         }
