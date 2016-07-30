@@ -15,8 +15,12 @@
 package org.codice.imaging.nitf.core.image;
 
 /**
-    Image compression format.
-*/
+ * Image compression (IC) format.
+ *
+ * Note that some format options are only valid in motion imagery (MIE4NITF),
+ * and that there is coupling between the ImageMode (IMODE) property and this
+ * compression property.
+ */
 public enum ImageCompression {
 
     /**
@@ -146,6 +150,7 @@ public enum ImageCompression {
         This is not valid for NITF 2.0 files.
     */
     JPEG2000 ("C8"),
+
     /**
         JPEG 2000 mask.
         <p>
@@ -153,7 +158,61 @@ public enum ImageCompression {
         <p>
         This is not valid for NITF 2.0 files.
     */
-    JPEG2000MASK ("M8");
+    JPEG2000MASK ("M8"),
+
+    /**
+     * Blocked H.264 with time.
+     *
+     * This field value is from the Motion Imagery Extensions for NITF (MIE4NITF)
+     * version 1.1, table 16. This is only valid if the image segment holds
+     * motion imagery.
+     */
+    H264MASK ("M9"),
+
+    /**
+     * Blocked H.265 with time.
+     *
+     * This field value is from the Motion Imagery Extensions for NITF (MIE4NITF)
+     * version 1.1, table 16. This is only valid if the image segment holds
+     * motion imagery.
+     */
+    H265MASK ("MA"),
+
+    /**
+     * H.264 with time.
+     *
+     * This field value is from the Motion Imagery Extensions for NITF (MIE4NITF)
+     * version 1.1, table 16. This is only valid if the image segment holds
+     * motion imagery.
+     */
+    H264 ("C9"),
+
+    /**
+     * H.265 with time.
+     *
+     * This field value is from the Motion Imagery Extensions for NITF (MIE4NITF)
+     * version 1.1, table 16. This is only valid if the image segment holds
+     * motion imagery.
+     */
+    H265 ("CA"),
+
+    /**
+     * Blocked JPEG2000 with time.
+     *
+     * This field value is from the Motion Imagery Extensions for NITF (MIE4NITF)
+     * version 1.1, table 16. This is only valid if the image segment holds
+     * motion imagery.
+     */
+    JPEG2000MASKTIME ("MB"),
+
+    /**
+     * JPEG2000 with time.
+     *
+     * This field value is from the Motion Imagery Extensions for NITF (MIE4NITF)
+     * version 1.1, table 16. This is only valid if the image segment holds
+     * motion imagery.
+     */
+    JPEG2000TIME ("CB");
 
     private final String textEquivalent;
 
@@ -179,7 +238,7 @@ public enum ImageCompression {
     */
     public static ImageCompression getEnumValue(final String textEquivalent) {
         for (ImageCompression ic : values()) {
-            if (textEquivalent.equals(ic.textEquivalent)) {
+            if (ic.textEquivalent.equals(textEquivalent)) {
                 return ic;
             }
         }
