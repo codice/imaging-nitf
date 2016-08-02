@@ -14,13 +14,21 @@
  */
 package org.codice.imaging.nitf.render;
 
+import java.awt.Rectangle;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+
+import org.codice.imaging.nitf.core.image.ImageBand;
+import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandler;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandlerFactory;
@@ -76,6 +84,9 @@ public class NitfRenderer {
             ImageMask imageMask = new ImageMask(imageSegment, imageSegment.getData());
             renderJPEG(imageSegment, targetGraphic, imageMask);
             break;
+        case JPEG2000:
+            renderJPEG2k(imageSegment, targetGraphic);
+            break;
         default:
             throw new UnsupportedOperationException("Unhandled image compression format: "
                     + imageSegment.getImageCompression());
@@ -116,7 +127,7 @@ public class NitfRenderer {
     }
 
     private void renderJPEG(final ImageSegment imageSegment, final Graphics2D targetGraphic, final ImageMask imageMask) throws IOException {
-        ImageReader reader = getJPEGimageReader();
+        ImageReader reader = getImageReader("image/jpeg");
         reader.setInput(imageSegment.getData());
         ThreadLocal<Integer> maskedBlocks = new ThreadLocal<Integer>();
         maskedBlocks.set(0);
@@ -135,6 +146,61 @@ public class NitfRenderer {
                     rowIndex * (int) imageSegment.getNumberOfPixelsPerBlockVertical(),
                     null);
         });
+    }
+
+    private void renderJPEG2k(final ImageSegment imageSegment, final Graphics2D targetGraphic) throws IOException {
+        final ImageReader reader = getImageReader("image/jp2");
+        reader.setInput(imageSegment.getData(), true, true);
+        final ImageReadParam param = reader.getDefaultReadParam();
+
+        if (ImageRepresentation.MULTIBAND.equals(imageSegment.getImageRepresentation())) {
+            final int[] sourceBands = getSourceBands(imageSegment);
+            param.setSourceBands(sourceBands);
+        }
+
+        processBlocks(imageSegment, (r, c) -> {
+                    Rectangle rect = new Rectangle((int) (c * imageSegment.getNumberOfPixelsPerBlockHorizontal()),
+                            (int) (r * imageSegment.getNumberOfPixelsPerBlockVertical()),
+                            (int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
+                            (int) imageSegment.getNumberOfPixelsPerBlockVertical());
+                    param.setSourceRegion(rect);
+
+                    BufferedImage renderedBlock = reader.read(0, param);
+                    param.setDestination(renderedBlock);
+                    targetGraphic.drawImage(renderedBlock, (int) (c * imageSegment.getNumberOfPixelsPerBlockVertical()),
+                            (int) (r * imageSegment.getNumberOfPixelsPerBlockHorizontal()),
+                            null);
+
+                }
+        );
+    }
+
+    private int[] getSourceBands(final ImageSegment imageSegment) {
+        List<Integer> imageBands = new ArrayList<Integer>();
+
+        for (int i = 0; i < imageSegment.getNumBands(); i++) {
+            ImageBand band = imageSegment.getImageBandZeroBase(i);
+
+            if (null != band.getImageRepresentation()) {
+                switch (band.getImageRepresentation()) {
+                case "R":
+                case "G":
+                case "B":
+                    imageBands.add(i);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        int[] imageBandAry = new int[imageBands.size()];
+
+        for (int i = 0; i < imageBands.size(); i++) {
+            imageBandAry[i] = imageBands.get(i);
+        }
+
+        return imageBandAry;
     }
 
     private void processBlocks(final ImageSegment imageSegment, final BlockConsumer consumer)
@@ -167,8 +233,14 @@ public class NitfRenderer {
     }
 
 
-    private ImageReader getJPEGimageReader() {
-        Iterator<ImageReader> imageReaders = ImageIO.getImageReadersByMIMEType("image/jpeg");
+    private ImageReader getImageReader(final String mediaType) {
+        Iterator<ImageReader> imageReaders = ImageIO.getImageReadersByMIMEType(mediaType);
+
+        if (imageReaders == null || !imageReaders.hasNext()) {
+            throw new UnsupportedOperationException(
+                    String.format("NitfRenderer.render(): no ImageReader found for media type '%s'.", mediaType));
+        }
+
         return imageReaders.next();
     }
 }
