@@ -17,25 +17,22 @@ package org.codice.imaging.nitf.render.imagerep;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
-
 import javax.imageio.stream.ImageInputStream;
-
 import org.codice.imaging.nitf.render.ImageMask;
 
-public class NoDisplayImageRepresentationHandler implements ImageRepresentationHandler {
+class NoDisplayImageRepresentationHandler implements ImageRepresentationHandler {
     @Override
-    public void renderPixelBand(DataBuffer dataBuffer, int pixelIndex,
-            ImageInputStream imageInputStream, int bandIndex) throws IOException {
-        return;
+    public void renderPixelBand(final DataBuffer dataBuffer, final int pixelIndex,
+            final ImageInputStream imageInputStream, final int bandIndex) throws IOException {
     }
 
     @Override
-    public BufferedImage createBufferedImage(int width, int height) {
+    public final BufferedImage createBufferedImage(final int width, final int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
     }
 
     @Override
-    public void renderPadPixel(ImageMask imageMask, DataBuffer data, int pixelIndex) {
+    public final void renderPadPixel(final ImageMask imageMask, final DataBuffer data, final int pixelIndex) {
         return;
     }
 }
