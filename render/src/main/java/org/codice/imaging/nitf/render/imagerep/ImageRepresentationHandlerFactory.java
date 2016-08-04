@@ -44,6 +44,8 @@ public final class ImageRepresentationHandlerFactory {
     public static ImageRepresentationHandler forImageSegment(final ImageSegment segment) {
 
         switch (segment.getImageRepresentation()) {
+            case NOTFORDISPLAY:
+                return new NoDisplayImageRepresentationHandler();
             case MONOCHROME:
                 return getMonoImageRepresentationHandler(segment, 0);
             case RGBTRUECOLOUR:
