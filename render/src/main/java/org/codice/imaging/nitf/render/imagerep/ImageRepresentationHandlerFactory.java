@@ -16,8 +16,8 @@ package org.codice.imaging.nitf.render.imagerep;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.ImageBand;
+import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.datareader.DataReaderFactory;
 import org.codice.imaging.nitf.render.datareader.IOReaderFunction;
 
@@ -38,8 +38,8 @@ public final class ImageRepresentationHandlerFactory {
      *
      * @param segment the image segment specifying the image characteristics to
      * be read.
-     * @return a handler for the segment, or null if an appropriate handler
-     * could not be found.
+     * @return a handler for the segment, or a "no render" handler if an
+     * appropriate handler could not be found.
      */
     public static ImageRepresentationHandler forImageSegment(final ImageSegment segment) {
 
@@ -53,8 +53,9 @@ public final class ImageRepresentationHandlerFactory {
             case RGBLUT:
                 return getRgbLUTImageRepresentationHandler(segment, 0);
             //add other (more complex) cases here
+            case NOTFORDISPLAY:
             default:
-                return null;
+                return new NoDisplayImageRepresentationHandler();
         }
     }
 
