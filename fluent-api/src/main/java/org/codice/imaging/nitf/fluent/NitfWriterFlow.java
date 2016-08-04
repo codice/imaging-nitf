@@ -14,12 +14,14 @@
  */
 package org.codice.imaging.nitf.fluent;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.function.Supplier;
+
 import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.NitfOutputStreamWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides methods for writing a NITF to a java.io.File or java.io.OutputStream.  Instances of
@@ -29,41 +31,20 @@ import org.codice.imaging.nitf.core.NitfOutputStreamWriter;
  * no operation being performed.
  */
 public class NitfWriterFlow {
-    private OutputStream outStream;
+    private Supplier<OutputStream> streamSupplier;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NitfWriterFlow.class);
 
     /**
      * Sets the OutputStream that a call to write() will write to.  Calling this method multiple
      * times, or calling file() after outputStream() will overwrite the previous value.
      *
-     * @param outputStream the OutputStream to write the NITF to.
+     * @param outputStreamSupplier a Supplier for the OutputStream to write the NITF to.
      * @return this NitfWriterFlow.
      */
-    public final NitfWriterFlow outputStream(final OutputStream outputStream) {
-        if (outputStream != null) {
-            this.outStream = outputStream;
-        }
-
-        return this;
-    }
-
-    /**
-     * Sets the OutputStream that a call to write() will write to.  Calling this method multiple
-     * times, or calling outputStream() after file() will overwrite the previous value.
-     *
-     * @param file the File to write the NITF to.
-     * @return this NitfWriterFlow.
-     */
-    public final NitfWriterFlow file(final File file) {
-        if (file != null) {
-            try {
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-
-                outputStream(new FileOutputStream(file));
-            } catch (IOException ioe) {
-                throw new RuntimeException(ioe);
-            }
+    public final NitfWriterFlow outputStream(final Supplier<OutputStream> outputStreamSupplier) {
+        if (outputStreamSupplier != null) {
+            this.streamSupplier = outputStreamSupplier;
         }
 
         return this;
@@ -77,9 +58,14 @@ public class NitfWriterFlow {
      * @return this NitfWriterFlow.
      */
     public final NitfWriterFlow write(final DataSource dataSource) {
-        if (this.outStream != null) {
-            NitfOutputStreamWriter nitfWriter = new NitfOutputStreamWriter(dataSource, outStream);
-            nitfWriter.write();
+        if (this.streamSupplier != null) {
+            try (OutputStream outputStream = streamSupplier.get()) {
+                NitfOutputStreamWriter nitfWriter = new NitfOutputStreamWriter(dataSource,
+                        outputStream);
+                nitfWriter.write();
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
         }
 
         return this;

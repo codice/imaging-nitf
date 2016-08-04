@@ -16,7 +16,10 @@ package org.codice.imaging.nitf.fluent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -30,11 +33,15 @@ import org.slf4j.LoggerFactory;
  */
 public class WritingFlowTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(WritingFlowTest.class);
+
     private static final String INPUT_FILE_NAME = "ns3038a.nsf";
+
     private static final String DIRECTORY_NAME = "JitcNitf21Samples";
 
     private static final String TEST_FILE_TITLE = "test file title";
+
     private static final String TEST_ORIGINATOR_NAME = "test originator";
+
     private static final String TEST_STATIION_ID = "_OSTAID";
 
     private File outputFile;
@@ -49,42 +56,37 @@ public class WritingFlowTest {
     public void testNS3038A() throws IOException, NitfFormatException {
         String inputFileName = "/" + DIRECTORY_NAME + "/" + INPUT_FILE_NAME;
         LOGGER.info("================================== Testing :" + inputFileName);
-        Assert.assertNotNull("Test file missing: " + inputFileName, getClass().getResource(inputFileName));
+        Assert.assertNotNull("Test file missing: " + inputFileName,
+                getClass().getResource(inputFileName));
         modifyNitf(inputFileName);
         verifyResult();
     }
 
-    public void modifyNitf(final String inputFileName) throws
-            IOException, NitfFormatException {
+    public void modifyNitf(final String inputFileName) throws IOException, NitfFormatException {
 
-        new NitfParserInputFlow()
-                .inputStream(getClass().getResourceAsStream(inputFileName))
-                .allData()
-                .fileHeader(
-                    header -> {
+        try (OutputStream outputStream = new FileOutputStream(outputFile)) {
+            new NitfParserInputFlow().inputStream(getClass().getResourceAsStream(inputFileName))
+                    .allData()
+                    .fileHeader(header -> {
                         header.setFileTitle(TEST_FILE_TITLE);
                         header.setOriginatorsName(TEST_ORIGINATOR_NAME);
                         header.setOriginatingStationId(TEST_STATIION_ID);
-                    }
-                )
-                .dataSource(datasource ->
-                        new NitfWriterFlow()
-                            .file(outputFile)
-                            .write(datasource)
-                );
+                    })
+                    .dataSource(datasource -> new NitfWriterFlow().outputStream(() -> outputStream)
+                            .write(datasource));
+        }
     }
 
     private void verifyResult() throws NitfFormatException, FileNotFoundException {
-        new NitfParserInputFlow()
-                .file(outputFile)
+        new NitfParserInputFlow().file(outputFile)
                 .headerOnly()
-                .fileHeader(
-                    header -> {
-                        Assert.assertThat(header.getFileTitle(), CoreMatchers.is(TEST_FILE_TITLE));
-                        Assert.assertThat(header.getOriginatorsName(), CoreMatchers.is(TEST_ORIGINATOR_NAME));
-                        Assert.assertThat(header.getOriginatingStationId(), CoreMatchers.is(TEST_STATIION_ID));
-                    }
-                );
+                .fileHeader(header -> {
+                    Assert.assertThat(header.getFileTitle(), CoreMatchers.is(TEST_FILE_TITLE));
+                    Assert.assertThat(header.getOriginatorsName(),
+                            CoreMatchers.is(TEST_ORIGINATOR_NAME));
+                    Assert.assertThat(header.getOriginatingStationId(),
+                            CoreMatchers.is(TEST_STATIION_ID));
+                });
     }
 
 }
