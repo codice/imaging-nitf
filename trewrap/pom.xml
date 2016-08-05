@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.codice.imaging.nitf</groupId>
         <artifactId>codice-imaging-nitf</artifactId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.4</version>
     </parent>
     <artifactId>trewrap</artifactId>
     <packaging>jar</packaging>
