@@ -25,10 +25,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Provides methods for writing a NITF to a java.io.File or java.io.OutputStream.  Instances of
- * this class will maintain state for a single OutputStream.  Expected usage is that either
- * outputStream() or file() will be called, not both. Calling them both will have the same effect
- * as calling only the last one.  Calling write() before outputStream() or file() will result in
- * no operation being performed.
+ * this class will maintain state for a single OutputStream.
  */
 public class NitfWriterFlow {
     private Supplier<OutputStream> streamSupplier;
@@ -37,7 +34,7 @@ public class NitfWriterFlow {
 
     /**
      * Sets the OutputStream that a call to write() will write to.  Calling this method multiple
-     * times, or calling file() after outputStream() will overwrite the previous value.
+     * times will overwrite the previous value.
      *
      * @param outputStreamSupplier a Supplier for the OutputStream to write the NITF to.
      * @return this NitfWriterFlow.
@@ -51,8 +48,8 @@ public class NitfWriterFlow {
     }
 
     /**
-     * Writes the NITF to the current OutputStream.  If either outputStream() or file() hasn't
-     * been called, no operation will be performed.
+     * Writes the NITF to the current OutputStream.
+     * If either outputStream() hasn't been called, no operation will be performed.
      *
      * @param dataSource the DataSource that represents the state of the NITF.
      * @return this NitfWriterFlow.
