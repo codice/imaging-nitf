@@ -36,7 +36,7 @@ public final class ImageSegmentFactory {
      * valid - it is application dependent.
      *
      * @param fileType the type (version) of NITF file this image segment is for
-     * @return default valid image segment, containing no image data.
+     * @return default image segment, containing no image data.
      */
     public static ImageSegment getDefault(final FileType fileType) {
         ImageSegment imageSegment = new ImageSegmentImpl();
