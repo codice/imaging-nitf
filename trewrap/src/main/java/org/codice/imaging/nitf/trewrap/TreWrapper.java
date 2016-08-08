@@ -114,7 +114,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if the field was not found or a parsing issue occurs.
      */
     protected final long getValueAsLongInteger(final String fieldName) throws NitfFormatException {
-        return mTre.getLongIntegerValue(fieldName);
+        return mTre.getLongValue(fieldName);
     }
 
     /**

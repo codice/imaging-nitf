@@ -103,7 +103,7 @@ class TreGroupImpl implements TreGroup {
      * {@inheritDoc}
      */
     @Override
-    public final long getLongIntegerValue(final String tagName) throws NitfFormatException {
+    public final long getLongValue(final String tagName) throws NitfFormatException {
         return getBigIntegerValue(tagName).longValueExact();
     }
 

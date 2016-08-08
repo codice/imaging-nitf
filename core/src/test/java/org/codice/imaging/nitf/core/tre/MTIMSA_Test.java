@@ -59,12 +59,12 @@ public class MTIMSA_Test extends SharedTreTest {
         baos.write(parseHexBinary("00000001"));
         baos.write(parseHexBinary("7ffffffffffffffe"));
         Tre mtimsa = doParseAndCheckResults(baos);
-        assertEquals(8, mtimsa.getLongIntegerValue("DT_SIZE"));
-        assertEquals(16909060, mtimsa.getLongIntegerValue("NUMBER_FRAMES"));
-        assertEquals(1, mtimsa.getLongIntegerValue("NUMBER_DT"));
+        assertEquals(8, mtimsa.getLongValue("DT_SIZE"));
+        assertEquals(16909060, mtimsa.getLongValue("NUMBER_FRAMES"));
+        assertEquals(1, mtimsa.getLongValue("NUMBER_DT"));
         TreGroup deltaTimes = mtimsa.getEntry("DELTA_TIME").getGroups().get(0);
         assertEquals(1, deltaTimes.getEntries().size());
-        assertEquals(0x7FFFFFFFFFFFFFFEL, deltaTimes.getLongIntegerValue("DT"));
+        assertEquals(0x7FFFFFFFFFFFFFFEL, deltaTimes.getLongValue("DT"));
     }
 
     private Tre doParseAndCheckResults(ByteArrayOutputStream baos) throws NitfFormatException {

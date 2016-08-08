@@ -85,7 +85,7 @@ public interface TreGroup {
      * @throws NitfFormatException when the tag is not found or the value cannot
      * be converted to long integer format.
      */
-    long getLongIntegerValue(String tagName) throws NitfFormatException;
+    long getLongValue(String tagName) throws NitfFormatException;
 
     /**
      * Get the field value for a specific tag as a BigInteger.

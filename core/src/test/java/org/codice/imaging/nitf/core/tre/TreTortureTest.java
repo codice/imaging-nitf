@@ -501,10 +501,10 @@ public class TreTortureTest {
     public void parseTST10A() throws NitfFormatException {
         BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303333" + "fff02367" + "ff01020304" + "ff0102030405" + "ff010203040506" + "7f01020304050607")));
         Tre tre = parseTST10A(bufferedStream);
-        assertEquals(0xfff02367L, tre.getLongIntegerValue("UINT4"));
-        assertEquals(0xff01020304L, tre.getLongIntegerValue("UINT5"));
-        assertEquals(0xff0102030405L, tre.getLongIntegerValue("UINT6"));
-        assertEquals(0xff010203040506L, tre.getLongIntegerValue("UINT7"));
+        assertEquals(0xfff02367L, tre.getLongValue("UINT4"));
+        assertEquals(0xff01020304L, tre.getLongValue("UINT5"));
+        assertEquals(0xff0102030405L, tre.getLongValue("UINT6"));
+        assertEquals(0xff010203040506L, tre.getLongValue("UINT7"));
         assertEquals(new BigInteger("9151598129769154055"), tre.getBigIntegerValue("UINT8"));
     }
 
@@ -523,10 +523,10 @@ public class TreTortureTest {
     public void parseTST10A_0xff() throws NitfFormatException {
         BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303333" + "ffffffff" + "ffffffffff" + "ffffffffffff" + "ffffffffffffff" + "ffffffffffffffff")));
         Tre tre = parseTST10A(bufferedStream);
-        assertEquals(4294967295L, tre.getLongIntegerValue("UINT4"));
-        assertEquals(1099511627775L, tre.getLongIntegerValue("UINT5"));
-        assertEquals(281474976710655L, tre.getLongIntegerValue("UINT6"));
-        assertEquals(72057594037927935L, tre.getLongIntegerValue("UINT7"));
+        assertEquals(4294967295L, tre.getLongValue("UINT4"));
+        assertEquals(1099511627775L, tre.getLongValue("UINT5"));
+        assertEquals(281474976710655L, tre.getLongValue("UINT6"));
+        assertEquals(72057594037927935L, tre.getLongValue("UINT7"));
         assertEquals(new BigInteger("18446744073709551615"), tre.getBigIntegerValue("UINT8"));
     }
 
