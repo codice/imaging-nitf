@@ -47,6 +47,11 @@ public abstract class TreWrapper {
     protected static final DateTimeFormatter TIMESTAMP_NANO_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss.nnnnnnnnn");
 
     /**
+     * Internal constant for date formatting / parsing in four digit year, month, day, hours, minutes, seconds convention.
+     */
+    protected static final DateTimeFormatter CENTURY_DATE_TIME_SECONDS_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+    /**
      * The TRE that is being wrapped.
      *
      * This holds the state / data.
