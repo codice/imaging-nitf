@@ -22,7 +22,7 @@ public class TreTest {
 
     @Test
     public void testTreEntryAccessors1() {
-        TreEntry entry = new TreEntry("oldName", null);
+        TreEntry entry = new TreEntry("oldName", null, "string");
         assertNotNull(entry);
 
         entry.setName("DANAME");
@@ -34,7 +34,7 @@ public class TreTest {
 
     @Test
     public void testTreEntryAccessors2() {
-        TreEntry entry = new TreEntry("ANAME", null);
+        TreEntry entry = new TreEntry("ANAME", null, null);
         assertNotNull(entry);
 
         entry.initGroups();

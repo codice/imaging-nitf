@@ -57,11 +57,11 @@ public class PIAPEB extends FlatTreWrapper {
     public PIAPEB(final TreSource treSource) throws NitfFormatException {
         super(TAG_NAME, treSource);
         // set default values
-        addOrUpdateEntry("LASTNME", "");
-        addOrUpdateEntry("FIRSTNME", "");
-        addOrUpdateEntry("MIDNME", "");
-        addOrUpdateEntry("DOB", "");
-        addOrUpdateEntry("ASSOCTRY", "");
+        addOrUpdateEntry("LASTNME", "", "string");
+        addOrUpdateEntry("FIRSTNME", "", "string");
+        addOrUpdateEntry("MIDNME", "", "string");
+        addOrUpdateEntry("DOB", "", "string");
+        addOrUpdateEntry("ASSOCTRY", "", "string");
     }
 
     /**
@@ -73,7 +73,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setLastName(final String lastName) throws NitfFormatException {
-        addOrUpdateEntry("LASTNME", lastName);
+        addOrUpdateEntry("LASTNME", lastName, "string");
     }
 
     /**
@@ -97,7 +97,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setFirstName(final String firstName) throws NitfFormatException {
-        addOrUpdateEntry("FIRSTNME", firstName);
+        addOrUpdateEntry("FIRSTNME", firstName, "string");
     }
 
     /**
@@ -121,7 +121,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setMiddleName(final String middleName) throws NitfFormatException {
-        addOrUpdateEntry("MIDNME", middleName);
+        addOrUpdateEntry("MIDNME", middleName, "string");
     }
 
     /**
@@ -176,7 +176,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setAssociatedCountry(final String associatedCountry) throws NitfFormatException {
-        addOrUpdateEntry("ASSOCTRY", associatedCountry);
+        addOrUpdateEntry("ASSOCTRY", associatedCountry, "string");
     }
 
     /**

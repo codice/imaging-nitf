@@ -58,9 +58,10 @@ public abstract class FlatTreWrapper extends TreWrapper {
      *
      * @param fieldName the field name for the TRE.
      * @param value the value to set.
+     * @param fieldType the data type of the value to be written
      * @throws NitfFormatException if there is a parsing error.
      */
-    protected final void addOrUpdateEntry(final String fieldName, final String value) throws NitfFormatException {
+    protected final void addOrUpdateEntry(final String fieldName, final String value, final String fieldType) throws NitfFormatException {
         for (TreEntry entry : mTre.getEntries()) {
             if (entry.getName().equals(fieldName)) {
                 mTre.getEntry(fieldName).setFieldValue(value);
@@ -68,7 +69,7 @@ public abstract class FlatTreWrapper extends TreWrapper {
             }
         }
         // Didn't find it, just add.
-        mTre.add(new TreEntry(fieldName, value));
+        mTre.add(new TreEntry(fieldName, value, fieldType));
     }
 
     /**
@@ -87,6 +88,6 @@ public abstract class FlatTreWrapper extends TreWrapper {
         if (date != null) {
             value = date.format(CENTURY_DATE_FORMATTER);
         }
-        addOrUpdateEntry(fieldName, value);
+        addOrUpdateEntry(fieldName, value, "string");
     }
 }

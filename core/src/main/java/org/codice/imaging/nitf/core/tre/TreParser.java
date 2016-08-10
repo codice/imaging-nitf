@@ -130,30 +130,36 @@ public class TreParser {
     private TreEntry parseField(final FieldType field, final NitfReader reader,
             final TreParams parameters) throws NitfFormatException {
         String fieldKey = field.getName();
+        String fieldType = field.getType();
         if (fieldKey == null) {
-            reader.skip(field.getLength().intValue());
+            reader.skip(getLengthForField(field, parameters));
             return null;
         } else {
             if (fieldKey.isEmpty()) {
                 fieldKey = field.getLongname();
             }
-            int fieldLength = 0;
-            BigInteger fieldLengthBigInt = field.getLength();
-            if (fieldLengthBigInt != null) {
-                fieldLength = fieldLengthBigInt.intValue();
-            } else if (field.getLengthVar() != null) {
-                fieldLength = Integer.parseInt(parameters.getFieldValue(field.getLengthVar()));
-            } else {
-                throw new UnsupportedOperationException("Unhandled field type parsing issue");
-            }
-            String fieldValue = reader.readBytes(fieldLength);
+            int bytesToRead = getLengthForField(field, parameters);
+            String fieldValue = reader.readBytes(bytesToRead);
             if (fieldKey.isEmpty()) {
-                return new TreEntry("no name", fieldValue);
+                return new TreEntry("no name", fieldValue, fieldType);
             } else {
-                parameters.addParameter(fieldKey, fieldValue);
-                return new TreEntry(fieldKey, fieldValue);
+                parameters.addParameter(fieldKey, fieldValue, fieldType);
+                return new TreEntry(fieldKey, fieldValue, fieldType);
             }
         }
+    }
+
+    private int getLengthForField(final FieldType field, final TreParams parameters) throws UnsupportedOperationException, NumberFormatException {
+        int fieldLength = 0;
+        BigInteger fieldLengthBigInt = field.getLength();
+        if (fieldLengthBigInt != null) {
+            fieldLength = fieldLengthBigInt.intValue();
+        } else if (field.getLengthVar() != null) {
+            fieldLength = parameters.getIntValue(field.getLengthVar());
+        } else {
+            throw new UnsupportedOperationException("Unhandled field type parsing issue");
+        }
+        return fieldLength;
     }
 
     private int computeFormula(final String formula, final TreParams treParas) throws NitfFormatException {
@@ -389,7 +395,7 @@ public class TreParser {
         if (fieldTypeName != null) {
             TreEntry entry = treGroup.getEntry(fieldTypeName);
             String value = getValidatedValue(fieldType, entry, params);
-            params.addParameter(fieldTypeName, value);
+            params.addParameter(fieldTypeName, value, entry.getDataType());
             return value.getBytes(StandardCharsets.UTF_8);
         } else {
             // This is a pad field

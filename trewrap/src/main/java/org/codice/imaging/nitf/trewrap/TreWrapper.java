@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.trewrap;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -39,6 +40,11 @@ public abstract class TreWrapper {
      * Internal constant for date formatting / parsing in four digit year, month, day, hours, minutes convention.
      */
     protected static final DateTimeFormatter CENTURY_DATE_TIME_MINUTES_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+
+    /**
+     * Internal constant for date formatting / parsing in UTC to nanosecond precision format.
+     */
+    protected static final DateTimeFormatter TIMESTAMP_NANO_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss.nnnnnnnnn");
 
     /**
      * The TRE that is being wrapped.
@@ -98,6 +104,28 @@ public abstract class TreWrapper {
      */
     protected final int getValueAsInteger(final String fieldName) throws NitfFormatException {
         return mTre.getIntValue(fieldName);
+    }
+
+    /**
+     * Retrieve the specified value as a long integer field.
+     *
+     * @param fieldName the name of the field value to retrieve.
+     * @return the value for the TRE entry.
+     * @throws NitfFormatException if the field was not found or a parsing issue occurs.
+     */
+    protected final long getValueAsLongInteger(final String fieldName) throws NitfFormatException {
+        return mTre.getLongValue(fieldName);
+    }
+
+    /**
+     * Retrieve the specified value as an arbitrary precision (BigInteger) field.
+     *
+     * @param fieldName the name of the field value to retrieve.
+     * @return the value for the TRE entry.
+     * @throws NitfFormatException if the field was not found or a parsing issue occurs.
+     */
+    protected final BigInteger getValueAsBigInteger(final String fieldName) throws NitfFormatException {
+        return mTre.getBigIntegerValue(fieldName);
     }
 
     /**
