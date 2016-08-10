@@ -516,6 +516,18 @@
         <field name="TOTAL_TILES_COLS" length="3" type="integer" minval="1" maxval="999"/>
         <field name="TOTAL_TILES_ROWS" length="5" type="integer" minval="1" maxval="99999"/>
     </tre>
+    
+    <!-- MIE4NITF 1.1, Section 5.9.3.2 and Table 11 -->
+    <tre name="MIMCSA" length="121" location="file">
+        <field name="LAYER_ID" length="36" type="string"/>
+        <field name="NOMINAL_FRAME_RATE" length="13" type="real" minval="0.0"/>
+        <field name="MIN_FRAME_RATE" length="13" type="real" minval="0.0"/>
+        <field name="MAX_FRAME_RATE" length="13" type="real" minval="0.0"/>
+        <field name="T_RSET" length="2" type="integer" minval="0" maxval="99"/>
+        <field name="MI_REQ_DECODER" length="2" type="string"/>
+        <field name="MI_REQ_PROFILE" length="36" type="string"/>
+        <field name="MI_REQ_LEVEL" length="6" type="string"/>
+    </tre>
 
     <!-- MIE4NITF Version 1.1, Section 5.9.4.7 Motion Imaging Segment TRE (MTIMSA) and Table 17 -->
     <tre name="MTIMSA" minlength="150" maxlength="99985" location="image">
@@ -538,7 +550,7 @@
             <field name="DT" length_var="DT_SIZE" type="UINT"/>
         </loop>
     </tre>
-
+    
     <!-- STDI-0002 Appendix E (ASDE 2.1/CN1), Section 3.10 and Table E-19 -->
     <tre name="MTIRPB" minlength="119" maxlength="42035">
         <field name="MTI_DP" length="2" type="string"/>
