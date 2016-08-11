@@ -316,14 +316,14 @@ public class TreParser {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         for (Tre tre : handler.getTREsRawStructure().getTREsForSource(source)) {
             String name = padStringToLength(tre.getName(), TAG_LENGTH);
-            baos.write(name.getBytes(StandardCharsets.UTF_8));
+            baos.write(name.getBytes(StandardCharsets.ISO_8859_1));
             if (tre.getRawData() != null) {
                 String tagLen = padIntegerToLength(tre.getRawData().length, TAGLEN_LENGTH);
-                baos.write(tagLen.getBytes(StandardCharsets.UTF_8));
+                baos.write(tagLen.getBytes(StandardCharsets.ISO_8859_1));
                 baos.write(tre.getRawData());
             } else {
                 byte[] treData = serializeTRE(tre);
-                baos.write(padIntegerToLength(treData.length, TAGLEN_LENGTH).getBytes(StandardCharsets.UTF_8));
+                baos.write(padIntegerToLength(treData.length, TAGLEN_LENGTH).getBytes(StandardCharsets.ISO_8859_1));
                 baos.write(treData);
             }
         }
@@ -338,7 +338,13 @@ public class TreParser {
         return String.format("%1$-" + length + "s", s);
     }
 
-    private String padRealToLength(final double number, final int length) {
+    private String padRealToLength(final double number, final String format, final int length) {
+        if ((format != null) && (format.equals("UE"))) {
+            if (Double.isNaN(number)) {
+                return padStringToLength("NaN", length);
+            }
+            return String.format("%0" + length + "." + (length - "X.".length() - "E+ZZ".length()) + "E", number);
+        }
         return String.format("%" + length + "f", number);
     }
 
@@ -388,48 +394,34 @@ public class TreParser {
     }
 
     private byte[] getFieldValue(final FieldType fieldType, final TreGroup treGroup, final TreParams params) throws NitfFormatException {
+        String fieldTypeName = getFieldTypeName(fieldType);
+        if (fieldTypeName != null) {
+            TreEntry entry = treGroup.getEntry(fieldTypeName);
+            return getValueForEntry(params, fieldType, entry);
+        } else {
+            // This is a pad field
+            String value = fieldType.getFixedValue();
+            if ((value != null) && (!value.isEmpty())) {
+                return value.getBytes(StandardCharsets.ISO_8859_1);
+            } else {
+                return padStringToLength("", fieldType.getLength().intValueExact()).getBytes(StandardCharsets.ISO_8859_1);
+            }
+        }
+    }
+
+    private String getFieldTypeName(final FieldType fieldType) {
         String fieldTypeName = fieldType.getName();
         if ("".equals(fieldTypeName)) {
             fieldTypeName = fieldType.getLongname();
         }
-        if (fieldTypeName != null) {
-            TreEntry entry = treGroup.getEntry(fieldTypeName);
-            String value = getValidatedValue(fieldType, entry, params);
-            params.addParameter(fieldTypeName, value, entry.getDataType());
-            return value.getBytes(StandardCharsets.UTF_8);
-        } else {
-            // This is a pad field
-            String value = fieldType.getFixedValue();
-            return value.getBytes(StandardCharsets.UTF_8);
-        }
+        return fieldTypeName;
     }
 
-    private String getValidatedValue(final FieldType fieldType, final TreEntry entry, final TreParams params) throws NitfFormatException {
+    private byte[] getValueForEntry(final TreParams params, final FieldType fieldType, final TreEntry entry)
+            throws NitfFormatException {
         String value = entry.getFieldValue();
         if (value == null) {
             throw new NitfFormatException("Cannot serialize null entry for: " + fieldType.getName());
-        }
-        if ((fieldType.getLength() != null) && (value.length() != fieldType.getLength().intValue())) {
-            // Try to pad out to the required length.
-            if (fieldType.getType() == null) {
-                String err = "Cannot pad unknown data type for " + fieldType.getName();
-                LOG.error(err);
-                throw new NitfFormatException(err);
-            }
-            if (fieldType.getType().equals("integer")) {
-                value = getValidatedIntegerValue(value, fieldType);
-            }
-
-            if (fieldType.getType().equals("string")) {
-                value = padStringToLength(value, fieldType.getLength().intValue());
-            }
-
-            if (fieldType.getType().equals("real")) {
-                value = getValidatedRealValue(value, fieldType);
-            }
-            if (value.length() != fieldType.getLength().intValue()) {
-                throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
-            }
         }
         if (fieldType.getLengthVar() != null) {
             String lengthVar = fieldType.getLengthVar();
@@ -440,11 +432,51 @@ public class TreParser {
                 throw new NitfFormatException(err);
             }
         }
-        return value;
+        if ((fieldType.getLength() == null) || (fieldType.getLength().intValueExact() == value.length())) {
+            params.addParameter(getFieldTypeName(fieldType), value, entry.getDataType());
+            return value.getBytes(StandardCharsets.ISO_8859_1);
+        }
+        // Try to pad out to the required length.
+        if (fieldType.getType() == null) {
+            String err = "Cannot pad unknown data type for " + fieldType.getName();
+            LOG.error(err);
+            throw new NitfFormatException(err);
+        }
+        if (fieldType.getType().equals("integer")) {
+            value = getValidatedIntegerValue(value, fieldType);
+            params.addParameter(getFieldTypeName(fieldType), value, entry.getDataType());
+            return value.getBytes(StandardCharsets.ISO_8859_1);
+        }
+
+        if (fieldType.getType().equals("string")) {
+            value = padStringToLength(value, fieldType.getLength().intValue());
+            if (value.length() > fieldType.getLength().intValue()) {
+               throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
+            }
+            params.addParameter(getFieldTypeName(fieldType), value, entry.getDataType());
+            return value.getBytes(StandardCharsets.ISO_8859_1);
+        }
+
+        if (fieldType.getType().equals("real")) {
+            value = getValidatedRealValue(value, fieldType);
+            params.addParameter(getFieldTypeName(fieldType), value, entry.getDataType());
+            return value.getBytes(StandardCharsets.ISO_8859_1);
+        }
+        if (fieldType.getType().equals("UINT")) {
+            byte[] result = getValidatedUINTValue(entry.getFieldValue().getBytes(StandardCharsets.ISO_8859_1), fieldType);
+            params.addParameter(getFieldTypeName(fieldType), value, entry.getDataType());
+            // params.addUintParameter(getFieldTypeName(fieldType), result);
+            return result;
+        }
+        throw new UnsupportedOperationException("Unsupported field type for serialisation:" + fieldType.getType());
     }
+
 
     private String getValidatedIntegerValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
+        if (value.length() > fieldType.getLength().intValue()) {
+            throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
+        }
         try {
             int intValue = Integer.parseInt(value);
             validateIntegerValueRange(intValue, fieldType);
@@ -477,7 +509,7 @@ public class TreParser {
         try {
             double realValue = Double.parseDouble(value);
             validateRealValueRange(realValue, fieldType);
-            paddedValue = padRealToLength(realValue, fieldType.getLength().intValue());
+            paddedValue = padRealToLength(realValue, fieldType.getFormat(), fieldType.getLength().intValue());
         } catch (NumberFormatException ex) {
             String err = "Could not parse " + fieldType.getName() + " value " + value + " as a floating point number.";
             LOG.error(err);
@@ -501,6 +533,23 @@ public class TreParser {
         }
     }
 
+    private byte[] getValidatedUINTValue(final byte[] value, final FieldType fieldType) {
+        // TODO: validate range properly
+        int requiredLength = fieldType.getLength().intValueExact();
+        if (requiredLength > value.length) {
+            byte[] paddedResult = new byte[requiredLength];
+            int numPadBytes = requiredLength - value.length;
+            for (int i = 0; i < numPadBytes; ++i) {
+                paddedResult[i] = 0;
+            }
+            for (int i = 0; i < value.length; ++i) {
+                paddedResult[i + numPadBytes] = value[i];
+            }
+            return paddedResult;
+        }
+        return value;
+    }
+
     private void checkTreLocationMatchesTreSource(final String location, final TreSource source) throws NitfFormatException {
         if (location == null) {
             // We don't have a fixed location for this TRE.
@@ -520,5 +569,6 @@ public class TreParser {
             }
         }
     }
+
 
 }

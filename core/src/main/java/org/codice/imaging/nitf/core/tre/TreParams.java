@@ -30,7 +30,7 @@ class TreParams {
         if ("UINT".equals(parameter.mFieldType)) {
             int res = 0;
             for (int i = 0; i < parameter.mFieldValue.length(); ++i) {
-                res = (res << Byte.SIZE) + Byte.toUnsignedInt(parameter.mFieldValue.getBytes(StandardCharsets.US_ASCII)[i]);
+                res = (res << Byte.SIZE) + Byte.toUnsignedInt(parameter.mFieldValue.getBytes(StandardCharsets.ISO_8859_1)[i]);
             }
             return res;
         } else {

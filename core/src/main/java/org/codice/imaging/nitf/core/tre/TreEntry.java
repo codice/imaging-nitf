@@ -40,7 +40,7 @@ public class TreEntry {
      *
      * @param fieldName the field name of the new TRE entry.
      * @param fieldValue the field value for the new TRE entry.
-     * @param fieldType the data type ("string", "real", "UINT8", "integer") for the data
+     * @param fieldType the data type ("string", "real", "UINT", "integer") for the data
     */
     public TreEntry(final String fieldName, final String fieldValue, final String fieldType) {
         name = fieldName;

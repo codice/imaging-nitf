@@ -74,7 +74,7 @@ public class CoordinateParseTest {
 
     private ImageSegment parseImageDataSegment(String imageHeaderData) throws NitfFormatException {
         ImageSegmentParser parser = new ImageSegmentParser();
-        NitfReader nitfReader  = new NitfInputStreamReader(new ByteArrayInputStream(imageHeaderData.getBytes(StandardCharsets.US_ASCII)));
+        NitfReader nitfReader  = new NitfInputStreamReader(new ByteArrayInputStream(imageHeaderData.getBytes(StandardCharsets.ISO_8859_1)));
         nitfReader.setFileType(FileType.NITF_TWO_ONE);
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy();
         ImageSegment imageSegment = parser.parse(nitfReader, parseStrategy, 0);

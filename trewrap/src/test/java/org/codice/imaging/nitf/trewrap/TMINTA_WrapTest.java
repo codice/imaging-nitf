@@ -37,7 +37,7 @@ public class TMINTA_WrapTest extends SharedTreTestSupport {
     @Test
     public void basicParse() throws IOException, NitfFormatException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write("TMINTA00112000200000320160819201946.80225902620160819201948.72887270900000420160819203319.69098424120160819203321.557468116".getBytes(StandardCharsets.US_ASCII));
+        baos.write("TMINTA00112000200000320160819201946.80225902620160819201948.72887270900000420160819203319.69098424120160819203321.557468116".getBytes(StandardCharsets.ISO_8859_1));
         Tre tre = parseTRE(new ByteArrayInputStream(baos.toByteArray()), 123, "TMINTA");
         TMINTA tminta = new TMINTA(tre);
         assertTrue(tminta.getValidity().isValid());

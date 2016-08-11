@@ -75,6 +75,7 @@ public class ENGRDA_Test {
         assertEquals(16, engrdaTre.getEntry("RECORDS").getGroups().size());
         TreGroup group15 = engrdaTre.getEntry("RECORDS").getGroups().get(15);
         assertEquals("milliseconds", group15.getFieldValue("ENGLBL"));
+        assertEquals("(Group)", group15.toString());
         assertEquals(3, group15.getIntValue("ENGMTXC"));
         assertEquals(1, group15.getIntValue("ENGMTXR"));
         assertEquals("A", group15.getFieldValue("ENGTYP"));

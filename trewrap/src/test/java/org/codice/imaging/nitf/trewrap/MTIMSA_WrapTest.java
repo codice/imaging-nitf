@@ -40,7 +40,7 @@ public class MTIMSA_WrapTest extends SharedTreTestSupport {
     @Test
     public void basicParse() throws IOException, NitfFormatException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write("MTIMSA0016000199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e840000030045.0000000E+0100000000620160716215756.012345678".getBytes(StandardCharsets.US_ASCII));
+        baos.write("MTIMSA0016000199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e840000030045.0000000E+0100000000620160716215756.012345678".getBytes(StandardCharsets.ISO_8859_1));
         baos.write(parseHexBinary("0000000001312D00"));
         baos.write(parseHexBinary("01"));
         baos.write(parseHexBinary("01020304"));
@@ -72,7 +72,7 @@ public class MTIMSA_WrapTest extends SharedTreTestSupport {
     @Test
     public void basicNaNAltData() throws IOException, NitfFormatException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write("MTIMSA0016000199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e84000003004NaN                   20160716215756.012345678".getBytes(StandardCharsets.US_ASCII));
+        baos.write("MTIMSA0016000199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e84000003004NaN                   20160716215756.012345678".getBytes(StandardCharsets.ISO_8859_1));
         baos.write(parseHexBinary("0000000001312D00"));
         baos.write(parseHexBinary("03"));
         baos.write(parseHexBinary("01020304"));

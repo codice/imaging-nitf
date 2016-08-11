@@ -133,6 +133,7 @@
         <xs:attribute name="minval" use="optional"/>
         <xs:attribute name="maxval" use="optional"/>
         <xs:attribute name="fixed_value" use="optional"/>
+        <xs:attribute name="format" use="optional"/>
         <!--<xs:anyAttribute/>-->
     </xs:complexType>
 </xs:schema>
