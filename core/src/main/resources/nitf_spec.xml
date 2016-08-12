@@ -119,24 +119,24 @@
     </tre>
 
     <tre name="AIMIDB" length="89" location="image">
-        <field name="ACQUISITION_DATE" length="14"/>
-        <field name="MISSION_NO" length="4"/>
-        <field name="MISSION_IDENTIFICATION" length="10"/>
-        <field name="FLIGHT_NO" length="2"/>
-        <field name="OP_NUM" length="3"/>
-        <field name="CURRENT_SEGMENT" length="2"/>
-        <field name="REPRO_NUM" length="2"/>
-        <field name="REPLAY" length="3"/>
-        <field name="RESERVED_1" length="1"/>
-        <field name="START_TILE_COLUMN" length="3"/>
-        <field name="START_TILE_ROW" length="5"/>
-        <field name="END_SEGMENT" length="2"/>
-        <field name="END_TILE_COLUMN" length="3"/>
-        <field name="END_TILE_ROW" length="5"/>
-        <field name="COUNTRY" length="2"/>
-        <field name="RESERVED_2" length="4"/>
-        <field name="LOCATION" length="11"/>
-        <field name="RESERVED_3" length="13"/>
+        <field name="ACQUISITION_DATE" length="14" type="string"/>
+        <field name="MISSION_NO" length="4" type="string"/>
+        <field name="MISSION_IDENTIFICATION" length="10" type="string"/>
+        <field name="FLIGHT_NO" length="2" type="string"/>
+        <field name="OP_NUM" length="3" type="integer" minval="0" maxval="999"/>
+        <field name="CURRENT_SEGMENT" length="2" type="string"/>
+        <field name="REPRO_NUM" length="2" type="integer" minval="0" maxval="99"/>
+        <field name="REPLAY" length="3" type="string"/>
+        <field name="RESERVED_1" length="1" type="string" fixed_value=" "/>
+        <field name="START_TILE_COLUMN" length="3" type="integer" minval="1" maxval="99"/>
+        <field name="START_TILE_ROW" length="5" type="integer" minval="1" maxval="99999"/>
+        <field name="END_SEGMENT" length="2" type="string"/>
+        <field name="END_TILE_COLUMN" length="3" type="integer" minval="1" maxval="99"/>
+        <field name="END_TILE_ROW" length="5" type="integer" minval="1" maxval="99999"/>
+        <field name="COUNTRY" length="2" type="string"/>
+        <field name="RESERVED_2" length="4" fix_value="    "/>
+        <field name="LOCATION" length="11" type="string"/>
+        <field name="RESERVED_3" length="13" type="string" fixed_value="             "/>
     </tre>
 
     <tre name="BLOCKA" length="123" location="image">
