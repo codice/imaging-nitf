@@ -14,7 +14,9 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import java.io.IOException;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
 
 /**
@@ -41,6 +43,32 @@ public final class DataExtensionSegmentFactory {
         des.setIdentifier("");
         return des;
     }
+
+    /**
+     * Create a user defined data extension segment (DES).
+     * @param fileType the type (version) of NITF file this data extension segment is for
+     * @param userDES the user DES to build this DES from.
+     * @return user defined DES
+     * @throws NitfFormatException if the DES could not be generated
+     */
+    public static DataExtensionSegment getUserDefinedDES(final FileType fileType, final UserDefinedDataExtensionSegment userDES)
+            throws NitfFormatException {
+        if (fileType.equals(FileType.UNKNOWN)) {
+            throw new UnsupportedOperationException("Cannot make DES for unsupported FileType: " + fileType.toString());
+        }
+        DataExtensionSegment des = makeBasicDesImpl(fileType);
+        des.setIdentifier(userDES.getTypeIdentifier());
+        des.setDESVersion(userDES.getVersion());
+        des.setUserDefinedSubheaderField(userDES.getUserDefinedSubheader());
+        des.setData(userDES.getUserData());
+        try {
+            des.setDataLength(userDES.getUserData().length());
+        } catch (IOException ex) {
+            throw new NitfFormatException("Cannot get data length: " + ex.getMessage());
+        }
+        return des;
+    }
+
 
     /**
      * Create a TRE Overflow NITF data extension segment (DES), without data.

@@ -14,10 +14,14 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -28,6 +32,15 @@ import org.junit.rules.ExpectedException;
 public class DataExtensionSegmentFactoryTest {
 
     public DataExtensionSegmentFactoryTest() {
+    }
+
+    // Avoid test coverage problem
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<DataExtensionSegmentFactory> constructor = DataExtensionSegmentFactory.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 
     @Rule
@@ -69,6 +82,15 @@ public class DataExtensionSegmentFactoryTest {
         assertEquals("Controlled Extensions", result.getIdentifier());
         assertEquals("IXSHD", result.getOverflowedHeaderType());
         assertEquals(3, result.getItemOverflowed());
+    }
+
+    @Test
+    public void testGetOverflow20Registered() {
+        DataExtensionSegment result = DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ZERO, "UDHD", 0);
+        assertNotNull(result);
+        assertEquals("Registered Extensions", result.getIdentifier());
+        assertEquals("UDHD", result.getOverflowedHeaderType());
+        assertEquals(0, result.getItemOverflowed());
     }
 
     @Test
