@@ -14,10 +14,18 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
+import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -28,6 +36,15 @@ import org.junit.rules.ExpectedException;
 public class DataExtensionSegmentFactoryTest {
 
     public DataExtensionSegmentFactoryTest() {
+    }
+
+    // Avoid test coverage problem
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<DataExtensionSegmentFactory> constructor = DataExtensionSegmentFactory.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 
     @Rule
@@ -72,6 +89,15 @@ public class DataExtensionSegmentFactoryTest {
     }
 
     @Test
+    public void testGetOverflow20Registered() {
+        DataExtensionSegment result = DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ZERO, "UDHD", 0);
+        assertNotNull(result);
+        assertEquals("Registered Extensions", result.getIdentifier());
+        assertEquals("UDHD", result.getOverflowedHeaderType());
+        assertEquals(0, result.getItemOverflowed());
+    }
+
+    @Test
     public void testGetOverflowNSIF() {
         DataExtensionSegment result = DataExtensionSegmentFactory.getOverflow(FileType.NSIF_ONE_ZERO, "SXSHD", 2);
         assertNotNull(result);
@@ -86,5 +112,152 @@ public class DataExtensionSegmentFactoryTest {
         exception.expect(UnsupportedOperationException.class);
         exception.expectMessage("Cannot make DES for unsupported FileType: U");
         DataExtensionSegment result = DataExtensionSegmentFactory.getOverflow(FileType.UNKNOWN, "SXSHD", 2);
+    }
+
+    @Test
+    public void testCSSHPA_POINT() throws NitfFormatException, IOException {
+        String resourceName = "/simplepoint";
+        String expectedSubheader = "USER_DEF_SHAPES          POINT     SHP000000SHX000156DBF000272";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POLYLINE() throws NitfFormatException, IOException {
+        String resourceName = "/simplelinestring";
+        String expectedSubheader = "USER_DEF_SHAPES          POLYLINE  SHP000000SHX000188DBF000296";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_MULTIPOINT() throws NitfFormatException, IOException {
+        String resourceName = "/multipoint";
+        String expectedSubheader = "USER_DEF_SHAPES          MULTIPOINTSHP000000SHX000180DBF000288";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POINTZ() throws NitfFormatException, IOException {
+        String resourceName = "/pointz";
+        String expectedSubheader = "USER_DEF_SHAPES          POINTZ    SHP000000SHX000172DBF000288";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POINTM() throws NitfFormatException, IOException {
+        String resourceName = "/pointm";
+        String expectedSubheader = "USER_DEF_SHAPES          POINTM    SHP000000SHX000172DBF000288";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POLYLINEZ() throws NitfFormatException, IOException {
+        String resourceName = "/linestringz";
+        String expectedSubheader = "USER_DEF_SHAPES          POLYLINEZ SHP000000SHX000220DBF000328";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POLYLINEM() throws NitfFormatException, IOException {
+        String resourceName = "/linestringm";
+        String expectedSubheader = "USER_DEF_SHAPES          POLYLINEM SHP000000SHX000220DBF000328";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_MULTIPOINTZ() throws NitfFormatException, IOException {
+        String resourceName = "/multipointz";
+        String expectedSubheader = "USER_DEF_SHAPES          MULTPOINTZSHP000000SHX000212DBF000320";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POLYGON() throws NitfFormatException, IOException {
+        String resourceName = "/polygon";
+        String expectedSubheader = "USER_DEF_SHAPES          POLYGON   SHP000000SHX000236DBF000344";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POLYGONZ() throws NitfFormatException, IOException {
+        String resourceName = "/polygonz";
+        String expectedSubheader = "USER_DEF_SHAPES          POLYGONZ  SHP000000SHX000292DBF000400";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_POLYGONM() throws NitfFormatException, IOException {
+        String resourceName = "/polygonm";
+        String expectedSubheader = "USER_DEF_SHAPES          POLYGONM  SHP000000SHX000292DBF000400";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_NULL() throws NitfFormatException, IOException {
+        String resourceName = "/null";
+        String expectedSubheader = "USER_DEF_SHAPES          NULL SHAPESHP000000SHX000112DBF000220";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_MULTIPOINTM() throws NitfFormatException, IOException {
+        String resourceName = "/multipointm";
+        String expectedSubheader = "USER_DEF_SHAPES          MULTPOINTMSHP000000SHX000212DBF000320";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    @Test
+    public void testCSSHPA_MULTIPATCH() throws NitfFormatException, IOException {
+        String resourceName = "/multipatch";
+        String expectedSubheader = "USER_DEF_SHAPES          MULTIPATCHSHP000000SHX000320DBF000428";
+        checkCSSHPA(resourceName, expectedSubheader);
+    }
+
+    private void checkCSSHPA(final String resourceName, final String expectedSubheader) throws IOException, NitfFormatException {
+        File shapefile = new File(getClass().getResource(resourceName + ".shp").getFile());
+        File shxfile = new File(getClass().getResource(resourceName + ".shx").getFile());
+        File dbffile = new File(getClass().getResource(resourceName + ".dbf").getFile());
+        DataExtensionSegment result = DataExtensionSegmentFactory.getCSSHPA(FileType.NITF_TWO_ONE, shapefile, shxfile, dbffile);
+        assertEquals("CSSHPA DES", result.getIdentifier());
+        assertEquals(expectedSubheader, result.getUserDefinedSubheaderField());
+        byte[] shp = new byte[(int)shapefile.length()];
+        byte[] shx = new byte[(int)shxfile.length()];
+        byte[] dbf = new byte[(int)dbffile.length()];
+        
+        result.getData().seek(0L);
+
+        assertEquals(shp.length, result.getData().read(shp));
+        byte[] shpReferenceBytes = new byte[shp.length];
+        getClass().getResourceAsStream(resourceName + ".shp").read(shpReferenceBytes);
+        Assert.assertArrayEquals(shpReferenceBytes, shp);
+
+        assertEquals(shx.length, result.getData().read(shx));
+        byte[] shxReferenceBytes = new byte[shx.length];
+        getClass().getResourceAsStream(resourceName + ".shx").read(shxReferenceBytes);
+        Assert.assertArrayEquals(shxReferenceBytes, shx);
+
+        assertEquals(dbf.length, result.getData().read(dbf));
+        byte[] dbfReferenceBytes = new byte[dbf.length];
+        getClass().getResourceAsStream(resourceName + ".dbf").read(dbfReferenceBytes);
+        Assert.assertArrayEquals(dbfReferenceBytes, dbf);
+    }
+
+    @Test
+    public void testCSSHPA_InvalidFileType() throws NitfFormatException, IOException {
+        exception.expect(UnsupportedOperationException.class);
+        exception.expectMessage("Cannot make DES for unsupported FileType: U");
+        DataExtensionSegmentFactory.getCSSHPA(FileType.UNKNOWN,
+                new File(getClass().getResource("/null.shp").getFile()),
+                new File(getClass().getResource("/null.shp").getFile()),
+                new File(getClass().getResource("/null.shp").getFile()));
+    }
+
+    @Test
+    public void testCSSHPA_InvalidShapeClass() throws NitfFormatException, IOException {
+        exception.expect(NitfFormatException.class);
+        exception.expectMessage("Could not generate CSSHPA: Error reading shapefile, unknown shapefile geometry class: 255");
+        DataExtensionSegmentFactory.getCSSHPA(FileType.NITF_TWO_ONE,
+                new File(getClass().getResource("/invalid.shp").getFile()),
+                new File(getClass().getResource("/null.shp").getFile()),
+                new File(getClass().getResource("/null.shp").getFile()));
     }
 }
