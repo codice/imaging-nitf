@@ -134,6 +134,21 @@ public abstract class TreWrapper {
     }
 
     /**
+     * Retrieve the specified value as a double precision real.
+     *
+     * @param fieldName the name of the field value to retrieve.
+     * @return the value for the TRE entry.
+     * @throws NitfFormatException if the field was not found or a parsing issue occurs.
+     */
+    protected final double getValueAsDouble(final String fieldName) throws NitfFormatException {
+        String val = getFieldValue(fieldName);
+        if ("NaN".equalsIgnoreCase(val.trim())) {
+            return Double.NaN;
+        }
+        return Double.parseDouble(val);
+    }
+
+    /**
      * Retrieve the specified value as LocalDate.
      *
      * @param fieldName the name of the field value to retrieve.
