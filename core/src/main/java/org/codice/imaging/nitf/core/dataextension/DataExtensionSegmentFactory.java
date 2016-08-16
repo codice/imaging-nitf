@@ -14,7 +14,9 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import java.io.File;
 import org.codice.imaging.nitf.core.common.FileType;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
 
 /**
@@ -40,6 +42,44 @@ public final class DataExtensionSegmentFactory {
         DataExtensionSegment des = makeBasicDesImpl(fileType);
         des.setIdentifier("");
         return des;
+    }
+
+    /**
+     * Create a user defined data extension segment (DES).
+     * @param fileType the type (version) of NITF file this data extension segment is for
+     * @param userDES the user DES to build this DES from.
+     * @return user defined DES
+     * @throws NitfFormatException if the DES could not be generated
+     */
+    public static DataExtensionSegment getUserDefinedDES(final FileType fileType, final UserDefinedDataExtensionSegment userDES)
+            throws NitfFormatException {
+        if (fileType.equals(FileType.UNKNOWN)) {
+            throw new UnsupportedOperationException("Cannot make DES for unsupported FileType: " + fileType.toString());
+        }
+        DataExtensionSegment des = makeBasicDesImpl(fileType);
+        des.setIdentifier(userDES.getTypeIdentifier());
+        des.setDESVersion(userDES.getVersion());
+        des.setUserDefinedSubheaderField(userDES.getUserDefinedSubheader());
+        des.setData(userDES.getUserData());
+        return des;
+    }
+
+    /**
+     * Create a Shapefile data extension segment (CSSHPA DES).
+     *
+     * See STDI-0002-2 Appendix D and NTB RFC-080.
+     *
+     * @param fileType the type (version) of NITF file this data extension segment is for
+     * @param shpFile the path to the SHP geometry
+     * @param shxFile the path to the SHX index
+     * @param dbfFile the path to the DBF attributes
+     * @return shapefile DES, ready to write out.
+     * @throws NitfFormatException if the shapefile DES could not be generated
+     */
+    public static DataExtensionSegment getCSSHPA(final FileType fileType, final File shpFile, final File shxFile, final File dbfFile)
+            throws NitfFormatException {
+        UserDefinedDataExtensionSegment csshpa = new CSSHPAUserDefinedDES(shpFile, shxFile, dbfFile);
+        return getUserDefinedDES(fileType, csshpa);
     }
 
     /**

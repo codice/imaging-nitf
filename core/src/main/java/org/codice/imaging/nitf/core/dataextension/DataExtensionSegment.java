@@ -24,6 +24,18 @@ import org.codice.imaging.nitf.core.tre.TreCollection;
 public interface DataExtensionSegment extends CommonSegment {
 
     /**
+     * Set the DES version (DESVER).
+     * <p>
+     * "This field shall contain the alphanumeric version number of the use of
+     * the tag. The version number is assigned as part of the registration
+     * process."
+     *
+     * @param version the version (valid range 1 to 99).
+     */
+    void setDESVersion(final int version);
+
+
+    /**
      Return the DES version (DESVER).
      <p>
      "This field shall contain
@@ -87,6 +99,17 @@ public interface DataExtensionSegment extends CommonSegment {
      @return the overflowed item
      */
     int getItemOverflowed();
+
+    /**
+     * Set the user defined subheader data (DESSHF).
+     * <p>
+     * This can only be non-null if the identifier is not "Registered
+     * Extensions" or "Controlled Extensions" (NITF 2.0) or "TRE_OVERFLOW" (NITF
+     * 2.1 / NSIF 1.0).
+     *
+     * @param data the user defined subheader data
+     */
+    void setUserDefinedSubheaderField(final String data);
 
     /**
      Set the user defined subheader data (DESSHF).
@@ -162,4 +185,6 @@ public interface DataExtensionSegment extends CommonSegment {
      * @param length the number of bytes of data in this segment.
      */
     void setDataLength(final long length);
+
+
 }
