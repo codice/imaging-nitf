@@ -795,7 +795,7 @@ public interface ImageSegment extends CommonBasicSegment {
      * Set the number of significant columns (NCOLS) in the image.
      * <p>
      * "This field shall contain the total number of columns of significant pixels in the image. When the product of the
-     * values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR > NCOLS), the columns
+     * values of the NPPBH field and the NBPR field is greater than the NCOLS field (NPPBH * NBPR &gt; NCOLS), the columns
      * indexed with the value of the NCOLS field to (NPPBH * NBPR) minus 1 shall contain fill data. NOTE: Only the
      * columns indexed 0 to the value of the NCOLS field minus 1 of the image contain significant data. The pixel fill
      * values are determined by the application."
@@ -808,7 +808,7 @@ public interface ImageSegment extends CommonBasicSegment {
      * Set the number of significant rows (NROWS) in the image.
      * <p>
      * "This field shall contain the total number of rows of significant pixels in the image. When the product of the
-     * values of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC > NROWS),
+     * values of the NPPBV field and the NBPC field is greater than the value of the NROWS field (NPPBV * NBPC &gt; NROWS),
      * the rows indexed with the value of the NROWS field to (NPPBV * NBPC) minus 1 shall contain fill data. NOTE: Only
      * the rows indexed 0 to the value of the NROWS field minus 1 of the image contain significant data. The pixel fill
      * values are determined by the application."
