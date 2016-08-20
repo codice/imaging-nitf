@@ -178,6 +178,18 @@ public abstract class TreWrapper {
      */
     protected final ZonedDateTime getValueAsZonedDateTime(final String fieldName, final DateTimeFormatter formatter) throws NitfFormatException {
         String dateTimeString = mTre.getFieldValue(fieldName);
+        return parseAsZonedDateTime(formatter, dateTimeString);
+    }
+
+    /**
+     * Parse a string to a ZonedDateTime.
+     *
+     * @param formatter the formatter to use for the field
+     * @param dateTimeString the string to parse
+     *
+     * @return the value for the TRE entry, or null if the field did not represent a valid date.
+     */
+    protected final ZonedDateTime parseAsZonedDateTime(final DateTimeFormatter formatter, final String dateTimeString) {
         try {
             DateTimeFormatter dtf = formatter.withZone(ZoneId.of("UTC"));
             ZonedDateTime zdt = ZonedDateTime.parse(dateTimeString, dtf);

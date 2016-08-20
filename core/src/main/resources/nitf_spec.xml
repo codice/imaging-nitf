@@ -1776,6 +1776,16 @@
         <field name="E_BIE" length="6" type="real"/>
     </tre>
 
+    <!-- MIE4NITF Version 1.1, Section 5.9.3.4 Time Interval Definition TRE (TMINTA) and Table 13 -->
+    <tre name="TMINTA" minlength="58" maxlength="99958" location="file">
+        <field name="NUM_TIME_INT" length="4" type="integer" minval="1" maxval="1851"/>
+        <loop counter="NUM_TIME_INT" name="TIME INTERVALS" md_prefix="TIME_INTERVAL_%04d">
+            <field name="TIME_INTERVAL_INDEX" length="6" type="integer" minval="0" maxval="999999"/>
+            <field name="START_TIMESTAMP" length="24" type="string"/>
+            <field name="END_TIMESTAMP" length="24" type="string"/>
+        </loop>
+    </tre>
+
     <tre name="USE00A" md_prefix="NITF_USE00A_" length="107" location="image">
         <field name="ANGLE_TO_NORTH" length="3"/>
         <field name="MEAN_GSD" length="5"/>
