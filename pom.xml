@@ -27,6 +27,7 @@
         <module>fluent-api</module>
         <module>trewrap</module>
         <module>registryparser</module>
+        <module>deswrap</module>
     </modules>
 
     <distributionManagement>
