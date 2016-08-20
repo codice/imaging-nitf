@@ -147,7 +147,7 @@ public class MIMCSA extends FlatTreWrapper {
      * phenomenological layer in the temporal reduced resolution set, where a
      * value of 0 indicates the original collected temporal resolution, and
      * values greater than 0 indicate some reduced frame rate, where the frame
-     * rate of T_RSET tr is less than the frame rate of T_RSET tr’ if tr > tr’.
+     * rate of T_RSET tr is less than the frame rate of T_RSET tr’ if tr &gt; tr’.
      * There is no implied temporal subsampling relationship between T_RSET
      * values. A common practice might be to relate them by powers of two, where
      * the frame rate of the MI data associated with T_RSET = 1 is twice that of
