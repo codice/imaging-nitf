@@ -134,7 +134,7 @@
         <field name="END_TILE_COLUMN" length="3" type="integer" minval="1" maxval="99"/>
         <field name="END_TILE_ROW" length="5" type="integer" minval="1" maxval="99999"/>
         <field name="COUNTRY" length="2" type="string"/>
-        <field name="RESERVED_2" length="4" fix_value="    "/>
+        <field name="RESERVED_2" length="4" fixed_value="    "/>
         <field name="LOCATION" length="11" type="string"/>
         <field name="RESERVED_3" length="13" type="string" fixed_value="             "/>
     </tre>
@@ -520,9 +520,9 @@
     <!-- MIE4NITF 1.1, Section 5.9.3.2 and Table 11 -->
     <tre name="MIMCSA" length="121" location="file">
         <field name="LAYER_ID" length="36" type="string"/>
-        <field name="NOMINAL_FRAME_RATE" length="13" type="real" minval="0.0"/>
-        <field name="MIN_FRAME_RATE" length="13" type="real" minval="0.0"/>
-        <field name="MAX_FRAME_RATE" length="13" type="real" minval="0.0"/>
+        <field name="NOMINAL_FRAME_RATE" length="13" type="real" minval="0.0" format="UE"/>
+        <field name="MIN_FRAME_RATE" length="13" type="real" minval="0.0" format="UE"/>
+        <field name="MAX_FRAME_RATE" length="13" type="real" minval="0.0" format="UE"/>
         <field name="T_RSET" length="2" type="integer" minval="0" maxval="99"/>
         <field name="MI_REQ_DECODER" length="2" type="string"/>
         <field name="MI_REQ_PROFILE" length="36" type="string"/>
@@ -538,8 +538,7 @@
         <field name="CAMERA_ID" length="36" type="string"/>
         <field name="TIME_INTERVAL_INDEX" length="6" type="integer" minval="0" maxval="999999"/>
         <field name="TEMP_BLOCK_INDEX" length="3" type="integer" minval="0" maxval="999"/>
-        <!-- TODO: make this type="UE/13" -->
-        <field name="NOMINAL_FRAME_RATE" length="13" type="real"/>
+        <field name="NOMINAL_FRAME_RATE" length="13" type="real" format="UE"/>
         <field name="REFERENCE_FRAME_NUM" length="9" type="string"/>
         <field name="BASE_TIMESTAMP" length="24" type="string"/>
         <field name="DT_MULTIPLIER" length="8" type="UINT"/>

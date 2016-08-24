@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core.tre;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
@@ -34,7 +35,7 @@ public class MTIMSA_Test extends SharedTreTest {
     @Test
     public void SimpleParse() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write("MTIMSA0016000199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e840000030045.0000000E+0100000000620160716215756.012345678".getBytes(StandardCharsets.US_ASCII));
+        baos.write("MTIMSA0015300199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e840000030045.0000000E+0100000000620160716215756.012345678".getBytes(StandardCharsets.ISO_8859_1));
         baos.write(parseHexBinary("0000000001312D00"));
         baos.write(parseHexBinary("01"));
         baos.write(parseHexBinary("01020304"));
@@ -52,7 +53,7 @@ public class MTIMSA_Test extends SharedTreTest {
     @Test
     public void Uint64Parse() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write("MTIMSA0016700199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e840000030045.0000000E+0100000000620160716215756.012345678".getBytes(StandardCharsets.US_ASCII));
+        baos.write("MTIMSA0016000199fa238862-73ed-41fc-8d52-bfc7a954428c00295cb5511-7350-479b-9c8a-f028aba01e840000030045.0000000E+0100000000620160716215756.012345678".getBytes(StandardCharsets.ISO_8859_1));
         baos.write(parseHexBinary("0000000001312D00"));
         baos.write(parseHexBinary("08"));
         baos.write(parseHexBinary("01020304"));
@@ -67,7 +68,7 @@ public class MTIMSA_Test extends SharedTreTest {
         assertEquals(0x7FFFFFFFFFFFFFFEL, deltaTimes.getLongValue("DT"));
     }
 
-    private Tre doParseAndCheckResults(ByteArrayOutputStream baos) throws NitfFormatException {
+    private Tre doParseAndCheckResults(ByteArrayOutputStream baos) throws NitfFormatException, IOException {
         Tre mtimsa = parseTRE(baos.toByteArray(), baos.toByteArray().length, "MTIMSA");
         assertEquals(15, mtimsa.getEntries().size());
         assertEquals("001", mtimsa.getFieldValue("IMAGE_SEG_INDEX"));

@@ -16,10 +16,14 @@ package org.codice.imaging.nitf.core.tre;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -28,20 +32,27 @@ import static org.junit.Assert.assertNotNull;
  */
 class SharedTreTest {
     
-    protected Tre parseTRE(String testData, int expectedLength, String treTag) throws NitfFormatException {
+    protected Tre parseTRE(String testData, int expectedLength, String treTag) throws NitfFormatException, IOException {
         byte bytes[] = testData.getBytes();
         return parseTRE(bytes, expectedLength, treTag);
     }
 
-    protected Tre parseTRE(byte[] bytes, int expectedLength, String treTag) throws NitfFormatException {
+    protected Tre parseTRE(byte[] bytes, int expectedLength, String treTag) throws NitfFormatException, IOException {
         InputStream inputStream = new ByteArrayInputStream(bytes);
         BufferedInputStream bufferedStream = new BufferedInputStream(inputStream);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
-        TreCollection parseResult = parser.parse(nitfReader, expectedLength, TreSource.ImageExtendedSubheaderData);
+        TreCollection parseResult = parser.parse(nitfReader, expectedLength, TreSource.TreOverflowDES);
         assertEquals(1, parseResult.getTREs().size());
         Tre tre = parseResult.getTREsWithName(treTag).get(0);
         assertNotNull(tre);
+        TreParser treParser = new TreParser();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write(treTag.getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(String.format("%05d", expectedLength - 11).getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(treParser.serializeTRE(tre));
+        byte[] actualSerialisedResults = baos.toByteArray();
+        assertArrayEquals(bytes, actualSerialisedResults);
         return tre;
     }
 

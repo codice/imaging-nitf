@@ -14,11 +14,18 @@
  */
 package org.codice.imaging.nitf.core.tre;
 
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-public class TreTest {
+public class TreTest extends SharedTreTest {
 
     @Test
     public void testTreEntryAccessors1() {
@@ -61,5 +68,30 @@ public class TreTest {
         group2.add(subEntry);
         subEntry.addGroup(new TreGroupImpl());
         entry.dump();
+    }
+
+    // Avoid test coverage problem
+    @Test
+    public void testFactoryConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<TreFactory> constructor = TreFactory.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
+
+    // Avoid test coverage problem
+    @Test
+    public void testConstantsConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<TreConstants> constructor = TreConstants.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
+
+    @Test
+    public void testTreImplPrefixGetter() throws NitfFormatException, IOException {
+        Tre tre = parseTRE("USE00A00107                                                                                                           ", 11 + 107, "USE00A");
+        assertNull(tre.getRawData());
+        assertEquals("NITF_USE00A_", tre.getPrefix());
     }
 }

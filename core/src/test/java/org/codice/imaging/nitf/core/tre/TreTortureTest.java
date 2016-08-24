@@ -16,8 +16,11 @@ package org.codice.imaging.nitf.core.tre;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import javax.xml.transform.Source;
@@ -28,6 +31,7 @@ import org.codice.imaging.nitf.core.common.NitfReader;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -62,7 +66,7 @@ public class TreTortureTest {
             + "         <field name=\"INFO_LEN\" type=\"integer\" minval=\"2\" maxval=\"80\" length=\"2\"/>"
             + "         <field name=\"INFO\" type=\"string\" length_var=\"INFO_LEN\"/>"
             + "     </tre>"
-            + "     <tre name=\"TST04A\">"
+            + "     <tre name=\"TST04A\" location=\"file\">"
             + "         <field name=\"SCALE\" type=\"real\" minval=\"0.25\" maxval=\"4\" length=\"8\"/>"
             + "     </tre>"
             + "     <tre name=\"TST05A\">"
@@ -87,13 +91,21 @@ public class TreTortureTest {
             + "     <tre name=\"TST09A\">"
             + "         <field name=\"UINT\" type=\"UINT\" length=\"3\"/>"
             + "     </tre>"
-            + "     <tre name=\"TST10A\">"
+            + "     <tre name=\"TST10A\" location=\"file\">"
             + "         <field name=\"UINT4\" type=\"UINT\" length=\"4\"/>"
             + "         <field name=\"UINT5\" type=\"UINT\" length=\"5\"/>"
             + "         <field name=\"UINT6\" type=\"UINT\" length=\"6\"/>"
             + "         <field name=\"UINT7\" type=\"UINT\" length=\"7\"/>"
             + "         <field name=\"UINT8\" type=\"UINT\" length=\"8\"/>"
             + "     </tre>"
+            + "     <tre name=\"TST11A\" location=\"image\">"
+            + "         <field name=\"LENGTH\" type=\"UINT\" length=\"2\"/>"
+            + "         <field name=\"VALUE\" type=\"string\" length_var=\"LENGTH\"/>"
+            + "     </tre>"
+            + "     <tre name=\"TST12A\" location=\"image\">"
+            + "         <field name=\"REAL1\" type=\"real\" length=\"13\" format=\"UE\"/>"
+            + "     </tre>"
+
             + "</tres>";
 
     private final Source sourceTREs = new StreamSource(new StringReader(xmlTREs));
@@ -237,6 +249,17 @@ public class TreTortureTest {
     }
 
     @Test
+    public void checkTST04A_BadFieldName() throws NitfFormatException {
+        Tre tst04a = TreFactory.getDefault("TST04A", TreSource.UserDefinedHeaderData);
+        tst04a.add(new TreEntry("SCALE", "2.3", "real"));
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        exception.expect(NitfFormatException.class);
+        exception.expectMessage("Failed to look up NOSUCHFIELD as double value");
+        tst04a.getDoubleValue("NOSUCHFIELD");
+    }
+
+    @Test
     public void checkTST04A_TooMuchPrecision() throws NitfFormatException {
         Tre tst04a = TreFactory.getDefault("TST04A", TreSource.UserDefinedHeaderData);
         tst04a.add(new TreEntry("SCALE", "2.3012343", "real"));
@@ -278,6 +301,17 @@ public class TreTortureTest {
         parser.registerAdditionalTREdescriptor(sourceTREs);
         exception.expect(NitfFormatException.class);
         exception.expectMessage("Maximum value for SCALE is 4.000000, got 4.000100");
+        parser.serializeTRE(tst04a);
+    }
+
+    @Test
+    public void checkTST04A_BadLocation() throws NitfFormatException {
+        Tre tst04a = TreFactory.getDefault("TST04A", TreSource.ImageExtendedSubheaderData);
+        tst04a.add(new TreEntry("SCALE", "3.0", "real"));
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        exception.expect(NitfFormatException.class);
+        exception.expectMessage("TRE is only permitted in a file-level header, or in an overflow DES");
         parser.serializeTRE(tst04a);
     }
 
@@ -400,6 +434,7 @@ public class TreTortureTest {
         assertNotNull(coef1);
         assertEquals(2, coef1.getEntries().size());
         assertEquals("Key 1  ", coef1.getFieldValue("CONCEPT"));
+        assertEquals("CONCEPT: Key 1  ", coef1.getEntry("CONCEPT").toString());
         assertEquals("0001", coef1.getFieldValue("VALUE"));
 
         TreGroup coef5 = coefficients.get(4);
@@ -498,8 +533,54 @@ public class TreTortureTest {
     }
 
     @Test
-    public void parseTST10A() throws NitfFormatException {
-        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303333" + "fff02367" + "ff01020304" + "ff0102030405" + "ff010203040506" + "7f01020304050607")));
+    public void parseTST09A_BigInteger() throws NitfFormatException {
+        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary(TST09A_THREE + "f02367")));
+        Tre tst09a = parseTST_UINT(bufferedStream, 3);
+
+        TreEntry uint = tst09a.getEntries().get(0);
+        assertNotNull(uint);
+        assertEquals(BigInteger.valueOf(15737703), tst09a.getBigIntegerValue("UINT"));
+    }
+
+    @Test
+    public void parseTST09A_BadBigInteger() throws NitfFormatException {
+        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary(TST09A_THREE + "f02367")));
+        Tre tst09a = parseTST_UINT(bufferedStream, 3);
+
+        TreEntry uint = tst09a.getEntries().get(0);
+        assertNotNull(uint);
+        exception.expect(NitfFormatException.class);
+        exception.expectMessage("Failed to look up NOSUCHFIELD as a numerical value");
+        tst09a.getBigIntegerValue("NOSUCHFIELD");
+    }
+
+    @Test
+    public void parseTST09A_BadLong() throws NitfFormatException {
+        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary(TST09A_THREE + "f02367")));
+        Tre tst09a = parseTST_UINT(bufferedStream, 3);
+
+        TreEntry uint = tst09a.getEntries().get(0);
+        assertNotNull(uint);
+        exception.expect(NitfFormatException.class);
+        exception.expectMessage("Failed to look up NOSUCHFIELD as a numerical value");
+        tst09a.getLongValue("NOSUCHFIELD");
+    }
+
+    @Test
+    public void parseTST09A_BadField() throws NitfFormatException {
+        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary(TST09A_THREE + "f02367")));
+        Tre tst09a = parseTST_UINT(bufferedStream, 3);
+
+        TreEntry uint = tst09a.getEntries().get(0);
+        assertNotNull(uint);
+        exception.expect(NitfFormatException.class);
+        exception.expectMessage("Failed to look up NOSUCHFIELD");
+        tst09a.getFieldValue("NOSUCHFIELD");
+    }
+
+    @Test
+    public void parseTST10A() throws NitfFormatException, IOException {
+        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303330" + "fff02367" + "ff01020304" + "ff0102030405" + "ff010203040506" + "7f01020304050607")));
         Tre tre = parseTST10A(bufferedStream);
         assertEquals(0xfff02367L, tre.getLongValue("UINT4"));
         assertEquals(0xff01020304L, tre.getLongValue("UINT5"));
@@ -509,8 +590,8 @@ public class TreTortureTest {
     }
 
     @Test
-    public void parseTST10A_0x00() throws NitfFormatException {
-        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303333" + "00000000" + "0000000000" + "000000000000" + "00000000000000" + "0000000000000000")));
+    public void parseTST10A_0x00() throws NitfFormatException, IOException {
+        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303330" + "00000000" + "0000000000" + "000000000000" + "00000000000000" + "0000000000000000")));
         Tre tre = parseTST10A(bufferedStream);
         assertEquals(0L, tre.getIntValue("UINT4"));
         assertEquals(0L, tre.getIntValue("UINT5"));
@@ -520,8 +601,8 @@ public class TreTortureTest {
     }
 
     @Test
-    public void parseTST10A_0xff() throws NitfFormatException {
-        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303333" + "ffffffff" + "ffffffffff" + "ffffffffffff" + "ffffffffffffff" + "ffffffffffffffff")));
+    public void parseTST10A_0xff() throws NitfFormatException, IOException {
+        BufferedInputStream bufferedStream = new BufferedInputStream(new ByteArrayInputStream(parseHexBinary("5453543130413030303330" + "ffffffff" + "ffffffffff" + "ffffffffffff" + "ffffffffffffff" + "ffffffffffffffff")));
         Tre tre = parseTST10A(bufferedStream);
         assertEquals(4294967295L, tre.getLongValue("UINT4"));
         assertEquals(1099511627775L, tre.getLongValue("UINT5"));
@@ -530,11 +611,13 @@ public class TreTortureTest {
         assertEquals(new BigInteger("18446744073709551615"), tre.getBigIntegerValue("UINT8"));
     }
 
-    private Tre parseTST10A(BufferedInputStream bufferedStream) throws NitfFormatException {
+    private Tre parseTST10A(BufferedInputStream bufferedStream) throws NitfFormatException, IOException {
+        assertTrue(bufferedStream.markSupported());
+        bufferedStream.mark(1024);
         NitfReader nitfReader = new NitfInputStreamReader(bufferedStream);
         TreCollectionParser parser = new TreCollectionParser();
         parser.registerAdditionalTREdescriptor(sourceTREs);
-        TreCollection parseResult = parser.parse(nitfReader, 11 + 33, TreSource.UserDefinedHeaderData);
+        TreCollection parseResult = parser.parse(nitfReader, 11 + 30, TreSource.UserDefinedHeaderData);
         assertNotNull(parseResult);
         assertNotNull(parseResult.getTREs());
         assertEquals(1, parseResult.getTREs().size());
@@ -542,6 +625,19 @@ public class TreTortureTest {
         assertNotNull(tre);
         assertNotNull(tre.getEntries());
         assertEquals(5, tre.getEntries().size());
+
+        TreParser treParser = new TreParser();
+        treParser.registerAdditionalTREdescriptor(new StreamSource(new StringReader(xmlTREs)));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write("TST10A".getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(String.format("%05d", 30).getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(treParser.serializeTRE(tre));
+        byte[] actualSerialisedResults = baos.toByteArray();
+        bufferedStream.reset();
+        int available = bufferedStream.available();
+        byte[] referenceBytes = new byte[available];
+        bufferedStream.read(referenceBytes);
+        assertArrayEquals(referenceBytes, actualSerialisedResults);
         return tre;
     }
 
@@ -564,6 +660,88 @@ public class TreTortureTest {
         return tre;
     }
 
+    @Test
+    public void checkTST09A_BuildPad() throws NitfFormatException {
+        Tre tst09a = TreFactory.getDefault("TST09A", TreSource.UserDefinedHeaderData);
+        tst09a.add(new TreEntry("UINT", "\u0002", "UINT"));
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        byte[] serialisedTre = parser.serializeTRE(tst09a);
+        assertNotNull(serialisedTre);
+        assertEquals("TST09A", tst09a.getName());
+        assertArrayEquals("\u0000\u0000\u0002".getBytes(StandardCharsets.ISO_8859_1), serialisedTre);
+    }
+
+    @Test
+    public void parseTST11A() throws NitfFormatException, IOException {
+        ByteArrayOutputStream bufferedStream = new ByteArrayOutputStream();
+        bufferedStream.write("TST11A00008".getBytes(StandardCharsets.ISO_8859_1));
+        bufferedStream.write(parseHexBinary("0006"));
+        bufferedStream.write("ABCDEF".getBytes(StandardCharsets.ISO_8859_1));
+        NitfReader nitfReader = new NitfInputStreamReader(new ByteArrayInputStream(bufferedStream.toByteArray()));
+        TreCollectionParser parser = new TreCollectionParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        TreCollection parseResult = parser.parse(nitfReader, 11 + 8, TreSource.ImageExtendedSubheaderData);
+        assertNotNull(parseResult);
+        assertNotNull(parseResult.getTREs());
+        assertEquals(1, parseResult.getTREs().size());
+        Tre tre = parseResult.getTREs().get(0);
+        assertNotNull(tre);
+        assertNotNull(tre.getEntries());
+        assertEquals(2, tre.getEntries().size());
+
+        int len = tre.getIntValue("LENGTH");
+        assertEquals(6, len);
+        assertEquals("ABCDEF", tre.getFieldValue("VALUE"));
+        assertEquals("VALUE: ABCDEF", tre.getEntry("VALUE").toString());
+
+        TreParser treParser = new TreParser();
+        treParser.registerAdditionalTREdescriptor(new StreamSource(new StringReader(xmlTREs)));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write("TST11A".getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(String.format("%05d", 8).getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(treParser.serializeTRE(tre));
+        byte[] actualSerialisedResults = baos.toByteArray();
+        assertArrayEquals(bufferedStream.toByteArray(), actualSerialisedResults);
+    }
+
+    @Test
+    public void checkTST12A() throws NitfFormatException {
+        Tre tst12a = TreFactory.getDefault("TST12A", TreSource.ImageExtendedSubheaderData);
+        TreEntry real1 = new TreEntry("REAL1", "0.532", "real");
+        tst12a.add(real1);
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        byte[] serialisedTre = parser.serializeTRE(tst12a);
+        assertNotNull(serialisedTre);
+        assertEquals("TST12A", tst12a.getName());
+        assertArrayEquals("5.3200000E-01".getBytes(StandardCharsets.ISO_8859_1), serialisedTre);
+    }
+
+    @Test
+    public void checkTST12A_BadLocation() throws NitfFormatException {
+        Tre tst12a = TreFactory.getDefault("TST12A", TreSource.UserDefinedHeaderData);
+        TreEntry real1 = new TreEntry("REAL1", "0.532", "real");
+        tst12a.add(real1);
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        exception.expect(NitfFormatException.class);
+        exception.expectMessage("TRE is only permitted in an image-related sub-header, or in an overflow DES");
+        parser.serializeTRE(tst12a);
+    }
+
+    @Test
+    public void checkTST12A_NaN() throws NitfFormatException {
+        Tre tst12a = TreFactory.getDefault("TST12A", TreSource.UserDefinedImageData);
+        TreEntry real1 = new TreEntry("REAL1", "NaN", "real");
+        tst12a.add(real1);
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        byte[] serialisedTre = parser.serializeTRE(tst12a);
+        assertNotNull(serialisedTre);
+        assertEquals("TST12A", tst12a.getName());
+        assertArrayEquals("NaN          ".getBytes(StandardCharsets.ISO_8859_1), serialisedTre);
+    }
 
     // TODO: check data types per MIL-STD-2500C 5.1.7a
 
