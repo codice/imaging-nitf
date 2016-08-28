@@ -161,6 +161,26 @@
         </loop>
     </tre>
 
+    <!-- MIE4NITF 1.1, Section 5.9.3.3 and Table 12 -->
+    <tre name="CAMSDA" minlength="196" maxlength="99985" location="file">
+        <field name="NUM_CAMERA_SETS" length="3" type="integer" minval="1" maxval="999"/>
+        <field name="NUM_CAMERA_SETS_IN_TRE" length="3" type="integer" minval="1" maxval="534"/>
+        <field name="FIRST_CAMERA_SET_IN_TRE" length="3" type="integer" minval="1" maxval="999"/>
+        <loop counter="NUM_CAMERA_SETS_IN_TRE" md_prefix="CAMERA_SET_IN_TRE_%03d_" name="CAMERA_SETS">
+            <field name="NUM_CAMERAS_IN_SET" minval="1" maxval="543" length="3" type="integer"/>
+            <loop counter="NUM_CAMERAS_IN_SET" md_prefix="CAMERA_%03d_" name="CAMERAS">
+                <field name="CAMERA_ID" type="string" length="36"/>
+                <field name="CAMERA_DESC" type="string" length="80"/>
+                <field name="LAYER_ID" type="string" length="36"/>
+                <field name="IDLVL" type="integer" length="3" minval="1" maxval="999"/>
+                <field name="IALVL" type="integer" length="3" minval="0" maxval="998"/>
+                <field name="ILOC" type="string" length="10"/>
+                <field name="NROWS" type="integer" length="8" minval="1" maxval="99999999"/>
+                <field name="NCOLS" type="integer" length="8" minval="1" maxval="99999999"/>
+            </loop>
+        </loop>
+    </tre>
+
     <tre name="CSDIDA" md_prefix="NITF_CSDIDA_" length="70" location="file">
         <field name="DAY" length="2"/>
         <field name="MONTH" length="3"/>
