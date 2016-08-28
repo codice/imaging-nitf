@@ -549,6 +549,23 @@
         <field name="MI_REQ_LEVEL" length="6" type="string"/>
     </tre>
 
+    <!-- MIE4NITF Version 1.1, Section 5.9.3.5 Motion Imagery File TRE (MTIMFA) and Table 14 -->
+    <tre name="MTIMFA" minlength="138" maxlength="99985" location="file">
+        <field name="LAYER_ID" length="36" type="string"/>
+        <field name="CAMERA_SET_INDEX" length="3" type="integer" minval="1" maxval="999"/>
+        <field name="TIME_INTERVAL_INDEX" length="6" type="integer" minval="1" maxval="999999"/>
+        <field name="NUM_CAMERAS_DEFINED" length="3" type="integer" minval="1" maxval="999"/>
+        <loop counter="NUM_CAMERAS_DEFINED" md_prefix="CAMERA_%d" name="CAMERAS">
+            <field name="CAMERA_ID" type="string" length="36"/>
+            <field name="NUM_TEMP_BLOCKS" type="integer" length="3" minval="1" maxval="999"/>
+            <loop counter="NUM_TEMP_BLOCKS" name="TEMPORAL_BLOCKS" md_prefix="TEMPORAL_BLOCK_%d">
+                <field name="START_TIMESTAMP" length="24" type="string"/>
+                <field name="END_TIMESTAMP" length="24" type="string"/>
+                <field name="IMAGE_SEG_INDEX" length="3" type="string"/>
+            </loop>
+        </loop>
+    </tre>
+
     <!-- MIE4NITF Version 1.1, Section 5.9.4.7 Motion Imaging Segment TRE (MTIMSA) and Table 17 -->
     <tre name="MTIMSA" minlength="150" maxlength="99985" location="image">
         <field name="IMAGE_SEG_INDEX" length="3" type="integer" minval="1" maxval="999"/>
