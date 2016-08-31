@@ -80,6 +80,11 @@ public class PIAPEB_WrapTest extends SharedTreTestSupport {
         assertEquals("AB", piapeb.getLastName());
         piapeb.setLastName("ZY");
         assertEquals("ZY", piapeb.getLastName());
+
+        Tre tre = piapeb.getTRE();
+        assertNotNull(tre);
+        assertEquals("ZY", tre.getFieldValue("LASTNME"));
+
         byte[] serialisedTRE = piapeb.serialize();
         Assert.assertArrayEquals("ZY                          EF                          CD                          19870315US".getBytes(), serialisedTRE);
     }

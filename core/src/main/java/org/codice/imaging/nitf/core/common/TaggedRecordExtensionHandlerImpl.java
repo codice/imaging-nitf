@@ -92,7 +92,7 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
         @param treEntry the TreEntry to flatten.
         @param parentName the name of the parent, required for namespacing.
     */
-    public final void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String parentName) {
+    private void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String parentName) {
         if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
             String key = String.format("%s_%s", parentName, treEntry.getName());
             String value = treEntry.getFieldValue().trim();

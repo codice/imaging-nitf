@@ -225,6 +225,15 @@ public abstract class TreWrapper {
     }
 
     /**
+     * Get the TRE structure.
+     *
+     * @return the Tre that this object wraps.
+     */
+    public final Tre getTRE() {
+        return mTre;
+    }
+
+    /**
      * Check if the TRE structure looks (basically) valid.
      *
      * There are cases where the validity cannot be checked (e.g. valid values

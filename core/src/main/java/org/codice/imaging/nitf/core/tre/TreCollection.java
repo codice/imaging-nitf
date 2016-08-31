@@ -53,6 +53,16 @@ public class TreCollection {
     }
 
     /**
+     * Remove the specified TRE.
+     *
+     * @param tre the TRE to remove (must be from the list)
+     * @return true if the TRE was removed, otherwise false.
+     */
+    public final boolean remove(final Tre tre) {
+        return treCollectionEntries.remove(tre);
+    }
+
+    /**
         Get the names of the TREs in the collection.
         <p>
         This method returns a unique list of TRE names. That list can be
