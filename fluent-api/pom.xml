@@ -95,6 +95,27 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <version>1.5</version>
+                <configuration>
+                    <resourceBundles>
+                        <resourceBundle>org.codice.imaging.nitf:codice-imaging-nitf-shared-test-resources:${project.version}</resourceBundle>
+                    </resourceBundles>
+                    <attachToMain>false</attachToMain>
+                    <outputBuildDirectory>${project.build.directory}/src/test/resources</outputBuildDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
     
