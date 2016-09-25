@@ -28,6 +28,7 @@
         <module>trewrap</module>
         <module>registryparser</module>
         <module>deswrap</module>
+        <module>imagecompare</module>
     </modules>
 
     <distributionManagement>

@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import junit.framework.TestCase;
+import static junit.framework.TestCase.assertTrue;
+import org.codice.imaging.compare.Compare;
 import org.codice.imaging.nitf.core.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
@@ -61,7 +63,14 @@ public class RenderTestSupport extends TestCase {
             NitfRenderer renderer = new NitfRenderer();
             BufferedImage img = renderer.render(imageSegment);
             // TODO: move to automated (perceptual?) comparison
-            ImageIO.write(img, "png", new File("target" + File.separator + testfile + "_" + i + ".png"));
+            File targetPath = new File("target" + File.separator + testfile + "_" + i + ".png");
+            ImageIO.write(img, "png", targetPath);
+            String referencePath = "/" + parentDirectory + "/" + testfile + "_" + i + ".ref.png";
+            if (getClass().getResource(referencePath) != null) {
+                BufferedImage refImage = ImageIO.read(getClass().getResourceAsStream(referencePath));
+                assertTrue(Compare.areIdentical(img, refImage));
+                targetPath.delete();
+            }
         }
     }
 }
