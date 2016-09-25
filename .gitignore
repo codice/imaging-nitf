@@ -29,3 +29,6 @@ hs_err_pid*
 /registryparser/target/
 /deswrap/target/
 /deswrap/nbproject/
+/imagecompare/nbproject/
+/imagecompare/target/
+
