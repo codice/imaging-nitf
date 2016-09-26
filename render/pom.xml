@@ -18,22 +18,14 @@
     </properties>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.3</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${mavencompilerplugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
 
@@ -79,7 +71,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>${findbugsplugin.version}</version>
                 <configuration>
                     <xmlOutput>true</xmlOutput>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
@@ -126,7 +118,7 @@
         <dependency>
             <groupId>org.codice.imaging.nitf</groupId>
             <artifactId>codice-imaging-nitf-core</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -138,13 +130,19 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>1.10.8</version>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.org.lidalia</groupId>
+            <artifactId>slf4j-test</artifactId>
+            <version>${slf4jtest.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.codice.imaging.nitf</groupId>
             <artifactId>codice-imaging-compare</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
             <type>jar</type>
         </dependency>
