@@ -39,6 +39,8 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
 
     private File dataFile;
 
+    private RandomAccessFile randomAccessFile;
+
     /**
      * @param resultConverter a function that converts a RandomAccessFile to &lt;R&gt;
      */
@@ -64,7 +66,7 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
 
         try (FileOutputStream fos = new FileOutputStream(dataFile)) {
             fos.write(bytes);
-            RandomAccessFile randomAccessFile = new RandomAccessFile(dataFile, "rwd");
+            this.randomAccessFile = new RandomAccessFile(dataFile, "rwd");
             R result = resultConversionFunction.apply(randomAccessFile);
             return result;
         } catch (IOException e) {
@@ -76,6 +78,7 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
     public final void cleanUp() {
         if (dataFile != null) {
             try {
+                randomAccessFile.close();
                 Files.deleteIfExists(dataFile.toPath());
             } catch (IOException e) {
                 LOGGER.warn("Unable to delete file.", e);
