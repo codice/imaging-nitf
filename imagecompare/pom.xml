@@ -6,7 +6,7 @@
         <artifactId>codice-imaging-nitf</artifactId>
         <version>0.5</version>
     </parent>
-    <artifactId>codice-imaging-compare</artifactId>
+    <artifactId>codice-imaging-nitf-imagecompare</artifactId>
     <packaging>jar</packaging>
 
     <name>Codice Imaging: Image Compare</name>
