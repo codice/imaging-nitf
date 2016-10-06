@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.codice.imaging.nitf</groupId>
         <artifactId>codice-imaging-nitf</artifactId>
-        <version>0.5-SNAPSHOT</version>
+        <version>0.5</version>
     </parent>
     <artifactId>registryparser</artifactId>
     <packaging>jar</packaging>
