@@ -141,7 +141,7 @@
         </dependency>
         <dependency>
             <groupId>org.codice.imaging.nitf</groupId>
-            <artifactId>codice-imaging-compare</artifactId>
+            <artifactId>codice-imaging-imagecompare</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
             <type>jar</type>
