@@ -711,7 +711,7 @@
         <field name="GENERATION" length="1" type="integer"/>
         <field name="ESD" length="1" type="string"/>
         <field name="OTHERCOND" length="2" type="string"/>
-        <field name="MEANGSD" length="7" type="integer"/>
+        <field name="MEANGSD" length="7" type="real"/>
         <field name="IDATUM" length="3" type="string"/>
         <field name="IELLIP" length="3" type="string"/>
         <field name="PREPROC" length="2" type="string"/>
