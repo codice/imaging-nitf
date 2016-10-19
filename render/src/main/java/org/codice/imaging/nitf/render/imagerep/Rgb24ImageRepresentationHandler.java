@@ -18,23 +18,47 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.util.Map;
+
 import javax.imageio.stream.ImageInputStream;
+
 import org.codice.imaging.nitf.render.ImageMask;
 
 class Rgb24ImageRepresentationHandler implements ImageRepresentationHandler {
     private final Map<Integer, Integer> bandMapping;
 
+    private final int numOfReadsPerBand;
+
+    private final int bitsToDiscard;
+
     private static final int ALPHA_MASK = 0xFF000000;
 
-    Rgb24ImageRepresentationHandler(final Map<Integer, Integer> bandMap) {
+    Rgb24ImageRepresentationHandler(final Map<Integer, Integer> bandMap,
+            final int actualBitsPerPixelPerBand) {
         this.bandMapping = bandMap;
+        this.numOfReadsPerBand = (int) Math.ceil(actualBitsPerPixelPerBand / ((double) Byte.SIZE));
+        if (actualBitsPerPixelPerBand - Byte.SIZE < 0) {
+            this.bitsToDiscard = 0;
+        } else {
+            this.bitsToDiscard = actualBitsPerPixelPerBand - Byte.SIZE;
+        }
     }
 
     @Override
-    public void renderPixelBand(final DataBuffer data, final int pixelIndex, final ImageInputStream imageInputStream, final int bandIndex)
-            throws IOException {
+    public void renderPixelBand(final DataBuffer data, final int pixelIndex,
+            final ImageInputStream imageInputStream, final int bandIndex) throws IOException {
+        int pixelBandValue = 0;
+
+        //Read a byte for every 8 bits per pixel per band.
+        for (int i = numOfReadsPerBand - 1; i >= 0; i--) {
+            pixelBandValue = pixelBandValue | (imageInputStream.read() << i * Byte.SIZE);
+        }
+
+        //Convert the value down to 8 bits.
+        pixelBandValue = pixelBandValue >> bitsToDiscard;
+
         data.setElem(pixelIndex,
-                ALPHA_MASK | data.getElem(pixelIndex) | (imageInputStream.read() << bandMapping.get(bandIndex)));
+                ALPHA_MASK | data.getElem(pixelIndex) | (pixelBandValue
+                        << bandMapping.get(bandIndex)));
     }
 
     @Override
