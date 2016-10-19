@@ -62,7 +62,6 @@ public final class ImageRepresentationHandlerFactory {
     private static ImageRepresentationHandler getRgbImageRepresentationHandler(final ImageSegment segment) {
         if (segment.getNumberOfBitsPerPixelPerBand() != Byte.SIZE && segment.getNumberOfBitsPerPixelPerBand() != Short.SIZE) {
             // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 (enough for CLEVEL 3 and 5)
-            // TODO: implement 16 bit support [IMG-112]
             // TODO: implement 32 bit support [IMG-113]
             return null;
         }
