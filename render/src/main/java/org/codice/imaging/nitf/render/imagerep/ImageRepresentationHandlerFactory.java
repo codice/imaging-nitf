@@ -60,17 +60,22 @@ public final class ImageRepresentationHandlerFactory {
     }
 
     private static ImageRepresentationHandler getRgbImageRepresentationHandler(final ImageSegment segment) {
-        if (segment.getNumberOfBitsPerPixelPerBand() != Byte.SIZE) {
-            // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 (enough for CLEVEL 3 and 5)
-            // TODO: implement 16 bit support [IMG-112]
+        Map<Integer, Integer> bandMapping;
+        switch (segment.getNumberOfBitsPerPixelPerBand()) {
+        case Byte.SIZE:
+            bandMapping = getRgbImageRepresentationMapping(segment);
+            return new Rgb24ImageRepresentationHandler(bandMapping, segment.getActualBitsPerPixelPerBand());
+        case Short.SIZE:
+            bandMapping = getRgbImageRepresentationMapping(segment);
+            return new Rgb48ImageRepresentationHandler(bandMapping, segment.getActualBitsPerPixelPerBand());
+        default:
+            // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 or 16.
             // TODO: implement 32 bit support [IMG-113]
             return null;
         }
-        Map<Integer, Integer> bandMapping = getRgb24ImageRepresentationMapping(segment);
-        return new Rgb24ImageRepresentationHandler(bandMapping);
     }
 
-    private static Map<Integer, Integer> getRgb24ImageRepresentationMapping(final ImageSegment imageSegment) {
+    private static Map<Integer, Integer> getRgbImageRepresentationMapping(final ImageSegment imageSegment) {
         Map<Integer, Integer> mapping = new HashMap<>();
         for (int bandIndex = 0; bandIndex < imageSegment.getNumBands(); bandIndex++) {
             int leftShift;
