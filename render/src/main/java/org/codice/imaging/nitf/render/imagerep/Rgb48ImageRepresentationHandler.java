@@ -20,18 +20,22 @@ import java.util.Map;
 
 import javax.imageio.stream.ImageInputStream;
 
-class Rgb24ImageRepresentationHandler extends AbstractRgbImageRepresentationHandler {
-
-    Rgb24ImageRepresentationHandler(final Map<Integer, Integer> bandMap,
+class Rgb48ImageRepresentationHandler extends AbstractRgbImageRepresentationHandler {
+    Rgb48ImageRepresentationHandler(final Map<Integer, Integer> bandMap,
             final int actualBitsPerPixelPerBand) {
         super(bandMap, actualBitsPerPixelPerBand);
     }
 
     @Override
-    public final void renderPixelBand(final DataBuffer data, final int pixelIndex,
-            final ImageInputStream imageInputStream, final int bandIndex) throws IOException {
+    public final void renderPixelBand(final DataBuffer data, final int pixelIndex, final ImageInputStream imageInputStream,
+            final int bandIndex) throws IOException {
+        int pixelBandValue = (imageInputStream.read() << Byte.SIZE) | (imageInputStream.read());
+
+        //Convert the value down to 8 bits.
+        pixelBandValue = pixelBandValue >> bitsToDiscard;
 
         data.setElem(pixelIndex,
-                ALPHA_MASK | data.getElem(pixelIndex) | (imageInputStream.read() << bandMapping.get(bandIndex)));
+                ALPHA_MASK | data.getElem(pixelIndex) | (pixelBandValue
+                        << bandMapping.get(bandIndex)));
     }
 }
