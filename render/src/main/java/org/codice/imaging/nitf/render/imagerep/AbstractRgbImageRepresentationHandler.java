@@ -28,19 +28,12 @@ abstract class AbstractRgbImageRepresentationHandler implements ImageRepresentat
 
     protected final int numOfReadsPerBand;
 
-    protected final int bitsToDiscard;
-
     protected static final int ALPHA_MASK = 0xFF000000;
 
     AbstractRgbImageRepresentationHandler(final Map<Integer, Integer> bandMap,
             final int actualBitsPerPixelPerBand) {
         this.bandMapping = bandMap;
         this.numOfReadsPerBand = (int) Math.ceil(actualBitsPerPixelPerBand / ((double) Byte.SIZE));
-        if (actualBitsPerPixelPerBand - Byte.SIZE < 0) {
-            this.bitsToDiscard = 0;
-        } else {
-            this.bitsToDiscard = actualBitsPerPixelPerBand - Byte.SIZE;
-        }
     }
 
     @Override

@@ -20,10 +20,28 @@ import java.util.Map;
 
 import javax.imageio.stream.ImageInputStream;
 
+import org.codice.imaging.nitf.core.image.PixelJustification;
+
 class Rgb48ImageRepresentationHandler extends AbstractRgbImageRepresentationHandler {
+    private final int bitsToDiscard;
+
     Rgb48ImageRepresentationHandler(final Map<Integer, Integer> bandMap,
-            final int actualBitsPerPixelPerBand) {
+            final int actualBitsPerPixelPerBand, final PixelJustification pixelJustification, final int numBitsPerPixelPerBand) {
         super(bandMap, actualBitsPerPixelPerBand);
+
+        if (actualBitsPerPixelPerBand - Byte.SIZE < 0) {
+            if (pixelJustification.equals(PixelJustification.RIGHT)) {
+                this.bitsToDiscard = 0;
+            } else {
+                this.bitsToDiscard = numBitsPerPixelPerBand - actualBitsPerPixelPerBand;
+            }
+        } else {
+            if (pixelJustification.equals(PixelJustification.RIGHT)) {
+                this.bitsToDiscard = actualBitsPerPixelPerBand - Byte.SIZE;
+            } else {
+                this.bitsToDiscard = numBitsPerPixelPerBand - Byte.SIZE;
+            }
+        }
     }
 
     @Override

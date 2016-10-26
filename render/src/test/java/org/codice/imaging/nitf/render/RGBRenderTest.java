@@ -34,4 +34,48 @@ public class RGBRenderTest extends RenderTestSupport {
         testOneFile("merlionRGB.ntf", "Codice");
     }
 
+    /**
+     * Tests rendering of image with following features: RGB, 16 bits per pixel per band,
+     * 16 actual pixels per band, and right pixel justification.
+     */
+    @Test
+    public void test16BPPImage() throws IOException, NitfFormatException {
+        testOneFile("rgb16.ntf", "fromGDAL");
+    }
+
+    /**
+     * Tests rendering of image with following features: RGB, 16 bits per pixel per band,
+     * 11 actual pixels per band, and right pixel justification.
+     */
+    @Test
+    public void test11ABPPImage() throws IOException, NitfFormatException {
+        testOneFile("rgb16_11ABPP.ntf", "fromGDAL");
+    }
+
+    /**
+     * Tests rendering of image with following features: RGB, 16 bits per pixel per band,
+     * 11 actual pixels per band, and left pixel justification.
+     */
+    @Test
+    public void test11ABPPLeftImage() throws IOException, NitfFormatException {
+        testOneFile("rgb16_11ABPPLeft.ntf", "fromGDAL");
+    }
+
+    /**
+     * Tests rendering of image with following features: RGB, 16 bits per pixel per band,
+     * 6 actual pixels per band, and left pixel justification.
+     */
+    @Test
+    public void test6ABPPLeftImage() throws IOException, NitfFormatException {
+        testOneFile("rgb16_6ABPPLeft.ntf", "fromGDAL");
+    }
+
+    /**
+     * Tests rendering of image with following features: RGB, 16 bits per pixel per band,
+     * 6 actual pixels per band, and right pixel justification.
+     */
+    @Test
+    public void test6ABPPRightImage() throws IOException, NitfFormatException {
+        testOneFile("rgb16_6ABPPRight.ntf", "fromGDAL");
+    }
 }
