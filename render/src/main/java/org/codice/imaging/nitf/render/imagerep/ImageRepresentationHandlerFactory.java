@@ -67,7 +67,10 @@ public final class ImageRepresentationHandlerFactory {
             return new Rgb24ImageRepresentationHandler(bandMapping, segment.getActualBitsPerPixelPerBand());
         case Short.SIZE:
             bandMapping = getRgbImageRepresentationMapping(segment);
-            return new Rgb48ImageRepresentationHandler(bandMapping, segment.getActualBitsPerPixelPerBand());
+            return new Rgb48ImageRepresentationHandler(bandMapping,
+                    segment.getActualBitsPerPixelPerBand(),
+                    segment.getPixelJustification(),
+                    segment.getNumberOfBitsPerPixelPerBand());
         default:
             // It can be 8, 16 or 32 once we are at CLEVEL 6, but so far we can only do 8 or 16.
             // TODO: implement 32 bit support [IMG-113]
