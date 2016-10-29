@@ -18,6 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import org.codice.imaging.nitf.core.SlottedParseStrategy;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -59,6 +60,7 @@ public class Nitf21GraphicParsingTest {
 
     private void assertGraphicSegmentMetadataIsAsExpected(GraphicSegment graphicSegment) {
         assertNotNull(graphicSegment);
+        assertEquals(FileType.NITF_TWO_ONE, graphicSegment.getFileType());
         assertEquals("0000000001", graphicSegment.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", graphicSegment.getGraphicName());
         assertUnclasAndEmpty(graphicSegment.getSecurityMetadata());

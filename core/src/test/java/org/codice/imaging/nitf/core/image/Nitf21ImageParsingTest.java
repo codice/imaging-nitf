@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
 import org.codice.imaging.nitf.core.SlottedParseStrategy;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -67,6 +68,7 @@ public class Nitf21ImageParsingTest {
 
     private void assertImageSegmentMetadataIsAsExpected(ImageSegment imageSegment) {
         assertNotNull(imageSegment);
+        assertEquals(FileType.NITF_TWO_ONE, imageSegment.getFileType());
         assertEquals("Missing ID", imageSegment.getIdentifier());
         assertEquals("1996-12-17 10:26:30", formatter.format(imageSegment.getImageDateTime().getZonedDateTime()));
         assertEquals("          ", imageSegment.getImageTargetId().getBasicEncyclopediaNumber());

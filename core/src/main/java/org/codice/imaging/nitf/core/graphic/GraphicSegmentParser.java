@@ -68,6 +68,7 @@ public class GraphicSegmentParser extends AbstractSegmentParser {
         segment = new GraphicSegmentImpl();
         segment.setDataLength(dataLength);
         parsingStrategy = parseStrategy;
+        segment.setFileType(nitfReader.getFileType());
 
         readSY();
         readSID();

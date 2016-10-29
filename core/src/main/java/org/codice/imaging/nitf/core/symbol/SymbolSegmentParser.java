@@ -66,6 +66,7 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
         segment = new SymbolSegmentImpl();
         segment.setDataLength(dataLength);
         parsingStrategy = parseStrategy;
+        segment.setFileType(nitfReader.getFileType());
 
         readSY();
         readSID();

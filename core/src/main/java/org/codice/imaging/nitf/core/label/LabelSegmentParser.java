@@ -64,6 +64,7 @@ public class LabelSegmentParser extends AbstractSegmentParser {
         reader = nitfReader;
         parsingStrategy = parseStrategy;
         segment = new LabelSegmentImpl();
+        segment.setFileType(nitfReader.getFileType());
 
         readLA();
         readLID();
