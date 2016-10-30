@@ -466,6 +466,7 @@ public class Nitf20HeaderTest {
 
         LabelSegment labelSegment1 = parseStrategy.getDataSource().getLabelSegments().get(0);
         assertNotNull(labelSegment1);
+        assertEquals(FileType.NITF_TWO_ZERO, labelSegment1.getFileType());
         assertEquals("0000000001", labelSegment1.getIdentifier());
         checkNitf20SecurityMetadataUnclasAndEmpty(labelSegment1.getSecurityMetadata());
         assertEquals("999998", labelSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());

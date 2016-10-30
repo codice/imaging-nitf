@@ -95,6 +95,7 @@ public class Nitf20OverflowTest {
 
         ImageSegment imageSegment1 = parseStrategy.getDataSource().getImageSegments().get(0);
         assertNotNull(imageSegment1);
+        assertEquals(FileType.NITF_TWO_ZERO, imageSegment1.getFileType());
         assertEquals("512 Lenna", imageSegment1.getIdentifier());
         assertEquals("1993-03-25 15:25:59", formatter.format(imageSegment1.getImageDateTime().getZonedDateTime()));
         assertEquals("- BASE IMAGE -", imageSegment1.getImageIdentifier2());

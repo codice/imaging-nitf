@@ -59,6 +59,7 @@ public class TextSegmentParser extends AbstractSegmentParser {
         reader = nitfReader;
         segment = new TextSegmentImpl();
         parsingStrategy = parseStrategy;
+        segment.setFileType(nitfReader.getFileType());
 
         readTE();
         readTEXTID();

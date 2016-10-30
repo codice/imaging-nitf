@@ -18,6 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
+import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -64,6 +65,7 @@ public class Nitf21TextParsingTest {
 
     private void assertTextSegmentMetadataIsAsExpected(TextSegment textSegment) {
         assertNotNull(textSegment);
+        assertEquals(FileType.NSIF_ONE_ZERO, textSegment.getFileType());
         assertEquals(" PIDF T", textSegment.getIdentifier());
         assertEquals(1, textSegment.getAttachmentLevel());
         assertEquals("1998-02-17 10:19:39", formatter.format(textSegment.getTextDateTime().getZonedDateTime()));

@@ -111,6 +111,7 @@ public class Nitf20SymbolTest {
 
     private void assertSymbolSegmentHeaderDataIsAsExpected(SymbolSegment symbolSegment1) {
         assertNotNull(symbolSegment1);
+        assertEquals(FileType.NITF_TWO_ZERO, symbolSegment1.getFileType());
         assertEquals("0000000001", symbolSegment1.getIdentifier());
         assertEquals("multi.cgm  SYMBOL.", symbolSegment1.getSymbolName());
         checkNitf20SecurityMetadataUnclasAndEmpty(symbolSegment1.getSecurityMetadata());

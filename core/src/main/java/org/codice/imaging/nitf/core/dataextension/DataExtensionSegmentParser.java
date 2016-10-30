@@ -51,6 +51,7 @@ public class DataExtensionSegmentParser extends AbstractSegmentParser {
         reader = nitfReader;
         segment = new DataExtensionSegmentImpl(nitfReader.getFileType());
         segment.setDataLength(dataLength);
+        segment.setFileType(nitfReader.getFileType());
 
         readDE();
         readDESID();
