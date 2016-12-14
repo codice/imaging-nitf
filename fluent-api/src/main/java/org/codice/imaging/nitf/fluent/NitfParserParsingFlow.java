@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.codice.imaging.nitf.core.FileBackedHeapStrategy;
 import org.codice.imaging.nitf.core.HeapStrategy;
+import org.codice.imaging.nitf.core.InMemoryHeapStrategy;
 import org.codice.imaging.nitf.core.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
@@ -40,7 +40,7 @@ public class NitfParserParsingFlow {
     private final NitfReader reader;
 
     private HeapStrategy<ImageInputStream> imageDataStrategy =
-            new FileBackedHeapStrategy<>(file -> new FileImageInputStream(file));
+            new InMemoryHeapStrategy<>(MemoryCacheImageInputStream::new);
 
     private final List<Source> treDescriptors = new ArrayList<>();
 
