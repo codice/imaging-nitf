@@ -14,18 +14,22 @@
  */
 package org.codice.imaging.nitf.core.common;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Common data elements for NITF segments and file header.
  */
 public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordExtensionHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaggedRecordExtensionHandler.class);
 
     private final TreCollection treCollection = new TreCollection();
 
@@ -103,7 +107,15 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
                 groupCounter++;
                 for (TreEntry entryInGroup : group.getEntries()) {
                     String key = String.format("%s_%s_%d", parentName, entryInGroup.getName(), groupCounter);
-                    String value = entryInGroup.getFieldValue().trim();
+                    String value = entryInGroup.getFieldValue();
+
+                    if (value != null) {
+                        value = value.trim();
+                    } else {
+                        value = "";
+                        LOGGER.warn("Value for %s attribute %s is missing. Substituting blank.", parentName, key);
+                    }
+
                     tresFlat.put(key, value);
                 }
             }
