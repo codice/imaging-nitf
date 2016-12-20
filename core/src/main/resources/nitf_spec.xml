@@ -387,57 +387,57 @@
     </tre>
 
     <tre name="HISTOA" minlength="115" maxlength="83512" location="image">
-        <field name="SYSTYPE" length="20"/>
-        <field name="PC" length="12"/>
-        <field name="PE" length="4"/>
-        <field name="REMAP_FLAG" length="1"/>
-        <field name="LUTID" length="2"/>
-        <field name="NEVENTS" length="2"/>
+        <field name="SYSTYPE" length="20" type="string"/>
+        <field name="PC" length="12" type="string"/>
+        <field name="PE" length="4" type="string"/>
+        <field name="REMAP_FLAG" length="1" type="string"/>
+        <field name="LUTID" length="2" type="string"/>
+        <field name="NEVENTS" length="2" type="integer"/>
         <loop counter="NEVENTS" md_prefix="EVENT_%02d_" name="EVENT">
-            <field name="PDATE" length="14"/>
-            <field name="PSITE" length="10"/>
-            <field name="PAS" length="10"/>
-            <field name="NIPCOM" length="1"/>
+            <field name="PDATE" length="14" type="string"/>
+            <field name="PSITE" length="10" type="string"/>
+            <field name="PAS" length="10" type="string"/>
+            <field name="NIPCOM" length="1" type="integer"/>
             <loop counter="NIPCOM" md_prefix="IPCOM_%d" name="IPCOM">
-                <field name="" longname="IPCOM" length="80"/>
+                <field name="" longname="IPCOM" length="80" type="string"/>
             </loop>
-            <field name="IBPP" length="2"/>
-            <field name="IPVTYPE" length="3"/>
-            <field name="INBWC" length="10"/>
-            <field name="DISP_FLAG" length="1"/>
-            <field name="ROT_FLAG" length="1"/>
+            <field name="IBPP" length="2" type="integer"/>
+            <field name="IPVTYPE" length="3" type="string"/>
+            <field name="INBWC" length="10" type="string"/>
+            <field name="DISP_FLAG" length="1" type="integer"/>
+            <field name="ROT_FLAG" length="1" type="integer"/>
             <if cond="ROT_FLAG=1">
-                <field name="ROT_ANGLE" length="8"/>
+                <field name="ROT_ANGLE" length="8" type="real"/>
             </if>
-            <field name="ASYM_FLAG" length="1"/>
+            <field name="ASYM_FLAG" length="1"  type="integer"/>
             <if cond="ASYM_FLAG=1">
-                <field name="ZOOMROW" length="7"/>
-                <field name="ZOOMCOL" length="7"/>
+                <field name="ZOOMROW" length="7" type="real"/>
+                <field name="ZOOMCOL" length="7" type="real"/>
             </if>
-            <field name="PROJ_FLAG" length="1"/>
-            <field name="SHARP_FLAG" length="1"/>
+            <field name="PROJ_FLAG" length="1" type="integer"/>
+            <field name="SHARP_FLAG" length="1" type="integer"/>
             <if cond="SHARP_FLAG=1">
-                <field name="SHARPFAM" length="2"/>
-                <field name="SHARPMEM" length="2"/>
+                <field name="SHARPFAM" length="2" type="integer"/>
+                <field name="SHARPMEM" length="2" type="integer"/>
             </if>
-            <field name="MAG_FLAG" length="1"/>
+            <field name="MAG_FLAG" length="1" type="integer"/>
             <if cond="MAG_FLAG=1">
-                <field name="MAG_LEVEL" length="7"/>
+                <field name="MAG_LEVEL" length="7" type="real"/>
             </if>
-            <field name="DRA_FLAG" length="1"/>
+            <field name="DRA_FLAG" length="1" type="integer"/>
             <if cond="DRA_FLAG=1">
-                <field name="DRA_MULT" length="7"/>
-                <field name="DRA_SUB" length="5"/>
+                <field name="DRA_MULT" length="7" type="real"/>
+                <field name="DRA_SUB" length="5" type="integer"/>
             </if>
-            <field name="TTC_FLAG" length="1"/>
+            <field name="TTC_FLAG" length="1" type="integer"/>
             <if cond="TTC_FLAG=1">
-                <field name="TTCFAM" length="2"/>
-                <field name="TTCMEM" length="2"/>
+                <field name="TTCFAM" length="2" type="integer"/>
+                <field name="TTCMEM" length="2" type="integer"/>
             </if>
-            <field name="DEVLUT_FLAG" length="1"/>
-            <field name="OBPP" length="2"/>
-            <field name="OPVTYPE" length="3"/>
-            <field name="OUTBWC" length="10"/>
+            <field name="DEVLUT_FLAG" length="1" type="integer"/>
+            <field name="OBPP" length="2" type="integer"/>
+            <field name="OPVTYPE" length="3" type="string"/>
+            <field name="OUTBWC" length="10" type="string"/>
         </loop>
     </tre>
 
