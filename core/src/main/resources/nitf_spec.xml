@@ -313,7 +313,28 @@
             <field name="ENGDTS" length="1" type="integer"/>
             <field name="ENGDATU" length="2" type="string"/>
             <field name="ENGDATC" length="8" type="integer" minval="1" maxval="99999932"/>
-            <field name="ENGDATA" length_var="ENGDATC"/>
+            <if cond="ENGTYP=A">
+                <field name="ENGDATA" length_var="ENGDATC" type="string"/>
+            </if>
+            <!-- we don't really handle unsigned int very well -->
+            <if cond="ENGTYP=I">
+                <loop counter="ENGDATC" name="ENGDATA" md_prefix="ENGDATA_%d_">
+                    <field name="ENGDATA" length_var="ENGDTS" type="UINT"/>
+                </loop>
+            </if>
+            <if cond="ENGTYP=S">
+                <loop counter="ENGDATC" name="ENGDATA" md_prefix="ENGDATA_%d_">
+                    <field name="ENGDATA" length_var="ENGDTS" type="UINT"/>
+                </loop>
+            </if>
+            <!-- TODO: make this handle other types better -->
+            <if cond="ENGTYP!=A AND ENGTYP!=I">
+                <if cond="ENGTYP!=S">
+                    <loop counter="ENGDATC" name="ENGDATA" md_prefix="ENGDATA_%d_">
+                        <field name="ENGDATA" length_var="ENGDTS"/>
+                    </loop>
+                </if>
+            </if>
         </loop>
     </tre>
 
