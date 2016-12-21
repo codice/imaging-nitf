@@ -32,19 +32,24 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
     /**
      * {@inheritDoc}
      */
+    @Override
     public final TreCollection getTREsRawStructure() {
         return treCollection;
     }
 
     /**
-        Return the TREs for this segment, flattened into a key-value pair map.
-        <p>
-        This will build appropriate namespaces for each entry.
-
-        @return TRE map.
-    */
+     * Return the TREs for this segment, flattened into a key-value pair map.
+     *
+     * This will build appropriate namespaces for each entry.
+     *
+     * @deprecated Use the raw structure. Flattening out the TREs does not have a single correct solution.
+     *
+     * @return TRE map.
+     */
+    @Deprecated
+    @Override
     public final Map<String, String> getTREsFlat() {
-        Map<String, String> tresFlat = new TreeMap<String, String>();
+        Map<String, String> tresFlat = new TreeMap<>();
         for (String treName : treCollection.getUniqueNamesOfTRE()) {
             List<Tre> tresWithName = treCollection.getTREsWithName(treName);
             if (tresWithName.size() == 1) {
@@ -67,7 +72,8 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
     private void flattenOnlyTre(final Tre onlyTre, final Map<String, String> tresFlat) {
         List<TreEntry> treEntries = onlyTre.getEntries();
         for (TreEntry treEntry : treEntries) {
-            flattenOneTreEntry(tresFlat, treEntry, onlyTre.getName());
+            String label = String.format("%s_%s", onlyTre.getName(), treEntry.getName());
+            flattenOneTreEntry(tresFlat, treEntry, label);
         }
     }
 
@@ -92,22 +98,35 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
         @param treEntry the TreEntry to flatten.
         @param parentName the name of the parent, required for namespacing.
     */
-    private void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String parentName) {
-        if ((treEntry.getName() != null) && (treEntry.getFieldValue() != null)) {
-            String key = String.format("%s_%s", parentName, treEntry.getName());
-            String value = treEntry.getFieldValue().trim();
-            tresFlat.put(key, value);
-        } else if (treEntry.getGroups() != null) {
-            int groupCounter = 0;
-            for (TreGroup group : treEntry.getGroups()) {
-                groupCounter++;
-                for (TreEntry entryInGroup : group.getEntries()) {
-                    String key = String.format("%s_%s_%d", parentName, entryInGroup.getName(), groupCounter);
-                    String value = entryInGroup.getFieldValue().trim();
-                    tresFlat.put(key, value);
+    private void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String label) {
+        if (treEntry.isSimpleField()) {
+            addValueToMap(tresFlat, label, treEntry);
+        } else if (treEntry.hasGroups()) {
+            processTreGroups(treEntry, label, tresFlat);
+        }
+    }
+
+    private void processTreGroups(final TreEntry treEntry, final String parentName, final Map<String, String> tresFlat) {
+        int groupCounter = 0;
+        for (TreGroup group : treEntry.getGroups()) {
+            groupCounter++;
+            if (group.getEntries().size() > 1) {
+                for (int entryCounter = 0; entryCounter < group.getEntries().size(); ++entryCounter) {
+                    TreEntry entryInGroup = group.getEntries().get(entryCounter);
+                    String label = String.format("%s_%d_%s", parentName, groupCounter, entryInGroup.getName());
+                    flattenOneTreEntry(tresFlat, entryInGroup, label);
                 }
+            } else {
+                TreEntry entryInGroup = group.getEntries().get(0);
+                String label = String.format("%s_%d", parentName, groupCounter);
+                flattenOneTreEntry(tresFlat, entryInGroup, label);
             }
         }
+    }
+
+    private void addValueToMap(final Map<String, String> tresFlat, final String key, final TreEntry treEntry) {
+        String value = treEntry.getFieldValue().trim();
+        tresFlat.put(key, value);
     }
 
     /**

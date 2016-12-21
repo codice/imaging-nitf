@@ -114,7 +114,7 @@ class TreGroupImpl implements TreGroup {
     public final BigInteger getBigIntegerValue(final String tagName) throws NitfFormatException {
         try {
             TreEntry entry = getEntry(tagName);
-            if (entry.getDataType().equals("UINT")) {
+            if ("UINT".equals(entry.getDataType())) {
                 return new BigInteger(1, entry.getFieldValue().getBytes(StandardCharsets.ISO_8859_1));
             } else {
                 return new BigInteger(entry.getFieldValue(), DECIMAL_BASE);

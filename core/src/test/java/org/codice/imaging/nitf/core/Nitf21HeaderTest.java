@@ -701,12 +701,12 @@ public class Nitf21HeaderTest {
                 put("PIAPRC_PRODCRTIME", "26081023ZOCT95");
                 put("PIAPRC_MAPID", "132                                -END-");
                 put("PIAPRC_SECTITLEREP", "02");
-                put("PIAPRC_SECTITLE_1", "FIRST");
-                put("PIAPRC_PPNUM_1", "31/46");
-                put("PIAPRC_TPP_1", "001");
-                put("PIAPRC_SECTITLE_2", "SECOND");
-                put("PIAPRC_PPNUM_2", "32/47");
-                put("PIAPRC_TPP_2", "002");
+                put("PIAPRC_SECTITLE_1_SECTITLE", "FIRST");
+                put("PIAPRC_SECTITLE_1_PPNUM", "31/46");
+                put("PIAPRC_SECTITLE_1_TPP", "001");
+                put("PIAPRC_SECTITLE_2_SECTITLE", "SECOND");
+                put("PIAPRC_SECTITLE_2_PPNUM", "32/47");
+                put("PIAPRC_SECTITLE_2_TPP", "002");
                 put("PIAPRC_REQORGREP", "02");
                 put("PIAPRC_REQORG_1", "FIRST                                                      -END-");
                 put("PIAPRC_REQORG_2", "SECOND                                                     -END-");

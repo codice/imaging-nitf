@@ -115,6 +115,24 @@ public class TreEntry {
     }
 
     /**
+     * Check whether the TreEntry is a simple field.
+     *
+     * @return true if it is a simple field (name / value pair), otherwise false.
+     */
+    public final boolean isSimpleField() {
+        return (name != null) && (value != null);
+    }
+
+    /**
+     * Check whether the TreEntry has groups.
+     *
+     * @return true if it has groups, otherwise false.
+     */
+    public final boolean hasGroups() {
+        return ((groups != null) && (groups.size() > 0));
+    }
+
+    /**
         Add a group to the groups in this TRE entry.
 
         @param group the group to add.
