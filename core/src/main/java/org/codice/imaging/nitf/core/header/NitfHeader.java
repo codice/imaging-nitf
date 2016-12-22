@@ -141,6 +141,14 @@ public interface NitfHeader extends TaggedRecordExtensionHandler {
     int getUserDefinedHeaderOverflow();
 
     /**
+     * Set the complexity level (CLEVEL) for the file. This should not be done arbitrarily - it
+     * needs to match the reality of the file properties, including all images. See MIL-STD-2500C
+     * Table A-10 for NITF 2.1 and NSIF 1.0 files.
+     * @param complexityLevel the complexity level
+     */
+    void setComplexityLevel(int complexityLevel);
+
+    /**
      * Set the title (FTITLE) for the file.
      *
      * The file title is 80 characters maximum.
