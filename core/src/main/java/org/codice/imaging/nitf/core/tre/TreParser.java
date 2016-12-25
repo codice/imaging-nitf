@@ -14,6 +14,7 @@
  **/
 package org.codice.imaging.nitf.core.tre;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +26,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
 import org.codice.imaging.nitf.core.schema.FieldType;
@@ -94,18 +96,33 @@ public class TreParser {
         }
     }
 
-    final Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength, final TreSource source) throws NitfFormatException {
+    final Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength, final TreSource source) {
         Tre tre = new TreImpl(tag, source);
         TreType treType = getTreTypeForTag(tag);
-        if (treType == null) {
-            tre.setRawData(reader.readBytesRaw(fieldLength));
-        } else {
-            TreParams parameters = new TreParams();
-            tre.setPrefix(treType.getMdPrefix());
-            TreGroupImpl group = parseTreComponents(treType.getFieldOrLoopOrIf(),
-                    reader, parameters);
-            tre.setEntries(group.getEntries());
+        byte[] treBytes = null;
+
+        try {
+            treBytes = reader.readBytesRaw(fieldLength);
+
+            if (treType == null) {
+                tre.setRawData(treBytes);
+            } else {
+                NitfReader treReader =
+                        new NitfInputStreamReader(new ByteArrayInputStream(treBytes));
+                TreParams parameters = new TreParams();
+                tre.setPrefix(treType.getMdPrefix());
+                TreGroupImpl group = parseTreComponents(treType.getFieldOrLoopOrIf(),
+                        treReader,
+                        parameters);
+                tre.setEntries(group.getEntries());
+            }
+
+        } catch (Exception e) {
+            tre.setRawData(treBytes);
+            LOG.warn("Failed to parse TRE {}. See debug log for exception information.", tag);
+            LOG.debug(e.getMessage(), e);
         }
+
         return tre;
     }
 

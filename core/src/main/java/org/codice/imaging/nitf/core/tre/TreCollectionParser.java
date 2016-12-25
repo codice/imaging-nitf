@@ -52,7 +52,12 @@ public class TreCollectionParser {
             bytesRead += TAG_LENGTH;
             int fieldLength = reader.readBytesAsInteger(TAGLEN_LENGTH);
             bytesRead += TAGLEN_LENGTH;
-            treCollection.add(treParser.parseOneTre(reader, tag, fieldLength, sourceSegment));
+            Tre tre = treParser.parseOneTre(reader, tag, fieldLength, sourceSegment);
+
+            if (tre != null) {
+                treCollection.add(tre);
+            }
+
             bytesRead += fieldLength;
         }
         return treCollection;
