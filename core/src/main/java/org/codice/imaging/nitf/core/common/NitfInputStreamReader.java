@@ -87,12 +87,14 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
     public final byte[] readBytesRaw(final int count) throws NitfFormatException {
         try {
             byte[] bytes = new byte[count];
-            int thisRead = input.read(bytes, 0, count);
-            if (thisRead == -1) {
-                throw new NitfFormatException("End of file reading from NITF stream.", numBytesRead);
-            } else if (thisRead < count) {
-                throw new NitfFormatException(String.format("Short read while reading from NITF stream (%s/%s).", thisRead, count),
-                                         numBytesRead + thisRead);
+            int thisRead = 0;
+            while (thisRead != count) {
+                int read = input.read(bytes, thisRead, count - thisRead);
+                if (read == -1) {
+                    throw new NitfFormatException("End of file reading from NITF stream.",
+                            numBytesRead);
+                }
+                thisRead += read;
             }
             numBytesRead += thisRead;
             return bytes;
