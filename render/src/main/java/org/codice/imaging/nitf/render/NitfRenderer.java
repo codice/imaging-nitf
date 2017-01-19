@@ -14,8 +14,8 @@
  */
 package org.codice.imaging.nitf.render;
 
-import java.awt.Rectangle;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +32,8 @@ import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandler;
 import org.codice.imaging.nitf.render.imagemode.ImageModeHandlerFactory;
+import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandler;
+import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandlerFactory;
 
 /**
  * Renderer for NITF files.
@@ -106,6 +108,28 @@ public class NitfRenderer {
                 imageSegment.getImageLocationRow()
                         + (int) imageSegment.getNumberOfRows(),
                 BufferedImage.TYPE_INT_ARGB);
+        Graphics2D targetGraphic = img.createGraphics();
+
+        render(imageSegment, targetGraphic);
+        return img;
+    }
+
+    /**
+     * Render the segment as a BufferedImage using a data model that matches the NITF data as close as possible.
+     *
+     * @param imageSegment the image segment header for the segment to be rendered
+     * @return rendered image
+     * @throws IOException if the source data could not be read from
+     */
+    public final BufferedImage renderToClosestDataModel(final ImageSegment imageSegment) throws IOException {
+        ImageRepresentationHandler handler =
+                ImageRepresentationHandlerFactory.forImageSegment(imageSegment);
+
+        BufferedImage img = handler.createBufferedImage(imageSegment.getImageLocationColumn()
+                        + (int) imageSegment.getNumberOfColumns(),
+                imageSegment.getImageLocationRow()
+                        + (int) imageSegment.getNumberOfRows());
+
         Graphics2D targetGraphic = img.createGraphics();
 
         render(imageSegment, targetGraphic);

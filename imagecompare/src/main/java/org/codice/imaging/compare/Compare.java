@@ -32,7 +32,38 @@ import java.awt.image.BufferedImage;
  */
 public final class Compare {
 
+    private static final int RGB_MASK = 0xFFFFFF;
+
     private Compare() {
+    }
+
+    /**
+     * Check whether two images are the same while only considering specific non-padded region and ignore alpha values.
+     *
+     * @param imageUnderTest the image to check
+     * @param referenceImage the reference image
+     * @param nonPadWidth    the width to consider for comparison
+     * @param nonPadHeight   the height to consider for comparison
+     * @return true if the images are identical in size and content.
+     */
+    public static boolean areIdentical(final BufferedImage imageUnderTest,
+            final BufferedImage referenceImage, final int nonPadWidth, final int nonPadHeight) {
+        if (imageUnderTest.getWidth() != referenceImage.getWidth()) {
+            return false;
+        }
+        if (imageUnderTest.getHeight() != referenceImage.getHeight()) {
+            return false;
+        }
+        for (int x = 0; x < nonPadWidth; ++x) {
+            for (int y = 0; y < nonPadHeight; ++y) {
+                int iutPixel = imageUnderTest.getRGB(x, y);
+                int refPixel = referenceImage.getRGB(x, y);
+                if (iutPixel != refPixel && ((iutPixel & RGB_MASK) != (refPixel & RGB_MASK))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
