@@ -37,9 +37,12 @@ public class WorkBook {
     private static final String WORKBOOK_RESOURCE_NAME = "/NITF Metadata Register 04082016 (Pre-Coordination Draft).xlsx";
 
     public static void main(String[] args) throws IOException, XMLStreamException {
-        Workbook wb = new XSSFWorkbook(WorkBook.class.getResourceAsStream(WORKBOOK_RESOURCE_NAME));
-        Sheet metadataSheet = wb.getSheet("TRE Metadata");
-        TreMetadataSheetHandler treMetadataSheetHandler = new TreMetadataSheetHandler(metadataSheet);
-        treMetadataSheetHandler.process();
+        try (Workbook wb = new XSSFWorkbook(WorkBook.class.getResourceAsStream(
+                WORKBOOK_RESOURCE_NAME));) {
+            Sheet metadataSheet = wb.getSheet("TRE Metadata");
+            TreMetadataSheetHandler treMetadataSheetHandler = new TreMetadataSheetHandler(
+                    metadataSheet);
+            treMetadataSheetHandler.process();
+        }
     }
 }
