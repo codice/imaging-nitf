@@ -18,12 +18,12 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Field / description lookup for sensor specific TRE fields.
@@ -33,7 +33,7 @@ public class SensorLookup {
     private String mField;
     private String mTre;
 
-    private static final Logger LOGGER = Logger.getLogger(SensorLookup.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SensorLookup.class);
 
     /**
      * Construct new lookup.
@@ -66,7 +66,7 @@ public class SensorLookup {
                 }
             }
         } catch (XMLStreamException ex) {
-            LOGGER.log(Level.WARNING, String.format("Problem parsing XML for %s:%s. %s", mTre, mField, ex.toString()));
+            LOGGER.warn(String.format("Problem parsing XML for %s:%s. %s", mTre, mField, ex.toString()));
         }
     }
 

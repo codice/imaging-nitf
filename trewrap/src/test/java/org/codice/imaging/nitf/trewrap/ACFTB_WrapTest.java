@@ -18,22 +18,30 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import javax.xml.stream.XMLStreamException;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.trewrap.fields.ACFTBMissionPlanMode;
 import org.codice.imaging.nitf.trewrap.fields.ACFTBSceneSource;
 import org.codice.imaging.nitf.trewrap.fields.ACFTBSensorId;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import uk.org.lidalia.slf4jtest.LoggingEvent;
+import uk.org.lidalia.slf4jtest.TestLogger;
+import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 /**
  * Tests for the ACFTB wrapper.
  */
 public class ACFTB_WrapTest extends SharedTreTestSupport {
+
+    TestLogger LOGGER = TestLoggerFactory.getTestLogger(TreWrapper.class);
 
     private final String mTestData = "ACFTB 00207FOOLS_MATE          0000000001201411030748HHFRACESHY00000002014110300000000000005+33.36200000+044.35100000000.00+22555f+33.36500000+044.35100000+23555045.0000000000u0000000u999.990000010001.00201411030000000";
     private final String mAlternateData = "ACFTB 00207NOT AVAILABLE                             HHFRDPY-1  0000002014110300000000000005-33.36200000-044.35100000030.00+22555m-33.36500000-044.35200000+23555045.00012.0001f03.4567m123.450000010001.00201611031234321";
@@ -105,8 +113,10 @@ public class ACFTB_WrapTest extends SharedTreTestSupport {
         assertTrue(acftb.getValidity().isValid());
         assertEquals("NOT AVAILABLE", acftb.getAircraftMissionIdentification());
         assertEquals("", acftb.getAircraftTailNumber());
+        assertThat(LOGGER.getLoggingEvents().isEmpty(), is(true));
         ZonedDateTime actualTakeOffTime = acftb.getAircraftTakeoff();
         assertNull(actualTakeOffTime);
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.debug("Could not parse              as a zoned date/time: Text '            ' could not be parsed at index 0"))));
         assertEquals("DPY-1", acftb.getSensorIdentification());
         // Likely a typo in the source data
         assertEquals("Lxyn Block 30 Radar", acftb.getSensorIdentificationDecoded());

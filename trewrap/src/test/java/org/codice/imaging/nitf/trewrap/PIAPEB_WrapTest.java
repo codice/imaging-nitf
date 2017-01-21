@@ -15,21 +15,29 @@
 package org.codice.imaging.nitf.trewrap;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreFactory;
 import org.codice.imaging.nitf.core.tre.TreSource;
+import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import uk.org.lidalia.slf4jtest.LoggingEvent;
+import uk.org.lidalia.slf4jtest.TestLogger;
+import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 /**
  * Tests for the PIAPEB wrapper.
  */
 public class PIAPEB_WrapTest extends SharedTreTestSupport {
-    
+
+    TestLogger LOGGER = TestLoggerFactory.getTestLogger(TreWrapper.class);
+
     private final String mTestData = "PIAPEB00094Maxwell                     James                       Clerk                       18310613UK";
     private final String mAllSpaces = "PIAPEB00094                                                                                              ";
     
@@ -54,7 +62,9 @@ public class PIAPEB_WrapTest extends SharedTreTestSupport {
         assertEquals("", piapeb.getLastName());
         assertEquals("", piapeb.getFirstName());
         assertEquals("", piapeb.getMiddleName());
+        assertThat(LOGGER.getLoggingEvents().isEmpty(), is(true));
         assertEquals(null, piapeb.getBirthDate());
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.debug("Could not parse          as a local date: Text '        ' could not be parsed at index 0"))));
         assertEquals("  ", piapeb.getAssociatedCountryCode());
     }
 
@@ -143,4 +153,8 @@ public class PIAPEB_WrapTest extends SharedTreTestSupport {
         assertEquals("ASSOCTRY may not be null", piapeb.getValidity().getValidityResultDescription());
     }
 
+    @Before
+    public void clearLoggers() {
+        TestLoggerFactory.clear();
+    }
 }

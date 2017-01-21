@@ -25,11 +25,15 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreFactory;
 import org.codice.imaging.nitf.core.tre.TreParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parent class for TRE wrappers.
  */
 public abstract class TreWrapper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TreWrapper.class);
 
     /**
      * Internal constant for date formatting / parsing in four digit year, month, day convention.
@@ -162,7 +166,7 @@ public abstract class TreWrapper {
             LocalDate dt = LocalDate.parse(dob, CENTURY_DATE_FORMATTER);
             return dt;
         } catch (DateTimeParseException ex) {
-            // TODO: log?
+            LOGGER.debug(String.format("Could not parse %s as a local date: %s", dob, ex.getMessage()));
             return null;
         }
     }
@@ -195,7 +199,7 @@ public abstract class TreWrapper {
             ZonedDateTime zdt = ZonedDateTime.parse(dateTimeString, dtf);
             return zdt;
         } catch (DateTimeParseException ex) {
-            // TODO: log?
+            LOGGER.debug(String.format("Could not parse %s as a zoned date/time: %s", dateTimeString, ex.getMessage()));
             return null;
         }
     }

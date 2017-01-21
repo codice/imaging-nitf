@@ -14,19 +14,28 @@
  */
 package org.codice.imaging.nitf.trewrap.fields;
 
+import java.util.Arrays;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import uk.org.lidalia.slf4jtest.LoggingEvent;
+import uk.org.lidalia.slf4jtest.TestLogger;
+import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 /**
  * Tests for field lookup
  */
 public class SimpleLookupTest {
 
+    TestLogger LOGGER = TestLoggerFactory.getTestLogger(SimpleLookup.class);
+
     public SimpleLookupTest() {
     }
 
     @Test
     public void checkBadResourcePath() {
-        // TODO: add check for logged message
+        assertThat(LOGGER.getLoggingEvents().isEmpty(), is(true));
         SimpleLookup lookup = new SimpleLookup(SimpleLookup.class.getResourceAsStream("/bad path"));
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.warn("Problem parsing XML for null:null. javax.xml.stream.XMLStreamException: java.net.MalformedURLException"))));
     }
 }
