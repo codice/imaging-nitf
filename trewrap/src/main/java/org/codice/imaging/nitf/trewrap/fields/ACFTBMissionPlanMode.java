@@ -14,6 +14,12 @@
  */
 package org.codice.imaging.nitf.trewrap.fields;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Lookup for sensor-dependent ACFTB MPLAN TRE field.
  *
@@ -21,13 +27,20 @@ package org.codice.imaging.nitf.trewrap.fields;
  */
 public final class ACFTBMissionPlanMode extends SensorLookup {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ACFTBMissionPlanMode.class);
+
     private static final ACFTBMissionPlanMode INSTANCE = new ACFTBMissionPlanMode();
 
     /**
      * Constructor for this lookup class.
      */
     private ACFTBMissionPlanMode() {
-        super(ACFTBMissionPlanMode.class.getResourceAsStream("/ACFTB_MPLAN_sensor.xml"));
+        try (InputStream inputStream = ACFTBMissionPlanMode.class.getResourceAsStream("/ACFTB_MPLAN_sensor.xml")) {
+            super.parseSensorLookup(inputStream);
+        } catch (IOException e) {
+            //This will only occur when inputStream.close() throws an exception.
+            LOGGER.warn(e.getMessage(), e);
+        }
     }
 
     /**

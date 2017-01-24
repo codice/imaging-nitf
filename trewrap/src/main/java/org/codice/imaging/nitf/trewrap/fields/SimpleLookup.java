@@ -36,15 +36,30 @@ public class SimpleLookup {
     private static final Logger LOGGER = Logger.getLogger(SimpleLookup.class.getName());
 
     /**
-     * Construct new lookup.
+     * Internal constructor.
+     */
+    protected SimpleLookup() {
+    }
+
+    /**
+     * Build lookup map from XML representation.
      *
-     * @param xmlStream  stream of XML containing lookup entries.
+     * The lookup can be manually configured, but typically most of the data will be read from an existing source. This
+     * method provides reading from XML in a specific format that is generated from the main registry (see NITF
+     * Registry Values Parser module). The XML is stored as resources in the TRE Wrapper module.
+     *
+     * @param xmlStream the XML to read.
      */
     public SimpleLookup(final InputStream xmlStream) {
         parseSimpleLookup(xmlStream);
     }
 
-    private void parseSimpleLookup(final InputStream xmlStream) {
+    /**
+     * Parses simple lookup data from an XML stream.
+     *
+     * @param xmlStream - an InputStream containing the simple lookup data.
+     */
+    protected final void parseSimpleLookup(final InputStream xmlStream) {
         try {
             XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(xmlStream);
             reader.next();

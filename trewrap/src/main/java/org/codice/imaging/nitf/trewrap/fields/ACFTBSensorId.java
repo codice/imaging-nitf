@@ -14,6 +14,12 @@
  */
 package org.codice.imaging.nitf.trewrap.fields;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Field lookup for ACFTB SENSOR_ID fields values.
  *
@@ -21,13 +27,20 @@ package org.codice.imaging.nitf.trewrap.fields;
  */
 public final class ACFTBSensorId extends SimpleLookup {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ACFTBSensorId.class);
+
     private static final ACFTBSensorId INSTANCE = new ACFTBSensorId();
 
     /**
      * Private constructor for this lookup class.
      */
     private ACFTBSensorId() {
-        super(ACFTBSensorId.class.getResourceAsStream("/ACFTB_SENSOR_ID.xml"));
+        try (InputStream inputStream = ACFTBSensorId.class.getResourceAsStream("/ACFTB_SENSOR_ID.xml")) {
+            super.parseSimpleLookup(inputStream);
+        } catch (IOException e) {
+            //This will only occur when inputStream.close() throws an exception.
+            LOGGER.warn(e.getMessage(), e);
+        }
     }
 
     /**

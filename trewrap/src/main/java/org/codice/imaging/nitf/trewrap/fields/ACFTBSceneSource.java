@@ -14,6 +14,12 @@
  */
 package org.codice.imaging.nitf.trewrap.fields;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Lookup for sensor-dependent ACFTB SCENE_SOURCE TRE field.
  *
@@ -21,13 +27,20 @@ package org.codice.imaging.nitf.trewrap.fields;
  */
 public final class ACFTBSceneSource extends SensorLookup {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ACFTBSceneSource.class);
+
     private static final ACFTBSceneSource INSTANCE = new ACFTBSceneSource();
 
     /**
      * Constructor for this lookup class.
      */
     private ACFTBSceneSource() {
-        super(ACFTBSceneSource.class.getResourceAsStream("/ACFTB_SENSOR_SOURCE_sensor.xml"));
+        try (InputStream inputStream = ACFTBSceneSource.class.getResourceAsStream("/ACFTB_SENSOR_SOURCE_sensor.xml")) {
+            super.parseSensorLookup(inputStream);
+        } catch (IOException e) {
+            //This will only occur when inputStream.close() throws an exception.
+            LOGGER.warn(e.getMessage(), e);
+        }
     }
 
     /**
