@@ -17,23 +17,23 @@ package org.codice.imaging.nitf.trewrap.fields;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic field / description lookup for simple (non-sensor specific) TRE fields.
  */
 public class SimpleLookup {
 
-    private Map<String, String> fieldToDescriptionMap = new HashMap<>();
+    private final Map<String, String> fieldToDescriptionMap = new HashMap<>();
     private String mField;
     private String mTre;
 
-    private static final Logger LOGGER = Logger.getLogger(SimpleLookup.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleLookup.class);
 
     /**
      * Internal constructor.
@@ -74,7 +74,7 @@ public class SimpleLookup {
                 }
             }
         } catch (XMLStreamException ex) {
-            LOGGER.log(Level.WARNING, String.format("Problem parsing XML for %s:%s. %s", mTre, mField, ex.toString()));
+            LOGGER.warn(String.format("Problem parsing XML for %s:%s. %s", mTre, mField, ex.toString()));
         }
     }
 
