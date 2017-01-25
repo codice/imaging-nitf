@@ -25,6 +25,9 @@ import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import static org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentFactory.getUserDefinedDES;
 import org.codice.imaging.nitf.core.dataextension.UserDefinedDataExtensionSegment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.codice.imaging.nitf.deswrap.CSSHPAConstants.CC_SOURCE_LENGTH;
 import static org.codice.imaging.nitf.deswrap.CSSHPAConstants.CLOUD_SHAPES_USE;
 import static org.codice.imaging.nitf.deswrap.CSSHPAConstants.FILEOFFSET_LENGTH;
@@ -50,6 +53,8 @@ public class CSSHPA extends DES {
     }
 
     private Map<String, ShapePart> mShapeParts = new HashMap<>();
+
+    private static final Logger LOG = LoggerFactory.getLogger(CSSHPA.class);
 
     /**
      * Create a Shapefile data extension segment (CSSHPA DES).
@@ -216,8 +221,14 @@ public class CSSHPA extends DES {
         ShapePart shapePart = mShapeParts.get(filename);
         int length = (int) (shapePart.endOffset - shapePart.startOffset);
         byte[] data = new byte[length];
-        mDES.getData().seek(shapePart.startOffset);
-        mDES.getData().readFully(data);
+        mDES.consume(imageInputStream -> {
+            try {
+                imageInputStream.seek(shapePart.startOffset);
+                imageInputStream.readFully(data);
+            } catch (IOException ieo) {
+                LOG.warn(ieo.getMessage(), ieo);
+            }
+        });
         return data;
     }
 

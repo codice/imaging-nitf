@@ -16,11 +16,17 @@ package org.codice.imaging.nitf.deswrap;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
+
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import javax.imageio.stream.ImageInputStream;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -144,19 +150,29 @@ public class CSSHPA_CreateTest {
         byte[] shp = new byte[(int) shapefile.length()];
         byte[] shx = new byte[(int) shxfile.length()];
         byte[] dbf = new byte[(int) dbffile.length()];
-        result.getData().seek(0L);
-        assertEquals(shp.length, result.getData().read(shp));
-        byte[] shpReferenceBytes = new byte[shp.length];
-        getClass().getResourceAsStream(resourceName + ".shp").read(shpReferenceBytes);
-        Assert.assertArrayEquals(shpReferenceBytes, shp);
-        assertEquals(shx.length, result.getData().read(shx));
-        byte[] shxReferenceBytes = new byte[shx.length];
-        getClass().getResourceAsStream(resourceName + ".shx").read(shxReferenceBytes);
-        Assert.assertArrayEquals(shxReferenceBytes, shx);
-        assertEquals(dbf.length, result.getData().read(dbf));
-        byte[] dbfReferenceBytes = new byte[dbf.length];
-        getClass().getResourceAsStream(resourceName + ".dbf").read(dbfReferenceBytes);
-        Assert.assertArrayEquals(dbfReferenceBytes, dbf);
+        Consumer<ImageInputStream> callbackConsumer = imageInputStream -> {
+            try {
+                imageInputStream.seek(0L);
+                assertEquals(shp.length, imageInputStream.read(shp));
+                byte[] shpReferenceBytes = new byte[shp.length];
+                getClass().getResourceAsStream(resourceName + ".shp")
+                        .read(shpReferenceBytes);
+                Assert.assertArrayEquals(shpReferenceBytes, shp);
+                assertEquals(shx.length, imageInputStream.read(shx));
+                byte[] shxReferenceBytes = new byte[shx.length];
+                getClass().getResourceAsStream(resourceName + ".shx")
+                        .read(shxReferenceBytes);
+                Assert.assertArrayEquals(shxReferenceBytes, shx);
+                assertEquals(dbf.length, imageInputStream.read(dbf));
+                byte[] dbfReferenceBytes = new byte[dbf.length];
+                getClass().getResourceAsStream(resourceName + ".dbf")
+                        .read(dbfReferenceBytes);
+                Assert.assertArrayEquals(dbfReferenceBytes, dbf);
+            } catch (IOException e) {
+                fail(e.getMessage());
+            }
+        };
+        result.consume(callbackConsumer);
     }
 
     @Test

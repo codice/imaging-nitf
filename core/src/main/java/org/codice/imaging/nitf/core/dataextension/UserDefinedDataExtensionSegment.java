@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import java.util.function.Consumer;
+
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 
@@ -68,7 +70,8 @@ public interface UserDefinedDataExtensionSegment {
     String getUserDefinedSubheader() throws NitfFormatException;
 
     /**
-     * Get the user defined data.
+     * Returns a consumer that gets user defined DES data. The consumer also
+     * contains a call back consumer to be called at the end of the operation.
      *
      * From MIL-STD-2500C: "DES User-Defined Data. This field shall contain data
      * of either binary or character types defined by and formatted according to
@@ -76,9 +79,15 @@ public interface UserDefinedDataExtensionSegment {
      * another NITF field length limits to be exceeded, but is otherwise fully
      * user-defined."
      *
-     * @return stream containing the user defined data.
-     * @throws NitfFormatException if there was a problem generating the data.
+     * @return Consumer to get the user-defined DES data.
      */
-    ImageInputStream getUserData() throws NitfFormatException;
+    Consumer<Consumer<ImageInputStream>> getUserDataConsumer();
+
+    /**
+     * Get the combined length of the user-defined DES files.
+     *
+     * @return the combined length of the user-defined DES files.
+     */
+    long getLength();
 
 }

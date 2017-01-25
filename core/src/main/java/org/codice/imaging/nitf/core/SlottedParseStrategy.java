@@ -320,7 +320,7 @@ public class SlottedParseStrategy implements ParseStrategy {
                 dataExtensionSegment.mergeTREs(overflowTres);
             } else if (!"STREAMING_FILE_HEADER".equals(dataExtensionSegment.getIdentifier().trim())) {
                 ImageInputStream iis = desHeapStrategy.handleSegment(reader, dataLength);
-                dataExtensionSegment.setData(iis);
+                dataExtensionSegment.setDataConsumer(c -> c.accept(iis));
             }
         }
     }

@@ -65,8 +65,6 @@ public class DataExtensionSegmentWriter extends AbstractSegmentWriter {
             byte[] treData = mTreParser.getTREs(des, TreSource.TreOverflowDES);
             mOutput.write(treData);
         }
-        if (des.getData() != null) {
-            writeSegmentData(des.getData());
-        }
+        des.consume(this::writeSegmentData);
     }
 }
