@@ -38,7 +38,7 @@ import static org.junit.Assert.assertTrue;
  */
 class AbstractWriterTest {
 
-    private static final int ABOUT_100K = 100000;
+    protected static final int ABOUT_100K = 100000;
 
     protected InputStream getInputStream(String testfile) {
         assertNotNull("Test file missing", getClass().getResource(testfile));

@@ -14,15 +14,36 @@
  */
 package org.codice.imaging.nitf.core;
 
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.MemoryCacheImageInputStream;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
+import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.NitfReader;
+import org.codice.imaging.nitf.core.header.NitfParser;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import org.junit.Before;
 import org.junit.Test;
+import uk.org.lidalia.slf4jtest.LoggingEvent;
+import uk.org.lidalia.slf4jtest.TestLogger;
+import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 /**
  * Tests for writing NITF file - basic cases.
  */
 public class BasicWriterTest extends AbstractWriterTest {
+
+    TestLogger LOGGER = TestLoggerFactory.getTestLogger(NitfFileWriter.class);
+
     @Test
     public void roundTripSimpleFile() throws NitfFormatException, URISyntaxException, IOException {
         roundTripFile("/WithBE.ntf");
@@ -56,5 +77,50 @@ public class BasicWriterTest extends AbstractWriterTest {
     @Test
     public void roundTripTREs() throws IOException, NitfFormatException, URISyntaxException {
         roundTripFile("/JitcNitf21Samples/i_3128b.ntf");
+    }
+
+    @Before
+    public void clearLoggers()
+    {
+        TestLoggerFactory.clearAll();
+    }
+
+    @Test
+    public void checkBadWriter() throws NitfFormatException {
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream("/WithBE.ntf")));
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
+        HeapStrategyConfiguration heapStrategyConfiguration = new HeapStrategyConfiguration(length -> length > ABOUT_100K);
+        HeapStrategy<ImageInputStream> imageDataStrategy = new ConfigurableHeapStrategy<>(heapStrategyConfiguration,
+                file -> new FileImageInputStream(file), is -> new MemoryCacheImageInputStream(is));
+        parseStrategy.setImageHeapStrategy(imageDataStrategy);
+        NitfParser.parse(reader, parseStrategy);
+
+        // Introduce deliberate issue
+        parseStrategy.getDataSource().getImageSegments().get(0).getImageTargetId().setCountryCode(null);
+
+        NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), "checkBadWriter.ntf");
+        assertEquals(0, LOGGER.getLoggingEvents().size());
+        writer.write();
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.error("Could not write", "Cannot generate string target identifier with null country code"))));
+    }
+
+    @Test
+    public void checkBadStreamWriter() throws NitfFormatException, FileNotFoundException {
+        OutputStream outputStream = new FileOutputStream("checkBadStreamWriter.ntf");
+        NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream("/WithBE.ntf")));
+        SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
+        HeapStrategyConfiguration heapStrategyConfiguration = new HeapStrategyConfiguration(length -> length > ABOUT_100K);
+        HeapStrategy<ImageInputStream> imageDataStrategy = new ConfigurableHeapStrategy<>(heapStrategyConfiguration,
+                file -> new FileImageInputStream(file), is -> new MemoryCacheImageInputStream(is));
+        parseStrategy.setImageHeapStrategy(imageDataStrategy);
+        NitfParser.parse(reader, parseStrategy);
+
+        // Introduce deliberate issue
+        parseStrategy.getDataSource().getImageSegments().get(0).getImageTargetId().setCountryCode(null);
+
+        NitfWriter writer = new NitfOutputStreamWriter(parseStrategy.getDataSource(), outputStream);
+        assertEquals(0, LOGGER.getLoggingEvents().size());
+        writer.write();
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.error("Could not write", "Cannot generate string target identifier with null country code"))));
     }
 }
