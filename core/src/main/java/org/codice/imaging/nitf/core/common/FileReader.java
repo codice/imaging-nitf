@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
-import java.util.logging.Level;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import org.slf4j.Logger;
@@ -80,6 +79,19 @@ public class FileReader extends SharedReader implements NitfReader {
     }
 
     /**
+     * Close underlying resources.
+     *
+     * @throws NitfFormatException if an error occurs during close.
+     */
+    public final void close() throws NitfFormatException {
+        try {
+            nitfFile.close();
+        } catch (IOException ex) {
+            throw new NitfFormatException("IO Exception during close()" + ex.getMessage());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -100,7 +112,7 @@ public class FileReader extends SharedReader implements NitfReader {
         try {
             nitfFile.seek(nitfFile.length());
         } catch (IOException ex) {
-            LOG.warn("IO Exception seeking to end of file: {}", ex);
+            LOG.warn("IO Exception seeking to end of file", ex);
             throw new NitfFormatException("Unable to seek to end of file: " + ex.getMessage());
         }
     }
@@ -204,7 +216,7 @@ public class FileReader extends SharedReader implements NitfReader {
             iis.seek(offset);
             return iis;
         } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(FileReader.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.warn("IOException in getImageInputStreamAt()", ex);
             throw new NitfFormatException("Error seeking while creating image input stream: " + ex, (int) offset);
         }
     }
