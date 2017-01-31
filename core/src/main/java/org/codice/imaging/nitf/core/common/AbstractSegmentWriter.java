@@ -14,10 +14,13 @@
  */
 package org.codice.imaging.nitf.core.common;
 
+import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
+
 import java.io.DataOutput;
 import java.io.IOException;
+
 import javax.imageio.stream.ImageInputStream;
-import static org.codice.imaging.nitf.core.common.CommonConstants.STANDARD_DATE_TIME_LENGTH;
+
 import org.codice.imaging.nitf.core.graphic.GraphicSegmentWriter;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.security.SecurityMetadataWriter;
@@ -193,17 +196,20 @@ public abstract class AbstractSegmentWriter {
      * Write out the data for the segment.
      *
      * @param data the data to write.
-     * @throws IOException on write failure.
      */
-    public final void writeSegmentData(final ImageInputStream data) throws IOException {
-        if (data == null) {
-            return;
-        }
-        data.seek(0);
-        byte[] buffer = new byte[GraphicSegmentWriter.BUFFER_SIZE];
-        int bytesRead;
-        while ((bytesRead = data.read(buffer)) != -1) {
-            mOutput.write(buffer, 0, bytesRead);
+    public final void writeSegmentData(final ImageInputStream data) {
+        try {
+            if (data == null) {
+                return;
+            }
+            data.seek(0);
+            byte[] buffer = new byte[GraphicSegmentWriter.BUFFER_SIZE];
+            int bytesRead;
+            while ((bytesRead = data.read(buffer)) != -1) {
+                mOutput.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException ioe) {
+            LOG.warn(ioe.getMessage(), ioe);
         }
     }
 }

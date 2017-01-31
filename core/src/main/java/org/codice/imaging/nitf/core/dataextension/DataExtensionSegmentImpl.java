@@ -15,6 +15,8 @@
 package org.codice.imaging.nitf.core.dataextension;
 
 import java.io.IOException;
+import java.util.function.Consumer;
+
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonSegmentImpl;
 import org.codice.imaging.nitf.core.common.FileType;
@@ -36,8 +38,8 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
     private String overflowedHeaderType = null;
     private int desItemOverflowed = 0;
     private String userDefinedSubheaderField = null;
-    private ImageInputStream desData = null;
     private long dataLength = 0;
+    private Consumer<Consumer<ImageInputStream>> dataConsumer;
 
     /**
         Default constructor.
@@ -191,16 +193,18 @@ class DataExtensionSegmentImpl extends CommonSegmentImpl implements DataExtensio
      * {@inheritDoc}
      */
     @Override
-    public void setData(final ImageInputStream dataStream) {
-        desData = dataStream;
+    public void consume(final Consumer<ImageInputStream> consumer) {
+       if (dataConsumer != null) {
+           dataConsumer.accept(consumer);
+       }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ImageInputStream getData() {
-        return desData;
+    public void setDataConsumer(final Consumer<Consumer<ImageInputStream>> consumer) {
+        dataConsumer = consumer;
     }
 
     /**

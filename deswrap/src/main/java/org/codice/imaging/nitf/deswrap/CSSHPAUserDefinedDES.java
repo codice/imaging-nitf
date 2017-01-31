@@ -14,17 +14,23 @@
  */
 package org.codice.imaging.nitf.deswrap;
 
+import static org.codice.imaging.nitf.deswrap.CSSHPAConstants.CLOUD_SHAPES_USE;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
+import java.util.function.Consumer;
+
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
+
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.dataextension.UserDefinedDataExtensionSegment;
-import static org.codice.imaging.nitf.deswrap.CSSHPAConstants.CLOUD_SHAPES_USE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of CSSHPA DES.
@@ -40,6 +46,8 @@ class CSSHPAUserDefinedDES implements UserDefinedDataExtensionSegment {
     private final String mCloudCoverSensor;
 
     private static final int FILE_BUF_SIZE = 8192;
+
+    private static final Logger LOG = LoggerFactory.getLogger(CSSHPAUserDefinedDES.class);
 
     CSSHPAUserDefinedDES(final File shpFile, final File shxFile, final File dbfFile) {
         mSHP = shpFile;
@@ -99,16 +107,33 @@ class CSSHPAUserDefinedDES implements UserDefinedDataExtensionSegment {
     }
 
     @Override
-    public ImageInputStream getUserData() throws NitfFormatException {
-        try {
-            FileImageOutputStream desData = new FileImageOutputStream(Files.createTempFile(null, null).toFile());
-            writeOutFile(desData, mSHP);
-            writeOutFile(desData, mSHX);
-            writeOutFile(desData, mDBF);
-            return desData;
-        } catch (IOException ex) {
-            throw new NitfFormatException("Could not generate CSSHPA: " + ex.getMessage());
-        }
+    public Consumer<Consumer<ImageInputStream>> getUserDataConsumer() {
+        return callbackConsumer -> {
+            File tempFile = null;
+            FileImageOutputStream desData = null;
+            try {
+                tempFile = Files.createTempFile(null, null).toFile();
+                desData = new FileImageOutputStream(tempFile);
+                writeOutFile(desData, mSHP);
+                writeOutFile(desData, mSHX);
+                writeOutFile(desData, mDBF);
+                callbackConsumer.accept(desData);
+            } catch (IOException ex) {
+                LOG.warn("Could not generate CSSHPA.", ex);
+            } finally {
+                tempFile.delete();
+                try {
+                    desData.close();
+                } catch (IOException ex) {
+                    LOG.warn("Could not close DES data stream.", ex);
+                }
+            }
+        };
+    }
+
+    @Override
+    public long getLength() {
+        return mSHP.length() + mSHX.length() + mDBF.length();
     }
 
     private static String getShapefileClassName(final File shpFile) throws IOException, NitfFormatException {

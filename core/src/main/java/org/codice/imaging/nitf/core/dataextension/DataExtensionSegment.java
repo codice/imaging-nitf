@@ -14,6 +14,8 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
+import java.util.function.Consumer;
+
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.core.common.CommonSegment;
 import org.codice.imaging.nitf.core.tre.TreCollection;
@@ -159,20 +161,6 @@ public interface DataExtensionSegment extends CommonSegment {
     boolean isStreamingMode();
 
     /**
-     * Set the DES data, if any.
-     *
-     * @param stream stream containing the data for this DES.
-     */
-    void setData(final ImageInputStream stream);
-
-    /**
-     * Get the data for this DES.
-     *
-     * @return data for this DES.
-     */
-    ImageInputStream getData();
-
-    /**
      * Get the length of the data for this segment.
      *
      * @return the number of bytes of data for this segment.
@@ -186,5 +174,18 @@ public interface DataExtensionSegment extends CommonSegment {
      */
     void setDataLength(final long length);
 
+    /**
+     * Performs an operation. Supplies a callback consumer to be called at the
+     * end of the operation.
+     *
+     * @param callbackConsumer - consumer to be run after operation is finished.
+     *
+     */
+    void consume(Consumer<ImageInputStream> callbackConsumer);
 
+    /**
+     * Set the DES data consumer.
+     * @param dataConsumer - the data consumer for this segment.
+     */
+    void setDataConsumer(Consumer<Consumer<ImageInputStream>> dataConsumer);
 }

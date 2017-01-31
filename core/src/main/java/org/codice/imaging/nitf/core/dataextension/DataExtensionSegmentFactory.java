@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.dataextension;
 
-import java.io.IOException;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.security.SecurityMetadataFactory;
@@ -60,12 +59,8 @@ public final class DataExtensionSegmentFactory {
         des.setIdentifier(userDES.getTypeIdentifier());
         des.setDESVersion(userDES.getVersion());
         des.setUserDefinedSubheaderField(userDES.getUserDefinedSubheader());
-        des.setData(userDES.getUserData());
-        try {
-            des.setDataLength(userDES.getUserData().length());
-        } catch (IOException ex) {
-            throw new NitfFormatException("Cannot get data length: " + ex.getMessage());
-        }
+        des.setDataLength(userDES.getLength());
+        des.setDataConsumer(userDES.getUserDataConsumer());
         return des;
     }
 
