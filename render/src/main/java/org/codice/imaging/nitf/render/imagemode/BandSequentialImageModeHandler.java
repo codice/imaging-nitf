@@ -46,7 +46,7 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
 
         ImageBlockMatrix matrix = new ImageBlockMatrix(imageSegment, ()
                 -> imageRepresentationHandler.createBufferedImage((int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
-                        (int) imageSegment.getNumberOfPixelsPerBlockVertical()));
+                (int) imageSegment.getNumberOfPixelsPerBlockVertical()));
 
         for (int bandIndex = 0; bandIndex < imageSegment.getNumBands(); bandIndex++) {
             final int index = bandIndex;
