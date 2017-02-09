@@ -79,10 +79,13 @@ public class FileComparer {
     private BufferedWriter out = null;
 
     FileComparer(String fileName) {
-        filename = fileName;
-        generateGdalMetadata();
-        generateOurMetadata();
-        compareMetadataFiles();
+        File file = new File(fileName);
+        if (file.isFile()) {
+            filename = file.getAbsolutePath();
+            generateGdalMetadata();
+            generateOurMetadata();
+            compareMetadataFiles();
+        }
     }
 
 
