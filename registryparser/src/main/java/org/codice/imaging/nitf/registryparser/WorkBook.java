@@ -24,6 +24,7 @@
 package org.codice.imaging.nitf.registryparser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import javax.xml.stream.XMLStreamException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -37,8 +38,8 @@ public class WorkBook {
     private static final String WORKBOOK_RESOURCE_NAME = "/NITF Metadata Register 04082016 (Pre-Coordination Draft).xlsx";
 
     public static void main(String[] args) throws IOException, XMLStreamException {
-        try (Workbook wb = new XSSFWorkbook(WorkBook.class.getResourceAsStream(
-                WORKBOOK_RESOURCE_NAME));) {
+        try (InputStream workbookData = WorkBook.class.getResourceAsStream(WORKBOOK_RESOURCE_NAME);
+                Workbook wb = new XSSFWorkbook(workbookData);) {
             Sheet metadataSheet = wb.getSheet("TRE Metadata");
             TreMetadataSheetHandler treMetadataSheetHandler = new TreMetadataSheetHandler(
                     metadataSheet);
