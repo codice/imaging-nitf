@@ -4,7 +4,7 @@
 
     <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf</artifactId>
-    <version>0.7</version>
+    <version>0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Codice Imaging: NITF Parent</name>
 
