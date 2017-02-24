@@ -163,7 +163,7 @@ public class NitfRenderer {
             }
 
             BufferedImage img = reader.read(
-                    (columnIndex + rowIndex * imageSegment.getNumberOfBlocksPerColumn()) - maskedBlocks.get());
+                    (columnIndex + rowIndex * imageSegment.getNumberOfBlocksPerRow()) - maskedBlocks.get());
 
             targetGraphic.drawImage(img,
                     columnIndex * (int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
