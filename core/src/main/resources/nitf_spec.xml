@@ -1355,6 +1355,33 @@
         <field length="1" fixed_value="0"/>
     </tre>
 
+    <tre name="SENSRA" length="132" location="image">
+        <field name="REF_ROW" length="8" type="string"/>
+        <field name="REF_COL" length="8" type="string"/>
+        <field name="SENSOR_MODEL" length="6" type="string"/>
+        <field name="SENSOR_MOUNT" length="3" type="string"/>
+        <field name="SENSOR_LOC" length="21" type="string"/>
+        <field name="SENSOR_ALT_SOURCE" length="1" type="string"/>
+        <field name="SENSOR_ALT" length="6" type="string"/>
+        <field name="SENSOR_ALT_UNIT" length="1" type="string"/>
+        <field name="SENSOR_AGL" length="5" type="string"/>
+        <field name="SENSOR_PITCH" length="7" type="string"/>
+        <field name="SENSOR_ROLL" length="8" type="string"/>
+        <field name="SENSOR_YAW" length="8" type="string"/>
+        <field name="PLATFORM_PITCH" length="7" type="string"/>
+        <field name="PLATFORM_ROLL" length="8" type="string"/>
+        <field name="PLATFORM_HDG" length="5" type="string"/>
+        <field name="GROUND_SPD_SOURCE" length="1" type="string"/>
+        <field name="GROUND_SPD" length="6" type="string"/>
+        <field name="GROUND_SPD_UNIT" length="1" type="string"/>
+        <field name="GROUND_TRACK" length="5" type="string"/>
+        <field name="VERT_VEL" length="5" type="string"/>
+        <field name="VERT_VEL_UNIT" length="1" type="string"/>
+        <field name="SWATH_FRAMES" length="4" type="string"/>
+        <field name="N_SWATHS" length="4" type="string"/>
+        <field name="SPOT_NUM" length="3" type="string"/>
+    </tre>
+
     <tre name="SENSRB" location="image">
         <field name="GENERAL_DATA" length="1" type="string"/>
         <if cond="GENERAL_DATA=Y">
