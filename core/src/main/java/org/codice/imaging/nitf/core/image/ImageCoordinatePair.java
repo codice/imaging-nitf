@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.image;
 
-import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.codice.imaging.nitf.core.image.CoordinateConstants.HEMISPHERE_MARKER_LENGTH;
 import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_DECIMAL_DEGREES_FORMAT_LENGTH;
 import static org.codice.imaging.nitf.core.image.CoordinateConstants.LAT_DEGREES_LENGTH;
@@ -31,6 +30,9 @@ import static org.codice.imaging.nitf.core.image.CoordinateConstants.MINUTES_IN_
 import static org.codice.imaging.nitf.core.image.CoordinateConstants.MINUTES_LENGTH;
 import static org.codice.imaging.nitf.core.image.CoordinateConstants.SECONDS_IN_ONE_MINUTE;
 import static org.codice.imaging.nitf.core.image.CoordinateConstants.SECONDS_LENGTH;
+
+import org.codice.imaging.nitf.core.common.NitfFormatException;
+import org.codice.usng4j.DecimalDegreesCoordinate;
 
 /**
     A coordinate pair (latitude / longitude or equivalent).
@@ -166,6 +168,13 @@ public class ImageCoordinatePair {
             throw new NitfFormatException("Incorrect length for UTM North string");
         }
         sourceString = utm;
+
+        DecimalDegreesCoordinate latLonCoordinate = CoordinateUtility.buildCoordinateFromUtm(this.sourceString);
+
+        if (latLonCoordinate != null) {
+            this.lat = latLonCoordinate.getLat();
+            this.lon = latLonCoordinate.getLon();
+        }
     }
 
     /**
@@ -182,6 +191,13 @@ public class ImageCoordinatePair {
             throw new NitfFormatException("Incorrect length for UTM South string");
         }
         sourceString = utm;
+
+        DecimalDegreesCoordinate latLonCoordinate = CoordinateUtility.buildCoordinateFromUtm(this.sourceString);
+
+        if (latLonCoordinate != null) {
+            this.lat = latLonCoordinate.getLat();
+            this.lon = latLonCoordinate.getLon() * -1;
+        }
     }
 
     /**
@@ -240,5 +256,12 @@ public class ImageCoordinatePair {
     */
     final void setFromMGRS(final String mgrs) {
         sourceString = mgrs;
+
+        DecimalDegreesCoordinate latLonCoordinate = CoordinateUtility.buildCoordinateFromMgrs(this.sourceString);
+
+        if (latLonCoordinate != null) {
+            this.lat = latLonCoordinate.getLat();
+            this.lon = latLonCoordinate.getLon();
+        }
     }
 }
