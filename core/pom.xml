@@ -30,6 +30,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <usng4j.version>0.1</usng4j.version>
     </properties>
 
     <build>
@@ -202,6 +203,18 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codice.usng4j</groupId>
+            <artifactId>usng4j-api</artifactId>
+            <version>${usng4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codice.usng4j</groupId>
+            <artifactId>usng4j-impl</artifactId>
+            <version>${usng4j.version}</version>
         </dependency>
     </dependencies>
 </project>
