@@ -22,11 +22,11 @@ import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import static org.codice.imaging.nitf.core.TestUtils.checkNitf21SecurityMetadataUnclasAndEmpty;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
-import org.codice.imaging.nitf.core.header.NitfParser;
+import org.codice.imaging.nitf.core.header.impl.NitfParser;
 import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
@@ -36,6 +36,8 @@ import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
+import org.codice.imaging.nitf.core.impl.FileBackedHeapStrategy;
+import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
 import static org.junit.Assert.assertEquals;
@@ -90,7 +92,7 @@ public class Nitf21SorcerTest {
         assertEquals(ImageCompression.JPEG, imageSegment.getImageCompression());
         assertEquals(3, imageSegment.getNumBands());
 
-        // Checks for ImageBand
+        // Checks for ImageBandImpl
         ImageBand band1 = imageSegment.getImageBand(1);
         assertNotNull(band1);
         assertEquals("Y", band1.getImageRepresentation());

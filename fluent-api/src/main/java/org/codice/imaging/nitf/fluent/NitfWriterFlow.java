@@ -19,7 +19,7 @@ import java.io.OutputStream;
 import java.util.function.Supplier;
 
 import org.codice.imaging.nitf.core.DataSource;
-import org.codice.imaging.nitf.core.NitfOutputStreamWriter;
+import org.codice.imaging.nitf.core.impl.NitfOutputStreamWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

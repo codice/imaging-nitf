@@ -25,12 +25,21 @@ import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfParser;
+import org.codice.imaging.nitf.core.header.impl.NitfParser;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+
+import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.core.image.TargetId;
+import org.codice.imaging.nitf.core.image.impl.TargetIdImpl;
+import org.codice.imaging.nitf.core.impl.ConfigurableHeapStrategy;
+import org.codice.imaging.nitf.core.impl.HeapStrategyConfiguration;
+import org.codice.imaging.nitf.core.impl.NitfFileWriter;
+import org.codice.imaging.nitf.core.impl.NitfOutputStreamWriter;
+import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.lidalia.slf4jtest.LoggingEvent;
@@ -96,7 +105,14 @@ public class BasicWriterTest extends AbstractWriterTest {
         NitfParser.parse(reader, parseStrategy);
 
         // Introduce deliberate issue
-        parseStrategy.getDataSource().getImageSegments().get(0).getImageTargetId().setCountryCode(null);
+        // Introduce deliberate issue
+        ImageSegment imageSegment = parseStrategy.getDataSource().getImageSegments().get(0);
+        TargetId originalTargetId = imageSegment.getImageTargetId();
+        TargetIdImpl newTargetId = new TargetIdImpl();
+        newTargetId.setBasicEncyclopediaNumber(originalTargetId.getBasicEncyclopediaNumber());
+        newTargetId.setOSuffix(originalTargetId.getOSuffix());
+        newTargetId.setCountryCode(null);
+        imageSegment.setImageTargetId(newTargetId);
 
         NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), "checkBadWriter.ntf");
         assertEquals(0, LOGGER.getLoggingEvents().size());
@@ -116,7 +132,13 @@ public class BasicWriterTest extends AbstractWriterTest {
         NitfParser.parse(reader, parseStrategy);
 
         // Introduce deliberate issue
-        parseStrategy.getDataSource().getImageSegments().get(0).getImageTargetId().setCountryCode(null);
+        ImageSegment imageSegment = parseStrategy.getDataSource().getImageSegments().get(0);
+        TargetId originalTargetId = imageSegment.getImageTargetId();
+        TargetIdImpl newTargetId = new TargetIdImpl();
+        newTargetId.setBasicEncyclopediaNumber(originalTargetId.getBasicEncyclopediaNumber());
+        newTargetId.setOSuffix(originalTargetId.getOSuffix());
+        newTargetId.setCountryCode(null);
+        imageSegment.setImageTargetId(newTargetId);
 
         NitfWriter writer = new NitfOutputStreamWriter(parseStrategy.getDataSource(), outputStream);
         assertEquals(0, LOGGER.getLoggingEvents().size());

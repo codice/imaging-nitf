@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
-import org.codice.imaging.nitf.core.tre.TreFactory;
+import org.codice.imaging.nitf.core.tre.impl.TreFactory;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import static org.hamcrest.core.Is.is;
 import org.junit.Assert;

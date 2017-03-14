@@ -18,9 +18,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 
-import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.impl.FileReader;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -29,7 +28,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import uk.org.lidalia.slf4jtest.LoggingEvent;
+
 import uk.org.lidalia.slf4jtest.TestLogger;
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 

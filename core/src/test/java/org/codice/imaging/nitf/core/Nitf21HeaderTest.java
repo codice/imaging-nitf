@@ -27,28 +27,29 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.transform.stream.StreamSource;
 import static org.codice.imaging.nitf.core.TestUtils.checkNitf21SecurityMetadataUnclasAndEmpty;
-import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.impl.FileReader;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.common.ParseStrategy;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicColour;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.header.NitfHeader;
-import org.codice.imaging.nitf.core.header.NitfParser;
+import org.codice.imaging.nitf.core.header.impl.NitfParser;
 import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageBandLUT;
+import org.codice.imaging.nitf.core.image.ImageCoordinates;
 import org.codice.imaging.nitf.core.image.ImageCategory;
 import org.codice.imaging.nitf.core.image.ImageCompression;
-import org.codice.imaging.nitf.core.image.ImageCoordinates;
 import org.codice.imaging.nitf.core.image.ImageCoordinatesRepresentation;
 import org.codice.imaging.nitf.core.image.ImageMode;
 import org.codice.imaging.nitf.core.image.ImageRepresentation;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.core.image.PixelJustification;
 import org.codice.imaging.nitf.core.image.PixelValueType;
+import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
@@ -56,6 +57,8 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import static org.hamcrest.Matchers.is;
+
+import org.codice.imaging.nitf.core.tre.impl.TreEntryImpl;
 import org.junit.After;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
@@ -72,7 +75,7 @@ import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 public class Nitf21HeaderTest {
 
-    TestLogger LOGGER = TestLoggerFactory.getTestLogger(TreEntry.class);
+    TestLogger LOGGER = TestLoggerFactory.getTestLogger(TreEntryImpl.class);
 
     private DateTimeFormatter formatter = null;
 
@@ -150,7 +153,7 @@ public class Nitf21HeaderTest {
         Assert.assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
 
-        // Checks for ImageBand
+        // Checks for ImageBandImpl
         ImageBand band1 = segment1.getImageBand(1);
         assertNotNull(band1);
         assertEquals("LU", band1.getImageRepresentation());
@@ -249,7 +252,7 @@ public class Nitf21HeaderTest {
         assertEquals(0, segment1.getImageComments().size());
         assertEquals(ImageCompression.NOTCOMPRESSED, segment1.getImageCompression());
         assertEquals(1, segment1.getNumBands());
-        // Checks for ImageBand
+        // Checks for ImageBandImpl
         ImageBand band1 = segment1.getImageBand(1);
         assertNotNull(band1);
         assertEquals("M", band1.getImageRepresentation());
