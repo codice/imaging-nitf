@@ -23,7 +23,7 @@ import java.util.Map;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
-import static org.codice.imaging.nitf.core.dataextension.DataExtensionSegmentFactory.getUserDefinedDES;
+import static org.codice.imaging.nitf.core.dataextension.impl.DataExtensionSegmentFactory.getUserDefinedDES;
 import org.codice.imaging.nitf.core.dataextension.UserDefinedDataExtensionSegment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

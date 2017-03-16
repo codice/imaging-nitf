@@ -27,9 +27,15 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfParser;
+import org.codice.imaging.nitf.core.header.impl.NitfParser;
+import org.codice.imaging.nitf.core.impl.ConfigurableHeapStrategy;
+import org.codice.imaging.nitf.core.impl.HeapStrategyConfiguration;
+import org.codice.imaging.nitf.core.impl.NitfFileWriter;
+import org.codice.imaging.nitf.core.impl.NitfOutputStreamWriter;
+import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreEntry;
+import org.codice.imaging.nitf.core.tre.impl.TreEntryImpl;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
@@ -69,7 +70,7 @@ public abstract class FlatTreWrapper extends TreWrapper {
             }
         }
         // Didn't find it, just add.
-        mTre.add(new TreEntry(fieldName, value, fieldType));
+        mTre.add(new TreEntryImpl(fieldName, value, fieldType));
     }
 
     /**

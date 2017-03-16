@@ -16,6 +16,7 @@ package org.codice.imaging.nitf.render.imagerep;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.codice.imaging.nitf.core.image.ImageBand;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.codice.imaging.nitf.render.datareader.DataReaderFactory;

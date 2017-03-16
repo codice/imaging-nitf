@@ -26,6 +26,7 @@
 
     <modules>
         <module>shared-test-resources</module>
+        <module>core-api</module>
         <module>core</module>
         <module>metadata-comparison</module>
         <module>cgm</module>
@@ -60,5 +61,4 @@
             <version>1.7.14</version>
         </dependency>
     </dependencies>
-
 </project>

@@ -19,12 +19,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.codice.imaging.nitf.core.common.FileReader;
+import org.codice.imaging.nitf.core.common.impl.FileReader;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfParser;
+import org.codice.imaging.nitf.core.header.impl.NitfParser;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import org.codice.imaging.nitf.core.impl.NitfFileWriter;
+import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.junit.Test;
 
 /**

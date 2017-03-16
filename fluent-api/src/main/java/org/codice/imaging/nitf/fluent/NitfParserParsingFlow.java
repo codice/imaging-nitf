@@ -27,11 +27,11 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 import org.codice.imaging.nitf.core.HeapStrategy;
-import org.codice.imaging.nitf.core.InMemoryHeapStrategy;
-import org.codice.imaging.nitf.core.SlottedParseStrategy;
+import org.codice.imaging.nitf.core.impl.InMemoryHeapStrategy;
+import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.NitfParser;
+import org.codice.imaging.nitf.core.header.impl.NitfParser;
 
 /**
  * A builder class that handles parsing.

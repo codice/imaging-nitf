@@ -16,15 +16,15 @@ package org.codice.imaging.nitf.fluent;
 
 import java.util.List;
 import java.util.function.Supplier;
+
 import org.codice.imaging.nitf.core.DataSource;
-import org.codice.imaging.nitf.core.NitfFileWriter;
-import org.codice.imaging.nitf.core.SlottedStorage;
 import org.codice.imaging.nitf.core.common.CommonBasicSegment;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
+import org.codice.imaging.nitf.core.impl.SlottedStorage;
 import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.text.TextSegment;
@@ -33,7 +33,7 @@ import org.codice.imaging.nitf.core.text.TextSegment;
  * The NitfCreationFlow provides methods for creating a NITF file from scratch.
  */
 public class NitfCreationFlow {
-    private final SlottedStorage dataSource = new SlottedStorage();
+    private final DataSource dataSource = new SlottedStorage();
 
     /**
      * Sets the header for this NITF.
@@ -181,15 +181,5 @@ public class NitfCreationFlow {
         }
         segments.add(segment);
         return this;
-    }
-
-    /**
-     * Write out the created file.
-     *
-     * @param filename the name of the file to write to
-     */
-    public final void write(final String filename) {
-        NitfFileWriter nitfWriter = new NitfFileWriter(build(), filename);
-        nitfWriter.write();
     }
 }

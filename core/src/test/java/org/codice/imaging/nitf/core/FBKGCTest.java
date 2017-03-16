@@ -19,12 +19,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfInputStreamReader;
+import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.header.NitfHeader;
-import org.codice.imaging.nitf.core.header.NitfParser;
+import org.codice.imaging.nitf.core.header.impl.NitfParser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.junit.Test;
 
 /**
