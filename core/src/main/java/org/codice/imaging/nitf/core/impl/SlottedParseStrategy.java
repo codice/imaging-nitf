@@ -166,9 +166,8 @@ public class SlottedParseStrategy implements ParseStrategy {
     }
 
     /**
-     * Get the resulting data.
      *
-     * @return a DataSource containing the parsed NITF.
+     * {@inheritDoc}
      */
     public final DataSource getDataSource() {
         return nitfStorage;
@@ -329,10 +328,8 @@ public class SlottedParseStrategy implements ParseStrategy {
     }
 
     /**
-     * Register an additional TRE descriptor.
      *
-     * @param source the source of the additional TreImpl descriptor.
-     * @throws NitfFormatException - when the TRE descriptors in the source are not in the expected format.
+     * {@inheritDoc}
      */
     public final void registerAdditionalTREdescriptor(final Source source) throws NitfFormatException {
         initialiseTreCollectionParserIfRequired();

@@ -32,6 +32,7 @@
         <module>cgm</module>
         <module>render</module>
         <module>fluent-api</module>
+        <module>fluent</module>
         <module>trewrap</module>
         <module>registryparser</module>
         <module>deswrap</module>

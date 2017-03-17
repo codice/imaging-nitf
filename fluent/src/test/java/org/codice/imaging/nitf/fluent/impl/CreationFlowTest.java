@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.fluent;
+package org.codice.imaging.nitf.fluent.impl;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -47,6 +47,7 @@ import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.text.TextFormat;
 import org.codice.imaging.nitf.core.text.TextSegment;
 import org.codice.imaging.nitf.core.text.impl.TextSegmentFactory;
+import org.codice.imaging.nitf.fluent.NitfCreationFlow;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -65,12 +66,11 @@ public class CreationFlowTest {
     @Test
     public void createEmptyNitf() throws FileNotFoundException, NitfFormatException {
         final String filename = "empty.ntf";
-        DataSource dataSource = new NitfCreationFlow()
+        new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
-                .build();
-        new NitfFileWriter(dataSource, filename).write();
+                .write(filename);
 
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .fileHeader(
@@ -87,7 +87,7 @@ public class CreationFlowTest {
     @Test
     public void createImageNitf() throws FileNotFoundException, NitfFormatException {
         final String filename = "image.ntf";
-        NitfCreationFlow flow = new NitfCreationFlow();
+        NitfCreationFlowImpl flow = new NitfCreationFlowImpl();
         DataSource dataSource = flow.fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
                 .imageSegment(() -> {
                     ImageSegment imageSegment = ImageSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
@@ -97,7 +97,7 @@ public class CreationFlowTest {
         new NitfFileWriter(dataSource, filename).write();
 
         assertThat(flow.build().getImageSegments().size(), is(1));
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .fileHeader(header -> {
@@ -113,7 +113,7 @@ public class CreationFlowTest {
     @Test
     public void createTwoTextNitf() throws FileNotFoundException, NitfFormatException {
         final String filename = "text.ntf";
-        NitfCreationFlow flow = new NitfCreationFlow();
+        NitfCreationFlowImpl flow = new NitfCreationFlowImpl();
         DataSource dataSource = flow.fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
             .textSegment(() -> {
                 TextSegment segment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
@@ -131,7 +131,7 @@ public class CreationFlowTest {
         new NitfFileWriter(dataSource, filename).write();
         assertThat(flow.build().getTextSegments().size(), is(2));
 
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .fileHeader(
@@ -155,12 +155,12 @@ public class CreationFlowTest {
     @Test
     public void createSimpleDESNitf() throws FileNotFoundException, NitfFormatException {
         final String filename = "des.ntf";
-        DataSource dataSource = new NitfCreationFlow()
+        new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
                 .dataExtensionSegment(() -> DataExtensionSegmentFactory.getDefault(FileType.NITF_TWO_ONE))
-                .build();
-        new NitfFileWriter(dataSource, filename).write();
-        new NitfParserInputFlow()
+                .write(filename);
+
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .fileHeader(
@@ -185,12 +185,12 @@ public class CreationFlowTest {
     @Test
     public void createOverflowDESNitf() throws FileNotFoundException, NitfFormatException {
         final String filename = "overflow.ntf";
-        DataSource dataSource = new NitfCreationFlow()
+        new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
                 .dataExtensionSegment(() -> DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ONE, "UDHD", 0))
-                .build();
-        new NitfFileWriter(dataSource, filename).write();
-        new NitfParserInputFlow()
+                .write(filename);
+
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .fileHeader(
@@ -217,12 +217,12 @@ public class CreationFlowTest {
     @Test
     public void createOverflowDESNitf20() throws FileNotFoundException, NitfFormatException {
         final String filename = "overflow.ntf";
-        DataSource dataSource = new NitfCreationFlow()
+        new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ZERO))
                 .dataExtensionSegment(() -> DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ZERO, "XHD", 0))
-                .build();
-        new NitfFileWriter(dataSource, filename).write();
-        new NitfParserInputFlow()
+                .write(filename);
+
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .fileHeader(
@@ -248,7 +248,7 @@ public class CreationFlowTest {
     @Test
     public void createTextOverflowDESNitf() throws FileNotFoundException, NitfFormatException {
         final String filename = "overflowText.ntf";
-        DataSource dataSource = new NitfCreationFlow()
+        new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
                 .textSegment(() -> {
                     TextSegment segment = TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
@@ -258,11 +258,10 @@ public class CreationFlowTest {
                 })
                 .textSegment(() -> TextSegmentFactory.getDefault(FileType.NITF_TWO_ONE))
                 .dataExtensionSegment(() -> DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ONE, "TXSHD", 2))
-                .build();
-        new NitfFileWriter(dataSource, filename).write();
+                .write(filename);
 
         List<TextSegment> textSegments = new ArrayList<>();
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .forEachTextSegment(textSegment -> textSegments.add(textSegment))
@@ -298,7 +297,7 @@ public class CreationFlowTest {
         when(band.getNumLUTEntries()).thenReturn(0);
         ImageInputStream iis1 = ImageIO.createImageInputStream(is1);
         ImageInputStream iis2 = ImageIO.createImageInputStream(is2);
-        DataSource dataSource = new NitfCreationFlow()
+        new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ONE))
                 .imageSegment(() -> {
                     ImageSegment imageSegment1 = ImageSegmentFactory.getDefault(FileType.NITF_TWO_ONE);
@@ -328,12 +327,11 @@ public class CreationFlowTest {
                 })
                 .dataExtensionSegment(() -> DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ONE, "IXSHD", 2))
                 .dataExtensionSegment(() -> DataExtensionSegmentFactory.getOverflow(FileType.NITF_TWO_ONE, "UDID", 2))
-                .build();
-        new NitfFileWriter(dataSource, filename).write();
+                .write(filename);
 
         List<ImageSegment> imageSegments = new ArrayList<>();
         List<DataExtensionSegment> desList = new ArrayList<>();
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .file(new File(filename))
                 .allData()
                 .forEachImageSegment(imageSegment -> imageSegments.add(imageSegment))
@@ -366,12 +364,12 @@ public class CreationFlowTest {
     public void buildWithoutHeader() {
         exception.expect(IllegalStateException.class);
         exception.expectMessage("NitfCreationFlow.build(): method cannot be called before fileHeader().");
-        new NitfCreationFlow().build();
+        new NitfCreationFlowImpl().build();
     }
 
     @Test
     public void addDESNullSupplier() {
-        NitfCreationFlow flow = new NitfCreationFlow()
+        NitfCreationFlow flow = new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO))
                 .dataExtensionSegment(null);
         assertThat(flow, is(notNullValue()));
@@ -380,7 +378,7 @@ public class CreationFlowTest {
 
     @Test
     public void addTextSegmentNullSupplier() {
-        NitfCreationFlow flow = new NitfCreationFlow()
+        NitfCreationFlow flow = new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ZERO))
                 .textSegment(null);
         assertThat(flow, is(notNullValue()));
@@ -389,7 +387,7 @@ public class CreationFlowTest {
 
     @Test
     public void addNullDES() {
-        NitfCreationFlow flow = new NitfCreationFlow()
+        NitfCreationFlow flow = new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO))
                 .dataExtensionSegment(() -> null);
         assertThat(flow, is(notNullValue()));
@@ -397,7 +395,7 @@ public class CreationFlowTest {
 
     @Test
     public void addMismatchedSegmentTypes() {
-        NitfCreationFlow flow = new NitfCreationFlow()
+        NitfCreationFlow flow = new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO));
         exception.expect(IllegalStateException.class);
         exception.expectMessage("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
@@ -406,7 +404,7 @@ public class CreationFlowTest {
 
     @Test
     public void addUnknownSegmentType() {
-        NitfCreationFlow flow = new NitfCreationFlow()
+        NitfCreationFlow flow = new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NSIF_ONE_ZERO));
         exception.expect(IllegalStateException.class);
         exception.expectMessage("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
@@ -415,7 +413,7 @@ public class CreationFlowTest {
 
     @Test
     public void addMismatchedDES() {
-        NitfCreationFlow flow = new NitfCreationFlow()
+        NitfCreationFlow flow = new NitfCreationFlowImpl()
                 .fileHeader(() -> NitfHeaderFactory.getDefault(FileType.NITF_TWO_ZERO));
         exception.expect(IllegalStateException.class);
         exception.expectMessage("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");

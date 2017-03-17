@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.fluent;
+package org.codice.imaging.nitf.fluent.impl;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,6 +33,6 @@ public class SegmentsFlowTest {
     public void NullSource() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("ImageSegmentFlow(): constructor argument 'dataSource' may not be null.");
-        NitfSegmentsFlow flow = new NitfSegmentsFlow(null, null);
+        NitfSegmentsFlowImpl flow = new NitfSegmentsFlowImpl(null, null);
     }
 }

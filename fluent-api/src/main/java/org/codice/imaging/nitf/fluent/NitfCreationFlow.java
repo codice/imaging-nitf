@@ -14,17 +14,13 @@
  */
 package org.codice.imaging.nitf.fluent;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 import org.codice.imaging.nitf.core.DataSource;
-import org.codice.imaging.nitf.core.common.CommonBasicSegment;
-import org.codice.imaging.nitf.core.common.FileType;
 import org.codice.imaging.nitf.core.dataextension.DataExtensionSegment;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.image.ImageSegment;
-import org.codice.imaging.nitf.core.impl.SlottedStorage;
 import org.codice.imaging.nitf.core.label.LabelSegment;
 import org.codice.imaging.nitf.core.symbol.SymbolSegment;
 import org.codice.imaging.nitf.core.text.TextSegment;
@@ -32,8 +28,7 @@ import org.codice.imaging.nitf.core.text.TextSegment;
 /**
  * The NitfCreationFlow provides methods for creating a NITF file from scratch.
  */
-public class NitfCreationFlow {
-    private final DataSource dataSource = new SlottedStorage();
+public interface NitfCreationFlow {
 
     /**
      * Sets the header for this NITF.
@@ -44,10 +39,7 @@ public class NitfCreationFlow {
      * @param nitfHeaderSupplier the supplier that will supply the NitfHeader.
      * @return this NitfCreationFlow.
      */
-    public final NitfCreationFlow fileHeader(final Supplier<NitfHeader> nitfHeaderSupplier) {
-        dataSource.setNitfHeader(nitfHeaderSupplier.get());
-        return this;
-    }
+    NitfCreationFlow fileHeader(Supplier<NitfHeader> nitfHeaderSupplier);
 
     /**
      * Adds an ImageSegment to the NITF.
@@ -55,9 +47,7 @@ public class NitfCreationFlow {
      * @param imageSegmentSupplier the supplier that will supply the ImageSegment.
      * @return this NitfCreationFlow.
      */
-    public final NitfCreationFlow imageSegment(final Supplier<ImageSegment> imageSegmentSupplier) {
-        return addSegment(dataSource.getImageSegments(), imageSegmentSupplier);
-    }
+    NitfCreationFlow imageSegment(Supplier<ImageSegment> imageSegmentSupplier);
 
     /**
      * Adds a DataExtensionSegment to the NITF.
@@ -65,51 +55,8 @@ public class NitfCreationFlow {
      * @param dataExtensionSegmentSupplier the supplier that will supply the DataExtenstionSegment.
      * @return this NitfCreationFlow.
      */
-    public final NitfCreationFlow dataExtensionSegment(
-            final Supplier<DataExtensionSegment> dataExtensionSegmentSupplier) {
-        if (dataExtensionSegmentSupplier == null) {
-            return this;
-        }
-        DataExtensionSegment des = dataExtensionSegmentSupplier.get();
-        if (des == null) {
-            return this;
-        }
-        FileType desFileType = des.getFileType();
-        FileType headerFileType = dataSource.getNitfHeader().getFileType();
-        if (!desFileType.equals(headerFileType) || desFileType.equals(FileType.UNKNOWN)) {
-            throw new IllegalStateException("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
-        }
-        this.dataSource.getDataExtensionSegments().add(des);
-        if (des.isTreOverflow()) {
-            int index = dataSource.getDataExtensionSegments().size();
-            switch (des.getOverflowedHeaderType()) {
-                case "UDHD":
-                    dataSource.getNitfHeader().setUserDefinedHeaderOverflow(index);
-                    break;
-                case "XHD":
-                    dataSource.getNitfHeader().setExtendedHeaderDataOverflow(index);
-                    break;
-                case "UDID":
-                    dataSource.getImageSegments().get(des.getItemOverflowed() - 1).setUserDefinedHeaderOverflow(index);
-                    break;
-                case "IXSHD":
-                    dataSource.getImageSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
-                    break;
-                case "SXSHD":
-                    dataSource.getGraphicSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
-                    break;
-                case "LXSHD":
-                    dataSource.getLabelSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
-                    break;
-                case "TXSHD":
-                    dataSource.getTextSegments().get(des.getItemOverflowed() - 1).setExtendedHeaderDataOverflow(index);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Cannot set TRE overflow for: " + des.getOverflowedHeaderType());
-            }
-        }
-        return this;
-    }
+    NitfCreationFlow dataExtensionSegment(
+            Supplier<DataExtensionSegment> dataExtensionSegmentSupplier);
 
     /**
      * Adds a TextSegment to the NITF.
@@ -117,9 +64,7 @@ public class NitfCreationFlow {
      * @param textSegmentSupplier the supplier that will supply the TextSegment.
      * @return this NitfCreationFlow.
      */
-    public final NitfCreationFlow textSegment(final Supplier<TextSegment> textSegmentSupplier) {
-        return addSegment(dataSource.getTextSegments(), textSegmentSupplier);
-    }
+    NitfCreationFlow textSegment(Supplier<TextSegment> textSegmentSupplier);
 
     /**
      * Adds a GraphicSegment to the NITF.
@@ -127,9 +72,7 @@ public class NitfCreationFlow {
      * @param graphicSegmentSupplier the supplier that will supply the GraphicSegment.
      * @return this NitfCreationFlow.
      */
-    public final NitfCreationFlow graphicSegment(final Supplier<GraphicSegment> graphicSegmentSupplier) {
-        return addSegment(dataSource.getGraphicSegments(), graphicSegmentSupplier);
-    }
+    NitfCreationFlow graphicSegment(Supplier<GraphicSegment> graphicSegmentSupplier);
 
     /**
      * Adds a SymbolSegment to the NITF.
@@ -137,9 +80,7 @@ public class NitfCreationFlow {
      * @param symbolSegmentSupplier the supplier that will supply the SymbolSegment.
      * @return this NitfCreationFlow
      */
-    public final NitfCreationFlow symbolSegment(final Supplier<SymbolSegment> symbolSegmentSupplier) {
-        return addSegment(dataSource.getSymbolSegments(), symbolSegmentSupplier);
-    }
+    NitfCreationFlow symbolSegment(Supplier<SymbolSegment> symbolSegmentSupplier);
 
     /**
      * Adds a LabelSegment to the NITF.
@@ -147,39 +88,20 @@ public class NitfCreationFlow {
      * @param labelSegmentSupplier the supplier that will supply the LabelSegment.
      * @return this NitfCreationFlow
      */
-    public final NitfCreationFlow labelSegment(final Supplier<LabelSegment> labelSegmentSupplier) {
-        return addSegment(dataSource.getLabelSegments(), labelSegmentSupplier);
-    }
+    NitfCreationFlow labelSegment(Supplier<LabelSegment> labelSegmentSupplier);
 
     /**
      *
      * @return the DataSource that represents the NITF built by this NitfCreationFlow.
      * @throws IllegalStateException when called before fileHeader().
      */
-    public final DataSource build() {
-        if (dataSource.getNitfHeader() == null) {
-            throw new IllegalStateException(
-                    "NitfCreationFlow.build(): method cannot be called before fileHeader().");
-        }
+    DataSource build();
 
-        return this.dataSource;
-    }
+    /**
+     * Write out the created file.
+     *
+     * @param filename the name of the file to write to
+     */
 
-    private <T> NitfCreationFlow addSegment(final List<T> segments, final Supplier<T> supplier) {
-        if (supplier == null) {
-            return this;
-        }
-
-        T segment = supplier.get();
-        if (segment == null) {
-            return this;
-        }
-
-        FileType fileType = ((CommonBasicSegment) segment).getFileType();
-        if ((fileType != dataSource.getNitfHeader().getFileType()) || (fileType == FileType.UNKNOWN)) {
-            throw new IllegalStateException("NitfCreationFlow.addSegment(): segment FileType must match header FileType.");
-        }
-        segments.add(segment);
-        return this;
-    }
+    void write(final String filename);
 }

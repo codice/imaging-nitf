@@ -14,39 +14,20 @@
  */
 package org.codice.imaging.nitf.fluent;
 
-import java.io.File;
-import java.io.StringReader;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
 import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
 
 import org.codice.imaging.nitf.core.HeapStrategy;
-import org.codice.imaging.nitf.core.impl.InMemoryHeapStrategy;
-import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.common.NitfReader;
-import org.codice.imaging.nitf.core.header.impl.NitfParser;
+import org.codice.imaging.nitf.core.common.ParseStrategy;
 
 /**
  * A builder class that handles parsing.
  */
-public class NitfParserParsingFlow {
-    private final NitfReader reader;
-
-    private HeapStrategy<ImageInputStream> imageDataStrategy =
-            new InMemoryHeapStrategy<>(MemoryCacheImageInputStream::new);
-
-    private final List<Source> treDescriptors = new ArrayList<>();
-
-    NitfParserParsingFlow(final NitfReader nitfReader) {
-        reader = nitfReader;
-    }
+public interface NitfParserParsingFlow {
 
     /**
      * Configures the ImageDataStrategy for parsing operations.
@@ -54,11 +35,8 @@ public class NitfParserParsingFlow {
      * @param imageDataStrategySupplier a supplier for the ImageDataStrategy.
      * @return this NitfParserParsingFlow.
      */
-    public final NitfParserParsingFlow imageDataStrategy(
-            final Supplier<HeapStrategy<ImageInputStream>> imageDataStrategySupplier) {
-        this.imageDataStrategy = imageDataStrategySupplier.get();
-        return this;
-    }
+    NitfParserParsingFlow imageDataStrategy(
+            Supplier<HeapStrategy<ImageInputStream>> imageDataStrategySupplier);
 
     /**
      * Add a TRE descriptor to support TRE parsing.
@@ -66,10 +44,7 @@ public class NitfParserParsingFlow {
      * @param xmlDescriptor string containing the TRE (or TREs) format.
      * @return this NitfParserParsingFlow
      */
-    public final NitfParserParsingFlow treDescriptor(final String xmlDescriptor) {
-        this.treDescriptors.add(new StreamSource(new StringReader(xmlDescriptor)));
-        return this;
-    }
+    NitfParserParsingFlow treDescriptor(String xmlDescriptor);
 
     /**
      * Add a TRE descriptor to support TRE parsing.
@@ -77,10 +52,7 @@ public class NitfParserParsingFlow {
      * @param xmlDescriptor XML Source containing the TRE (or TREs) format.
      * @return this NitfParserParsingFlow
      */
-    public final NitfParserParsingFlow treDescriptor(final Source xmlDescriptor) {
-        this.treDescriptors.add(xmlDescriptor);
-        return this;
-    }
+    NitfParserParsingFlow treDescriptor(Source xmlDescriptor);
 
     /**
      * Add a TRE descriptor to support TRE parsing.
@@ -88,10 +60,7 @@ public class NitfParserParsingFlow {
      * @param xmlDescriptor URI containing the TRE (or TREs) format.
      * @return this NitfParserParsingFlow
      */
-    public final NitfParserParsingFlow treDescriptor(final URI xmlDescriptor) {
-        this.treDescriptors.add(new StreamSource(new File(xmlDescriptor)));
-        return this;
-    }
+    NitfParserParsingFlow treDescriptor(URI xmlDescriptor);
 
     /**
      * Parses the NITF file, extracting all data.
@@ -99,11 +68,7 @@ public class NitfParserParsingFlow {
      * @return a new NitfSegmentsFlow.
      * @throws NitfFormatException when it's thrown by the parser.
      */
-    public final NitfSegmentsFlow allData() throws NitfFormatException {
-        SlottedParseStrategy parseStrategy = new SlottedParseStrategy();
-        parseStrategy.setImageHeapStrategy(imageDataStrategy);
-        return build(parseStrategy);
-    }
+    NitfSegmentsFlow allData() throws NitfFormatException;
 
     /**
      * Parses only headers from the NITF file.
@@ -111,12 +76,7 @@ public class NitfParserParsingFlow {
      * @return a new NitfSegmentsFlow.
      * @throws NitfFormatException when it's thrown by the parser.
      */
-    public final NitfSegmentsFlow headerOnly() throws NitfFormatException {
-        SlottedParseStrategy parseStrategy =
-                new SlottedParseStrategy(SlottedParseStrategy.HEADERS_ONLY);
-        parseStrategy.setImageHeapStrategy(imageDataStrategy);
-        return build(parseStrategy);
-    }
+    NitfSegmentsFlow headerOnly() throws NitfFormatException;
 
     /**
      * Parses the NITF file using the supplied SlottedParseStrategy.
@@ -125,12 +85,6 @@ public class NitfParserParsingFlow {
      * @return a new NitfSegmentsFlow.
      * @throws NitfFormatException when it's thrown by the parser.
      */
-    public final NitfSegmentsFlow build(final SlottedParseStrategy parseStrategy)
-            throws NitfFormatException {
-        for (Source treDescriptor : treDescriptors) {
-            parseStrategy.registerAdditionalTREdescriptor(treDescriptor);
-        }
-        NitfParser.parse(reader, parseStrategy);
-        return new NitfSegmentsFlow(parseStrategy.getDataSource(), imageDataStrategy::cleanUp);
-    }
+    NitfSegmentsFlow build(ParseStrategy parseStrategy)
+            throws NitfFormatException;
 }

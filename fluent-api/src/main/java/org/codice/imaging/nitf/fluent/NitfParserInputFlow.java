@@ -15,22 +15,14 @@
 package org.codice.imaging.nitf.fluent;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 
 /**
  * The NitfParserInputFlow represents the start of the builder pattern for the
  * NITF parser.
  */
-public class NitfParserInputFlow {
-
-    /**
-     * Constructor.
-     */
-    public NitfParserInputFlow() {
-    }
+public interface NitfParserInputFlow {
 
     /**
      * Begins a NITF parsing flow using a file as input.
@@ -39,10 +31,7 @@ public class NitfParserInputFlow {
      * @return a new NitfParserParsingFlow.
      * @throws FileNotFoundException - when the file doesn't exist.
      */
-    public final NitfParserParsingFlow file(final File inputFile) throws FileNotFoundException {
-        NitfInputStreamReader nitfReader = new NitfInputStreamReader(new FileInputStream(inputFile));
-        return new NitfParserParsingFlow(nitfReader);
-    }
+    NitfParserParsingFlow file(File inputFile) throws FileNotFoundException;
 
     /**
      * Begins a parsing flow using an InputStream as input.
@@ -50,8 +39,5 @@ public class NitfParserInputFlow {
      * @param inputStream - the InputStream to read the NITF data from.
      * @return a new NitfParserParsingFlow.
      */
-    public final NitfParserParsingFlow inputStream(final InputStream inputStream) {
-        NitfInputStreamReader nitfReader = new NitfInputStreamReader(inputStream);
-        return new NitfParserParsingFlow(nitfReader);
-    }
+    NitfParserParsingFlow inputStream(InputStream inputStream);
 }
