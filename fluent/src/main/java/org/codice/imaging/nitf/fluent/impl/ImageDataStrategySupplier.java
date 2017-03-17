@@ -1,4 +1,4 @@
-package org.codice.imaging.nitf.core.impl;
+package org.codice.imaging.nitf.fluent.impl;
 
 import java.util.function.Supplier;
 import javax.imageio.stream.FileImageInputStream;
@@ -6,6 +6,10 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 
 import org.codice.imaging.nitf.core.HeapStrategy;
+import org.codice.imaging.nitf.core.impl.ConfigurableHeapStrategy;
+import org.codice.imaging.nitf.core.impl.FileBackedHeapStrategy;
+import org.codice.imaging.nitf.core.impl.HeapStrategyConfiguration;
+import org.codice.imaging.nitf.core.impl.InMemoryHeapStrategy;
 
 /**
  * Supplies an ImageDataStrategy to the SlottedNitfParsingStrategy.

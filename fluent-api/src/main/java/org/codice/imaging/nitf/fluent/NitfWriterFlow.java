@@ -14,23 +14,16 @@
  */
 package org.codice.imaging.nitf.fluent;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.function.Supplier;
 
 import org.codice.imaging.nitf.core.DataSource;
-import org.codice.imaging.nitf.core.impl.NitfOutputStreamWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides methods for writing a NITF to a java.io.File or java.io.OutputStream.  Instances of
  * this class will maintain state for a single OutputStream.
  */
-public class NitfWriterFlow {
-    private Supplier<OutputStream> streamSupplier;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(NitfWriterFlow.class);
+public interface NitfWriterFlow {
 
     /**
      * Sets the OutputStream that a call to write() will write to.  Calling this method multiple
@@ -39,13 +32,7 @@ public class NitfWriterFlow {
      * @param outputStreamSupplier a Supplier for the OutputStream to write the NITF to.
      * @return this NitfWriterFlow.
      */
-    public final NitfWriterFlow outputStream(final Supplier<OutputStream> outputStreamSupplier) {
-        if (outputStreamSupplier != null) {
-            this.streamSupplier = outputStreamSupplier;
-        }
-
-        return this;
-    }
+    NitfWriterFlow outputStream(Supplier<OutputStream> outputStreamSupplier);
 
     /**
      * Writes the NITF to the current OutputStream.
@@ -54,17 +41,5 @@ public class NitfWriterFlow {
      * @param dataSource the DataSource that represents the state of the NITF.
      * @return this NitfWriterFlow.
      */
-    public final NitfWriterFlow write(final DataSource dataSource) {
-        if (this.streamSupplier != null) {
-            try (OutputStream outputStream = streamSupplier.get()) {
-                NitfOutputStreamWriter nitfWriter = new NitfOutputStreamWriter(dataSource,
-                        outputStream);
-                nitfWriter.write();
-            } catch (IOException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-        }
-
-        return this;
-    }
+    NitfWriterFlow write(DataSource dataSource);
 }

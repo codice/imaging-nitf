@@ -33,3 +33,4 @@ hs_err_pid*
 /imagecompare/target/
 /imagesource/target/
 /core-api/target/
+/fluent/target/

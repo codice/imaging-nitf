@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.fluent;
+package org.codice.imaging.nitf.fluent.impl;
 
 import java.io.StringReader;
 import java.net.URISyntaxException;
@@ -45,7 +45,7 @@ public class AdditionalTREsTest {
     public void ParseWithoutAdditionalTRE() throws NitfFormatException {
         final String testfile = "/JitcNitf21Samples/ns3228d.nsf";
         List<Tre> tres = new ArrayList<>();
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .inputStream(getClass().getResourceAsStream(testfile))
                 .allData()
                 .fileHeader(header -> tres.addAll(header.getTREsRawStructure().getTREs()))
@@ -60,7 +60,7 @@ public class AdditionalTREsTest {
     public void ParseWithAdditionalTREinString() throws NitfFormatException {
         final String testfile = "/JitcNitf21Samples/ns3228d.nsf";
         List<Tre> tres = new ArrayList<>();
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .inputStream(getClass().getResourceAsStream(testfile))
                 .treDescriptor("<?xml version=\"1.0\"?><tres><tre name=\"JITCID\" location=\"image\"><field name=\"Info\" length=\"200\"/></tre></tres>")
                 .allData()
@@ -78,7 +78,7 @@ public class AdditionalTREsTest {
     public void ParseWithAdditionalTREinXmlSource() throws NitfFormatException {
         final String testfile = "/JitcNitf21Samples/ns3228d.nsf";
         List<Tre> tres = new ArrayList<>();
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .inputStream(getClass().getResourceAsStream(testfile))
                 .treDescriptor(new StreamSource(new StringReader("<?xml version=\"1.0\"?><tres><tre name=\"JITCID\" location=\"image\"><field name=\"Info\" length=\"200\"/></tre></tres>")))
                 .allData()
@@ -96,7 +96,7 @@ public class AdditionalTREsTest {
     public void ParseWithAdditionalTREinFile() throws NitfFormatException, URISyntaxException {
         final String testfile = "/JitcNitf21Samples/ns3228d.nsf";
         List<Tre> tres = new ArrayList<>();
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .inputStream(getClass().getResourceAsStream(testfile))
                 .treDescriptor(getClass().getResource("/jitcid.xml").toURI())
                 .allData()
@@ -114,7 +114,7 @@ public class AdditionalTREsTest {
     public void VerifyCleanup() throws NitfFormatException {
         final String testfile = "/JitcNitf21Samples/ns3228d.nsf";
         HeapStrategy mockHeapStrategy = mock(HeapStrategy.class);
-        new NitfParserInputFlow()
+        new NitfParserInputFlowImpl()
                 .inputStream(getClass().getResourceAsStream(testfile))
                 .imageDataStrategy(() -> mockHeapStrategy)
                 .allData()

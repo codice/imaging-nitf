@@ -14,6 +14,9 @@
  */
 package org.codice.imaging.nitf.core.common;
 
+import javax.xml.transform.Source;
+
+import org.codice.imaging.nitf.core.DataSource;
 import org.codice.imaging.nitf.core.header.NitfHeader;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
@@ -103,4 +106,18 @@ public interface ParseStrategy {
      */
     void handleSymbolSegment(final NitfReader reader, final long dataLength) throws NitfFormatException;
 
+    /**
+     * Register an additional TRE descriptor.
+     *
+     * @param source the source of the additional TreImpl descriptor.
+     * @throws NitfFormatException - when the TRE descriptors in the source are not in the expected format.
+     */
+    void registerAdditionalTREdescriptor(Source source) throws NitfFormatException;
+
+    /**
+     * Get the resulting data.
+     *
+     * @return a DataSource containing the parsed NITF.
+     */
+    DataSource getDataSource();
 }

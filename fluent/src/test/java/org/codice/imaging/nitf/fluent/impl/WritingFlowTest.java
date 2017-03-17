@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
  */
-package org.codice.imaging.nitf.fluent;
+package org.codice.imaging.nitf.fluent.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,20 +65,20 @@ public class WritingFlowTest {
     public void modifyNitf(final String inputFileName) throws IOException, NitfFormatException {
 
         try (OutputStream outputStream = new FileOutputStream(outputFile)) {
-            new NitfParserInputFlow().inputStream(getClass().getResourceAsStream(inputFileName))
+            new NitfParserInputFlowImpl().inputStream(getClass().getResourceAsStream(inputFileName))
                     .allData()
                     .fileHeader(header -> {
                         header.setFileTitle(TEST_FILE_TITLE);
                         header.setOriginatorsName(TEST_ORIGINATOR_NAME);
                         header.setOriginatingStationId(TEST_STATIION_ID);
                     })
-                    .dataSource(datasource -> new NitfWriterFlow().outputStream(() -> outputStream)
+                    .dataSource(datasource -> new NitfWriterFlowImpl().outputStream(() -> outputStream)
                             .write(datasource));
         }
     }
 
     private void verifyResult() throws NitfFormatException, FileNotFoundException {
-        new NitfParserInputFlow().file(outputFile)
+        new NitfParserInputFlowImpl().file(outputFile)
                 .headerOnly()
                 .fileHeader(header -> {
                     Assert.assertThat(header.getFileTitle(), CoreMatchers.is(TEST_FILE_TITLE));
