@@ -30,9 +30,7 @@ import org.codice.imaging.nitf.core.image.TargetId;
     <p>
     Note that FIPS PUB 10-4 has been withdrawn. The NGA
     has a replacement in the GEC (Geopolitical Entities and
-    Codes), but the codes do not always represent the same
-    countries (e.g. Australia was AS in FIPS 10-4, and is AU
-    in the GEC).
+    Codes).
 */
 public class TargetIdImpl implements TargetId {
 
