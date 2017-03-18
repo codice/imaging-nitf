@@ -143,7 +143,6 @@
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
-                            <linkXRef>false</linkXRef>
                         </configuration>
                         <goals>
                             <goal>check</goal>
@@ -170,7 +169,7 @@
                         <resourceBundle>org.codice.imaging.nitf:codice-imaging-nitf-shared-test-resources:${project.version}</resourceBundle>
                     </resourceBundles>
                     <attachToMain>false</attachToMain>
-                    <outputBuildDirectory>${project.build.directory}/src/test/resources</outputBuildDirectory>
+                    <outputDirectory>${project.build.directory}/src/test/resources</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -188,7 +187,6 @@
                 <configuration>
                     <xmlOutput>true</xmlOutput>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
-                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
                     <excludeFilterFile>file:${project.parent.basedir}/findbugs-excludes.xml</excludeFilterFile>
                 </configuration>
                 <executions>
