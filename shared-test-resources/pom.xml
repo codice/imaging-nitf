@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -22,7 +22,6 @@
         </developer>
     </developers>
 
-    <groupId>org.codice.imaging.nitf</groupId>
     <artifactId>codice-imaging-nitf-shared-test-resources</artifactId>
     <version>0.8-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -33,30 +32,39 @@
 
     <build>
         <plugins>
-        <plugin>
-            <artifactId>maven-remote-resources-plugin</artifactId>
-            <version>${mavenremoteresources.version}</version>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>bundle</goal>
-                    </goals>
-                </execution>
-            </executions>
-            <configuration>
-                <includes>
-                    <include>**/*.ntf</include>
-                    <include>**/*.NTF</include>
-                    <include>**/*.nsf</include>
-                    <include>**/*.lf2</include>
-                    <include>**/*.ntf.r?</include>
-                    <include>**/*.GN3</include>
-                    <include>**/*.on1</include>
-                    <include>SENSRB/*.txt</include>
-                    <include>**/*.ref.png</include>
-                </includes>
-            </configuration>
-        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${mavencompilerplugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <version>${mavenremoteresources.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>**/*.ntf</include>
+                        <include>**/*.NTF</include>
+                        <include>**/*.nsf</include>
+                        <include>**/*.lf2</include>
+                        <include>**/*.ntf.r?</include>
+                        <include>**/*.GN3</include>
+                        <include>**/*.on1</include>
+                        <include>SENSRB/*.txt</include>
+                        <include>**/*.ref.png</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
