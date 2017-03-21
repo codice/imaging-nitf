@@ -74,19 +74,26 @@ public class RasterProductFormatUtilities {
     private void unmarshal(final InputStream inputStream) throws JAXBException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document document = null;
+        dbf.setExpandEntityReferences(false);
+
+        Document document;
         try {
             dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
             dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            dbf.setExpandEntityReferences(false);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            document = db.parse(inputStream);
         } catch (ParserConfigurationException e) {
             LOG.debug("Could not set features on {}", dbf);
+        }
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            document = db.parse(inputStream);
         } catch (SAXException | IOException e) {
             LOG.warn("Error parsing input. Set log to DEBUG for more information.");
             LOG.debug("Error parsing input. {}", e);
+            throw new JAXBException(e);
+        } catch (ParserConfigurationException e) {
+            LOG.error("Error creating DocumentBuilder. Set log to DEBUG for more information.");
+            LOG.debug("Error creating DocumentBuilder. {}", e);
             throw new JAXBException(e);
         }
         JAXBContext jc = JAXBContext.newInstance(Rpfs.class);
