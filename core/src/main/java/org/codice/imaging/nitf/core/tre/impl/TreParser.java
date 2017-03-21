@@ -89,13 +89,6 @@ public class TreParser {
 
         Document document;
         try {
-            dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        } catch (ParserConfigurationException e) {
-            LOG.debug("Could not set features on {}", dbf);
-        }
-        try {
             DocumentBuilder db = dbf.newDocumentBuilder();
             document = db.parse(inputStream);
         } catch (SAXException | IOException e) {
