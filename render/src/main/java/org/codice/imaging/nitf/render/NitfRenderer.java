@@ -83,11 +83,13 @@ public class NitfRenderer {
                     targetGraphic);
             break;
         case JPEGMASK:
-            ImageMask imageMask = new ImageMask(imageSegment, imageSegment.getData());
-            renderJPEG(imageSegment, targetGraphic, imageMask);
+            renderJPEG(imageSegment, targetGraphic, new ImageMask(imageSegment, imageSegment.getData()));
             break;
         case JPEG2000:
-            renderJPEG2k(imageSegment, targetGraphic);
+            renderJPEG2k(imageSegment, targetGraphic, null);
+            break;
+        case JPEG2000MASK:
+            renderJPEG2k(imageSegment, targetGraphic, new ImageMask(imageSegment, imageSegment.getData()));
             break;
         default:
             throw new UnsupportedOperationException("Unhandled image compression format: "
@@ -172,9 +174,12 @@ public class NitfRenderer {
         });
     }
 
-    private void renderJPEG2k(final ImageSegment imageSegment, final Graphics2D targetGraphic) throws IOException {
+    private void renderJPEG2k(final ImageSegment imageSegment, final Graphics2D targetGraphic, final ImageMask imageMask) throws IOException {
         final ImageReader reader = getImageReader("image/jp2");
         reader.setInput(imageSegment.getData(), true, true);
+        ThreadLocal<Integer> maskedBlocks = new ThreadLocal<Integer>();
+        maskedBlocks.set(0);
+
         final ImageReadParam param = reader.getDefaultReadParam();
 
         if (ImageRepresentation.MULTIBAND.equals(imageSegment.getImageRepresentation())) {
@@ -183,13 +188,20 @@ public class NitfRenderer {
         }
 
         processBlocks(imageSegment, (r, c) -> {
+                    if (imageMask != null && imageMask.isMaskedBlock((r * imageSegment.getNumberOfBlocksPerRow() + c), 0)) {
+                        maskedBlocks.set(maskedBlocks.get() + 1);
+                        return;
+                    }
+
                     Rectangle rect = new Rectangle((int) (c * imageSegment.getNumberOfPixelsPerBlockHorizontal()),
                             (int) (r * imageSegment.getNumberOfPixelsPerBlockVertical()),
                             (int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
                             (int) imageSegment.getNumberOfPixelsPerBlockVertical());
                     param.setSourceRegion(rect);
 
-                    BufferedImage renderedBlock = reader.read(0, param);
+                    BufferedImage renderedBlock = reader.read(
+                            (c + r * imageSegment.getNumberOfBlocksPerRow()) - maskedBlocks.get());
+
                     param.setDestination(renderedBlock);
                     targetGraphic.drawImage(renderedBlock, (int) (c * imageSegment.getNumberOfPixelsPerBlockVertical()),
                             (int) (r * imageSegment.getNumberOfPixelsPerBlockHorizontal()),
