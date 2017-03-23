@@ -57,6 +57,21 @@ public class TreParser {
 
     private static final String TRE_XML_LOAD_ERROR_MESSAGE = "Exception while loading TRE XML";
 
+    // If this isn't obvious, the max len is 99999, but first 3 are for the
+    // overflow DES index, if any.
+    private static final int MAX_HEADER_DATA_LEN = 99996;
+    // The others have lower limits - see specs.
+    // 9747 minus 3
+    private static final int MAX_LABEL_DATA_LEN = 9744;
+    // 8833 minus 3
+    private static final int MAX_SYMBOL_DATA_LEN = 8830;
+    // 9741 minus 3
+    private static final int MAX_GRAPHIC_DATA_LEN = 9738;
+    // 9717 minus 3
+    private static final int MAX_TEXT_DATA_LEN = 9714;
+    // We seem unlikely to hit this: 10^9 - 2
+    private static final int MAX_DES_DATA_LEN = 999999998;
+
     private static Tres tresStructure = null;
 
     /**
@@ -351,6 +366,9 @@ public class TreParser {
                 baos.write(treData);
             }
         }
+        if (baos.size() > getValidSizeForTreSource(source)) {
+            throw new NitfFormatException("TREs exceed valid limit for source");
+        }
         return baos.toByteArray();
     }
 
@@ -593,6 +611,34 @@ public class TreParser {
             }
         }
     }
+
+    /**
+     * Get the largest valid size of all TREs for the specified location.
+     * @param source the location of the TREs.
+     * @return valid size in bytes.
+     */
+    public static final int getValidSizeForTreSource(final TreSource source) {
+        switch (source) {
+            case UserDefinedHeaderData:
+            case ExtendedHeaderData:
+            case UserDefinedImageData:
+            case ImageExtendedSubheaderData:
+                return MAX_HEADER_DATA_LEN;
+            case SymbolExtendedSubheaderData:
+                return MAX_SYMBOL_DATA_LEN;
+            case LabelExtendedSubheaderData:
+                return MAX_LABEL_DATA_LEN;
+            case GraphicExtendedSubheaderData:
+                return MAX_GRAPHIC_DATA_LEN;
+            case TextExtendedSubheaderData:
+                return MAX_TEXT_DATA_LEN;
+            case TreOverflowDES:
+                return MAX_DES_DATA_LEN;
+            default:
+                throw new IllegalStateException("Missing case for TreSource");
+        }
+    }
+
 
 
 }
