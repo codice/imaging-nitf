@@ -23,19 +23,13 @@ import org.codice.imaging.nitf.core.image.ImageBandLUT;
 /**
     Image Band.
 */
-class ImageBandImpl implements ImageBand {
+public class ImageBandImpl implements ImageBand {
 
     // An enum might have been useful, but this is extensible
     private String imageRepresentation = "";
     private String imageSubcategory = "";
     private int numEntriesLUT = 0;
     private List<ImageBandLUT> luts = new ArrayList<>();
-
-    /**
-        Default constructor.
-    */
-    ImageBandImpl() {
-    }
 
     /**
         Set the image representation for the band (IREPBAND).
