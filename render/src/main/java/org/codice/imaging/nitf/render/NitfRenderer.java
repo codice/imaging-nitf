@@ -19,6 +19,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,6 +42,12 @@ import org.codice.imaging.nitf.render.imagerep.ImageRepresentationHandlerFactory
 public class NitfRenderer {
 
     private static final int BYTE_MASK = 0xFF;
+
+    static final String[][] BAND_PRIORITY = {
+            {"R", "G", "B"},
+            {"LU"},
+            {"M"}
+    };
 
     /**
      * Constructor.
@@ -211,21 +218,30 @@ public class NitfRenderer {
         );
     }
 
-    private int[] getSourceBands(final ImageSegment imageSegment) {
+    // CSOFF: DesignForExtension
+    int[] getSourceBands(final ImageSegment imageSegment) {
+    // CSON: DesignForExtension
         List<Integer> imageBands = new ArrayList<Integer>();
 
-        for (int i = 0; i < imageSegment.getNumBands(); i++) {
-            ImageBand band = imageSegment.getImageBandZeroBase(i);
+        /* When bands marked as LU, R, G, B, and M are present
+            the RGB designated bands are the default bands for display
+            If R, G, B are not present, the default displayable band
+            is the LU band. If the R, G, B, or LU bands are not present,
+            the default displayable band is the first M band
+        */
 
-            if (null != band.getImageRepresentation()) {
-                switch (band.getImageRepresentation()) {
-                case "R":
-                case "G":
-                case "B":
-                    imageBands.add(i);
-                    break;
-                default:
-                    break;
+        for (String[] bandsToFind : BAND_PRIORITY) {
+            if (!imageBands.isEmpty()) {
+                break;
+            }
+
+            for (int i = 0; i < imageSegment.getNumBands(); i++) {
+                ImageBand band = imageSegment.getImageBandZeroBase(i);
+
+                if (null != band.getImageRepresentation()) {
+                    if (Arrays.asList(bandsToFind).contains(band.getImageRepresentation())) {
+                        imageBands.add(i);
+                    }
                 }
             }
         }
