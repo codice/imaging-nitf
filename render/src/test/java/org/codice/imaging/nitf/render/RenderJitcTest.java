@@ -278,4 +278,9 @@ public class RenderJitcTest extends RenderTestSupport {
     public void testNS3228b() throws IOException, NitfFormatException {
         testOneFile("ns3228b.nsf", "JitcNitf21Samples");
     }
+
+    @Test
+    public void testMultiBand() throws IOException, NitfFormatException {
+        testOneFile("005_007_1024x1024_s_8_1_multi_j2c.ntf", "JitcNitf21Samples");
+    }
 }
