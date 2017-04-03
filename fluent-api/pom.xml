@@ -7,7 +7,7 @@
     <parent>
         <artifactId>codice-imaging-nitf</artifactId>
         <groupId>org.codice.imaging.nitf</groupId>
-        <version>0.8-SNAPSHOT</version>
+        <version>0.8</version>
     </parent>
 
     <artifactId>codice-imaging-nitf-fluent-api</artifactId>
