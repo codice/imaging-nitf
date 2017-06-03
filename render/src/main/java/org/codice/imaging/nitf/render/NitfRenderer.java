@@ -199,15 +199,16 @@ public class NitfRenderer {
                         maskedBlocks.set(maskedBlocks.get() + 1);
                         return;
                     }
+                    int column = (r * imageSegment.getNumberOfBlocksPerRow() + c  - maskedBlocks.get()) % imageSegment.getNumberOfBlocksPerRow();
+                    int row = (r * imageSegment.getNumberOfBlocksPerRow() + c - maskedBlocks.get()) / imageSegment.getNumberOfBlocksPerRow();
 
-                    Rectangle rect = new Rectangle((int) (c * imageSegment.getNumberOfPixelsPerBlockHorizontal()),
-                            (int) (r * imageSegment.getNumberOfPixelsPerBlockVertical()),
+                    Rectangle rect = new Rectangle((int) (column * imageSegment.getNumberOfPixelsPerBlockHorizontal()),
+                            (int) (row * imageSegment.getNumberOfPixelsPerBlockVertical()),
                             (int) imageSegment.getNumberOfPixelsPerBlockHorizontal(),
                             (int) imageSegment.getNumberOfPixelsPerBlockVertical());
                     param.setSourceRegion(rect);
 
-                    BufferedImage renderedBlock = reader.read(
-                            (c + r * imageSegment.getNumberOfBlocksPerRow()) - maskedBlocks.get());
+                    BufferedImage renderedBlock = reader.read(0, param);
 
                     param.setDestination(renderedBlock);
                     targetGraphic.drawImage(renderedBlock, (int) (c * imageSegment.getNumberOfPixelsPerBlockVertical()),

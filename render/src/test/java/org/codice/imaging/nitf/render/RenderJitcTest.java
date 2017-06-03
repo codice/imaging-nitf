@@ -20,6 +20,7 @@ package org.codice.imaging.nitf.render;
 
 import java.io.IOException;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -42,6 +43,208 @@ public class RenderJitcTest extends RenderTestSupport {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    @Test
+    public void testFILE1_JP2() throws IOException, NitfFormatException {
+        testOneFile("file1_jp2.ntf", "JitcJpeg2000");
+    }
+
+    //todo (RWY) - this one doesn't work correctly
+    @Test
+    public void testFILE2_J2C() throws IOException, NitfFormatException {
+        testOneFile("file2_j2c.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE2_JP2_1PLACE() throws IOException, NitfFormatException {
+        testOneFile("file2_jp2_1place.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE2_JP2_2PLACES() throws IOException, NitfFormatException {
+        testOneFile("file2_jp2_2places.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testFILE3_JP2() throws IOException, NitfFormatException {
+        // testOneFile("file3_jp2.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE4_JP2() throws IOException, NitfFormatException {
+        testOneFile("file4_jp2.ntf", "JitcJpeg2000");
+    }
+
+    //TODO (RWY) - color is off
+    @Test
+    public void testFILE5_JP2() throws IOException, NitfFormatException {
+        testOneFile("file5_jp2.ntf", "JitcJpeg2000");
+    }
+
+    //TODO (RWY) - color is off
+    @Test
+    public void testFILE6_JP2() throws IOException, NitfFormatException {
+        testOneFile("file6_jp2.ntf", "JitcJpeg2000");
+    }
+
+    //TODO (RWY) - color is off
+    @Test
+    public void testFILE7_JP2() throws IOException, NitfFormatException {
+        testOneFile("file7_jp2.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE8_JP2() throws IOException, NitfFormatException {
+        testOneFile("file8_jp2.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE9_J2C() throws IOException, NitfFormatException {
+        testOneFile("file9_j2c.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE9_JP2_1PLACE() throws IOException, NitfFormatException {
+        testOneFile("file9_jp2_1place.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE9_JP2_2PLACES() throws IOException, NitfFormatException {
+        testOneFile("file9_jp2_2places.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testFILE9_NC() throws IOException, NitfFormatException {
+        testOneFile("file9_nc.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_01A() throws IOException, NitfFormatException {
+        testOneFile("p0_01a.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_02A() throws IOException, NitfFormatException {
+        testOneFile("p0_02a.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP0_03A() throws IOException, NitfFormatException {
+//        testOneFile("p0_03a.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_04B() throws IOException, NitfFormatException {
+        testOneFile("p0_04b.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP0_05A() throws IOException, NitfFormatException {
+//        testOneFile("p0_05a.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP0_06A() throws IOException, NitfFormatException {
+//        testOneFile("p0_06a.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP0_07A() throws IOException, NitfFormatException {
+//        testOneFile("p0_07a.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP0_08A() throws IOException, NitfFormatException {
+//        testOneFile("p0_08a.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_09A() throws IOException, NitfFormatException {
+        testOneFile("p0_09a.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_10B() throws IOException, NitfFormatException {
+        testOneFile("p0_10b.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testp0_11xa() throws IOException, NitfFormatException {
+        testOneFile("p0_11xa.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_12A() throws IOException, NitfFormatException {
+        testOneFile("p0_12a.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP0_13XA() throws IOException, NitfFormatException {
+//        testOneFile("p0_13xa.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_14B() throws IOException, NitfFormatException {
+        testOneFile("p0_14b.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP0_15A() throws IOException, NitfFormatException {
+//        testOneFile("p0_15a.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP0_16A() throws IOException, NitfFormatException {
+        testOneFile("p0_16a.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP1_01A() throws IOException, NitfFormatException {
+//        testOneFile("p1_01a.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP1_02B() throws IOException, NitfFormatException {
+        testOneFile("p1_02b.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP1_03A() throws IOException, NitfFormatException {
+//        testOneFile("p1_03a.ntf", "JitcJpeg2000");
+    }
+
+    //TODO (RWY) - color is off
+    @Test
+    public void testP1_04A() throws IOException, NitfFormatException {
+        testOneFile("p1_04a.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Hangs needs to be fixed")
+    @Test
+    public void testP1_05B() throws IOException, NitfFormatException {
+        //        testOneFile("p1_05b.ntf", "JitcJpeg2000");
+    }
+
+    @Test
+    public void testP1_06B() throws IOException, NitfFormatException {
+        testOneFile("p1_06b.ntf", "JitcJpeg2000");
+    }
+
+    @Ignore("Needs to be fixed")
+    @Test
+    public void testP1_07A() throws IOException, NitfFormatException {
+//        testOneFile("p1_07a.ntf", "JitcJpeg2000");
     }
 
     @Test
