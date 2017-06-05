@@ -51,6 +51,10 @@ public enum FileType {
     */
     NSIF_ONE_ZERO ("NSIF01.00");
 
+    private static final String TWO_ONE = "2.1";
+    private static final String TWO_ZERO = "2.0";
+    private static final String ONE_ZERO = "1.0";
+
     private final String textEquivalent;
 
     /**
@@ -92,6 +96,45 @@ public enum FileType {
      */
     public String getTextEquivalent() {
         return textEquivalent;
+    }
+
+    /**
+     * Return just the file type for a given FileType.
+     *
+     * This returns just the type of file - NITF, NSIF, or UNKNOWN.
+     *
+     * @return the text of the file type without the version number.
+     */
+    public String getType() {
+        switch (this) {
+            case NITF_TWO_ONE:
+            case NITF_TWO_ZERO:
+                return "NITF";
+            case NSIF_ONE_ZERO:
+                return "NSIF";
+            default:
+                return name();
+        }
+    }
+
+    /**
+     * Return just the version number for the FileType with leading zeros stripped.
+     *
+     * This returns just the version number of the FileType as a string (with leading zeroes stripped).
+     *
+     * @return the version number as a string with leading zeroes stripped.
+     */
+    public String getVersion() {
+        switch (this) {
+            case NITF_TWO_ONE:
+                return TWO_ONE;
+            case NITF_TWO_ZERO:
+                return TWO_ZERO;
+            case NSIF_ONE_ZERO:
+                return ONE_ZERO;
+            default:
+                return textEquivalent;
+        }
     }
 };
 
