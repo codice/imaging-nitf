@@ -30,4 +30,20 @@ public class TypeTest {
         assertEquals("NSIF01.00", FileType.NSIF_ONE_ZERO.getTextEquivalent());
         assertEquals("", FileType.UNKNOWN.getTextEquivalent());
     }
+
+    @Test
+    public void textTypeTests() {
+        assertEquals("NITF", FileType.NITF_TWO_ONE.getType());
+        assertEquals("NITF", FileType.NITF_TWO_ZERO.getType());
+        assertEquals("NSIF", FileType.NSIF_ONE_ZERO.getType());
+        assertEquals("UNKNOWN", FileType.UNKNOWN.name());
+    }
+
+    @Test
+    public void textVersionTests() {
+        assertEquals("2.1", FileType.NITF_TWO_ONE.getVersion());
+        assertEquals("2.0", FileType.NITF_TWO_ZERO.getVersion());
+        assertEquals("1.0", FileType.NSIF_ONE_ZERO.getVersion());
+        assertEquals("", FileType.UNKNOWN.getVersion());
+    }
 }
