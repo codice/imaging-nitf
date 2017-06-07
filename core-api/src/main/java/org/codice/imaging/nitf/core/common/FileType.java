@@ -120,7 +120,8 @@ public enum FileType {
     /**
      * Return just the version number for the FileType with leading zeros stripped.
      *
-     * This returns just the version number of the FileType as a string (with leading zeroes stripped).
+     * This returns just the version number of the FileType as a string (with leading zeroes stripped). Note that "1.0"
+     * may not always represent NSIF.
      *
      * @return the version number as a string with leading zeroes stripped.
      */
