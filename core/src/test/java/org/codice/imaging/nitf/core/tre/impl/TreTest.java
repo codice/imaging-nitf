@@ -25,7 +25,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.codice.imaging.nitf.core.tre.Tre;
+import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreSource;
 import org.junit.Test;
 
 public class TreTest extends SharedTreTest {
@@ -71,6 +73,35 @@ public class TreTest extends SharedTreTest {
         group2.add(subEntry);
         subEntry.addGroup(new TreGroupImpl());
         entry.dump();
+    }
+
+    @Test
+    public void testFactoryTre() {
+        Tre testTre = TreFactory.getDefault("ACFTB", TreSource.ImageExtendedSubheaderData);
+        assertNotNull(testTre);
+        assertEquals("ACFTB", testTre.getName());
+    }
+
+    @Test
+    public void testFactoryTreGroup() {
+        TreGroup testGroup = TreFactory.getGroup();
+        assertNotNull(testGroup);
+        assertEquals(0, testGroup.getEntries().size());
+    }
+
+    @Test
+    public void testFactoryTreEntry() {
+        TreEntry testEntry = TreFactory.getEntry("X");
+        assertEquals("X", testEntry.getName());
+        assertNotNull(testEntry.getGroups());
+    }
+
+    @Test
+    public void testFactoryTreEntryWithValue() {
+        TreEntry testEntry = TreFactory.getEntry("X", "abc", "string");
+        assertEquals("X", testEntry.getName());
+        assertEquals("abc", testEntry.getFieldValue());
+        assertEquals("string", testEntry.getDataType());
     }
 
     // Avoid test coverage problem

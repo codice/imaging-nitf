@@ -37,7 +37,7 @@ public class TreEntryImpl implements TreEntry {
     private List<TreGroup> groups = null;
 
     /**
-     * Construct a TRE entry with a specific field name, field value and parent.
+     * Construct a TRE entry with a specific field name, field value and value type.
      * <p>
      * This is the simple (not-repeating) TRE entry form.
      *
@@ -52,7 +52,7 @@ public class TreEntryImpl implements TreEntry {
     }
 
     /**
-        Construct a TRE entry with a specific field name and parent.
+        Construct a TRE entry with a specific field name.
         <p>
         This is the repeating TRE entry form of an entry, initialised with an empty group list.
 
