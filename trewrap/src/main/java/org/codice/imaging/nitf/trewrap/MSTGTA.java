@@ -251,7 +251,7 @@ public class MSTGTA extends FlatTreWrapper {
      * <li>5 End Products (civilian)
      * <li>6 End Products (military)
      * <li>7 Places, Population, Gov‘t
-     * <li>8 Air & Missile Facilities
+     * <li>8 Air &amp; Missile Facilities
      * <li>9 Military Troop Facilities
      * </ul><p>
      * Each successive numeric character, reading from left to right, extends or
