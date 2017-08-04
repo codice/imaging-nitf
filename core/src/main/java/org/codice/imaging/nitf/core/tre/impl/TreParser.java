@@ -30,6 +30,9 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 
 import org.codice.imaging.nitf.core.common.NitfFormatException;
@@ -47,6 +50,8 @@ import org.codice.imaging.nitf.core.tre.TreGroup;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
     Parser for Tagged Registered Extension (TRE) data.
@@ -94,7 +99,24 @@ public class TreParser {
     }
 
     private void unmarshal(final InputStream inputStream) throws JAXBException {
-        tresStructure = (Tres) getUnmarshaller().unmarshal(inputStream);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        dbf.setExpandEntityReferences(false);
+
+        Document document;
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            document = db.parse(inputStream);
+        } catch (SAXException | IOException e) {
+            LOG.warn("Error parsing input. Set log to DEBUG for more information.");
+            LOG.debug("Error parsing input. {}", e);
+            throw new JAXBException(e);
+        } catch (ParserConfigurationException e) {
+            LOG.error("Error creating DocumentBuilder. Set log to DEBUG for more information.");
+            LOG.debug("Error creating DocumentBuilder. {}", e);
+            throw new JAXBException(e);
+        }
+        tresStructure = (Tres) getUnmarshaller().unmarshal(document);
     }
 
     private Unmarshaller getUnmarshaller() throws JAXBException {
