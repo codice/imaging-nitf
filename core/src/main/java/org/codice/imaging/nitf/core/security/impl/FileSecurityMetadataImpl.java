@@ -33,12 +33,7 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
     }
 
     /**
-        Set the file copy number.
-        <p>
-        "This field shall contain the copy number of the file. If this field is all BCS zeros (0x30),
-        it shall imply that there is no tracking of numbered file copies."
-
-        @param copyNumber the copy number
+     * {@inheritDoc}
     */
     public final void setFileCopyNumber(final String copyNumber) {
         nitfFileCopyNumber = copyNumber;
@@ -53,13 +48,8 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
     }
 
     /**
-        Set the file number of copies.
-        <p>
-        "This field shall contain the total number of copies of the file. If this field is all BCS
-        zeros (0x30), it shall imply that there is no tracking of numbered file copies."
-
-        @param numberOfCopies the number of copies.
-    */
+     * {@inheritDoc}
+     */
     public final void setFileNumberOfCopies(final String numberOfCopies) {
         nitfFileNumberOfCopies = numberOfCopies;
     }

@@ -36,6 +36,17 @@ public interface FileSecurityMetadata extends SecurityMetadata {
     String getFileCopyNumber();
 
     /**
+     * Set the file copy number.
+     * <p>
+     * "This field shall contain the copy number of the file. If this field is
+     * all BCS zeros (0x30), it shall imply that there is no tracking of
+     * numbered file copies."
+     *
+     * @param copyNumber the copy number
+     */
+    void setFileCopyNumber(final String copyNumber);
+
+    /**
      Return the file number of copies.
      <p>
      "This field shall contain the total number of copies of the file. If this field is all BCS
@@ -47,4 +58,15 @@ public interface FileSecurityMetadata extends SecurityMetadata {
      @return the number of copies.
      */
     String getFileNumberOfCopies();
+
+    /**
+     * Set the file number of copies.
+     * <p>
+     * "This field shall contain the total number of copies of the file. If this
+     * field is all BCS zeros (0x30), it shall imply that there is no tracking
+     * of numbered file copies."
+     *
+     * @param numberOfCopies the number of copies.
+     */
+    void setFileNumberOfCopies(final String numberOfCopies);
 }
