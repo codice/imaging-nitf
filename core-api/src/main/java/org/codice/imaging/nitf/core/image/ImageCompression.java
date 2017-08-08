@@ -212,7 +212,17 @@ public enum ImageCompression {
      * version 1.1, table 16. This is only valid if the image segment holds
      * motion imagery.
      */
-    JPEG2000TIME ("CB");
+    JPEG2000TIME ("CB"),
+
+    /**
+     * ZLIB compression.
+     */
+    ZLIB ("CC"),
+
+    /**
+     * ZLIB compression with masked blocks.
+     */
+    ZLIBMASK ("MC");
 
     private final String textEquivalent;
 

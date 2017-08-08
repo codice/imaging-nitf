@@ -59,4 +59,12 @@ public class ImageCompressionTest {
         assertEquals("NC", ImageCompression.NOTCOMPRESSED.getTextEquivalent());
         assertEquals("NM", ImageCompression.NOTCOMPRESSEDMASK.getTextEquivalent());
     }
+
+    @Test
+    public void checkZLIB() {
+        assertEquals(ImageCompression.ZLIB, ImageCompression.getEnumValue("CC"));
+        assertEquals(ImageCompression.ZLIBMASK, ImageCompression.getEnumValue("MC"));
+        assertEquals("CC", ImageCompression.ZLIB.getTextEquivalent());
+        assertEquals("MC", ImageCompression.ZLIBMASK.getTextEquivalent());
+    }
 }
