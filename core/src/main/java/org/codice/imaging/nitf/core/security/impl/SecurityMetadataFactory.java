@@ -52,6 +52,7 @@ public final class SecurityMetadataFactory {
      * depending on application needs. In particular, you probably need to set the security classification system to
      * reflect your national needs if you care about these fields.
      *
+     * @deprecated use SecurityMetadataBuilder20() or SecurityMetadataBuilder21(fileType) instead.
      * @param fileType the type of NITF file to generate security metadata for
      * @return defaulted metadata structure
      */
