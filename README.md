@@ -1,6 +1,7 @@
 imaging-nitf
 ============
 [![Build Status](https://travis-ci.org/codice/imaging-nitf.svg?branch=master)](https://travis-ci.org/codice/imaging-nitf)
+[![CLA assistant](https://cla-assistant.io/readme/badge/codice/imaging-nitf)](https://cla-assistant.io/codice/imaging-nitf) 
 
 Pure Java National Imagery Transmission Format (NITF) file support.
 
