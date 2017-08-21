@@ -11,17 +11,20 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ *
+ */
 package org.codice.imaging.nitf.core.tre.impl;
 
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
-    Tagged registered extension (TRE).
-*/
-class TreImpl extends TreEntryListImpl implements Tre {
+ * Tagged registered extension (TRE).
+ */
+class TreImpl extends TreGroupImpl implements Tre {
+
     private String prefix = null;
+    private String name = null;
     private byte[] rawData = null;
     private final TreSource mSource;
 
@@ -32,8 +35,17 @@ class TreImpl extends TreEntryListImpl implements Tre {
      * @param source the TreSource associated with this TRE
      */
     TreImpl(final String tag, final TreSource source) {
-        super(tag);
+        name = tag;
         mSource = source;
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getName() {
+        return name;
     }
 
     /**
@@ -76,4 +88,8 @@ class TreImpl extends TreEntryListImpl implements Tre {
         return mSource;
     }
 
+    @Override
+    public final String toString() {
+        return getName();
+    }
 }
