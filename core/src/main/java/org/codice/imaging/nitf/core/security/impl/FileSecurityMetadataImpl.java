@@ -19,10 +19,11 @@ import org.codice.imaging.nitf.core.security.FileSecurityMetadata;
 /**
  * File security metadata.
  * <p>
- * The security metadata at the file level is the same as the subheaders, except for two extra fields (copy number, and
- * number of copies).
+ * The security metadata at the file level is the same as the subheaders, except
+ * for two extra fields (copy number, and number of copies).
  */
 class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecurityMetadata {
+
     private String nitfFileCopyNumber = null;
     private String nitfFileNumberOfCopies = null;
 
@@ -33,13 +34,14 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
     }
 
     /**
-        Set the file copy number.
-        <p>
-        "This field shall contain the copy number of the file. If this field is all BCS zeros (0x30),
-        it shall imply that there is no tracking of numbered file copies."
-
-        @param copyNumber the copy number
-    */
+     * Set the file copy number.
+     * <p>
+     * "This field shall contain the copy number of the file. If this field is
+     * all BCS zeros (0x30), it shall imply that there is no tracking of
+     * numbered file copies."
+     *
+     * @param copyNumber the copy number
+     */
     public final void setFileCopyNumber(final String copyNumber) {
         nitfFileCopyNumber = copyNumber;
     }
@@ -53,13 +55,14 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
     }
 
     /**
-        Set the file number of copies.
-        <p>
-        "This field shall contain the total number of copies of the file. If this field is all BCS
-        zeros (0x30), it shall imply that there is no tracking of numbered file copies."
-
-        @param numberOfCopies the number of copies.
-    */
+     * Set the file number of copies.
+     * <p>
+     * "This field shall contain the total number of copies of the file. If this
+     * field is all BCS zeros (0x30), it shall imply that there is no tracking
+     * of numbered file copies."
+     *
+     * @param numberOfCopies the number of copies.
+     */
     public final void setFileNumberOfCopies(final String numberOfCopies) {
         nitfFileNumberOfCopies = numberOfCopies;
     }
@@ -83,4 +86,3 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
         return len;
     }
 };
-

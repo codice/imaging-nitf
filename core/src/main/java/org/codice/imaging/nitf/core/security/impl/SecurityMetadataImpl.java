@@ -26,7 +26,7 @@ import static org.codice.imaging.nitf.core.security.impl.SecurityConstants.XSDEV
  */
 class SecurityMetadataImpl implements SecurityMetadata {
 
-    private FileType nitfFileType = FileType.NITF_TWO_ONE;
+    private FileType nitfFileType = FileType.UNKNOWN;
 
     private SecurityClassification securityClassification = SecurityClassification.UNKNOWN;
     private String nitfSecurityClassificationSystem = null;
