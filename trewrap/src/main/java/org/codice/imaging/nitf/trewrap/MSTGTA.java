@@ -144,12 +144,11 @@ public class MSTGTA extends FlatTreWrapper {
     /**
      * Get Pre-Planned Target Type (TGT_TYPE) as an encoded field.
      *
-     * <p>
      * <ul>
      * <li>0 = point
      * <li>1 = strip
      * <li>2 = area
-     * </ul><p>
+     * </ul>
      *
      * @return target type, or an empty string if no information is available
      * @throws NitfFormatException if there was a problem during parsing.
@@ -161,12 +160,11 @@ public class MSTGTA extends FlatTreWrapper {
     /**
      * Get decoded Pre-Planned Target Type (TGT_TYPE) as an encoded field.
      *
-     * <p>
      * <ul>
      * <li>0 = point
      * <li>1 = strip
      * <li>2 = area
-     * </ul><p>
+     * </ul>
      *
      * @return target type as a decoded string, or "unknown" if not known.
      * @throws NitfFormatException if there was a problem during parsing.
@@ -187,14 +185,13 @@ public class MSTGTA extends FlatTreWrapper {
     /**
      * Get the Pre-Planned Collection Technique (TGT_COLL) encoded.
      *
-     * <p>
      * <ul>
      * <li>0 = vertical
      * <li>1 = forward oblique
      * <li>2 = right oblique
      * <li>3 = left oblique
      * <li>4 = best possible
-     * </ul><p>
+     * </ul>
      *
      * @return the collection technique as an encoded value.
      * @throws NitfFormatException if there was a problem during parsing.
@@ -206,14 +203,13 @@ public class MSTGTA extends FlatTreWrapper {
     /**
      * Get the Pre-Planned Collection Technique (TGT_COLL) decoded.
      *
-     * <p>
      * <ul>
      * <li>0 = vertical
      * <li>1 = forward oblique
      * <li>2 = right oblique
      * <li>3 = left oblique
      * <li>4 = best possible
-     * </ul><p>
+     * </ul>
      *
      * @return the collection technique as a decoded string, or "unknown"
      * @throws NitfFormatException if there was a problem during parsing.
@@ -242,7 +238,7 @@ public class MSTGTA extends FlatTreWrapper {
      * character numeric code classifies the function performed by a facility.
      * The data code is based on an initial breakdown of targets into nine major
      * groups, identified by the first digit:
-     * <p>
+     *
      * <ul>
      * <li>1 Raw Materials
      * <li>2 Basic Processing
@@ -251,9 +247,9 @@ public class MSTGTA extends FlatTreWrapper {
      * <li>5 End Products (civilian)
      * <li>6 End Products (military)
      * <li>7 Places, Population, Gov‘t
-     * <li>8 Air & Missile Facilities
+     * <li>8 Air &amp; Missile Facilities
      * <li>9 Military Troop Facilities
-     * </ul><p>
+     * </ul>
      * Each successive numeric character, reading from left to right, extends or
      * delineates the definition further.
      *
