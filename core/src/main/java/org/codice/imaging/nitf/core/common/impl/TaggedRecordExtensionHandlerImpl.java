@@ -23,21 +23,21 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
-import org.codice.imaging.nitf.core.tre.impl.TreCollectionImpl;
+import org.codice.imaging.nitf.core.tre.impl.TreCollectionBuilder;
 
 /**
  * Common data elements for NITF segments and file header.
  */
 public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordExtensionHandler {
 
-    private final TreCollectionImpl treCollection = new TreCollectionImpl();
+    private final TreCollectionBuilder treCollectionBuilder = new TreCollectionBuilder();
 
     /**
      * {@inheritDoc}
      */
     @Override
     public final TreCollection getTREsRawStructure() {
-        return treCollection;
+        return treCollectionBuilder.get();
     }
 
     /**
@@ -53,8 +53,8 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
     @Override
     public final Map<String, String> getTREsFlat() {
         Map<String, String> tresFlat = new TreeMap<>();
-        for (String treName : treCollection.getUniqueNamesOfTRE()) {
-            List<Tre> tresWithName = treCollection.getTREsWithName(treName);
+        for (String treName : treCollectionBuilder.get().getUniqueNamesOfTRE()) {
+            List<Tre> tresWithName = treCollectionBuilder.get().getTREsWithName(treName);
             if (tresWithName.size() == 1) {
                 flattenOnlyTre(tresWithName.get(0), tresFlat);
             } else {
@@ -138,6 +138,6 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
      * @param tresToAdd the TRE collection to add.
      */
     public final void mergeTREs(final TreCollection tresToAdd) {
-        treCollection.add(tresToAdd);
+        treCollectionBuilder.add(tresToAdd);
     }
 }

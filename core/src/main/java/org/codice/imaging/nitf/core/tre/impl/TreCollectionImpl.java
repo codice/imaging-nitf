@@ -15,6 +15,7 @@
 package org.codice.imaging.nitf.core.tre.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.codice.imaging.nitf.core.tre.Tre;
@@ -24,8 +25,12 @@ import org.codice.imaging.nitf.core.tre.TreSource;
 /**
     Collection of TREs.
 */
-public class TreCollectionImpl implements TreCollection {
-    private final List<Tre> treCollectionEntries = new ArrayList<>();
+class TreCollectionImpl implements TreCollection {
+    private List<Tre> treCollectionEntries;
+
+    TreCollectionImpl(final List<Tre> entries) {
+        treCollectionEntries = Collections.unmodifiableList(entries);
+    }
 
     /**
      *
@@ -41,35 +46,6 @@ public class TreCollectionImpl implements TreCollection {
      * {@inheritDoc}
      */
     @Override
-    public final void add(final Tre tre) {
-        treCollectionEntries.add(tre);
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public final void add(final TreCollection collectionToAdd) {
-        if (collectionToAdd != null) {
-            treCollectionEntries.addAll(collectionToAdd.getTREs());
-        }
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public final boolean remove(final Tre tre) {
-        return treCollectionEntries.remove(tre);
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
     public final List<String> getUniqueNamesOfTRE() {
         List<String> treNames = new ArrayList<String>();
         for (Tre tre : treCollectionEntries) {
@@ -78,7 +54,7 @@ public class TreCollectionImpl implements TreCollection {
                 treNames.add(treName);
             }
         }
-        return treNames;
+        return Collections.unmodifiableList(treNames);
     }
 
     /**
@@ -94,7 +70,7 @@ public class TreCollectionImpl implements TreCollection {
                 tres.add(tre);
             }
         }
-        return tres;
+        return Collections.unmodifiableList(tres);
     }
 
     /**
@@ -126,6 +102,6 @@ public class TreCollectionImpl implements TreCollection {
                 tres.add(tre);
             }
         }
-        return tres;
+        return Collections.unmodifiableList(tres);
     }
 }

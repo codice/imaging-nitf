@@ -49,24 +49,27 @@ public class TreCollectionTest {
 
     @Test
     public void checkToString() {
-        TreCollection collection = new TreCollectionImpl();
+        TreCollection collection = TreCollectionBuilder.getEmptyCollection();
         assertEquals("TRE Collection", collection.toString());
     }
 
     @Test
     public void addRemove() {
-        TreCollection collection = new TreCollectionImpl();
+        TreCollectionBuilder builder = new TreCollectionBuilder();
         Tre tre1 = TreFactory.getDefault("One", TreSource.TreOverflowDES);
-        collection.add(tre1);
+        builder.add(tre1);
+        TreCollection collection = builder.get();
         assertEquals(1, collection.getTREs().size());
         assertEquals(1, collection.getTREsWithName("One").size());
         assertEquals(tre1, collection.getTREs().get(0));
         Tre tre2 = TreFactory.getDefault("Two", TreSource.TreOverflowDES);
-        collection.add(tre2);
+        builder.add(tre2);
+        collection = builder.get();
         assertEquals(2, collection.getTREs().size());
         assertEquals(1, collection.getTREsWithName("One").size());
         assertEquals(1, collection.getTREsWithName("Two").size());
-        assertTrue(collection.remove(tre1));
+        assertTrue(builder.remove(tre1));
+        collection = builder.get();
         assertEquals(1, collection.getTREs().size());
         assertEquals(0, collection.getTREsWithName("One").size());
         assertEquals(1, collection.getTREsWithName("Two").size());

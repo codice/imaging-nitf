@@ -25,9 +25,9 @@ import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.tre.impl.TreCollectionImpl;
 import org.codice.imaging.nitf.core.tre.impl.TreCollectionParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
+import org.codice.imaging.nitf.core.tre.impl.TreCollectionBuilder;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -52,12 +52,12 @@ public class TaggedRecordExtensionHandlerTest {
         TreCollection parseResult = parser.parse(nitfReader, 287, TreSource.ImageExtendedSubheaderData);
         assertEquals(1, parseResult.getTREs().size());
         Tre histoa = parseResult.getTREsWithName("HISTOA").get(0);
-        TreCollection col = new TreCollectionImpl();
-        col.add(histoa);
+        TreCollectionBuilder colBuilder = new TreCollectionBuilder();
+        colBuilder.add(histoa);
 
         TaggedRecordExtensionHandlerImpl treHandler = new TaggedRecordExtensionHandlerTestClass();
 
-        treHandler.mergeTREs(col);
+        treHandler.mergeTREs(colBuilder.get());
 
         Map<String, String> flatTres = treHandler.getTREsFlat();
         assertEquals("WV02AA", flatTres.get("HISTOA_SYSTYPE"));

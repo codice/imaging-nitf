@@ -11,7 +11,8 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ *
+ */
 package org.codice.imaging.nitf.core.graphic.impl;
 
 import java.util.LinkedList;
@@ -23,8 +24,8 @@ import org.codice.imaging.nitf.core.graphic.GraphicColour;
 import org.codice.imaging.nitf.core.graphic.GraphicSegment;
 import org.codice.imaging.nitf.core.security.SecurityClassification;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
-import org.codice.imaging.nitf.core.tre.impl.TreCollectionImpl;
 import org.codice.imaging.nitf.core.tre.TreSource;
+import org.codice.imaging.nitf.core.tre.impl.TreCollectionBuilder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -36,8 +37,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
 public class GraphicSegmentParserTest {
+
     private ParseStrategy strategy;
     private NitfReader nitfReader;
     private final LinkedList<String> stringValues = new LinkedList<>();
@@ -121,7 +122,8 @@ public class GraphicSegmentParserTest {
         when(nitfReader.readBytesAsInteger(any(Integer.class))).thenAnswer(a -> intValues.pop());
 
         strategy = mock(ParseStrategy.class);
-        when(strategy.parseTREs(any(NitfReader.class), any(Integer.class), eq(TreSource.GraphicExtendedSubheaderData))).thenReturn(new TreCollectionImpl());
+        when(strategy.parseTREs(any(NitfReader.class), any(Integer.class), eq(TreSource.GraphicExtendedSubheaderData)))
+                .thenReturn(TreCollectionBuilder.getEmptyCollection());
     }
 
     @Test

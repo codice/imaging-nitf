@@ -50,7 +50,7 @@ public class TreCollectionParser {
      * @throws NitfFormatException if the TRE parsing fails (e.g. end of file or TRE that is clearly incorrect).
      */
     public final TreCollection parse(final NitfReader reader, final int treLength, final TreSource sourceSegment) throws NitfFormatException {
-        TreCollection treCollection = new TreCollectionImpl();
+        TreCollectionBuilder treCollectionBuilder = new TreCollectionBuilder();
         int bytesRead = 0;
         while (bytesRead < treLength) {
             String tag = reader.readBytes(TAG_LENGTH);
@@ -60,12 +60,12 @@ public class TreCollectionParser {
             Tre tre = treParser.parseOneTre(reader, tag, fieldLength, sourceSegment);
 
             if (tre != null) {
-                treCollection.add(tre);
+                treCollectionBuilder.add(tre);
             }
 
             bytesRead += fieldLength;
         }
-        return treCollection;
+        return treCollectionBuilder.get();
     }
 
     /**

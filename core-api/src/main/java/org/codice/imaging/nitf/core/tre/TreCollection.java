@@ -14,28 +14,6 @@ public interface TreCollection {
     List<Tre> getTREs();
 
     /**
-     * Add a TRE to the collection.
-     *
-     * @param tre the TRE to add to the collection.
-     */
-    void add(Tre tre);
-
-    /**
-     * Add multiple TREs to the collection.
-     *
-     * @param collectionToAdd the TREs to add.
-     */
-    void add(TreCollection collectionToAdd);
-
-    /**
-     * Remove the specified TRE.
-     *
-     * @param tre the TRE to remove (must be from the list)
-     * @return true if the TRE was removed, otherwise false.
-     */
-    boolean remove(Tre tre);
-
-    /**
      * Get the names of the TREs in the collection.
      * <p>
      * This method returns a unique list of TRE names. That list can be
