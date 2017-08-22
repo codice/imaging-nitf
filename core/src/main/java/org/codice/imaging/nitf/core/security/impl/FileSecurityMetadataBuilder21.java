@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.core.common.FileType;
  *
  * A simple example of its use is:
  * <pre>{@code
- *      FileSecurityMetadataBuilder21 builder = new FileSecurityMetadataBuilder21(FileType.NITF_TWO_ONE);
+ *      FileSecurityMetadataBuilder21 builder = FileSecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE);
  *      builder.securityClassification(SecurityClassification.UNCLASSIFIED);
  *      FileSecurityMetadata securityMetadata = builder.get();
  * }</pre>
@@ -34,7 +34,7 @@ import org.codice.imaging.nitf.core.common.FileType;
  * The API supports method chaining for a more fluent style, which is useful for
  * more involved metadata requirements:
  * <pre>{@code
- *      FileSecurityMetadataBuilder21 builder = new FileSecurityMetadataBuilder21(FileType.NITF_TWO_ONE);
+ *      FileSecurityMetadataBuilder21 builder = FileSecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE);
  *      builder.securityClassification(SecurityClassification.RESTRICTED)
  *              .fileCopyNumber("00001")
  *              .securityClassificationSystem("AS")
@@ -60,26 +60,35 @@ public final class FileSecurityMetadataBuilder21
         extends FileSecurityMetadataBuilder<FileSecurityMetadataBuilder21, SecurityMetadataBuilder21>
         implements Supplier<FileSecurityMetadata> {
 
-    /**
-     * Constructor.
-     *
-     * @param fileType the type of file (NITF 2.1 or NSIF 1.0)
-     */
-    public FileSecurityMetadataBuilder21(final FileType fileType) {
-        super.instance = this;
-        builderInstance = new SecurityMetadataBuilder21(fileType);
+    private FileSecurityMetadataBuilder21() {
     }
 
     /**
-     * Constructor.
+     * Constructor method.
+     *
+     * @param fileType the type of file (NITF 2.1 or NSIF 1.0)
+     * @return new instance of this FileSecurityMetadataBuilder21
+     */
+    public static FileSecurityMetadataBuilder21 newInstance(final FileType fileType) {
+        FileSecurityMetadataBuilder21 builder = new FileSecurityMetadataBuilder21();
+        builder.instance = builder;
+        builder.builderInstance = SecurityMetadataBuilder21.newInstance(fileType);
+        return builder;
+    }
+
+    /**
+     * Copy constructor method.
      *
      * @param securityMetadata base security metadata.
+     * @return new instance of this FileSecurityMetadataBuilder21
      */
-    public FileSecurityMetadataBuilder21(final FileSecurityMetadata securityMetadata) {
-        super.instance = this;
-        builderInstance = new SecurityMetadataBuilder21(securityMetadata);
-        nitfFileCopyNumber = securityMetadata.getFileCopyNumber();
-        nitfFileNumberOfCopies = securityMetadata.getFileNumberOfCopies();
+    public static FileSecurityMetadataBuilder21 newInstance(final FileSecurityMetadata securityMetadata) {
+        FileSecurityMetadataBuilder21 builder = new FileSecurityMetadataBuilder21();
+        builder.instance = builder;
+        builder.builderInstance = SecurityMetadataBuilder21.newInstance(securityMetadata);
+        builder.fileCopyNumber(securityMetadata.getFileCopyNumber());
+        builder.fileNumberOfCopies(securityMetadata.getFileNumberOfCopies());
+        return builder;
     }
 
     /**

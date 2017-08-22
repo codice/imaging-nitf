@@ -34,7 +34,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilder21() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE);
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE);
         builder.securityClassification(SecurityClassification.UNCLASSIFIED);
         SecurityMetadata securityMetadata = builder.get();
         assertNotNull(securityMetadata);
@@ -43,18 +43,18 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilder21Copy() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE);
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE);
         builder.securityClassification(SecurityClassification.UNCLASSIFIED);
         SecurityMetadata securityMetadata = builder.get();
         assertNotNull(securityMetadata);
-        SecurityMetadataBuilder21 builderCopy = new SecurityMetadataBuilder21(securityMetadata);
+        SecurityMetadataBuilder21 builderCopy = SecurityMetadataBuilder21.newInstance(securityMetadata);
         SecurityMetadata securityMetadata2 = builderCopy.get();
         checkNitf21SecurityMetadataUnclasAndEmpty(securityMetadata2);
     }
 
     @Test
     public void checkSecurityMetadataBuilder21CopyAll() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE);
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE);
         builder.securityClassification(SecurityClassification.RESTRICTED)
                 .securityClassificationSystem("AS")
                 .downgrade("F")
@@ -73,7 +73,7 @@ public class SecurityMetadataBuilderTest {
                 .classificationAuthority("Some Person");
         SecurityMetadata securityMetadata = builder.get();
         assertNotNull(securityMetadata);
-        SecurityMetadataBuilder21 builderCopy = new SecurityMetadataBuilder21(securityMetadata);
+        SecurityMetadataBuilder21 builderCopy = SecurityMetadataBuilder21.newInstance(securityMetadata);
         SecurityMetadata securityMetadata2 = builderCopy.get();
         assertEquals(SecurityClassification.RESTRICTED, securityMetadata2.getSecurityClassification());
         assertEquals("AS", securityMetadata2.getSecurityClassificationSystem());
@@ -95,7 +95,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilder20Copy() {
-        SecurityMetadataBuilder20 builder = new SecurityMetadataBuilder20();
+        SecurityMetadataBuilder20 builder = SecurityMetadataBuilder20.newInstance();
         builder.securityClassification(SecurityClassification.RESTRICTED)
                 .codewords("AB CD")
                 .controlAndHandling("WITH CARE")
@@ -106,7 +106,7 @@ public class SecurityMetadataBuilderTest {
                 .securityControlNumber("BOGUS");
         SecurityMetadata securityMetadata = builder.get();
         assertNotNull(securityMetadata);
-        SecurityMetadataBuilder20 builderCopy = new SecurityMetadataBuilder20(securityMetadata);
+        SecurityMetadataBuilder20 builderCopy = SecurityMetadataBuilder20.newInstance(securityMetadata);
         SecurityMetadata securityMetadata2 = builderCopy.get();
         assertEquals("AB CD", securityMetadata2.getCodewords());
         assertEquals("WITH CARE", securityMetadata2.getControlAndHandling());
@@ -137,7 +137,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderClassificationSystem() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .securityClassificationSystem("AS");
         SecurityMetadata securityMetadata = builder.get();
@@ -148,7 +148,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderCodewords() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .codewords("abc123");
         SecurityMetadata securityMetadata = builder.get();
@@ -158,7 +158,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderControlAndHandling() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .controlAndHandling("AZ,BY");
         SecurityMetadata securityMetadata = builder.get();
@@ -168,7 +168,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderReleaseInstructions() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .releaseInstructions("AS CA NZ");
         SecurityMetadata securityMetadata = builder.get();
@@ -178,7 +178,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderDeclassificationDate() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .declassificationType("DD")
                 .declassificationDate("20201020");
@@ -190,7 +190,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderDeclassificationExemption() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .declassificationType("X")
                 .declassificationExemption("X251");
@@ -202,7 +202,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderDowngrade() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .declassificationType("GE")
                 .downgrade("R")
@@ -218,7 +218,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderClassificationAuthority() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .classificationAuthorityType("M")
                 .classificationAuthority("Derive-Multiple")
@@ -234,7 +234,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderControlNumber() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE)
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE)
                 .securityClassification(SecurityClassification.UNCLASSIFIED)
                 .securityControlNumber("Obfuscation");
         SecurityMetadata securityMetadata = builder.get();
@@ -244,7 +244,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilderNSIF() {
-        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NSIF_ONE_ZERO);
+        SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NSIF_ONE_ZERO);
         builder.securityClassification(SecurityClassification.UNCLASSIFIED);
         SecurityMetadata securityMetadata = builder.get();
         assertNotNull(securityMetadata);
@@ -254,7 +254,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilder20() {
-        SecurityMetadataBuilder20 builder = new SecurityMetadataBuilder20();
+        SecurityMetadataBuilder20 builder = SecurityMetadataBuilder20.newInstance();
         builder.securityClassification(SecurityClassification.UNCLASSIFIED);
         SecurityMetadata securityMetadata = builder.get();
         assertNotNull(securityMetadata);
@@ -264,7 +264,7 @@ public class SecurityMetadataBuilderTest {
 
     @Test
     public void checkSecurityMetadataBuilder20Downgrade() {
-        SecurityMetadataBuilder20 builder = new SecurityMetadataBuilder20();
+        SecurityMetadataBuilder20 builder = SecurityMetadataBuilder20.newInstance();
         builder.securityClassification(SecurityClassification.UNCLASSIFIED)
                 .downgradeDateOrSpecialCase("999998")
                 .downgradeEvent("When its good.");
