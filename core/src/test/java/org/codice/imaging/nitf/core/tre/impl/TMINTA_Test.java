@@ -38,10 +38,10 @@ public class TMINTA_Test extends SharedTreTest {
         Tre tminta = parseTRE(testData, expectedLength, treTag);
         assertEquals(2, tminta.getEntries().size());
         assertEquals(1, tminta.getIntValue("NUM_TIME_INT"));
-        assertEquals(1, tminta.getEntry("TIME INTERVALS").getGroups().size());
-        assertEquals(2, tminta.getEntry("TIME INTERVALS").getGroups().get(0).getIntValue("TIME_INTERVAL_INDEX"));
-        assertEquals("20160819201946.802259026", tminta.getEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("START_TIMESTAMP"));
-        assertEquals("20160819201948.728872709", tminta.getEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("END_TIMESTAMP"));
+        assertEquals(1, tminta.getGroupListEntry("TIME INTERVALS").getGroups().size());
+        assertEquals(2, tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(0).getIntValue("TIME_INTERVAL_INDEX"));
+        assertEquals("20160819201946.802259026", tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("START_TIMESTAMP"));
+        assertEquals("20160819201948.728872709", tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("END_TIMESTAMP"));
     }
 
     @Test
@@ -53,12 +53,12 @@ public class TMINTA_Test extends SharedTreTest {
         Tre tminta = parseTRE(testData, expectedLength, treTag);
         assertEquals(2, tminta.getEntries().size());
         assertEquals(2, tminta.getIntValue("NUM_TIME_INT"));
-        assertEquals(2, tminta.getEntry("TIME INTERVALS").getGroups().size());
-        assertEquals(3, tminta.getEntry("TIME INTERVALS").getGroups().get(0).getIntValue("TIME_INTERVAL_INDEX"));
-        assertEquals("20160819201946.802259026", tminta.getEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("START_TIMESTAMP"));
-        assertEquals("20160819201948.728872709", tminta.getEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("END_TIMESTAMP"));
-        assertEquals(4, tminta.getEntry("TIME INTERVALS").getGroups().get(1).getIntValue("TIME_INTERVAL_INDEX"));
-        assertEquals("20160819203319.690984241", tminta.getEntry("TIME INTERVALS").getGroups().get(1).getFieldValue("START_TIMESTAMP"));
-        assertEquals("20160819203321.557468116", tminta.getEntry("TIME INTERVALS").getGroups().get(1).getFieldValue("END_TIMESTAMP"));
+        assertEquals(2, tminta.getGroupListEntry("TIME INTERVALS").getGroups().size());
+        assertEquals(3, tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(0).getIntValue("TIME_INTERVAL_INDEX"));
+        assertEquals("20160819201946.802259026", tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("START_TIMESTAMP"));
+        assertEquals("20160819201948.728872709", tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(0).getFieldValue("END_TIMESTAMP"));
+        assertEquals(4, tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(1).getIntValue("TIME_INTERVAL_INDEX"));
+        assertEquals("20160819203319.690984241", tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(1).getFieldValue("START_TIMESTAMP"));
+        assertEquals("20160819203321.557468116", tminta.getGroupListEntry("TIME INTERVALS").getGroups().get(1).getFieldValue("END_TIMESTAMP"));
     }
 }

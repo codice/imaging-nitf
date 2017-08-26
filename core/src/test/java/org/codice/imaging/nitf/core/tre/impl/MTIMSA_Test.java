@@ -48,7 +48,7 @@ public class MTIMSA_Test extends SharedTreTest {
         assertEquals(1, mtimsa.getIntValue("DT_SIZE"));
         assertEquals(16909060, mtimsa.getIntValue("NUMBER_FRAMES"));
         assertEquals(1, mtimsa.getIntValue("NUMBER_DT"));
-        TreGroup deltaTimes = mtimsa.getEntry("DELTA_TIME").getGroups().get(0);
+        TreGroup deltaTimes = mtimsa.getGroupListEntry("DELTA_TIME").getGroups().get(0);
         assertEquals(1, deltaTimes.getEntries().size());
         assertEquals(78, deltaTimes.getIntValue("DT"));
     }
@@ -66,7 +66,7 @@ public class MTIMSA_Test extends SharedTreTest {
         assertEquals(8, mtimsa.getLongValue("DT_SIZE"));
         assertEquals(16909060, mtimsa.getLongValue("NUMBER_FRAMES"));
         assertEquals(1, mtimsa.getLongValue("NUMBER_DT"));
-        TreGroup deltaTimes = mtimsa.getEntry("DELTA_TIME").getGroups().get(0);
+        TreGroup deltaTimes = mtimsa.getGroupListEntry("DELTA_TIME").getGroups().get(0);
         assertEquals(1, deltaTimes.getEntries().size());
         assertEquals(0x7FFFFFFFFFFFFFFEL, deltaTimes.getLongValue("DT"));
     }

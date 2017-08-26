@@ -43,12 +43,12 @@ public class MTIMFA_Test extends SharedTreTest {
         assertEquals(3, mtimfa.getIntValue("CAMERA_SET_INDEX"));
         assertEquals(4, mtimfa.getIntValue("TIME_INTERVAL_INDEX"));
         assertEquals(1, mtimfa.getIntValue("NUM_CAMERAS_DEFINED"));
-        assertEquals(1, mtimfa.getEntry("CAMERAS").getGroups().size());
-        TreGroup camera0 = mtimfa.getEntry("CAMERAS").getGroups().get(0);
+        assertEquals(1, mtimfa.getGroupListEntry("CAMERAS").getGroups().size());
+        TreGroup camera0 = mtimfa.getGroupListEntry("CAMERAS").getGroups().get(0);
         assertEquals("dc4cb54e-1d97-4917-b13a-c25a880c7025", camera0.getFieldValue("CAMERA_ID"));
         assertEquals(1, camera0.getIntValue("NUM_TEMP_BLOCKS"));
-        assertEquals(1, camera0.getEntry("TEMPORAL_BLOCKS").getGroups().size());
-        TreGroup temporalBlock0 = camera0.getEntry("TEMPORAL_BLOCKS").getGroups().get(0);
+        assertEquals(1, camera0.getGroupListEntry("TEMPORAL_BLOCKS").getGroups().size());
+        TreGroup temporalBlock0 = camera0.getGroupListEntry("TEMPORAL_BLOCKS").getGroups().get(0);
         assertEquals("20160827145527.890672633", temporalBlock0.getFieldValue("START_TIMESTAMP"));
         assertEquals("20160827145615.123184020", temporalBlock0.getFieldValue("END_TIMESTAMP"));
         assertEquals(7, temporalBlock0.getIntValue("IMAGE_SEG_INDEX"));

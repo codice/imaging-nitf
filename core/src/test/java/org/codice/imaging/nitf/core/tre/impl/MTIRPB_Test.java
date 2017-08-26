@@ -21,8 +21,8 @@ import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -60,7 +60,7 @@ public class MTIRPB_Test {
         assertEquals("-43.20", mtirpb.getFieldValue("SQUINT_ANGLE"));
         assertEquals("9.99999", mtirpb.getFieldValue("COSGRZ"));
         assertEquals(1, mtirpb.getIntValue("NO_VALID_TARGETS"));
-        TreEntry targets = mtirpb.getEntry("TARGETS");
+        TreGroupListEntry targets = mtirpb.getGroupListEntry("TARGETS");
         assertEquals(1, targets.getGroups().size());
         TreGroup group0 = targets.getGroups().get(0);
         assertNotNull(group0);

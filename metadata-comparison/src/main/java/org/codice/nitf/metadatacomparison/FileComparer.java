@@ -51,6 +51,8 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
+import org.codice.imaging.nitf.core.tre.TreSimpleEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -503,17 +505,18 @@ public class FileComparer {
                         if (entry.getName().equals("ERR_BIAS") || entry.getName().equals("ERR_RAND")) {
                             continue;
                         }
-                        if (entry.getFieldValue() != null) {
+                        if (entry.isSimpleField() && ((TreSimpleEntry) entry).getFieldValue() != null) {
                             if (entry.getName().equals("LONG_OFF") || entry.getName().equals("LONG_SCALE") || entry.getName().equals("LAT_OFF") || entry.getName().equals("LAT_SCALE")) {
                                 // skip this, we're filtering it out for both cases
                             } else {
-                                Integer rpcValue = Integer.parseInt(entry.getFieldValue());
+                                Integer rpcValue = Integer.parseInt(((TreSimpleEntry) entry).getFieldValue());
                                 rpc.put(entry.getName(), rpcValue.toString());
                             }
-                        } else if ((entry.getGroups() != null) && (!entry.getGroups().isEmpty())) {
+                        } else if ((!entry.isSimpleField()) && (((TreGroupListEntry) entry).getGroups() != null) && (!((TreGroupListEntry) entry).getGroups().isEmpty())) {
                             StringBuilder builder = new StringBuilder();
-                            for (TreGroup group : entry.getGroups()) {
-                                for (TreEntry groupEntry : group.getEntries()) {
+                            for (TreGroup group : ((TreGroupListEntry)entry).getGroups()) {
+                                for (TreEntry te : group.getEntries()) {
+                                    TreSimpleEntry groupEntry = (TreSimpleEntry) te;
                                     try {
                                         double fieldVal = Double.parseDouble(groupEntry.getFieldValue());
                                         builder.append(cleanupNumberString(fieldVal));
@@ -574,7 +577,7 @@ public class FileComparer {
                 // if it has a prefix, its probably an old-style NITF metadata field
                 List<TreEntry> entries = tre.getEntries();
                 for (TreEntry entry: entries) {
-                    metadata.put(tre.getPrefix() + entry.getName(), rightTrim(entry.getFieldValue()));
+                    metadata.put(tre.getPrefix() + entry.getName(), rightTrim(((TreSimpleEntry) entry).getFieldValue()));
                 }
             } else if ("ICHIPB".equals(tre.getName())) {
                 outputICHIPmetadata(metadata, tre);
@@ -589,7 +592,7 @@ public class FileComparer {
                 // GDAL skips this one
                 continue;
             }
-            BigDecimal value = new BigDecimal(entry.getFieldValue().trim()).stripTrailingZeros();
+            BigDecimal value = new BigDecimal(((TreSimpleEntry) entry).getFieldValue().trim()).stripTrailingZeros();
             if ("ANAMRPH_CORR".equals(entry.getName())) {
                 // Special case for GDAL
                 metadata.put("ICHIP_ANAMORPH_CORR", value.toPlainString());
@@ -644,15 +647,15 @@ public class FileComparer {
     }
 
     private static void outputThisEntry(BufferedWriter out, TreEntry entry, int indentLevel) throws IOException {
-        if (entry.getFieldValue() != null) {
+        if (entry.isSimpleField()) {
             doIndent(out, indentLevel);
-            out.write("<field name=\"" + entry.getName() + "\" value=\"" + rightTrim(entry.getFieldValue()) + "\" />\n");
+            out.write("<field name=\"" + entry.getName() + "\" value=\"" + rightTrim(((TreSimpleEntry) entry).getFieldValue()) + "\" />\n");
         }
-        if ((entry.getGroups() != null) && (!entry.getGroups().isEmpty())) {
+        if (entry.hasGroups()) {
             doIndent(out, indentLevel);
-            out.write("<repeated name=\"" + entry.getName() + "\" number=\"" + entry.getGroups().size() + "\">\n");
+            out.write("<repeated name=\"" + entry.getName() + "\" number=\"" + ((TreGroupListEntry) entry).getGroups().size() + "\">\n");
             int i = 0;
-            for (TreGroup group : entry.getGroups()) {
+            for (TreGroup group : ((TreGroupListEntry) entry).getGroups()) {
                 doIndent(out, indentLevel + 1);
                 out.write(String.format("<group index=\"%d\">\n", i));
                 for (TreEntry groupEntry : group.getEntries()) {

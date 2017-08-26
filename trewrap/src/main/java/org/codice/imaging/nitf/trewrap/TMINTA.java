@@ -75,7 +75,7 @@ public class TMINTA extends TreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final int getTimeIntervalIndex(final int i) throws NitfFormatException {
-        List<TreGroup> intervals = mTre.getEntry("TIME INTERVALS").getGroups();
+        List<TreGroup> intervals = mTre.getGroupListEntry("TIME INTERVALS").getGroups();
         TreGroup interval = intervals.get(i);
         return interval.getIntValue("TIME_INTERVAL_INDEX");
     }
@@ -123,7 +123,7 @@ public class TMINTA extends TreWrapper {
     }
 
     private ZonedDateTime getTimestamp(final int i, final String fieldLabel) throws NitfFormatException {
-        List<TreGroup> intervals = mTre.getEntry("TIME INTERVALS").getGroups();
+        List<TreGroup> intervals = mTre.getGroupListEntry("TIME INTERVALS").getGroups();
         TreGroup interval = intervals.get(i);
         String startTimeStamp = interval.getFieldValue(fieldLabel);
         return parseAsZonedDateTime(TIMESTAMP_NANO_FORMATTER, startTimeStamp);

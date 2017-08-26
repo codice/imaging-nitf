@@ -40,11 +40,11 @@ public class CAMSDA_Test extends SharedTreTest {
         assertEquals(1, camsda.getIntValue("NUM_CAMERA_SETS"));
         assertEquals(1, camsda.getIntValue("NUM_CAMERA_SETS_IN_TRE"));
         assertEquals(1, camsda.getIntValue("FIRST_CAMERA_SET_IN_TRE"));
-        assertEquals(1, camsda.getEntry("CAMERA_SETS").getGroups().size());
-        TreGroup cameraSet1 = camsda.getEntry("CAMERA_SETS").getGroups().get(0);
+        assertEquals(1, camsda.getGroupListEntry("CAMERA_SETS").getGroups().size());
+        TreGroup cameraSet1 = camsda.getGroupListEntry("CAMERA_SETS").getGroups().get(0);
         assertEquals(1, cameraSet1.getIntValue("NUM_CAMERAS_IN_SET"));
-        assertEquals(1, cameraSet1.getEntry("CAMERAS").getGroups().size());
-        TreGroup camera1 = cameraSet1.getEntry("CAMERAS").getGroups().get(0);
+        assertEquals(1, cameraSet1.getGroupListEntry("CAMERAS").getGroups().size());
+        TreGroup camera1 = cameraSet1.getGroupListEntry("CAMERAS").getGroups().get(0);
         assertEquals("5b52e94f-5285-4374-8272-b29e7962af6e", camera1.getFieldValue("CAMERA_ID"));
         assertEquals("The first and only camera in the first and only camera set", camera1.getFieldValue("CAMERA_DESC").trim());
         assertEquals("ad955a2f-87ab-44c4-a918-8291074efcd6", camera1.getFieldValue("LAYER_ID"));

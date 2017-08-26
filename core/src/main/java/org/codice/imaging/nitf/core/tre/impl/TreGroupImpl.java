@@ -21,6 +21,8 @@ import java.util.List;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
+import org.codice.imaging.nitf.core.tre.TreSimpleEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,8 +90,34 @@ class TreGroupImpl implements TreGroup {
      * {@inheritDoc}
      */
     @Override
+    public final TreSimpleEntry getSimpleEntry(final String tagName) throws NitfFormatException {
+        for (TreEntry entry : entries) {
+            if (entry.getName().equals(tagName)) {
+                return (TreSimpleEntry) entry;
+            }
+        }
+        throw new NitfFormatException(String.format("Failed to look up %s", tagName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final TreGroupListEntry getGroupListEntry(final String tagName) throws NitfFormatException {
+        for (TreEntry entry : entries) {
+            if (entry.getName().equals(tagName) && (!entry.isSimpleField())) {
+                return (TreGroupListEntry) entry;
+            }
+        }
+        throw new NitfFormatException(String.format("Failed to look up %s", tagName));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final String getFieldValue(final String tagName) throws NitfFormatException {
-        TreEntry entry = getEntry(tagName);
+        TreSimpleEntry entry = getSimpleEntry(tagName);
         return entry.getFieldValue();
     }
 
@@ -115,11 +143,12 @@ class TreGroupImpl implements TreGroup {
     @Override
     public final BigInteger getBigIntegerValue(final String tagName) throws NitfFormatException {
         try {
-            TreEntry entry = getEntry(tagName);
-            if ("UINT".equals(entry.getDataType())) {
-                return new BigInteger(1, entry.getFieldValue().getBytes(StandardCharsets.ISO_8859_1));
+            TreSimpleEntry entry = getSimpleEntry(tagName);
+            TreSimpleEntry simpleEntry = (TreSimpleEntry) entry;
+            if ("UINT".equals(simpleEntry.getDataType())) {
+                return new BigInteger(1, simpleEntry.getFieldValue().getBytes(StandardCharsets.ISO_8859_1));
             } else {
-                return new BigInteger(entry.getFieldValue(), DECIMAL_BASE);
+                return new BigInteger(simpleEntry.getFieldValue(), DECIMAL_BASE);
             }
         } catch (NitfFormatException ex) {
             throw new NitfFormatException(String.format("Failed to look up %s as a numerical value", tagName));
@@ -132,7 +161,7 @@ class TreGroupImpl implements TreGroup {
     @Override
     public final double getDoubleValue(final String tagName) throws NitfFormatException {
         try {
-            TreEntry entry = getEntry(tagName);
+            TreSimpleEntry entry = getSimpleEntry(tagName);
             return Double.parseDouble(entry.getFieldValue());
         } catch (NitfFormatException ex) {
             throw new NitfFormatException(String.format("Failed to look up %s as double value", tagName));

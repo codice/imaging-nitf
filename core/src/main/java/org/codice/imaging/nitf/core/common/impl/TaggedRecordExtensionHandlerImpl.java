@@ -23,6 +23,8 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
+import org.codice.imaging.nitf.core.tre.TreSimpleEntry;
 import org.codice.imaging.nitf.core.tre.impl.TreCollectionBuilder;
 
 /**
@@ -90,7 +92,10 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
     private void flattenThisTre(final Tre thisTre, final int i, final Map<String, String> tresFlat) {
         List<TreEntry> treEntries = thisTre.getEntries();
         for (TreEntry treEntry : treEntries) {
-            tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treEntry.getName()), treEntry.getFieldValue().trim());
+            if (treEntry.isSimpleField()) {
+                TreSimpleEntry simpleEntry = (TreSimpleEntry) treEntry;
+                tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treEntry.getName()), simpleEntry.getFieldValue().trim());
+            }
         }
     }
 
@@ -103,13 +108,15 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
      */
     private void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String label) {
         if (treEntry.isSimpleField()) {
-            addValueToMap(tresFlat, label, treEntry);
+            TreSimpleEntry simpleEntry = (TreSimpleEntry) treEntry;
+            addValueToMap(tresFlat, label, simpleEntry);
         } else if (treEntry.hasGroups()) {
-            processTreGroups(treEntry, label, tresFlat);
+            TreGroupListEntry groupListEntry = (TreGroupListEntry) treEntry;
+            processTreGroups(groupListEntry, label, tresFlat);
         }
     }
 
-    private void processTreGroups(final TreEntry treEntry, final String parentName, final Map<String, String> tresFlat) {
+    private void processTreGroups(final TreGroupListEntry treEntry, final String parentName, final Map<String, String> tresFlat) {
         int groupCounter = 0;
         for (TreGroup group : treEntry.getGroups()) {
             groupCounter++;
@@ -127,8 +134,8 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
         }
     }
 
-    private void addValueToMap(final Map<String, String> tresFlat, final String key, final TreEntry treEntry) {
-        String value = treEntry.getFieldValue().trim();
+    private void addValueToMap(final Map<String, String> tresFlat, final String key, final TreSimpleEntry treSimpleEntry) {
+        String value = treSimpleEntry.getFieldValue().trim();
         tresFlat.put(key, value);
     }
 

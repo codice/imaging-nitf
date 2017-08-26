@@ -25,8 +25,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
-import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import org.junit.Test;
 
@@ -54,7 +54,7 @@ public class J2KLRA_Test {
         assertEquals("00001", j2klra.getFieldValue("NBANDS_O"));
         assertEquals("019", j2klra.getFieldValue("NLAYERS_O"));
 
-        TreEntry layer = j2klra.getEntry("LAYER");
+        TreGroupListEntry layer = j2klra.getGroupListEntry("LAYER");
         assertNotNull(layer);
         List<TreGroup> layerGroups = layer.getGroups();
         assertNotNull(layerGroups);
@@ -102,7 +102,7 @@ public class J2KLRA_Test {
         assertEquals("00001", j2klra.getFieldValue("NBANDS_O"));
         assertEquals("019", j2klra.getFieldValue("NLAYERS_O"));
 
-        TreEntry layer = j2klra.getEntry("LAYER");
+        TreGroupListEntry layer = j2klra.getGroupListEntry("LAYER");
         assertNotNull(layer);
         List<TreGroup> layerGroups = layer.getGroups();
         assertNotNull(layerGroups);

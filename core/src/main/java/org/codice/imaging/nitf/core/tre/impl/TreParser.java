@@ -11,7 +11,8 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- **/
+ *
+ */
 package org.codice.imaging.nitf.core.tre.impl;
 
 import static org.codice.imaging.nitf.core.tre.impl.TreConstants.AND_CONDITION;
@@ -47,6 +48,8 @@ import org.codice.imaging.nitf.core.schema.Tres;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
+import org.codice.imaging.nitf.core.tre.TreSimpleEntry;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +57,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
-    Parser for Tagged Registered Extension (TRE) data.
-*/
+ * Parser for Tagged Registered Extension (TRE) data.
+ */
 public class TreParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreParser.class);
@@ -80,12 +83,13 @@ public class TreParser {
     private static Tres tresStructure = null;
 
     /**
-        Constructor for TRE parser.
-        <p>
-        This does reasonably complex initialisation, so try to re-use it if possible.
-
-        @throws NitfFormatException if the initialisation fails.
-    */
+     * Constructor for TRE parser.
+     * <p>
+     * This does reasonably complex initialisation, so try to re-use it if
+     * possible.
+     *
+     * @throws NitfFormatException if the initialisation fails.
+     */
     public TreParser() throws NitfFormatException {
         try (InputStream is = getClass().getResourceAsStream("/nitf_spec.xml")) {
             unmarshal(is);
@@ -128,7 +132,8 @@ public class TreParser {
      * Add one or more TRE descriptor to the existing descriptor set.
      *
      * @param source the Source to read the TRE descriptors from
-     * @throws NitfFormatException if parsing fails (typically invalid descriptors)
+     * @throws NitfFormatException if parsing fails (typically invalid
+     * descriptors)
      */
     public final void registerAdditionalTREdescriptor(final Source source) throws NitfFormatException {
         try {
@@ -151,8 +156,8 @@ public class TreParser {
             if (treType == null) {
                 tre.setRawData(treBytes);
             } else {
-                NitfReader treReader =
-                        new NitfInputStreamReader(new ByteArrayInputStream(treBytes));
+                NitfReader treReader
+                        = new NitfInputStreamReader(new ByteArrayInputStream(treBytes));
                 TreParams parameters = new TreParams();
                 tre.setPrefix(treType.getMdPrefix());
                 TreGroupImpl group = parseTreComponents(treType.getFieldOrLoopOrIf(),
@@ -369,7 +374,8 @@ public class TreParser {
      *
      * @param handler the TRE handler to read TREs from
      * @param source the source (which has to match the header) of the TREs.
-     * @return byte array of serialised TREs - may be empty if there are no TREs.
+     * @return byte array of serialised TREs - may be empty if there are no
+     * TREs.
      * @throws NitfFormatException on TRE parsing problem.
      * @throws IOException on reading or writing problems.
      */
@@ -440,8 +446,10 @@ public class TreParser {
                 } else if (fieldLoopIf instanceof LoopType) {
                     LoopType loopType = (LoopType) fieldLoopIf;
                     TreEntry loopDataEntry = treGroup.getEntry(loopType.getName());
-                    for (TreGroup subGroup : loopDataEntry.getGroups()) {
-                        serializeFieldOrLoopOrIf(loopType.getFieldOrLoopOrIf(), subGroup, baos, params);
+                    if (loopDataEntry.hasGroups()) {
+                        for (TreGroup subGroup : ((TreGroupListEntry) loopDataEntry).getGroups()) {
+                            serializeFieldOrLoopOrIf(loopType.getFieldOrLoopOrIf(), subGroup, baos, params);
+                        }
                     }
                 } else if (fieldLoopIf instanceof IfType) {
                     IfType ifType = (IfType) fieldLoopIf;
@@ -461,7 +469,7 @@ public class TreParser {
         String fieldTypeName = getFieldTypeName(fieldType);
         if (fieldTypeName != null) {
             TreEntry entry = treGroup.getEntry(fieldTypeName);
-            return getValueForEntry(params, fieldType, entry);
+            return getValueForEntry(params, fieldType, (TreSimpleEntry) entry);
         } else {
             // This is a pad field
             String value = fieldType.getFixedValue();
@@ -481,7 +489,7 @@ public class TreParser {
         return fieldTypeName;
     }
 
-    private byte[] getValueForEntry(final TreParams params, final FieldType fieldType, final TreEntry entry)
+    private byte[] getValueForEntry(final TreParams params, final FieldType fieldType, final TreSimpleEntry entry)
             throws NitfFormatException {
         String value = entry.getFieldValue();
         if (value == null) {
@@ -515,7 +523,7 @@ public class TreParser {
         if (fieldType.getType().equals("string")) {
             value = padStringToLength(value, fieldType.getLength().intValue());
             if (value.length() > fieldType.getLength().intValue()) {
-               throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
+                throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
             }
             params.addParameter(getFieldTypeName(fieldType), value, entry.getDataType());
             return value.getBytes(StandardCharsets.ISO_8859_1);
@@ -534,7 +542,6 @@ public class TreParser {
         }
         throw new UnsupportedOperationException("Unsupported field type for serialisation:" + fieldType.getType());
     }
-
 
     private String getValidatedIntegerValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
@@ -636,6 +643,7 @@ public class TreParser {
 
     /**
      * Get the largest valid size of all TREs for the specified location.
+     *
      * @param source the location of the TREs.
      * @return valid size in bytes.
      */
@@ -660,7 +668,5 @@ public class TreParser {
                 throw new IllegalStateException("Missing case for TreSource");
         }
     }
-
-
 
 }

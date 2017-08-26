@@ -65,7 +65,7 @@ public abstract class FlatTreWrapper extends TreWrapper {
     protected final void addOrUpdateEntry(final String fieldName, final String value, final String fieldType) throws NitfFormatException {
         for (TreEntry entry : mTre.getEntries()) {
             if (entry.getName().equals(fieldName)) {
-                mTre.getEntry(fieldName).setFieldValue(value);
+                mTre.getSimpleEntry(fieldName).setFieldValue(value);
                 return;
             }
         }

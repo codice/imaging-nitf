@@ -17,8 +17,9 @@ package org.codice.imaging.nitf.core.tre.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
+import org.codice.imaging.nitf.core.tre.TreSimpleEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,8 @@ import org.slf4j.LoggerFactory;
     <p>
     This is a name and a value, or a name and a group of entries.
 */
-public class TreEntryImpl implements TreEntry {
+// TODO: split implementations.
+public class TreEntryImpl implements TreSimpleEntry, TreGroupListEntry {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreEntryImpl.class);
 

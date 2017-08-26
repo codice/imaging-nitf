@@ -274,7 +274,7 @@ public class MTIMSA extends TreWrapper {
      * @throws NitfFormatException if there was an issue during parsing.
      */
     public final BigInteger getDeltaTime(final long deltaItemIndex) throws NitfFormatException {
-        List<TreGroup> deltaTimes = mTre.getEntry("DELTA_TIME").getGroups();
+        List<TreGroup> deltaTimes = mTre.getGroupListEntry("DELTA_TIME").getGroups();
         TreGroup deltaTimeGroup = deltaTimes.get((int) deltaItemIndex);
         return deltaTimeGroup.getBigIntegerValue("DT");
     }

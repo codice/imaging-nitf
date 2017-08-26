@@ -79,8 +79,8 @@ public class ENGRDA_Test extends SharedTreTest {
         assertEquals(3, engrdaTre.getEntries().size());
         assertEquals("LAIR                ", engrdaTre.getFieldValue("RESRC"));
         assertEquals(16, engrdaTre.getIntValue("RECNT"));
-        assertEquals(16, engrdaTre.getEntry("RECORDS").getGroups().size());
-        TreGroup group15 = engrdaTre.getEntry("RECORDS").getGroups().get(15);
+        assertEquals(16, engrdaTre.getGroupListEntry("RECORDS").getGroups().size());
+        TreGroup group15 = engrdaTre.getGroupListEntry("RECORDS").getGroups().get(15);
         assertEquals("milliseconds", group15.getFieldValue("ENGLBL"));
         assertEquals("(Group)", group15.toString());
         assertEquals(3, group15.getIntValue("ENGMTXC"));
@@ -138,8 +138,8 @@ public class ENGRDA_Test extends SharedTreTest {
         Tre engrda = parseTRE(baos.toByteArray(), baos.toByteArray().length, "ENGRDA");
         assertEquals("YOUR_SENSOR_ID....  ", engrda.getFieldValue("RESRC"));
         assertEquals(3, engrda.getIntValue("RECNT"));
-        assertEquals(3, engrda.getEntry("RECORDS").getGroups().size());
-        TreGroup group0 = engrda.getEntry("RECORDS").getGroups().get(0);
+        assertEquals(3, engrda.getGroupListEntry("RECORDS").getGroups().size());
+        TreGroup group0 = engrda.getGroupListEntry("RECORDS").getGroups().get(0);
         assertEquals(5, group0.getIntValue("ENGLN"));
         assertEquals("TEMP1", group0.getFieldValue("ENGLBL"));
         assertEquals(1, group0.getIntValue("ENGMTXC"));
@@ -148,11 +148,11 @@ public class ENGRDA_Test extends SharedTreTest {
         assertEquals(2, group0.getIntValue("ENGDTS"));
         assertEquals("tC", group0.getFieldValue("ENGDATU"));
         assertEquals(1, group0.getIntValue("ENGDATC"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().size());
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(0).getEntries().size());
-        assertEquals(0x0125, group0.getEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().size());
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(0).getEntries().size());
+        assertEquals(0x0125, group0.getGroupListEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
 
-        TreGroup group1 = engrda.getEntry("RECORDS").getGroups().get(1);
+        TreGroup group1 = engrda.getGroupListEntry("RECORDS").getGroups().get(1);
         assertEquals(5, group1.getIntValue("ENGLN"));
         assertEquals("TEMP2", group1.getFieldValue("ENGLBL"));
         assertEquals(1, group1.getIntValue("ENGMTXC"));
@@ -161,11 +161,11 @@ public class ENGRDA_Test extends SharedTreTest {
         assertEquals(4, group1.getIntValue("ENGDTS"));
         assertEquals("tK", group1.getFieldValue("ENGDATU"));
         assertEquals(1, group1.getIntValue("ENGDATC"));
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().size());
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().get(0).getEntries().size());
-        assertArrayEquals(parseHexBinary("03271276"), group1.getEntry("ENGDATA").getGroups().get(0).getFieldValue("ENGDATA").getBytes(StandardCharsets.ISO_8859_1));
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().size());
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().get(0).getEntries().size());
+        assertArrayEquals(parseHexBinary("03271276"), group1.getGroupListEntry("ENGDATA").getGroups().get(0).getFieldValue("ENGDATA").getBytes(StandardCharsets.ISO_8859_1));
 
-        TreGroup group2 = engrda.getEntry("RECORDS").getGroups().get(2);
+        TreGroup group2 = engrda.getGroupListEntry("RECORDS").getGroups().get(2);
         assertEquals(10, group2.getIntValue("ENGLN"));
         assertEquals("TEMP3 Wall", group2.getFieldValue("ENGLBL"));
         assertEquals(10, group2.getIntValue("ENGMTXC"));
@@ -195,8 +195,8 @@ public class ENGRDA_Test extends SharedTreTest {
         Tre engrda = parseTRE(baos.toByteArray(), baos.toByteArray().length, "ENGRDA");
         assertEquals("YOUR_SENSOR_ID....  ", engrda.getFieldValue("RESRC"));
         assertEquals(2, engrda.getIntValue("RECNT"));
-        assertEquals(2, engrda.getEntry("RECORDS").getGroups().size());
-        TreGroup group0 = engrda.getEntry("RECORDS").getGroups().get(0);
+        assertEquals(2, engrda.getGroupListEntry("RECORDS").getGroups().size());
+        TreGroup group0 = engrda.getGroupListEntry("RECORDS").getGroups().get(0);
         assertEquals(11, group0.getIntValue("ENGLN"));
         assertEquals("STB MTX 3x2", group0.getFieldValue("ENGLBL"));
         assertEquals(3, group0.getIntValue("ENGMTXC"));
@@ -205,20 +205,20 @@ public class ENGRDA_Test extends SharedTreTest {
         assertEquals(1, group0.getIntValue("ENGDTS"));
         assertEquals("NA", group0.getFieldValue("ENGDATU"));
         assertEquals(6, group0.getIntValue("ENGDATC"));
-        assertEquals(6, group0.getEntry("ENGDATA").getGroups().size());
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(0).getEntries().size());
-        assertEquals(0x01, group0.getEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(1).getEntries().size());
-        assertEquals(0x25, group0.getEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(2).getEntries().size());
-        assertEquals(0x37, group0.getEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(3).getEntries().size());
-        assertEquals(0x27, group0.getEntry("ENGDATA").getGroups().get(3).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(4).getEntries().size());
-        assertEquals(0x12, group0.getEntry("ENGDATA").getGroups().get(4).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(5).getEntries().size());
-        assertEquals(0x76, group0.getEntry("ENGDATA").getGroups().get(5).getIntValue("ENGDATA"));
-        TreGroup group1 = engrda.getEntry("RECORDS").getGroups().get(1);
+        assertEquals(6, group0.getGroupListEntry("ENGDATA").getGroups().size());
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(0).getEntries().size());
+        assertEquals(0x01, group0.getGroupListEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(1).getEntries().size());
+        assertEquals(0x25, group0.getGroupListEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(2).getEntries().size());
+        assertEquals(0x37, group0.getGroupListEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(3).getEntries().size());
+        assertEquals(0x27, group0.getGroupListEntry("ENGDATA").getGroups().get(3).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(4).getEntries().size());
+        assertEquals(0x12, group0.getGroupListEntry("ENGDATA").getGroups().get(4).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(5).getEntries().size());
+        assertEquals(0x76, group0.getGroupListEntry("ENGDATA").getGroups().get(5).getIntValue("ENGDATA"));
+        TreGroup group1 = engrda.getGroupListEntry("RECORDS").getGroups().get(1);
         assertEquals(11, group1.getIntValue("ENGLN"));
         assertEquals("temps a b c", group1.getFieldValue("ENGLBL"));
         assertEquals(3, group1.getIntValue("ENGMTXC"));
@@ -227,13 +227,13 @@ public class ENGRDA_Test extends SharedTreTest {
         assertEquals(1, group1.getIntValue("ENGDTS"));
         assertEquals("tC", group1.getFieldValue("ENGDATU"));
         assertEquals(3, group1.getIntValue("ENGDATC"));
-        assertEquals(3, group1.getEntry("ENGDATA").getGroups().size());
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().get(0).getEntries().size());
-        assertEquals(0x37, group1.getEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().get(1).getEntries().size());
-        assertEquals(0x28, group1.getEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().get(2).getEntries().size());
-        assertEquals(0x26, group1.getEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
+        assertEquals(3, group1.getGroupListEntry("ENGDATA").getGroups().size());
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().get(0).getEntries().size());
+        assertEquals(0x37, group1.getGroupListEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().get(1).getEntries().size());
+        assertEquals(0x28, group1.getGroupListEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().get(2).getEntries().size());
+        assertEquals(0x26, group1.getGroupListEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
     }
 
     @Test
@@ -254,8 +254,8 @@ public class ENGRDA_Test extends SharedTreTest {
         Tre engrda = parseTRE(baos.toByteArray(), baos.toByteArray().length, "ENGRDA");
         assertEquals("YOUR_SENSOR_ID....  ", engrda.getFieldValue("RESRC"));
         assertEquals(2, engrda.getIntValue("RECNT"));
-        assertEquals(2, engrda.getEntry("RECORDS").getGroups().size());
-        TreGroup group0 = engrda.getEntry("RECORDS").getGroups().get(0);
+        assertEquals(2, engrda.getGroupListEntry("RECORDS").getGroups().size());
+        TreGroup group0 = engrda.getGroupListEntry("RECORDS").getGroups().get(0);
         assertEquals(11, group0.getIntValue("ENGLN"));
         assertEquals("STB MTX 3x2", group0.getFieldValue("ENGLBL"));
         assertEquals(3, group0.getIntValue("ENGMTXC"));
@@ -264,20 +264,20 @@ public class ENGRDA_Test extends SharedTreTest {
         assertEquals(1, group0.getIntValue("ENGDTS"));
         assertEquals("NA", group0.getFieldValue("ENGDATU"));
         assertEquals(6, group0.getIntValue("ENGDATC"));
-        assertEquals(6, group0.getEntry("ENGDATA").getGroups().size());
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(0).getEntries().size());
-        assertEquals(0xD1, group0.getEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(1).getEntries().size());
-        assertEquals(0xE5, group0.getEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(2).getEntries().size());
-        assertEquals(0x37, group0.getEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(3).getEntries().size());
-        assertEquals(0xF7, group0.getEntry("ENGDATA").getGroups().get(3).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(4).getEntries().size());
-        assertEquals(0x12, group0.getEntry("ENGDATA").getGroups().get(4).getIntValue("ENGDATA"));
-        assertEquals(1, group0.getEntry("ENGDATA").getGroups().get(5).getEntries().size());
-        assertEquals(0x76, group0.getEntry("ENGDATA").getGroups().get(5).getIntValue("ENGDATA"));
-        TreGroup group1 = engrda.getEntry("RECORDS").getGroups().get(1);
+        assertEquals(6, group0.getGroupListEntry("ENGDATA").getGroups().size());
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(0).getEntries().size());
+        assertEquals(0xD1, group0.getGroupListEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(1).getEntries().size());
+        assertEquals(0xE5, group0.getGroupListEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(2).getEntries().size());
+        assertEquals(0x37, group0.getGroupListEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(3).getEntries().size());
+        assertEquals(0xF7, group0.getGroupListEntry("ENGDATA").getGroups().get(3).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(4).getEntries().size());
+        assertEquals(0x12, group0.getGroupListEntry("ENGDATA").getGroups().get(4).getIntValue("ENGDATA"));
+        assertEquals(1, group0.getGroupListEntry("ENGDATA").getGroups().get(5).getEntries().size());
+        assertEquals(0x76, group0.getGroupListEntry("ENGDATA").getGroups().get(5).getIntValue("ENGDATA"));
+        TreGroup group1 = engrda.getGroupListEntry("RECORDS").getGroups().get(1);
         assertEquals(11, group1.getIntValue("ENGLN"));
         assertEquals("temps a b c", group1.getFieldValue("ENGLBL"));
         assertEquals(3, group1.getIntValue("ENGMTXC"));
@@ -286,13 +286,13 @@ public class ENGRDA_Test extends SharedTreTest {
         assertEquals(1, group1.getIntValue("ENGDTS"));
         assertEquals("tC", group1.getFieldValue("ENGDATU"));
         assertEquals(3, group1.getIntValue("ENGDATC"));
-        assertEquals(3, group1.getEntry("ENGDATA").getGroups().size());
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().get(0).getEntries().size());
-        assertEquals(0x37, group1.getEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().get(1).getEntries().size());
-        assertEquals(0x28, group1.getEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
-        assertEquals(1, group1.getEntry("ENGDATA").getGroups().get(2).getEntries().size());
-        assertEquals(0x26, group1.getEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
+        assertEquals(3, group1.getGroupListEntry("ENGDATA").getGroups().size());
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().get(0).getEntries().size());
+        assertEquals(0x37, group1.getGroupListEntry("ENGDATA").getGroups().get(0).getIntValue("ENGDATA"));
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().get(1).getEntries().size());
+        assertEquals(0x28, group1.getGroupListEntry("ENGDATA").getGroups().get(1).getIntValue("ENGDATA"));
+        assertEquals(1, group1.getGroupListEntry("ENGDATA").getGroups().get(2).getEntries().size());
+        assertEquals(0x26, group1.getGroupListEntry("ENGDATA").getGroups().get(2).getIntValue("ENGDATA"));
     }
 
     @Test
@@ -303,8 +303,8 @@ public class ENGRDA_Test extends SharedTreTest {
         Tre engrda = parseTRE(baos.toByteArray(), baos.toByteArray().length, "ENGRDA");
         assertEquals("YOUR_SENSOR_ID....  ", engrda.getFieldValue("RESRC"));
         assertEquals(1, engrda.getIntValue("RECNT"));
-        assertEquals(1, engrda.getEntry("RECORDS").getGroups().size());
-        TreGroup group0 = engrda.getEntry("RECORDS").getGroups().get(0);
+        assertEquals(1, engrda.getGroupListEntry("RECORDS").getGroups().size());
+        TreGroup group0 = engrda.getGroupListEntry("RECORDS").getGroups().get(0);
         assertEquals(12, group0.getIntValue("ENGLN"));
         assertEquals("Sta Temp 1-3", group0.getFieldValue("ENGLBL"));
         assertEquals(22, group0.getIntValue("ENGMTXC"));

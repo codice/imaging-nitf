@@ -54,15 +54,15 @@ public class CCINFA_Test {
         assertNull(ccinfa.getRawData());
         assertEquals(2, ccinfa.getEntries().size());
         assertEquals(2, ccinfa.getIntValue("NUMCODE"));
-        assertEquals(2, ccinfa.getEntry("CODES").getGroups().size());
-        TreGroup group1 = ccinfa.getEntry("CODES").getGroups().get(0);
+        assertEquals(2, ccinfa.getGroupListEntry("CODES").getGroups().size());
+        TreGroup group1 = ccinfa.getGroupListEntry("CODES").getGroups().get(0);
         assertEquals(2, group1.getIntValue("CODE_LEN"));
         assertEquals("RQ", group1.getFieldValue("CODE"));
         assertEquals(" ", group1.getFieldValue("EQTYPE"));
         assertEquals(17, group1.getIntValue("ESURN_LEN"));
         assertEquals("ge:GENC:3:3-5:PRI", group1.getFieldValue("ESURN"));
         assertEquals(0, group1.getIntValue("DETAIL_LEN"));
-        TreGroup group2 = ccinfa.getEntry("CODES").getGroups().get(1);
+        TreGroup group2 = ccinfa.getGroupListEntry("CODES").getGroups().get(1);
         assertEquals(2, group2.getIntValue("CODE_LEN"));
         assertEquals("RQ", group2.getFieldValue("CODE"));
         assertEquals(" ", group2.getFieldValue("EQTYPE"));
@@ -171,9 +171,9 @@ public class CCINFA_Test {
         assertNull(ccinfa.getRawData());
         assertEquals(2, ccinfa.getEntries().size());
         assertEquals(6, ccinfa.getIntValue("NUMCODE"));
-        assertEquals(6, ccinfa.getEntry("CODES").getGroups().size());
+        assertEquals(6, ccinfa.getGroupListEntry("CODES").getGroups().size());
 
-        TreGroup group1 = ccinfa.getEntry("CODES").getGroups().get(0);
+        TreGroup group1 = ccinfa.getGroupListEntry("CODES").getGroups().get(0);
         assertEquals(2, group1.getIntValue("CODE_LEN"));
         assertEquals("RQ", group1.getFieldValue("CODE"));
         assertEquals(" ", group1.getFieldValue("EQTYPE"));
@@ -181,7 +181,7 @@ public class CCINFA_Test {
         assertEquals("ge:GENC:3:3-5:PRI", group1.getFieldValue("ESURN"));
         assertEquals(0, group1.getIntValue("DETAIL_LEN"));
 
-        TreGroup group2 = ccinfa.getEntry("CODES").getGroups().get(1);
+        TreGroup group2 = ccinfa.getGroupListEntry("CODES").getGroups().get(1);
         assertEquals(2, group2.getIntValue("CODE_LEN"));
         assertEquals("RQ", group2.getFieldValue("CODE"));
         assertEquals(" ", group2.getFieldValue("EQTYPE"));
@@ -189,7 +189,7 @@ public class CCINFA_Test {
         assertEquals("as:ISO2:6:II-3:US-PR", group2.getFieldValue("ESURN"));
         assertEquals(0, group2.getIntValue("DETAIL_LEN"));
 
-        TreGroup group3 = ccinfa.getEntry("CODES").getGroups().get(2);
+        TreGroup group3 = ccinfa.getGroupListEntry("CODES").getGroups().get(2);
         assertEquals(2, group3.getIntValue("CODE_LEN"));
         assertEquals("BM", group3.getFieldValue("CODE"));
         assertEquals(" ", group3.getFieldValue("EQTYPE"));
@@ -199,7 +199,7 @@ public class CCINFA_Test {
         assertEquals(" ", group3.getFieldValue("DETAIL_CMPR"));
         assertEquals(listingAG1, group3.getFieldValue("DETAIL"));
 
-        TreGroup group4 = ccinfa.getEntry("CODES").getGroups().get(3);
+        TreGroup group4 = ccinfa.getGroupListEntry("CODES").getGroups().get(3);
         assertEquals(3, group4.getIntValue("CODE_LEN"));
         assertEquals("MMR", group4.getFieldValue("CODE"));
         assertEquals(" ", group4.getFieldValue("EQTYPE"));
@@ -209,7 +209,7 @@ public class CCINFA_Test {
         assertEquals("G", group4.getFieldValue("DETAIL_CMPR"));
         assertArrayEquals(gzipData, group4.getFieldValue("DETAIL").getBytes(StandardCharsets.ISO_8859_1));
 
-        TreGroup group5 = ccinfa.getEntry("CODES").getGroups().get(4);
+        TreGroup group5 = ccinfa.getGroupListEntry("CODES").getGroups().get(4);
         assertEquals(2, group5.getIntValue("CODE_LEN"));
         assertEquals("S1", group5.getFieldValue("CODE"));
         assertEquals(" ", group5.getFieldValue("EQTYPE"));
@@ -217,7 +217,7 @@ public class CCINFA_Test {
         assertEquals("ge:GENC:3:3-alt:SCT", group5.getFieldValue("ESURN"));
         assertEquals(0, group5.getIntValue("DETAIL_LEN"));
 
-        TreGroup group6 = ccinfa.getEntry("CODES").getGroups().get(5);
+        TreGroup group6 = ccinfa.getGroupListEntry("CODES").getGroups().get(5);
         assertEquals(2, group6.getIntValue("CODE_LEN"));
         assertEquals("YY", group6.getFieldValue("CODE"));
         assertEquals("C", group6.getFieldValue("EQTYPE"));

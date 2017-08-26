@@ -59,7 +59,7 @@ public class HISTOA_Test {
         assertEquals(" ", histoa.getFieldValue("REMAP_FLAG"));
         assertEquals("00", histoa.getFieldValue("LUTID"));
         assertEquals(2, histoa.getIntValue("NEVENTS"));
-        TreGroup event1 = histoa.getEntry("EVENT").getGroups().get(0);
+        TreGroup event1 = histoa.getGroupListEntry("EVENT").getGroups().get(0);
         assertEquals("20160718085758", event1.getFieldValue("PDATE"));
         assertEquals("DG", event1.getFieldValue("PSITE").trim());
         assertEquals("N001042216", event1.getFieldValue("PAS"));
@@ -80,12 +80,12 @@ public class HISTOA_Test {
         assertEquals("INT", event1.getFieldValue("OPVTYPE"));
         assertEquals("J2VLC00000", event1.getFieldValue("OUTBWC"));
 
-        TreGroup event2 = histoa.getEntry("EVENT").getGroups().get(1);
+        TreGroup event2 = histoa.getGroupListEntry("EVENT").getGroups().get(1);
         assertEquals("20160720173751", event2.getFieldValue("PDATE"));
         assertEquals("NDL-W", event2.getFieldValue("PSITE").trim());
         assertEquals("NCL1204   ", event2.getFieldValue("PAS"));
         assertEquals(1, event2.getIntValue("NIPCOM"));
-        TreGroup event2comment1 = event2.getEntry("IPCOM").getGroups().get(0);
+        TreGroup event2comment1 = event2.getGroupListEntry("IPCOM").getGroups().get(0);
         assertEquals("Transcode to EPJE+Quality Layer Parsing+Rset extraction/generation              ", event2comment1.getFieldValue("IPCOM"));
         assertEquals(11, event2.getIntValue("IBPP"));
         assertEquals("INT", event2.getFieldValue("IPVTYPE"));

@@ -37,6 +37,8 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
+import org.codice.imaging.nitf.core.tre.TreGroupListEntry;
+import org.codice.imaging.nitf.core.tre.TreSimpleEntry;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import org.junit.Rule;
 import org.junit.Test;
@@ -362,10 +364,10 @@ public class TreTortureTest {
         assertNotNull(tst05a);
         assertNotNull(tst05a.getEntries());
         assertEquals(2, tst05a.getEntries().size());
-        TreEntry flag = tst05a.getEntry("FLAG");
+        TreSimpleEntry flag = tst05a.getSimpleEntry("FLAG");
         assertNotNull(flag);
         assertEquals("N", flag.getFieldValue());
-        TreEntry text = tst05a.getEntry("TEXT");
+        TreSimpleEntry text = tst05a.getSimpleEntry("TEXT");
         assertNotNull(text);
         assertEquals("HELLO WORLD         ", text.getFieldValue());
     }
@@ -387,16 +389,16 @@ public class TreTortureTest {
 
         TreEntry flag = tst05a.getEntries().get(0);
         assertNotNull(flag);
-        assertEquals("Y", flag.getFieldValue());
+        assertEquals("Y", ((TreSimpleEntry)flag).getFieldValue());
 
         TreEntry numb = tst05a.getEntries().get(1);
         assertNotNull(numb);
-        assertEquals("03", numb.getFieldValue());
+        assertEquals("03", ((TreSimpleEntry)numb).getFieldValue());
         assertEquals(3, tst05a.getIntValue("NUMB"));
 
         TreEntry text = tst05a.getEntries().get(2);
         assertNotNull(text);
-        assertEquals("HELLO WORLD         ", text.getFieldValue());
+        assertEquals("HELLO WORLD         ", ((TreSimpleEntry)text).getFieldValue());
     }
 
     @Test
@@ -433,7 +435,7 @@ public class TreTortureTest {
         assertNotNull(tst06a);
         assertNotNull(tst06a.getEntries());
         assertEquals(1, tst06a.getEntries().size());
-        List<TreGroup> coefficients = tst06a.getEntries().get(0).getGroups();
+        List<TreGroup> coefficients = ((TreGroupListEntry)tst06a.getEntries().get(0)).getGroups();
         assertNotNull(coefficients);
         assertEquals(5, coefficients.size());
         TreGroup coef1 = coefficients.get(0);
@@ -464,7 +466,7 @@ public class TreTortureTest {
 
         TreEntry uint = tst07a.getEntries().get(0);
         assertNotNull(uint);
-        assertEquals(0x00, uint.getFieldValue().getBytes()[0]);
+        assertEquals(0x00, ((TreSimpleEntry)uint).getFieldValue().getBytes()[0]);
         assertEquals(0, tst07a.getIntValue("UINT"));
     }
 
