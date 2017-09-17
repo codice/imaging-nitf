@@ -43,11 +43,16 @@ import org.codice.imaging.nitf.core.symbol.SymbolType;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
     Parser for a symbol segment in a NITF 2.0 file.
 */
 public class SymbolSegmentParser extends AbstractSegmentParser {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SymbolSegmentParser.class);
+    
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
 
@@ -91,7 +96,7 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
         readSROT();
         readNELUT();
         for (int i = 0; i < numberOfEntriesInLUT; ++i) {
-            throw new UnsupportedOperationException("TODO: Implement LUT parsing when we have an example");
+            LOGGER.warn("TODO: LUT parsing has not been implemented, please contribute an example");
         }
         readSXSHDL();
         if (symbolExtendedSubheaderLength > 0) {
