@@ -50,6 +50,8 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
 
     private int numberOfEntriesInLUT = 0;
     private int symbolExtendedSubheaderLength = 0;
+    static final int NUM_BYTES_IN_GRAYSCALE_LUT_ENTRY = 1;
+    static final int NUM_BYTES_IN_COLOUR_LUT_ENTRY = 3;
 
     private SymbolSegmentImpl segment = null;
 
@@ -91,7 +93,7 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
         readSROT();
         readNELUT();
         for (int i = 0; i < numberOfEntriesInLUT; ++i) {
-            throw new UnsupportedOperationException("TODO: Implement LUT parsing when we have an example");
+            readLUTEntry();
         }
         readSXSHDL();
         if (symbolExtendedSubheaderLength > 0) {
@@ -167,6 +169,27 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
 
     private void readNELUT() throws NitfFormatException {
         numberOfEntriesInLUT = reader.readBytesAsInteger(SYNELUT_LENGTH);
+    }
+
+    private void readLUTEntry() throws UnsupportedOperationException, NitfFormatException {
+        if (segment.getSymbolType().equals(SymbolType.BITMAP)) {
+            if (segment.getSymbolColour().equals(SymbolColour.USE_COLOUR_LUT)) {
+                readColourLUTEntry();
+                return;
+            } else if (segment.getSymbolColour().equals(SymbolColour.USE_GRAYSCALE_LUT)) {
+                readGrayScaleLUTEntry();
+                return;
+            }
+        }
+        throw new NitfFormatException("Symbol LUT only permitted for Symbol Type B with Symbol Colour G or C.");
+    }
+
+    private void readColourLUTEntry() throws NitfFormatException {
+        reader.skip(NUM_BYTES_IN_COLOUR_LUT_ENTRY);
+    }
+
+    private void readGrayScaleLUTEntry() throws NitfFormatException {
+        reader.skip(NUM_BYTES_IN_GRAYSCALE_LUT_ENTRY);
     }
 
     private void readSXSHDL() throws NitfFormatException {
