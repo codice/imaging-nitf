@@ -119,7 +119,7 @@ public class Nitf20SymbolTest {
         assertEquals("999998", symbolSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals("This symbol will never need downgrading.", symbolSegment1.getSecurityMetadata().getDowngradeEvent());
         assertEquals(SymbolType.CGM, symbolSegment1.getSymbolType());
-        assertEquals(SymbolColour.UNKNOWN, symbolSegment1.getSymbolColour());
+        assertEquals(SymbolColour.NOT_APPLICABLE, symbolSegment1.getSymbolColour());
         assertEquals(0, symbolSegment1.getNumberOfLinesPerSymbol());
         assertEquals(0, symbolSegment1.getNumberOfPixelsPerLine());
         assertEquals(0, symbolSegment1.getLineWidth());
