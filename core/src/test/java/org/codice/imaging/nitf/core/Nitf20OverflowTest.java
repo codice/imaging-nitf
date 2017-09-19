@@ -144,7 +144,7 @@ public class Nitf20OverflowTest {
         checkNitf20SecurityMetadataUnclasAndEmpty(symbolSegment1.getSecurityMetadata());
         assertEquals("      ", symbolSegment1.getSecurityMetadata().getDowngradeDateOrSpecialCase());
         assertEquals(SymbolType.CGM, symbolSegment1.getSymbolType());
-        assertEquals(SymbolColour.UNKNOWN, symbolSegment1.getSymbolColour());
+        assertEquals(SymbolColour.NOT_APPLICABLE, symbolSegment1.getSymbolColour());
         assertEquals(0, symbolSegment1.getNumberOfLinesPerSymbol());
         assertEquals(0, symbolSegment1.getNumberOfPixelsPerLine());
         assertEquals(0, symbolSegment1.getLineWidth());

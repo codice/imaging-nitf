@@ -153,7 +153,7 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
     }
 
     private void readSCOLOR() throws NitfFormatException {
-        String scolor = reader.readTrimmedBytes(SCOLOR_LENGTH);
+        String scolor = reader.readBytes(SCOLOR_LENGTH);
         segment.setSymbolColourFormat(SymbolColour.getEnumValue(scolor));
     }
 
