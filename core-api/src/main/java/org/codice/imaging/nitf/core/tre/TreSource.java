@@ -16,6 +16,8 @@ package org.codice.imaging.nitf.core.tre;
 
 /**
  * A source of a TRE.
+ *
+ * This indicates which part of the file it came from (or belongs to).
  */
 public enum TreSource {
 

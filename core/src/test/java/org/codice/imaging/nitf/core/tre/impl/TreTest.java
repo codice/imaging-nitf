@@ -32,7 +32,7 @@ public class TreTest extends SharedTreTest {
 
     @Test
     public void testTreEntryAccessors1() {
-        TreEntryImpl entry = new TreEntryImpl("oldName", null, "string");
+        TreSimpleEntryImpl entry = new TreSimpleEntryImpl("oldName", null, "string");
         assertNotNull(entry);
 
         entry.setName("DANAME");
@@ -44,7 +44,7 @@ public class TreTest extends SharedTreTest {
 
     @Test
     public void testTreEntryAccessors2() {
-        TreEntryImpl entry = new TreEntryImpl("ANAME", null, null);
+        TreGroupListEntryImpl entry = new TreGroupListEntryImpl("ANAME");
         assertNotNull(entry);
 
         entry.initGroups();
@@ -58,16 +58,16 @@ public class TreTest extends SharedTreTest {
 
     @Test
     public void testTreEntry() {
-        TreEntryImpl entry = new TreEntryImpl("ANAME");
+        TreGroupListEntryImpl entry = new TreGroupListEntryImpl("ANAME");
         assertNotNull(entry);
 
         entry.initGroups();
         assertEquals(0, entry.getGroups().size());
         TreGroup group1 = new TreGroupImpl();
         entry.addGroup(group1);
-        TreGroup group2 = new TreGroupImpl();
-        entry.addGroup(group2);
-        TreEntryImpl subEntry = new TreEntryImpl("SubEntry");
+        TreGroupBuilder group2 = new TreGroupBuilder();
+        entry.addGroup(group2.getTreGroup());
+        TreGroupListEntryImpl subEntry = new TreGroupListEntryImpl("SubEntry");
         group2.add(subEntry);
         subEntry.addGroup(new TreGroupImpl());
         entry.dump();

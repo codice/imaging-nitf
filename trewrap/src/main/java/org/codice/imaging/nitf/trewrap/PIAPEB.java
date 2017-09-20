@@ -191,7 +191,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final String getAssociatedCountryCode() throws NitfFormatException {
-        return mTre.getFieldValue("ASSOCTRY");
+        return getFieldValue("ASSOCTRY");
     }
 
     /**
@@ -200,7 +200,7 @@ public class PIAPEB extends FlatTreWrapper {
     @Override
     public final ValidityResult getValidity() throws NitfFormatException {
         for (String tagName : new String[] {"LASTNME", "FIRSTNME", "MIDNME", "ASSOCTRY"}) {
-            if (mTre.getFieldValue(tagName) == null) {
+            if (getFieldValue(tagName) == null) {
                 ValidityResult validity = new ValidityResult();
                 validity.setValidityStatus(ValidityResult.ValidityStatus.NOT_VALID);
                 validity.setValidityResultDescription(String.format("%s may not be null", tagName));

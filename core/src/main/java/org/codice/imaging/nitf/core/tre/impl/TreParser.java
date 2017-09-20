@@ -146,7 +146,7 @@ public class TreParser {
     }
 
     final Tre parseOneTre(final NitfReader reader, final String tag, final int fieldLength, final TreSource source) {
-        Tre tre = new TreImpl(tag, source);
+        TreBuilder treBuilder = new TreBuilder(tag, source);
         TreType treType = getTreTypeForTag(tag);
         byte[] treBytes = null;
 
@@ -154,25 +154,25 @@ public class TreParser {
             treBytes = reader.readBytesRaw(fieldLength);
 
             if (treType == null) {
-                tre.setRawData(treBytes);
+                treBuilder.setRawData(treBytes);
             } else {
                 NitfReader treReader
                         = new NitfInputStreamReader(new ByteArrayInputStream(treBytes));
                 TreParams parameters = new TreParams();
-                tre.setPrefix(treType.getMdPrefix());
+                treBuilder.setPrefix(treType.getMdPrefix());
                 TreGroupImpl group = parseTreComponents(treType.getFieldOrLoopOrIf(),
                         treReader,
                         parameters);
-                tre.setEntries(group.getEntries());
+                treBuilder.setEntries(group.getEntries());
             }
 
         } catch (Exception e) {
-            tre.setRawData(treBytes);
+            treBuilder.setRawData(treBytes);
             LOG.warn("Failed to parse TRE {}. See debug log for exception information.", tag);
             LOG.debug(e.getMessage(), e);
         }
 
-        return tre;
+        return treBuilder.getTre();
     }
 
     private TreGroupImpl parseTreComponents(final List<Object> fieldOrLoopOrIf,
@@ -207,10 +207,10 @@ public class TreParser {
             int bytesToRead = getLengthForField(field, parameters);
             String fieldValue = reader.readBytes(bytesToRead);
             if (fieldKey.isEmpty()) {
-                return new TreEntryImpl("no name", fieldValue, fieldType);
+                return new TreSimpleEntryImpl("no name", fieldValue, fieldType);
             } else {
                 parameters.addParameter(fieldKey, fieldValue, fieldType);
-                return new TreEntryImpl(fieldKey, fieldValue, fieldType);
+                return new TreSimpleEntryImpl(fieldKey, fieldValue, fieldType);
             }
         }
     }
@@ -301,7 +301,7 @@ public class TreParser {
         } else {
             throw new UnsupportedOperationException("Need to implement other loop type");
         }
-        TreEntryImpl treEntry = new TreEntryImpl(loopType.getName());
+        TreGroupListEntryImpl treEntry = new TreGroupListEntryImpl(loopType.getName());
         for (int i = 0; i < numRepetitions; ++i) {
             TreGroupImpl subGroup = parseTreComponents(loopType.getFieldOrLoopOrIf(),
                     reader, params);
@@ -446,7 +446,7 @@ public class TreParser {
                 } else if (fieldLoopIf instanceof LoopType) {
                     LoopType loopType = (LoopType) fieldLoopIf;
                     TreEntry loopDataEntry = treGroup.getEntry(loopType.getName());
-                    if (loopDataEntry.hasGroups()) {
+                    if (loopDataEntry instanceof TreGroupListEntry) {
                         for (TreGroup subGroup : ((TreGroupListEntry) loopDataEntry).getGroups()) {
                             serializeFieldOrLoopOrIf(loopType.getFieldOrLoopOrIf(), subGroup, baos, params);
                         }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) Codice Foundation
  *
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
@@ -11,41 +11,38 @@
  * is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  *
- *
  */
 package org.codice.imaging.nitf.core.tre.impl;
 
+import java.util.List;
 import org.codice.imaging.nitf.core.tre.Tre;
+import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
- * Tagged registered extension (TRE).
+ * Builder for TREs (Tagged Record Extensions).
  */
-class TreImpl extends TreGroupImpl implements Tre {
+public class TreBuilder {
 
-    private String prefix = null;
-    private String name = null;
-    private byte[] rawData = null;
-    private final TreSource mSource;
+    private final TreImpl treImpl;
 
     /**
-     * Construct TRE with specific tag name.
+     * Create a new builder.
      *
      * @param tag the name for the TRE.
      * @param source the TreSource associated with this TRE
      */
-    TreImpl(final String tag, final TreSource source) {
-        name = tag;
-        mSource = source;
-    }
+    public TreBuilder(final String tag, final TreSource source) {
+        treImpl = new TreImpl(tag, source);
+    };
 
     /**
+     * Create a new builder from an existing TRE.
      *
-     * {@inheritDoc}
+     * @param tre the TRE to copy from.
      */
-    @Override
-    public final String getName() {
-        return name;
+    public TreBuilder(final Tre tre) {
+        treImpl = (TreImpl) tre;
     }
 
     /**
@@ -54,15 +51,7 @@ class TreImpl extends TreGroupImpl implements Tre {
      * @param mdPrefix the metadata prefix.
      */
     public final void setPrefix(final String mdPrefix) {
-        prefix = mdPrefix;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String getPrefix() {
-        return prefix;
+        treImpl.setPrefix(mdPrefix);
     }
 
     /**
@@ -73,27 +62,42 @@ class TreImpl extends TreGroupImpl implements Tre {
      * @param treDataRaw the raw bytes for the TRE.
      */
     public final void setRawData(final byte[] treDataRaw) {
-        rawData = treDataRaw;
+        treImpl.setRawData(treDataRaw);
     }
 
     /**
-     * {@inheritDoc}
+     * Add an entry to the TRE.
+     *
+     * @param entry the entry to add
      */
-    @Override
-    public final byte[] getRawData() {
-        return rawData;
+    public final void add(final TreEntry entry) {
+        treImpl.add(entry);
     }
 
     /**
-     * {@inheritDoc}
+     * Set the list of entries in the TRE.
+     *
+     * @param treEntries the new list of entries.
      */
-    @Override
-    public final TreSource getSource() {
-        return mSource;
+    public final void setEntries(final List<TreEntry> treEntries) {
+        treImpl.setEntries(treEntries);
     }
 
-    @Override
-    public final String toString() {
-        return getName();
+    /**
+     * Get the list of entries in the TRE.
+     *
+     * @return the list of entries.
+     */
+    public final List<TreEntry> getEntries() {
+        return treImpl.getEntries();
+    }
+
+    /**
+     * Return the built TRE.
+     *
+     * @return the TRE that has been built.
+     */
+    public final Tre getTre() {
+        return treImpl;
     }
 }

@@ -233,7 +233,7 @@ public class MTIMFA extends TreWrapper {
     }
 
     private TreGroup getCamera(final int cameraIndex) throws NitfFormatException {
-        TreGroup camera = mTre.getGroupListEntry("CAMERAS").getGroups().get(cameraIndex);
+        TreGroup camera = getTRE().getGroupListEntry("CAMERAS").getGroups().get(cameraIndex);
         return camera;
     }
 

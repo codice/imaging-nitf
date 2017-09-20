@@ -505,14 +505,14 @@ public class FileComparer {
                         if (entry.getName().equals("ERR_BIAS") || entry.getName().equals("ERR_RAND")) {
                             continue;
                         }
-                        if (entry.isSimpleField() && ((TreSimpleEntry) entry).getFieldValue() != null) {
+                        if ((entry instanceof TreSimpleEntry) && ((TreSimpleEntry) entry).getFieldValue() != null) {
                             if (entry.getName().equals("LONG_OFF") || entry.getName().equals("LONG_SCALE") || entry.getName().equals("LAT_OFF") || entry.getName().equals("LAT_SCALE")) {
                                 // skip this, we're filtering it out for both cases
                             } else {
                                 Integer rpcValue = Integer.parseInt(((TreSimpleEntry) entry).getFieldValue());
                                 rpc.put(entry.getName(), rpcValue.toString());
                             }
-                        } else if ((!entry.isSimpleField()) && (((TreGroupListEntry) entry).getGroups() != null) && (!((TreGroupListEntry) entry).getGroups().isEmpty())) {
+                        } else if ((entry instanceof TreGroupListEntry) && (((TreGroupListEntry) entry).getGroups() != null) && (!((TreGroupListEntry) entry).getGroups().isEmpty())) {
                             StringBuilder builder = new StringBuilder();
                             for (TreGroup group : ((TreGroupListEntry)entry).getGroups()) {
                                 for (TreEntry te : group.getEntries()) {
@@ -647,11 +647,11 @@ public class FileComparer {
     }
 
     private static void outputThisEntry(BufferedWriter out, TreEntry entry, int indentLevel) throws IOException {
-        if (entry.isSimpleField()) {
+        if (entry instanceof TreSimpleEntry) {
             doIndent(out, indentLevel);
             out.write("<field name=\"" + entry.getName() + "\" value=\"" + rightTrim(((TreSimpleEntry) entry).getFieldValue()) + "\" />\n");
         }
-        if (entry.hasGroups()) {
+        if (entry instanceof TreGroupListEntry) {
             doIndent(out, indentLevel);
             out.write("<repeated name=\"" + entry.getName() + "\" number=\"" + ((TreGroupListEntry) entry).getGroups().size() + "\">\n");
             int i = 0;

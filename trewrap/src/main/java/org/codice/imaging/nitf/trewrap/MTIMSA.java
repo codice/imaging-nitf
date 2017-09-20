@@ -162,10 +162,10 @@ public class MTIMSA extends TreWrapper {
      * @throws NitfFormatException if there was an issue during parsing
      */
     public final double getNominalFrameRate() throws NitfFormatException {
-        if (mTre.getFieldValue("NOMINAL_FRAME_RATE").trim().equals("NaN")) {
+        if (getFieldValue("NOMINAL_FRAME_RATE").trim().equals("NaN")) {
             return -1.0;
         }
-        return mTre.getDoubleValue("NOMINAL_FRAME_RATE");
+        return getValueAsDouble("NOMINAL_FRAME_RATE");
     }
 
     /**
@@ -274,7 +274,7 @@ public class MTIMSA extends TreWrapper {
      * @throws NitfFormatException if there was an issue during parsing.
      */
     public final BigInteger getDeltaTime(final long deltaItemIndex) throws NitfFormatException {
-        List<TreGroup> deltaTimes = mTre.getGroupListEntry("DELTA_TIME").getGroups();
+        List<TreGroup> deltaTimes = getTRE().getGroupListEntry("DELTA_TIME").getGroups();
         TreGroup deltaTimeGroup = deltaTimes.get((int) deltaItemIndex);
         return deltaTimeGroup.getBigIntegerValue("DT");
     }

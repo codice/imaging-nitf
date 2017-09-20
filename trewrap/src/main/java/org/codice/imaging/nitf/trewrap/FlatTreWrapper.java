@@ -18,8 +18,8 @@ import java.time.LocalDate;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreEntry;
-import org.codice.imaging.nitf.core.tre.impl.TreEntryImpl;
 import org.codice.imaging.nitf.core.tre.TreSource;
+import org.codice.imaging.nitf.core.tre.impl.TreSimpleEntryImpl;
 
 /**
  * Shared superclass for wrappers for TREs that are "flat".
@@ -63,14 +63,15 @@ public abstract class FlatTreWrapper extends TreWrapper {
      * @throws NitfFormatException if there is a parsing error.
      */
     protected final void addOrUpdateEntry(final String fieldName, final String value, final String fieldType) throws NitfFormatException {
-        for (TreEntry entry : mTre.getEntries()) {
-            if (entry.getName().equals(fieldName)) {
-                mTre.getSimpleEntry(fieldName).setFieldValue(value);
+        for (TreEntry entry : mTreBuilder.getEntries()) {
+            if (entry.getName().equals(fieldName) && (entry instanceof TreSimpleEntryImpl)) {
+                TreSimpleEntryImpl simpleEntry = (TreSimpleEntryImpl) entry;
+                simpleEntry.setFieldValue(value);
                 return;
             }
         }
         // Didn't find it, just add.
-        mTre.add(new TreEntryImpl(fieldName, value, fieldType));
+        mTreBuilder.add(new TreSimpleEntryImpl(fieldName, value, fieldType));
     }
 
     /**

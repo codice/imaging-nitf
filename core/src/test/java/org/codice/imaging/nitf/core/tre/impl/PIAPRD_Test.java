@@ -15,12 +15,14 @@
 package org.codice.imaging.nitf.core.tre.impl;
 
 import org.codice.imaging.nitf.core.common.NitfFormatException;
-import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * Unit tests for PIAPRD TRE.
@@ -37,47 +39,47 @@ public class PIAPRD_Test {
 
     @Test
     public void checkPIAPRDLocation() throws NitfFormatException {
-        Tre piaprd = TreFactory.getDefault("PIAPRD", TreSource.ImageExtendedSubheaderData);
+        TreBuilder piaprd = TreFactory.getDefault("PIAPRD", TreSource.ImageExtendedSubheaderData);
         fillTRE(piaprd);
 
         TreParser parser = new TreParser();
         exception.expect(NitfFormatException.class);
         exception.expectMessage("TRE is only permitted in a file-level header, or in an overflow DES");
-        parser.serializeTRE(piaprd);
+        parser.serializeTRE(piaprd.getTre());
     }
 
     @Test
     public void checkPIAPRDBuild() throws NitfFormatException {
-        Tre piaprd = TreFactory.getDefault("PIAPRD", TreSource.ExtendedHeaderData);
+        TreBuilder piaprd = TreFactory.getDefault("PIAPRD", TreSource.ExtendedHeaderData);
         fillTRE(piaprd);
 
         TreParser parser = new TreParser();
-        byte[] serialisedTre = parser.serializeTRE(piaprd);
+        byte[] serialisedTre = parser.serializeTRE(piaprd.getTre());
         String t = new String(serialisedTre);
         assertArrayEquals("979358f8-8173-11e7-89b3-1b1e7b6aa52a                            Nope                            EZ1DetA  Gold 34             Codice    CD201708150435  OpenStreetMap                           0000000000".getBytes(), serialisedTre);
     }
 
-    private void fillTRE(Tre piaprd) {
-        piaprd.add(new TreEntryImpl("ACCESSID", "979358f8-8173-11e7-89b3-1b1e7b6aa52a", "string"));
-        piaprd.add(new TreEntryImpl("FMCONTROL", "Nope", "string"));
-        piaprd.add(new TreEntryImpl("SUBDET", "E", "string"));
-        piaprd.add(new TreEntryImpl("PRODCODE", "Z1", "string"));
-        piaprd.add(new TreEntryImpl("PRODUCERSE", "DetA", "string"));
-        piaprd.add(new TreEntryImpl("PRODIDNO", "Gold 34", "string"));
-        piaprd.add(new TreEntryImpl("PRODSNME", "Codice", "string"));
-        piaprd.add(new TreEntryImpl("PRODUCERCD", "CD", "string"));
-        piaprd.add(new TreEntryImpl("PRODCRTIME", "201708150435", "string"));
-        piaprd.add(new TreEntryImpl("MAPID", "OpenStreetMap", "string"));
-        piaprd.add(new TreEntryImpl("SECTITLEREP", "0", "integer"));
-        piaprd.add(new TreEntryImpl("SECTITLE"));
-        piaprd.add(new TreEntryImpl("REQORGREP", "0", "integer"));
-        piaprd.add(new TreEntryImpl("REQORG"));
-        piaprd.add(new TreEntryImpl("KEYWORDREP", "0", "integer"));
-        piaprd.add(new TreEntryImpl("KEYWORD"));
-        piaprd.add(new TreEntryImpl("ASSRPTREP", "0", "integer"));
-        piaprd.add(new TreEntryImpl("ASSRPT"));
-        piaprd.add(new TreEntryImpl("ATEXTREP", "0", "integer"));
-        piaprd.add(new TreEntryImpl("ATEXT"));
+    private void fillTRE(TreBuilder treBuilder) {
+        treBuilder.add(new TreSimpleEntryImpl("ACCESSID", "979358f8-8173-11e7-89b3-1b1e7b6aa52a", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("FMCONTROL", "Nope", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("SUBDET", "E", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("PRODCODE", "Z1", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("PRODUCERSE", "DetA", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("PRODIDNO", "Gold 34", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("PRODSNME", "Codice", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("PRODUCERCD", "CD", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("PRODCRTIME", "201708150435", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("MAPID", "OpenStreetMap", "string"));
+        treBuilder.add(new TreSimpleEntryImpl("SECTITLEREP", "0", "integer"));
+        treBuilder.add(new TreGroupListEntryImpl("SECTITLE"));
+        treBuilder.add(new TreSimpleEntryImpl("REQORGREP", "0", "integer"));
+        treBuilder.add(new TreGroupListEntryImpl("REQORG"));
+        treBuilder.add(new TreSimpleEntryImpl("KEYWORDREP", "0", "integer"));
+        treBuilder.add(new TreGroupListEntryImpl("KEYWORD"));
+        treBuilder.add(new TreSimpleEntryImpl("ASSRPTREP", "0", "integer"));
+        treBuilder.add(new TreGroupListEntryImpl("ASSRPT"));
+        treBuilder.add(new TreSimpleEntryImpl("ATEXTREP", "0", "integer"));
+        treBuilder.add(new TreGroupListEntryImpl("ATEXT"));
     }
 
 }

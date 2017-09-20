@@ -22,11 +22,4 @@ public interface TreSimpleEntry extends TreEntry {
      * @return the data type as a string, or null for a group.
      */
     String getDataType();
-
-    // TODO: remove
-    /**
-     * Set the field value.
-     * @param value the value to be assigned to this field
-     */
-    void setFieldValue(String value);
 }

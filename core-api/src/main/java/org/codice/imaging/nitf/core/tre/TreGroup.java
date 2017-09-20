@@ -33,27 +33,6 @@ public interface TreGroup {
     List<TreEntry> getEntries();
 
     /**
-     * Add an entry to the group.
-     *
-     * @param entry the entry to add
-     */
-    void add(TreEntry entry);
-
-    /**
-     * Add multiple entries to the group.
-     *
-     * @param group the group containing the entry or entries to add
-     */
-    void addAll(TreGroup group);
-
-    /**
-     * Set the list of entries.
-     *
-     * @param treEntries the new list of entries.
-     */
-    void setEntries(List<TreEntry> treEntries);
-
-    /**
      * Get the entry for a specific tag.
      *
      * @param tagName the name (tag) of the field to look up.

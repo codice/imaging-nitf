@@ -21,27 +21,11 @@ package org.codice.imaging.nitf.core.tre;
 public interface Tre extends TreGroup {
 
     /**
-     * Set the metadata prefix format string.
-     *
-     * @param mdPrefix the metadata prefix.
-     */
-    void setPrefix(String mdPrefix);
-
-    /**
      * Return the metadata prefix format string.
      *
      * @return the metadata prefix.
      */
     String getPrefix();
-
-    /**
-     * Set the raw data for this TRE.
-     * <p>
-     * This is only used for TREs that we couldn't parse.
-     *
-     * @param treDataRaw the raw bytes for the TRE.
-     */
-    void setRawData(byte[] treDataRaw);
 
     /**
      * Get the raw data for this TRE.
@@ -63,9 +47,9 @@ public interface Tre extends TreGroup {
     TreSource getSource();
 
     /**
-     * Return the name of the entry list key.
+     * Return the name of the TRE.
      *
-     * @return the entry list key name
+     * @return the TRE name
      */
     String getName();
 }

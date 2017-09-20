@@ -14,7 +14,6 @@
  */
 package org.codice.imaging.nitf.core.tre.impl;
 
-import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreSource;
 
 /**
@@ -26,16 +25,16 @@ public final class TreFactory {
     }
 
     /**
-     * Create a new Tre instance.
+     * Create a new TreBuilder instance.
      *
-     * This instance will need to have the required entries added.
+     * This builder will need to have the required entries added.
      *
      * @param tag the name of the TRE (i.e. the six letter tag)
      * @param source the location of this TRE (intended location in the file)
-     * @return TRE with no content.
+     * @return TreBuilder with no content.
      */
-    public static Tre getDefault(final String tag, final TreSource source) {
-        Tre tre = new TreImpl(tag, source);
-        return tre;
+    public static TreBuilder getDefault(final String tag, final TreSource source) {
+        TreBuilder treBuilder = new TreBuilder(tag, source);
+        return treBuilder;
     }
 }

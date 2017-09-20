@@ -101,28 +101,28 @@ public class ENGRDA_Test extends SharedTreTest {
 
     @Test
     public void BuildENGRDA() throws NitfFormatException {
-        Tre engrda = TreFactory.getDefault("ENGRDA", TreSource.UserDefinedHeaderData);
+        TreBuilder engrda = TreFactory.getDefault("ENGRDA", TreSource.UserDefinedHeaderData);
         assertNotNull(engrda);
-        engrda.add(new TreEntryImpl("RESRC", "GEOMOS", "string"));
-        engrda.add(new TreEntryImpl("RECNT", "1", "integer"));
-        TreEntryImpl records = new TreEntryImpl("RECORDS");
+        engrda.add(new TreSimpleEntryImpl("RESRC", "GEOMOS", "string"));
+        engrda.add(new TreSimpleEntryImpl("RECNT", "1", "integer"));
+        TreGroupListEntryImpl records = new TreGroupListEntryImpl("RECORDS");
         engrda.add(records);
-        TreGroup record0 = new TreGroupImpl();
-        record0.add(new TreEntryImpl("ENGLN", "11", "integer"));
-        record0.add(new TreEntryImpl("ENGLBL", "TEMPERATURE", "string"));
-        record0.add(new TreEntryImpl("ENGMTXC", "3", "integer"));
-        record0.add(new TreEntryImpl("ENGMTXR", "1", "integer"));
-        record0.add(new TreEntryImpl("ENGTYP", "A", "string"));
-        record0.add(new TreEntryImpl("ENGDTS", "1", "integer"));
-        record0.add(new TreEntryImpl("ENGDATU", "NA", "string"));
-        record0.add(new TreEntryImpl("ENGDATC", "3", "integer"));
-        record0.add(new TreEntryImpl("ENGDATA", "374", "string"));
-        records.addGroup(record0);
+        TreGroupBuilder record0 = new TreGroupBuilder();
+        record0.add(new TreSimpleEntryImpl("ENGLN", "11", "integer"));
+        record0.add(new TreSimpleEntryImpl("ENGLBL", "TEMPERATURE", "string"));
+        record0.add(new TreSimpleEntryImpl("ENGMTXC", "3", "integer"));
+        record0.add(new TreSimpleEntryImpl("ENGMTXR", "1", "integer"));
+        record0.add(new TreSimpleEntryImpl("ENGTYP", "A", "string"));
+        record0.add(new TreSimpleEntryImpl("ENGDTS", "1", "integer"));
+        record0.add(new TreSimpleEntryImpl("ENGDATU", "NA", "string"));
+        record0.add(new TreSimpleEntryImpl("ENGDATC", "3", "integer"));
+        record0.add(new TreSimpleEntryImpl("ENGDATA", "374", "string"));
+        records.addGroup(record0.getTreGroup());
 
         TreParser parser = new TreParser();
-        byte[] serialisedTre = parser.serializeTRE(engrda);
+        byte[] serialisedTre = parser.serializeTRE(engrda.getTre());
         assertNotNull(serialisedTre);
-        assertEquals("ENGRDA", engrda.getName());
+        assertEquals("ENGRDA", engrda.getTre().getName());
         assertArrayEquals("GEOMOS              00111TEMPERATURE00030001A1NA00000003374".getBytes(), serialisedTre);
     }
 

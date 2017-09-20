@@ -92,7 +92,7 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
     private void flattenThisTre(final Tre thisTre, final int i, final Map<String, String> tresFlat) {
         List<TreEntry> treEntries = thisTre.getEntries();
         for (TreEntry treEntry : treEntries) {
-            if (treEntry.isSimpleField()) {
+            if (treEntry instanceof TreSimpleEntry) {
                 TreSimpleEntry simpleEntry = (TreSimpleEntry) treEntry;
                 tresFlat.put(String.format("%s_%d_%s", thisTre.getName(), i, treEntry.getName()), simpleEntry.getFieldValue().trim());
             }
@@ -107,10 +107,10 @@ public abstract class TaggedRecordExtensionHandlerImpl implements TaggedRecordEx
      * @param label    the name of the treEntry.
      */
     private void flattenOneTreEntry(final Map<String, String> tresFlat, final TreEntry treEntry, final String label) {
-        if (treEntry.isSimpleField()) {
+        if (treEntry instanceof TreSimpleEntry) {
             TreSimpleEntry simpleEntry = (TreSimpleEntry) treEntry;
             addValueToMap(tresFlat, label, simpleEntry);
-        } else if (treEntry.hasGroups()) {
+        } else if (treEntry instanceof TreGroupListEntry) {
             TreGroupListEntry groupListEntry = (TreGroupListEntry) treEntry;
             processTreGroups(groupListEntry, label, tresFlat);
         }

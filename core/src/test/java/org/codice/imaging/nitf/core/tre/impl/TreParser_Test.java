@@ -20,7 +20,6 @@ import java.util.Arrays;
 import javax.xml.transform.stream.StreamSource;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.TaggedRecordExtensionHandler;
-import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreCollection;
 import org.codice.imaging.nitf.core.tre.TreSource;
 import static org.junit.Assert.assertEquals;
@@ -100,9 +99,9 @@ public class TreParser_Test {
     @Test
     public void checkSingleSmallTREIsValid() throws NitfFormatException, IOException {
         TreCollectionBuilder collectionBuilder = new TreCollectionBuilder();
-        Tre tre1 = TreFactory.getDefault("One", TreSource.ExtendedHeaderData);
+        TreBuilder tre1 = TreFactory.getDefault("One", TreSource.ExtendedHeaderData);
         tre1.setRawData(new byte[1000]);
-        collectionBuilder.add(tre1);
+        collectionBuilder.add(tre1.getTre());
         assertCollectionCanBeSerialised(collectionBuilder.get(), TreSource.ExtendedHeaderData, 1011);
     }
 
@@ -117,101 +116,101 @@ public class TreParser_Test {
 
     @Test
     public void checkSingleLargeTREIsValid() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.ExtendedHeaderData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "99980", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.ExtendedHeaderData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "99980", "integer"));
         char[] filldata = new char[99980];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
-        TreCollection collection = new TreCollectionBuilder().add(tre1).get();
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
+        TreCollection collection = new TreCollectionBuilder().add(tre1.getTre()).get();
         assertCollectionCanBeSerialised(collection, TreSource.ExtendedHeaderData, 99996);
     }
 
     @Test
     public void checkSingleOversizeTREIsNotValid() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.ExtendedHeaderData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "99981", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.ExtendedHeaderData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "99981", "integer"));
         char[] filldata = new char[99981];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
-        TreCollection collection = new TreCollectionBuilder().add(tre1).get();
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
+        TreCollection collection = new TreCollectionBuilder().add(tre1.getTre()).get();
         assertCollectionCanNotBeSerialised(collection, TreSource.ExtendedHeaderData);
     }
 
     @Test
     public void checkSingleLargeTREIsValidInTextSegment() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.TextExtendedSubheaderData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "9698", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.TextExtendedSubheaderData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "9698", "integer"));
         char[] filldata = new char[9698];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
-        TreCollection collection = new TreCollectionBuilder().add(tre1).get();
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
+        TreCollection collection = new TreCollectionBuilder().add(tre1.getTre()).get();
         assertCollectionCanBeSerialised(collection, TreSource.TextExtendedSubheaderData, 9714);
     }
 
     @Test
     public void checkSingleOversizeTREIsNotValidInTextSegment() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.TextExtendedSubheaderData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "9699", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.TextExtendedSubheaderData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "9699", "integer"));
         char[] filldata = new char[9699];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
-        TreCollection collection = new TreCollectionBuilder().add(tre1).get();
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
+        TreCollection collection = new TreCollectionBuilder().add(tre1.getTre()).get();
         assertCollectionCanNotBeSerialised(collection, TreSource.TextExtendedSubheaderData);
     }
 
     public void checkSingleLargeTREIsValidInImageSegment() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.ImageExtendedSubheaderData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "99980", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.ImageExtendedSubheaderData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "99980", "integer"));
         char[] filldata = new char[99980];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
-        TreCollection collection = new TreCollectionBuilder().add(tre1).get();
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
+        TreCollection collection = new TreCollectionBuilder().add(tre1.getTre()).get();
         assertCollectionCanBeSerialised(collection, TreSource.ImageExtendedSubheaderData, 99996);
     }
 
     @Test
     public void checkSingleOversizeTREIsNotValidInImageSegment() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.ImageExtendedSubheaderData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "99981", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.ImageExtendedSubheaderData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "99981", "integer"));
         char[] filldata = new char[99981];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
-        TreCollection collection = new TreCollectionBuilder().add(tre1).get();
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
+        TreCollection collection = new TreCollectionBuilder().add(tre1.getTre()).get();
         assertCollectionCanNotBeSerialised(collection, TreSource.ImageExtendedSubheaderData);
     }
 
     public void checkMultipleLargeTREIsValidInImageSegment() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "90980", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "90980", "integer"));
         char[] filldata = new char[90980];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
         TreCollectionBuilder collectionBuilder = new TreCollectionBuilder()
-                .add(tre1);
-        Tre tre2 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
-        tre2.add(new TreEntryImpl("FILL_LEN", "9969", "integer"));
+                .add(tre1.getTre());
+        TreBuilder tre2 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
+        tre2.add(new TreSimpleEntryImpl("FILL_LEN", "9969", "integer"));
         char[] filldata2 = new char[9969];
         Arrays.fill(filldata2, 'X');
-        tre2.add((new TreEntryImpl("FILL_DATA", new String(filldata2), "string")));
-        collectionBuilder.add(tre2);
+        tre2.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata2), "string")));
+        collectionBuilder.add(tre2.getTre());
         assertCollectionCanBeSerialised(collectionBuilder.get(), TreSource.UserDefinedImageData, 99996);
     }
 
     @Test
     public void checkMultipleOversizeTREIsNotValidInImageSegment() throws NitfFormatException, IOException {
-        Tre tre1 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
-        tre1.add(new TreEntryImpl("FILL_LEN", "90980", "integer"));
+        TreBuilder tre1 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
+        tre1.add(new TreSimpleEntryImpl("FILL_LEN", "90980", "integer"));
         char[] filldata = new char[90980];
         Arrays.fill(filldata, 'X');
-        tre1.add((new TreEntryImpl("FILL_DATA", new String(filldata), "string")));
+        tre1.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata), "string")));
         TreCollectionBuilder collectionBuilder = new TreCollectionBuilder()
-                .add(tre1);
-        Tre tre2 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
-        tre2.add(new TreEntryImpl("FILL_LEN", "9970", "integer"));
+                .add(tre1.getTre());
+        TreBuilder tre2 = TreFactory.getDefault("FILL", TreSource.UserDefinedImageData);
+        tre2.add(new TreSimpleEntryImpl("FILL_LEN", "9970", "integer"));
         char[] filldata2 = new char[9970];
         Arrays.fill(filldata2, 'X');
-        tre2.add((new TreEntryImpl("FILL_DATA", new String(filldata2), "string")));
-        collectionBuilder.add(tre2);
+        tre2.add((new TreSimpleEntryImpl("FILL_DATA", new String(filldata2), "string")));
+        collectionBuilder.add(tre2.getTre());
         assertCollectionCanNotBeSerialised(collectionBuilder.get(), TreSource.UserDefinedImageData);
     }
 }

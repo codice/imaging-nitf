@@ -25,6 +25,7 @@ import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.impl.TreFactory;
 import org.codice.imaging.nitf.core.tre.impl.TreParser;
 import org.codice.imaging.nitf.core.tre.TreSource;
+import org.codice.imaging.nitf.core.tre.impl.TreBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +61,7 @@ public abstract class TreWrapper {
      *
      * This holds the state / data.
      */
-    protected Tre mTre;
+    protected TreBuilder mTreBuilder;
 
     private String mTag;
 
@@ -71,7 +72,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if there is a parsing issue
      */
     protected TreWrapper(final Tre tre, final String tag) throws NitfFormatException {
-        mTre = tre;
+        mTreBuilder = new TreBuilder(tre);
         mTag = tag;
         verifyTreName();
     }
@@ -83,12 +84,12 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     protected TreWrapper(final String tag, final TreSource treSource) throws NitfFormatException {
-        mTre = TreFactory.getDefault(tag, treSource);
+        mTreBuilder = TreFactory.getDefault(tag, treSource);
         mTag = tag;
     }
 
     private void verifyTreName() throws IllegalStateException {
-        if (!mTre.getName().equals(mTag)) {
+        if (!getTRE().getName().equals(mTag)) {
             throw new IllegalStateException(String.format("Incorrect TRE name for %s wrapper", mTag));
         }
     }
@@ -112,7 +113,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if the field was not found or a parsing issue occurs.
      */
     protected final int getValueAsInteger(final String fieldName) throws NitfFormatException {
-        return mTre.getIntValue(fieldName);
+        return getTRE().getIntValue(fieldName);
     }
 
     /**
@@ -123,7 +124,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if the field was not found or a parsing issue occurs.
      */
     protected final long getValueAsLongInteger(final String fieldName) throws NitfFormatException {
-        return mTre.getLongValue(fieldName);
+        return getTRE().getLongValue(fieldName);
     }
 
     /**
@@ -134,7 +135,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if the field was not found or a parsing issue occurs.
      */
     protected final BigInteger getValueAsBigInteger(final String fieldName) throws NitfFormatException {
-        return mTre.getBigIntegerValue(fieldName);
+        return getTRE().getBigIntegerValue(fieldName);
     }
 
     /**
@@ -161,7 +162,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if he field was not found or a parsing issue occurs.
      */
     protected final LocalDate getValueAsLocalDate(final String fieldName) throws NitfFormatException {
-        String dob = mTre.getFieldValue(fieldName);
+        String dob = getTRE().getFieldValue(fieldName);
         try {
             LocalDate dt = LocalDate.parse(dob, CENTURY_DATE_FORMATTER);
             return dt;
@@ -181,7 +182,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if he field was not found or a parsing issue occurs.
      */
     protected final ZonedDateTime getValueAsZonedDateTime(final String fieldName, final DateTimeFormatter formatter) throws NitfFormatException {
-        String dateTimeString = mTre.getFieldValue(fieldName);
+        String dateTimeString = getTRE().getFieldValue(fieldName);
         return parseAsZonedDateTime(formatter, dateTimeString);
     }
 
@@ -212,7 +213,7 @@ public abstract class TreWrapper {
      * @throws NitfFormatException if the field was not found or a parsing issue occurs.
      */
     public final String getFieldValue(final String fieldName) throws NitfFormatException {
-        return mTre.getFieldValue(fieldName);
+        return getTRE().getFieldValue(fieldName);
     }
 
     /**
@@ -225,7 +226,7 @@ public abstract class TreWrapper {
      */
     public final byte[] serialize() throws NitfFormatException {
         TreParser parser = new TreParser();
-        return parser.serializeTRE(mTre);
+        return parser.serializeTRE(getTRE());
     }
 
     /**
@@ -234,7 +235,7 @@ public abstract class TreWrapper {
      * @return the Tre that this object wraps.
      */
     public final Tre getTRE() {
-        return mTre;
+        return mTreBuilder.getTre();
     }
 
     /**

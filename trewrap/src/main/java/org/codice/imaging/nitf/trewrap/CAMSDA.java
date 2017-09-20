@@ -606,7 +606,7 @@ public class CAMSDA extends TreWrapper {
     }
 
     private TreGroup getCameraSetTreBased(final int cameraSetIndex) throws NitfFormatException {
-        List<TreGroup> cameraSets = mTre.getGroupListEntry("CAMERA_SETS").getGroups();
+        List<TreGroup> cameraSets = getTRE().getGroupListEntry("CAMERA_SETS").getGroups();
         TreGroup cameraSet = cameraSets.get(cameraSetIndex);
         return cameraSet;
     }

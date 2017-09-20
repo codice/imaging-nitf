@@ -56,13 +56,13 @@ public class TreCollectionTest {
     @Test
     public void addRemove() {
         TreCollectionBuilder builder = new TreCollectionBuilder();
-        Tre tre1 = TreFactory.getDefault("One", TreSource.TreOverflowDES);
+        Tre tre1 = TreFactory.getDefault("One", TreSource.TreOverflowDES).getTre();
         builder.add(tre1);
         TreCollection collection = builder.get();
         assertEquals(1, collection.getTREs().size());
         assertEquals(1, collection.getTREsWithName("One").size());
         assertEquals(tre1, collection.getTREs().get(0));
-        Tre tre2 = TreFactory.getDefault("Two", TreSource.TreOverflowDES);
+        Tre tre2 = TreFactory.getDefault("Two", TreSource.TreOverflowDES).getTre();
         builder.add(tre2);
         collection = builder.get();
         assertEquals(2, collection.getTREs().size());

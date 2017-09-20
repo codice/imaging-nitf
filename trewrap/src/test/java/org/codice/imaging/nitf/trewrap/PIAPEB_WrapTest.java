@@ -73,7 +73,7 @@ public class PIAPEB_WrapTest extends SharedTreTestSupport {
 
     @Test
     public void checkBadUsage() throws NitfFormatException {
-        Tre tre = TreFactory.getDefault("PIAEVA", TreSource.ImageExtendedSubheaderData);
+        Tre tre = TreFactory.getDefault("PIAEVA", TreSource.ImageExtendedSubheaderData).getTre();
         exception.expect(IllegalStateException.class);
         exception.expectMessage("Incorrect TRE name for PIAPEB wrapper");
         PIAPEB piapeb = new PIAPEB(tre);

@@ -17,6 +17,7 @@ package org.codice.imaging.nitf.core.tre.impl;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.TreEntry;
@@ -27,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-    A group of values within a TreEntryImpl.
+    A group of values within a TreGroupListEntry.
 */
 class TreGroupImpl implements TreGroup {
 
@@ -41,33 +42,36 @@ class TreGroupImpl implements TreGroup {
      */
     @Override
     public final List<TreEntry> getEntries() {
-        return entries;
+        return Collections.unmodifiableList(entries);
     }
 
     /**
-     * {@inheritDoc}
+     * Add an entry to the group.
+     *
+     * @param entry the entry to add
      */
-    @Override
-    public final void add(final TreEntry entry) {
+    final void add(final TreEntry entry) {
         if (entry != null) {
             entries.add(entry);
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Add multiple entries to the group.
+     *
+     * @param group the group containing the entry or entries to add
      */
-    @Override
-    public final void addAll(final TreGroup group) {
+    final void addAll(final TreGroup group) {
         if (group != null) {
             entries.addAll(group.getEntries());
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Set the list of entries.
+     *
+     * @param treEntries the new list of entries.
      */
-    @Override
     public final void setEntries(final List<TreEntry> treEntries) {
         entries = new ArrayList<>();
         entries.addAll(treEntries);
@@ -105,7 +109,7 @@ class TreGroupImpl implements TreGroup {
     @Override
     public final TreGroupListEntry getGroupListEntry(final String tagName) throws NitfFormatException {
         for (TreEntry entry : entries) {
-            if (entry.getName().equals(tagName) && (!entry.isSimpleField())) {
+            if (entry.getName().equals(tagName) && (entry instanceof TreGroupListEntry)) {
                 return (TreGroupListEntry) entry;
             }
         }
