@@ -34,7 +34,6 @@ public class CMETAA_Test {
     public void testCmetaaGeod() throws NitfFormatException {
         Tre cmetaa = readTre("/CMETAA/CMETAA_GEOD.txt");
         assertNotNull(cmetaa);
-        //System.out.println("GEOD Raw Data: " + new String(cmetaa.getRawData()));
         assertEquals(187,  cmetaa.getEntries().size());
         evaluateCommonFields(cmetaa);
         assertEquals("GEOD", cmetaa.getFieldValue("CG_MAP_TYPE"));
@@ -57,7 +56,6 @@ public class CMETAA_Test {
         Tre cmetaa = readTre("/CMETAA/CMETAA_MGRS.txt");
 
         assertNotNull(cmetaa);
-        //System.out.println("MGRS Raw Data: " + new String(cmetaa.getRawData()));
         assertEquals(182,  cmetaa.getEntries().size());
         evaluateCommonFields(cmetaa);
         assertEquals("MGRS", cmetaa.getFieldValue("CG_MAP_TYPE"));
@@ -74,7 +72,6 @@ public class CMETAA_Test {
     public void testCmetaaNa() throws NitfFormatException {
         Tre cmetaa = readTre("/CMETAA/CMETAA_NA.txt");
         assertNotNull(cmetaa);
-        //System.out.println("NA Raw Data: " + new String(cmetaa.getRawData()));
         assertEquals(176, cmetaa.getEntries().size());
         evaluateCommonFields(cmetaa);
         assertEquals("NA  ", cmetaa.getFieldValue("CG_MAP_TYPE"));
@@ -103,7 +100,6 @@ public class CMETAA_Test {
 
         NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), output);
         writer.write();
-        System.out.println("Output file: " + output);
     }
 
     private Tre readTre(String filename) throws NitfFormatException {
