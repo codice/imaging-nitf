@@ -46,7 +46,7 @@ public class CMETAA_Test {
         assertEquals("+16.9000000", cmetaa.getFieldValue("CG_PATCH_LTCORLR"));
         assertEquals("-170.0000000", cmetaa.getFieldValue("CG_PATCH_LGCORLR"));
         assertEquals("+17.1000000", cmetaa.getFieldValue("CG_PATCH_LTCORLL"));
-        assertEquals("-172.0000000", cmetaa.getFieldValue("CG_PATCH_LGCORLL"));
+        assertEquals("-172.0000000", cmetaa.getFieldValue("CG_PATCH_LNGCOLL"));
         assertEquals("1.7300000", cmetaa.getFieldValue("CG_PATCH_LAT_CONFIDENCE"));
         assertEquals("1.7400000", cmetaa.getFieldValue("CG_PATCH_LONG_CONFIDENCE"));
     }
@@ -63,7 +63,7 @@ public class CMETAA_Test {
         assertEquals("zzBJKeeeeeeeee17600nnnn", cmetaa.getFieldValue("CG_MGRSCORUL"));
         assertEquals("zzBJKeeeeeeeee17700nnnn", cmetaa.getFieldValue("CG_MGRSCORUR"));
         assertEquals("zzBJKeeeeeeeee17800nnnn", cmetaa.getFieldValue("CG_MGRSCORLR"));
-        assertEquals("zzBJKeeeeeeeee17900nnnn", cmetaa.getFieldValue("CG_MGRSCORLL"));
+        assertEquals("zzBJKeeeeeeeee17900nnnn", cmetaa.getFieldValue("CG_MGRCORLL"));
         assertEquals("1800.00", cmetaa.getFieldValue("CG_MGRS_CONFIDENCE"));
         assertEquals("           ", cmetaa.getFieldValue("CG_MGRS_PAD"));
     }
@@ -120,12 +120,12 @@ public class CMETAA_Test {
         assertEquals("22FR ", cmetaa.getFieldValue("RD_MODE"));
         assertEquals("0023", cmetaa.getFieldValue("RD_PATCH_NO"));
         assertEquals("I1Q2 ", cmetaa.getFieldValue("CMPLX_DOMAIN"));
-        assertEquals("LLM ", cmetaa.getFieldValue("CMPLX_MAG_SCALE_TYPE"));
+        assertEquals("LLM ", cmetaa.getFieldValue("CMPLX_MAG_REMAP_TYPE"));
         assertEquals("1.00000", cmetaa.getFieldValue("CMPLX_LIN_SCALE"));
         assertEquals("12345.6", cmetaa.getFieldValue("CMPLX_AVG_POWER"));
         assertEquals("01234", cmetaa.getFieldValue("CMPLX_LINLOG_TP"));
-        assertEquals("UQ2", cmetaa.getFieldValue("CMPLX_PHASE_SCALING_TYPE"));
-        assertEquals("19", cmetaa.getFieldValue("CMPLX_PHASE_SCALE"));
+        assertEquals("UQ2", cmetaa.getFieldValue("CMPLX_PHASE_QUANT_FLAG"));
+        assertEquals("19", cmetaa.getFieldValue("CMPLX_PHASE_QUANT_BIT_DEPTH"));
         assertEquals("32", cmetaa.getFieldValue("CMPLX_SIZE_1"));
         assertEquals("C5", cmetaa.getFieldValue("CMPLX_IC_1"));
         assertEquals("32", cmetaa.getFieldValue("CMPLX_SIZE_2"));
@@ -222,10 +222,10 @@ public class CMETAA_Test {
         assertEquals("+108.0000", cmetaa.getFieldValue("CG_CAAC"));
         assertEquals("0.1090", cmetaa.getFieldValue("CG_CONE_CONFIDENCE"));
         assertEquals("-11.0000", cmetaa.getFieldValue("CG_GPSAC"));
-        assertEquals("0.1110", cmetaa.getFieldValue("CG_SQUINT_CONFIDENCE"));
+        assertEquals("0.1110", cmetaa.getFieldValue("CG_GPSAC_CONFIDENCE"));
         assertEquals("+11.2000", cmetaa.getFieldValue("CG_SQUINT"));
         assertEquals("11.3000", cmetaa.getFieldValue("CG_GAAC"));
-        assertEquals("0.1140", cmetaa.getFieldValue("CG_GRAZE_CONFIDENCE"));
+        assertEquals("0.1140", cmetaa.getFieldValue("CG_GAAC_CONFIDENCE"));
         assertEquals("11.5000", cmetaa.getFieldValue("CG_INCIDENT"));
         assertEquals("-11.600", cmetaa.getFieldValue("CG_SLOPE"));
         assertEquals("+11.7000", cmetaa.getFieldValue("CG_TILT"));
