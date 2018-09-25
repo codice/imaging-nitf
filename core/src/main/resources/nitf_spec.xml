@@ -199,6 +199,214 @@
         </loop>
     </tre>
 
+    <tre name="CMETAA" length="1572" location="image">
+        <field name="RELATED_TRES" length="2" type="integer" minval="0" maxval="20"/>
+        <field name="ADDITIONAL_TRES" length="120" type="string"/>
+        <field name="RD_PRC_NO" length="12" type="string"/>
+        <field name="IF_PROCESS" length="4" type="string"/>
+        <field name="RD_CEN_FREQ" length="4" type="string"/>
+        <field name="RD_MODE" length="5" type="string"/>
+        <field name="RD_PATCH_NO" length="4" type="integer" minval="0" maxval="9999"/>
+        <field name="CMPLX_DOMAIN" length="5" type="string"/>
+        <field name="CMPLX_MAG_REMAP_TYPE" length="4" type="string"/>
+        <field name="CMPLX_LIN_SCALE" length="7" type="real" minval="0.000001" maxval="99999.9"/>
+        <field name="CMPLX_AVG_POWER" length="7" type="real" minval="0" maxval="99999.9"/>
+        <field name="CMPLX_LINLOG_TP" length="5" type="integer" minval="0" maxval="65535"/>
+        <field name="CMPLX_PHASE_QUANT_FLAG" length="3" type="string"/>
+        <field name="CMPLX_PHASE_QUANT_BIT_DEPTH" length="2" type="integer" minval="0" maxval="32"/>
+        <field name="CMPLX_SIZE_1" length="2" type="integer" minval="4" maxval="64"/>
+        <field name="CMPLX_IC_1" length="2" type="string"/>
+        <field name="CMPLX_SIZE_2" length="2" type="integer" minval="0" maxval="64"/>
+        <field name="CMPLX_IC_2" length="2" type="string"/>
+        <field name="CMPLX_IC_BPP" length="5" type="real" minval="0.0" maxval="64.0"/>
+        <field name="CMPLX_WEIGHT" length="3" type="string"/>
+        <field name="CMPLX_AZ_SLL" length="2" type="integer" minval="0" maxval="99" unit="decibels"/>
+        <field name="CMPLX_RNG_SLL" length="2" type="integer" minval="0" maxval="99" unit="decibels"/>
+        <field name="CMPLX_AZ_TAY_NBAR" length="2" type="integer" minval="0" maxval="99"/>
+        <field name="CMPLX_RNG_TAY_NBAR" length="2" type="integer" minval="0" maxval="99"/>
+        <field name="CMPLX_WEIGHT_NORM" length="3" type="string"/>
+        <field name="CMPLX_SIGNAL_PLANE" length="1" type="string"/>
+        <field name="IF_DC_SF_ROW" length="6" type="integer" minval="0" maxval="999999"/>
+        <field name="IF_DC_SF_COL" length="6" type="integer" minval="0" maxval="999999"/>
+        <field name="IF_PATCH_1_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_PATCH_1_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_PATCH_2_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_PATCH_2_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_PATCH_3_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_PATCH_3_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_PATCH_4_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_PATCH_4_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_DC_IS_ROW" length="8" type="integer" minval="0" maxval="99999999"/>
+        <field name="IF_DC_IS_COL" length="8" type="integer" minval="0" maxval="99999999"/>
+        <field name="IF_IMG_ROW_DC" length="8" type="integer" minval="0" maxval="99999999"/>
+        <field name="IF_IMG_COL_DC" length="8" type="integer" minval="0" maxval="99999999"/>
+        <field name="IF_TILE_1_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_TILE_1_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_TILE_2_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_TILE_2_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_TILE_3_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_TILE_3_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_TILE_4_ROW" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_TILE_4_COL" length="6" type="integer" minval="-99999" maxval="999999"/>
+        <field name="IF_RD" length="1" type="string"/>
+        <field name="IF_RGWLK" length="1" type="string"/>
+        <field name="IF_KEYSTN" length="1" type="string"/>
+        <field name="IF_LINSFT" length="1" type="string"/>
+        <field name="IF_SUBPATCH" length="1" type="string"/>
+        <field name="IF_GEODIST" length="1" type="string"/>
+        <field name="IF_RGFO" length="1" type="string"/>
+        <field name="IF_BEAM_COMP" length="1" type="string"/>
+        <field name="IF_RGRES" length="8" type="real" minval="0.0" maxval="9999.999" unit="meters"/>
+        <field name="IF_AZRES" length="8" type="real" minval="0.0" maxval="9999.999" unit="meters"/>
+        <field name="IF_RSS" length="8" type="real" minval="0.0" maxval="99.99999" unit="meters/pixel"/>
+        <field name="IF_AZSS" length="8" type="real" minval="0.0" maxval="99.99999" unit="meters/pixel"/>
+        <field name="IF_RSR" length="8" type="real" minval="0.0" maxval="99.99999" unit="samples/IPR"/>
+        <field name="IF_AZSR" length="8" type="real" minval="0.0" maxval="99.99999" unit="samples/IPR"/>
+        <field name="IF_RFFT_SAMP" length="7" type="integer" minval="1" maxval="9999999"/>
+        <field name="IF_AZFFT_SAMP" length="7" type="integer" minval="1" maxval="9999999"/>
+        <field name="IF_RFFT_TOT" length="7" type="integer" minval="1" maxval="9999999"/>
+        <field name="IF_AZFFT_TOT" length="7" type="integer" minval="1" maxval="9999999"/>
+        <field name="IF_SUBP_ROW" length="6" type="integer" minval="0" maxval="999999" unit="pixels"/>
+        <field name="IF_SUBP_COL" length="6" type="integer" minval="0" maxval="999999" unit="pixels"/>
+        <field name="IF_SUB_RG" length="4" type="integer" minval="0" maxval="1000"/>
+        <field name="IF_SUB_AZ" length="4" type="integer" minval="0" maxval="1000"/>
+        <field name="IF_RFFTS" length="1" type="string"/>
+        <field name="IF_AFFTS" length="1" type="string"/>
+        <field name="IF_RANGE_DATA" length="7" type="string"/>
+        <field name="IF_INCPH" length="1" type="string"/>
+        <field name="IF_SR_NAME1" length="8" type="string"/>
+        <field name="IF_SR_AMOUNT1" length="8" type="real" minval="1.0" maxval="99.99999"/>
+        <field name="IF_SR_NAME2" length="8" type="string"/>
+        <field name="IF_SR_AMOUNT2" length="8" type="real" minval="1.0" maxval="99.99999"/>
+        <field name="IF_SR_NAME3" length="8" type="string"/>
+        <field name="IF_SR_AMOUNT" length="8" type="real" minval="1.0" maxval="99.99999"/>
+        <field name="AF_TYPE1" length="5" type="string"/>
+        <field name="AF_TYPE2" length="5" type="string"/>
+        <field name="AF_TYPE3" length="5" type="string"/>
+        <field name="POL_TR" length="1" type="string"/>
+        <field name="POL_RE" length="1" type="string"/>
+        <field name="POL_REFERENCE" length="40" type="string"/>
+        <field name="POL" length="1" type="string"/>
+        <field name="POL_REG" length="1" type="string"/>
+        <field name="POL_ISO_1" length="5" type="real" minval="0.0" maxval="99.99" unit="decibels"/>
+        <field name="POL_BAL" length="1" type="string"/>
+        <field name="POL_BAL_MAG" length="8" type="real" minval="0.0" maxval="0.999999"/>
+        <field name="POL_BAL_PHS" length="8" type="real" minval="-9.999999" maxval="9.999999" unit="radians"/>
+        <field name="POL_HCOMP" length="1" type="string"/>
+        <field name="POL_HCOMP_BASIS" length="10" type="string"/>
+        <field name="POL_HCOMP_COEF_1" length="9" type="real" minval="-99999999" maxval="999999999"/>
+        <field name="POL_HCOMP_COEF_2" length="9" type="real" minval="-99999999" maxval="999999999"/>
+        <field name="POL_HCOMP_COEF_3" length="9" type="real" minval="-99999999" maxval="999999999"/>
+        <field name="POL_AFCOMP" length="1" type="string"/>
+        <field name="POL_SPARE_A" length="15" type="string" fixed_value="               "/>
+        <field name="POL_SPARE_N" length="9" type="integer" fixed_value="000000000"/>
+        <field name="T_UTC_YYYYMMMDD" length="9" type="string"/>
+        <field name="T_HHMMSSUTC" length="6" type="string"/>
+        <field name="T_HHMMSSLOCAL" length="6" type="string"/>
+        <field name="CG_SRAC" length="11" type="real" minval="0.0" maxval="99999999.99" unit="meters"/>
+        <field name="CG_SLANT_CONFIDENCE" length="7" type="real" minval="0.0" maxval="9999.99" unit="meters"/>
+        <field name="CG_CROSS" length="11" type="real" minval="0.0" maxval="99999999.99" unit="meters"/>
+        <field name="CG_CROSS_CONFIDENCE" length="7" type="real" minval="0.0" maxval="9999.99" unit="meters"/>
+        <field name="CG_CAAC" length="9" type="real" minval="-179.0" maxval="179.0" unit="degrees"/>
+        <field name="CG_CONE_CONFIDENCE" length="6" type="real" minval="0.0" maxval="0.9999" unit="degrees"/>
+        <field name="CG_GPSAC" length="8" type="real" minval="-89.0" maxval="89.0" unit="degrees"/>
+        <field name="CG_GPSAC_CONFIDENCE" length="6" type="real" minval="0.0" maxval="0.9999" unit="degrees"/>
+        <field name="CG_SQUINT" length="8" type="real" minval="-89.0" maxval="89.0" unit="degrees"/>
+        <field name="CG_GAAC" length="7" type="real" minval="0.0" maxval="89.9999" unit="degrees"/>
+        <field name="CG_GAAC_CONFIDENCE" length="6" type="real" minval="0.0" maxval="0.9999" unit="degrees"/>
+        <field name="CG_INCIDENT" length="7" type="real" minval="0.0" maxval="89.9999" unit="degrees"/>
+        <field name="CG_SLOPE" length="7" type="real" minval="-89.9999" maxval="89.9999" unit="degrees"/>
+        <field name="CG_TILT" length="8" type="real" minval="-44.9999" maxval="44.9999" unit="degrees"/>
+        <field name="CG_LD" length="1" type="string"/>
+        <field name="CG_NORTH" length="8" type="real" minval="0.0" maxval="359.9999" unit="degrees"/>
+        <field name="CG_NORTH_CONFIDENCE" length="6" type="real" minval="0.0" maxval="9.9999" unit="degrees"/>
+        <field name="CG_EAST" length="8" type="real" minval="0.0" maxval="359.9999" unit="degrees"/>
+        <field name="CG_RLOS" length="8" type="real" minval="0.0" maxval="359.9999" unit="degrees"/>
+        <field name="CG_LOS_CONFIDENCE" length="6" type="real" minval="0.0" maxval="9.9999" unit="degrees"/>
+        <field name="CG_LAYOVER" length="8" type="real" minval="0.0" maxval="359.9999" unit="degrees"/>
+        <field name="CG_SHADOW" length="8" type="real" minval="0.0" maxval="359.9999" unit="degrees"/>
+        <field name="CG_OPM" length="7" type="real" minval="0.0" maxval="999.999" unit="miliarcsec"/>
+        <field name="CG_MODEL" length="5" type="string"/>
+        <field name="CG_AMPT_X" length="13" type="real" minval="-99999999.999" maxval="99999999.999"/>
+        <field name="CG_AMPT_Y" length="13" type="real" minval="-99999999.999" maxval="99999999.999"/>
+        <field name="CG_AMPT_Z" length="13" type="real" minval="-99999999.999" maxval="99999999.999" unit="meters"/>
+        <field name="CG_AP_CONF_XY" length="6" type="real" minval="0.0" maxval="999.99" unit="meters"/>
+        <field name="CG_AP_CONF_Z" length="6" type="real" minval="0.0" maxval="999.99" unit="meters"/>
+        <field name="CG_APCEN_X" length="13" type="real" minval="-99999999.999" maxval="99999999.99"/>
+        <field name="CG_APCEN_Y" length="13" type="real" minval="-99999999.999" maxval="99999999.99"/>
+        <field name="CG_APCEN_Z" length="13" type="real" minval="-99999999.999" maxval="99999999.99" unit="meters"/>
+        <field name="CG_APER_CONF_XY" length="6" type="real" minval="0.0" maxval="999.99" unit="meters"/>
+        <field name="CG_APER_CONF_Z" length="6" type="real" minval="0.0" maxval="999.99" unit="meters"/>
+        <field name="CG_FPNUV_X" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_FPNUV_Y" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_FPNUV_Z" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_IDPNUVX" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_IDPNUVY" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_IDPNUVZ" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_SCECN_X" length="13" type="real" minval="-99999999.999" maxval="99999999.999"/>
+        <field name="CG_SCECN_Y" length="13" type="real" minval="-99999999.999" maxval="99999999.999"/>
+        <field name="CG_SCECN_Z" length="13" type="real" minval="-99999999.999" maxval="99999999.999" unit="meters"/>
+        <field name="CG_SC_CONF_XY" length="6" type="real" minval="0.0" maxval="999.99" unit="meters"/>
+        <field name="CG_SC_CONF_Z" length="6" type="real" minval="0.0" maxval="999.99" unit="meters"/>
+        <field name="CG_SWWD" length="8" type="real" minval="0.0" maxval="99999.99" unit="meters"/>
+        <field name="CG_SNVEL_X" length="10" type="real" minval="-99999.999" maxval="99999.999" unit="meters/sec"/>
+        <field name="CG_SNVEL_Y" length="10" type="real" minval="-99999.999" maxval="99999.999" unit="meters/sec"/>
+        <field name="CG_SNVEL_Z" length="10" type="real" minval="-99999.999" maxval="99999.999" unit="meters/sec"/>
+        <field name="CG_SNACC_X" length="10" type="real" minval="-99.999999" maxval="99.999999" unit="meters/sec squared"/>
+        <field name="CG_SNACC_Y" length="10" type="real" minval="-99.999999" maxval="99.999999" unit="meters/sec squared"/>
+        <field name="CG_SNACC_Z" length="10" type="real" minval="-99.999999" maxval="99.999999" unit="meters/sec squared"/>
+        <field name="CG_SNATT_ROLL" length="8" type="real" minval="-9999999" maxval="179.999" unit="degrees"/>
+        <field name="CG_SNATT_PITCH" length="8" type="real" minval="-9999999" maxval="179.999" unit="degrees"/>
+        <field name="CG_SNATT_YAW" length="8" type="real" minval="-9999999" maxval="359.999" unit="degrees"/>
+        <field name="CG_GTP_X" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_GTP_Y" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_GTP_Z" length="9" type="real" minval="-1.0" maxval="1.0"/>
+        <field name="CG_MAP_TYPE" length="4" type="string"/>
+
+        <if cond="CG_MAP_TYPE=GEOD">
+            <field name="CG_PATCH_LATCEN" length="11" type="real" minval="-89.9999999" maxval="89.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LNGCEN" length="12" type="real" minval="-179.9999999" maxval="179.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LTCORUL" length="11" type="real" minval="-89.9999999" maxval="89.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LGCORUL" length="12" type="real" minval="-179.9999999" maxval="179.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LTCORUR" length="11" type="real" minval="-89.9999999" maxval="89.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LGCORUR" length="12" type="real" minval="-179.9999999" maxval="179.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LTCORLR" length="11" type="real" minval="-89.9999999" maxval="89.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LGCORLR" length="12" type="real" minval="-179.9999999" maxval="179.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LTCORLL" length="11" type="real" minval="-89.9999999" maxval="89.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LNGCOLL" length="12" type="real" minval="-179.9999999" maxval="179.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LAT_CONFIDENCE" length="9" type="real" minval="0.0" maxval="9.9999999" unit="degrees"/>
+            <field name="CG_PATCH_LONG_CONFIDENCE" length="9" type="real" minval="0.0" maxval="9.9999999" unit="degrees"/>
+        </if>
+
+        <if cond="CG_MAP_TYPE=MGRS">
+            <field name="CG_MGRS_CENT" length="23" type="string"/>
+            <field name="CG_MGRSCORUL" length="23" type="string"/>
+            <field name="CG_MGRSCORUR" length="23" type="string"/>
+            <field name="CG_MGRSCORLR" length="23" type="string"/>
+            <field name="CG_MGRCORLL" length="23" type="string"/>
+            <field name="CG_MGRS_CONFIDENCE" length="7" type="real" minval="0.0" maxval="9999.99" unit="meters"/>
+            <field name="CG_MGRS_PAD" length="11" type="string" fixed_value="           "/>
+        </if>
+
+        <if cond="CG_MAP_TYPE=NA  ">
+            <field name="CG_MAP_TYPE_BLANK" length="133" type="string"/>
+        </if>
+
+        <field name="CG_SPARE_A" length="144" type="string" fixed_value="                                                                                                                                                "/>
+        <field name="CA_CALPA" length="7" type="real" minval="0.0" maxval="999.999"/>
+        <field name="WF_SRTFR" length="14" type="real" minval="0.0" maxval="999999999999.9" unit="Hz"/>
+        <field name="WF_ENDFR" length="14" type="real" minval="0.0" maxval="999999999999.9" unit="Hz"/>
+        <field name="WF_CHRPRT" length="10" type="real" minval="-99.999999" maxval="99.999999" unit="MHz/msec"/>
+        <field name="WF_WIDTH" length="9" type="real" minval="0.0" maxval="0.9999999" unit="seconds"/>
+        <field name="WF_CENFRQ" length="13" type="real" minval="0.0" maxval="99999999999.9" unit="Hz"/>
+        <field name="WF_BW" length="13" type="real" minval="0.0" maxval="99999999999.9" unit="Hz"/>
+        <field name="WF_PRF" length="7" type="real" minval="0.0" maxval="99999.9" unit="Hz"/>
+        <field name="WF_PRI" length="9" type="real" minval="0.0" maxval="0.9999999" unit="seconds"/>
+        <field name="WF_CDP" length="7" type="real" minval="0.0" maxval="100.0" unit="seconds"/>
+        <field name="WF_NUMBER_OF_PULSES" length="9" type="integer" minval="2" maxval="999999999"/>
+        <field name="VPH_COND" length="1" type="string"/>
+    </tre>
+
     <tre name="CSDIDA" md_prefix="NITF_CSDIDA_" length="70" location="file">
         <field name="DAY" length="2"/>
         <field name="MONTH" length="3"/>
@@ -575,7 +783,7 @@
         <field name="TOTAL_TILES_COLS" length="3" type="integer" minval="1" maxval="999"/>
         <field name="TOTAL_TILES_ROWS" length="5" type="integer" minval="1" maxval="99999"/>
     </tre>
-    
+
     <!-- MIE4NITF 1.1, Section 5.9.3.2 and Table 11 -->
     <tre name="MIMCSA" length="121" location="file">
         <field name="LAYER_ID" length="36" type="string"/>
@@ -642,7 +850,7 @@
             <field name="DT" length_var="DT_SIZE" type="UINT"/>
         </loop>
     </tre>
-    
+
     <!-- STDI-0002 Appendix E (ASDE 2.1/CN1), Section 3.10 and Table E-19 -->
     <tre name="MTIRPB" minlength="119" maxlength="42035">
         <field name="MTI_DP" length="2" type="string"/>

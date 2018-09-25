@@ -61,6 +61,7 @@
                         <include>**/*.GN3</include>
                         <include>**/*.on1</include>
                         <include>SENSRB/*.txt</include>
+                        <include>CMETAA/*.txt</include>
                         <include>**/*.ref.png</include>
                     </includes>
                 </configuration>
