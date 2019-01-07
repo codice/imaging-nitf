@@ -39,7 +39,7 @@ import org.codice.imaging.nitf.fluent.NitfSegmentsFlow;
 /**
  * A builder class that handles parsing.
  */
-public class NitfParserParsingFlowImpl implements NitfParserParsingFlow {
+public class NitfParserParsingFlowImpl implements NitfParserParsingFlow, AutoCloseable {
     private final NitfReader reader;
 
     private HeapStrategy<ImageInputStream> imageDataStrategy =
@@ -127,5 +127,10 @@ public class NitfParserParsingFlowImpl implements NitfParserParsingFlow {
         }
         NitfParser.parse(reader, parseStrategy);
         return new NitfSegmentsFlowImpl(parseStrategy.getDataSource(), imageDataStrategy::cleanUp);
+    }
+
+    @Override
+    public final void close() throws Exception {
+        this.reader.close();
     }
 }

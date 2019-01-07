@@ -27,7 +27,7 @@ import org.codice.imaging.nitf.core.common.NitfReader;
     combination of shared methods and default implementation methods that a concrete
     implementation class can call.
 */
-public abstract class NitfReaderDefaultImpl implements NitfReader {
+public abstract class NitfReaderDefaultImpl implements NitfReader, AutoCloseable {
 
     /**
         The type (version) of NITF file.

@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 /**
     NitfReader implementation using an InputStream.
 */
-public class NitfInputStreamReader extends SharedReader implements NitfReader {
+public class NitfInputStreamReader extends SharedReader implements NitfReader, AutoCloseable {
 
     private static final Logger LOG = LoggerFactory.getLogger(NitfInputStreamReader.class);
 
@@ -123,6 +123,13 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
         } catch (IOException ex) {
             LOG.warn("IO Exception skipping bytes", ex);
             throw new NitfFormatException(GENERIC_READ_ERROR_MESSAGE + ex.getMessage(), numBytesRead);
+        }
+    }
+
+    @Override
+    public final void close() throws Exception {
+        if (input != null) {
+            input.close();
         }
     }
 }
