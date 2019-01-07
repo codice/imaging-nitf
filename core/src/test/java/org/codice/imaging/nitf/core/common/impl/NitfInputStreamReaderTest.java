@@ -53,4 +53,33 @@ public class NitfInputStreamReaderTest {
         NitfReader reader = new NitfInputStreamReader(mockInputStream);
         reader.readBytes(100);
     }
+
+    @Test(expected = NitfFormatException.class)
+    public void testIOExceptionReadingFromClosedStream() throws Exception {
+        InputStream mockInputStream = new InputStream() {
+            boolean closed = false;
+            @Override public int read() throws IOException {
+                throwIOExceptionIfClosed();
+                return 100;
+            }
+            @Override public int read(byte[] buff, int offset, int len) throws IOException {
+                throwIOExceptionIfClosed();
+                return 100;
+            }
+            public void close() throws IOException {
+                throwIOExceptionIfClosed();
+                closed = true;
+            }
+            private void throwIOExceptionIfClosed() throws IOException {
+                if (closed) {
+                    throw new IOException("Stream already closed");
+                }
+            }
+        };
+
+        // IOException is rethrown as NitfFormatException
+        NitfReader reader = new NitfInputStreamReader(mockInputStream);
+        reader.close();
+        reader.readBytes(100);
+    }
 }

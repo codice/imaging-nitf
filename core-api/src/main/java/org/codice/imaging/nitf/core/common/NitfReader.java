@@ -164,4 +164,12 @@ public interface NitfReader {
         @throws NitfFormatException if something went wrong during parsing (e.g. end of file).
     */
     void skip(final long count) throws NitfFormatException;
+
+    /**
+       Closes the file.
+
+       @throws Exception if there is an error closing the file.
+     */
+
+    void close() throws Exception;
 }

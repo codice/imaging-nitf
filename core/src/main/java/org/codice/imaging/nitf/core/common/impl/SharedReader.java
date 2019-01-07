@@ -21,7 +21,7 @@ import org.codice.imaging.nitf.core.impl.NitfReaderDefaultImpl;
 /**
     Shared NitfReader implementation.
 */
-abstract class SharedReader extends NitfReaderDefaultImpl implements NitfReader {
+abstract class SharedReader extends NitfReaderDefaultImpl implements NitfReader, AutoCloseable {
 
     @Override
     public final Integer readBytesAsInteger(final int count) throws NitfFormatException {

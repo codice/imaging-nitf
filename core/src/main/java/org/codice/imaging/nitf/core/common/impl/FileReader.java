@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 /**
     NitfReader implementation using a (random access) File.
 */
-public class FileReader extends SharedReader implements NitfReader {
+public class FileReader extends SharedReader implements NitfReader, AutoCloseable {
     // Error Messages
     static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF file: ";
     static final String FILE_NOT_FOUND_EXCEPTION_MESSAGE = "File Not Found Exception opening file:";
