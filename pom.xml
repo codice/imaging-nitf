@@ -37,6 +37,8 @@
         <module>registryparser</module>
         <module>deswrap</module>
         <module>imagecompare</module>
+        <module>nifi</module>
+        <module>extract</module>
     </modules>
 
     <distributionManagement>
