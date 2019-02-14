@@ -31,6 +31,7 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
 
     private InputStream input = null;
     private long numBytesRead = 0;
+    private long skipTimeoutMillis = 0;
 
     private static final String GENERIC_READ_ERROR_MESSAGE = "Error reading from NITF stream: ";
 
@@ -41,6 +42,24 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
     */
     public NitfInputStreamReader(final InputStream nitfInputStream) {
         input = nitfInputStream;
+    }
+
+    /**
+       Sets the timeout for the skip() method if reading from a slow input stream.
+
+       @param timeoutMillis The timeout in milliseconds.
+     */
+    public final void setSkipTimeout(final long timeoutMillis) {
+        skipTimeoutMillis = timeoutMillis;
+    }
+
+    /**
+       Gets the timeout to be used by skip() after which an exception will be thrown.
+
+       @return The timeout to be used by skip() if reading from a slow input stream.
+     */
+    public final long getSkipTimeoutMillis() {
+        return skipTimeoutMillis;
     }
 
     /**
@@ -112,11 +131,20 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
      */
     @Override
     public final void skip(final long count) throws NitfFormatException {
+        if (count <= 0) {
+            throw new IllegalArgumentException("Invalid count parameter ( " + count + " ), it should be > 0.");
+        }
         long bytesToRead = count;
         try {
             long thisRead = 0;
+            long startTime = System.currentTimeMillis();
             do {
                 thisRead = input.skip(bytesToRead);
+                if (thisRead == 0) {
+                    if (System.currentTimeMillis() - startTime > this.skipTimeoutMillis) {
+                        throw new NitfFormatException("Input stream skip timed out after " + this.skipTimeoutMillis + "ms.");
+                    }
+                }
                 numBytesRead += thisRead;
                 bytesToRead -= thisRead;
             } while (bytesToRead > 0);
