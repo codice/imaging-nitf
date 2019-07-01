@@ -4,4 +4,5 @@ install: mvn install --quiet -DskipTests=true -B
 script: mvn test --quiet -B
 jdk:
   - oraclejdk8
+  - openjdk11
 after_success: codecov
