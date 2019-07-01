@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import static org.codice.imaging.nitf.core.common.impl.CommonConstants.NITF20_DATE_FORMAT;
 import static org.codice.imaging.nitf.core.common.impl.CommonConstants.NITF21_DATE_FORMAT;
@@ -62,7 +63,7 @@ public class DateTimeParser {
         String strippedSourceString = sourceString.trim();
         SimpleDateFormat dateFormat = null;
         if (strippedSourceString.length() == STANDARD_DATE_TIME_LENGTH) {
-            dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT);
+            dateFormat = new SimpleDateFormat(NITF20_DATE_FORMAT, Locale.ENGLISH);
         } else if (strippedSourceString.length() == 0) {
             return;
         }
