@@ -121,7 +121,12 @@ class CSSHPAUserDefinedDES implements UserDefinedDataExtensionSegment {
             } catch (IOException ex) {
                 LOG.warn("Could not generate CSSHPA.", ex);
             } finally {
-                tempFile.delete();
+                if (tempFile != null) {
+                    boolean wasDeleted = tempFile.delete();
+                    if (!wasDeleted) {
+                        LOG.warn("Did not delete temporary file");
+                    }
+                }
                 try {
                     desData.close();
                 } catch (IOException ex) {

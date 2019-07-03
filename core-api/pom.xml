@@ -44,7 +44,7 @@
                                 file:${project.parent.basedir}/checkstyle.xml
                             </configLocation>
                             <!--<suppressionsLocation>-->
-                                <!--file:${project.basedir}/checkstyle-suppressions.xml-->
+                            <!--file:${project.basedir}/checkstyle-suppressions.xml-->
                             <!--</suppressionsLocation>-->
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
@@ -68,15 +68,16 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>${findbugsplugin.version}</version>
-                <configuration>
-                    <xmlOutput>true</xmlOutput>
-                    <findbugsXmlOutput>true</findbugsXmlOutput>
-                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-                    <excludeFilterFile>file:${project.parent.basedir}/findbugs-excludes.xml</excludeFilterFile>
-                </configuration>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.mavenplugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>${spotbugs.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <phase>verify</phase>

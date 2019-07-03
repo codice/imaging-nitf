@@ -29,7 +29,7 @@ public class ImageBandLUTImpl implements ImageBandLUT {
         @param lutEntries the LUT data, in order.
     */
     public ImageBandLUTImpl(final byte[] lutEntries) {
-        entries = lutEntries;
+        entries = lutEntries.clone();
     }
 
     /**
@@ -56,6 +56,6 @@ public class ImageBandLUTImpl implements ImageBandLUT {
      */
     @Override
     public final byte[] getEntries() {
-        return entries;
+        return entries.clone();
     }
 }

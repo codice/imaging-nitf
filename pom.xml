@@ -16,7 +16,8 @@
         <slf4jtest.version>1.2.0</slf4jtest.version>
         <jacoco.version>0.8.4</jacoco.version>
         <checkstyleplugin.version>2.17</checkstyleplugin.version>
-        <findbugsplugin.version>3.0.5</findbugsplugin.version>
+        <spotbugs.version>4.0.0-beta3</spotbugs.version>
+        <spotbugs.mavenplugin.version>3.1.12</spotbugs.mavenplugin.version>
         <mavencompilerplugin.version>3.3</mavencompilerplugin.version>
         <mavenremoteresources.version>1.5</mavenremoteresources.version>
         <mavenjavadocplugin.version>2.9.1</mavenjavadocplugin.version>
