@@ -538,11 +538,15 @@ public class TreParser {
 
     private String getValidatedIntegerValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
-        if (value.length() > fieldType.getLength().intValue()) {
+        String trimmedValue = value.trim();
+        if (trimmedValue.length() > fieldType.getLength().intValue()) {
             throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
         }
         try {
-            int intValue = Integer.parseInt(value);
+            int intValue = 0;
+            if (trimmedValue.length() > 0) {
+                intValue = Integer.parseInt(trimmedValue);
+            }
             validateIntegerValueRange(intValue, fieldType);
             paddedValue = padIntegerToLength(intValue, fieldType.getLength().intValue());
         } catch (NumberFormatException ex) {
