@@ -538,17 +538,18 @@ public class TreParser {
 
     private String getValidatedIntegerValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
-        String trimmedValue = value.trim();
-        if (trimmedValue.length() > fieldType.getLength().intValue()) {
+        if (value.length() > fieldType.getLength().intValue()) {
             throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
         }
         try {
-            int intValue = 0;
-            if (trimmedValue.length() > 0) {
-                intValue = Integer.parseInt(trimmedValue);
+            // allow for null values
+            if (value != null && value.trim().length() > 0) {
+                int intValue = Integer.parseInt(value);
+                validateIntegerValueRange(intValue, fieldType);
+                paddedValue = padIntegerToLength(intValue, fieldType.getLength().intValue());
+            } else {
+                paddedValue = padStringToLength("", fieldType.getLength().intValue());
             }
-            validateIntegerValueRange(intValue, fieldType);
-            paddedValue = padIntegerToLength(intValue, fieldType.getLength().intValue());
         } catch (NumberFormatException ex) {
             String err = "Could not parse " + fieldType.getName() + " value " + value + " as a number.";
             LOG.error(err);
@@ -574,10 +575,25 @@ public class TreParser {
 
     private String getValidatedRealValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
+        // to handle a field that allows spaces or null values
+        // (i.e. TGTLAT and TGTLONG from the PIATGB tagged record extension)
         try {
-            double realValue = Double.parseDouble(value);
-            validateRealValueRange(realValue, fieldType);
-            paddedValue = padRealToLength(realValue, fieldType.getFormat(), fieldType.getLength().intValue());
+            if(value == null || value.contains(" ")) {
+                if (value != null && value.trim().length() > 0) {
+                    // remove the spaces and validate the number
+                    double realValue = Double.parseDouble(value.trim());
+                    validateRealValueRange(realValue, fieldType);
+                    // use the original number with it's spaces and pad to length
+                    paddedValue = padStringToLength(value, fieldType.getLength().intValue());
+                } else {
+                    // null, pad with spaces to length
+                    paddedValue = padStringToLength("", fieldType.getLength().intValue());
+                }
+            } else {
+                double realValue = Double.parseDouble(value);
+                validateRealValueRange(realValue, fieldType);
+                paddedValue = padRealToLength(realValue, fieldType.getFormat(), fieldType.getLength().intValue());
+            }
         } catch (NumberFormatException ex) {
             String err = "Could not parse " + fieldType.getName() + " value " + value + " as a floating point number.";
             LOG.error(err);
