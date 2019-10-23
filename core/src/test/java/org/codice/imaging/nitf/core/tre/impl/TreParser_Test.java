@@ -113,6 +113,35 @@ public class TreParser_Test {
             + "         <field name=\"FILL_LEN\" type=\"integer\" length=\"5\"/>"
             + "         <field name=\"FILL_DATA\" type=\"string\" length_var=\"FILL_LEN\"/>"
             + "     </tre>"
+
+            + "     <tre name=\"JUNKA1\">"
+            + "         <field name=\"A1\" type=\"integer\" length=\"1\"/>"
+            + "         <if cond=\"A1==0\">"
+            + "             <field name=\"X\" length=\"1\" type=\"string\"/>"
+            + "         </if>"
+            + "     </tre>"
+
+            + "     <tre name=\"JUNKA2\">"
+            + "         <field name=\"A2\" type=\"integer\" length=\"1\"/>"
+            + "         <if cond=\"A2!=!=0\">"
+            + "             <field name=\"X\" length=\"1\" type=\"string\"/>"
+            + "         </if>"
+            + "     </tre>"
+
+            + "     <tre name=\"JUNKA3\">"
+            + "         <field name=\"A3\" type=\"integer\" length=\"1\"/>"
+            + "         <if cond=\"A3&amp;&amp;0\">"
+            + "             <field name=\"X\" length=\"1\" type=\"string\"/>"
+            + "         </if>"
+            + "     </tre>"
+
+            + "     <tre name=\"JUNKA4\">"
+            + "         <field name=\"A4\" type=\"integer\" length=\"1\"/>"
+            + "         <if cond=\"A4 AND A4 AND A4\">"
+            + "             <field name=\"X\" length=\"1\" type=\"string\"/>"
+            + "         </if>"
+            + "     </tre>"
+
             + " </tres>";
 
     @Test
@@ -219,5 +248,49 @@ public class TreParser_Test {
         tre2.add((new TreEntryImpl("FILL_DATA", new String(filldata2), "string")));
         collection.add(tre2);
         assertCollectionCanNotBeSerialised(collection, TreSource.UserDefinedImageData);
+    }
+
+    @Test
+    public void checkConditionShouldOnlyHaveSingleEquals() throws NitfFormatException, IOException {
+        exception.expect(UnsupportedOperationException.class);
+        TreCollection collection = new TreCollectionImpl();
+        Tre tre1 = TreFactory.getDefault("JUNKA1", TreSource.ExtendedHeaderData);
+        tre1.add(new TreEntryImpl("A1", "1", "integer"));
+        tre1.add((new TreEntryImpl("X", "A", "string")));
+        collection.add(tre1);
+        assertCollectionCanBeSerialised(collection, TreSource.ExtendedHeaderData, 2);
+    }
+
+    @Test
+    public void checkConditionShouldOnlyHaveSingleNotEquals() throws NitfFormatException, IOException {
+        exception.expect(UnsupportedOperationException.class);
+        TreCollection collection = new TreCollectionImpl();
+        Tre tre1 = TreFactory.getDefault("JUNKA2", TreSource.ExtendedHeaderData);
+        tre1.add(new TreEntryImpl("A2", "0", "integer"));
+        tre1.add((new TreEntryImpl("X", "A", "string")));
+        collection.add(tre1);
+        assertCollectionCanBeSerialised(collection, TreSource.ExtendedHeaderData, 2);
+    }
+
+    @Test
+    public void checkConditionShouldOnlyHaveSingleBitmask() throws NitfFormatException, IOException {
+        exception.expect(UnsupportedOperationException.class);
+        TreCollection collection = new TreCollectionImpl();
+        Tre tre1 = TreFactory.getDefault("JUNKA3", TreSource.ExtendedHeaderData);
+        tre1.add(new TreEntryImpl("A3", "0", "integer"));
+        tre1.add((new TreEntryImpl("X", "A", "string")));
+        collection.add(tre1);
+        assertCollectionCanBeSerialised(collection, TreSource.ExtendedHeaderData, 2);
+    }
+
+    @Test
+    public void checkConditionShouldOnlyHaveSingleAND() throws NitfFormatException, IOException {
+        exception.expect(UnsupportedOperationException.class);
+        TreCollection collection = new TreCollectionImpl();
+        Tre tre1 = TreFactory.getDefault("JUNKA4", TreSource.ExtendedHeaderData);
+        tre1.add(new TreEntryImpl("A4", "0", "integer"));
+        tre1.add((new TreEntryImpl("X", "A", "string")));
+        collection.add(tre1);
+        assertCollectionCanBeSerialised(collection, TreSource.ExtendedHeaderData, 2);
     }
 }
