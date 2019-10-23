@@ -142,6 +142,13 @@ public class TreParser_Test {
             + "         </if>"
             + "     </tre>"
 
+            + "     <tre name=\"JUNKA5\">"
+            + "         <field name=\"A5\" type=\"integer\" length=\"1\"/>"
+            + "         <if cond=\"A5 BLAH A5\">"
+            + "             <field name=\"X\" length=\"1\" type=\"string\"/>"
+            + "         </if>"
+            + "     </tre>"
+
             + " </tres>";
 
     @Test
@@ -289,6 +296,17 @@ public class TreParser_Test {
         TreCollection collection = new TreCollectionImpl();
         Tre tre1 = TreFactory.getDefault("JUNKA4", TreSource.ExtendedHeaderData);
         tre1.add(new TreEntryImpl("A4", "0", "integer"));
+        tre1.add((new TreEntryImpl("X", "A", "string")));
+        collection.add(tre1);
+        assertCollectionCanBeSerialised(collection, TreSource.ExtendedHeaderData, 2);
+    }
+
+    @Test
+    public void checkConditionHasValidOperator() throws NitfFormatException, IOException {
+        exception.expect(UnsupportedOperationException.class);
+        TreCollection collection = new TreCollectionImpl();
+        Tre tre1 = TreFactory.getDefault("JUNKA5", TreSource.ExtendedHeaderData);
+        tre1.add(new TreEntryImpl("A5", "0", "integer"));
         tre1.add((new TreEntryImpl("X", "A", "string")));
         collection.add(tre1);
         assertCollectionCanBeSerialised(collection, TreSource.ExtendedHeaderData, 2);

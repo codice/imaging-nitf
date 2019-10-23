@@ -117,6 +117,9 @@ public class TreTortureTest {
             + "     <tre name=\"TST14A\" location=\"image\">"
             + "         <field name=\"VAL1\" type=\"IEEE754\" length=\"8\"/>"
             + "     </tre>"
+            + "     <tre name=\"TST15A\" location=\"image\">"
+            + "         <field name=\"VAL1\" type=\"IEEE754\" length=\"1\"/>"
+            + "     </tre>"
             + "</tres>";
 
     private final Source sourceTREs = new StreamSource(new StringReader(xmlTREs));
@@ -797,6 +800,45 @@ public class TreTortureTest {
         assertNotNull(tst13a.getEntries());
         assertEquals(1, tst13a.getEntries().size());
         assertEquals(2.0, tst13a.getDoubleValue("VAL1"), 0.000001);
+    }
+
+    @Test
+    public void parseTST14A_Valid() throws NitfFormatException, IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write("TST14A00008".getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(parseHexBinary("40055C28F5C28F5C"));
+        NitfReader nitfReader = new NitfInputStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        TreCollectionParser parser = new TreCollectionParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        TreCollection parseResult = parser.parse(nitfReader, 19, TreSource.UserDefinedHeaderData);
+        assertNotNull(parseResult);
+        assertNotNull(parseResult.getTREs());
+        assertEquals(1, parseResult.getTREs().size());
+        Tre tst14a = parseResult.getTREs().get(0);
+        assertNotNull(tst14a);
+        assertNotNull(tst14a.getEntries());
+        assertEquals(1, tst14a.getEntries().size());
+        assertEquals(2.67, tst14a.getDoubleValue("VAL1"), 0.000001);
+    }
+
+    @Test
+    public void parseTST15A_Bad() throws NitfFormatException, IOException {
+        exception.expect(NitfFormatException.class);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write("TST15A00001".getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(parseHexBinary("40"));
+        NitfReader nitfReader = new NitfInputStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        TreCollectionParser parser = new TreCollectionParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        TreCollection parseResult = parser.parse(nitfReader, 12, TreSource.UserDefinedHeaderData);
+        assertNotNull(parseResult);
+        assertNotNull(parseResult.getTREs());
+        assertEquals(1, parseResult.getTREs().size());
+        Tre tst15a = parseResult.getTREs().get(0);
+        assertNotNull(tst15a);
+        assertNotNull(tst15a.getEntries());
+        assertEquals(1, tst15a.getEntries().size());
+        tst15a.getDoubleValue("VAL1");
     }
 
     // TODO: check data types per MIL-STD-2500C 5.1.7a
