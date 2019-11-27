@@ -15,6 +15,8 @@
 package org.codice.imaging.nitf.core.tre.impl;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,6 +135,15 @@ class TreGroupImpl implements TreGroup {
     public final double getDoubleValue(final String tagName) throws NitfFormatException {
         try {
             TreEntry entry = getEntry(tagName);
+            if (entry.getDataType().equals("IEEE754")) {
+                byte[] floatBytes = entry.getFieldValue().getBytes(StandardCharsets.ISO_8859_1);
+                if (floatBytes.length == Float.BYTES) {
+                    return ByteBuffer.wrap(floatBytes).order(ByteOrder.BIG_ENDIAN).getFloat();
+                } else if (floatBytes.length == Double.BYTES) {
+                    return ByteBuffer.wrap(floatBytes).order(ByteOrder.BIG_ENDIAN).getDouble();
+                }
+                throw new NitfFormatException(String.format("Unexpected length for %s IEEE754 value: %d", tagName, floatBytes.length));
+            }
             return Double.parseDouble(entry.getFieldValue());
         } catch (NitfFormatException ex) {
             throw new NitfFormatException(String.format("Failed to look up %s as double value", tagName));

@@ -322,6 +322,8 @@ public class TreParser {
             return evaluateConditionIsNotEqual(condition, params);
         } else if (condition.contains("=")) {
             return evaluateConditionIsEqual(condition, params);
+        } else if (condition.contains("&")) {
+            return evaluateConditionBitmask(condition, params);
         } else {
             throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
         }
@@ -362,6 +364,18 @@ public class TreParser {
         }
         String actualValue = params.getFieldValue(conditionParts[0]);
         return conditionParts[1].equals(actualValue);
+    }
+
+    private boolean evaluateConditionBitmask(final String condition, final TreParams params) {
+        String[] conditionParts = condition.split("&");
+        if (conditionParts.length != 2) {
+            // This is an error
+            throw new UnsupportedOperationException(UNSUPPORTED_IFTYPE_FORMAT_MESSAGE + condition);
+        }
+        Integer actualValue = params.getIntValue(conditionParts[0]);
+        Long bitmask = Long.decode(conditionParts[1]);
+        Long maskedValue = bitmask & actualValue;
+        return  maskedValue != 0;
     }
 
     /**

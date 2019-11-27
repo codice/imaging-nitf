@@ -34,3 +34,7 @@ hs_err_pid*
 /imagesource/target/
 /core-api/target/
 /fluent/target/
+
+.settings
+.project
+.classpath

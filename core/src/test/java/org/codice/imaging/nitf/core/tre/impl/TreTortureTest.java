@@ -111,7 +111,15 @@ public class TreTortureTest {
             + "     <tre name=\"TST12A\" location=\"image\">"
             + "         <field name=\"REAL1\" type=\"real\" length=\"13\" format=\"UE\"/>"
             + "     </tre>"
-
+            + "     <tre name=\"TST13A\" location=\"image\">"
+            + "         <field name=\"VAL1\" type=\"IEEE754\" length=\"4\"/>"
+            + "     </tre>"
+            + "     <tre name=\"TST14A\" location=\"image\">"
+            + "         <field name=\"VAL1\" type=\"IEEE754\" length=\"8\"/>"
+            + "     </tre>"
+            + "     <tre name=\"TST15A\" location=\"image\">"
+            + "         <field name=\"VAL1\" type=\"IEEE754\" length=\"1\"/>"
+            + "     </tre>"
             + "</tres>";
 
     private final Source sourceTREs = new StreamSource(new StringReader(xmlTREs));
@@ -747,6 +755,90 @@ public class TreTortureTest {
         assertNotNull(serialisedTre);
         assertEquals("TST12A", tst12a.getName());
         assertArrayEquals("NaN          ".getBytes(StandardCharsets.ISO_8859_1), serialisedTre);
+    }
+
+    @Test
+    public void checkTST13A() throws NitfFormatException {
+        Tre tst13a = TreFactory.getDefault("TST13A", TreSource.ImageExtendedSubheaderData);
+        TreEntry real1 = new TreEntryImpl("VAL1", new String(parseHexBinary("40000000"), StandardCharsets.ISO_8859_1), "IEEE754");
+        tst13a.add(real1);
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        byte[] serialisedTre = parser.serializeTRE(tst13a);
+        assertNotNull(serialisedTre);
+        assertEquals("TST13A", tst13a.getName());
+        assertArrayEquals(parseHexBinary("40000000"), serialisedTre);
+    }
+
+    @Test
+    public void checkTST14A() throws NitfFormatException {
+        Tre tst14a = TreFactory.getDefault("TST14A", TreSource.ImageExtendedSubheaderData);
+        TreEntry real1 = new TreEntryImpl("VAL1", new String(parseHexBinary("40055C28F5C28F5C"), StandardCharsets.ISO_8859_1), "IEEE754");
+        tst14a.add(real1);
+        TreParser parser = new TreParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        byte[] serialisedTre = parser.serializeTRE(tst14a);
+        assertNotNull(serialisedTre);
+        assertEquals("TST14A", tst14a.getName());
+        assertArrayEquals(parseHexBinary("40055C28F5C28F5C"), serialisedTre);
+    }
+
+    @Test
+    public void parseTST13A_Valid() throws NitfFormatException, IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write("TST13A00004".getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(parseHexBinary("40000000"));
+        NitfReader nitfReader = new NitfInputStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        TreCollectionParser parser = new TreCollectionParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        TreCollection parseResult = parser.parse(nitfReader, 15, TreSource.UserDefinedHeaderData);
+        assertNotNull(parseResult);
+        assertNotNull(parseResult.getTREs());
+        assertEquals(1, parseResult.getTREs().size());
+        Tre tst13a = parseResult.getTREs().get(0);
+        assertNotNull(tst13a);
+        assertNotNull(tst13a.getEntries());
+        assertEquals(1, tst13a.getEntries().size());
+        assertEquals(2.0, tst13a.getDoubleValue("VAL1"), 0.000001);
+    }
+
+    @Test
+    public void parseTST14A_Valid() throws NitfFormatException, IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write("TST14A00008".getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(parseHexBinary("40055C28F5C28F5C"));
+        NitfReader nitfReader = new NitfInputStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        TreCollectionParser parser = new TreCollectionParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        TreCollection parseResult = parser.parse(nitfReader, 19, TreSource.UserDefinedHeaderData);
+        assertNotNull(parseResult);
+        assertNotNull(parseResult.getTREs());
+        assertEquals(1, parseResult.getTREs().size());
+        Tre tst14a = parseResult.getTREs().get(0);
+        assertNotNull(tst14a);
+        assertNotNull(tst14a.getEntries());
+        assertEquals(1, tst14a.getEntries().size());
+        assertEquals(2.67, tst14a.getDoubleValue("VAL1"), 0.000001);
+    }
+
+    @Test
+    public void parseTST15A_Bad() throws NitfFormatException, IOException {
+        exception.expect(NitfFormatException.class);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write("TST15A00001".getBytes(StandardCharsets.ISO_8859_1));
+        baos.write(parseHexBinary("40"));
+        NitfReader nitfReader = new NitfInputStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+        TreCollectionParser parser = new TreCollectionParser();
+        parser.registerAdditionalTREdescriptor(sourceTREs);
+        TreCollection parseResult = parser.parse(nitfReader, 12, TreSource.UserDefinedHeaderData);
+        assertNotNull(parseResult);
+        assertNotNull(parseResult.getTREs());
+        assertEquals(1, parseResult.getTREs().size());
+        Tre tst15a = parseResult.getTREs().get(0);
+        assertNotNull(tst15a);
+        assertNotNull(tst15a.getEntries());
+        assertEquals(1, tst15a.getEntries().size());
+        tst15a.getDoubleValue("VAL1");
     }
 
     // TODO: check data types per MIL-STD-2500C 5.1.7a

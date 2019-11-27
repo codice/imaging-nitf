@@ -153,6 +153,142 @@
         <field length="5" fixed_value="010.0"/>
     </tre>
 
+    <tre name="BANDSB">
+        <field name="COUNT" length="5" type="integer" minval="1" maxval="99999"/>
+        <field name="RADIOMETRIC_QUANTITY" length="24" type="string"/>
+        <field name="RADIOMETRIC_QUANTITY_UNIT" length="1" type="string"/>
+        <field name="SCALE_FACTOR" length="4" type="IEEE754"/>
+        <field name="ADDITIVE_FACTOR" length="4" type="IEEE754"/>
+        <field name="ROW_GSD" length="7" type="real"/>
+        <field name="ROW_GSD_UNIT" length="1" type="string"/>
+        <field name="COL_GSD" length="7" type="real"/>
+        <field name="COL_GSD_UNIT" length="1" type="string"/>
+        <field name="SPT_RESP_ROW" length="7" type="real"/>
+        <field name="SPT_RESP_ROW_UNIT" length="1" type="string"/>
+        <field name="SPT_RESP_COL" length="7" type="real"/>
+        <field name="SPT_RESP_COL_UNIT" length="1" type="string"/>
+        <field name="DATA_FLD_1" length="48" type="string"/>
+        <field name="EXISTENCE_MASK" length="4" type="UINT"/>
+        <if cond="EXISTENCE_MASK&amp;0x80000000">
+            <field name="RADIOMETRIC_ADJUSTMENT_SURFACE" length="24" type="string"/>
+            <field name="ATMOSPHERIC_ADJUSTMENT_ALTITUDE" length="4" type="IEEE754"/>
+        </if>
+        <if cond="EXISTENCE_MASK&amp;0x40000000">
+            <field name="DIAMETER" length="7" type="real"/>
+        </if>
+        <if cond="EXISTENCE_MASK&amp;0x20000000">
+            <field name="DATA_FLD_2" length="32" type="string"/>
+        </if>
+        <field name="WAVE_LENGTH_UNIT" length="1" type="string"/>
+        <loop counter="COUNT" md_prefix="BAND_%05d_" name="BANDS">
+            <if cond="EXISTENCE_MASK&amp;0x10000000">
+                <field name="BANDID" length="50" type="string"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x08000000">
+                <field name="BAD_BAND" length="1" type="integer"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x04000000">
+                <field name="NIIRS" length="3" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x02000000">
+                <field name="FOCAL_LEN" length="5" type="integer"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x01000000">
+                <field name="CWAVE" length="7" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00800000">
+                <field name="FWHM" length="7" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00400000">
+                <field name="FWHM_UNC" length="7" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00200000">
+                <field name="NOM_WAVE" length="7" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00100000">
+                <field name="NOM_WAVE_UNC" length="7" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00080000">
+                <field name="LBOUND" length="7" type="real"/>
+                <field name="UBOUND" length="7" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00040000">
+                <field name="SCALE_FACTOR" length="4" type="IEEE754"/>
+                <field name="ADDITIVE_FACTOR" length="4" type="IEEE754"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00020000">
+                <field name="START_TIME" length="16" type="string"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00010000">
+                <field name="INT_TIME" length="6" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00008000">
+                <field name="CALDRK" length="6" type="real"/>
+                <field name="CALIBRATION_SENSITIVITY" length="5" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00004000">
+                <field name="ROW_GSD" length="7" type="real"/>
+                <if cond="EXISTENCE_MASK&amp;0x00002000">
+                    <field name="ROW_GSD_UNC" length="7" type="real"/>
+                </if>
+                <field name="ROW_GSD_UNIT" length="1" type="string"/>
+                <field name="COL_GSD" length="7" type="real"/>
+                <if cond="EXISTENCE_MASK&amp;0x00002000">
+                    <field name="COL_GSD_UNC" length="7" type="real"/>
+                </if>
+                <field name="COL_GSD_UNIT" length="1" type="string"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00001000">
+                <field name="BKNOISE" length="5" type="real"/>
+                <field name="SCNNOISE" length="5" type="real"/>
+            </if>
+            <if cond="EXISTENCE_MASK&amp;0x00000800">
+                <field name="SPT_RESP_FUNCTION_ROW" length="7" type="real"/>
+                <if cond="EXISTENCE_MASK&amp;0x00000400">
+                    <field name="SPT_RESP_UNC_ROW" length="7" type="real"/>
+                </if>
+                <field name="SPT_RESP_UNIT_ROW" length="1" type="string"/>
+                <field name="SPT_RESP_FUNCTION_COL" length="7" type="real"/>
+                <if cond="EXISTENCE_MASK&amp;0x00000400">
+                    <field name="SPT_RESP_UNC_COL" length="7" type="real"/>
+                </if>
+                <field name="SPT_RESP_UNIT_COL" length="1" type="string"/>
+            </if>
+        </loop>
+        <if cond="EXISTENCE_MASK&amp;0x00000001">
+            <field name="NUM_AUX_B" length="2" type="integer"/>
+            <field name="NUM_AUX_C" length="2" type="integer"/>
+            <loop counter="NUM_AUX_B" md_prefix="BAND_AUX_PARAM_%02d_" name="BAND_AUX_PARAMS">
+                <field name="BAPF" length="1" type="string"/>
+                <field name="UBAP" length="7" type="string"/>
+                <loop counter="COUNT" md_prefix="BAND_AUX_05d_" name="BANDS_AUX">
+                    <if cond="BAPF=I">
+                        <field name="APN" length="10" type="integer"/>
+                    </if>
+                    <if cond="BAPF=R">
+                        <field name="APR" length="4" type="IEEE754"/>
+                    </if>
+                    <if cond="BAPF=A">
+                        <field name="APA" length="20" type="string"/>
+                    </if>
+                </loop>
+            </loop>
+            <loop counter="NUM_AUX_C" md_prefix="CUBE_AUX_PARAM_%02d_" name="CUBE_AUX_PARAMS">
+                <field name="CAPF" length="1" type="string"/>
+                <field name="UCAP" length="7" type="string"/>
+                <if cond="CAPF=I">
+                    <field name="APN" length="10" type="integer"/>
+                </if>
+                <if cond="CAPF=R">
+                    <field name="APR" length="4" type="IEEE754"/>
+                </if>
+                <if cond="CAPF=A">
+                    <field name="APA" length="20" type="string"/>
+                </if>
+            </loop>
+        </if>
+    </tre>
+
     <tre name="BNDPLB" minlength="124" maxlength="99964" location="image">
         <field name="NUM_PTS" length="4" type="integer" minval="4" maxval="3332"/>
         <loop counter="NUM_PTS" md_prefix="POINT_%04d_" name="POINT">
