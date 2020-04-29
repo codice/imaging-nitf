@@ -54,12 +54,12 @@ public class SECURA extends TreWrapper {
     /**
      * Invalid version message.
      */
-    protected static final String INVALID_VERSION = "NITF version {s}  is not NITF 2.0 nor NITF 2.1.";
+    protected static final String INVALID_VERSION = "NITF version %s is not NITF 2.0 nor NITF 2.1.";
 
     /**
      *  Invalid security standard message.
      */
-    protected static final String INVALID_SECURITY_STANDARD = "Security Standard {s} is not registered with the NITF Technical Board.";
+    protected static final String INVALID_SECURITY_STANDARD = "Security Standard %s is not registered with the NITF Technical Board.";
 
     /**
      * Invalid compression message.

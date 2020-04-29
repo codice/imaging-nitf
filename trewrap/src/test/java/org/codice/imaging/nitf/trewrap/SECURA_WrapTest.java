@@ -150,7 +150,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         Tre tre = parseTRE(mTestInvalidVersion, "SECURA");
         SECURA secura = new SECURA(tre);
         String error = secura.getValidity().getValidityResultDescription();
-        assertEquals(error, SECURA.INVALID_VERSION);
+        assertEquals(error, String.format(SECURA.INVALID_VERSION, secura.getNitfVersion().getTextEquivalent()));
     }
 
     @Test
@@ -158,7 +158,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         Tre tre = parseTRE(mTestInvlaidSecurityStandard, "SECURA");
         SECURA secura = new SECURA(tre);
         String error = secura.getValidity().getValidityResultDescription();
-        assertEquals(error, SECURA.INVALID_SECURITY_STANDARD);
+        assertEquals(error, String.format(SECURA.INVALID_SECURITY_STANDARD, secura.getSecurityStandard()));
     }
 
     @Test
