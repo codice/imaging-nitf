@@ -73,7 +73,7 @@ public class SECURA extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final DateTime getNitfDateTimeField() throws NitfFormatException {
-        InputStream stream = new ByteArrayInputStream(getValueAsTrimmedString("FDATTIM").getBytes(StandardCharsets.UTF_8));
+        InputStream stream = new ByteArrayInputStream(getValueAsTrimmedString("FDATTIM").getBytes(StandardCharsets.ISO_8859_1));
         NitfInputStreamReader nitfReader = new NitfInputStreamReader(stream);
         nitfReader.setFileType(getNitfVersion());
         DateTimeParser dateTimeParser = new DateTimeParser();
