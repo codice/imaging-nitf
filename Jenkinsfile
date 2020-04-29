@@ -73,6 +73,9 @@ pipeline {
                     environment name: 'JENKINS_ENV', value: 'prod'
                 }
             }
+            options {
+                timeout(time: 1, unit: 'HOURS')
+            }
             steps{
                 withMaven(maven: 'maven-latest', jdk: 'jdk8-latest', globalMavenSettingsConfig: '51e52749-c47a-4e11-9c58-0adf485626f5', mavenSettingsConfig: 'codice-maven-settings', mavenOpts: '${LINUX_MVN_RANDOM}') {
                     sh 'mvn deploy -nsu -DskipTests=true -Dcheckstyle.skip=true -Djacoco.skip=true'
