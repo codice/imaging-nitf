@@ -47,20 +47,6 @@ pipeline {
             }
         }
 
-        stage('Full Build except itest') {
-            when {
-                expression { env.CHANGE_ID == null } 
-            }
-            options {
-                timeout(time: 1, unit: 'HOURS')
-            }
-            steps {
-                withMaven(maven: 'maven-latest', globalMavenSettingsConfig:  '51e52749-c47a-4e11-9c58-0adf485626f5', mavenSettingsConfig: 'feca3f61-1da1-4887-a9ad-dd4a41fd4423', mavenOpts: '${LARGE_MVN_OPTS} ${LINUX_MVN_RANDOM}') {
-                    sh 'mvn -P!documentation -P!findbugs -DskipTests=true -Dpmd.skip=true -Djacoco.skip=true -Dfindbugs.skip=true -Dcheckstyle.skip=true clean install'
-                }
-            }
-        }
-
         stage('Full Build') {
             when {
                 expression { env.CHANGE_ID == null } 
@@ -89,7 +75,7 @@ pipeline {
             }
             steps{
                 withMaven(maven: 'maven-latest', jdk: 'jdk8-latest', globalMavenSettingsConfig: '51e52749-c47a-4e11-9c58-0adf485626f5', mavenSettingsConfig: 'codice-maven-settings', mavenOpts: '${LINUX_MVN_RANDOM}') {
-                    sh 'mvn deploy -nsu -DskipTests=true -Dpmd.skip=true -Dfindbugs.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true'
+                    sh 'mvn deploy -nsu -DskipTests=true -Dcheckstyle.skip=true -Djacoco.skip=true'
                 }
             }
         }
