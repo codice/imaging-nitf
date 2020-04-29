@@ -54,21 +54,37 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
     private final String securityUncompressed = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <arh:Security   xmlns:arh=\"urn:us:gov:ic:arh\"   xmlns:ism=\"urn:us:gov:ic:ism\"   xmlns:ntk=\"urn:us:gov:is:ntk\"   ism:compliesWith=\"USGov USIC\"   ism:DESVersion=\"201609.201707\"   ism:ISMCATCESVersion=\"201707\"   ism:resourceElement=\"true\"   arh:DESVersion=\"3\"   ntk:DESVersion=\"201508\"   ism:createDate=\"2006-05-04\"   ism:classification=\"U\"   ism:ownerProducer=\"USA\">   <ntk:Access ism:classification=\"U\" ism:ownerProducer=\"USA\">     <ntk:RequiresAnyOf>       <ntk:AccessProfileList xmlns=\"urn:us:gov:ic:ntk\">         <ntk:AccessProfile ism:classification=\"U\" ism:ownerProducer=\"USA\">           <ntk:AccessPolicy>urn:us:gov:ic:aces:ntk:permissive</ntk:AccessPolicy>           <ntk:ProfileDes>urn:us:gov:ic:ntk:profile:grp-ind</ntk:ProfileDes>           <ntk:VocabularyType ntk:name=\"individual:unclasssourceforge\"             ntk:source=\"UnclassSourceForge\"/>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">johndoe</ntk:AccessProfileValue>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">ssun</ntk:AccessProfileValue>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">cjhodges</ntk:AccessProfileValue>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">cgilsenan</ntk:AccessProfileValue>         </ntk:AccessProfile>       </ntk:AccessProfileList>     </ntk:RequiresAnyOf>   </ntk:Access>   <ism:NoticeList ism:classification=\"U\" ism:ownerProducer=\"USA\">     <ism:Notice ism:classification=\"U\" ism:ownerProducer=\"USA\" ism:unregisteredNoticeType=\"Holiday\">       <ism:NoticeText ism:classification=\"U\" ism:ownerProducer=\"USA\">Memorial day is on May 28th 2012</ism:NoticeText>     </ism:Notice>     <ism:Notice ism:classification=\"U\" ism:ownerProducer=\"USA\" ism:unregisteredNoticeType=\"Holiday\">       <ism:NoticeText ism:classification=\"U\" ism:ownerProducer=\"USA\">The next Holiday will be July 4th 2012</ism:NoticeText>     </ism:Notice>   </ism:NoticeList> </arh:Security>";
     private final String securityCompressedLength = "00576";
     private final byte[] secuirtyGzipped = compress(securityUncompressed);
-    private final String mTestData20 = "SECURA0228723091801ZAPR20NITF02.00" +
-            "                                                                                                                                                                                                               " +
-            "ARH XML         " + securityUncompressedLength + securityUncompressed;
+    private final String nitf20 = "NITF02.00";
+    private final String nitf21 = "NITF02.10";
+    private final String invalidVersion = "NITF02.22";
+    private final String nitfSecurityFields = "                                                                                                                                                                                                               ";
+    private final String securityStandard = "ARH.XML ";
+    private final String invalidsecurityStandard = "XXX.XML ";
+    private final String seccompUncompressed = "        ";
+    private final String seccompCompressed = "GZIP    ";
+    private final String seccompInvalid = "ZIP     ";
 
-    private final String mTestData21 = "SECURA0228720200423091801NITF02.10" +
-            "                                                                                                                                                                                                               " +
-            "ARH XML         " + securityUncompressedLength + securityUncompressed;
+    private final String mTestData20 = "SECURA0228723091801ZAPR20" + nitf20 + nitfSecurityFields +
+            securityStandard + seccompUncompressed + securityUncompressedLength + securityUncompressed;
 
-    private final String mTestDataGzip = "SECURA0082720200423091801NITF02.10" +
-            "                                                                                                                                                                                                               " +
-            "ARH XML GZIP    " + securityCompressedLength;
+    private final String mTestData21 = "SECURA0228720200423091801" + nitf21 + nitfSecurityFields +
+            securityStandard + seccompUncompressed + securityUncompressedLength + securityUncompressed;
 
-    private final String mTestDataBadCompression = "SECURA0228720200423091801NITF02.10" +
-            "                                                                                                                                                                                                               " +
-            "ARH XML GZIP    " + securityUncompressedLength + securityUncompressed;
+    private final String mTestDataGzip = "SECURA0082720200423091801" + nitf21 + nitfSecurityFields +
+            securityStandard + seccompCompressed + securityCompressedLength;
+
+    private final String mTestDataBadCompression = "SECURA0228720200423091801NITF02.10" + nitf21 + nitfSecurityFields +
+            securityStandard + seccompCompressed + securityUncompressedLength + securityUncompressed;
+
+    private final String mTestInvalidVersion = "SECURA0228720200423091801" + invalidVersion + nitfSecurityFields +
+            securityStandard + seccompUncompressed + securityUncompressedLength + securityUncompressed;
+
+    private final String mTestInvlaidSecurityStandard = "SECURA0228720200423091801" + nitf21 + nitfSecurityFields +
+            invalidsecurityStandard + seccompUncompressed + securityUncompressedLength + securityUncompressed;
+
+    private final String mTestInvalidCompression = "SECURA0228720200423091801" + nitf21 + nitfSecurityFields +
+            securityStandard + seccompInvalid + securityUncompressedLength + securityUncompressed;
+
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -83,7 +99,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         assertEquals("2020-04-23 09:18:01", formatter.format(secura.getNitfDateTimeField().getZonedDateTime()));
         assertEquals(FileType.NITF_TWO_ONE, secura.getNitfVersion());
         checkNitf21SecurityMetadataUnclasAndEmpty(secura.getNitfSecurityFields());
-        assertEquals("ARH XML", secura.getSecurityStandard());
+        assertEquals("ARH.XML", secura.getSecurityStandard());
         assertEquals("GZIP", secura.getSecurityFieldCompression());
         assertEquals(576, secura.getSecurityLength());
         String uncompressed = uncompress(secuirtyGzipped);
@@ -100,7 +116,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         assertEquals("2020-04-23 09:18:01", formatter.format(secura.getNitfDateTimeField().getZonedDateTime()));
         assertEquals(FileType.NITF_TWO_ZERO, secura.getNitfVersion());
         checkNitf20SecurityMetadataUnclasAndEmpty(secura.getNitfSecurityFields());
-        assertEquals("ARH XML", secura.getSecurityStandard());
+        assertEquals("ARH.XML", secura.getSecurityStandard());
         assertEquals("", secura.getSecurityFieldCompression());
         assertEquals(2036, secura.getSecurityLength());
         assertEquals(securityUncompressed, new String(secura.getSecurity(), StandardCharsets.ISO_8859_1));
@@ -115,7 +131,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         assertEquals("2020-04-23 09:18:01", formatter.format(secura.getNitfDateTimeField().getZonedDateTime()));
         assertEquals(FileType.NITF_TWO_ONE, secura.getNitfVersion());
         checkNitf21SecurityMetadataUnclasAndEmpty(secura.getNitfSecurityFields());
-        assertEquals("ARH XML", secura.getSecurityStandard());
+        assertEquals("ARH.XML", secura.getSecurityStandard());
         assertEquals("", secura.getSecurityFieldCompression());
         assertEquals(2036, secura.getSecurityLength());
         assertEquals(securityUncompressed, new String(secura.getSecurity(), StandardCharsets.ISO_8859_1));
@@ -127,6 +143,30 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         Tre tre = parseTRE(mTestDataBadCompression, "SECURA");
         SECURA secura = new SECURA(tre);
         String test = secura.getSecurityUncompressed();
+    }
+
+    @Test
+    public void testInvalidNitfVersion() throws NitfFormatException {
+        Tre tre = parseTRE(mTestInvalidVersion, "SECURA");
+        SECURA secura = new SECURA(tre);
+        String error = secura.getValidity().getValidityResultDescription();
+        assertEquals(error, SECURA.INVALID_VERSION);
+    }
+
+    @Test
+    public void testInvalidSecurityStandard() throws NitfFormatException {
+        Tre tre = parseTRE(mTestInvlaidSecurityStandard, "SECURA");
+        SECURA secura = new SECURA(tre);
+        String error = secura.getValidity().getValidityResultDescription();
+        assertEquals(error, SECURA.INVALID_SECURITY_STANDARD);
+    }
+
+    @Test
+    public void mTestInvalidCompression() throws NitfFormatException {
+        Tre tre = parseTRE(mTestInvalidCompression, "SECURA");
+        SECURA secura = new SECURA(tre);
+        String error = secura.getValidity().getValidityResultDescription();
+        assertEquals(error, SECURA.INVALID_COMPRESSION);
     }
 
 

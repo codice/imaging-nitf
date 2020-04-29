@@ -47,12 +47,25 @@ import org.codice.imaging.nitf.core.tre.Tre;
  * Access Rights and Handling (ARH.XML)
  *
  */
-public class SECURA extends FlatTreWrapper {
+public class SECURA extends TreWrapper {
+
+    private static final String TAG_NAME = "SECURA";
 
     /**
-     * Flag value that indicates that the True Map Angle.
+     * Invalid version message.
      */
-    private static final String TAG_NAME = "SECURA";
+    protected static final String INVALID_VERSION = "NITF version {s}  is not NITF 2.0 nor NITF 2.1.";
+
+    /**
+     *  Invalid security standard message.
+     */
+    protected static final String INVALID_SECURITY_STANDARD = "Security Standard {s} is not registered with the NITF Technical Board.";
+
+    /**
+     * Invalid compression message.
+     */
+    protected static final String INVALID_COMPRESSION = "Compression is not using GZIP.";
+
 
     /**
      * Create a SECURA TRE wrapper from an existing TRE.
@@ -103,7 +116,7 @@ public class SECURA extends FlatTreWrapper {
     public final SecurityMetadata getNitfSecurityFields() throws NitfFormatException {
         final SecurityMetadata securityMetadata;
         if (getNitfVersion() == NITF_TWO_ONE || getNitfVersion() == FileType.NITF_TWO_ZERO) {
-            InputStream stream = new ByteArrayInputStream(getFieldValue("NFSECFLDS").getBytes(StandardCharsets.UTF_8));
+            InputStream stream = new ByteArrayInputStream(getFieldValue("NFSECFLDS").getBytes(StandardCharsets.ISO_8859_1));
             SecurityMetadataParser parser = new SecurityMetadataParser();
             NitfInputStreamReader nitfReader = new NitfInputStreamReader(stream);
             nitfReader.setFileType(getNitfVersion());
@@ -198,7 +211,17 @@ public class SECURA extends FlatTreWrapper {
      */
     @Override
     public final ValidityResult getValidity() throws NitfFormatException {
-        // TODO: add more validity checks
+        if (getNitfVersion() != FileType.NITF_TWO_ZERO  && getNitfVersion() != NITF_TWO_ONE) {
+            return new ValidityResult(ValidityResult.ValidityStatus.NOT_VALID,
+                    String.format(INVALID_VERSION, getNitfVersion().getTextEquivalent()));
+        }
+        if (!getSecurityStandard().equals("ARH.XML")) {
+            return new ValidityResult(ValidityResult.ValidityStatus.NOT_VALID,
+                    String.format(INVALID_SECURITY_STANDARD, getSecurityStandard()));
+        }
+        if (!getSecurityFieldCompression().isEmpty() && !getSecurityFieldCompression().equals("GZIP")) {
+            return new ValidityResult(ValidityResult.ValidityStatus.NOT_VALID, INVALID_COMPRESSION);
+        }
         return new ValidityResult();
     }
 }
