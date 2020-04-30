@@ -1724,7 +1724,7 @@
         <field name="SECSTD" length="8" type="string"/>
         <field name="SECCOMP" length="8" type="string"/>
         <field name="SECLEN" length="5" type="integer"/>
-        <field name="SECURITY" length_var="SECLEN" type="binary"/>
+        <field name="SECURITY" length_var="SECLEN" type="string"/>
     </tre>
 
     <tre name="SENSRA" length="132" location="image">

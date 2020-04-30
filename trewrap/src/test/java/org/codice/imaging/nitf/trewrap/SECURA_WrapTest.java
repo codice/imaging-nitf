@@ -53,7 +53,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
     private final String securityUncompressedLength = "02036";
     private final String securityUncompressed = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <arh:Security   xmlns:arh=\"urn:us:gov:ic:arh\"   xmlns:ism=\"urn:us:gov:ic:ism\"   xmlns:ntk=\"urn:us:gov:is:ntk\"   ism:compliesWith=\"USGov USIC\"   ism:DESVersion=\"201609.201707\"   ism:ISMCATCESVersion=\"201707\"   ism:resourceElement=\"true\"   arh:DESVersion=\"3\"   ntk:DESVersion=\"201508\"   ism:createDate=\"2006-05-04\"   ism:classification=\"U\"   ism:ownerProducer=\"USA\">   <ntk:Access ism:classification=\"U\" ism:ownerProducer=\"USA\">     <ntk:RequiresAnyOf>       <ntk:AccessProfileList xmlns=\"urn:us:gov:ic:ntk\">         <ntk:AccessProfile ism:classification=\"U\" ism:ownerProducer=\"USA\">           <ntk:AccessPolicy>urn:us:gov:ic:aces:ntk:permissive</ntk:AccessPolicy>           <ntk:ProfileDes>urn:us:gov:ic:ntk:profile:grp-ind</ntk:ProfileDes>           <ntk:VocabularyType ntk:name=\"individual:unclasssourceforge\"             ntk:source=\"UnclassSourceForge\"/>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">johndoe</ntk:AccessProfileValue>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">ssun</ntk:AccessProfileValue>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">cjhodges</ntk:AccessProfileValue>           <ntk:AccessProfileValue ntk:vocabulary=\"individual:unclasssourceforge\">cgilsenan</ntk:AccessProfileValue>         </ntk:AccessProfile>       </ntk:AccessProfileList>     </ntk:RequiresAnyOf>   </ntk:Access>   <ism:NoticeList ism:classification=\"U\" ism:ownerProducer=\"USA\">     <ism:Notice ism:classification=\"U\" ism:ownerProducer=\"USA\" ism:unregisteredNoticeType=\"Holiday\">       <ism:NoticeText ism:classification=\"U\" ism:ownerProducer=\"USA\">Memorial day is on May 28th 2012</ism:NoticeText>     </ism:Notice>     <ism:Notice ism:classification=\"U\" ism:ownerProducer=\"USA\" ism:unregisteredNoticeType=\"Holiday\">       <ism:NoticeText ism:classification=\"U\" ism:ownerProducer=\"USA\">The next Holiday will be July 4th 2012</ism:NoticeText>     </ism:Notice>   </ism:NoticeList> </arh:Security>";
     private final String securityCompressedLength = "00576";
-    private final byte[] secuirtyGzipped = compress(securityUncompressed);
+    private final byte[] securityGzipped = compress(securityUncompressed);
     private final String nitf20 = "NITF02.00";
     private final String nitf21 = "NITF02.10";
     private final String invalidVersion = "NITF02.22";
@@ -79,7 +79,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
     private final String mTestInvalidVersion = "SECURA0228720200423091801" + invalidVersion + nitfSecurityFields +
             securityStandard + seccompUncompressed + securityUncompressedLength + securityUncompressed;
 
-    private final String mTestInvlaidSecurityStandard = "SECURA0228720200423091801" + nitf21 + nitfSecurityFields +
+    private final String mTestInvalidSecurityStandard = "SECURA0228720200423091801" + nitf21 + nitfSecurityFields +
             invalidsecurityStandard + seccompUncompressed + securityUncompressedLength + securityUncompressed;
 
     private final String mTestInvalidCompression = "SECURA0228720200423091801" + nitf21 + nitfSecurityFields +
@@ -102,9 +102,9 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         assertEquals("ARH.XML", secura.getSecurityStandard());
         assertEquals("GZIP", secura.getSecurityFieldCompression());
         assertEquals(576, secura.getSecurityLength());
-        String uncompressed = uncompress(secuirtyGzipped);
+        String uncompressed = uncompress(securityGzipped);
         assertEquals(uncompressed, securityUncompressed);
-        assertArrayEquals(secuirtyGzipped, secura.getSecurity());
+        assertArrayEquals(securityGzipped, secura.getSecurity());
         assertEquals(securityUncompressed, secura.getSecurityUncompressed());
     }
 
@@ -155,7 +155,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
 
     @Test
     public void testInvalidSecurityStandard() throws NitfFormatException {
-        Tre tre = parseTRE(mTestInvlaidSecurityStandard, "SECURA");
+        Tre tre = parseTRE(mTestInvalidSecurityStandard, "SECURA");
         SECURA secura = new SECURA(tre);
         String error = secura.getValidity().getValidityResultDescription();
         assertEquals(error, String.format(SECURA.INVALID_SECURITY_STANDARD, secura.getSecurityStandard()));
@@ -211,7 +211,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         byte[] compressed = null;
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
         GZIPOutputStream gzip = new GZIPOutputStream(bos);) {
-            gzip.write(data.getBytes(StandardCharsets.ISO_8859_1));
+            gzip.write(data.getBytes(StandardCharsets.UTF_8));
             // in order to get the full set of bytes you must close the output stream.
             gzip.close();
             compressed = bos.toByteArray();
@@ -238,23 +238,18 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
 
     private final byte[] buildTREBytes() {
         String result;
-        String defaltEncoding = System.getProperty("file.encoding");
-        Charset defaultCharset = Charset.forName(defaltEncoding);
-        Charset iso88591charset = Charset.forName("ISO-8859-1");
-
-
         ByteBuffer inputBuffer = ByteBuffer.wrap(mTestDataGzip.getBytes());
 
         // decode UTF-8
-        CharBuffer data = defaultCharset.decode(inputBuffer);
+        CharBuffer data = StandardCharsets.UTF_8.decode(inputBuffer);
 
         // encode ISO-8559-1
-        ByteBuffer outputBuffer = iso88591charset.encode(data);
+        ByteBuffer outputBuffer = StandardCharsets.ISO_8859_1.encode(data);
         byte[] outputData = outputBuffer.array();
-        byte[] gzipped = new byte[outputData.length + secuirtyGzipped.length];
+        byte[] gzipped = new byte[outputData.length + securityGzipped.length];
 
         System.arraycopy(outputData, 0, gzipped, 0, outputData.length);
-        System.arraycopy(secuirtyGzipped, 0, gzipped, outputData.length, secuirtyGzipped.length);
+        System.arraycopy(securityGzipped, 0, gzipped, outputData.length, securityGzipped.length);
 
         return gzipped;
     }

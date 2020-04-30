@@ -193,7 +193,7 @@ public class SECURA extends TreWrapper {
             StringBuilder sb = new StringBuilder();
             try (ByteArrayInputStream bis = new ByteArrayInputStream(security);
             GZIPInputStream gis = new GZIPInputStream(bis);
-            BufferedReader br = new BufferedReader(new InputStreamReader(gis, StandardCharsets.ISO_8859_1))) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(gis, StandardCharsets.UTF_8))) {
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
@@ -203,7 +203,7 @@ public class SECURA extends TreWrapper {
             }
             return sb.toString();
         }
-        return getFieldValue("SECURITY");
+        return new String(getSecurity(), StandardCharsets.UTF_8);
     }
 
     /**
