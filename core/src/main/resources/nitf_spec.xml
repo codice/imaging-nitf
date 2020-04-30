@@ -1717,6 +1717,16 @@
         <field length="1" fixed_value="0"/>
     </tre>
 
+    <tre name="SECURA">
+        <field name="FDATTIM" length="14" type="string"/>
+        <field name="NITFVER" length="9" type="string"/>
+        <field name="NFSECFLDS" length="207" type="string"/>
+        <field name="SECSTD" length="8" type="string"/>
+        <field name="SECCOMP" length="8" type="string"/>
+        <field name="SECLEN" length="5" type="integer"/>
+        <field name="SECURITY" length_var="SECLEN" type="string"/>
+    </tre>
+
     <tre name="SENSRA" length="132" location="image">
         <field name="REF_ROW" length="8" type="string"/>
         <field name="REF_COL" length="8" type="string"/>

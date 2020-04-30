@@ -33,7 +33,7 @@ public class ValidityResult {
          * At least one issue with the TRE values was detected during validity checks.
          */
         NOT_VALID
-    };
+    }
 
     private ValidityStatus mValidityStatus = ValidityStatus.VALID;
 
@@ -45,6 +45,18 @@ public class ValidityResult {
      * The default values are that the result is valid.
      */
     public ValidityResult() {
+    }
+
+    /**
+     * Create a new validity result.
+     *
+     * @param validityStatus VALID for no issues, NOT_VALID if issues are found
+     * @param validityResultDescription  Description for reason field is invalid
+     */
+
+    public ValidityResult(final ValidityStatus validityStatus, final String validityResultDescription) {
+        mValidityStatus = validityStatus;
+        mValidityResultDescription = validityResultDescription;
     }
 
     /**
