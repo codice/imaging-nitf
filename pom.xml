@@ -26,7 +26,7 @@
         <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
         <jaxbmavenplugin.version>2.4</jaxbmavenplugin.version>
         <jakarta.activation.version>1.2.1</jakarta.activation.version>
-        <jaxb.api.version>2.3.0</jaxb.api.version>
+        <jaxb.api.version>2.3.1</jaxb.api.version>
     </properties>
 
     <modules>
