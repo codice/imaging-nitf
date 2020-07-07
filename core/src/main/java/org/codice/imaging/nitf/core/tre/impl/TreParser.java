@@ -538,22 +538,26 @@ public class TreParser {
 
     private String getValidatedIntegerValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
-        if (value.length() > fieldType.getLength().intValue()) {
-            throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
-        }
-        try {
-            // allow for null values
-            if (value != null && value.trim().length() > 0) {
+
+        // Allow null values for TREs that require them.
+        if (value == null || value.trim().length() == 0) {
+            paddedValue = padStringToLength("", fieldType.getLength().intValue());
+        } else {
+            if (value.length() > fieldType.getLength()
+                    .intValue()) {
+                throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
+            }
+            try {
                 int intValue = Integer.parseInt(value);
                 validateIntegerValueRange(intValue, fieldType);
-                paddedValue = padIntegerToLength(intValue, fieldType.getLength().intValue());
-            } else {
-                paddedValue = padStringToLength("", fieldType.getLength().intValue());
+                paddedValue = padIntegerToLength(intValue,
+                        fieldType.getLength()
+                                .intValue());
+            } catch (NumberFormatException ex) {
+                String err = "Could not parse " + fieldType.getName() + " value " + value + " as a number.";
+                LOG.error(err);
+                throw new NitfFormatException(err);
             }
-        } catch (NumberFormatException ex) {
-            String err = "Could not parse " + fieldType.getName() + " value " + value + " as a number.";
-            LOG.error(err);
-            throw new NitfFormatException(err);
         }
         return paddedValue;
     }
@@ -575,29 +579,22 @@ public class TreParser {
 
     private String getValidatedRealValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
-        // to handle a field that allows spaces or null values
-        // (i.e. TGTLAT and TGTLONG from the PIATGB tagged record extension)
-        try {
-            if(value == null || value.contains(" ")) {
-                if (value != null && value.trim().length() > 0) {
-                    // remove the spaces and validate the number
-                    double realValue = Double.parseDouble(value.trim());
-                    validateRealValueRange(realValue, fieldType);
-                    // use the original number with it's spaces and pad to length
-                    paddedValue = padStringToLength(value, fieldType.getLength().intValue());
-                } else {
-                    // null, pad with spaces to length
-                    paddedValue = padStringToLength("", fieldType.getLength().intValue());
-                }
-            } else {
+        // allow null values for TREs that require them, such as the PIATGB in the TGTLAT and TGTLON fields
+        if (value == null || value.trim().length() == 0) {
+            paddedValue = padStringToLength("", fieldType.getLength().intValue());
+        } else {
+            try {
                 double realValue = Double.parseDouble(value);
                 validateRealValueRange(realValue, fieldType);
-                paddedValue = padRealToLength(realValue, fieldType.getFormat(), fieldType.getLength().intValue());
+                paddedValue = padRealToLength(realValue,
+                        fieldType.getFormat(),
+                        fieldType.getLength()
+                                .intValue());
+            } catch (NumberFormatException ex) {
+                String err = "Could not parse " + fieldType.getName() + " value " + value + " as a floating point number.";
+                LOG.error(err);
+                throw new NitfFormatException(err);
             }
-        } catch (NumberFormatException ex) {
-            String err = "Could not parse " + fieldType.getName() + " value " + value + " as a floating point number.";
-            LOG.error(err);
-            throw new NitfFormatException(err);
         }
         return paddedValue;
     }
@@ -680,7 +677,4 @@ public class TreParser {
                 throw new IllegalStateException("Missing case for TreSource");
         }
     }
-
-
-
 }
