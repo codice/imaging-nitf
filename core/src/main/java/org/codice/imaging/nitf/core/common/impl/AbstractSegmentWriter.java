@@ -140,7 +140,9 @@ public abstract class AbstractSegmentWriter {
     protected final void writeFixedLengthString(final String s, final int length)
             throws IOException {
         String toWrite;
-        if (s.length() > length) {
+        if (s == null) {
+            toWrite = padStringToLength("", length);
+        } else if (s.length() > length) {
             LOG.warn(String.format("Truncated string \"%s\", max length is %d", s, length));
             toWrite = s.substring(0, length);
         } else {

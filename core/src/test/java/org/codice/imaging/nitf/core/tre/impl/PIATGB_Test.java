@@ -49,4 +49,24 @@ public class PIATGB_Test extends SharedTreTest {
         assertEquals("-35.30812 ", piatgb.getFieldValue("TGTLAT"));
         assertEquals("+149.12447 ", piatgb.getFieldValue("TGTLON"));
     }
+
+    @Test
+    public void blankLatLongPIATGB() throws Exception {
+        String treTag = "PIATGB";
+        String testData = "PIATGB0011755HFA9359093610ABCDEFGHIJUVWXYAS702XX351655S1490742EWGECanberra Hill                                                 ";
+        int expectedLength = treTag.length() + "00117".length() + 117;
+
+        Tre piatgb = parseTRE(testData, expectedLength, treTag);
+        assertEquals(10, piatgb.getEntries().size());
+        assertEquals("55HFA9359093610", piatgb.getFieldValue("TGTUTM"));
+        assertEquals("ABCDEFGHIJUVWXY", piatgb.getFieldValue("PIATGAID"));
+        assertEquals("AS", piatgb.getFieldValue("PIACTRY"));
+        assertEquals("702XX", piatgb.getFieldValue("PIACAT"));
+        assertEquals("351655S1490742E", piatgb.getFieldValue("TGTGEO"));
+        assertEquals("WGE", piatgb.getFieldValue("DATUM"));
+        assertEquals("Canberra Hill                         ", piatgb.getFieldValue("TGTNAME"));
+        assertEquals("   ", piatgb.getFieldValue("PERCOVER"));
+        assertEquals("          ", piatgb.getFieldValue("TGTLAT"));
+        assertEquals("           ", piatgb.getFieldValue("TGTLON"));
+    }
 }

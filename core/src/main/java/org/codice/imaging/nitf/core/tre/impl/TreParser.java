@@ -552,17 +552,26 @@ public class TreParser {
 
     private String getValidatedIntegerValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
-        if (value.length() > fieldType.getLength().intValue()) {
-            throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
-        }
-        try {
-            int intValue = Integer.parseInt(value);
-            validateIntegerValueRange(intValue, fieldType);
-            paddedValue = padIntegerToLength(intValue, fieldType.getLength().intValue());
-        } catch (NumberFormatException ex) {
-            String err = "Could not parse " + fieldType.getName() + " value " + value + " as a number.";
-            LOG.error(err);
-            throw new NitfFormatException(err);
+
+        // Allow null values for TREs that require them.
+        if (value == null || value.trim().length() == 0) {
+            paddedValue = padStringToLength("", fieldType.getLength().intValue());
+        } else {
+            if (value.length() > fieldType.getLength()
+                    .intValue()) {
+                throw new NitfFormatException("Incorrect length serialising out: " + fieldType.getName());
+            }
+            try {
+                int intValue = Integer.parseInt(value);
+                validateIntegerValueRange(intValue, fieldType);
+                paddedValue = padIntegerToLength(intValue,
+                        fieldType.getLength()
+                                .intValue());
+            } catch (NumberFormatException ex) {
+                String err = "Could not parse " + fieldType.getName() + " value " + value + " as a number.";
+                LOG.error(err);
+                throw new NitfFormatException(err);
+            }
         }
         return paddedValue;
     }
@@ -584,14 +593,22 @@ public class TreParser {
 
     private String getValidatedRealValue(final String value, final FieldType fieldType) throws NitfFormatException {
         String paddedValue;
-        try {
-            double realValue = Double.parseDouble(value);
-            validateRealValueRange(realValue, fieldType);
-            paddedValue = padRealToLength(realValue, fieldType.getFormat(), fieldType.getLength().intValue());
-        } catch (NumberFormatException ex) {
-            String err = "Could not parse " + fieldType.getName() + " value " + value + " as a floating point number.";
-            LOG.error(err);
-            throw new NitfFormatException(err);
+        // allow null values for TREs that require them, such as the PIATGB in the TGTLAT and TGTLON fields
+        if (value == null || value.trim().length() == 0) {
+            paddedValue = padStringToLength("", fieldType.getLength().intValue());
+        } else {
+            try {
+                double realValue = Double.parseDouble(value);
+                validateRealValueRange(realValue, fieldType);
+                paddedValue = padRealToLength(realValue,
+                        fieldType.getFormat(),
+                        fieldType.getLength()
+                                .intValue());
+            } catch (NumberFormatException ex) {
+                String err = "Could not parse " + fieldType.getName() + " value " + value + " as a floating point number.";
+                LOG.error(err);
+                throw new NitfFormatException(err);
+            }
         }
         return paddedValue;
     }
@@ -674,7 +691,4 @@ public class TreParser {
                 throw new IllegalStateException("Missing case for TreSource");
         }
     }
-
-
-
 }
