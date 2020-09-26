@@ -19,10 +19,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
-import org.codice.imaging.nitf.core.tre.TreEntry;
 import org.codice.imaging.nitf.core.tre.TreGroup;
 import org.junit.Test;
 
