@@ -438,7 +438,7 @@ class BilevelBlockRenderer implements BlockRenderer {
     }
 
     private TwoDmode getTwoDmode() throws IOException {
-        TwoDmode mode = TwoDmode.Unknown;
+        TwoDmode mode;
         int numberOfCodewordBits = 1;
         int codeWord = (int) mImageData.readBits(numberOfCodewordBits);
         do {
@@ -611,9 +611,8 @@ class BilevelBlockRenderer implements BlockRenderer {
         return runLength;
     }
 
-    private int lookupRunLength(final CodebookEntry[] codeBook, final int codeWord, final int numberOfCodewordBits) throws IOException {
-        for (int i = 0; i < codeBook.length; ++i) {
-            CodebookEntry entry = codeBook[i];
+    private int lookupRunLength(final CodebookEntry[] codeBook, final int codeWord, final int numberOfCodewordBits) {
+        for (CodebookEntry entry : codeBook) {
             if ((entry.codeWordLength == numberOfCodewordBits) && (entry.codeWord == codeWord)) {
                 return entry.runLength;
             }

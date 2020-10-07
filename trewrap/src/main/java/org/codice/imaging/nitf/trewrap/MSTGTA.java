@@ -44,6 +44,7 @@ public class MSTGTA extends FlatTreWrapper {
     private static final double SECONDS_IN_ONE_MINUTE = 60.0;
 
     private static final String TAG_NAME = "MSTGTA";
+    private static final String TGT_LOC = "TGT_LOC";
 
     /**
      * Create a MSTGTA TRE wrapper from an existing TRE.
@@ -316,7 +317,7 @@ public class MSTGTA extends FlatTreWrapper {
      * @throws NitfFormatException if there was a problem during parsing.
      */
     public final String getTargetLocationRaw() throws NitfFormatException {
-        return getFieldValue("TGT_LOC");
+        return getFieldValue(TGT_LOC);
     }
 
     /**
@@ -336,7 +337,7 @@ public class MSTGTA extends FlatTreWrapper {
      * @throws NitfFormatException if there was a problem during parsing.
      */
     public final double getTargetLocationLatitude() throws NitfFormatException {
-        String targetLocation = getFieldValue("TGT_LOC");
+        String targetLocation = getFieldValue(TGT_LOC);
         return parseLatitudeFromLocation(targetLocation);
     }
 
@@ -357,15 +358,14 @@ public class MSTGTA extends FlatTreWrapper {
      * @throws NitfFormatException if there was a problem during parsing.
      */
     public final double getTargetLocationLongitude() throws NitfFormatException {
-        String targetLocation = getFieldValue("TGT_LOC");
+        String targetLocation = getFieldValue(TGT_LOC);
         return parseLongitudeFromLocation(targetLocation);
     }
 
-    private double parseLatitudeFromLocation(final String location) throws NumberFormatException {
+    private double parseLatitudeFromLocation(final String location) {
         String latitudePart = location.substring(0, LONGITUDE_OFFSET);
         if (latitudePart.startsWith("+") || latitudePart.startsWith("-")) {
-            Double latitude = Double.parseDouble(latitudePart);
-            return latitude;
+            return Double.parseDouble(latitudePart);
         }
         if (latitudePart.endsWith("N") || latitudePart.endsWith("S")) {
             int degrees = Integer.parseInt(latitudePart.substring(LAT_OFFSET, LAT_MINUTES_OFFSET));
@@ -380,11 +380,10 @@ public class MSTGTA extends FlatTreWrapper {
         return 0.0;
     }
 
-    private double parseLongitudeFromLocation(final String location) throws NumberFormatException {
+    private double parseLongitudeFromLocation(final String location) {
         String longitudePart = location.substring(LONGITUDE_OFFSET);
         if (longitudePart.startsWith("+") || longitudePart.startsWith("-")) {
-            Double longitude = Double.parseDouble(longitudePart);
-            return longitude;
+            return Double.parseDouble(longitudePart);
         }
         if (longitudePart.endsWith("E") || longitudePart.endsWith("W")) {
             int degrees = Integer.parseInt(longitudePart.substring(0, LON_MINUTES_OFFSET));

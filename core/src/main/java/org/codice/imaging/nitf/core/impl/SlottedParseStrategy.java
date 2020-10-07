@@ -15,7 +15,6 @@
 package org.codice.imaging.nitf.core.impl;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.xml.transform.Source;
@@ -50,9 +49,9 @@ import org.slf4j.LoggerFactory;
 public class SlottedParseStrategy implements ParseStrategy {
 
     private HeapStrategy<ImageInputStream> imageHeapStrategy =
-            new InMemoryHeapStrategy<>((InputStream is) -> new MemoryCacheImageInputStream(is));
+            new InMemoryHeapStrategy<>(MemoryCacheImageInputStream::new);
     private HeapStrategy<ImageInputStream> desHeapStrategy
-            = new InMemoryHeapStrategy<>((InputStream is) -> new MemoryCacheImageInputStream(is));
+            = new InMemoryHeapStrategy<>(MemoryCacheImageInputStream::new);
 
     /**
      * Stores the NITF data.

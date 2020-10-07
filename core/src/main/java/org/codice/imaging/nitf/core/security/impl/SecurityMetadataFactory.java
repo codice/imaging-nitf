@@ -56,6 +56,7 @@ public final class SecurityMetadataFactory {
      * @param fileType the type of NITF file to generate security metadata for
      * @return defaulted metadata structure
      */
+    @Deprecated
     public static SecurityMetadata getDefaultMetadata(final FileType fileType) {
         SecurityMetadataImpl meta = new SecurityMetadataImpl();
         fillDefaultMetadata(meta, fileType);

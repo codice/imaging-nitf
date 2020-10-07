@@ -166,7 +166,7 @@ public class SECURA_WrapTest extends SharedTreTestSupport {
         Tre tre = parseTRE(mTestInvalidCompression, "SECURA");
         SECURA secura = new SECURA(tre);
         String error = secura.getValidity().getValidityResultDescription();
-        assertEquals(error, SECURA.INVALID_COMPRESSION);
+        assertEquals(SECURA.INVALID_COMPRESSION, error);
     }
 
 

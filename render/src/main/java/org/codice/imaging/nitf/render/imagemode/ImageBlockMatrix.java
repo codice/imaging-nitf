@@ -36,8 +36,8 @@ class ImageBlockMatrix {
      * @param imageSupplier the underlying buffered image to store the data.
      */
     ImageBlockMatrix(final ImageSegment imageSegment, final Supplier<BufferedImage> imageSupplier) {
-        this.matrixWidth = (int) imageSegment.getNumberOfBlocksPerColumn();
-        this.matrixHeight = (int) imageSegment.getNumberOfBlocksPerRow();
+        this.matrixWidth = imageSegment.getNumberOfBlocksPerColumn();
+        this.matrixHeight = imageSegment.getNumberOfBlocksPerRow();
         int blockWidth = (int) imageSegment.getNumberOfPixelsPerBlockHorizontal();
         int blockHeight = (int) imageSegment.getNumberOfPixelsPerBlockVertical();
 

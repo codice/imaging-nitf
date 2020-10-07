@@ -39,8 +39,7 @@ public class TMINTA extends TreWrapper {
 
     @Override
     public final ValidityResult getValidity() throws NitfFormatException {
-        ValidityResult validityResult = new ValidityResult();
-        return validityResult;
+        return new ValidityResult();
     }
 
     /**

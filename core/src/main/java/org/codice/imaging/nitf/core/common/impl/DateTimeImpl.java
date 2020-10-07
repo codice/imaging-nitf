@@ -45,6 +45,7 @@ public class DateTimeImpl implements org.codice.imaging.nitf.core.common.DateTim
      * This does not produce a valid NitfDateTime - use set().
      */
     public DateTimeImpl() {
+        // Intentionally Empty
     }
 
     /**

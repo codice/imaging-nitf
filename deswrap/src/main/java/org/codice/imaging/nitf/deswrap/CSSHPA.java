@@ -186,9 +186,8 @@ public class CSSHPA extends DES {
      * This is the content that would normally be associated with the .shp file.
      *
      * @return shapefile content as a byte array
-     * @throws IOException if the content could not be read
      */
-    public final byte[] getSHP() throws IOException {
+    public final byte[] getSHP() {
         return getShapePart("SHP");
     }
 
@@ -198,9 +197,8 @@ public class CSSHPA extends DES {
      * This is the content that would normally be associated with the .shx file.
      *
      * @return shapefile index content as a byte array
-     * @throws IOException if the content could not be read
      */
-    public final byte[] getSHX() throws IOException {
+    public final byte[] getSHX() {
         return getShapePart("SHX");
     }
 
@@ -210,13 +208,12 @@ public class CSSHPA extends DES {
      * This is the content that would normally be associated with the .dbf file.
      *
      * @return shapefile attribute content as a byte array
-     * @throws IOException if the content could not be read
      */
-    public final byte[] getDBF() throws IOException {
+    public final byte[] getDBF() {
         return getShapePart("DBF");
     }
 
-    private byte[] getShapePart(final String filename) throws IOException {
+    private byte[] getShapePart(final String filename) {
         initShapePartsIfNecessary();
         ShapePart shapePart = mShapeParts.get(filename);
         int length = (int) (shapePart.endOffset - shapePart.startOffset);
@@ -238,7 +235,7 @@ public class CSSHPA extends DES {
         }
     }
 
-    private void initShapeParts() throws NumberFormatException {
+    private void initShapeParts() {
         String subheader = mDES.getUserDefinedSubheaderField();
         int offset = getShape1FilenameOffset();
         List<Long> offsets = new ArrayList<>();

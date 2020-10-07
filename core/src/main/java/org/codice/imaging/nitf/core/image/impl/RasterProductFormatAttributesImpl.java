@@ -27,9 +27,9 @@ class RasterProductFormatAttributesImpl implements RasterProductFormatAttributes
 
     private static final int GLOBAL_AREAL_INDEX = 0;
 
-    private Map<Integer, String> currencyDates = new HashMap<Integer, String>();
-    private Map<Integer, String> productionDates = new HashMap<Integer, String>();
-    private Map<Integer, String> significantDates = new HashMap<Integer, String>();
+    private Map<Integer, String> currencyDates = new HashMap<>();
+    private Map<Integer, String> productionDates = new HashMap<>();
+    private Map<Integer, String> significantDates = new HashMap<>();
 
     /**
         Add a currency date.

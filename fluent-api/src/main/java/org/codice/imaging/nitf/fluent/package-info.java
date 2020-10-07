@@ -38,4 +38,4 @@
  * </pre>
  */
 
-package org.codice.imaging.nitf.fluent.impl;
+package org.codice.imaging.nitf.fluent;

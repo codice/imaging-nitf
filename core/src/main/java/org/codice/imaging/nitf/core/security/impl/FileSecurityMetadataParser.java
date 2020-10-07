@@ -33,6 +33,7 @@ public class FileSecurityMetadataParser extends SecurityMetadataParser {
      * default constructor.
      */
     public FileSecurityMetadataParser() {
+        // Intentionally Empty
     }
 
     /**
@@ -61,5 +62,5 @@ public class FileSecurityMetadataParser extends SecurityMetadataParser {
     private void readFSCPYS(final FileSecurityMetadataImpl metadata) throws NitfFormatException {
         metadata.setFileNumberOfCopies(reader.readTrimmedBytes(FSCPYS_LENGTH));
     }
-};
+}
 

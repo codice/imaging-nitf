@@ -20,7 +20,6 @@ import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
 
 import org.codice.imaging.nitf.core.common.DateTime;
-import org.codice.imaging.nitf.core.graphic.impl.GraphicSegmentWriter;
 import org.codice.imaging.nitf.core.security.SecurityMetadata;
 import org.codice.imaging.nitf.core.security.impl.SecurityMetadataWriter;
 import org.codice.imaging.nitf.core.tre.impl.TreParser;
@@ -70,9 +69,9 @@ public abstract class AbstractSegmentWriter {
         return String.format("%1$-" + length + "s", s);
     }
 
-    private String hyphenPadStringToLength(final String s, final int length) {
+    private String hyphenPadStringToLength(final String s) {
         StringBuilder builder = new StringBuilder(s);
-        while (builder.length() < length) {
+        while (builder.length() < CommonConstants.STANDARD_DATE_TIME_LENGTH) {
             builder.append("-");
         }
         return builder.toString();
@@ -198,11 +197,10 @@ public abstract class AbstractSegmentWriter {
         } else if (dateTime.getSourceString()
                 .length() > CommonConstants.STANDARD_DATE_TIME_LENGTH) {
             LOG.warn(String.format("Invalid date format \"%s\"", dateTime.getSourceString()));
-            writeBytes(hyphenPadStringToLength("", CommonConstants.STANDARD_DATE_TIME_LENGTH),
+            writeBytes(hyphenPadStringToLength(""),
                     CommonConstants.STANDARD_DATE_TIME_LENGTH);
         } else {
-            writeBytes(hyphenPadStringToLength(dateTime.getSourceString(),
-                    CommonConstants.STANDARD_DATE_TIME_LENGTH),
+            writeBytes(hyphenPadStringToLength(dateTime.getSourceString()),
                     CommonConstants.STANDARD_DATE_TIME_LENGTH);
         }
     }
@@ -218,7 +216,7 @@ public abstract class AbstractSegmentWriter {
                 return;
             }
             data.seek(0);
-            byte[] buffer = new byte[GraphicSegmentWriter.BUFFER_SIZE];
+            byte[] buffer = new byte[BUFFER_SIZE];
             int bytesRead;
             while ((bytesRead = data.read(buffer)) != -1) {
                 mOutput.write(buffer, 0, bytesRead);

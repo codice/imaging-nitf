@@ -93,7 +93,7 @@ public final class ImageMask {
         if (tpxcdlnth > 0) {
             tpxcd = 0;
             int numBytesToRead = (tpxcdlnth + Byte.SIZE - 1) / Byte.SIZE;
-            LOGGER.debug("Reading TPXCD at length:" + numBytesToRead);
+            LOGGER.debug("Reading TPXCD at length: {}", numBytesToRead);
             int bandBits = (int) imageInputStream.readBits(numBytesToRead * Byte.SIZE);
             for (int i = 0; i < mImageSegment.getNumBands(); ++i) {
                 tpxcd |= (bandBits << (Byte.SIZE * i));

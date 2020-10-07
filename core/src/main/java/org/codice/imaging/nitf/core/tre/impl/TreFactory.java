@@ -35,7 +35,6 @@ public final class TreFactory {
      * @return TRE with no content.
      */
     public static Tre getDefault(final String tag, final TreSource source) {
-        Tre tre = new TreImpl(tag, source);
-        return tre;
+        return new TreImpl(tag, source);
     }
 }

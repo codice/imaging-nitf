@@ -53,7 +53,7 @@ public class NitfFileWriter extends SharedNitfWriter {
                 writeData();
             }
         } catch (IOException | NitfFormatException ex) {
-            LOGGER.error("Could not write", ex.getMessage());
+            LOGGER.error("Could not write {}", ex.getMessage());
         }
     }
 }

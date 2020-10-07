@@ -53,6 +53,7 @@ public class NitfRenderer {
      * Constructor.
      */
     public NitfRenderer() {
+        // Intentionally Empty
     }
 
     /**
@@ -162,7 +163,7 @@ public class NitfRenderer {
     private void renderJPEG(final ImageSegment imageSegment, final Graphics2D targetGraphic, final ImageMask imageMask) throws IOException {
         ImageReader reader = getImageReader("image/jpeg");
         reader.setInput(imageSegment.getData());
-        ThreadLocal<Integer> maskedBlocks = new ThreadLocal<Integer>();
+        ThreadLocal<Integer> maskedBlocks = new ThreadLocal<>();
         maskedBlocks.set(0);
 
         processBlocks(imageSegment, (rowIndex, columnIndex) -> {
@@ -184,7 +185,7 @@ public class NitfRenderer {
     private void renderJPEG2k(final ImageSegment imageSegment, final Graphics2D targetGraphic, final ImageMask imageMask) throws IOException {
         final ImageReader reader = getImageReader("image/jp2");
         reader.setInput(imageSegment.getData(), true, true);
-        ThreadLocal<Integer> maskedBlocks = new ThreadLocal<Integer>();
+        ThreadLocal<Integer> maskedBlocks = new ThreadLocal<>();
         maskedBlocks.set(0);
 
         final ImageReadParam param = reader.getDefaultReadParam();
@@ -222,7 +223,7 @@ public class NitfRenderer {
     // CSOFF: DesignForExtension
     int[] getSourceBands(final ImageSegment imageSegment) {
     // CSON: DesignForExtension
-        List<Integer> imageBands = new ArrayList<Integer>();
+        List<Integer> imageBands = new ArrayList<>();
 
         /* When bands marked as LU, R, G, B, and M are present
             the RGB designated bands are the default bands for display
@@ -239,10 +240,8 @@ public class NitfRenderer {
             for (int i = 0; i < imageSegment.getNumBands(); i++) {
                 ImageBand band = imageSegment.getImageBandZeroBase(i);
 
-                if (null != band.getImageRepresentation()) {
-                    if (Arrays.asList(bandsToFind).contains(band.getImageRepresentation())) {
-                        imageBands.add(i);
-                    }
+                if (null != band.getImageRepresentation() && Arrays.asList(bandsToFind).contains(band.getImageRepresentation())) {
+                    imageBands.add(i);
                 }
             }
         }

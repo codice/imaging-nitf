@@ -40,7 +40,7 @@ public abstract class NitfReaderDefaultImpl implements NitfReader {
     /**
         Standard byte to UTF-8 charset conversion.
     */
-    protected static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+    protected static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
     /** {@inheritDoc} */
     @Override

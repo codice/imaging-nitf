@@ -124,4 +124,4 @@ public enum ImageMode {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}

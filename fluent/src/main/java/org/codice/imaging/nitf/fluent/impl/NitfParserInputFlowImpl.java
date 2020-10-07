@@ -32,6 +32,7 @@ public class NitfParserInputFlowImpl implements NitfParserInputFlow {
      * Constructor.
      */
     public NitfParserInputFlowImpl() {
+        // Intentionally Empty
     }
 
     /**

@@ -14,8 +14,8 @@
  */
 package org.codice.imaging.nitf.core.image.impl;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
@@ -82,7 +82,7 @@ public class RasterProductFormatAttributeParser {
 
         int numberOfAttributeOffsetRecords = bytes.getShort();
 
-        List<OffsetRecord> offsetRecords = new ArrayList<OffsetRecord>();
+        List<OffsetRecord> offsetRecords = new ArrayList<>();
         for (int i = 0; i < numberOfAttributeOffsetRecords; ++i) {
             OffsetRecord offsetRecord = new OffsetRecord();
             offsetRecord.attributeId = bytes.getShort();
@@ -185,11 +185,6 @@ public class RasterProductFormatAttributeParser {
     private String readAsci(final ByteBuffer bytes, final int numBytes) {
         byte[] data = new byte[numBytes];
         bytes.get(data, 0, numBytes);
-        try {
-            return new String(data, "US-ASCII");
-        } catch (UnsupportedEncodingException ex) {
-            LOGGER.error("UnsupportedEncodingException while trying to convert to ASCII:", ex);
-        }
-        return "";
+        return new String(data, StandardCharsets.US_ASCII);
     }
 }

@@ -87,7 +87,7 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
                 mode = Mode.INTERPOLATED;
                 break;
             default:
-                LOGGER.info("Unknown Interior Style value: " + data);
+                LOGGER.info("Unknown Interior Style value: {}", data);
                 break;
         }
     }
@@ -101,7 +101,7 @@ class InteriorStyleElement extends ElementHelpers implements AbstractElement {
 
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
-        LOGGER.debug("TODO: render for " + getFriendlyName());
+        LOGGER.debug("TODO: render for {}", getFriendlyName());
         StringBuilder builder = new StringBuilder();
         addStringDescription(builder);
         LOGGER.debug(builder.toString());

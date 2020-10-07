@@ -46,13 +46,13 @@ public final class DataReaderFactory {
         }
         switch (segment.getNumberOfBitsPerPixelPerBand()) {
             case 1:
-                return (imageInputStream) -> ((ImageInputStream) imageInputStream).readBit();
+                return imageInputStream -> ((ImageInputStream) imageInputStream).readBit();
             case Byte.SIZE:
-                return (imageInputStream) -> ((ImageInputStream) imageInputStream).readUnsignedByte();
+                return imageInputStream -> ((ImageInputStream) imageInputStream).readUnsignedByte();
             case TWELVE_BIT_IMAGE:
                 return new Bitshift16IOReaderFunction(segment);
             case Short.SIZE:
-                return (imageInputStream) -> ((ImageInputStream) imageInputStream).readUnsignedShort();
+                return imageInputStream -> ((ImageInputStream) imageInputStream).readUnsignedShort();
             default:
                 return null;
         }

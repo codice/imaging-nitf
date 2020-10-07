@@ -14,10 +14,8 @@
  */
 package org.codice.imaging.nitf.trewrap;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import javax.xml.stream.XMLStreamException;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.trewrap.fields.ACFTBMissionPlanMode;
@@ -51,6 +49,8 @@ public class ACFTB extends FlatTreWrapper {
     private static final double SECONDS_IN_ONE_MINUTE = 60.0;
 
     private static final double MINIMUM_VALID_LOC_ACCY = 0.01;
+    private static final String ENTLOC = "ENTLOC";
+    private static final String EXITLOC = "EXITLOC";
 
     /**
      * Create a ACFTB TRE wrapper from an existing TRE.
@@ -130,10 +130,8 @@ public class ACFTB extends FlatTreWrapper {
      *
      * @return description of the sensor ID
      * @throws NitfFormatException if there is a parsing issue on the NITF side
-     * @throws XMLStreamException if there is a problem creating the lookup class.
-     * @throws IOException if the resource could not be opened.
      */
-    public final String getSensorIdentificationDecoded() throws NitfFormatException, XMLStreamException, IOException {
+    public final String getSensorIdentificationDecoded() throws NitfFormatException {
         String encodedValue = getValueAsTrimmedString("SENSOR_ID");
         ACFTBSensorId acftbSensorIdLookup = ACFTBSensorId.getInstance();
         return acftbSensorIdLookup.lookupDescription(encodedValue);
@@ -290,15 +288,14 @@ public class ACFTB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue
      */
     public final double getEntryLocationLatitude() throws NitfFormatException {
-        String entloc = getFieldValue("ENTLOC");
+        String entloc = getFieldValue(ENTLOC);
         return parseLatitudeFromLocation(entloc);
     }
 
     private double parseLatitudeFromLocation(final String location) throws NumberFormatException {
         String latitudePart = location.substring(0, LONGITUDE_OFFSET);
         if (latitudePart.startsWith("+") || latitudePart.startsWith("-")) {
-            Double latitude = Double.parseDouble(latitudePart);
-            return latitude;
+            return Double.parseDouble(latitudePart);
         }
         if (latitudePart.endsWith("N") || latitudePart.endsWith("S")) {
             int degrees = Integer.parseInt(latitudePart.substring(LAT_OFFSET, LAT_MINUTES_OFFSET));
@@ -336,15 +333,14 @@ public class ACFTB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue
      */
     public final double getEntryLocationLongitude() throws NitfFormatException {
-        String entloc = getFieldValue("ENTLOC");
+        String entloc = getFieldValue(ENTLOC);
         return parseLongitudeFromLocation(entloc);
     }
 
-    private double parseLongitudeFromLocation(final String location) throws NumberFormatException {
+    private double parseLongitudeFromLocation(final String location) {
         String longitudePart = location.substring(LONGITUDE_OFFSET);
         if (longitudePart.startsWith("+") || longitudePart.startsWith("-")) {
-            Double longitude = Double.parseDouble(longitudePart);
-            return longitude;
+            return Double.parseDouble(longitudePart);
         }
         if (longitudePart.endsWith("E") || longitudePart.endsWith("W")) {
             int degrees = Integer.parseInt(longitudePart.substring(0, LON_MINUTES_OFFSET));
@@ -369,7 +365,7 @@ public class ACFTB extends FlatTreWrapper {
      * @throws NitfFormatException if there was an issue during parsing.
      */
     public final boolean entryPointHasData() throws NitfFormatException {
-        return locationHasData(getFieldValue("ENTLOC"));
+        return locationHasData(getFieldValue(ENTLOC));
     }
 
     /**
@@ -381,10 +377,7 @@ public class ACFTB extends FlatTreWrapper {
      * @throws NitfFormatException if there was an issue during parsing.
      */
     public final boolean locationAccuracyIsKnown() throws NitfFormatException {
-        if (getLocationAccuracy() < MINIMUM_VALID_LOC_ACCY) {
-            return false;
-        }
-        return true;
+        return (getLocationAccuracy() >= MINIMUM_VALID_LOC_ACCY);
     }
 
     /**
@@ -441,7 +434,7 @@ public class ACFTB extends FlatTreWrapper {
      * @throws NitfFormatException if there was an issue during parsing.
      */
     public final boolean exitPointHasData() throws NitfFormatException {
-        return locationHasData(getFieldValue("EXITLOC"));
+        return locationHasData(getFieldValue(EXITLOC));
     }
 
     /**
@@ -467,7 +460,7 @@ public class ACFTB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue
      */
     public final double getExitLocationLatitude() throws NitfFormatException {
-        String exitloc = getFieldValue("EXITLOC");
+        String exitloc = getFieldValue(EXITLOC);
         return parseLatitudeFromLocation(exitloc);
     }
 
@@ -494,7 +487,7 @@ public class ACFTB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue
      */
     public final double getExitLocationLongitude() throws NitfFormatException {
-        String exitloc = getFieldValue("EXITLOC");
+        String exitloc = getFieldValue(EXITLOC);
         return parseLongitudeFromLocation(exitloc);
     }
 

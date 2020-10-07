@@ -39,6 +39,7 @@ public class DataExtensionSegmentParser extends AbstractSegmentParser {
      * Default Constructor.
      */
     public DataExtensionSegmentParser() {
+        // Intentionally Empty
     }
 
     /**

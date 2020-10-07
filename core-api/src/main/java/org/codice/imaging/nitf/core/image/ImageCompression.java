@@ -266,5 +266,5 @@ public enum ImageCompression {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}
 

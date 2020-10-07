@@ -26,6 +26,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +62,9 @@ public class FileComparer {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileComparer.class);
     static final String OUR_OUTPUT_EXTENSION = ".OURS.txt";
     static final String THEIR_OUTPUT_EXTENSION = ".THEIRS.txt";
+    private static final String NITF_FHDR = "NITF_FHDR";
+    private static final String NITF_ICORDS = "NITF_ICORDS";
+    private static final String IMAGE_STRUCTURE_METADATA = "Image Structure Metadata:\n";
 
     private String filename = null;
     private SlottedParseStrategy parseStrategy = null;
@@ -97,15 +103,14 @@ public class FileComparer {
     }
 
     private void outputData() {
-        try {
-            FileWriter fstream = new FileWriter(filename + OUR_OUTPUT_EXTENSION);
+        try (FileWriter fstream = new FileWriter(filename + OUR_OUTPUT_EXTENSION)) {
             out = new BufferedWriter(fstream);
             out.write("Driver: NITF/National Imagery Transmission Format\n");
             out.write("Files: " + filename + "\n");
             if (segment1 == null) {
-                out.write(String.format("Size is 1, 1\n"));
+                out.write(String.format("Size is 1, 1%n"));
             } else {
-                out.write(String.format("Size is %d, %d\n", segment1.getNumberOfColumns(), segment1.getNumberOfRows()));
+                out.write(String.format("Size is %d, %d%n", segment1.getNumberOfColumns(), segment1.getNumberOfRows()));
             }
             outputCoordinateSystem();
 
@@ -177,19 +182,19 @@ public class FileComparer {
     }
 
     private void outputBaseMetadata() throws IOException, NitfFormatException {
-        Map <String, String> metadata = new TreeMap<String, String>();
+        Map <String, String> metadata = new TreeMap<>();
 
         addCommonFileLevelMetadata(metadata);
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         switch (nitfHeader.getFileType()) {
             case NSIF_ONE_ZERO:
-                metadata.put("NITF_FHDR", "NSIF01.00");
+                metadata.put(NITF_FHDR, "NSIF01.00");
                 break;
             case NITF_TWO_ZERO:
-                metadata.put("NITF_FHDR", "NITF02.00");
+                metadata.put(NITF_FHDR, "NITF02.00");
                 break;
             case NITF_TWO_ONE:
-                metadata.put("NITF_FHDR", "NITF02.10");
+                metadata.put(NITF_FHDR, "NITF02.10");
                 break;
         }
         if (nitfHeader.getFileType() == FileType.NITF_TWO_ZERO) {
@@ -213,12 +218,12 @@ public class FileComparer {
         }
 
         out.write("Metadata:\n");
-        for (String key : metadata.keySet()) {
-            out.write(String.format("  %s=%s\n", key, metadata.get(key)));
+        for (Map.Entry<String,String> entry : metadata.entrySet()){
+            out.write(String.format(" %s=%s%n", entry.getKey(), entry.getValue()));
         }
     }
 
-    private void addCommonFileLevelMetadata(Map <String, String> metadata) throws IOException {
+    private void addCommonFileLevelMetadata(Map <String, String> metadata) {
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         metadata.put("NITF_CLEVEL", String.format("%02d", nitfHeader.getComplexityLevel()));
         metadata.put("NITF_ENCRYP", "0");
@@ -238,7 +243,7 @@ public class FileComparer {
         metadata.put("NITF_STYPE", nitfHeader.getStandardType());
     }
 
-    private void addNITF20FileLevelMetadata(Map <String, String> metadata) throws IOException {
+    private void addNITF20FileLevelMetadata(Map <String, String> metadata) {
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         metadata.put("NITF_FSDWNG", nitfHeader.getFileSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
         if (nitfHeader.getFileSecurityMetadata().getDowngradeEvent() != null) {
@@ -246,7 +251,7 @@ public class FileComparer {
         }
     }
 
-    private void addNITF21FileLevelMetadata(Map <String, String> metadata) throws IOException {
+    private void addNITF21FileLevelMetadata(Map <String, String> metadata) {
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         metadata.put("NITF_FBKGC", (String.format("%3d,%3d,%3d",
                 (int) (nitfHeader.getFileBackgroundColour().getRed() & 0xFF),
@@ -283,9 +288,9 @@ public class FileComparer {
         addOldStyleMetadata(metadata, segment1.getTREsRawStructure());
     }
 
-    private void addNITF20ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
+    private void addNITF20ImageSegmentMetadata(Map <String, String> metadata) {
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
-        metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(
+        metadata.put(NITF_ICORDS, segment1.getImageCoordinatesRepresentation().getTextEquivalent(
                 nitfHeader.getFileType()));
         metadata.put("NITF_ITITLE", segment1.getImageIdentifier2());
         metadata.put("NITF_ISDWNG", segment1.getSecurityMetadata().getDowngradeDateOrSpecialCase().trim());
@@ -294,12 +299,12 @@ public class FileComparer {
         }
     }
 
-    private void addNITF21ImageSegmentMetadata(Map <String, String> metadata) throws IOException {
+    private void addNITF21ImageSegmentMetadata(Map <String, String> metadata) {
         NitfHeader nitfHeader = parseStrategy.getNitfHeader();
         if (segment1.getImageCoordinatesRepresentation() == ImageCoordinatesRepresentation.NONE) {
-            metadata.put("NITF_ICORDS", "");
+            metadata.put(NITF_ICORDS, "");
         } else {
-            metadata.put("NITF_ICORDS", segment1.getImageCoordinatesRepresentation().getTextEquivalent(
+            metadata.put(NITF_ICORDS, segment1.getImageCoordinatesRepresentation().getTextEquivalent(
                     nitfHeader.getFileType()));
         }
         metadata.put("NITF_IID2", segment1.getImageIdentifier2());
@@ -320,7 +325,7 @@ public class FileComparer {
         metadata.put("NITF_ISSRDT", segment1.getSecurityMetadata().getSecuritySourceDate());
     }
 
-    private void addCommonImageSegmentMetadata(Map<String, String> metadata) throws IOException, NitfFormatException {
+    private void addCommonImageSegmentMetadata(Map<String, String> metadata) throws NitfFormatException {
         metadata.put("NITF_ABPP", String.format("%02d", segment1.getActualBitsPerPixelPerBand()));
         metadata.put("NITF_CCS_COLUMN", String.format("%d", segment1.getImageLocationColumn()));
         metadata.put("NITF_CCS_ROW", String.format("%d", segment1.getImageLocationRow()));
@@ -370,7 +375,7 @@ public class FileComparer {
         }
     }
 
-    private void addRpfNamesMetadata(Map <String, String> metadata) throws IOException, NitfFormatException {
+    private void addRpfNamesMetadata(Map <String, String> metadata) throws NitfFormatException {
         if (filename.toLowerCase().endsWith(".ntf")) {
             // GDAL does this off the filename, not off the IID2, so it won't show these for "plain" NITF files
             return;
@@ -396,27 +401,27 @@ public class FileComparer {
             switch (segment1.getImageCompression()) {
                 case JPEG:
                 case JPEGMASK:
-                    out.write("Image Structure Metadata:\n");
+                    out.write(IMAGE_STRUCTURE_METADATA);
                     out.write("  COMPRESSION=JPEG\n");
                     break;
                 case BILEVEL:
                 case BILEVELMASK:
                 case DOWNSAMPLEDJPEG:
-                    out.write("Image Structure Metadata:\n");
+                    out.write(IMAGE_STRUCTURE_METADATA);
                     out.write("  COMPRESSION=BILEVEL\n");
                     break;
                 case LOSSLESSJPEG:
-                    out.write("Image Structure Metadata:\n");
+                    out.write(IMAGE_STRUCTURE_METADATA);
                     out.write("  COMPRESSION=LOSSLESS JPEG\n");
                     break;
                 case JPEG2000:
                 case JPEG2000MASK:
-                    out.write("Image Structure Metadata:\n");
+                    out.write(IMAGE_STRUCTURE_METADATA);
                     out.write("  COMPRESSION=JPEG2000\n");
                     break;
                 case VECTORQUANTIZATION:
                 case VECTORQUANTIZATIONMASK:
-                    out.write("Image Structure Metadata:\n");
+                    out.write(IMAGE_STRUCTURE_METADATA);
                     out.write("  COMPRESSION=VECTOR QUANTIZATION\n");
                     break;
             }
@@ -427,8 +432,8 @@ public class FileComparer {
         if (parseStrategy.getDataSource().getImageSegments().size() > 1) {
             out.write("Subdatasets:\n");
             for (int i = 0; i < parseStrategy.getDataSource().getImageSegments().size(); ++i) {
-                out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s\n", i+1, i, filename));
-                out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s\n", i+1, i+1, filename));
+                out.write(String.format("  SUBDATASET_%d_NAME=NITF_IM:%d:%s%n", i+1, i, filename));
+                out.write(String.format("  SUBDATASET_%d_DESC=Image %d of %s%n", i+1, i+1, filename));
             }
         }
     }
@@ -490,7 +495,7 @@ public class FileComparer {
     }
 
     private void outputRPCs() throws IOException {
-        Map <String, String> rpc = new TreeMap<String, String>();
+        Map <String, String> rpc = new TreeMap<>();
         if (segment1 != null) {
             // Walk the segment1 TRE collection and add RPC entries here
             TreCollection treCollection = segment1.getTREsRawStructure();
@@ -549,8 +554,8 @@ public class FileComparer {
         }
         if (!rpc.keySet().isEmpty()) {
             out.write("RPC Metadata:\n");
-            for (String tagname : rpc.keySet()) {
-                out.write(String.format("  %s=%s\n", tagname, rpc.get(tagname)));
+            for (Map.Entry<String,String> entry : rpc.entrySet()) {
+                out.write(String.format("  %s=%s%n", entry.getKey(), entry.getValue()));
             }
         }
     }
@@ -654,12 +659,12 @@ public class FileComparer {
             int i = 0;
             for (TreGroup group : entry.getGroups()) {
                 doIndent(out, indentLevel + 1);
-                out.write(String.format("<group index=\"%d\">\n", i));
+                out.write(String.format("<group index=\"%d\">%n", i));
                 for (TreEntry groupEntry : group.getEntries()) {
                     outputThisEntry(out, groupEntry, indentLevel + 2);
                 }
                 doIndent(out, indentLevel + 1);
-                out.write(String.format("</group>\n"));
+                out.write(String.format("</group>%n"));
                 i = i + 1;
             }
             doIndent(out, indentLevel);
@@ -689,116 +694,78 @@ public class FileComparer {
         }
     }
 
-    // This is ugly - feel free to fix it any time.
-    private static String makeGeoString(ImageCoordinatePair coords) {
-        double latitude = coords.getLatitude();
-        double longitude = coords.getLongitude();
-
-        String northSouth = "N";
-        if (latitude < 0.0) {
-            northSouth = "S";
-            latitude = Math.abs(latitude);
-        }
-        String eastWest = "E";
-        if (longitude < 0.0) {
-            eastWest = "W";
-            longitude = Math.abs(longitude);
-        }
-
-        int latDegrees = (int)Math.floor(latitude);
-        double minutesAndSecondsPart = (latitude -latDegrees) * 60;
-        int latMinutes = (int)Math.floor(minutesAndSecondsPart);
-        double secondsPart = (minutesAndSecondsPart - latMinutes) * 60;
-        int latSeconds = (int)Math.round(secondsPart);
-        if (latSeconds == 60) {
-            latMinutes++;
-            latSeconds = 0;
-        }
-        if (latMinutes == 60) {
-            latDegrees++;
-            latMinutes = 0;
-        }
-        int lonDegrees = (int)Math.floor(longitude);
-        minutesAndSecondsPart = (longitude - lonDegrees) * 60;
-        int lonMinutes = (int)Math.floor(minutesAndSecondsPart);
-        secondsPart = (minutesAndSecondsPart - lonMinutes) * 60;
-        int lonSeconds = (int)Math.round(secondsPart);
-        if (lonSeconds == 60) {
-            lonMinutes++;
-            lonSeconds = 0;
-        }
-        if (lonMinutes == 60) {
-            lonDegrees++;
-            lonMinutes = 0;
-        }
-        return String.format("%02d%02d%02d%s%03d%02d%02d%s", latDegrees, latMinutes, latSeconds, northSouth, lonDegrees, lonMinutes, lonSeconds, eastWest);
-    }
-
     private void generateGdalMetadata() {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("gdalinfo", "-nogcp", "-mdd", "xml:TRE", filename);
             processBuilder.environment().put("NITF_OPEN_UNDERLYING_DS", "NO");
             Process process = processBuilder.start();
-            BufferedWriter out = null;
-            try {
-                FileWriter fstream = new FileWriter(filename + THEIR_OUTPUT_EXTENSION);
-                out = new BufferedWriter(fstream);
-            } catch (IOException e) {
-                LOGGER.error(e.getMessage(), e);
+            BufferedWriter bufferedWriter = getBufferedWriter();
+            BufferedReader infoOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8), 1000000);
+            processMetadata(bufferedWriter, infoOutputReader);
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
             }
-            BufferedReader infoOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"), 1000000);
-            boolean done = false;
-            try {
-                do {
-                    do {
-                        String line = infoOutputReader.readLine();
-                        if (line == null) {
-                            done = true;
-                            break;
-                        }
-                        if (line.startsWith("Origin = (")) {
-                            LOGGER.debug("Filtering on Origin");
-                            continue;
-                        }
-                        if (line.startsWith("Pixel Size = (")) {
-                            LOGGER.debug("Filtering on Pixel Size");
-                            continue;
-                        }
-                        if (line.startsWith("  LINE_DEN_COEFF=") || line.startsWith("  LINE_NUM_COEFF=") || line.startsWith("  SAMP_DEN_COEFF=") || line.startsWith("  SAMP_NUM_COEFF=")) {
-                            LOGGER.debug("Filtering out RPC coefficients");
-                            continue;
-                        }
-                        if (line.startsWith("  LAT_SCALE=") || line.startsWith("  LONG_SCALE=") || line.startsWith("  LAT_OFF=") || line.startsWith("  LONG_OFF=")) {
-                            LOGGER.debug("Filtering out RPC coefficients");
-                            continue;
-                        }
-                        if (line.startsWith("Corner Coordinates:")) {
-                            LOGGER.debug("Exiting on Corner Coordinates");
-                            done = true;
-                            break;
-                        }
-                        if (line.startsWith("Band 1 Block=")) {
-                            LOGGER.debug("Exiting on Band 1 Block");
-                            done = true;
-                            break;
-                        }
-                        if (out != null) {
-                            out.write(line + "\n");
-                        }
-                    } while (infoOutputReader.ready() && (!done));
-                    Thread.sleep(100);
-                } while (!done);
-            } catch (IOException|InterruptedException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-            if (out != null) {
-                out.close();
-            }
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage(), e);
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    private void processMetadata(BufferedWriter bufferedWriter, BufferedReader infoOutputReader) {
+        boolean done = false;
+        try {
+            do {
+                do {
+                    String line = infoOutputReader.readLine();
+                    if (line == null) {
+                        done = true;
+                        break;
+                    }
+                    if (line.startsWith("Origin = (")) {
+                        LOGGER.debug("Filtering on Origin");
+                        continue;
+                    }
+                    if (line.startsWith("Pixel Size = (")) {
+                        LOGGER.debug("Filtering on Pixel Size");
+                        continue;
+                    }
+                    if (line.startsWith("  LINE_DEN_COEFF=") || line.startsWith("  LINE_NUM_COEFF=") || line.startsWith("  SAMP_DEN_COEFF=") || line.startsWith("  SAMP_NUM_COEFF=")) {
+                        LOGGER.debug("Filtering out RPC coefficients");
+                        continue;
+                    }
+                    if (line.startsWith("  LAT_SCALE=") || line.startsWith("  LONG_SCALE=") || line.startsWith("  LAT_OFF=") || line.startsWith("  LONG_OFF=")) {
+                        LOGGER.debug("Filtering out RPC coefficients");
+                        continue;
+                    }
+                    if (line.startsWith("Corner Coordinates:")) {
+                        LOGGER.debug("Exiting on Corner Coordinates");
+                        done = true;
+                        break;
+                    }
+                    if (line.startsWith("Band 1 Block=")) {
+                        LOGGER.debug("Exiting on Band 1 Block");
+                        done = true;
+                        break;
+                    }
+                    if (bufferedWriter != null) {
+                        bufferedWriter.write(line + "\n");
+                    }
+                } while (infoOutputReader.ready() && (!done));
+                Thread.sleep(100);
+            } while (!done);
+        } catch (IOException |InterruptedException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private BufferedWriter getBufferedWriter() {
+        BufferedWriter bufferedWriter = null;
+        try {
+            FileWriter fstream = new FileWriter(filename + THEIR_OUTPUT_EXTENSION);
+            bufferedWriter = new BufferedWriter(fstream);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return bufferedWriter;
     }
 
     private void compareMetadataFiles() {
@@ -813,21 +780,24 @@ public class FileComparer {
             }
             LOGGER.debug("  * Done");
         } else {
-            new File(filename + THEIR_OUTPUT_EXTENSION).delete();
-            new File(filename + OUR_OUTPUT_EXTENSION).delete();
+            try {
+                Files.delete(Paths.get(filename + THEIR_OUTPUT_EXTENSION));
+                Files.delete(Paths.get(filename + OUR_OUTPUT_EXTENSION));
+            } catch (IOException e) {
+                LOGGER.error("Error deleting {}: {}", filename, e);
+            }
         }
     }
 
     private static List<String> fileToLines(String filename) {
         List<String> lines = new LinkedList<>();
         String line;
-        try {
-                BufferedReader in = new BufferedReader(new java.io.FileReader(filename));
+        try (BufferedReader in = new BufferedReader(new java.io.FileReader(filename))) {
                 while ((line = in.readLine()) != null) {
                         lines.add(line);
                 }
         } catch (IOException e) {
-                LOGGER.error(e.getMessage() + e);
+                LOGGER.error(e.getMessage(), e);
         }
         return lines;
     }

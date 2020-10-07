@@ -62,6 +62,7 @@ public class SecurityMetadataParser {
      * Default constructor.
      */
     public SecurityMetadataParser() {
+        // Intentionally Empty
     }
 
     /**
@@ -242,5 +243,5 @@ public class SecurityMetadataParser {
         }
     }
 
-};
+}
 

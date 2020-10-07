@@ -85,5 +85,5 @@ public enum PixelJustification {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}
 

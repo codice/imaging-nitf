@@ -561,4 +561,4 @@ class SecurityMetadataImpl implements SecurityMetadata {
         }
         return 0;
     }
-};
+}

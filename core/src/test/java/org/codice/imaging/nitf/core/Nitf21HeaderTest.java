@@ -793,16 +793,16 @@ public class Nitf21HeaderTest {
         Tre lastTre = tres.getTREs().get(3);
         lastTre.dump();
         assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(
-            LoggingEvent.debug("\tName: LASTNME"),
-            LoggingEvent.debug("\tValue: WEBB                        "),
-            LoggingEvent.debug("\tName: FIRSTNME"),
-            LoggingEvent.debug("\tValue: DAVE                        "),
-            LoggingEvent.debug("\tName: MIDNME"),
-            LoggingEvent.debug("\tValue: L.                          "),
-            LoggingEvent.debug("\tName: DOB"),
-            LoggingEvent.debug("\tValue: 061856"),
-            LoggingEvent.debug("\tName: ASSOCTRY"),
-            LoggingEvent.debug("\tValue: US")
+            LoggingEvent.debug("\tName: {}", "LASTNME"),
+            LoggingEvent.debug("\tValue: {}", "WEBB                        "),
+            LoggingEvent.debug("\tName: {}", "FIRSTNME"),
+            LoggingEvent.debug("\tValue: {}", "DAVE                        "),
+            LoggingEvent.debug("\tName: {}", "MIDNME"),
+            LoggingEvent.debug("\tValue: {}", "L.                          "),
+            LoggingEvent.debug("\tName: {}", "DOB"),
+            LoggingEvent.debug("\tValue: {}", "061856"),
+            LoggingEvent.debug("\tName: {}", "ASSOCTRY"),
+            LoggingEvent.debug("\tValue: {}", "US")
         )));
     }
 

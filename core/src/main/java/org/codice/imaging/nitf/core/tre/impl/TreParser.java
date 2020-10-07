@@ -27,6 +27,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -100,7 +101,11 @@ public class TreParser {
 
     private void unmarshal(final InputStream inputStream) throws JAXBException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
+        try {
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        } catch (ParserConfigurationException e) {
+            LOG.warn("Unable to set secure processing on DocumentBuilderFactory: {}", e.getMessage());
+        }
         dbf.setExpandEntityReferences(false);
 
         Document document;
@@ -210,7 +215,7 @@ public class TreParser {
         }
     }
 
-    private int getLengthForField(final FieldType field, final TreParams parameters) throws UnsupportedOperationException, NumberFormatException {
+    private int getLengthForField(final FieldType field, final TreParams parameters) {
         int fieldLength = 0;
         BigInteger fieldLengthBigInt = field.getLength();
         if (fieldLengthBigInt != null) {
@@ -248,28 +253,28 @@ public class TreParser {
         return result;
     }
 
-    private int computeAverageNPart(final TreParams parameters) throws NitfFormatException {
+    private int computeAverageNPart(final TreParams parameters) {
         int npart = parameters.getIntValue("NPART");
         return (npart + 1) * (npart) / 2;
     }
 
-    private int computeAverageNumOrg(final TreParams parameters) throws NitfFormatException {
+    private int computeAverageNumOrg(final TreParams parameters) {
         int numopg = parameters.getIntValue("NUMOPG");
         return (numopg + 1) * (numopg) / 2;
     }
 
-    private int computeProductNParNParo(final TreParams parameters) throws NitfFormatException {
+    private int computeProductNParNParo(final TreParams parameters) {
         int npar = parameters.getIntValue("NPAR");
         int nparo = parameters.getIntValue("NPARO");
         return npar * nparo;
     }
 
-    private int computeNplnMinus(final TreParams parameters) throws NitfFormatException {
+    private int computeNplnMinus(final TreParams parameters) {
         int npln = parameters.getIntValue("NPLN");
         return npln - 1;
     }
 
-    private int computeProductNxptsNypts(final TreParams parameters) throws NitfFormatException {
+    private int computeProductNxptsNypts(final TreParams parameters) {
         int nxpts = parameters.getIntValue("NXPTS");
         int nypts = parameters.getIntValue("NYPTS");
         return nxpts * nypts;
@@ -658,10 +663,10 @@ public class TreParser {
             if ((!source.equals(TreSource.UserDefinedHeaderData)) && (!source.equals(TreSource.ExtendedHeaderData))) {
                 throw new NitfFormatException("TRE is only permitted in a file-level header, or in an overflow DES");
             }
-        } else if (location.equalsIgnoreCase("image")) {
-            if ((!source.equals(TreSource.ImageExtendedSubheaderData)) && (!source.equals(TreSource.UserDefinedImageData))) {
-                throw new NitfFormatException("TRE is only permitted in an image-related sub-header, or in an overflow DES");
-            }
+        } else if (location.equalsIgnoreCase("image")
+                && (!source.equals(TreSource.ImageExtendedSubheaderData))
+                && (!source.equals(TreSource.UserDefinedImageData))) {
+            throw new NitfFormatException("TRE is only permitted in an image-related sub-header, or in an overflow DES");
         }
     }
 

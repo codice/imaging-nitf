@@ -59,7 +59,7 @@ class ColourSelectionModeElement extends ElementHelpers implements AbstractEleme
                 mode = Mode.DIRECT_COLOUR_MODE;
                 break;
             default:
-                LOG.info("Unknown Colour Selection Mode value: " + data);
+                LOG.info("Unknown Colour Selection Mode value: {}", data);
                 break;
         }
     }

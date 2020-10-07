@@ -79,7 +79,7 @@ public class TreMetadataSheetHandler {
         }
     }
 
-    private void sanityCheckHeader() throws IllegalStateException {
+    private void sanityCheckHeader() {
         Row headerRow = metadataSheet.getRow(0);
         checkHeaderCell(headerRow, TRE_COLUMN, "TRE");
         checkHeaderCell(headerRow, FIELD_NAME_COLUMN, "FIELD");
@@ -88,7 +88,7 @@ public class TreMetadataSheetHandler {
         checkHeaderCell(headerRow, DESCRIPTION_COLUMN, "DESCRIPTION");
     }
 
-    private void checkHeaderCell(Row headerRow, int zeroBasedIndex, String expectedContent) throws IllegalStateException {
+    private void checkHeaderCell(Row headerRow, int zeroBasedIndex, String expectedContent) {
         if (!headerRow.getCell(zeroBasedIndex).toString().equals(expectedContent)) {
             throw new IllegalStateException("Expected second column to be " + expectedContent + ", but was " + headerRow.getCell(zeroBasedIndex).toString() + ". Possible format change");
         }
@@ -96,21 +96,18 @@ public class TreMetadataSheetHandler {
 
     private void handleSimpleRow(String treName, String fieldName, String fieldValue, String description, int rowNumber) {
         SimpleFieldLookupHandler handler = getHandler(treName, fieldName);
-        if (handler != null) {
-            handler.handleRow(fieldValue, description, rowNumber);
-        } else {
+        if (handler == null) {
             throw new IllegalStateException("No handler available");
         }
+        handler.handleRow(fieldValue, description, rowNumber);
     }
 
     private void handleSensorRow(String sensor, String treName, String fieldName, String fieldValue, String description, int rowNumber) {
         SensorFieldLookupHandler handler = getSensorHandler(treName, fieldName);
-
-        if (handler != null) {
-            handler.handleRow(fieldValue, description, sensor, rowNumber);
-        } else {
+        if (handler == null) {
             throw new IllegalStateException("No handler available");
         }
+        handler.handleRow(fieldValue, description, sensor, rowNumber);
     }
 
     private SimpleFieldLookupHandler getHandler(String treName, String fieldName) {

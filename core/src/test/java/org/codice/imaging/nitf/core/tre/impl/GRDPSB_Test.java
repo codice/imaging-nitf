@@ -43,16 +43,16 @@ public class GRDPSB_Test extends SharedTreTest {
 
     private Tre doParseAndCheckResults(ByteArrayOutputStream baos) throws NitfFormatException, IOException {
         Tre grdpsb = parseTRE(baos.toByteArray(), baos.toByteArray().length, "GRDPSB");
-        assertEquals(grdpsb.getIntValue("NUM_GRDS"), 1);
-        assertEquals(grdpsb.getEntry("GRDS").getGroups().size(), 1);
+        assertEquals(1, grdpsb.getIntValue("NUM_GRDS"));
+        assertEquals(1, grdpsb.getEntry("GRDS").getGroups().size());
         TreGroup group1 = grdpsb.getEntry("GRDS").getGroups().get(0);
-        assertEquals(group1.getFieldValue("ZVL"), "+000027.81");
-        assertEquals(group1.getDoubleValue("ZVL"), 27.81, 0.001);
-        assertEquals(group1.getFieldValue("BAD"), "PIX_LATLON");
-        assertEquals(group1.getFieldValue("LOD"), "000000000001");
-        assertEquals(group1.getFieldValue("LAD"), "000000000001");
-        assertEquals(group1.getFieldValue("LSO"), "00000000000");
-        assertEquals(group1.getFieldValue("PSO"), "00000000000");
+        assertEquals("+000027.81", group1.getFieldValue("ZVL"));
+        assertEquals(27.81, group1.getDoubleValue("ZVL"), 0.001);
+        assertEquals("PIX_LATLON", group1.getFieldValue("BAD"));
+        assertEquals("000000000001", group1.getFieldValue("LOD"));
+        assertEquals("000000000001", group1.getFieldValue("LAD"));
+        assertEquals("00000000000", group1.getFieldValue("LSO"));
+        assertEquals("00000000000", group1.getFieldValue("PSO"));
         return grdpsb;
     }
 }

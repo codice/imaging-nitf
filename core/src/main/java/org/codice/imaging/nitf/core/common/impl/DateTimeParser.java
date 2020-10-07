@@ -91,14 +91,13 @@ public class DateTimeParser {
                 break;
             case UNKNOWN:
             default:
-                LOG.warn("Unknown NITF file type while reading date: " + reader.getFileType());
+                LOG.warn("Unknown NITF file type while reading date: {}", reader.getFileType());
                 throw new NitfFormatException("Need to set NITF file type prior to reading dates", reader.getCurrentOffset());
         }
         return dateTime;
     }
 
-    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final DateTimeImpl dateTime)
-            throws NitfFormatException {
+    private void parseDateString(final String sourceString, final SimpleDateFormat dateFormat, final DateTimeImpl dateTime) {
         if (dateFormat != null) {
             Date date;
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

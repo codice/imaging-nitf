@@ -16,10 +16,7 @@ package org.codice.imaging.nitf.render.imagerep;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
-import java.io.IOException;
 import java.util.Map;
-
-import javax.imageio.stream.ImageInputStream;
 
 import org.codice.imaging.nitf.render.ImageMask;
 
@@ -35,10 +32,6 @@ abstract class AbstractRgbImageRepresentationHandler implements ImageRepresentat
         this.bandMapping = bandMap;
         this.numOfReadsPerBand = (int) Math.ceil(actualBitsPerPixelPerBand / ((double) Byte.SIZE));
     }
-
-    @Override
-    public abstract void renderPixelBand(final DataBuffer data, final int pixelIndex,
-            final ImageInputStream imageInputStream, final int bandIndex) throws IOException;
 
     @Override
     public final BufferedImage createBufferedImage(final int blockWidth, final int blockHeight) {

@@ -37,6 +37,11 @@ import org.codice.imaging.nitf.core.tre.TreSource;
 public class PIAPEB extends FlatTreWrapper {
 
     private static final String TAG_NAME = "PIAPEB";
+    private static final String LASTNME = "LASTNME";
+    private static final String STRING = "string";
+    private static final String FIRSTNME = "FIRSTNME";
+    private static final String MIDNME = "MIDNME";
+    private static final String ASSOCTRY = "ASSOCTRY";
 
     /**
      * Create a PIAPEB TRE wrapper from an existing TRE.
@@ -57,11 +62,11 @@ public class PIAPEB extends FlatTreWrapper {
     public PIAPEB(final TreSource treSource) throws NitfFormatException {
         super(TAG_NAME, treSource);
         // set default values
-        addOrUpdateEntry("LASTNME", "", "string");
-        addOrUpdateEntry("FIRSTNME", "", "string");
-        addOrUpdateEntry("MIDNME", "", "string");
-        addOrUpdateEntry("DOB", "", "string");
-        addOrUpdateEntry("ASSOCTRY", "", "string");
+        addOrUpdateEntry(LASTNME, "", STRING);
+        addOrUpdateEntry(FIRSTNME, "", STRING);
+        addOrUpdateEntry(MIDNME, "", STRING);
+        addOrUpdateEntry("DOB", "", STRING);
+        addOrUpdateEntry(ASSOCTRY, "", STRING);
     }
 
     /**
@@ -73,7 +78,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setLastName(final String lastName) throws NitfFormatException {
-        addOrUpdateEntry("LASTNME", lastName, "string");
+        addOrUpdateEntry(LASTNME, lastName, STRING);
     }
 
     /**
@@ -85,7 +90,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final String getLastName() throws NitfFormatException {
-        return getValueAsTrimmedString("LASTNME");
+        return getValueAsTrimmedString(LASTNME);
     }
 
     /**
@@ -97,7 +102,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setFirstName(final String firstName) throws NitfFormatException {
-        addOrUpdateEntry("FIRSTNME", firstName, "string");
+        addOrUpdateEntry(FIRSTNME, firstName, STRING);
     }
 
     /**
@@ -109,7 +114,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final String getFirstName() throws NitfFormatException {
-        return getValueAsTrimmedString("FIRSTNME");
+        return getValueAsTrimmedString(FIRSTNME);
     }
 
     /**
@@ -121,7 +126,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setMiddleName(final String middleName) throws NitfFormatException {
-        addOrUpdateEntry("MIDNME", middleName, "string");
+        addOrUpdateEntry(MIDNME, middleName, STRING);
     }
 
     /**
@@ -133,7 +138,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final String getMiddleName() throws NitfFormatException {
-        return getValueAsTrimmedString("MIDNME");
+        return getValueAsTrimmedString(MIDNME);
     }
 
     /**
@@ -176,7 +181,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final void setAssociatedCountry(final String associatedCountry) throws NitfFormatException {
-        addOrUpdateEntry("ASSOCTRY", associatedCountry, "string");
+        addOrUpdateEntry(ASSOCTRY, associatedCountry, STRING);
     }
 
     /**
@@ -191,7 +196,7 @@ public class PIAPEB extends FlatTreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final String getAssociatedCountryCode() throws NitfFormatException {
-        return mTre.getFieldValue("ASSOCTRY");
+        return mTre.getFieldValue(ASSOCTRY);
     }
 
     /**
@@ -199,7 +204,7 @@ public class PIAPEB extends FlatTreWrapper {
      */
     @Override
     public final ValidityResult getValidity() throws NitfFormatException {
-        for (String tagName : new String[] {"LASTNME", "FIRSTNME", "MIDNME", "ASSOCTRY"}) {
+        for (String tagName : new String[] {LASTNME, FIRSTNME, MIDNME, ASSOCTRY}) {
             if (mTre.getFieldValue(tagName) == null) {
                 ValidityResult validity = new ValidityResult();
                 validity.setValidityStatus(ValidityResult.ValidityStatus.NOT_VALID);

@@ -88,5 +88,5 @@ public enum GraphicColour {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}
 

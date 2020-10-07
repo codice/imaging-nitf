@@ -85,4 +85,4 @@ class FileSecurityMetadataImpl extends SecurityMetadataImpl implements FileSecur
         len += FileSecurityConstants.FSCPYS_LENGTH;
         return len;
     }
-};
+}
