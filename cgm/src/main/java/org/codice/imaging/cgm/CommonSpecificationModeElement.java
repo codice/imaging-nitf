@@ -55,16 +55,16 @@ abstract class CommonSpecificationModeElement extends ElementHelpers implements 
         int data = inputReader.readEnumValue();
         switch (data) {
             case LINE_WIDTH_MODE_ABSOLUTE:
-                mode = CommonSpecificationModeElement.Mode.ABSOLUTE;
+                mode = Mode.ABSOLUTE;
                 break;
             case LINE_WIDTH_MODE_SCALED:
-                mode = CommonSpecificationModeElement.Mode.SCALED;
+                mode = Mode.SCALED;
                 break;
             case LINE_WIDTH_MODE_FRACTIONAL:
-                mode = CommonSpecificationModeElement.Mode.FRACTIONAL;
+                mode = Mode.FRACTIONAL;
                 break;
             case LINE_WIDTH_MODE_MM:
-                mode = CommonSpecificationModeElement.Mode.MILLIMETRES;
+                mode = Mode.MILLIMETRES;
                 break;
             default:
                 LOG.info(String.format("Unknown %s value: %d", getFriendlyName(), data));

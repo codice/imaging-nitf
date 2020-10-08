@@ -69,9 +69,9 @@ public abstract class AbstractSegmentWriter {
         return String.format("%1$-" + length + "s", s);
     }
 
-    private String hyphenPadStringToLength(final String s) {
+    private String hyphenPadStringToLength(final String s, final int length) {
         StringBuilder builder = new StringBuilder(s);
-        while (builder.length() < CommonConstants.STANDARD_DATE_TIME_LENGTH) {
+        while (builder.length() < length) {
             builder.append("-");
         }
         return builder.toString();
@@ -197,10 +197,10 @@ public abstract class AbstractSegmentWriter {
         } else if (dateTime.getSourceString()
                 .length() > CommonConstants.STANDARD_DATE_TIME_LENGTH) {
             LOG.warn(String.format("Invalid date format \"%s\"", dateTime.getSourceString()));
-            writeBytes(hyphenPadStringToLength(""),
+            writeBytes(hyphenPadStringToLength("", CommonConstants.STANDARD_DATE_TIME_LENGTH),
                     CommonConstants.STANDARD_DATE_TIME_LENGTH);
         } else {
-            writeBytes(hyphenPadStringToLength(dateTime.getSourceString()),
+            writeBytes(hyphenPadStringToLength(dateTime.getSourceString(), CommonConstants.STANDARD_DATE_TIME_LENGTH),
                     CommonConstants.STANDARD_DATE_TIME_LENGTH);
         }
     }
