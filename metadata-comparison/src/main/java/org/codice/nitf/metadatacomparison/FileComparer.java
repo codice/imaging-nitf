@@ -219,7 +219,7 @@ public class FileComparer {
 
         out.write("Metadata:\n");
         for (Map.Entry<String,String> entry : metadata.entrySet()){
-            out.write(String.format(" %s=%s%n", entry.getKey(), entry.getValue()));
+            out.write(String.format("  %s=%s%n", entry.getKey(), entry.getValue()));
         }
     }
 
