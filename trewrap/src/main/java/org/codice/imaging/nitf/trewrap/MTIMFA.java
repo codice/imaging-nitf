@@ -233,19 +233,16 @@ public class MTIMFA extends TreWrapper {
     }
 
     private TreGroup getCamera(final int cameraIndex) throws NitfFormatException {
-        TreGroup camera = mTre.getEntry("CAMERAS").getGroups().get(cameraIndex);
-        return camera;
+        return mTre.getEntry("CAMERAS").getGroups().get(cameraIndex);
     }
 
     private TreGroup getTemporalBlock(final int cameraIndex, final int temporalBlockIndex) throws NitfFormatException {
         TreGroup camera = getCamera(cameraIndex);
-        TreGroup tempBlock = camera.getEntry("TEMPORAL_BLOCKS").getGroups().get(temporalBlockIndex);
-        return tempBlock;
+        return camera.getEntry("TEMPORAL_BLOCKS").getGroups().get(temporalBlockIndex);
     }
 
     @Override
     public final ValidityResult getValidity() throws NitfFormatException {
-        ValidityResult validity = new ValidityResult();
-        return validity;
+        return new ValidityResult();
     }
 }

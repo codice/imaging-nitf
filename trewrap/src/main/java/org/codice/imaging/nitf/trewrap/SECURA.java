@@ -114,18 +114,15 @@ public class SECURA extends TreWrapper {
      * @throws NitfFormatException if there is a parsing issue.
      */
     public final SecurityMetadata getNitfSecurityFields() throws NitfFormatException {
-        final SecurityMetadata securityMetadata;
         if (getNitfVersion() == NITF_TWO_ONE || getNitfVersion() == FileType.NITF_TWO_ZERO) {
             InputStream stream = new ByteArrayInputStream(getFieldValue("NFSECFLDS").getBytes(StandardCharsets.ISO_8859_1));
             SecurityMetadataParser parser = new SecurityMetadataParser();
             NitfInputStreamReader nitfReader = new NitfInputStreamReader(stream);
             nitfReader.setFileType(getNitfVersion());
-            securityMetadata = parser.parseSecurityMetadata(nitfReader);
+            return parser.parseSecurityMetadata(nitfReader);
         } else {
-            securityMetadata = null;
-                throw new NitfFormatException("Could not parse Security Fields");
+            throw new NitfFormatException("Could not parse Security Fields");
         }
-        return securityMetadata;
     }
 
     /**

@@ -48,6 +48,7 @@ public class LabelSegmentParser extends AbstractSegmentParser {
      * default constructor.
      */
     public LabelSegmentParser() {
+        // Intentionally Empty
     }
 
     /**

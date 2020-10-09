@@ -120,7 +120,7 @@ public enum TextFormat {
                 likelyTextFormat = UTF8SUBSET;
                 continue;
             }
-            LOG.warn("Invalid character detected in Text string:" + stringToTest);
+            LOG.warn("Invalid character detected in Text string: {}", stringToTest);
         }
         return likelyTextFormat;
     }
@@ -167,5 +167,5 @@ public enum TextFormat {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}
 

@@ -52,6 +52,7 @@ public class GraphicSegmentParser extends AbstractSegmentParser {
      * Default constructor.
      */
     public GraphicSegmentParser() {
+        // Intentionally Empty
     }
 
     /**

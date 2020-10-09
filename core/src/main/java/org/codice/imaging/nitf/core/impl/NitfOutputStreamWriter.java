@@ -46,7 +46,7 @@ public class NitfOutputStreamWriter extends SharedNitfWriter {
         try {
             writeData();
         } catch (NitfFormatException | IOException ex) {
-            LOGGER.error("Could not write", ex.getMessage());
+            LOGGER.error("Could not write {}", ex.getMessage());
         }
     }
 

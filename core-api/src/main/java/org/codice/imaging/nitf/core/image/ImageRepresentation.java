@@ -133,5 +133,5 @@ public enum ImageRepresentation {
         return textEquivalent;
     }
 
-};
+}
 

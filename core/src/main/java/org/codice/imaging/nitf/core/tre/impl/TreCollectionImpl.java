@@ -71,7 +71,7 @@ public class TreCollectionImpl implements TreCollection {
      */
     @Override
     public final List<String> getUniqueNamesOfTRE() {
-        List<String> treNames = new ArrayList<String>();
+        List<String> treNames = new ArrayList<>();
         for (Tre tre : treCollectionEntries) {
             String treName = tre.getName();
             if (!treNames.contains(treName)) {
@@ -87,7 +87,7 @@ public class TreCollectionImpl implements TreCollection {
      */
     @Override
     public final List<Tre> getTREsWithName(final String nameToMatch) {
-        List<Tre> tres = new ArrayList<Tre>();
+        List<Tre> tres = new ArrayList<>();
         for (Tre tre : treCollectionEntries) {
             String treName = tre.getName();
             if (treName.equals(nameToMatch)) {
@@ -120,7 +120,7 @@ public class TreCollectionImpl implements TreCollection {
      */
     @Override
     public final List<Tre> getTREsForSource(final TreSource source) {
-        List<Tre> tres = new ArrayList<Tre>();
+        List<Tre> tres = new ArrayList<>();
         for (Tre tre : treCollectionEntries) {
             if (tre.getSource() == source) {
                 tres.add(tre);

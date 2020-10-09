@@ -61,7 +61,9 @@ public class SimpleLookup {
      */
     protected final void parseSimpleLookup(final InputStream xmlStream) {
         try {
-            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(xmlStream);
+            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+            xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+            XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(xmlStream);
             reader.next();
             mTre = reader.getAttributeValue("", "tre");
             mField = reader.getAttributeValue("", "field");

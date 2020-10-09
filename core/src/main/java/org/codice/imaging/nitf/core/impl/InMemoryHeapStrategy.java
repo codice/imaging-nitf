@@ -51,8 +51,7 @@ public class InMemoryHeapStrategy<R> implements HeapStrategy<R> {
         LOGGER.info(String.format("Storing %s bytes in heap space.", length));
         ByteArrayInputStream inputStream = new ByteArrayInputStream(
                 reader.readBytesRaw((int) length));
-        R result = resultConversionFunction.apply(inputStream);
-        return result;
+        return resultConversionFunction.apply(inputStream);
     }
 
     @Override

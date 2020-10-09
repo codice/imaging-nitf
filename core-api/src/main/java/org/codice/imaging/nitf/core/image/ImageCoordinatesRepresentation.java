@@ -139,5 +139,5 @@ public enum ImageCoordinatesRepresentation {
             return textEquivalent;
         }
     }
-};
+}
 

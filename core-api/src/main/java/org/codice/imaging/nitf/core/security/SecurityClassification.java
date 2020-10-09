@@ -95,5 +95,5 @@ public enum SecurityClassification {
         return textEquivalent;
     }
 
-};
+}
 

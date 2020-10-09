@@ -87,7 +87,7 @@ public abstract class TreWrapper {
         mTag = tag;
     }
 
-    private void verifyTreName() throws IllegalStateException {
+    private void verifyTreName() {
         if (!mTre.getName().equals(mTag)) {
             throw new IllegalStateException(String.format("Incorrect TRE name for %s wrapper", mTag));
         }
@@ -163,8 +163,7 @@ public abstract class TreWrapper {
     protected final LocalDate getValueAsLocalDate(final String fieldName) throws NitfFormatException {
         String dob = mTre.getFieldValue(fieldName);
         try {
-            LocalDate dt = LocalDate.parse(dob, CENTURY_DATE_FORMATTER);
-            return dt;
+            return LocalDate.parse(dob, CENTURY_DATE_FORMATTER);
         } catch (DateTimeParseException ex) {
             LOGGER.debug(String.format("Could not parse %s as a local date: %s", dob, ex.getMessage()));
             return null;
@@ -196,8 +195,7 @@ public abstract class TreWrapper {
     protected final ZonedDateTime parseAsZonedDateTime(final DateTimeFormatter formatter, final String dateTimeString) {
         try {
             DateTimeFormatter dtf = formatter.withZone(ZoneId.of("UTC"));
-            ZonedDateTime zdt = ZonedDateTime.parse(dateTimeString, dtf);
-            return zdt;
+            return ZonedDateTime.parse(dateTimeString, dtf);
         } catch (DateTimeParseException ex) {
             LOGGER.debug(String.format("Could not parse %s as a zoned date/time: %s", dateTimeString, ex.getMessage()));
             return null;

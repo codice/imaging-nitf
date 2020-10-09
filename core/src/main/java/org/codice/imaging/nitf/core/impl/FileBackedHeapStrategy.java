@@ -68,8 +68,8 @@ public class FileBackedHeapStrategy<R> implements HeapStrategy<R> {
         try (FileOutputStream fos = new FileOutputStream(dataFile)) {
             fos.write(bytes);
             this.randomAccessFile = new RandomAccessFile(dataFile, "rwd");
-            R result = resultConversionFunction.apply(randomAccessFile);
-            return result;
+            return resultConversionFunction.apply(randomAccessFile);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

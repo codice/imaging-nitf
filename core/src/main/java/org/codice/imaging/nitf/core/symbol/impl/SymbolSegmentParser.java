@@ -171,7 +171,7 @@ public class SymbolSegmentParser extends AbstractSegmentParser {
         numberOfEntriesInLUT = reader.readBytesAsInteger(SYNELUT_LENGTH);
     }
 
-    private void readLUTEntry() throws UnsupportedOperationException, NitfFormatException {
+    private void readLUTEntry() throws NitfFormatException {
         if (segment.getSymbolType().equals(SymbolType.BITMAP)) {
             if (segment.getSymbolColour().equals(SymbolColour.USE_COLOUR_LUT)) {
                 readColourLUTEntry();

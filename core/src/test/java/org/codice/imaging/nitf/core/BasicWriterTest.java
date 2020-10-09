@@ -117,7 +117,7 @@ public class BasicWriterTest extends AbstractWriterTest {
         NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), "checkBadWriter.ntf");
         assertEquals(0, LOGGER.getLoggingEvents().size());
         writer.write();
-        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.error("Could not write", "Cannot generate string target identifier with null country code"))));
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.error("Could not write {}", "Cannot generate string target identifier with null country code"))));
     }
 
     @Test
@@ -143,6 +143,6 @@ public class BasicWriterTest extends AbstractWriterTest {
         NitfWriter writer = new NitfOutputStreamWriter(parseStrategy.getDataSource(), outputStream);
         assertEquals(0, LOGGER.getLoggingEvents().size());
         writer.write();
-        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.error("Could not write", "Cannot generate string target identifier with null country code"))));
+        assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.error("Could not write {}", "Cannot generate string target identifier with null country code"))));
     }
 }

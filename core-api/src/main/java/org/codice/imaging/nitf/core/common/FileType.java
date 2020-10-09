@@ -137,5 +137,5 @@ public enum FileType {
                 return textEquivalent;
         }
     }
-};
+}
 

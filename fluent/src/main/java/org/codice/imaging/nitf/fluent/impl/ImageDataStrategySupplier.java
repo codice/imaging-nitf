@@ -50,8 +50,7 @@ public class ImageDataStrategySupplier implements Supplier<HeapStrategy<ImageInp
      * @return this ImageDataStrategySupplier.
      */
     public final ImageDataStrategySupplier file() {
-        this.imageDataStrategy = new FileBackedHeapStrategy<>(
-                file -> new FileImageInputStream(file));
+        this.imageDataStrategy = new FileBackedHeapStrategy<>(FileImageInputStream::new);
         return this;
     }
 
@@ -62,8 +61,7 @@ public class ImageDataStrategySupplier implements Supplier<HeapStrategy<ImageInp
      * @return this ImageDataStrategySupplier.
      */
     public final ImageDataStrategySupplier inMemory() {
-        this.imageDataStrategy = new InMemoryHeapStrategy<>(
-                is -> new MemoryCacheImageInputStream(is));
+        this.imageDataStrategy = new InMemoryHeapStrategy<>(MemoryCacheImageInputStream::new);
         return this;
     }
 

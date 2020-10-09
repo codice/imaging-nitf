@@ -135,5 +135,5 @@ public enum SymbolColour {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}
 

@@ -104,7 +104,7 @@ public class TreEntryImpl implements TreEntry {
     */
     public final void initGroups() {
         if (groups == null) {
-            groups = new ArrayList<TreGroup>();
+            groups = new ArrayList<>();
         }
     }
 
@@ -132,7 +132,7 @@ public class TreEntryImpl implements TreEntry {
      */
     @Override
     public final boolean hasGroups() {
-        return ((groups != null) && (groups.size() > 0));
+        return (groups != null && !groups.isEmpty());
     }
 
     /**
@@ -158,9 +158,9 @@ public class TreEntryImpl implements TreEntry {
      */
     @Override
     public final void dump() {
-        LOG.debug("\tName: " + name);
+        LOG.debug("\tName: {}", name);
         if (value != null) {
-            LOG.debug("\tValue: " + value);
+            LOG.debug("\tValue: {}", value);
         } else if (groups != null) {
             for (TreGroup group : groups) {
                 LOG.debug("\t--New Group--");

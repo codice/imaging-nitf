@@ -52,7 +52,7 @@ abstract class SharedImageModeHandler extends BaseImageModeHandler implements Im
             }
         });
 
-        matrix.forEachBlock((block) -> block.render(targetImage, true));
+        matrix.forEachBlock(block -> block.render(targetImage, true));
     }
 
     protected abstract void readBlock(final ImageBlock block, final ImageSegment imageSegment);

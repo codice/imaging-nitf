@@ -94,5 +94,5 @@ public enum PixelValueType {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}
 

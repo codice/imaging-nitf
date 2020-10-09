@@ -25,6 +25,7 @@ import org.codice.imaging.nitf.core.tre.TreGroup;
 public class CAMSDA extends TreWrapper {
 
     private static final String TAG_NAME = "CAMSDA";
+    private static final String RRRRR = "RRRRR";
 
     /**
      * Create a CAMSDA TRE wrapper from an existing TRE.
@@ -38,8 +39,7 @@ public class CAMSDA extends TreWrapper {
 
     @Override
     public final ValidityResult getValidity() throws NitfFormatException {
-        ValidityResult validity = new ValidityResult();
-        return validity;
+        return new ValidityResult();
     }
 
     /**
@@ -410,7 +410,7 @@ public class CAMSDA extends TreWrapper {
     public final int getImageLocationRow(final int cameraSetIndex, final int cameraIndex) throws NitfFormatException {
         TreGroup camera = getCameraCollectionBased(cameraSetIndex, cameraIndex);
         String iloc = camera.getFieldValue("ILOC");
-        return Integer.parseInt(iloc.substring(0, "RRRRR".length()));
+        return Integer.parseInt(iloc.substring(0, RRRRR.length()));
     }
     /**
      * Get the image location row for a given camera in a given camera set in
@@ -437,7 +437,7 @@ public class CAMSDA extends TreWrapper {
     public final int getImageLocationRowForCameraSetInTRE(final int cameraSetIndex, final int cameraIndex) throws NitfFormatException {
         TreGroup camera = getCameraTreBased(cameraSetIndex, cameraIndex);
         String iloc = camera.getFieldValue("ILOC");
-        return Integer.parseInt(iloc.substring(0, "RRRRR".length()));
+        return Integer.parseInt(iloc.substring(0, RRRRR.length()));
     }
 
     /**
@@ -464,7 +464,7 @@ public class CAMSDA extends TreWrapper {
     public final int getImageLocationColumn(final int cameraSetIndex, final int cameraIndex) throws NitfFormatException {
         TreGroup camera = getCameraCollectionBased(cameraSetIndex, cameraIndex);
         String iloc = camera.getFieldValue("ILOC");
-        return Integer.parseInt(iloc.substring("RRRRR".length()));
+        return Integer.parseInt(iloc.substring(RRRRR.length()));
     }
 
     /**
@@ -492,7 +492,7 @@ public class CAMSDA extends TreWrapper {
     public final int getImageLocationColumnForCameraSetInTRE(final int cameraSetIndex, final int cameraIndex) throws NitfFormatException {
         TreGroup camera = getCameraTreBased(cameraSetIndex, cameraIndex);
         String iloc = camera.getFieldValue("ILOC");
-        return Integer.parseInt(iloc.substring("RRRRR".length()));
+        return Integer.parseInt(iloc.substring(RRRRR.length()));
     }
 
     /**
@@ -607,8 +607,7 @@ public class CAMSDA extends TreWrapper {
 
     private TreGroup getCameraSetTreBased(final int cameraSetIndex) throws NitfFormatException {
         List<TreGroup> cameraSets = mTre.getEntry("CAMERA_SETS").getGroups();
-        TreGroup cameraSet = cameraSets.get(cameraSetIndex);
-        return cameraSet;
+        return cameraSets.get(cameraSetIndex);
     }
 
     private TreGroup getCameraSetCollectionBased(final int cameraSetIndex) throws NitfFormatException {

@@ -83,6 +83,7 @@ public class ImageSegmentParser extends AbstractSegmentParser {
      * Default constructor.
      */
     public ImageSegmentParser() {
+        // Intentionally Empty
     }
 
     /**

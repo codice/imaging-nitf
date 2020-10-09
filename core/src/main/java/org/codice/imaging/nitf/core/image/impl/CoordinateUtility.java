@@ -37,8 +37,7 @@ final class CoordinateUtility {
     static DecimalDegreesCoordinate buildCoordinateFromMgrs(final String mgrsString) {
         try {
             UsngCoordinate usngCoordinate = coordinateSystemTranslator.parseMgrsString(mgrsString);
-            DecimalDegreesCoordinate latLonCoordinate = coordinateSystemTranslator.toLatLon(usngCoordinate);
-            return latLonCoordinate;
+            return coordinateSystemTranslator.toLatLon(usngCoordinate);
         } catch (ParseException pe) {
             String message = String.format("MGRS input value: '%s' could not be parsed.", mgrsString);
             LOGGER.warn(message, pe);
@@ -50,8 +49,7 @@ final class CoordinateUtility {
     static DecimalDegreesCoordinate buildCoordinateFromUtm(final String utmString) {
         try {
             UtmCoordinate utmCoordinate = coordinateSystemTranslator.parseUtmString(utmString);
-            DecimalDegreesCoordinate latLonCoordinate = coordinateSystemTranslator.toLatLon(utmCoordinate);
-            return latLonCoordinate;
+            return coordinateSystemTranslator.toLatLon(utmCoordinate);
         } catch (ParseException pe) {
             String message = String.format("UTM input value: '%s' could not be parsed.", utmString);
             LOGGER.warn(message, pe);

@@ -140,10 +140,8 @@ public class NitfInputStreamReader extends SharedReader implements NitfReader {
             long startTime = System.currentTimeMillis();
             do {
                 thisRead = input.skip(bytesToRead);
-                if (thisRead == 0) {
-                    if (System.currentTimeMillis() - startTime > this.skipTimeoutMillis) {
-                        throw new NitfFormatException("Input stream skip timed out after " + this.skipTimeoutMillis + "ms.");
-                    }
+                if (thisRead == 0 && System.currentTimeMillis() - startTime > this.skipTimeoutMillis) {
+                    throw new NitfFormatException("Input stream skip timed out after " + this.skipTimeoutMillis + "ms.");
                 }
                 numBytesRead += thisRead;
                 bytesToRead -= thisRead;

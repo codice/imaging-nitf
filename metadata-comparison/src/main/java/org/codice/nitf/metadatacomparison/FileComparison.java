@@ -32,7 +32,7 @@ public class FileComparison {
         }
         for (String arg : args) {
             if (new File(arg).isDirectory()) {
-                LOGGER.info("Walking contents of " + arg);
+                LOGGER.info("Walking contents of {}", arg);
                 File[] files = new File(arg).listFiles();
                 for (File file : files) {
                     handleFile(arg + "/" + file.getName());
@@ -45,7 +45,7 @@ public class FileComparison {
 
     private static void handleFile(String filename) {
         if (new File(filename).isFile() && (! filename.endsWith(".txt"))) {
-            LOGGER.info("Dumping output of " + filename);
+            LOGGER.info("Dumping output of {}", filename);
             compareOneFile(filename);
         }
     }

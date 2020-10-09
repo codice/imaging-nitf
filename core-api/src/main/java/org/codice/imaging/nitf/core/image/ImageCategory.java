@@ -529,5 +529,5 @@ public enum ImageCategory {
     public boolean isMotionImagery() {
         return this.textEquivalent.endsWith(".M");
     }
-};
+}
 

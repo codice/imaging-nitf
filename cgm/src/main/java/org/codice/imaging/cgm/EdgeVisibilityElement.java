@@ -57,7 +57,7 @@ class EdgeVisibilityElement extends ElementHelpers implements AbstractElement {
                 mode = Mode.ON;
                 break;
             default:
-                LOG.info("Unknown Edge Visibility value: " + data);
+                LOG.info("Unknown Edge Visibility value: {}", data);
                 break;
         }
     }

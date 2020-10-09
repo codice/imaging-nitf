@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.impl;
 
-import java.util.function.Predicate;
+import java.util.function.LongPredicate;
 
 /**
  * Aggregates configuration data for the ConfigurableHeapStrategy class.
@@ -31,9 +31,9 @@ import java.util.function.Predicate;
 public class HeapStrategyConfiguration {
     private long maximumSegmentSize = Long.MAX_VALUE;
 
-    private Predicate<Long> tempFilePredicate = length -> true;
+    private LongPredicate tempFilePredicate = length -> true;
 
-    private final Predicate<Long> maximumFileSizePredicate = length -> length <= maximumSegmentSize;
+    private final LongPredicate maximumFileSizePredicate = length -> length <= maximumSegmentSize;
 
     /**
      * HeapStrategyConfiguration that allows selective storage.
@@ -41,7 +41,7 @@ public class HeapStrategyConfiguration {
      * @param temporaryFilePredicate segment data will be stored in temporary files when the test() method of this
      * predicate returns true.
      */
-    public HeapStrategyConfiguration(final Predicate<Long> temporaryFilePredicate) {
+    public HeapStrategyConfiguration(final LongPredicate temporaryFilePredicate) {
         if (temporaryFilePredicate != null) {
             this.tempFilePredicate = temporaryFilePredicate;
         }
@@ -55,7 +55,7 @@ public class HeapStrategyConfiguration {
      * predicate returns true.
      */
     public HeapStrategyConfiguration(final long maximumSize,
-            final Predicate<Long> temporaryFilePredicate) {
+            final LongPredicate temporaryFilePredicate) {
         this(maximumSize);
 
         if (temporaryFilePredicate != null) {
@@ -84,7 +84,7 @@ public class HeapStrategyConfiguration {
      * @return the predicate used to determine whether the segment data should be stored in memory or in temporary
      * files.
      */
-    public final Predicate<Long> temporaryFilePredicate() {
+    public final LongPredicate temporaryFilePredicate() {
         return this.tempFilePredicate;
     }
 
@@ -92,7 +92,7 @@ public class HeapStrategyConfiguration {
      * @return the predicate used to determine whether the requested data read length exceeds
      *         'maximumSize'.
      */
-    public final Predicate<Long> maximumFileSizePredicate() {
+    public final LongPredicate maximumFileSizePredicate() {
         return this.maximumFileSizePredicate;
     }
 }

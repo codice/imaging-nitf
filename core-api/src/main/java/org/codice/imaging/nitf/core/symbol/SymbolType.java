@@ -103,5 +103,5 @@ public enum SymbolType {
     public String getTextEquivalent() {
         return textEquivalent;
     }
-};
+}
 

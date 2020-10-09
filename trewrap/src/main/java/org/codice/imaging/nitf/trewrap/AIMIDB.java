@@ -290,9 +290,8 @@ public class AIMIDB extends FlatTreWrapper {
 
     @Override
     public final ValidityResult getValidity() throws NitfFormatException {
-        ValidityResult validity = new ValidityResult();
         // TODO: build checks
-        return validity;
+        return new ValidityResult();
     }
 
 }

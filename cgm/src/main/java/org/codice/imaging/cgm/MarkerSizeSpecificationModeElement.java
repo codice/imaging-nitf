@@ -39,7 +39,7 @@ class MarkerSizeSpecificationModeElement extends CommonSpecificationModeElement 
 
     @Override
     public void render(final Graphics2D g2, final CgmGraphicState graphicState) {
-        LOGGER.info("TODO: render for " + getFriendlyName());
+        LOGGER.info("TODO: render for {}", getFriendlyName());
     }
 
 }

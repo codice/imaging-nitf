@@ -47,6 +47,7 @@ public class TextSegmentParser extends AbstractSegmentParser {
      * default constructor.
      */
     public TextSegmentParser() {
+        // Intentionally Empty
     }
 
     /**

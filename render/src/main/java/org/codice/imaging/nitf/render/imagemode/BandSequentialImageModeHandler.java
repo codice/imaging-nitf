@@ -59,7 +59,7 @@ class BandSequentialImageModeHandler extends BaseImageModeHandler implements Ima
             });
         }
 
-        matrix.forEachBlock((block) -> block.render(targetImage, true));
+        matrix.forEachBlock(block -> block.render(targetImage, true));
     }
 
     private void readBlock(final ImageBlock block, final ImageInputStream imageInputStream, final int bandIndex) {

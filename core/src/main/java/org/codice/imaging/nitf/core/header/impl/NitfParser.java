@@ -14,7 +14,7 @@
  */
 package org.codice.imaging.nitf.core.header.impl;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,12 +63,12 @@ public final class NitfParser extends AbstractSegmentParser {
     private final List<Integer> ldsh = new ArrayList<>();
     private final List<Long> ld = new ArrayList<>();
 
-    private NitfParser(final NitfReader nitfReader, final ParseStrategy parseStrategy) throws NitfFormatException {
+    private NitfParser(final NitfReader nitfReader, final ParseStrategy parseStrategy) {
         nitfFileHeader = new NitfHeaderImpl();
         reader = nitfReader;
         parsingStrategy = parseStrategy;
         parseStrategy.setFileHeader(nitfFileHeader);
-    };
+    }
 
     /**
      * Parse a NITF file from a specific reader and parsing strategy.
@@ -112,7 +112,7 @@ public final class NitfParser extends AbstractSegmentParser {
                 parseStrategy.handleDataExtensionSegment(nitfReader, dataLength);
             }
         } catch (NitfFormatException ex) {
-            LOGGER.error(ex.getMessage() + ex);
+            LOGGER.error(ex.getMessage(), ex);
         }
     }
 
@@ -314,7 +314,7 @@ public final class NitfParser extends AbstractSegmentParser {
             nitfFileHeader.setOriginatorsName(reader.readTrimmedBytes(NitfHeaderConstants.ONAME_LENGTH));
         } else {
             // low probability of NITF 2.0 using FBKGC
-            nitfFileHeader.setOriginatorsName(new String(rgb, Charset.forName("UTF-8")) + reader.readTrimmedBytes(NitfHeaderConstants.ONAME_LENGTH));
+            nitfFileHeader.setOriginatorsName(new String(rgb, StandardCharsets.UTF_8) + reader.readTrimmedBytes(NitfHeaderConstants.ONAME_LENGTH));
         }
     }
 

@@ -16,14 +16,14 @@ package org.codice.imaging.nitf.render.imagerep;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
-import java.io.IOException;
 import javax.imageio.stream.ImageInputStream;
 import org.codice.imaging.nitf.render.ImageMask;
 
 class NoDisplayImageRepresentationHandler implements ImageRepresentationHandler {
     @Override
     public void renderPixelBand(final DataBuffer dataBuffer, final int pixelIndex,
-            final ImageInputStream imageInputStream, final int bandIndex) throws IOException {
+            final ImageInputStream imageInputStream, final int bandIndex) {
+        // Intentionally Empty
     }
 
     @Override
