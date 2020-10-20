@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.codice.imaging.nitf</groupId>
         <artifactId>codice-imaging-nitf</artifactId>
-        <version>0.12-SNAPSHOT</version>
+        <version>0.11</version>
     </parent>
     <artifactId>codice-imaging-imagecompare</artifactId>
     <packaging>jar</packaging>
