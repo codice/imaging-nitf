@@ -34,10 +34,30 @@ public interface NitfParserInputFlow {
     NitfParserParsingFlow file(File inputFile) throws FileNotFoundException;
 
     /**
+     * Begins a NITF parsing flow using a file as input.
+     *
+     * @param inputFile the NITF file to read from.
+     * @param skipTimeout - the timeout if reading from a slow input stream.
+     * @return a new NitfParserParsingFlow.
+     * @throws FileNotFoundException - when the file doesn't exist.
+     */
+    NitfParserParsingFlow file(File inputFile, long skipTimeout) throws FileNotFoundException;
+
+    /**
      * Begins a parsing flow using an InputStream as input.
      *
      * @param inputStream - the InputStream to read the NITF data from.
      * @return a new NitfParserParsingFlow.
      */
     NitfParserParsingFlow inputStream(InputStream inputStream);
+
+
+    /**
+     * Begins a parsing flow using an InputStream as input with a timeout.
+     *
+     * @param inputStream - the InputStream to read the NITF data from.
+     * @param skipTimeout - the timeout if reading from a slow input stream.
+     * @return a new NitfParserParsingFlow.
+     */
+    NitfParserParsingFlow inputStream(InputStream inputStream, long skipTimeout);
 }

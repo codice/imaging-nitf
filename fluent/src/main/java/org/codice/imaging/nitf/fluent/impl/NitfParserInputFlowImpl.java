@@ -27,6 +27,7 @@ import org.codice.imaging.nitf.fluent.NitfParserParsingFlow;
  * NITF parser.
  */
 public class NitfParserInputFlowImpl implements NitfParserInputFlow {
+    private static final long DEFAULT_SKIP_TIMEOUT = 0;
 
     /**
      * Constructor.
@@ -41,7 +42,18 @@ public class NitfParserInputFlowImpl implements NitfParserInputFlow {
      */
     @Override
     public final NitfParserParsingFlow file(final File inputFile) throws FileNotFoundException {
+        return file(inputFile, DEFAULT_SKIP_TIMEOUT);
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public final NitfParserParsingFlow file(final File inputFile, final long skipTimeout)
+        throws FileNotFoundException {
         NitfInputStreamReader nitfReader = new NitfInputStreamReader(new FileInputStream(inputFile));
+        nitfReader.setSkipTimeout(skipTimeout);
         return new NitfParserParsingFlowImpl(nitfReader);
     }
 
@@ -51,7 +63,17 @@ public class NitfParserInputFlowImpl implements NitfParserInputFlow {
      */
     @Override
     public final NitfParserParsingFlow inputStream(final InputStream inputStream) {
+        return inputStream(inputStream, DEFAULT_SKIP_TIMEOUT);
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public final NitfParserParsingFlow inputStream(final InputStream inputStream, final long skipTimeout) {
         NitfInputStreamReader nitfReader = new NitfInputStreamReader(inputStream);
+        nitfReader.setSkipTimeout(skipTimeout);
         return new NitfParserParsingFlowImpl(nitfReader);
     }
 }
