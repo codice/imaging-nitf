@@ -1,4 +1,5 @@
 package org.codice.imaging.nitf.core.sensorml.impl;
+
 /*
  * @author Gobe Hobona - Open Geospatial Consortium (OGC)
  *
