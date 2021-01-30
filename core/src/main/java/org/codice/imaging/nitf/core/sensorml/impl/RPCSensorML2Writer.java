@@ -1,5 +1,4 @@
 package org.codice.imaging.nitf.core.sensorml.impl;
-
 /*
  * @author Gobe Hobona - Open Geospatial Consortium (OGC)
  *
@@ -193,8 +192,12 @@ public class RPCSensorML2Writer {
 		Element parameterList = doc.createElement("sml:parameterList");
 		Element parameters = doc.createElement("sml:parameters");
 
-		for (int j = 0; j < tres.getTREs().size(); j++) {
-			Tre lastTre = tres.getTREs().get(j);
+		List<Tre> treList = tres.getTREsWithName("RPC00B");
+		if(treList.size()==0) throw new IOException("No RPC00B found. This method only supports export of parameters from RPC00B TREs");
+		if(treList.size()>1) throw new IOException("More than one RPC00B found. This method only supports export of parameters from a single RPC00B TRE");
+		
+		for (int j = 0; j < treList.size(); j++) {
+			Tre lastTre = treList.get(j);
 
 			List<TreEntry> listTreEntries = lastTre.getEntries();
 			for (int i = 0; i < listTreEntries.size(); i++) {
