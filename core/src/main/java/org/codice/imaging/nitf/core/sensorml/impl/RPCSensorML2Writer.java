@@ -1,5 +1,4 @@
 package org.codice.imaging.nitf.core.sensorml.impl;
-
 /*
  * @author Gobe Hobona - Open Geospatial Consortium (OGC)
  *
@@ -52,6 +51,10 @@ import org.w3c.dom.Element;
 
 public class RPCSensorML2Writer {
 
+	/*
+	 *  This method takes in a NITF file, and if that file contains an RPC00B TRE, the method exports the RPC00B fields out to an OGC SensorML 2 document.
+	 * 
+	 */
 	public void write(FileInputStream is, FileOutputStream os)
 			throws NitfFormatException, ParserConfigurationException, IOException, TransformerException {
 		
@@ -168,7 +171,7 @@ public class RPCSensorML2Writer {
 		Element rowOutput = doc.createElement("sml:output");
 		rowOutput.setAttribute("name", "r");
 		Element rowUom = doc.createElement("swe:uom");
-		rowUom.setAttribute("code", "pixel");
+		rowUom.setAttribute("code", "px");
 		Element rowQuantity = doc.createElement("swe:Quantity");
 		rowQuantity.setAttribute("definition", "http://www.opengis.net/def/ogc/Row");
 		rowQuantity.appendChild(rowUom);
@@ -177,7 +180,7 @@ public class RPCSensorML2Writer {
 		Element columnOutput = doc.createElement("sml:output");
 		columnOutput.setAttribute("name", "c");
 		Element columnUom = doc.createElement("swe:uom");
-		columnUom.setAttribute("code", "pixel");
+		columnUom.setAttribute("code", "px");
 		Element columnQuantity = doc.createElement("swe:Quantity");
 		columnQuantity.setAttribute("definition", "http://www.opengis.net/def/ogc/Column");
 		columnQuantity.appendChild(columnUom);
@@ -193,15 +196,21 @@ public class RPCSensorML2Writer {
 		Element parameterList = doc.createElement("sml:parameterList");
 		Element parameters = doc.createElement("sml:parameters");
 
-		for (int j = 0; j < tres.getTREs().size(); j++) {
-			Tre lastTre = tres.getTREs().get(j);
+		List<Tre> treList = tres.getTREsWithName("RPC00B");
+		if(treList.size()==0) throw new IOException("No RPC00B found. This method only supports export of parameters from RPC00B TREs");
+		if(treList.size()>1) throw new IOException("More than one RPC00B found. This method only supports export of parameters from a single RPC00B TRE");
+		
+		for (int j = 0; j < treList.size(); j++) {
+			Tre lastTre = treList.get(j);
 
 			List<TreEntry> listTreEntries = lastTre.getEntries();
 			for (int i = 0; i < listTreEntries.size(); i++) {
 
 				TreEntry treEntry = listTreEntries.get(i);
+				
+				if(treEntry.getName().equals("SUCCESS")) continue;  // SUCCESS is not a typical RPC00B field
 
-				if (treEntry.getName().endsWith("_COEFF")) {
+				if (treEntry.getName().endsWith("_COEFF")) {    // This buffers the Key-arrayValues
 
 					StringBuffer sb = new StringBuffer();
 
@@ -213,14 +222,11 @@ public class RPCSensorML2Writer {
 							if (group.getEntries().size() > 1) {
 								for (int entryCounter = 0; entryCounter < group.getEntries().size(); ++entryCounter) {
 									TreEntry entryInGroup = group.getEntries().get(entryCounter);
-									String label = String.format("%s_%d_%s", treEntry.getName(), groupCounter,
-											entryInGroup.getName());
 									sb.append(entryInGroup.getFieldValue() + " ");
 
 								}
 							} else {
 								TreEntry entryInGroup = group.getEntries().get(0);
-								String label = String.format("%s_%d", treEntry.getName(), groupCounter);
 								sb.append(entryInGroup.getFieldValue() + " ");
 							}
 						}
@@ -228,7 +234,8 @@ public class RPCSensorML2Writer {
 
 					parameterList
 							.appendChild(createArrayParameter(doc, listTreEntries.get(i).getName(), sb.toString()));
-				} else {
+					
+				} else {   // All other values are simple Key-Value fields
 					parameterList.appendChild(createSimpleParameter(doc, listTreEntries.get(i).getName(),
 							listTreEntries.get(i).getFieldValue()));
 				}
@@ -267,7 +274,26 @@ public class RPCSensorML2Writer {
 	}
 
 	private Element createSimpleParameter(Document doc, String fieldName, String value) {
-		String uom = "pixel";
+		String uom = null;
+		if (fieldName.contentEquals("ERR_BIAS") ||
+				fieldName.contentEquals("ERR_RAND") ||
+				fieldName.contentEquals("HEIGHT_OFF") ||
+				fieldName.contentEquals("HEIGHT_SCALE"))
+		{
+			uom = "m";
+		}
+		else if(fieldName.contentEquals("LINE_OFF") ||
+				fieldName.contentEquals("SAMP_OFF") ||
+				fieldName.contentEquals("LINE_SCALE") ||
+				fieldName.contentEquals("SAMP_SCALE")) {
+			uom = "px";
+		}
+		else if(fieldName.contentEquals("LAT_OFF") ||
+				fieldName.contentEquals("LONG_OFF") ||
+				fieldName.contentEquals("LAT_SCALE") ||
+				fieldName.contentEquals("LONG_SCALE")) {
+			uom = "deg";
+		}		
 
 		Element element = doc.createElement("sml:parameter");
 		element.setAttribute("name", fieldName);
