@@ -28,7 +28,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <usng4j.version>0.1</usng4j.version>
+        <usng4j.version>0.5</usng4j.version>
     </properties>
 
     <dependencies>
