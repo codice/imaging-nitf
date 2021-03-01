@@ -1,0 +1,30 @@
+name: Linux JDK 11 GitHub CI
+
+on: [pull_request]
+
+env:
+  MAVEN_OPTS: -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss,SSS
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-20.04
+            jdk: 11
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # 500 commits, set to 0 to get all
+        fetch-depth: 500
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.jdk }}
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4
+      with:
+        maven-version: 3.6.3
+    - name: Build with Maven
+      run: mvn -B -U -T3 -fae -Dfmt.skip=true -Prelease clean install

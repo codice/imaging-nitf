@@ -11,6 +11,8 @@ is also supported.
 
 ## Building
 
+JDK11 (or potentially higher) is required.
+
 ```
 git clone git://github.com/codice/imaging-nitf.git
 ```
