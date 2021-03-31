@@ -1,9 +1,8 @@
 package org.codice.imaging.nitf.core.tre.impl;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
 
 import org.apache.commons.io.FilenameUtils;
@@ -79,26 +78,26 @@ public class CMETAA_Test {
     }
 
     @Test
-    public void testCmetaaNitf() throws FileNotFoundException, NitfFormatException {
+    public void testCmetaaNitf() throws IOException, NitfFormatException {
         createNitfWithCmetaa("/CMETAA/CMETAA_GEOD.txt", "/JitcNitf21Samples/i_3128b.ntf");
     }
 
     private void createNitfWithCmetaa(String cmetaaFilename, String nitfFilename)
-            throws NitfFormatException, FileNotFoundException {
-        String output = FilenameUtils.getName(nitfFilename) + ".modified";
+            throws NitfFormatException, IOException {
         InputStream stream = getClass().getResourceAsStream(nitfFilename);
         NitfReader reader = new NitfInputStreamReader(stream);
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
         HeapStrategyConfiguration heapStrategyConfiguration = new HeapStrategyConfiguration(length -> length > 100000);
         HeapStrategy<ImageInputStream> imageDataStrategy = new ConfigurableHeapStrategy<>(heapStrategyConfiguration,
-                file -> new FileImageInputStream(file), is -> new MemoryCacheImageInputStream(is));
+                FileImageInputStream::new, MemoryCacheImageInputStream::new);
         parseStrategy.setImageHeapStrategy(imageDataStrategy);
 
         NitfParser.parse(reader, parseStrategy);
         Tre cmetaa = readTre(cmetaaFilename);
         parseStrategy.getDataSource().getImageSegments().get(0).getTREsRawStructure().add(cmetaa);
 
-        NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), output);
+        File outputFile = File.createTempFile(FilenameUtils.getName(nitfFilename) , ".modified");
+        NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), outputFile.getAbsolutePath());
         writer.write();
     }
 

@@ -15,7 +15,7 @@
 package org.codice.imaging.nitf.core;
 
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -95,12 +95,12 @@ public class BasicWriterTest extends AbstractWriterTest {
     }
 
     @Test
-    public void checkBadWriter() throws NitfFormatException {
+    public void checkBadWriter() throws NitfFormatException, IOException {
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream("/WithBE.ntf")));
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
         HeapStrategyConfiguration heapStrategyConfiguration = new HeapStrategyConfiguration(length -> length > ABOUT_100K);
         HeapStrategy<ImageInputStream> imageDataStrategy = new ConfigurableHeapStrategy<>(heapStrategyConfiguration,
-                file -> new FileImageInputStream(file), is -> new MemoryCacheImageInputStream(is));
+                FileImageInputStream::new, MemoryCacheImageInputStream::new);
         parseStrategy.setImageHeapStrategy(imageDataStrategy);
         NitfParser.parse(reader, parseStrategy);
 
@@ -114,20 +114,21 @@ public class BasicWriterTest extends AbstractWriterTest {
         newTargetId.setCountryCode(null);
         imageSegment.setImageTargetId(newTargetId);
 
-        NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), "checkBadWriter.ntf");
+        File outputFile = File.createTempFile("checkBadWriter",".ntf");
+        NitfWriter writer = new NitfFileWriter(parseStrategy.getDataSource(), outputFile.getAbsolutePath());
         assertEquals(0, LOGGER.getLoggingEvents().size());
         writer.write();
         assertThat(LOGGER.getLoggingEvents(), is(Arrays.asList(LoggingEvent.error("Could not write {}", "Cannot generate string target identifier with null country code"))));
     }
 
     @Test
-    public void checkBadStreamWriter() throws NitfFormatException, FileNotFoundException {
-        OutputStream outputStream = new FileOutputStream("checkBadStreamWriter.ntf");
+    public void checkBadStreamWriter() throws NitfFormatException, IOException {
+        OutputStream outputStream = new FileOutputStream(File.createTempFile("checkBadStreamWriter", ".ntf"));
         NitfReader reader = new NitfInputStreamReader(new BufferedInputStream(getInputStream("/WithBE.ntf")));
         SlottedParseStrategy parseStrategy = new SlottedParseStrategy(SlottedParseStrategy.ALL_SEGMENT_DATA);
         HeapStrategyConfiguration heapStrategyConfiguration = new HeapStrategyConfiguration(length -> length > ABOUT_100K);
         HeapStrategy<ImageInputStream> imageDataStrategy = new ConfigurableHeapStrategy<>(heapStrategyConfiguration,
-                file -> new FileImageInputStream(file), is -> new MemoryCacheImageInputStream(is));
+                FileImageInputStream::new, MemoryCacheImageInputStream::new);
         parseStrategy.setImageHeapStrategy(imageDataStrategy);
         NitfParser.parse(reader, parseStrategy);
 
