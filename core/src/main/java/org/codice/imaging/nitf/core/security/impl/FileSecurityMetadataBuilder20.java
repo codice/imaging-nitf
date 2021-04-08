@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  *
  * A simple example of its use is:
  * <pre>{@code
- *      FileSecurityMetadataBuilder20 builder = new FileSecurityMetadataBuilder20();
+ *      FileSecurityMetadataBuilder20 builder = FileSecurityMetadataBuilder20.newInstance();
  *      builder.securityClassification(SecurityClassification.UNCLASSIFIED);
  *      FileSecurityMetadata securityMetadata = builder.get();
  * }</pre>
@@ -34,7 +34,7 @@ import java.util.function.Supplier;
  * The API supports method chaining for a more fluent style, which is useful for
  * more involved metadata requirements:
  * <pre>{@code
- *      FileSecurityMetadataBuilder20 builder = new FileSecurityMetadataBuilder20();
+ *      FileSecurityMetadataBuilder20 builder = FileSecurityMetadataBuilder20.newInstance();
  *      builder.securityClassification(SecurityClassification.RESTRICTED)
  *              .fileCopyNumber("00001")
  *              .codewords("AB CD")
@@ -52,25 +52,37 @@ public final class FileSecurityMetadataBuilder20
         extends FileSecurityMetadataBuilder<FileSecurityMetadataBuilder20, SecurityMetadataBuilder20>
         implements Supplier<FileSecurityMetadata> {
 
-
     /**
      * Constructor.
      */
-    public FileSecurityMetadataBuilder20() {
-        super.instance = this;
-        super.builderInstance = new SecurityMetadataBuilder20();
+    private FileSecurityMetadataBuilder20() {
     }
 
     /**
-     * Constructor.
+     * Constructor method.
+     *
+     * @return new instance of this FileSecurityMetadataBuilder20
+     */
+    public static FileSecurityMetadataBuilder20 newInstance() {
+        FileSecurityMetadataBuilder20 builder = new FileSecurityMetadataBuilder20();
+        builder.instance = builder;
+        builder.builderInstance = SecurityMetadataBuilder20.newInstance();
+        return builder;
+    }
+
+    /**
+     * Copy constructor method.
      *
      * @param securityMetadata base security metadata.
+     * @return new instance of this FileSecurityMetadataBuilder20
      */
-    public FileSecurityMetadataBuilder20(final FileSecurityMetadata securityMetadata) {
-        super.instance = this;
-        builderInstance = new SecurityMetadataBuilder20(securityMetadata);
-        nitfFileCopyNumber = securityMetadata.getFileCopyNumber();
-        nitfFileNumberOfCopies = securityMetadata.getFileNumberOfCopies();
+    public static FileSecurityMetadataBuilder20 newInstance(final FileSecurityMetadata securityMetadata) {
+        FileSecurityMetadataBuilder20 builder = new FileSecurityMetadataBuilder20();
+        builder.instance = builder;
+        builder.builderInstance = SecurityMetadataBuilder20.newInstance(securityMetadata);
+        builder.fileCopyNumber(securityMetadata.getFileCopyNumber());
+        builder.fileNumberOfCopies(securityMetadata.getFileNumberOfCopies());
+        return builder;
     }
 
     /**

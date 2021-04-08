@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
  *
  * A simple example of its use is:
  * <pre>{@code
- *      SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE);
+ *      SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE);
  *      builder.securityClassification(SecurityClassification.UNCLASSIFIED);
  *      SecurityMetadata securityMetadata = builder.get();
  * }</pre>
@@ -34,7 +34,7 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
  * The API supports method chaining for a more fluent style, which is useful for
  * more involved metadata requirements:
  * <pre>{@code
- *      SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(FileType.NITF_TWO_ONE);
+ *      SecurityMetadataBuilder21 builder = SecurityMetadataBuilder21.newInstance(FileType.NITF_TWO_ONE);
  *      builder.securityClassification(SecurityClassification.RESTRICTED)
  *              .securityClassificationSystem("AS")
  *              .downgrade("F")
@@ -54,7 +54,7 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
  *      SecurityMetadata securityMetadata = builder.get();
  * }</pre>
  */
-public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityMetadataBuilder21> implements Supplier<SecurityMetadata> {
+public final class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityMetadataBuilder21> implements Supplier<SecurityMetadata> {
 
     private String securityClassificationSystem = "";
     private String classificationReason = "";
@@ -72,9 +72,21 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      *
      * @param fileType the type of NITF file to generate security metadata for
      */
-    public SecurityMetadataBuilder21(final FileType fileType) {
+    private SecurityMetadataBuilder21(final FileType fileType) {
         super(fileType);
-        super.instance = this;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param fileType the type of NITF file to generate security metadata for (NITF 2.1 or NSIF 1.0).
+     *
+     * @return new instance of this SecurityMetadataBuilder21
+     */
+    public static SecurityMetadataBuilder21 newInstance(final FileType fileType) {
+        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(fileType);
+        builder.instance = builder;
+        return builder;
     }
 
     /**
@@ -82,19 +94,30 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      *
      * @param securityMetadata data to initialise from.
      */
-    public SecurityMetadataBuilder21(final SecurityMetadata securityMetadata) {
+    private SecurityMetadataBuilder21(final SecurityMetadata securityMetadata) {
         super(securityMetadata);
-        nitfDeclassificationExemption = securityMetadata.getDeclassificationExemption();
-        nitfDeclassificationDate = securityMetadata.getDeclassificationDate();
-        nitfDeclassificationType = securityMetadata.getDeclassificationType();
-        securityClassificationSystem = securityMetadata.getSecurityClassificationSystem();
-        nitfDowngrade = securityMetadata.getDowngrade();
-        nitfDowngradeDate = securityMetadata.getDowngradeDate();
-        nitfSecuritySourceDate = securityMetadata.getSecuritySourceDate();
-        nitfClassificationAuthorityType = securityMetadata.getClassificationAuthorityType();
-        classificationReason = securityMetadata.getClassificationReason();
-        nitfClassificationText = securityMetadata.getClassificationText();
-        super.instance = this;
+    }
+
+    /**
+     * Copy constructor method.
+     *
+     * @param securityMetadata data to initialise from.
+     * @return new instance of this SecurityMetadataBuilder21
+     */
+    public static SecurityMetadataBuilder21 newInstance(final SecurityMetadata securityMetadata) {
+        SecurityMetadataBuilder21 builder = new SecurityMetadataBuilder21(securityMetadata);
+        builder.instance = builder;
+        builder.declassificationExemption(securityMetadata.getDeclassificationExemption());
+        builder.declassificationDate(securityMetadata.getDeclassificationDate());
+        builder.declassificationType(securityMetadata.getDeclassificationType());
+        builder.securityClassificationSystem(securityMetadata.getSecurityClassificationSystem());
+        builder.downgrade(securityMetadata.getDowngrade());
+        builder.downgradeDate(securityMetadata.getDowngradeDate());
+        builder.securitySourceDate(securityMetadata.getSecuritySourceDate());
+        builder.classificationAuthorityType(securityMetadata.getClassificationAuthorityType());
+        builder.classificationReason(securityMetadata.getClassificationReason());
+        builder.classificationText(securityMetadata.getClassificationText());
+        return builder;
     }
 
     /**
@@ -122,7 +145,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * character country code)
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 securityClassificationSystem(final String classificationSystem) {
+    public SecurityMetadataBuilder21 securityClassificationSystem(final String classificationSystem) {
         securityClassificationSystem = classificationSystem;
         return this;
     }
@@ -142,7 +165,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 classificationReason(final String reasonCode) {
+    public SecurityMetadataBuilder21 classificationReason(final String reasonCode) {
         classificationReason = reasonCode;
         return this;
     }
@@ -162,7 +185,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * an empty string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 securitySourceDate(final String securitySourceDate) {
+    public SecurityMetadataBuilder21 securitySourceDate(final String securitySourceDate) {
         nitfSecuritySourceDate = securitySourceDate;
         return this;
     }
@@ -185,7 +208,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * maximum), or an empty string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 declassificationType(final String declassificationType) {
+    public SecurityMetadataBuilder21 declassificationType(final String declassificationType) {
         nitfDeclassificationType = declassificationType;
         return this;
     }
@@ -204,7 +227,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * or an empty string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 declassificationDate(final String declassificationDate) {
+    public SecurityMetadataBuilder21 declassificationDate(final String declassificationDate) {
         nitfDeclassificationDate = declassificationDate;
         return this;
     }
@@ -229,7 +252,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * characters maximum), or an empty string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 declassificationExemption(final String declassificationExemption) {
+    public SecurityMetadataBuilder21 declassificationExemption(final String declassificationExemption) {
         nitfDeclassificationExemption = declassificationExemption;
         return this;
     }
@@ -249,7 +272,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * empty string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 downgrade(final String downgrade) {
+    public SecurityMetadataBuilder21 downgrade(final String downgrade) {
         nitfDowngrade = downgrade;
         return this;
     }
@@ -269,7 +292,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * string if downgrading does not apply.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 downgradeDate(final String downgradeDate) {
+    public SecurityMetadataBuilder21 downgradeDate(final String downgradeDate) {
         nitfDowngradeDate = downgradeDate;
         return this;
     }
@@ -292,7 +315,7 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * maximum), or an empty string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 classificationText(final String classificationText) {
+    public SecurityMetadataBuilder21 classificationText(final String classificationText) {
         nitfClassificationText = classificationText;
         return this;
     }
@@ -314,13 +337,13 @@ public class SecurityMetadataBuilder21 extends SecurityMetadataBuilder<SecurityM
      * character), or an empty string.
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder21 classificationAuthorityType(final String classificationAuthorityType) {
+    public SecurityMetadataBuilder21 classificationAuthorityType(final String classificationAuthorityType) {
         nitfClassificationAuthorityType = classificationAuthorityType;
         return this;
     }
 
     @Override
-    final void populateVersionSpecific(final SecurityMetadataImpl securityMetadata) {
+    void populateVersionSpecific(final SecurityMetadataImpl securityMetadata) {
         securityMetadata.setFileType(nitfFileType);
         securityMetadata.setDowngrade(nitfDowngrade);
         securityMetadata.setSecuritySourceDate(nitfSecuritySourceDate);

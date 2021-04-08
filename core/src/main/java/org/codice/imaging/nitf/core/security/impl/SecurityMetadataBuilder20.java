@@ -26,7 +26,7 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
  *
  * A simple example of its use is:
  * <pre>{@code
- *      SecurityMetadataBuilder20 builder = new SecurityMetadataBuilder20();
+ *      SecurityMetadataBuilder20 builder = SecurityMetadataBuilder20.newInstance();
  *      builder.securityClassification(SecurityClassification.UNCLASSIFIED);
  *      SecurityMetadata securityMetadata = builder.get();
  * }</pre>
@@ -34,36 +34,49 @@ import org.codice.imaging.nitf.core.security.SecurityMetadata;
  * The API supports method chaining for a more fluent style, which is useful for
  * more involved metadata requirements:
  * <pre>{@code
- *      SecurityMetadataBuilder20 builder = new SecurityMetadataBuilder20();
+ *      SecurityMetadataBuilder20 builder = SecurityMetadataBuilder20.newInstance();
  *      builder.securityClassification(SecurityClassification.UNCLASSIFIED)
  *              .downgradeDateOrSpecialCase("999998")
  *              .downgradeEvent("When its good.");
  *      SecurityMetadata securityMetadata = builder.get();
  * }</pre>
  */
-public class SecurityMetadataBuilder20 extends SecurityMetadataBuilder<SecurityMetadataBuilder20> implements Supplier<SecurityMetadata> {
+public final class SecurityMetadataBuilder20 extends SecurityMetadataBuilder<SecurityMetadataBuilder20> implements Supplier<SecurityMetadata> {
 
     private String nitfDowngradeDateOrSpecialCase = null;
     private String nitfDowngradeEvent = null;
 
+    private SecurityMetadataBuilder20() {
+        super(FileType.NITF_TWO_ZERO);
+    }
+
+    private SecurityMetadataBuilder20(final SecurityMetadata securityMetadata) {
+        super(securityMetadata);
+    }
+
     /**
      * Constructor.
+     *
+     * @return new instance of a SecurityMetadataBuilder20
      */
-    public SecurityMetadataBuilder20() {
-        super(FileType.NITF_TWO_ZERO);
-        super.instance = this;
+    public static SecurityMetadataBuilder20 newInstance() {
+        SecurityMetadataBuilder20 builder = new SecurityMetadataBuilder20();
+        builder.instance = builder;
+        return builder;
     }
 
     /**
      * Copy constructor.
      *
      * @param securityMetadata data to initialise from.
+     * @return new instance of a SecurityMetadataBuilder20
      */
-    public SecurityMetadataBuilder20(final SecurityMetadata securityMetadata) {
-        super(securityMetadata);
-        super.instance = this;
-        this.nitfDowngradeDateOrSpecialCase = securityMetadata.getDowngradeDateOrSpecialCase();
-        this.nitfDowngradeEvent = securityMetadata.getDowngradeEvent();
+    public static SecurityMetadataBuilder20 newInstance(final SecurityMetadata securityMetadata) {
+        SecurityMetadataBuilder20 builder = new SecurityMetadataBuilder20(securityMetadata);
+        builder.instance = builder;
+        builder.downgradeDateOrSpecialCase(securityMetadata.getDowngradeDateOrSpecialCase());
+        builder.downgradeEvent(securityMetadata.getDowngradeEvent());
+        return builder;
     }
 
     /**
@@ -82,7 +95,7 @@ public class SecurityMetadataBuilder20 extends SecurityMetadataBuilder<SecurityM
      * @param dateOrSpecialCase the date or special case
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder20 downgradeDateOrSpecialCase(final String dateOrSpecialCase) {
+    public SecurityMetadataBuilder20 downgradeDateOrSpecialCase(final String dateOrSpecialCase) {
         this.nitfDowngradeDateOrSpecialCase = dateOrSpecialCase;
         return this;
     }
@@ -98,13 +111,13 @@ public class SecurityMetadataBuilder20 extends SecurityMetadataBuilder<SecurityM
      * event applies
      * @return this builder, to support method chaining
      */
-    public final SecurityMetadataBuilder20 downgradeEvent(final String event) {
+    public SecurityMetadataBuilder20 downgradeEvent(final String event) {
         this.nitfDowngradeEvent = event;
         return this;
     }
 
     @Override
-    final void populateVersionSpecific(final SecurityMetadataImpl securityMetadata) {
+    void populateVersionSpecific(final SecurityMetadataImpl securityMetadata) {
         securityMetadata.setDowngradeEvent(nitfDowngradeEvent);
         securityMetadata.setDowngradeDateOrSpecialCase(nitfDowngradeDateOrSpecialCase);
     }
