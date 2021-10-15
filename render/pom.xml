@@ -71,6 +71,9 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs.mavenplugin.version}</version>
+                <configuration>
+                    <excludeFilterFile>SpotBugsFilter.xml</excludeFilterFile>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
@@ -155,4 +158,3 @@
     </dependencies>
 
 </project>
-
