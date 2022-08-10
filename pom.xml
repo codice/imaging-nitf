@@ -22,7 +22,7 @@
         <mavenremoteresources.version>1.5</mavenremoteresources.version>
         <mavenjavadocplugin.version>2.9.1</mavenjavadocplugin.version>
         <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
         <jaxbmavenplugin.version>2.4</jaxbmavenplugin.version>
         <jakarta.activation.version>1.2.2</jakarta.activation.version>
