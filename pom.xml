@@ -23,10 +23,10 @@
         <mavenjavadocplugin.version>2.9.1</mavenjavadocplugin.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
-        <jaxbmavenplugin.version>2.4</jaxbmavenplugin.version>
-        <jakarta.activation.version>1.2.2</jakarta.activation.version>
-        <jakarta.xml.bind.version>2.3.2</jakarta.xml.bind.version>
+        <glassfish.jaxb.version>4.0.2</glassfish.jaxb.version>
+        <jaxbmavenplugin.version>3.1.0</jaxbmavenplugin.version>
+        <jakarta.activation.version>2.1.1</jakarta.activation.version>
+        <jakarta.xml.bind.version>4.0.0</jakarta.xml.bind.version>
         <jaxb.api.version>2.3.0</jaxb.api.version>
         <commons-io.version>2.11.0</commons-io.version>
     </properties>

@@ -16,10 +16,10 @@ package org.codice.imaging.nitf.core.tre.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import static jakarta.xml.bind.DatatypeConverter.parseHexBinary;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
 import org.codice.imaging.nitf.core.tre.TreGroup;

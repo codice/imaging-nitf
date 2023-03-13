@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.core.tre.impl;
 
+import static jakarta.xml.bind.DatatypeConverter.parseHexBinary;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,7 +23,6 @@ import java.io.StringReader;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import org.codice.imaging.nitf.core.common.NitfFormatException;

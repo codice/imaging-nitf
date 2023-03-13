@@ -14,6 +14,7 @@
  */
 package org.codice.imaging.nitf.trewrap;
 
+import static jakarta.xml.bind.DatatypeConverter.parseHexBinary;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,7 +22,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.tre.Tre;
 import static org.junit.Assert.assertEquals;

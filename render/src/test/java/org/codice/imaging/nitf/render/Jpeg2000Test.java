@@ -18,7 +18,7 @@
  */
 package org.codice.imaging.nitf.render;
 
-import static javax.xml.bind.DatatypeConverter.parseHexBinary;
+import static jakarta.xml.bind.DatatypeConverter.parseHexBinary;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

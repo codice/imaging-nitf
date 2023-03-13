@@ -14,12 +14,12 @@
  */
 package org.codice.imaging.nitf.core.tre.impl;
 
+import static jakarta.xml.bind.DatatypeConverter.parseHexBinary;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import org.codice.imaging.nitf.core.impl.SlottedParseStrategy;
 import org.codice.imaging.nitf.core.common.NitfFormatException;
 import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
