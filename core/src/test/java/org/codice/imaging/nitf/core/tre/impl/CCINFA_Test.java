@@ -14,12 +14,12 @@
  */
 package org.codice.imaging.nitf.core.tre.impl;
 
+import jakarta.xml.bind.DatatypeConverter;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import javax.xml.bind.DatatypeConverter;
 import org.codice.imaging.nitf.core.common.NitfReader;
 import org.codice.imaging.nitf.core.common.impl.NitfInputStreamReader;
 import org.codice.imaging.nitf.core.tre.Tre;

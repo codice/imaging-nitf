@@ -18,6 +18,7 @@
  */
 package org.codice.imaging.nitf.render;
 
+import static jakarta.xml.bind.DatatypeConverter.parseHexBinary;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -28,7 +29,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
-import static javax.xml.bind.DatatypeConverter.parseHexBinary;
 import org.codice.imaging.nitf.core.image.ImageCompression;
 import org.codice.imaging.nitf.core.image.ImageSegment;
 import org.junit.Test;
