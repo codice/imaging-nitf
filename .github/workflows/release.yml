@@ -32,7 +32,6 @@ on:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
   release:
@@ -54,3 +53,5 @@ jobs:
       app_private_key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
       dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
       dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+      nexus_username: ${{ secrets.NEXUS_USERNAME }}
+      nexus_password: ${{ secrets.NEXUS_PASSWORD }}
